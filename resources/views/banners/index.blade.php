@@ -163,7 +163,7 @@
         </div>
     @endif
 
-    <meta name="banners-delete-url" content="{{ url('banners') }}">
+    <meta name="banners-delete-url" content="{{ route('banners.index') }}">
 @endsection
 
 @push('scripts')

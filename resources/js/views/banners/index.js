@@ -23,7 +23,8 @@ document.querySelectorAll(".toggle-status-btn").forEach((btn) => {
 
 async function toggleStatus(id, btn) {
     try {
-        const res = await fetch(`/banners/${id}/toggle-status`, {
+        const toggleUrl = `${BASE}/${id}/toggle-status`;
+        const res = await fetch(toggleUrl, {
             method: "PATCH",
             headers: { "X-CSRF-TOKEN": CSRF, Accept: "application/json" },
         });
