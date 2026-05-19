@@ -202,7 +202,9 @@
     @endif
 @endsection
 
-<meta name="announcements-base-url" content="{{ route('announcements.index') }}">
+@push('head')
+    <meta name="announcements-base-url" content="{{ route('announcements.index') }}">
+@endpush
 
 @push('scripts')
     @vite('resources/js/views/announcements/index.js')
