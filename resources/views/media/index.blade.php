@@ -11,7 +11,7 @@
 
 @section('header-actions')
   @canany(['media.upload', 'media.manage'])
-    <a href="{{ route('media.create') }}" class="btn-primary btn-header-action">
+    <a href="{{ route('media.create') }}" class="btn-primary btn-sm btn-header-action">
       <i class="ri-upload-2-line sm:mr-2"></i>
       <span class="btn-text">Subir Archivos</span>
       <span class="btn-tooltip">Subir Archivos</span>

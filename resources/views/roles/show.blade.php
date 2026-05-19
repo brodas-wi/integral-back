@@ -4,7 +4,7 @@
 @section('page-title', 'Detalles del Rol')
 
 @section('header-actions')
-    <a href="{{ route('roles.index') }}" class="btn-outline btn-header-action">
+    <a href="{{ route('roles.index') }}" class="btn-outline btn-sm btn-header-action">
         <i class="ri-arrow-left-line sm:mr-2"></i>
         <span class="btn-text">Volver</span>
         <span class="btn-tooltip">Volver</span>

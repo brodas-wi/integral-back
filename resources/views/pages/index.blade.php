@@ -11,7 +11,7 @@
 
 @section('header-actions')
     @canany(['pages.create', 'pages.manage'])
-        <a href="{{ route('pages.create') }}" class="btn-primary btn-header-action">
+        <a href="{{ route('pages.create') }}" class="btn-primary btn-sm btn-header-action">
             <i class="ri-add-line sm:mr-2"></i>
             <span class="btn-text">Crear</span>
             <span class="btn-tooltip">Crear</span>

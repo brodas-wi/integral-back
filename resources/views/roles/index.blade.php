@@ -5,7 +5,7 @@
 
 @section('header-actions')
     @canany(['roles.create', 'roles.manage'])
-        <a href="{{ route('roles.create') }}" class="btn-primary btn-header-action">
+        <a href="{{ route('roles.create') }}" class="btn-primary btn-sm btn-header-action">
             <i class="ri-add-line sm:mr-2"></i>
             <span class="btn-text">Nuevo Rol</span>
             <span class="btn-tooltip">Nuevo Rol</span>

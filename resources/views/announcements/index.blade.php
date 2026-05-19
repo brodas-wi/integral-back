@@ -7,7 +7,7 @@
 
 @section('header-actions')
     @canany(['announcements.create', 'announcements.manage'])
-        <a href="{{ route('announcements.create') }}" class="btn-primary btn-header-action">
+        <a href="{{ route('announcements.create') }}" class="btn-primary btn-sm btn-header-action">
             <i class="ri-add-line sm:mr-2"></i>
             <span class="btn-text">Nuevo Aviso</span>
             <span class="btn-tooltip">Crear</span>

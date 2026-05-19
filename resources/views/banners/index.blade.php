@@ -11,14 +11,14 @@
 
 @section('header-actions')
     @canany(['banners.delete', 'banners.manage'])
-        <a href="{{ route('banners.trashed') }}" class="btn-outline btn-header-action">
+        <a href="{{ route('banners.trashed') }}" class="btn-outline btn-sm btn-header-action">
             <i class="ri-delete-bin-line sm:mr-2"></i>
             <span class="btn-text">Papelera</span>
             <span class="btn-tooltip">Papelera</span>
         </a>
     @endcanany
     @canany(['banners.create', 'banners.manage'])
-        <a href="{{ route('banners.create') }}" class="btn-primary btn-header-action">
+        <a href="{{ route('banners.create') }}" class="btn-primary btn-sm btn-header-action">
             <i class="ri-add-line sm:mr-2"></i>
             <span class="btn-text">Crear Banner</span>
             <span class="btn-tooltip">Crear</span>

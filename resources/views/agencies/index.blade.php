@@ -8,7 +8,7 @@
 @section('header-actions')
 <div class="flex gap-2">
   @canany(['agencies.export', 'agencies.manage'])
-  <a href="{{ route('agencies.export', request()->query()) }}" class="btn-outline btn-header-action">
+  <a href="{{ route('agencies.export', request()->query()) }}" class="btn-outline btn-sm btn-header-action">
     <i class="ri-download-line sm:mr-2"></i>
     <span class="btn-text">Exportar</span>
     <span class="btn-tooltip">Exportar</span>
@@ -16,7 +16,7 @@
   @endcanany
 
   @canany(['agencies.import', 'agencies.manage'])
-  <a href="{{ route('agencies.import') }}" class="btn-outline-secondary btn-header-action">
+  <a href="{{ route('agencies.import') }}" class="btn-outline-secondary btn-sm btn-header-action">
     <i class="ri-upload-line sm:mr-2"></i>
     <span class="btn-text">Importar</span>
     <span class="btn-tooltip">Importar</span>
@@ -24,7 +24,7 @@
   @endcanany
 
   @canany(['agencies.create', 'agencies.manage'])
-  <a href="{{ route('agencies.create') }}" class="btn-primary btn-header-action">
+  <a href="{{ route('agencies.create') }}" class="btn-primary btn-sm btn-header-action">
     <i class="ri-add-line sm:mr-2"></i>
     <span class="btn-text">Crear</span>
     <span class="btn-tooltip">Crear</span>

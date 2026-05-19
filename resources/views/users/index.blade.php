@@ -11,7 +11,7 @@
 
 @section('header-actions')
     @canany(['users.create', 'users.manage'])
-        <a href="{{ route('users.create') }}" class="btn-primary btn-header-action">
+        <a href="{{ route('users.create') }}" class="btn-primary btn-sm btn-header-action">
             <i class="ri-add-line sm:mr-2"></i>
             <span class="btn-text">Nuevo Usuario</span>
             <span class="btn-tooltip">Nuevo Usuario</span>

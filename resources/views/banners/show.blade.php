@@ -13,7 +13,7 @@
 
 @section('header-actions')
     @canany(['banners.edit', 'banners.manage'])
-        <a href="{{ route('banners.edit', $banner) }}" class="btn-primary btn-header-action">
+        <a href="{{ route('banners.edit', $banner) }}" class="btn-primary btn-sm btn-header-action">
             <i class="ri-edit-line sm:mr-2"></i>
             <span class="btn-text">Editar</span>
             <span class="btn-tooltip">Editar</span>

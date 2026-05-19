@@ -5,7 +5,7 @@
 
 @section('header-actions')
     <div class="flex items-center gap-2">
-        <a href="{{ route('pages.index') }}" class="btn-outline btn-header-action">
+        <a href="{{ route('pages.index') }}" class="btn-outline btn-sm btn-header-action">
             <i class="ri-arrow-left-line sm:mr-2"></i>
             <span class="btn-text">Volver</span>
             <span class="btn-tooltip">Volver</span>

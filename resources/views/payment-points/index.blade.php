@@ -7,7 +7,7 @@
 
 @section('header-actions')
 @canany(['payment_points.export', 'payment_points.manage'])
-<a href="{{ route('payment-points.export', request()->query()) }}" class="btn-outline btn-header-action">
+<a href="{{ route('payment-points.export', request()->query()) }}" class="btn-outline btn-sm btn-header-action">
     <i class="ri-download-line mr-2"></i>
     <span class="btn-text">Exportar</span>
     <span class="btn-tooltip">Exportar</span>
@@ -15,7 +15,7 @@
 @endcanany
 
 @canany(['payment_points.import', 'payment_points.manage'])
-<a href="{{ route('payment-points.import') }}" class="btn-outline-secondary btn-header-action">
+<a href="{{ route('payment-points.import') }}" class="btn-outline-secondary btn-sm btn-header-action">
     <i class="ri-upload-line mr-2"></i>
     <span class="btn-text">Importar</span>
     <span class="btn-tooltip">Importar</span>
@@ -23,7 +23,7 @@
 @endcanany
 
 @canany(['payment_points.create', 'payment_points.manage'])
-<a href="{{ route('payment-points.create') }}" class="btn-primary btn-header-action">
+<a href="{{ route('payment-points.create') }}" class="btn-primary btn-sm btn-header-action">
     <i class="ri-add-line mr-2"></i>
     <span class="btn-text">Crear</span>
     <span class="btn-tooltip">Crear</span>
