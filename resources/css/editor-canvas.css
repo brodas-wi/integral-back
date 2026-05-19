@@ -1,0 +1,7 @@
+body,
+body.gjs-dashed {
+    margin: 0 !important;
+    padding: 0 0 160px 0 !important;
+    background: #ffffff !important;
+    font-family: 'Poppins', sans-serif !important;
+}

@@ -1,0 +1,33 @@
+{
+    "$schema": "https://www.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "serve": "php artisan serve",
+        "start": "concurrently \"npm run dev\" \"npm run serve\" --names \"VITE,SERVE\" --prefix-colors \"cyan,green\""
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.2",
+        "@tailwindcss/vite": "^4.0.0",
+        "alpinejs": "^3.4.2",
+        "autoprefixer": "^10.4.23",
+        "axios": "^1.11.0",
+        "concurrently": "^9.2.1",
+        "glob": "^13.0.6",
+        "laravel-vite-plugin": "^2.0.0",
+        "postcss": "^8.5.6",
+        "tailwindcss": "^3.4.19",
+        "vite": "^7.0.7"
+    },
+    "dependencies": {
+        "@fontsource/inter": "^5.1.0",
+        "@fontsource/poppins": "^5.2.7",
+        "flatpickr": "^4.6.13",
+        "grapesjs": "^0.22.14",
+        "grapesjs-preset-webpage": "^1.0.3",
+        "leaflet": "^1.9.4",
+        "remixicon": "^4.8.0"
+    }
+}

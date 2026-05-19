@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="canvas-css-url" content="{{ Vite::asset('resources/css/editor-canvas.css') }}">
+    <meta name="canvas-app-css-url" content="{{ Vite::asset('resources/css/app.css') }}">
+    <meta name="canvas-poppins-url" content="{{ Vite::asset('resources/css/fonts/poppins.css') }}">
+    <meta name="canvas-remixicons-url" content="{{ Vite::asset('node_modules/remixicon/fonts/remixicon.css') }}">
+    <title>{{ isset($page) ? 'Editar: ' . $page->title : 'Nueva Página' }} - Editor</title>
+    <link href="{{ Vite::asset('node_modules/remixicon/fonts/remixicon.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ Vite::asset('node_modules/grapesjs/dist/css/grapes.min.css') }}">
+    @vite(['resources/css/editor.css', 'resources/js/app.js', 'resources/js/pages-editor.js'])
+</head>
+
+<body>
+    <nav id="editor-navbar">
+        <div id="editor-navbar-left">
+            <a href="{{ route('pages.index') }}" class="btn-editor btn-editor-outline">
+                <i class="ri-arrow-left-line"></i>
+                <span>Volver</span>
+            </a>
+            <h1 id="editor-title">
+                @if (isset($page))
+                    Editando: {{ $page->title }}
+                @else
+                    Nueva Página
+                @endif
+            </h1>
+        </div>
+        <div id="editor-navbar-right">
+            <button id="save-button" class="btn-editor btn-editor-primary">
+                <i class="ri-save-line"></i>
+                <span>Guardar</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="gjs"></div>
+
+    <input type="hidden" id="page-id" value="{{ $page->id ?? '' }}">
+    <input type="hidden" id="page-slug" value="{{ $page->slug ?? '' }}">
+    <input type="hidden" id="page-load-url" value="{{ isset($page) ? route('pages.load', $page->slug) : '' }}">
+    <input type="hidden" id="page-store-url"
+        value="{{ isset($page) ? route('pages.update', $page->slug) : route('pages.store') }}">
+</body>
+
+</html>
