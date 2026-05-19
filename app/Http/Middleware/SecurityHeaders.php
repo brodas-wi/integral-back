@@ -53,6 +53,10 @@ class SecurityHeaders
     {
         $response = $next($request);
 
+        $assetUrl = config('app.asset_url', config('app.url'));
+        $this->defaultCsp['frame-src'][] = $assetUrl;
+        $this->editorCsp['frame-src'][] = $assetUrl;
+
         $viteSources = $this->getViteDevSources();
 
         if (!empty($viteSources)) {

@@ -284,6 +284,15 @@
       "media-modal.css"
     ]
   },
+  "resources/css/views/media/show.css": {
+    "file": "assets/show-DqyC9vAV.css",
+    "src": "resources/css/views/media/show.css",
+    "isEntry": true,
+    "name": "show",
+    "names": [
+      "show.css"
+    ]
+  },
   "resources/js/app.js": {
     "file": "assets/app-8qM03z5a.js",
     "name": "app",
