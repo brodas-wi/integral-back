@@ -73,9 +73,15 @@ function renderButtonPreview(container, text, style) {
     btn.dataset.hoverBg = s.hoverBg;
     btn.dataset.hoverColor = hoverColor;
 
-    btn.style.cssText = `background:${s.bg};color:${s.color};border:2px solid ${s.border};
-        padding:10px 28px;border-radius:999px;font-size:14px;
-        font-weight:600;cursor:pointer;transition:background .2s,color .2s;`;
+    btn.style.background = s.bg;
+    btn.style.color = s.color;
+    btn.style.border = `2px solid ${s.border}`;
+    btn.style.padding = "10px 28px";
+    btn.style.borderRadius = "999px";
+    btn.style.fontSize = "14px";
+    btn.style.fontWeight = "600";
+    btn.style.cursor = "pointer";
+    btn.style.transition = "background .2s, color .2s";
 
     btn.addEventListener("mouseenter", () => {
         btn.style.background = btn.dataset.hoverBg;

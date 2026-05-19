@@ -42,7 +42,10 @@ export function initMediaPicker({
         if (search) params.set("search", search);
 
         try {
-            const res = await fetch(`/media/api?${params}`, {
+            const mediaApiUrl =
+                document.querySelector('meta[name="media-api-url"]')?.content ??
+                "/media/api";
+            const res = await fetch(`${mediaApiUrl}?${params}`, {
                 headers: { Accept: "application/json", "X-CSRF-TOKEN": CSRF },
             });
             const data = await res.json();
