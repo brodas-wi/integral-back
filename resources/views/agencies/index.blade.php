@@ -107,8 +107,7 @@
       <span class="text-sm font-medium text-blue-900" id="geocoding-progress-text">0%</span>
     </div>
     <div class="w-full bg-blue-200 rounded-full h-3 overflow-hidden">
-      <div id="geocoding-progress-bar" class="bg-primary h-3 rounded-full transition-all duration-300"
-        style="width: 0%"></div>
+      <div id="geocoding-progress-bar" class="progress-bar bg-primary h-3 rounded-full transition-all duration-300"></div>
     </div>
     <div class="text-xs text-blue-700" id="geocoding-details">Preparando...</div>
   </div>

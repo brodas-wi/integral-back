@@ -219,6 +219,10 @@
         font-family: inherit;
     }
 
+    .progress-bar {
+        width: var(--progress, 0%);
+    }
+
     @media (max-width: 640px) {
         .btn-header-action .btn-text {
             @apply hidden;

@@ -130,7 +130,7 @@ async function geocodeSelected() {
 
         completed++;
         const progress = (completed / points.length) * 100;
-        progressBar.style.width = `${progress}%`;
+        progressBar.style.setProperty('--progress', `${progress}%`);
         progressText.textContent = `${Math.round(progress)}%`;
 
         await sleep(1000);

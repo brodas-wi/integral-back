@@ -152,8 +152,7 @@
                         <span class="text-sm font-medium text-blue-900" id="progress-text">0%</span>
                     </div>
                     <div class="w-full bg-blue-200 rounded-full h-3 overflow-hidden">
-                        <div id="progress-bar" class="bg-primary h-3 rounded-full transition-all duration-300 ease-out"
-                            style="width: 0%"></div>
+                        <div id="progress-bar" class="progress-bar bg-primary h-3 rounded-full transition-all duration-300 ease-out"></div>
                     </div>
                     <p class="text-xs text-blue-700 mt-2" id="progress-details"></p>
                 </div>

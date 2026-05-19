@@ -139,7 +139,7 @@ export function initPaymentPointImport() {
     });
 
     function updateProgress(percent, details) {
-        progressBar.style.width = percent + "%";
+        progressBar.style.setProperty("--progress", percent + "%");
         progressText.textContent = Math.round(percent) + "%";
         progressDetails.textContent = details;
     }
