@@ -204,7 +204,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DwjaJZM0.css",
+    "file": "assets/app-CnnJtKER.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -349,6 +349,33 @@
       "assets/media-modal-Do3bsqwH.css",
       "assets/icon-picker-modal-J3czLV3a.css",
       "assets/color-picker-modal-Kkz6xY2I.css"
+    ]
+  },
+  "resources/js/views/announcements/form.js": {
+    "file": "assets/form-G8zqCY9H.js",
+    "name": "form",
+    "src": "resources/js/views/announcements/form.js",
+    "isEntry": true,
+    "css": [
+      "assets/form-CksuuEqD.css"
+    ]
+  },
+  "resources/js/views/announcements/index.js": {
+    "file": "assets/index-BH_QfKZF.js",
+    "name": "index",
+    "src": "resources/js/views/announcements/index.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js"
+    ]
+  },
+  "resources/js/views/announcements/show.js": {
+    "file": "assets/show-CogCzZdo.js",
+    "name": "show",
+    "src": "resources/js/views/announcements/show.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js"
     ]
   },
   "resources/js/views/banners/form.js": {

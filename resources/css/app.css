@@ -129,6 +129,43 @@
         word-wrap: break-word;
     }
 
+    .announcement-removing {
+        transition:
+            opacity 0.3s,
+            transform 0.3s;
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    .media-card-overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s;
+    }
+
+    .group:hover .media-card-overlay {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .media-card-btn {
+        opacity: 0;
+        background-color: var(--color-primary, #f0872a);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    .group:hover .media-card-btn {
+        opacity: 1;
+    }
+
     .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;

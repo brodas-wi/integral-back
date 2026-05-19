@@ -1,4 +1,9 @@
-import { showNotification } from "../utils/notifications.js";
+import { showNotification } from "@/utils/notifications.js";
+
+const BASE = document.querySelector(
+    'meta[name="announcements-base-url"]',
+)?.content;
+const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
 
 document.addEventListener("DOMContentLoaded", function () {
     initAnnouncementToggles();
@@ -6,23 +11,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function initAnnouncementToggles() {
-    const toggles = document.querySelectorAll(".announcement-toggle");
-
-    toggles.forEach((toggle) => {
+    document.querySelectorAll(".announcement-toggle").forEach((toggle) => {
         toggle.addEventListener("change", async function () {
             const announcementId = this.dataset.announcementId;
             const isActive = this.checked;
 
             try {
                 const response = await fetch(
-                    `/announcements/${announcementId}/toggle-status`,
+                    `${BASE}/${announcementId}/toggle-status`,
                     {
                         method: "PATCH",
                         headers: {
                             "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document
-                                .querySelector('meta[name="csrf-token"]')
-                                .getAttribute("content"),
+                            "X-CSRF-TOKEN": CSRF,
                             Accept: "application/json",
                         },
                     },
@@ -76,7 +77,7 @@ function initAnnouncementDelete() {
 
         window.showConfirmModal({
             title: "¿Eliminar aviso?",
-            message: `¿Estás seguro de que deseas eliminar "${title}"? Esta acción no se puede deshacer.`,
+            message: `¿Estás seguro de que deseas eliminar "<strong>${title}</strong>"? Esta acción no se puede deshacer.`,
             confirmText: "Eliminar",
             cancelText: "Cancelar",
             type: "danger",
@@ -87,13 +88,11 @@ function initAnnouncementDelete() {
 
 async function deleteAnnouncement(announcementId) {
     try {
-        const response = await fetch(`/announcements/${announcementId}`, {
+        const response = await fetch(`${BASE}/${announcementId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
+                "X-CSRF-TOKEN": CSRF,
                 Accept: "application/json",
             },
         });
@@ -107,23 +106,19 @@ async function deleteAnnouncement(announcementId) {
                 `announcement-item-${announcementId}`,
             );
             if (item) {
-                item.style.transition = "opacity 0.3s, transform 0.3s";
-                item.style.opacity = "0";
-                item.style.transform = "scale(0.9)";
-
+                item.classList.add("announcement-removing");
                 setTimeout(() => {
                     item.remove();
-
-                    const remaining = document.querySelectorAll(
-                        '[id^="announcement-item-"]',
-                    );
-                    if (remaining.length === 0) {
+                    if (
+                        document.querySelectorAll('[id^="announcement-item-"]')
+                            .length === 0
+                    ) {
                         window.location.reload();
                     }
                 }, 300);
             } else {
                 setTimeout(() => {
-                    window.location.href = "/announcements";
+                    window.location.href = BASE;
                 }, 1500);
             }
         } else {

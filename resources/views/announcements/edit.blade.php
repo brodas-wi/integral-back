@@ -315,5 +315,5 @@
 @endsection
 
 @push('scripts')
-@vite('resources/js/modules/announcement-form.js')
+    @vite('resources/js/views/announcements/form.js')
 @endpush

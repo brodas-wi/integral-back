@@ -153,6 +153,8 @@
 </div>
 @endsection
 
+<meta name="announcements-base-url" content="{{ route('announcements.index') }}">
+
 @push('scripts')
-@vite('resources/js/modules/announcements.js')
+    @vite('resources/js/views/announcements/show.js')
 @endpush
