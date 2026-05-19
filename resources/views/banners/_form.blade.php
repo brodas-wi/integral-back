@@ -80,7 +80,7 @@
                 </div>
                 <div class="mt-4">
                     <label class="block text-xs font-medium text-gray-500 mb-2">Vista previa</label>
-                    <div id="btn-primary-preview"></div>
+                    <div id="btn-primary-preview" class="btn-preview-container"></div>
                 </div>
             </div>
 
@@ -124,7 +124,7 @@
                 </div>
                 <div class="mt-4">
                     <label class="block text-xs font-medium text-gray-500 mb-2">Vista previa</label>
-                    <div id="btn-secondary-preview"></div>
+                    <div id="btn-secondary-preview" class="btn-preview-container"></div>
                 </div>
             </div>
 
@@ -145,7 +145,8 @@
                         class="{{ $banner?->image_url ? 'hidden' : '' }} flex flex-col items-center justify-center py-2">
                         <i class="ri-image-add-line text-4xl text-gray-400 mb-2"></i>
                         <p class="text-sm text-gray-500">Haz clic para seleccionar una imagen</p>
-                        <p class="text-xs text-gray-400 mt-1">Se recomienda imagen horizontal. Se usará como fondo del banner.</p>
+                        <p class="text-xs text-gray-400 mt-1">Se recomienda imagen horizontal. Se usará como fondo del
+                            banner.</p>
                     </div>
                     <div id="image-selected" class="{{ $banner?->image_url ? '' : 'hidden' }}">
                         <img id="image-preview" src="{{ $banner?->image_url ?? '' }}" alt="Vista previa"
