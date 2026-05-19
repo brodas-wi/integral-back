@@ -16,6 +16,7 @@ export default defineConfig({
             input: [
                 "resources/css/app.css",
                 "resources/css/fonts/poppins.css",
+                "resources/css/notifications.css",
                 "resources/css/editor.css",
                 "resources/css/editor-canvas.css",
                 "resources/js/app.js",
