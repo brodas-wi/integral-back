@@ -162,9 +162,11 @@
             @endcanany
         </div>
     @endif
-
-    <meta name="banners-delete-url" content="{{ route('banners.index') }}">
 @endsection
+
+@push('head')
+    <meta name="banners-delete-url" content="{{ route('banners.index') }}">
+@endpush
 
 @push('scripts')
     @vite('resources/js/views/banners/index.js')
