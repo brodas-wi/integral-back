@@ -3,6 +3,10 @@
 @section('title', 'Ver Archivo')
 @section('page-title', 'Detalles del Archivo')
 
+@push('styles')
+    @vite(['resources/css/views/media/show.css'])
+@endpush
+
 @section('content')
     <div class="max-w-6xl mx-auto">
         <div class="mb-6">
