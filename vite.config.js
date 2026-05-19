@@ -6,6 +6,7 @@ const viewJs  = glob.sync('resources/js/views/**/*.js');
 const viewCss = glob.sync('resources/css/views/**/*.css');
 
 export default defineConfig({
+    base: '/adminintegral/public/build/',
     server: {
         host: '127.0.0.1',
         port: 5173,

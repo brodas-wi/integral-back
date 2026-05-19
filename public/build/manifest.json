@@ -204,7 +204,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CeWY2ATc.css",
+    "file": "assets/app-DVflGrVL.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -231,7 +231,7 @@
     ]
   },
   "resources/css/fonts/poppins.css": {
-    "file": "assets/poppins-CiInbUeW.css",
+    "file": "assets/poppins-DGoltf21.css",
     "src": "resources/css/fonts/poppins.css",
     "isEntry": true,
     "name": "poppins",
@@ -285,7 +285,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-KA-J6bKJ.js",
+    "file": "assets/app-8qM03z5a.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -295,7 +295,7 @@
       "__commonjsHelpers-CqkleIqs.js"
     ],
     "css": [
-      "assets/app-D8EDaPJ-.css"
+      "assets/app-DahDyFMT.css"
     ],
     "assets": [
       "assets/remixicon-Dj-GCdWP.eot",
