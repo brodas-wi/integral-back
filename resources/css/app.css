@@ -1,9 +1,13 @@
 @import "../fonts/inter.css";
 @import "./components/media-picker.css";
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
+    --color-primary: #f0872a;
+    --color-secondary: #003b71;
+    --color-light: #f8fafc;
+    --color-gray: #6b7280;
+}
 
 @layer base {
     body {
@@ -13,11 +17,11 @@
 
 @layer components {
     .btn-primary {
-        @apply bg-primary hover:bg-opacity-90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center border border-primary;
+        @apply bg-primary text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center border border-primary hover:opacity-90;
     }
 
     .btn-secondary {
-        @apply bg-secondary hover:bg-opacity-90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center border border-secondary;
+        @apply bg-secondary text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center border border-secondary hover:opacity-90;
     }
 
     .btn-outline {
