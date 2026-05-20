@@ -323,7 +323,8 @@ export function initializeBannerSingleBlocks(editor) {
 
 async function loadBannerOptions(editor, componentType) {
     try {
-        const res = await fetch("/api/banners/active");
+        const apiUrl = document.querySelector('meta[name="api-banners-url"]')?.content ?? '/api/banners/active';
+        const res = await fetch(apiUrl);
         const all = await res.json();
         if (!Array.isArray(all) || all.length === 0) return;
 

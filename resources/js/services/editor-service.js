@@ -57,9 +57,22 @@ export class EditorService {
             body: JSON.stringify(payload),
         });
 
+        const contentType = response.headers.get("content-type") || "";
+        const isJson = contentType.includes("application/json");
+
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || "Error al guardar");
+            if (isJson) {
+                const error = await response.json();
+                throw new Error(error.message || "Error al guardar");
+            }
+            if (response.status === 401 || response.status === 419) {
+                throw new Error("Tu sesión ha expirado. Recarga la página.");
+            }
+            throw new Error(`Error al guardar (${response.status})`);
+        }
+
+        if (!isJson) {
+            throw new Error("Respuesta inesperada del servidor");
         }
 
         return await response.json();

@@ -20,7 +20,7 @@
     <link href="{{ Vite::asset('node_modules/remixicon/fonts/remixicon.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ Vite::asset('node_modules/grapesjs/dist/css/grapes.min.css') }}">
 
-    @vite(['resources/css/editor.css', 'resources/js/app.js', 'resources/js/pages-editor.js'])
+    @vite(['resources/css/editor.css', 'resources/css/notifications.css', 'resources/js/app.js', 'resources/js/pages-editor.js'])
 </head>
 
 <body>
@@ -50,6 +50,7 @@
 
     <input type="hidden" id="page-id" value="{{ $page->id ?? '' }}">
     <input type="hidden" id="page-slug" value="{{ $page->slug ?? '' }}">
+    <input type="hidden" id="page-is-published" value="{{ isset($page) ? ($page->is_published ? '1' : '0') : '0' }}">
     <input type="hidden" id="page-load-url" value="{{ isset($page) ? route('pages.load', $page->slug) : '' }}">
     <input type="hidden" id="page-store-url"
         value="{{ isset($page) ? route('pages.update', $page->slug) : route('pages.store') }}">

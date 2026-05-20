@@ -5,6 +5,7 @@ export class EditorState {
         this.pageTitle = this.getPageTitle();
         this.loadUrl = this.getElementValue("page-load-url");
         this.storeUrl = this.getElementValue("page-store-url");
+        this.isPublished = this.getElementValue("page-is-published") === "1";
         this.isEditMode = Boolean(this.pageId);
     }
 

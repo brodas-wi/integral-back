@@ -68,7 +68,7 @@ async function savePageContent(
     title = null,
 ) {
     const content = editorService.getEditorContent(editor);
-    const payload = { ...content, is_published: false };
+    const payload = { ...content, is_published: editorState.isPublished };
     if (title) payload.title = title;
 
     const data = await editorService.savePage(
