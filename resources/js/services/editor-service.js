@@ -26,8 +26,7 @@ export class EditorService {
                 const projectData = JSON.parse(data.components_json);
                 editor.loadProjectData(projectData);
                 return data;
-            } catch {
-            }
+            } catch {}
         }
 
         const html = data.html || "";
@@ -80,7 +79,7 @@ export class EditorService {
 
     getEditorContent(editor) {
         const projectData = editor.getProjectData();
-        const html        = editor.getHtml();
+        const html = editor.getHtml();
 
         const cleanHtml = html
             .replace(/<body[^>]*>/gi, "")
@@ -89,12 +88,27 @@ export class EditorService {
             .replace(/<\/html>/gi, "")
             .trim();
 
+        const styleTagRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi;
+        const extractedStyles = [];
+        let match;
+        while ((match = styleTagRegex.exec(cleanHtml)) !== null) {
+            extractedStyles.push(match[1].trim());
+        }
+
+        const gjsCss = editor.getCss();
+        const blockCss = extractedStyles.join("\n");
+        const combinedCss = [gjsCss, blockCss].filter(Boolean).join("\n");
+
+        const htmlWithoutStyles = cleanHtml
+            .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+            .trim();
+
         return {
-            html_content:    cleanHtml,
-            css_content:     editor.getCss(),
-            js_content:      editor.getJs() || "",
+            html_content: htmlWithoutStyles,
+            css_content: combinedCss,
+            js_content: editor.getJs() || "",
             components_json: JSON.stringify(projectData),
-            styles_json:     JSON.stringify(projectData.styles ?? []),
+            styles_json: JSON.stringify(projectData.styles ?? []),
         };
     }
 
