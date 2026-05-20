@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="app-url" content="{{ rtrim(config('app.url'), '/') }}">
+    <meta name="asset-url" content="{{ rtrim(config('app.asset_url', config('app.url')), '/') }}">
     <meta name="media-api-url" content="{{ route('media.api') }}">
     <title>@yield('title', 'Dashboard') - CMS Integral</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">

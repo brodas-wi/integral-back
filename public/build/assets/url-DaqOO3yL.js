@@ -1,0 +1,1 @@
+const t=(()=>{const e=document.querySelector('meta[name="app-url"]');return e?e.content.replace(/\/$/,""):window.location.origin})(),r=(()=>{const e=document.querySelector('meta[name="asset-url"]');return e?e.content.replace(/\/$/,""):t})();function n(e){return t+"/"+e.replace(/^\//,"")}function a(e){return r+"/"+e.replace(/^\//,"")}export{a,n as b};

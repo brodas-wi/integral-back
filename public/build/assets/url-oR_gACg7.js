@@ -1,1 +1,0 @@
-const n=(()=>{const e=document.querySelector('meta[name="app-url"]');return e?e.content.replace(/\/$/,""):window.location.origin})();function r(e){return n+"/"+e.replace(/^\//,"")}function t(e){return r(e)}export{t as a,r as b};

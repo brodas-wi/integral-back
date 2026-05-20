@@ -15,8 +15,8 @@
     "file": "assets/notifications-Cgjr4krQ.js",
     "name": "notifications"
   },
-  "_url-oR_gACg7.js": {
-    "file": "assets/url-oR_gACg7.js",
+  "_url-DaqOO3yL.js": {
+    "file": "assets/url-DaqOO3yL.js",
     "name": "url"
   },
   "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2": {
@@ -329,7 +329,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-1fHsyVzJ.js",
+    "file": "assets/app-CHggtZNM.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -337,7 +337,7 @@
       "_notifications-Cgjr4krQ.js",
       "_modals-D7u3LXeA.js",
       "_dropdowns-CtvQ6cwq.js",
-      "_url-oR_gACg7.js",
+      "_url-DaqOO3yL.js",
       "__commonjsHelpers-CqkleIqs.js"
     ],
     "css": [
@@ -366,13 +366,13 @@
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-Bf4LBdf-.js",
+    "file": "assets/pages-editor-DN50m1Dy.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
       "__commonjsHelpers-CqkleIqs.js",
-      "_url-oR_gACg7.js"
+      "_url-DaqOO3yL.js"
     ],
     "css": [
       "assets/grapes-CX28yL7U.css",
@@ -442,25 +442,25 @@
     ]
   },
   "resources/js/views/pages/index.js": {
-    "file": "assets/index-6g3neysY.js",
+    "file": "assets/index-BmaSbkJa.js",
     "name": "index",
     "src": "resources/js/views/pages/index.js",
     "isEntry": true,
     "imports": [
       "_notifications-Cgjr4krQ.js",
       "_modals-D7u3LXeA.js",
-      "_url-oR_gACg7.js"
+      "_url-DaqOO3yL.js"
     ]
   },
   "resources/js/views/pages/show.js": {
-    "file": "assets/show-rMFh7uro.js",
+    "file": "assets/show-DvYJXKER.js",
     "name": "show",
     "src": "resources/js/views/pages/show.js",
     "isEntry": true,
     "imports": [
       "_notifications-Cgjr4krQ.js",
       "_modals-D7u3LXeA.js",
-      "_url-oR_gACg7.js"
+      "_url-DaqOO3yL.js"
     ]
   }
 }
