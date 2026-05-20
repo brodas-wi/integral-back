@@ -957,7 +957,7 @@ ${dv}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
     <rect x="19" y="19" width="9" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
     <rect x="19" y="23" width="10" height="2.5" rx="1" fill="#003B71" fill-opacity="0.5"/>
 </svg>`,pv=`
-<div class="flex flex-col gap-5 rounded-2xl p-8 bg-[#003B71]">
+<div class="flex flex-col gap-5 rounded-2xl p-8 dc-bg-primary">
     <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-white/20">
         <i class="ri-map-pin-line text-2xl text-white"></i>
     </div>
@@ -965,24 +965,27 @@ ${dv}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
         <h3 class="text-xl font-bold text-white">Lorem ipsum dolor</h3>
         <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
-    <a href="#" class="dc-btn-outline w-full py-3 px-4 rounded-lg bg-white text-[#003B71] text-base font-semibold text-center">Lorem ipsum</a>
+    <a href="#" class="dc-btn-outline w-full py-3 px-4 rounded-lg bg-white dc-text-primary text-base font-semibold text-center">Lorem ipsum</a>
 </div>`,hv=`
 <div class="flex flex-col gap-5 rounded-2xl p-8 bg-white border border-gray-200">
-    <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-[#dce8f5]">
-        <i class="ri-bank-line text-2xl text-[#003B71]"></i>
+    <div class="w-12 h-12 rounded-xl flex items-center justify-center dc-bg-light">
+        <i class="ri-bank-line text-2xl dc-text-primary"></i>
     </div>
     <div class="flex flex-col gap-3 flex-1">
-        <h3 class="text-xl font-bold text-[#003B71]">Lorem ipsum dolor</h3>
-        <p class="text-base text-[#003B71] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <h3 class="text-xl font-bold dc-text-primary">Lorem ipsum dolor</h3>
+        <p class="text-base dc-text-primary leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
-    <a href="#" class="dc-btn-solid w-full py-3 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center">Lorem ipsum</a>
+    <a href="#" class="dc-btn-solid w-full py-3 px-4 rounded-lg dc-bg-primary text-white text-base font-semibold text-center">Lorem ipsum</a>
 </div>`,mf=`
 <style>
 .dc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:stretch;}
 .dc-btn-outline{display:block;transition:background .2s,color .2s;}
-.dc-btn-outline:hover{background:#dce8f5!important;color:#003B71!important;}
+.dc-btn-outline:hover{background:#dce8f5;color:#003B71;}
 .dc-btn-solid{display:block;transition:background .2s,color .2s;}
-.dc-btn-solid:hover{background:#002a52!important;}
+.dc-btn-solid:hover{background:#002a52;}
+.dc-text-primary{color:#003B71;}
+.dc-bg-primary{background-color:#003B71;}
+.dc-bg-light{background-color:#dce8f5;}
 @media(max-width:640px){.dc-grid{grid-template-columns:1fr;}}
 </style>`,Ek=[{id:"dual-card-section",label:"Sección dos tarjetas",category:"Productos y Servicios",media:Tk,content:`
 <section class="w-full bg-white py-12 px-6">
