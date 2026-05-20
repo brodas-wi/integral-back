@@ -67,7 +67,7 @@ class AnnouncementModal {
         this.overlay = document.createElement("div");
         this.overlay.id = "announcement-overlay";
         this.overlay.className =
-            "fixed inset-0 bg-black bg-opacity-50 z-[9998] hidden transition-opacity duration-300";
+            "fixed inset-0 bg-black/50 z-[9998] hidden transition-opacity duration-300";
 
         this.modal = document.createElement("div");
         this.modal.id = "announcement-modal";
@@ -85,17 +85,17 @@ class AnnouncementModal {
     getModalContainerHTML() {
         return `
             <div class="relative max-w-full max-h-full">
-                <button type="button" id="close-announcement" 
+                <button type="button" id="close-announcement"
                     class="absolute top-4 right-4 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-all">
                     <i class="ri-close-line text-2xl"></i>
                 </button>
-                
+
                 ${this.announcements.length > 1 ? this.getNavigationHTML() : ""}
-                
+
                 <div id="announcement-content-container" class="relative">
                     <!-- Los avisos se renderizan aquí -->
                 </div>
-                
+
                 ${this.announcements.length > 1 ? this.getIndicatorsHTML() : ""}
             </div>
         `;
@@ -103,12 +103,12 @@ class AnnouncementModal {
 
     getNavigationHTML() {
         return `
-            <button type="button" id="prev-announcement" 
+            <button type="button" id="prev-announcement"
                 class="absolute -left-14 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-gray-600 hover:text-white hover:bg-primary transition-all hover:scale-110">
                 <i class="ri-arrow-left-s-line text-3xl"></i>
             </button>
-            
-            <button type="button" id="next-announcement" 
+
+            <button type="button" id="next-announcement"
                 class="absolute -right-14 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-gray-600 hover:text-white hover:bg-primary transition-all hover:scale-110">
                 <i class="ri-arrow-right-s-line text-3xl"></i>
             </button>
@@ -121,7 +121,7 @@ class AnnouncementModal {
                 ${this.announcements
                     .map(
                         (_, index) => `
-                    <button type="button" 
+                    <button type="button"
                         class="announcement-indicator w-2.5 h-2.5 rounded-full transition-all bg-white shadow-lg ${index === 0 ? "w-8" : "opacity-60"}"
                         data-index="${index}">
                     </button>
@@ -180,10 +180,10 @@ class AnnouncementModal {
         }
 
         return `
-            <div class="bg-white rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 scale-95 opacity-0 relative" 
+            <div class="bg-white rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 scale-95 opacity-0 relative"
                  data-announcement-content
                  style="max-width: ${displayWidth}px; max-height: ${displayHeight}px;">
-                <img src="${announcement.image_url}" 
+                <img src="${announcement.image_url}"
                      alt="${announcement.image_alt || "Aviso"}"
                      class="w-full h-full object-contain">
             </div>
@@ -194,10 +194,10 @@ class AnnouncementModal {
         const ctaButton =
             announcement.cta_text && announcement.cta_url
                 ? `
-            <a href="${announcement.cta_url}" 
+            <a href="${announcement.cta_url}"
                target="${announcement.cta_new_tab ? "_blank" : "_self"}"
                rel="${announcement.cta_new_tab ? "noopener noreferrer" : ""}"
-               class="w-full sm:w-auto px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-200 text-center inline-block">
+               class="w-full sm:w-auto px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:opacity-90 transition-all duration-200 text-center inline-block">
                 ${announcement.cta_text}
                 ${announcement.cta_new_tab ? '<i class="ri-external-link-line ml-1"></i>' : ""}
             </a>
@@ -205,23 +205,23 @@ class AnnouncementModal {
                 : "";
 
         return `
-            <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl transform transition-all duration-500 scale-95 opacity-0" 
+            <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl transform transition-all duration-500 scale-95 opacity-0"
                  data-announcement-content>
                 ${
                     announcement.image_url
                         ? `
                     <div class="relative w-full h-64 sm:h-80 overflow-hidden">
-                        <img src="${announcement.image_url}" 
+                        <img src="${announcement.image_url}"
                              alt="${announcement.image_alt || announcement.title}"
                              class="w-full h-full object-cover">
                     </div>
                 `
                         : ""
                 }
-                
+
                 <div class="p-6 sm:p-8">
                     ${announcement.title ? `<h2 class="text-2xl sm:text-3xl font-bold text-secondary mb-4">${announcement.title}</h2>` : ""}
-                    
+
                     ${
                         announcement.description
                             ? `
@@ -231,7 +231,7 @@ class AnnouncementModal {
                     `
                             : ""
                     }
-                    
+
                     ${ctaButton ? `<div class="flex justify-center">${ctaButton}</div>` : ""}
                 </div>
             </div>

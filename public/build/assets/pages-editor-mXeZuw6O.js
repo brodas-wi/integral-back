@@ -898,7 +898,7 @@ ${fv}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"C
     <rect x="6" y="19" width="11" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.3"/>
     <rect x="6" y="22" width="20" height="4" rx="1.5" fill="#003B71" fill-opacity="0.5"/>
 </svg>`,ms=`
-<div class="flex flex-col gap-4 bg-white border border-gray-200 rounded-2xl p-5">
+<div class="flex flex-col gap-4 bg-white border-2 border-[#003B71] rounded-2xl p-5">
     <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-[#dce8f5]">
         <i class="ri-bank-card-line text-2xl text-[#003B71]"></i>
     </div>
@@ -909,11 +909,24 @@ ${fv}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"C
     <a href="#" class="pc-btn w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center">Solicitar</a>
 </div>`,dv=`
 <style>
-.pc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
-.pc-btn{display:block;transition:background .2s,color .2s;}
-.pc-btn:hover{background:#002a52!important;}
-@media(max-width:900px){.pc-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:480px){.pc-grid{grid-template-columns:1fr;}}
+.pc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+.pc-btn {
+    display: block;
+    transition: background 0.2s, color 0.2s;
+}
+.pc-btn:hover {
+    background-color: #002a52;
+}
+@media (max-width: 900px) {
+    .pc-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+    .pc-grid { grid-template-columns: 1fr; }
+}
 </style>`,Ok=[{id:"product-cards-section",label:"Sección de productos",category:"Productos y Servicios",media:Ck,content:`
 <section class="w-full bg-white py-12 px-6">
     <div class="max-w-6xl mx-auto">
@@ -945,7 +958,7 @@ ${dv}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
     <rect x="19" y="23" width="10" height="2.5" rx="1" fill="#003B71" fill-opacity="0.5"/>
 </svg>`,pv=`
 <div class="flex flex-col gap-5 rounded-2xl p-8 bg-[#003B71]">
-    <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-white bg-opacity-20">
+    <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-white/20">
         <i class="ri-map-pin-line text-2xl text-white"></i>
     </div>
     <div class="flex flex-col gap-3 flex-1">
@@ -1316,7 +1329,7 @@ ${ed}`}],Xk=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="7" y="22.5" width="6" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
 </svg>`,Ll=`
 <div class="flex flex-col items-center gap-3 text-center">
-    <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white bg-opacity-20">
+    <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white/20">
         <i class="ri-map-pin-line text-2xl text-white"></i>
     </div>
     <div class="flex flex-col gap-1">
@@ -1821,29 +1834,29 @@ ${mv}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                             <a href="tel:${lt.replace(/\s+/g,"")}" class="agency-phone-link text-white font-medium hover:underline">${lt}</a>
                         </p>
                     `).join(""):"",st=`https://www.google.com/maps/search/?api=1&query=${A.latitude},${A.longitude}`;return`
-                <div class="${r}-item p-5 bg-white bg-opacity-10 border border-white border-opacity-20 rounded-2xl cursor-pointer transition-all duration-200" data-item-index="${W}">
+                <div class="${r}-item p-5 bg-white/10 border border-white/20 rounded-2xl cursor-pointer transition-all duration-200" data-item-index="${W}">
                     <h3 class="agency-title text-lg font-bold text-white mb-3">${A.name}</h3>
                     ${A.address?`<p class="text-gray-200 flex items-start gap-2 mt-2"><i class="ri-map-pin-line text-primary text-lg mt-0.5"></i><span class="flex-1">${A.address}</span></p>`:""}
                     ${A.municipality||A.department?`<p class="text-sm text-gray-300 mt-1 ml-6">${[A.municipality,A.department].filter(Boolean).join(", ")}</p>`:""}
                     ${A.schedule?`<p class="text-gray-200 flex items-start gap-2 mt-2"><i class="ri-time-line text-primary text-lg mt-0.5"></i><span class="flex-1">${A.schedule}</span></p>`:""}
                     ${E}
                     <div class="mt-3">
-                        <a href="${st}" target="_blank" rel="noopener noreferrer" class="agency-maps-btn block w-full text-center px-4 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-200" onclick="event.stopPropagation();">
+                        <a href="${st}" target="_blank" rel="noopener noreferrer" class="agency-maps-btn block w-full text-center px-4 py-2.5 bg-primary text-white font-semibold rounded-lg hover:opacity-90 transition-all duration-200" onclick="event.stopPropagation();">
                             Ver ubicación
                         </a>
                     </div>
                 </div>
             `}function Z(A){A.innerHTML=`
                 <div class="flex flex-col items-center justify-center p-12 text-center">
-                    <div class="w-20 h-20 mb-4 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <div class="w-20 h-20 mb-4 rounded-full bg-white/10 flex items-center justify-center">
                         <i class="ri-map-pin-line text-4xl text-white"></i>
                     </div>
                     <p class="text-white font-medium text-lg">No hay agencias disponibles</p>
                     <p class="text-gray-300 text-sm mt-2">Intenta ajustar los filtros de búsqueda</p>
                 </div>
-            `}function q(){const A=o.querySelectorAll(`.${r}-item`);A.forEach(W=>{W.addEventListener("click",E=>{if(E.target.closest(".agency-maps-btn"))return;E.preventDefault();const st=parseInt(W.dataset.itemIndex),lt=i[st];if(!lt)return;A.forEach(dt=>{dt.classList.remove("bg-white","border-secondary","selected-agency"),dt.classList.add("bg-white","bg-opacity-10","border-white","border-opacity-20");const Et=dt.querySelector(".agency-title"),Xt=dt.querySelectorAll("i"),Pt=dt.querySelectorAll(".agency-phone-link"),Rt=dt.querySelectorAll("p:not(:has(.agency-phone-link))"),$t=dt.querySelector(".agency-maps-btn");Et&&(Et.classList.remove("text-secondary"),Et.classList.add("text-white")),Xt.forEach(se=>{se.classList.remove("text-secondary","text-gray-300","text-white"),se.classList.add("text-primary")}),Pt.forEach(se=>{se.classList.remove("text-secondary"),se.classList.add("text-white")}),Rt.forEach(se=>{se.classList.remove("text-secondary"),se.classList.add("text-gray-200")}),$t&&($t.classList.remove("bg-secondary"),$t.classList.add("bg-primary"))}),W.classList.remove("bg-white","bg-opacity-10","border-white","border-opacity-20"),W.classList.add("bg-white","border-secondary","selected-agency");const Ct=W.querySelector(".agency-title"),zt=W.querySelectorAll("i"),Zt=W.querySelectorAll(".agency-phone-link"),yt=W.querySelectorAll("p:not(:has(.agency-phone-link))"),_t=W.querySelector(".agency-maps-btn");if(Ct&&(Ct.classList.remove("text-white"),Ct.classList.add("text-secondary")),zt.forEach(dt=>{dt.classList.remove("text-secondary","text-gray-300","text-white"),dt.classList.add("text-primary")}),Zt.forEach(dt=>{dt.classList.remove("text-white"),dt.classList.add("text-secondary")}),yt.forEach(dt=>{dt.classList.remove("text-gray-200"),dt.classList.add("text-secondary")}),_t&&(_t.classList.remove("bg-primary"),_t.classList.add("bg-secondary")),c&&lt&&c._loaded)try{c.flyTo([lt.latitude,lt.longitude],14,{animate:!0,duration:1});const dt=u.find(Et=>Et.item.id===lt.id);dt&&dt.marker&&dt.marker.openPopup()}catch(dt){console.warn("Error updating map view:",dt)}})})}function it(){const A=o.querySelector(`.${r}-search-input`),W=o.querySelector(`.${r}-zone-filter`),E=o.querySelector(`.${r}-department-filter`),st=o.querySelector(`.${r}-no-results`),lt={Occidental:["Ahuachapán","Santa Ana","Sonsonate"],Paracentral:["Chalatenango","Cuscatlán","La Paz","Cabañas","San Vicente"],Central:["La Libertad","San Salvador"],Oriental:["Usulután","San Miguel","Morazán","La Unión"]},Ct=()=>{if(!W||!E)return;const Zt=W.value,yt=E.value;if(!Zt)E.innerHTML='<option value="">Todos los Departamentos</option>',[...new Set(n.map(dt=>dt.department).filter(Boolean))].sort().forEach(dt=>{const Et=document.createElement("option");Et.value=dt,Et.textContent=dt,E.appendChild(Et)}),yt&&(E.value=yt);else{const _t=lt[Zt]||[];E.innerHTML='<option value="">Todos los Departamentos</option>',_t.forEach(dt=>{const Et=document.createElement("option");Et.value=dt,Et.textContent=dt,E.appendChild(Et)}),_t.includes(yt)&&(E.value=yt)}},zt=()=>{const Zt=A?A.value.toLowerCase().trim():"",yt=W?W.value:"",_t=E?E.value:"";i=n.filter(dt=>{let Et=!0,Xt=!0,Pt=!0;return Zt&&(Et=Object.values(dt).some(Rt=>String(Rt).toLowerCase().includes(Zt))),yt&&(Xt=dt.zone===yt),_t&&(Pt=dt.department===_t),Et&&Xt&&Pt}),nt(),O(),st&&st.classList.toggle("hidden",i.length>0)};A&&A.addEventListener("input",zt),W&&W.addEventListener("change",()=>{Ct(),zt()}),E&&E.addEventListener("change",zt)}function H(){const A=o.querySelector("[data-title]");if(A){const st=I("map-title")||"Nuestras Agencias";A.textContent=st}const W=o.querySelector(`.${r}-search-input`);if(W){const st=I("search-placeholder")||"Buscar...";W.setAttribute("placeholder",st)}const E=o.querySelector(`.${r}-no-results`);if(E){const st=I("no-results-text")||"No se encontraron agencias";E.textContent=st}}function I(A){return o.closest(`[data-gjs-type="${r}"]`)?.getAttribute(A)}function $(A){const W=o.querySelector(`.${r}-list`);W&&(W.innerHTML=`
+            `}function q(){const A=o.querySelectorAll(`.${r}-item`);A.forEach(W=>{W.addEventListener("click",E=>{if(E.target.closest(".agency-maps-btn"))return;E.preventDefault();const st=parseInt(W.dataset.itemIndex),lt=i[st];if(!lt)return;A.forEach(dt=>{dt.classList.remove("bg-white","border-secondary","selected-agency"),dt.classList.add("bg-white/10","border-white/20");const Et=dt.querySelector(".agency-title"),Xt=dt.querySelectorAll("i"),Pt=dt.querySelectorAll(".agency-phone-link"),Rt=dt.querySelectorAll("p:not(:has(.agency-phone-link))"),$t=dt.querySelector(".agency-maps-btn");Et&&(Et.classList.remove("text-secondary"),Et.classList.add("text-white")),Xt.forEach(se=>{se.classList.remove("text-secondary","text-gray-300","text-white"),se.classList.add("text-primary")}),Pt.forEach(se=>{se.classList.remove("text-secondary"),se.classList.add("text-white")}),Rt.forEach(se=>{se.classList.remove("text-secondary"),se.classList.add("text-gray-200")}),$t&&($t.classList.remove("bg-secondary"),$t.classList.add("bg-primary"))}),W.classList.remove("bg-white/10","border-white/20"),W.classList.add("bg-white","border-secondary","selected-agency");const Ct=W.querySelector(".agency-title"),zt=W.querySelectorAll("i"),Zt=W.querySelectorAll(".agency-phone-link"),yt=W.querySelectorAll("p:not(:has(.agency-phone-link))"),_t=W.querySelector(".agency-maps-btn");if(Ct&&(Ct.classList.remove("text-white"),Ct.classList.add("text-secondary")),zt.forEach(dt=>{dt.classList.remove("text-secondary","text-gray-300","text-white"),dt.classList.add("text-primary")}),Zt.forEach(dt=>{dt.classList.remove("text-white"),dt.classList.add("text-secondary")}),yt.forEach(dt=>{dt.classList.remove("text-gray-200"),dt.classList.add("text-secondary")}),_t&&(_t.classList.remove("bg-primary"),_t.classList.add("bg-secondary")),c&&lt&&c._loaded)try{c.flyTo([lt.latitude,lt.longitude],14,{animate:!0,duration:1});const dt=u.find(Et=>Et.item.id===lt.id);dt&&dt.marker&&dt.marker.openPopup()}catch(dt){console.warn("Error updating map view:",dt)}})})}function it(){const A=o.querySelector(`.${r}-search-input`),W=o.querySelector(`.${r}-zone-filter`),E=o.querySelector(`.${r}-department-filter`),st=o.querySelector(`.${r}-no-results`),lt={Occidental:["Ahuachapán","Santa Ana","Sonsonate"],Paracentral:["Chalatenango","Cuscatlán","La Paz","Cabañas","San Vicente"],Central:["La Libertad","San Salvador"],Oriental:["Usulután","San Miguel","Morazán","La Unión"]},Ct=()=>{if(!W||!E)return;const Zt=W.value,yt=E.value;if(!Zt)E.innerHTML='<option value="">Todos los Departamentos</option>',[...new Set(n.map(dt=>dt.department).filter(Boolean))].sort().forEach(dt=>{const Et=document.createElement("option");Et.value=dt,Et.textContent=dt,E.appendChild(Et)}),yt&&(E.value=yt);else{const _t=lt[Zt]||[];E.innerHTML='<option value="">Todos los Departamentos</option>',_t.forEach(dt=>{const Et=document.createElement("option");Et.value=dt,Et.textContent=dt,E.appendChild(Et)}),_t.includes(yt)&&(E.value=yt)}},zt=()=>{const Zt=A?A.value.toLowerCase().trim():"",yt=W?W.value:"",_t=E?E.value:"";i=n.filter(dt=>{let Et=!0,Xt=!0,Pt=!0;return Zt&&(Et=Object.values(dt).some(Rt=>String(Rt).toLowerCase().includes(Zt))),yt&&(Xt=dt.zone===yt),_t&&(Pt=dt.department===_t),Et&&Xt&&Pt}),nt(),O(),st&&st.classList.toggle("hidden",i.length>0)};A&&A.addEventListener("input",zt),W&&W.addEventListener("change",()=>{Ct(),zt()}),E&&E.addEventListener("change",zt)}function H(){const A=o.querySelector("[data-title]");if(A){const st=I("map-title")||"Nuestras Agencias";A.textContent=st}const W=o.querySelector(`.${r}-search-input`);if(W){const st=I("search-placeholder")||"Buscar...";W.setAttribute("placeholder",st)}const E=o.querySelector(`.${r}-no-results`);if(E){const st=I("no-results-text")||"No se encontraron agencias";E.textContent=st}}function I(A){return o.closest(`[data-gjs-type="${r}"]`)?.getAttribute(A)}function $(A){const W=o.querySelector(`.${r}-list`);W&&(W.innerHTML=`
                     <div class="flex flex-col items-center justify-center p-12 text-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
                             <i class="ri-error-warning-line text-4xl text-red-300"></i>
                         </div>
                         <p class="text-white font-medium text-lg">${A}</p>
@@ -1854,7 +1867,7 @@ ${mv}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                         <div class="mb-8">
                             <h2 class="text-4xl md:text-5xl font-bold text-white" contenteditable="true" data-gjs-editable="true" data-gjs-selectable="true" data-gjs-type="text">Nuestras Agencias</h2>
                         </div>
-                        <div class="mb-8 bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl border border-white border-opacity-20 p-6" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false">
+                        <div class="mb-8 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-6" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false">
                             <div class="flex flex-col gap-4" data-gjs-editable="false" data-gjs-selectable="false">
                                 <div class="flex-1" data-gjs-editable="false" data-gjs-selectable="false">
                                     <div class="relative" data-gjs-editable="false" data-gjs-selectable="false">
@@ -1866,7 +1879,7 @@ ${mv}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                                 </div>
                                 <div class="flex flex-col sm:flex-row gap-4 ${r}-filters-container" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false"></div>
                             </div>
-                            <div class="${r}-no-results hidden mt-6 p-4 bg-white bg-opacity-10 border border-white border-opacity-20 rounded-2xl text-center" data-gjs-editable="false" data-gjs-selectable="false">
+                            <div class="${r}-no-results hidden mt-6 p-4 bg-white/10 border border-white/20 rounded-2xl text-center" data-gjs-editable="false" data-gjs-selectable="false">
                                 <p class="text-white font-medium">No se encontraron agencias</p>
                             </div>
                         </div>
@@ -1876,7 +1889,7 @@ ${mv}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                                 </div>
                             </div>
                             <div class="lg:w-2/3 order-1 lg:order-2" data-gjs-editable="false" data-gjs-selectable="false">
-                                <div class="${r}-map-container rounded-2xl overflow-hidden border border-white border-opacity-20" style="height: 650px;" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false">
+                                <div class="${r}-map-container rounded-2xl overflow-hidden border border-white/20" style="height: 650px;" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false">
                                     <div class="${r}-map w-full h-full" data-gjs-editable="false" data-gjs-selectable="false"></div>
                                 </div>
                             </div>
@@ -1889,16 +1902,16 @@ ${mv}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                     border-radius: inherit;
                     z-index: 0;
                 }
-                
+
                 .${r}-item:hover {
                     background-color: rgba(255, 255, 255, 0.15);
                     border-color: rgba(240, 135, 42, 0.6);
                 }
-                
+
                 .${r}-item:hover .agency-title {
                     color: #f0872a;
                 }
-                
+
                 .agency-phone-link {
                     transition: all 0.2s ease;
                 }
@@ -1911,7 +1924,7 @@ ${mv}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                 .${r}-item.selected-agency .agency-phone-link:hover {
                     color: #f0872a !important;
                 }
-                
+
                 .${r}-list::-webkit-scrollbar {
                     width: 4px !important;
                 }
@@ -1929,12 +1942,12 @@ ${mv}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                 .${r}-list::-webkit-scrollbar-thumb:hover {
                     background: rgba(255, 255, 255, 0.3);
                 }
-                
+
                 @keyframes spin {
                     from { transform: rotate(0deg); }
                     to { transform: rotate(360deg); }
                 }
-                
+
                 .animate-spin {
                     animation: spin 1s linear infinite;
                 }

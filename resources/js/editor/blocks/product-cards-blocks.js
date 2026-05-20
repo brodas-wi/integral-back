@@ -30,7 +30,7 @@ const iconProductCard = `<svg viewBox="0 0 32 32" width="32" height="32">
 </svg>`;
 
 const PRODUCT_CARD = `
-<div class="flex flex-col gap-4 bg-white border border-gray-200 rounded-2xl p-5">
+<div class="flex flex-col gap-4 bg-white border-2 border-[#003B71] rounded-2xl p-5">
     <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-[#dce8f5]">
         <i class="ri-bank-card-line text-2xl text-[#003B71]"></i>
     </div>
@@ -43,11 +43,24 @@ const PRODUCT_CARD = `
 
 const PRODUCT_CARDS_STYLES = `
 <style>
-.pc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
-.pc-btn{display:block;transition:background .2s,color .2s;}
-.pc-btn:hover{background:#002a52!important;}
-@media(max-width:900px){.pc-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:480px){.pc-grid{grid-template-columns:1fr;}}
+.pc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+.pc-btn {
+    display: block;
+    transition: background 0.2s, color 0.2s;
+}
+.pc-btn:hover {
+    background-color: #002a52;
+}
+@media (max-width: 900px) {
+    .pc-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+    .pc-grid { grid-template-columns: 1fr; }
+}
 </style>`;
 
 export const productCardsBlocks = [

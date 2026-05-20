@@ -370,14 +370,14 @@ function createAgenciesMapScript() {
             const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${agency.latitude},${agency.longitude}`;
 
             return `
-                <div class="${componentType}-item p-5 bg-white bg-opacity-10 border border-white border-opacity-20 rounded-2xl cursor-pointer transition-all duration-200" data-item-index="${index}">
+                <div class="${componentType}-item p-5 bg-white/10 border border-white/20 rounded-2xl cursor-pointer transition-all duration-200" data-item-index="${index}">
                     <h3 class="agency-title text-lg font-bold text-white mb-3">${agency.name}</h3>
                     ${agency.address ? `<p class="text-gray-200 flex items-start gap-2 mt-2"><i class="ri-map-pin-line text-primary text-lg mt-0.5"></i><span class="flex-1">${agency.address}</span></p>` : ""}
                     ${agency.municipality || agency.department ? `<p class="text-sm text-gray-300 mt-1 ml-6">${[agency.municipality, agency.department].filter(Boolean).join(", ")}</p>` : ""}
                     ${agency.schedule ? `<p class="text-gray-200 flex items-start gap-2 mt-2"><i class="ri-time-line text-primary text-lg mt-0.5"></i><span class="flex-1">${agency.schedule}</span></p>` : ""}
                     ${phonesHtml}
                     <div class="mt-3">
-                        <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="agency-maps-btn block w-full text-center px-4 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-200" onclick="event.stopPropagation();">
+                        <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="agency-maps-btn block w-full text-center px-4 py-2.5 bg-primary text-white font-semibold rounded-lg hover:opacity-90 transition-all duration-200" onclick="event.stopPropagation();">
                             Ver ubicación
                         </a>
                     </div>
@@ -388,7 +388,7 @@ function createAgenciesMapScript() {
         function showEmptyState(container) {
             container.innerHTML = `
                 <div class="flex flex-col items-center justify-center p-12 text-center">
-                    <div class="w-20 h-20 mb-4 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                    <div class="w-20 h-20 mb-4 rounded-full bg-white/10 flex items-center justify-center">
                         <i class="ri-map-pin-line text-4xl text-white"></i>
                     </div>
                     <p class="text-white font-medium text-lg">No hay agencias disponibles</p>
@@ -421,10 +421,8 @@ function createAgenciesMapScript() {
                             "selected-agency",
                         );
                         el.classList.add(
-                            "bg-white",
-                            "bg-opacity-10",
-                            "border-white",
-                            "border-opacity-20",
+                            "bg-white/10",
+                            "border-white/20",
                         );
 
                         const title = el.querySelector(".agency-title");
@@ -467,10 +465,8 @@ function createAgenciesMapScript() {
                     });
 
                     itemEl.classList.remove(
-                        "bg-white",
-                        "bg-opacity-10",
-                        "border-white",
-                        "border-opacity-20",
+                        "bg-white/10",
+                        "border-white/20",
                     );
                     itemEl.classList.add(
                         "bg-white",
@@ -706,7 +702,7 @@ function createAgenciesMapScript() {
             if (itemsList) {
                 itemsList.innerHTML = `
                     <div class="flex flex-col items-center justify-center p-12 text-center">
-                        <div class="w-20 h-20 mb-4 rounded-full bg-red-500 bg-opacity-20 flex items-center justify-center">
+                        <div class="w-20 h-20 mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
                             <i class="ri-error-warning-line text-4xl text-red-300"></i>
                         </div>
                         <p class="text-white font-medium text-lg">${message}</p>
@@ -773,7 +769,7 @@ export function initializeMapBlocks(editor) {
                         <div class="mb-8">
                             <h2 class="text-4xl md:text-5xl font-bold text-white" contenteditable="true" data-gjs-editable="true" data-gjs-selectable="true" data-gjs-type="text">Nuestras Agencias</h2>
                         </div>
-                        <div class="mb-8 bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl border border-white border-opacity-20 p-6" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false">
+                        <div class="mb-8 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 p-6" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false">
                             <div class="flex flex-col gap-4" data-gjs-editable="false" data-gjs-selectable="false">
                                 <div class="flex-1" data-gjs-editable="false" data-gjs-selectable="false">
                                     <div class="relative" data-gjs-editable="false" data-gjs-selectable="false">
@@ -785,7 +781,7 @@ export function initializeMapBlocks(editor) {
                                 </div>
                                 <div class="flex flex-col sm:flex-row gap-4 ${componentType}-filters-container" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false"></div>
                             </div>
-                            <div class="${componentType}-no-results hidden mt-6 p-4 bg-white bg-opacity-10 border border-white border-opacity-20 rounded-2xl text-center" data-gjs-editable="false" data-gjs-selectable="false">
+                            <div class="${componentType}-no-results hidden mt-6 p-4 bg-white/10 border border-white/20 rounded-2xl text-center" data-gjs-editable="false" data-gjs-selectable="false">
                                 <p class="text-white font-medium">No se encontraron agencias</p>
                             </div>
                         </div>
@@ -795,7 +791,7 @@ export function initializeMapBlocks(editor) {
                                 </div>
                             </div>
                             <div class="lg:w-2/3 order-1 lg:order-2" data-gjs-editable="false" data-gjs-selectable="false">
-                                <div class="${componentType}-map-container rounded-2xl overflow-hidden border border-white border-opacity-20" style="height: 650px;" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false">
+                                <div class="${componentType}-map-container rounded-2xl overflow-hidden border border-white/20" style="height: 650px;" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-droppable="false">
                                     <div class="${componentType}-map w-full h-full" data-gjs-editable="false" data-gjs-selectable="false"></div>
                                 </div>
                             </div>
@@ -936,16 +932,16 @@ function injectMapStyles(editor, componentType) {
                     border-radius: inherit;
                     z-index: 0;
                 }
-                
+
                 .${componentType}-item:hover {
                     background-color: rgba(255, 255, 255, 0.15);
                     border-color: rgba(240, 135, 42, 0.6);
                 }
-                
+
                 .${componentType}-item:hover .agency-title {
                     color: #f0872a;
                 }
-                
+
                 .agency-phone-link {
                     transition: all 0.2s ease;
                 }
@@ -958,7 +954,7 @@ function injectMapStyles(editor, componentType) {
                 .${componentType}-item.selected-agency .agency-phone-link:hover {
                     color: #f0872a !important;
                 }
-                
+
                 .${componentType}-list::-webkit-scrollbar {
                     width: 4px !important;
                 }
@@ -976,12 +972,12 @@ function injectMapStyles(editor, componentType) {
                 .${componentType}-list::-webkit-scrollbar-thumb:hover {
                     background: rgba(255, 255, 255, 0.3);
                 }
-                
+
                 @keyframes spin {
                     from { transform: rotate(0deg); }
                     to { transform: rotate(360deg); }
                 }
-                
+
                 .animate-spin {
                     animation: spin 1s linear infinite;
                 }

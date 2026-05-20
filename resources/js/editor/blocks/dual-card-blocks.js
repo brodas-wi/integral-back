@@ -16,7 +16,7 @@ const iconDualCards = `<svg viewBox="0 0 32 32" width="32" height="32">
 
 const CARD_DARK = `
 <div class="flex flex-col gap-5 rounded-2xl p-8 bg-[#003B71]">
-    <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-white bg-opacity-20">
+    <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-white/20">
         <i class="ri-map-pin-line text-2xl text-white"></i>
     </div>
     <div class="flex flex-col gap-3 flex-1">

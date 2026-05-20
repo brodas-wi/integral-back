@@ -22,7 +22,7 @@ const iconStatsOrangeRight = `<svg viewBox="0 0 32 32" width="32" height="32">
 
 const STAT_ITEM = `
 <div class="flex flex-col items-center gap-3 text-center">
-    <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white bg-opacity-20">
+    <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white/20">
         <i class="ri-map-pin-line text-2xl text-white"></i>
     </div>
     <div class="flex flex-col gap-1">
