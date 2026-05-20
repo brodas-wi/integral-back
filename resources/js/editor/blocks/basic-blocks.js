@@ -1,3 +1,5 @@
+import { assetUrl } from "@/utils/url.js";
+
 export const basicBlocks = [
     {
         id: "heading1",
@@ -74,7 +76,7 @@ export const basicBlocks = [
         content: {
             type: "image",
             attributes: {
-                src: "/images/placeholder.svg",
+                src: assetUrl("images/placeholder.svg"),
                 alt: "Imagen",
             },
             classes: ["max-w-full", "h-auto", "block"],

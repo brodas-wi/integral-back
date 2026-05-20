@@ -7,3 +7,7 @@ const _base = (() => {
 export function buildUrl(path) {
     return _base + "/" + path.replace(/^\//, "");
 }
+
+export function assetUrl(path) {
+    return buildUrl(path);
+}

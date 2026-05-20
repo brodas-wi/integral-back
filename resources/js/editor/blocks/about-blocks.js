@@ -1,3 +1,5 @@
+import { assetUrl } from "@/utils/url.js";
+
 const iconAbout = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="3" width="14" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1.5"/>
@@ -72,7 +74,7 @@ export const aboutBlocks = [
             </div>
             <div class="ab-image-col">
                 <div class="ab-image">
-                    <img src="/images/placeholder.svg" alt="Imagen de sección">
+                    <img src="${assetUrl("images/placeholder.svg")}" alt="Imagen de sección">
                 </div>
             </div>
         </div>

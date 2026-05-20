@@ -1,3 +1,5 @@
+import { assetUrl } from "@/utils/url.js";
+
 const iconRight = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="13" height="24" rx="2" fill="#e0e7ef"/>
@@ -90,7 +92,7 @@ const CONTENT_COL = (variant) => {
 
 const IMAGE_COL = () => `
 <div class="sc-img-col w-full rounded-2xl overflow-hidden">
-    <img src="/images/placeholder.svg"
+    <img src="${assetUrl("images/placeholder.svg")}"
          alt="Imagen de sección"
          class="w-full h-full object-cover block"
          style="min-height:320px;">

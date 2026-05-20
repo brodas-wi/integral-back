@@ -1,3 +1,5 @@
+import { assetUrl } from "@/utils/url.js";
+
 const iconCta = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="3" y="3" width="26" height="26" fill="white" rx="2" stroke="#e5e7eb" stroke-width="0.8"/>
@@ -31,10 +33,10 @@ export const ctaBlocks = [
         content: `
 <section class="relative overflow-hidden w-full bg-white py-20 px-6">
     <div class="cta-watermark-left">
-        <img src="/images/brand-logo.png" alt="">
+        <img src="${assetUrl("images/brand-logo.png")}" alt="">
     </div>
     <div class="cta-watermark-right">
-        <img src="/images/brand-logo.png" alt="">
+        <img src="${assetUrl("images/brand-logo.png")}" alt="">
     </div>
     <div class="relative z-10 max-w-2xl mx-auto flex flex-col items-center text-center gap-6">
         <h2 class="text-4xl font-bold text-[#E97300] leading-tight">Lorem ipsum dolor sit amet consectetur</h2>

@@ -7,12 +7,16 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
+  "_modals-D7u3LXeA.js": {
+    "file": "assets/modals-D7u3LXeA.js",
+    "name": "modals"
+  },
   "_notifications-Cgjr4krQ.js": {
     "file": "assets/notifications-Cgjr4krQ.js",
     "name": "notifications"
   },
-  "_url-SUx8L3ym.js": {
-    "file": "assets/url-SUx8L3ym.js",
+  "_url-oR_gACg7.js": {
+    "file": "assets/url-oR_gACg7.js",
     "name": "url"
   },
   "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2": {
@@ -325,14 +329,15 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-DaD3H5hi.js",
+    "file": "assets/app-1fHsyVzJ.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
       "_notifications-Cgjr4krQ.js",
-      "_url-SUx8L3ym.js",
+      "_modals-D7u3LXeA.js",
       "_dropdowns-CtvQ6cwq.js",
+      "_url-oR_gACg7.js",
       "__commonjsHelpers-CqkleIqs.js"
     ],
     "css": [
@@ -361,12 +366,13 @@
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-C8RXTzkR.js",
+    "file": "assets/pages-editor-Bf4LBdf-.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
-      "__commonjsHelpers-CqkleIqs.js"
+      "__commonjsHelpers-CqkleIqs.js",
+      "_url-oR_gACg7.js"
     ],
     "css": [
       "assets/grapes-CX28yL7U.css",
@@ -436,23 +442,25 @@
     ]
   },
   "resources/js/views/pages/index.js": {
-    "file": "assets/index-0E7v9Or6.js",
+    "file": "assets/index-6g3neysY.js",
     "name": "index",
     "src": "resources/js/views/pages/index.js",
     "isEntry": true,
     "imports": [
       "_notifications-Cgjr4krQ.js",
-      "_url-SUx8L3ym.js"
+      "_modals-D7u3LXeA.js",
+      "_url-oR_gACg7.js"
     ]
   },
   "resources/js/views/pages/show.js": {
-    "file": "assets/show-BgyNc9fQ.js",
+    "file": "assets/show-rMFh7uro.js",
     "name": "show",
     "src": "resources/js/views/pages/show.js",
     "isEntry": true,
     "imports": [
       "_notifications-Cgjr4krQ.js",
-      "_url-SUx8L3ym.js"
+      "_modals-D7u3LXeA.js",
+      "_url-oR_gACg7.js"
     ]
   }
 }

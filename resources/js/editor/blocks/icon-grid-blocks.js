@@ -1,3 +1,5 @@
+import { assetUrl } from "@/utils/url.js";
+
 const iconGridIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="2" y="2" width="13" height="13" fill="rgba(255,255,255,0.15)" rx="2"/>
@@ -53,7 +55,7 @@ export const iconGridBlocks = [
         content: `
 <section class="relative overflow-hidden w-full bg-[#003B71] py-12 px-6">
     <div class="ig-watermark">
-        <img src="/images/brand-watermark.png" alt="">
+        <img src="${assetUrl("images/placbrand-watermark.png")}"
     </div>
     <div class="relative z-10 max-w-6xl mx-auto flex flex-col gap-12">
         <div class="flex flex-col items-center text-center gap-3">
