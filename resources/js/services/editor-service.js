@@ -24,9 +24,16 @@ export class EditorService {
         if (data.components_json) {
             try {
                 const projectData = JSON.parse(data.components_json);
-                editor.loadProjectData(projectData);
-                return data;
-            } catch {}
+                const htmlComponents = (data.html || '').match(/<section|<div class="ss-section/g);
+                const jsonComponents = projectData?.pages?.[0]?.frames?.[0]?.component?.components;
+
+                if (jsonComponents && htmlComponents &&
+                    jsonComponents.length >= htmlComponents.length) {
+                    editor.loadProjectData(projectData);
+                    return data;
+                }
+            } catch {
+            }
         }
 
         const html = data.html || "";
