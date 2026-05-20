@@ -3,11 +3,12 @@
  */
 export class MediaService {
     constructor() {
-        this.baseUrl = "/media";
+        this.apiUrl = document.querySelector('meta[name="media-api-url"]')?.content ?? "/media/api";
+        this.baseUrl = this.apiUrl.replace("/api", "");
         this.cache = {
             media: null,
             lastFetch: null,
-            cacheDuration: 60000, // 1 minute
+            cacheDuration: 60000,
         };
     }
 
@@ -44,7 +45,7 @@ export class MediaService {
             if (filters.per_page) params.append("per_page", filters.per_page);
             if (filters.page) params.append("page", filters.page);
 
-            const url = `/media/api?${params.toString()}`;
+            const url = `${this.apiUrl}?${params.toString()}`;
             const response = await fetch(url, {
                 method: "GET",
                 headers: {

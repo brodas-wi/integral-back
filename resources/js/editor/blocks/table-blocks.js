@@ -261,7 +261,8 @@ function createImagePickerModal() {
         try {
             const params = new URLSearchParams({ type: "image", per_page: 50 });
             if (search) params.append("search", search);
-            const res = await fetch(`/media/api?${params}`, {
+            const mediaApiUrl = document.querySelector('meta[name="media-api-url"]')?.content ?? "/media/api";
+            const res = await fetch(`${mediaApiUrl}?${params}`, {
                 headers: {
                     "X-Requested-With": "XMLHttpRequest",
                     Accept: "application/json",

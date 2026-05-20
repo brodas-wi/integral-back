@@ -1,5 +1,6 @@
 import { showNotification } from "../utils/notifications.js";
 import { showConfirmModal } from "../utils/modals.js";
+import { buildUrl } from "@/utils/url.js";
 
 // Confirm delete media file
 export function confirmDeleteMedia(mediaId, filename) {
@@ -35,7 +36,7 @@ export function deleteMedia(mediaId, filename) {
         return;
     }
 
-    const url = `/media/${mediaId}`;
+    const url = buildUrl(`media/${mediaId}`);
 
     showNotification("Eliminando archivo...", "info");
 
