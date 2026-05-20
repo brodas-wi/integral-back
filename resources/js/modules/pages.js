@@ -1,5 +1,6 @@
 import { showNotification } from "../utils/notifications.js";
 import { showConfirmModal } from "../utils/modals.js";
+import { buildUrl } from "../utils/url.js";
 
 // Toggle publish status of page
 export function togglePublishStatus(slug, currentStatus) {
@@ -36,7 +37,7 @@ async function submitTogglePublish(slug, currentStatus) {
     }
 
     try {
-        const response = await fetch(`/pages/${slug}/toggle-publish`, {
+        const response = await fetch(buildUrl(`pages/${slug}/toggle-publish`), {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -126,7 +127,7 @@ export function deletePage(pageId, pageTitle) {
 
     showNotification("Eliminando página...", "info");
 
-    fetch(`/pages/${slug}`, {
+    fetch(buildUrl(`pages/${slug}`), {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
