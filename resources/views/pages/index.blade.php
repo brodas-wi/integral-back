@@ -144,7 +144,9 @@
 
                                 @canany(['pages.publish', 'pages.manage'])
                                     <button type="button"
-                                        onclick="togglePublishStatus('{{ $page->slug }}', {{ $page->is_published ? 'true' : 'false' }})"
+                                        data-toggle-publish
+                                        data-slug="{{ $page->slug }}"
+                                        data-published="{{ $page->is_published ? '1' : '0' }}"
                                         class="dropdown-item">
                                         <i class="ri-{{ $page->is_published ? 'eye-off' : 'eye' }}-line"></i>
                                         <span>{{ $page->is_published ? 'Despublicar' : 'Publicar' }}</span>
@@ -152,7 +154,10 @@
                                 @endcanany
 
                                 @canany(['pages.delete', 'pages.manage'])
-                                    <button type="button" onclick="confirmDeletePage({{ $page->id }}, '{{ addslashes($page->title) }}')"
+                                    <button type="button"
+                                        data-delete-page
+                                        data-page-id="{{ $page->id }}"
+                                        data-page-title="{{ addslashes($page->title) }}"
                                         class="dropdown-item-danger">
                                         <i class="ri-delete-bin-line"></i>
                                         <span>Eliminar</span>
@@ -197,3 +202,7 @@
         </div>
     @endif
 @endsection
+
+@push('scripts')
+    @vite('resources/js/views/pages/index.js')
+@endpush

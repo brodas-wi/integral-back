@@ -2,6 +2,10 @@
 
 @section('title', 'Banners')
 
+@push('head')
+    <meta name="banners-delete-url" content="{{ route('banners.index') }}">
+@endpush
+
 @section('page-title')
     <div class="flex items-center gap-3">
         <span>Banners</span>
@@ -163,10 +167,6 @@
         </div>
     @endif
 @endsection
-
-@push('head')
-    <meta name="banners-delete-url" content="{{ route('banners.index') }}">
-@endpush
 
 @push('scripts')
     @vite('resources/js/views/banners/index.js')

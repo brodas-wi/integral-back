@@ -3,6 +3,10 @@
 @section('title', 'Detalles de Página')
 @section('page-title', 'Detalles de la Página')
 
+@push('head')
+    <meta name="pages-index-url" content="{{ route('pages.index') }}">
+@endpush
+
 @section('header-actions')
     <div class="flex items-center gap-2">
         <a href="{{ route('pages.index') }}" class="btn-outline btn-sm btn-header-action">
@@ -117,7 +121,9 @@
 
                     @canany(['pages.publish', 'pages.manage'])
                         <button type="button"
-                            onclick="togglePublishStatus('{{ $page->slug }}', {{ $page->is_published ? 'true' : 'false' }})"
+                            data-toggle-publish
+                            data-slug="{{ $page->slug }}"
+                            data-published="{{ $page->is_published ? '1' : '0' }}"
                             class="btn-primary btn-sm w-full">
                             <i class="ri-{{ $page->is_published ? 'eye-off' : 'eye' }}-line mr-2"></i>
                             {{ $page->is_published ? 'Despublicar' : 'Publicar' }}
@@ -125,7 +131,10 @@
                     @endcanany
 
                     @canany(['pages.delete', 'pages.manage'])
-                        <button type="button" onclick="confirmDeletePage('{{ $page->slug }}', '{{ addslashes($page->title) }}')"
+                        <button type="button"
+                            data-delete-page
+                            data-slug="{{ $page->slug }}"
+                            data-page-title="{{ addslashes($page->title) }}"
                             class="btn-danger btn-sm w-full">
                             <i class="ri-delete-bin-line mr-2"></i>
                             Eliminar
@@ -138,106 +147,5 @@
 @endsection
 
 @push('scripts')
-    <script>
-        // Toggle publish status
-        function togglePublishStatus(slug, currentStatus) {
-            if (typeof window.showConfirmModal !== 'function') {
-                if (confirm(currentStatus ? '¿Despublicar página?' : '¿Publicar página?')) {
-                    submitTogglePublish(slug);
-                }
-                return;
-            }
-
-            window.showConfirmModal({
-                title: currentStatus ? '¿Despublicar página?' : '¿Publicar página?',
-                message: currentStatus ?
-                    'La página dejará de ser visible públicamente.' :
-                    'La página será visible públicamente.',
-                confirmText: currentStatus ? 'Despublicar' : 'Publicar',
-                cancelText: 'Cancelar',
-                type: 'warning',
-                onConfirm: () => submitTogglePublish(slug)
-            });
-        }
-
-        // Submit toggle publish
-        async function submitTogglePublish(slug) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]');
-
-            try {
-                const response = await fetch(`/pages/${slug}/toggle-publish`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    if (typeof window.showNotification === 'function') {
-                        window.showNotification(data.message, 'success');
-                    }
-                    setTimeout(() => window.location.reload(), 1000);
-                }
-            } catch (error) {
-                if (typeof window.showNotification === 'function') {
-                    window.showNotification('Error al cambiar el estado', 'error');
-                }
-            }
-        }
-
-        // Confirm delete
-        function confirmDeletePage(slug, pageTitle) {
-            if (typeof window.showConfirmModal !== 'function') {
-                if (confirm(`¿Eliminar "${pageTitle}"?`)) {
-                    deletePage(slug);
-                }
-                return;
-            }
-
-            window.showConfirmModal({
-                title: '¿Eliminar página?',
-                message: `¿Estás seguro de que deseas eliminar "${pageTitle}"? Esta acción no se puede deshacer.`,
-                confirmText: 'Eliminar',
-                cancelText: 'Cancelar',
-                type: 'danger',
-                onConfirm: () => deletePage(slug)
-            });
-        }
-
-        // Delete page
-        async function deletePage(slug) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]');
-
-            try {
-                const response = await fetch(`/pages/${slug}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
-                        'Accept': 'application/json'
-                    }
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    if (typeof window.showNotification === 'function') {
-                        window.showNotification(data.message, 'success');
-                    }
-                    setTimeout(() => window.location.href = '{{ route('pages.index') }}', 1000);
-                }
-            } catch (error) {
-                if (typeof window.showNotification === 'function') {
-                    window.showNotification('Error al eliminar', 'error');
-                }
-            }
-        }
-
-        window.togglePublishStatus = togglePublishStatus;
-        window.confirmDeletePage = confirmDeletePage;
-    </script>
+    @vite('resources/js/views/pages/show.js')
 @endpush

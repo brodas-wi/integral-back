@@ -1,37 +1,49 @@
-import { showNotification } from "../utils/notifications.js";
-import { showConfirmModal } from "../utils/modals.js";
-import { buildUrl } from "../utils/url.js";
+import { showNotification } from "@/utils/notifications.js";
+import { showConfirmModal } from "@/utils/modals.js";
+import { buildUrl } from "@/utils/url.js";
 
-// Toggle publish status of page
-export function togglePublishStatus(slug, currentStatus) {
-    if (typeof window.showConfirmModal !== "function") {
-        if (
-            confirm(
-                currentStatus ? "¿Despublicar página?" : "¿Publicar página?",
-            )
-        ) {
-            submitTogglePublish(slug, currentStatus);
-        }
-        return;
-    }
+const CSRF = document.querySelector('meta[name="csrf-token"]');
 
-    showConfirmModal({
-        title: currentStatus ? "¿Despublicar página?" : "¿Publicar página?",
-        message: currentStatus
-            ? "La página dejará de ser visible públicamente."
-            : "La página será visible públicamente.",
-        confirmText: currentStatus ? "Despublicar" : "Publicar",
-        cancelText: "Cancelar",
-        type: "warning",
-        onConfirm: () => submitTogglePublish(slug, currentStatus),
+document.addEventListener("DOMContentLoaded", () => {
+    initTogglePublish();
+    initDeletePage();
+});
+
+function initTogglePublish() {
+    document.querySelectorAll("[data-toggle-publish]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const slug = btn.dataset.slug;
+            const isPublished = btn.dataset.published === "1";
+            confirmTogglePublish(slug, isPublished);
+        });
     });
 }
 
-// Submit toggle publish request via AJAX
-async function submitTogglePublish(slug, currentStatus) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+function initDeletePage() {
+    document.querySelectorAll("[data-delete-page]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const pageId = btn.dataset.pageId;
+            const pageTitle = btn.dataset.pageTitle;
+            confirmDeletePage(pageId, pageTitle);
+        });
+    });
+}
 
-    if (!csrfToken) {
+function confirmTogglePublish(slug, isPublished) {
+    showConfirmModal({
+        title: isPublished ? "¿Despublicar página?" : "¿Publicar página?",
+        message: isPublished
+            ? "La página dejará de ser visible públicamente."
+            : "La página será visible públicamente.",
+        confirmText: isPublished ? "Despublicar" : "Publicar",
+        cancelText: "Cancelar",
+        type: "warning",
+        onConfirm: () => submitTogglePublish(slug),
+    });
+}
+
+async function submitTogglePublish(slug) {
+    if (!CSRF) {
         showNotification("Error de configuración. Recarga la página.", "error");
         return;
     }
@@ -41,7 +53,7 @@ async function submitTogglePublish(slug, currentStatus) {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken.getAttribute("content"),
+                "X-CSRF-TOKEN": CSRF.getAttribute("content"),
                 Accept: "application/json",
                 "X-Requested-With": "XMLHttpRequest",
             },
@@ -76,49 +88,29 @@ async function submitTogglePublish(slug, currentStatus) {
         }
     } catch (error) {
         console.error("Error:", error);
-        showNotification(
-            error.message || "Ocurrió un error al cambiar el estado",
-            "error",
-        );
+        showNotification(error.message || "Ocurrió un error al cambiar el estado", "error");
     }
 }
 
-// Confirm delete page action
-export function confirmDeletePage(pageId, pageTitle) {
-    if (typeof window.showConfirmModal !== "function") {
-        if (
-            confirm(
-                `¿Eliminar "${pageTitle}"? Esta acción no se puede deshacer.`,
-            )
-        ) {
-            deletePage(pageId, pageTitle);
-        }
-        return;
-    }
-
+function confirmDeletePage(pageId, pageTitle) {
     showConfirmModal({
         title: "¿Eliminar página?",
         message: `¿Estás seguro de que deseas eliminar "${pageTitle}"? Esta acción no se puede deshacer.`,
         confirmText: "Eliminar",
         cancelText: "Cancelar",
         type: "danger",
-        onConfirm: () => deletePage(pageId, pageTitle),
+        onConfirm: () => deletePage(pageId),
     });
 }
 
-// Delete page via AJAX
-export function deletePage(pageId, pageTitle) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]');
-
-    if (!csrfToken) {
+function deletePage(pageId) {
+    if (!CSRF) {
         showNotification("Error de configuración. Recarga la página.", "error");
         return;
     }
 
     const pageItem = document.getElementById(`page-item-${pageId}`);
-    const slug = pageItem
-        ? pageItem.querySelector(".font-mono").textContent
-        : null;
+    const slug = pageItem?.querySelector(".font-mono")?.textContent?.trim();
 
     if (!slug) {
         showNotification("Error al identificar la página.", "error");
@@ -131,48 +123,37 @@ export function deletePage(pageId, pageTitle) {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
-            "X-CSRF-TOKEN": csrfToken.getAttribute("content"),
+            "X-CSRF-TOKEN": CSRF.getAttribute("content"),
             Accept: "application/json",
             "X-Requested-With": "XMLHttpRequest",
         },
         credentials: "same-origin",
     })
         .then((response) => {
-            if (
-                !response.headers
-                    .get("content-type")
-                    ?.includes("application/json")
-            ) {
+            const contentType = response.headers.get("content-type") || "";
+            if (!contentType.includes("application/json")) {
                 throw new Error("Respuesta inválida del servidor");
             }
-
             if (response.status === 403) {
                 return response.json().then((data) => {
                     throw new Error(data.message || "Sin permisos");
                 });
             }
-
             if (!response.ok) {
                 throw new Error(`Error del servidor: ${response.status}`);
             }
-
             return response.json();
         })
         .then((data) => {
             if (data.success) {
                 showNotification(data.message || "Página eliminada", "success");
-
                 if (pageItem) {
                     pageItem.style.transition = "opacity 0.3s, transform 0.3s";
                     pageItem.style.opacity = "0";
                     pageItem.style.transform = "scale(0.9)";
-
                     setTimeout(() => {
                         pageItem.remove();
-                        if (
-                            document.querySelectorAll('[id^="page-item-"]')
-                                .length === 0
-                        ) {
+                        if (document.querySelectorAll('[id^="page-item-"]').length === 0) {
                             window.location.reload();
                         }
                     }, 300);
@@ -182,16 +163,14 @@ export function deletePage(pageId, pageTitle) {
             }
         })
         .catch((error) => {
-            let errorMessage = "Error al eliminar. ";
-
+            let msg = "Error al eliminar. ";
             if (error.message.includes("permisos")) {
-                errorMessage += "Contacta al administrador.";
+                msg += "Contacta al administrador.";
             } else if (error.message.includes("Failed to fetch")) {
-                errorMessage += "Verifica tu conexión.";
+                msg += "Verifica tu conexión.";
             } else {
-                errorMessage += error.message;
+                msg += error.message;
             }
-
-            showNotification(errorMessage, "error");
+            showNotification(msg, "error");
         });
 }

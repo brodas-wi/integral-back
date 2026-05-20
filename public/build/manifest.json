@@ -7,9 +7,17 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
+  "_modals-D7u3LXeA.js": {
+    "file": "assets/modals-D7u3LXeA.js",
+    "name": "modals"
+  },
   "_notifications-Cgjr4krQ.js": {
     "file": "assets/notifications-Cgjr4krQ.js",
     "name": "notifications"
+  },
+  "_url-BrGnLE_k.js": {
+    "file": "assets/url-BrGnLE_k.js",
+    "name": "url"
   },
   "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2": {
     "file": "assets/inter-latin-400-normal-C38fXH4l.woff2",
@@ -321,12 +329,13 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-Eqr6WbY5.js",
+    "file": "assets/app-BCz93YPO.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
       "_notifications-Cgjr4krQ.js",
+      "_modals-D7u3LXeA.js",
       "_dropdowns-CtvQ6cwq.js",
       "__commonjsHelpers-CqkleIqs.js"
     ],
@@ -428,6 +437,28 @@
     "isEntry": true,
     "imports": [
       "_notifications-Cgjr4krQ.js"
+    ]
+  },
+  "resources/js/views/pages/index.js": {
+    "file": "assets/index-CUukJk8V.js",
+    "name": "index",
+    "src": "resources/js/views/pages/index.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js",
+      "_modals-D7u3LXeA.js",
+      "_url-BrGnLE_k.js"
+    ]
+  },
+  "resources/js/views/pages/show.js": {
+    "file": "assets/show-X5jAHO1K.js",
+    "name": "show",
+    "src": "resources/js/views/pages/show.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js",
+      "_modals-D7u3LXeA.js",
+      "_url-BrGnLE_k.js"
     ]
   }
 }

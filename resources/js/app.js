@@ -17,11 +17,6 @@ import {
     initPermissionCheckboxes,
 } from "./modules/roles.js";
 import {
-    togglePublishStatus,
-    confirmDeletePage,
-    deletePage,
-} from "./modules/pages.js";
-import {
     confirmDeleteMedia,
     deleteMedia,
     initMediaUpload,
@@ -63,10 +58,6 @@ window.confirmDeleteUser = confirmDeleteUser;
 window.confirmDeleteRole = confirmDeleteRole;
 window.selectAllManagePermissions = selectAllManagePermissions;
 window.deselectAllPermissions = deselectAllPermissions;
-
-window.togglePublishStatus = togglePublishStatus;
-window.confirmDeletePage = confirmDeletePage;
-window.deletePage = deletePage;
 
 window.confirmDeleteMedia = confirmDeleteMedia;
 window.deleteMedia = deleteMedia;
