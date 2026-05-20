@@ -5,13 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta name="canvas-css-url" content="{{ Vite::asset('resources/css/editor-canvas.css') }}">
     <meta name="canvas-app-css-url" content="{{ Vite::asset('resources/css/app.css') }}">
     <meta name="canvas-poppins-url" content="{{ Vite::asset('resources/css/fonts/poppins.css') }}">
     <meta name="canvas-remixicons-url" content="{{ Vite::asset('node_modules/remixicon/fonts/remixicon.css') }}">
+
+    <meta name="api-banners-url" content="{{ route('api.banners.active') }}">
+    <meta name="api-announcements-url" content="{{ route('api.announcements.for-page') }}">
+    <meta name="media-api-url" content="{{ route('media.api') }}">
+
     <title>{{ isset($page) ? 'Editar: ' . $page->title : 'Nueva Página' }} - Editor</title>
+
     <link href="{{ Vite::asset('node_modules/remixicon/fonts/remixicon.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ Vite::asset('node_modules/grapesjs/dist/css/grapes.min.css') }}">
+
     @vite(['resources/css/editor.css', 'resources/js/app.js', 'resources/js/pages-editor.js'])
 </head>
 

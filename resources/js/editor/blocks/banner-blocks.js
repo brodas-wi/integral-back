@@ -39,7 +39,7 @@ const BANNER_STYLES = `
 function createBannerScript() {
     return function () {
         const section = this;
-        const apiEndpoint = "/api/banners/active";
+        const apiEndpoint = document.querySelector('meta[name="api-banners-url"]')?.content ?? '/api/banners/active';
 
         const BUTTON_STYLES = {
             "fill-blue": {
