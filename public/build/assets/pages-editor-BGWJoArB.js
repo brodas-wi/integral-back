@@ -1059,26 +1059,49 @@ ${Ak}`}],Mk=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="7" y="17.5" width="10" height="1.2" fill="rgba(255,255,255,0.5)" rx="0.5"/>
     <rect x="7" y="22" width="18" height="3" fill="white" rx="1"/>
 </svg>`,wo=`
-<div class="flex flex-col gap-3 border-2 border-white rounded-2xl p-6">
+<div class="flex flex-col gap-3 border-2 border-white rounded-2xl p-6 bg-transparent">
     <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center shrink-0">
         <i class="ri-safe-line text-2xl text-[#003B71]"></i>
     </div>
     <h3 class="text-base font-bold text-white">Título del producto</h3>
     <p class="text-base text-white leading-relaxed">Descripción breve del producto o servicio financiero disponible para ti.</p>
-    <a href="#" class="ig-card-btn mt-auto w-full text-center py-2 px-4 rounded-lg bg-white text-[#003B71] text-base font-semibold">Más información</a>
+    <a href="#" class="mt-auto w-full text-center py-2 px-4 rounded-lg bg-white text-[#003B71] text-base font-semibold transition-all duration-200 hover:bg-[#dce8f5] hover:text-[#003B71]">Más información</a>
 </div>`,jk=`
 <style>
-.ig-watermark{position:absolute;bottom:-32px;right:-32px;width:320px;height:320px;opacity:0.07;pointer-events:none;user-select:none;}
-.ig-watermark img{width:100%;height:100%;object-fit:contain;}
-.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
-.ig-card-btn{transition:background .2s,color .2s;}
-.ig-card-btn:hover{background:#dce8f5!important;color:#003B71!important;}
-@media(max-width:900px){.ig-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:560px){.ig-grid{grid-template-columns:1fr;}}
+.ig-watermark {
+    position: absolute;
+    bottom: -32px;
+    right: -32px;
+    width: 320px;
+    height: 320px;
+    opacity: 0.07;
+    pointer-events: none;
+    user-select: none;
+}
+.ig-watermark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.ig-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+@media (max-width: 900px) {
+    .ig-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 560px) {
+    .ig-grid {
+        grid-template-columns: 1fr;
+    }
+}
 </style>`,Ik=[{id:"icon-grid-hero",label:"Sección de características",category:"Productos y Servicios",media:Mk,content:`
 <section class="relative overflow-hidden w-full bg-[#003B71] py-12 px-6">
     <div class="ig-watermark">
-        <img src="${Ta("images/placbrand-watermark.png")}"
+        <img src="${Ta("images/brand-watermark.png")}" alt="">
     </div>
     <div class="relative z-10 max-w-6xl mx-auto flex flex-col gap-12">
         <div class="flex flex-col items-center text-center gap-3">
