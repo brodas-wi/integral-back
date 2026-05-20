@@ -47,8 +47,22 @@ async function submitTogglePublish(slug, currentStatus) {
             credentials: "same-origin",
         });
 
+        const contentType = response.headers.get("content-type") || "";
+        const isJson = contentType.includes("application/json");
+
         if (!response.ok) {
+            if (response.status === 401 || response.status === 419) {
+                throw new Error("Tu sesión ha expirado. Recarga la página.");
+            }
+            if (isJson) {
+                const error = await response.json();
+                throw new Error(error.message || `Error del servidor: ${response.status}`);
+            }
             throw new Error(`Error del servidor: ${response.status}`);
+        }
+
+        if (!isJson) {
+            throw new Error("Respuesta inesperada del servidor");
         }
 
         const data = await response.json();
