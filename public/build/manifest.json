@@ -171,6 +171,15 @@
     "file": "assets/poppins-latin-ext-800-normal-CDgOlX-1.woff2",
     "src": "node_modules/@fontsource/poppins/files/poppins-latin-ext-800-normal.woff2"
   },
+  "node_modules/grapesjs/dist/css/grapes.min.css": {
+    "file": "assets/grapes-CX28yL7U.css",
+    "src": "node_modules/grapesjs/dist/css/grapes.min.css",
+    "isEntry": true,
+    "name": "grapes.min",
+    "names": [
+      "grapes.css"
+    ]
+  },
   "node_modules/leaflet/dist/images/layers-2x.png": {
     "file": "assets/layers-2x-Bpkbi35X.png",
     "src": "node_modules/leaflet/dist/images/layers-2x.png"
@@ -182,6 +191,15 @@
   "node_modules/leaflet/dist/images/marker-icon.png": {
     "file": "assets/marker-icon-hN30_KVU.png",
     "src": "node_modules/leaflet/dist/images/marker-icon.png"
+  },
+  "node_modules/remixicon/fonts/remixicon.css": {
+    "file": "assets/remixicon-CMwJI551.css",
+    "src": "node_modules/remixicon/fonts/remixicon.css",
+    "isEntry": true,
+    "name": "remixicon",
+    "names": [
+      "remixicon.css"
+    ]
   },
   "node_modules/remixicon/fonts/remixicon.eot": {
     "file": "assets/remixicon-Dj-GCdWP.eot",
@@ -303,7 +321,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-p6zo36la.js",
+    "file": "assets/app-aBchETUt.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -313,17 +331,18 @@
       "__commonjsHelpers-CqkleIqs.js"
     ],
     "css": [
-      "assets/app-DahDyFMT.css"
+      "assets/app-C1DhB47i.css",
+      "assets/remixicon-CMwJI551.css"
     ],
     "assets": [
+      "assets/layers-BWBAp2CZ.png",
+      "assets/layers-2x-Bpkbi35X.png",
+      "assets/marker-icon-hN30_KVU.png",
       "assets/remixicon-Dj-GCdWP.eot",
       "assets/remixicon-DMdG15mt.woff2",
       "assets/remixicon-C6oSHjyR.woff",
       "assets/remixicon-Cr1pveRX.ttf",
-      "assets/remixicon-Cj6uv-K3.svg",
-      "assets/layers-BWBAp2CZ.png",
-      "assets/layers-2x-Bpkbi35X.png",
-      "assets/marker-icon-hN30_KVU.png"
+      "assets/remixicon-Cj6uv-K3.svg"
     ]
   },
   "resources/js/layouts/admin-layout.js": {
@@ -337,7 +356,7 @@
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-CrLFHQ1i.js",
+    "file": "assets/pages-editor-kXiOIA3x.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
@@ -345,7 +364,7 @@
       "__commonjsHelpers-CqkleIqs.js"
     ],
     "css": [
-      "assets/pages-editor-CX28yL7U.css",
+      "assets/grapes-CX28yL7U.css",
       "assets/media-modal-Do3bsqwH.css",
       "assets/icon-picker-modal-J3czLV3a.css",
       "assets/color-picker-modal-Kkz6xY2I.css"

@@ -23,6 +23,8 @@ export default defineConfig({
                 "resources/js/layouts/admin-layout.js",
                 "resources/css/preview.css",
                 "resources/js/pages-editor.js",
+                "node_modules/remixicon/fonts/remixicon.css",
+                "node_modules/grapesjs/dist/css/grapes.min.css",
                 ...viewJs,
                 ...viewCss,
             ],
