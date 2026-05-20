@@ -14,9 +14,6 @@ class PageController extends Controller
 {
     use AuthorizesRequests;
 
-    /**
-     * Display a listing of pages
-     */
     public function index(Request $request)
     {
         $this->authorize('pages.view');
@@ -49,27 +46,20 @@ class PageController extends Controller
         $pages = $query->latest()->paginate($perPage);
 
         $stats = [
-            'total' => Page::count(),
+            'total'     => Page::count(),
             'published' => Page::where('is_published', true)->count(),
-            'draft' => Page::where('is_published', false)->count(),
+            'draft'     => Page::where('is_published', false)->count(),
         ];
 
         return view('pages.index', compact('pages', 'stats'));
     }
 
-    /**
-     * Show the form for creating a new page
-     */
     public function create()
     {
         $this->authorize('pages.create');
-
         return view('layouts.editor');
     }
 
-    /**
-     * Store a newly created page
-     */
     public function store(StorePageRequest $request)
     {
         $this->authorize('pages.create');
@@ -77,9 +67,9 @@ class PageController extends Controller
         try {
             $page = Page::create([
                 'title'           => $request->title,
-                'html_content'    => $request->html_content,
-                'css_content'     => $request->css_content,
-                'js_content'      => $request->js_content,
+                'html_content'    => $this->sanitizeContent($request->html_content),
+                'css_content'     => $this->sanitizeContent($request->css_content),
+                'js_content'      => $this->sanitizeContent($request->js_content),
                 'components_json' => $request->components_json,
                 'styles_json'     => $request->styles_json,
                 'is_published'    => $request->boolean('is_published', false),
@@ -106,50 +96,35 @@ class PageController extends Controller
         }
     }
 
-    /**
-     * Show details of a page (admin view)
-     */
     public function show(Page $page)
     {
         $this->authorize('pages.edit');
-
         return view('pages.show', compact('page'));
     }
 
-    /**
-     * Display the specified page (public view)
-     */
     public function preview(Page $page)
     {
         if (!$page->is_published && !auth()->check()) {
             abort(404);
         }
-
         return view('pages.preview', compact('page'));
     }
 
-    /**
-     * Show the form for editing the page
-     */
     public function edit(Page $page)
     {
         $this->authorize('pages.edit');
-
         return view('layouts.editor', compact('page'));
     }
 
-    /**
-     * Update the specified page
-     */
     public function update(UpdatePageRequest $request, Page $page)
     {
         $this->authorize('pages.edit');
 
         try {
             $updateData = [
-                'html_content'    => $request->html_content,
-                'css_content'     => $request->css_content,
-                'js_content'      => $request->js_content,
+                'html_content'    => $this->sanitizeContent($request->html_content),
+                'css_content'     => $this->sanitizeContent($request->css_content),
+                'js_content'      => $this->sanitizeContent($request->js_content),
                 'components_json' => $request->components_json,
                 'styles_json'     => $request->styles_json,
                 'is_published'    => $request->boolean('is_published', $page->is_published),
@@ -184,9 +159,6 @@ class PageController extends Controller
         }
     }
 
-    /**
-     * Remove the specified page
-     */
     public function destroy(Page $page)
     {
         $this->authorize('pages.delete');
@@ -224,9 +196,6 @@ class PageController extends Controller
         }
     }
 
-    /**
-     * Toggle publish status
-     */
     public function togglePublish(Page $page)
     {
         $this->authorize('pages.publish');
@@ -234,7 +203,7 @@ class PageController extends Controller
         try {
             $page->update([
                 'is_published' => !$page->is_published,
-                'updated_by' => Auth::id(),
+                'updated_by'   => Auth::id(),
             ]);
 
             $message = $page->is_published
@@ -243,8 +212,8 @@ class PageController extends Controller
 
             if (request()->expectsJson()) {
                 return response()->json([
-                    'success' => true,
-                    'message' => $message,
+                    'success'      => true,
+                    'message'      => $message,
                     'is_published' => $page->is_published,
                 ]);
             }
@@ -271,9 +240,6 @@ class PageController extends Controller
         }
     }
 
-    /**
-     * Load page data for editor
-     */
     public function load(Page $page)
     {
         $this->authorize('pages.edit');
@@ -297,5 +263,37 @@ class PageController extends Controller
                 'message' => 'Error al cargar el contenido de la página.',
             ], 500);
         }
+    }
+
+    private function sanitizeContent(?string $content): ?string
+    {
+        if (empty($content)) {
+            return $content;
+        }
+
+        $appUrl     = rtrim(config('app.url'), '/');
+        $assetUrl   = rtrim(config('app.asset_url', $appUrl), '/');
+        $storageUrl = rtrim(config('app.storage_url', $appUrl . '/storage'), '/');
+
+        $urls = array_unique(array_filter([
+            $storageUrl,
+            $assetUrl . '/storage',
+            $appUrl . '/storage',
+        ]));
+
+        foreach ($urls as $url) {
+            $content = str_replace($url . '/', '/storage/', $content);
+        }
+
+        $host = parse_url($appUrl, PHP_URL_HOST);
+        if ($host) {
+            $content = preg_replace(
+                '/https?:\/\/' . preg_quote($host, '/') . '\/storage\//i',
+                '/storage/',
+                $content
+            );
+        }
+
+        return $content;
     }
 }
