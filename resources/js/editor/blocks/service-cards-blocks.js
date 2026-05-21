@@ -30,15 +30,15 @@ const SERVICE_CARD = `
 <div class="flex flex-col gap-4 bg-white rounded-2xl p-6 text-center">
     <h3 class="text-lg font-bold text-[#003B71]">Lorem ipsum dolor</h3>
     <p class="text-base text-[#003B71] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-    <a href="#" class="sc-btn w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center mt-auto">Lorem ipsum</a>
+    <a href="#" class="srv-btn w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center mt-auto">Lorem ipsum</a>
 </div>`;
 
 const SERVICE_CARDS_STYLES = `
 <style>
-.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
-.sc-btn{display:block;transition:background .2s,color .2s;}
-.sc-btn:hover{background:#002a52!important;}
-@media(max-width:768px){.sc-grid{grid-template-columns:1fr;}}
+.srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.srv-btn{display:block;transition:background .2s,color .2s;}
+.srv-btn:hover{background:#002a52!important;}
+@media(max-width:768px){.srv-grid{grid-template-columns:1fr;}}
 </style>`;
 
 export const serviceCardsBlocks = [
@@ -54,7 +54,7 @@ export const serviceCardsBlocks = [
             <h2 class="text-4xl font-bold text-white mb-3">Lorem ipsum dolor sit amet</h2>
             <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
-        <div class="sc-grid">
+        <div class="srv-grid">
             ${SERVICE_CARD}
             ${SERVICE_CARD}
             ${SERVICE_CARD}

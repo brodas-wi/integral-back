@@ -65,7 +65,7 @@ const LIST_ITEM = (variant) => {
     const iconColor = isLight ? "text-[#003B71]" : "text-white";
     const textColor = isLight ? "text-[#003B71]" : "text-white";
     return `
-<div class="sc-list-item flex items-center gap-4">
+<div class="split-list-item flex items-center gap-4">
     <div class="bg-[#E97300] w-11 h-11 rounded-full flex items-center justify-center shrink-0">
         <i class="ri-shield-check-line text-xl ${iconColor}"></i>
     </div>
@@ -91,7 +91,7 @@ const CONTENT_COL = (variant) => {
 };
 
 const IMAGE_COL = () => `
-<div class="sc-img-col w-full rounded-2xl overflow-hidden">
+<div class="split-img-col w-full rounded-2xl overflow-hidden">
     <img src="${assetUrl("images/placeholder.svg")}"
          alt="Imagen de sección"
          class="w-full h-full object-cover block"
@@ -100,11 +100,11 @@ const IMAGE_COL = () => `
 
 const SPLIT_STYLES = `
 <style>
-.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
-.sc-list-item{min-height:44px;}
+.split-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+.split-list-item{min-height:44px;}
 @media(max-width:768px){
-    .sc-grid{grid-template-columns:1fr;gap:2rem;}
-    .sc-img-first{order:-1;}
+    .split-grid{grid-template-columns:1fr;gap:2rem;}
+    .split-img-first{order:-1;}
 }
 </style>`;
 
@@ -115,11 +115,11 @@ const buildSection = (imgRight, variant) => {
     return `
 <section class="w-full ${bgClass} py-12 px-6">
     <div class="max-w-6xl mx-auto">
-        <div class="sc-grid">
+        <div class="split-grid">
             ${
                 imgRight
-                    ? `<div>${content}</div><div class="sc-img-first">${image}</div>`
-                    : `<div class="sc-img-first">${image}</div><div>${content}</div>`
+                    ? `<div>${content}</div><div class="split-img-first">${image}</div>`
+                    : `<div class="split-img-first">${image}</div><div>${content}</div>`
             }
         </div>
     </div>

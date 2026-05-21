@@ -696,7 +696,7 @@ ${bt}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
     <circle cx="7" cy="22" r="4" fill="#E97300" fill-opacity="0.85"/>
     <rect x="14" y="20.5" width="14" height="2" rx="1" fill="#003B71" fill-opacity="0.7"/>
 </svg>`,U=i=>{const e=i==="light";return`
-<div class="sc-list-item flex items-center gap-4">
+<div class="split-list-item flex items-center gap-4">
     <div class="bg-[#E97300] w-11 h-11 rounded-full flex items-center justify-center shrink-0">
         <i class="ri-shield-check-line text-xl ${e?"text-[#003B71]":"text-white"}"></i>
     </div>
@@ -712,24 +712,24 @@ ${bt}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
         ${U(i)}
     </div>
 </div>`},zt=()=>`
-<div class="sc-img-col w-full rounded-2xl overflow-hidden">
+<div class="split-img-col w-full rounded-2xl overflow-hidden">
     <img src="${Z("images/placeholder.svg")}"
          alt="Imagen de sección"
          class="w-full h-full object-cover block"
          style="min-height:320px;">
 </div>`,se=`
 <style>
-.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
-.sc-list-item{min-height:44px;}
+.split-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+.split-list-item{min-height:44px;}
 @media(max-width:768px){
-    .sc-grid{grid-template-columns:1fr;gap:2rem;}
-    .sc-img-first{order:-1;}
+    .split-grid{grid-template-columns:1fr;gap:2rem;}
+    .split-img-first{order:-1;}
 }
 </style>`,te=(i,e)=>{const t=Tt(e),r=zt();return`
 <section class="w-full ${e==="dark"?"bg-[#003B71]":"bg-white"} py-12 px-6">
     <div class="max-w-6xl mx-auto">
-        <div class="sc-grid">
-            ${i?`<div>${t}</div><div class="sc-img-first">${r}</div>`:`<div class="sc-img-first">${r}</div><div>${t}</div>`}
+        <div class="split-grid">
+            ${i?`<div>${t}</div><div class="split-img-first">${r}</div>`:`<div class="split-img-first">${r}</div><div>${t}</div>`}
         </div>
     </div>
 </section>
@@ -823,13 +823,13 @@ ${Mt}`,Dt=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
 <div class="flex flex-col gap-4 bg-white rounded-2xl p-6 text-center">
     <h3 class="text-lg font-bold text-[#003B71]">Lorem ipsum dolor</h3>
     <p class="text-base text-[#003B71] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-    <a href="#" class="sc-btn w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center mt-auto">Lorem ipsum</a>
+    <a href="#" class="srv-btn w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center mt-auto">Lorem ipsum</a>
 </div>`,ue=`
 <style>
-.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
-.sc-btn{display:block;transition:background .2s,color .2s;}
-.sc-btn:hover{background:#002a52!important;}
-@media(max-width:768px){.sc-grid{grid-template-columns:1fr;}}
+.srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.srv-btn{display:block;transition:background .2s,color .2s;}
+.srv-btn:hover{background:#002a52!important;}
+@media(max-width:768px){.srv-grid{grid-template-columns:1fr;}}
 </style>`,Nt=[{id:"service-cards-section",label:"Sección de servicios",category:"Productos y Servicios",media:qt,content:`
 <section class="w-full bg-[#003B71] py-12 px-6">
     <div class="max-w-6xl mx-auto">
@@ -837,7 +837,7 @@ ${Mt}`,Dt=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
             <h2 class="text-4xl font-bold text-white mb-3">Lorem ipsum dolor sit amet</h2>
             <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
-        <div class="sc-grid">
+        <div class="srv-grid">
             ${ae}
             ${ae}
             ${ae}
