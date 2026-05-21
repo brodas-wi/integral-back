@@ -7,9 +7,12 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
-  "_editor-commands-NxX2QgS9.js": {
-    "file": "assets/editor-commands-NxX2QgS9.js",
-    "name": "editor-commands"
+  "_editor-commands-jJ4k4Gbt.js": {
+    "file": "assets/editor-commands-jJ4k4Gbt.js",
+    "name": "editor-commands",
+    "imports": [
+      "__commonjsHelpers-CqkleIqs.js"
+    ]
   },
   "_modals-D7u3LXeA.js": {
     "file": "assets/modals-D7u3LXeA.js",
@@ -360,16 +363,13 @@
     ]
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-DWLNO9he.js",
+    "file": "assets/footer-editor-VilQA5Bv.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-NxX2QgS9.js"
-    ],
-    "css": [
-      "assets/grapes-kcEUIu4-.css",
-      "assets/media-modal-AbMYGL4w.css"
+      "_editor-commands-jJ4k4Gbt.js",
+      "__commonjsHelpers-CqkleIqs.js"
     ]
   },
   "resources/js/layouts/admin-layout.js": {
@@ -383,14 +383,14 @@
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-CckDuDoX.js",
+    "file": "assets/pages-editor-Bqr_YdNj.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-NxX2QgS9.js",
-      "__commonjsHelpers-CqkleIqs.js",
-      "_url-DaqOO3yL.js"
+      "_editor-commands-jJ4k4Gbt.js",
+      "_url-DaqOO3yL.js",
+      "__commonjsHelpers-CqkleIqs.js"
     ],
     "css": [
       "assets/grapes-kcEUIu4-.css",

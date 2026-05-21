@@ -1,7 +1,3 @@
-import "grapesjs/dist/css/grapes.min.css";
-import "../css/views/editor/media-modal.css";
-
-import { EditorService } from "./services/editor-service";
 import { initializeFooterGrapesJS } from "./editor/footer-grapes-config";
 import { initializeFooterBlock } from "./editor/blocks/footer-block";
 import {
@@ -11,6 +7,7 @@ import {
     injectCanvasStyles,
 } from "./editor/ui-customization";
 import {
+    setupEditorCommands,
     setupImageDoubleClick,
     addImageToolbarButton,
 } from "./editor/editor-commands";
@@ -33,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         applyCustomStyles(editor);
         fixButtonTooltips(editor);
         injectCanvasStyles(editor);
+        setupEditorCommands(editor);
         setupImageDoubleClick(editor);
         addImageToolbarButton(editor);
 
