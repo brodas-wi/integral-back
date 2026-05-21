@@ -58,6 +58,22 @@
                         </a>
                     @endcanany
 
+                    @canany(['navbars.view', 'navbars.manage'])
+                        <a href="{{ route('navbars.index') }}"
+                            class="sidebar-link {{ request()->routeIs('navbars.*') ? 'active' : '' }}">
+                            <i class="ri-layout-top-line text-xl"></i>
+                            <span>Navbars</span>
+                        </a>
+                    @endcanany
+
+                    @canany(['footers.view', 'footers.manage'])
+                        <a href="{{ route('footers.index') }}"
+                            class="sidebar-link {{ request()->routeIs('footers.*') ? 'active' : '' }}">
+                            <i class="ri-layout-bottom-line text-xl"></i>
+                            <span>Footers</span>
+                        </a>
+                    @endcanany
+
                     @canany(['media.view', 'media.manage'])
                         <a href="{{ route('media.index') }}"
                             class="sidebar-link {{ request()->routeIs('media.*') ? 'active' : '' }}">
@@ -95,22 +111,6 @@
                             class="sidebar-link {{ request()->routeIs('banners.*') ? 'active' : '' }}">
                             <i class="ri-image-2-line text-xl"></i>
                             <span>Banners</span>
-                        </a>
-                    @endcanany
-
-                    @canany(['navbars.view', 'navbars.manage'])
-                        <a href="{{ route('navbars.index') }}"
-                            class="sidebar-link {{ request()->routeIs('navbars.*') ? 'active' : '' }}">
-                            <i class="ri-layout-top-line text-xl"></i>
-                            <span>Navbars</span>
-                        </a>
-                    @endcanany
-
-                    @canany(['footers.view', 'footers.manage'])
-                        <a href="{{ route('footers.index') }}"
-                            class="sidebar-link {{ request()->routeIs('footers.*') ? 'active' : '' }}">
-                            <i class="ri-layout-bottom-line text-xl"></i>
-                            <span>Footers</span>
                         </a>
                     @endcanany
                 </nav>
