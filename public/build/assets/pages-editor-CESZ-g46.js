@@ -456,15 +456,19 @@ ${ne}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
 .cta-watermark-left{position:absolute;bottom:-16px;left:-16px;width:220px;height:220px;opacity:0.2;pointer-events:none;user-select:none;transform:scaleX(-1);}
 .cta-watermark-right{position:absolute;bottom:-16px;right:-16px;width:220px;height:220px;opacity:0.2;pointer-events:none;user-select:none;}
 .cta-watermark-left img,.cta-watermark-right img{width:100%;height:100%;object-fit:contain;}
-.cta-btn-primary{display:inline-block;padding:14px 36px;border-radius:8px;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
+.cta-btn-primary{display:inline-block;padding:0.625rem 2rem;border-radius:0.5rem;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
 .cta-btn-primary:hover{background:#c96200;}
-.cta-btn-secondary{display:inline-block;padding:14px 36px;border-radius:8px;background:#ffffff;color:#E97300;font-size:1rem;font-weight:600;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,0.12);transition:background .2s,box-shadow .2s,color .2s;}
+.cta-btn-secondary{display:inline-block;padding:0.625rem 2rem;border-radius:0.5rem;background:#ffffff;color:#E97300;font-size:1rem;font-weight:600;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,0.12);transition:background .2s,color .2s;}
 .cta-btn-secondary:hover{background:#E97300;color:#ffffff;}
-@media(max-width:480px){
+@media(max-width:992px){
+    .cta-watermark-left,.cta-watermark-right{width:140px;height:140px;}
+}
+@media(max-width:580px){
+    .cta-watermark-left,.cta-watermark-right{width:90px;height:90px;}
     .cta-btn-primary,.cta-btn-secondary{width:100%;text-align:center;}
 }
 </style>`,mt=[{id:"cta-section",label:"Llamada a la acción",category:"Contenido",media:ft,content:`
-<section class="relative overflow-hidden w-full bg-white py-20 px-6">
+<section class="relative overflow-hidden w-full bg-white py-16 px-16">
     <div class="cta-watermark-left">
         <img src="${Z("images/brand-logo.png")}" alt="">
     </div>
