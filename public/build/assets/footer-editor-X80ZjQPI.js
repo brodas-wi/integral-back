@@ -1,4 +1,4 @@
-import{i as L,t as T,d as z,f as I,e as q,s as $,g as M,c as N,E as A}from"./editor-commands-Bhvw87E2.js";import"./_commonjsHelpers-CqkleIqs.js";function F(){return L()}const w="gjs-media-picker-modal";function H(){if(document.getElementById("gjs-media-picker-styles"))return;const e=document.createElement("style");e.id="gjs-media-picker-styles",e.textContent=`
+import{i as L,t as T,d as z,f as I,e as q,s as $,g as M,c as N,E as A}from"./editor-commands-CDeyLZrS.js";import"./_commonjsHelpers-CqkleIqs.js";function F(){return L()}const w="gjs-media-picker-modal";function H(){if(document.getElementById("gjs-media-picker-styles"))return;const e=document.createElement("style");e.id="gjs-media-picker-styles",e.textContent=`
         .mp-overlay {
             display: none;
             position: fixed;
