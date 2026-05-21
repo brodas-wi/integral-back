@@ -14,6 +14,10 @@
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
+  "_media-picker-CiKJ1Agb.js": {
+    "file": "assets/media-picker-CiKJ1Agb.js",
+    "name": "media-picker"
+  },
   "_modals-D7u3LXeA.js": {
     "file": "assets/modals-D7u3LXeA.js",
     "name": "modals"
@@ -363,12 +367,13 @@
     ]
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-CJwESaCD.js",
+    "file": "assets/footer-editor-C2e5aby2.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
     "imports": [
       "_editor-commands-DIM4nSZH.js",
+      "_media-picker-CiKJ1Agb.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
@@ -383,12 +388,13 @@
     ]
   },
   "resources/js/navbar-editor.js": {
-    "file": "assets/navbar-editor-ms8N2Lnz.js",
+    "file": "assets/navbar-editor-BpiOhBH_.js",
     "name": "navbar-editor",
     "src": "resources/js/navbar-editor.js",
     "isEntry": true,
     "imports": [
       "_editor-commands-DIM4nSZH.js",
+      "_media-picker-CiKJ1Agb.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
