@@ -163,12 +163,25 @@ function buildFooterHTML(data) {
         .join("");
 
     return `
-<footer class="ft-wrapper">
-    <div class="ft-inner">
-        <div class="ft-logo-col">${logoHtml}</div>
-        <div class="ft-sections">${sectionsHtml}</div>
+<footer class="ft-wrapper"
+    data-gjs-editable="false"
+    data-gjs-selectable="false"
+    data-gjs-hoverable="false"
+    data-gjs-droppable="false">
+    <div class="ft-inner"
+        data-gjs-editable="false"
+        data-gjs-selectable="false"
+        data-gjs-hoverable="false">
+        <div class="ft-logo-col"
+            data-gjs-editable="false"
+            data-gjs-selectable="false">${logoHtml}</div>
+        <div class="ft-sections"
+            data-gjs-editable="false"
+            data-gjs-selectable="false">${sectionsHtml}</div>
     </div>
-    <div class="ft-stripe"></div>
+    <div class="ft-stripe"
+        data-gjs-editable="false"
+        data-gjs-selectable="false"></div>
 </footer>`;
 }
 
@@ -421,10 +434,12 @@ export function initializeFooterBlock(editor) {
                 tagName: "div",
                 draggable: false,
                 droppable: false,
-                removable: false,
+                removable: true,
                 copyable: false,
                 selectable: true,
                 hoverable: true,
+                editable: false,
+                highlightable: false,
                 attributes: {
                     "data-gjs-type": componentType,
                     "data-footer-config": JSON.stringify({

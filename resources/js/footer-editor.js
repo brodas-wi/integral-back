@@ -51,13 +51,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (e) {
             showNotification("Error al cargar el footer", "error");
         }
-    } else {
-        // Insertar bloque footer por defecto en canvas nuevo
-        editor.on("load", () => {
-            setTimeout(() => {
-                editor.runCommand("insert-default-footer");
-            }, 300);
-        });
     }
 
     // Guardar

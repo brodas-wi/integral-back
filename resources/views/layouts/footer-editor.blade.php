@@ -7,6 +7,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="app-url" content="{{ rtrim(config('app.url'), '/') }}">
     <meta name="asset-url" content="{{ rtrim(config('app.asset_url', config('app.url')), '/') }}">
+
+    {{-- Mismos meta tags de canvas que el editor de páginas --}}
+    <meta name="canvas-css-url" content="{{ Vite::asset('resources/css/editor-canvas.css') }}">
+    <meta name="canvas-app-css-url" content="{{ Vite::asset('resources/css/app.css') }}">
+    <meta name="canvas-poppins-url" content="{{ Vite::asset('resources/css/fonts/poppins.css') }}">
+    <meta name="canvas-remixicons-url" content="{{ Vite::asset('node_modules/remixicon/fonts/remixicon.css') }}">
+
     <meta name="media-api-url" content="{{ route('media.api') }}">
     <meta name="editor-type" content="footer">
 
@@ -42,7 +49,8 @@
 
     <input type="hidden" id="footer-id" value="{{ $footer->id ?? '' }}">
     <input type="hidden" id="footer-name" value="{{ $footer->name ?? '' }}">
-    <input type="hidden" id="footer-load-url" value="{{ isset($footer) ? route('footers.load', $footer->id) : '' }}">
+    <input type="hidden" id="footer-load-url"
+        value="{{ isset($footer) ? route('footers.load', $footer->id) : '' }}">
     <input type="hidden" id="footer-store-url"
         value="{{ isset($footer) ? route('footers.update', $footer->id) : route('footers.store') }}">
     <input type="hidden" id="footer-is-active" value="{{ isset($footer) ? ($footer->is_active ? '1' : '0') : '0' }}">

@@ -1,6 +1,7 @@
 import { initializeGrapesJS } from "./grapes-config";
 
 export function initializeFooterGrapesJS() {
-    // Reutilizar exactamente la misma configuración del editor de páginas
-    return initializeGrapesJS();
+    // Reutiliza exactamente el mismo config incluyendo canvas styles
+    const editor = initializeGrapesJS();
+    return editor;
 }
