@@ -432,7 +432,7 @@ export function initializeFooterBlock(editor) {
             defaults: {
                 name: "Footer",
                 tagName: "div",
-                draggable: false,
+                draggable: true,
                 droppable: false,
                 removable: true,
                 copyable: false,
@@ -585,7 +585,11 @@ export function initializeFooterBlock(editor) {
             <rect x="19" y="11" width="4" height="1" rx="0.5" fill="rgba(255,255,255,0.5)"/>
             <rect x="0" y="26" width="32" height="6" fill="#E97300"/>
         </svg>`,
-        content: { type: componentType },
+        activate: true,
+        content: {
+            type: componentType,
+            attributes: { "data-gjs-type": componentType },
+        },
     });
 
     setupFooterEditorEvents(editor, componentType);

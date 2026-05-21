@@ -25,8 +25,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const editor = initializeFooterGrapesJS();
 
+    initializeFooterBlock(editor);
+
     editor.on("load", () => {
-        initializeFooterBlock(editor);
         translateDynamicUI(editor);
         applyCustomStyles(editor);
         fixButtonTooltips(editor);
