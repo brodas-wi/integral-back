@@ -60,9 +60,10 @@
                                     </a>
                                     <button data-toggle-active data-footer-id="{{ $footer->id }}"
                                         data-active="{{ $footer->is_active ? '1' : '0' }}"
-                                        class="btn-sm {{ $footer->is_active ? 'btn-danger' : 'btn-outline' }}">
-                                        <i class="{{ $footer->is_active ? 'ri-toggle-fill' : 'ri-toggle-line' }} mr-1"></i>
-                                        {{ $footer->is_active ? 'Desactivar' : 'Activar' }}
+                                        title="{{ $footer->is_active ? 'Desactivar' : 'Activar' }}"
+                                        class="btn-sm w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                                        <i
+                                            class="{{ $footer->is_active ? 'ri-toggle-fill text-green-500' : 'ri-toggle-line text-gray-400' }} text-2xl"></i>
                                     </button>
                                 </div>
                             </td>

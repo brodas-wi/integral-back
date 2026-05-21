@@ -12,17 +12,22 @@ function initToggleActive() {
         btn.addEventListener("click", () => {
             const id = btn.dataset.footerId;
             const isActive = btn.dataset.active === "1";
-            confirmToggle(id, isActive, btn);
+
+            window.showConfirmModal({
+                title: isActive ? "Desactivar footer" : "Activar footer",
+                message: isActive
+                    ? "El footer dejará de mostrarse en el sitio."
+                    : "El footer volverá a mostrarse en el sitio.",
+                confirmText: isActive ? "Desactivar" : "Activar",
+                cancelText: "Cancelar",
+                type: isActive ? "warning" : "success",
+                onConfirm: () => doToggle(id, btn),
+            });
         });
     });
 }
 
-async function confirmToggle(id, isActive, btn) {
-    btn.disabled = true;
-    const original = btn.innerHTML;
-    btn.innerHTML =
-        '<i class="ri-loader-4-line animate-spin mr-1"></i> Procesando...';
-
+async function doToggle(id, btn) {
     try {
         const res = await fetch(buildUrl(`footers/${id}/toggle-active`), {
             method: "PATCH",
@@ -55,27 +60,28 @@ async function confirmToggle(id, isActive, btn) {
 
         if (data.success) {
             const nowActive = data.is_active;
+            const icon = btn.querySelector("i");
 
-            // Actualizar badge
+            if (icon) {
+                icon.className = nowActive
+                    ? "ri-toggle-fill text-green-500 text-2xl"
+                    : "ri-toggle-line text-gray-400 text-2xl";
+            }
+
+            btn.dataset.active = nowActive ? "1" : "0";
+            btn.title = nowActive ? "Desactivar" : "Activar";
+
             const badge = document.getElementById(`footer-badge-${id}`);
             if (badge) {
                 badge.textContent = nowActive ? "Activo" : "Inactivo";
                 badge.className = `badge ${nowActive ? "badge-success" : "badge-danger"}`;
             }
 
-            // Actualizar botón
-            btn.dataset.active = nowActive ? "1" : "0";
-            btn.className = `btn-sm ${nowActive ? "btn-danger" : "btn-outline"}`;
-            btn.innerHTML = `<i class="${nowActive ? "ri-toggle-fill" : "ri-toggle-line"} mr-1"></i> ${nowActive ? "Desactivar" : "Activar"}`;
-            btn.disabled = false;
-
             showNotification(data.message, "success");
         } else {
             throw new Error(data.message || "Error desconocido");
         }
     } catch (e) {
-        btn.disabled = false;
-        btn.innerHTML = original;
         showNotification(e.message || "Error al cambiar estado", "error");
         console.error(e);
     }

@@ -11,6 +11,7 @@ use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\PaymentPointController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BannerController;
+use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to login
@@ -458,7 +459,7 @@ Route::middleware(['auth'])->group(function () {
 // PUBLIC PAGE VIEWING (Outside auth middleware)
 // ==========================================
 Route::get('/p/{slug}/styles.css', function ($slug) {
-    $page = \App\Models\Page::where('slug', $slug)->firstOrFail();
+    $page = Page::where('slug', $slug)->firstOrFail();
     return response($page->css_content ?? '', 200)
         ->header('Content-Type', 'text/css')
         ->header('Cache-Control', 'public, max-age=300');
