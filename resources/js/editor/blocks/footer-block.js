@@ -8,34 +8,28 @@ const FOOTER_STYLES = `
     font-family: 'Poppins', sans-serif;
 }
 .ft-inner {
-    max-width: 1152px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2.5rem;
+    padding: 3rem 4rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 2.5rem 2rem;
     align-items: flex-start;
 }
 .ft-logo-col {
-    flex: 0 0 auto;
-    min-width: 140px;
-    max-width: 200px;
+    min-width: 0;
 }
 .ft-logo-col img {
-    max-width: 100%;
+    max-width: 160px;
+    width: 100%;
     height: auto;
     display: block;
 }
-.ft-sections {
-    flex: 1 1 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    align-items: flex-start;
+.ft-logo-col .ft-logo-text {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.25rem;
 }
 .ft-section {
-    min-width: 120px;
-    flex: 1 1 120px;
+    min-width: 0;
 }
 .ft-section-title {
     color: #ffffff;
@@ -63,7 +57,6 @@ const FOOTER_STYLES = `
 }
 .ft-links li a:hover {
     color: #ffffff;
-    text-decoration: none;
 }
 .ft-links li span.ft-text {
     color: rgba(255,255,255,0.85);
@@ -83,60 +76,52 @@ const FOOTER_STYLES = `
     height: 40px;
     background: #E97300;
 }
-@media (max-width: 768px) {
+@media (max-width: 1280px) {
+    .ft-inner { padding: 3rem 2.5rem 2rem; }
+}
+@media (max-width: 992px) {
     .ft-inner {
-        gap: 1.5rem;
+        padding: 2.5rem 1.5rem 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 2rem 1.5rem;
+    }
+}
+@media (max-width: 480px) {
+    .ft-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.75rem 1.25rem;
     }
     .ft-logo-col {
-        flex: 0 0 100%;
-        max-width: 160px;
+        grid-column: 1 / -1;
     }
+}
+@media (max-width: 320px) {
+    .ft-inner { grid-template-columns: 1fr; }
+    .ft-logo-col { grid-column: auto; }
 }
 </style>`;
 
 function buildFooterHTML(data) {
     const logoHtml = data.logo_url
         ? `<img src="${data.logo_url}" alt="${data.logo_alt || "Logo"}">`
-        : `<div style="color:#fff;font-weight:800;font-size:1.25rem;">Logo</div>`;
+        : `<span class="ft-logo-text">Logo</span>`;
 
     const sectionsHtml = (data.sections || [])
         .map((sec, i) => {
             const linksHtml = (sec.links || [])
                 .map((link) => {
-                    const icon = link.icon
-                        ? `<i class="${link.icon}"></i>`
-                        : "";
-                    const href = link.href || "#";
+                    const icon = link.icon ? `<i class="${link.icon}"></i>` : "";
                     if (link.isText) {
                         return `<li><span class="ft-text">${icon}${link.label}</span></li>`;
                     }
-                    return `<li><a href="${href}">${icon}${link.label}</a></li>`;
+                    return `<li><a href="${link.href || "#"}">${icon}${link.label}</a></li>`;
                 })
                 .join("");
-
-            return `
-<div class="ft-section" data-section-index="${i}">
-    <p class="ft-section-title">${sec.title}</p>
-    <ul class="ft-links">${linksHtml}</ul>
-</div>`;
+            return `<div class="ft-section" data-section-index="${i}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><p class="ft-section-title">${sec.title}</p><ul class="ft-links">${linksHtml}</ul></div>`;
         })
         .join("");
 
-    return `
-<div class="ft-inner"
-    data-gjs-editable="false"
-    data-gjs-selectable="false"
-    data-gjs-hoverable="false">
-    <div class="ft-logo-col"
-        data-gjs-editable="false"
-        data-gjs-selectable="false">${logoHtml}</div>
-    <div class="ft-sections"
-        data-gjs-editable="false"
-        data-gjs-selectable="false">${sectionsHtml}</div>
-</div>
-<div class="ft-stripe"
-    data-gjs-editable="false"
-    data-gjs-selectable="false"></div>`;
+    return `<div class="ft-inner" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="ft-logo-col" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${logoHtml}</div>${sectionsHtml}</div><div class="ft-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>`;
 }
 
 function createFooterScript() {

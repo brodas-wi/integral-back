@@ -241,7 +241,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Bn8B5CjZ.css",
+    "file": "assets/app-DeGIrqED.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -367,7 +367,7 @@
     ]
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-CGif9RFi.js",
+    "file": "assets/footer-editor-qndciaqF.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
@@ -388,7 +388,7 @@
     ]
   },
   "resources/js/navbar-editor.js": {
-    "file": "assets/navbar-editor-Ck-XbNGK.js",
+    "file": "assets/navbar-editor-kb84xpFo.js",
     "name": "navbar-editor",
     "src": "resources/js/navbar-editor.js",
     "isEntry": true,
@@ -399,7 +399,7 @@
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-CuEB1Bq6.js",
+    "file": "assets/pages-editor-CdmYRIWC.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,

@@ -823,25 +823,21 @@ ${qt}`,Ht=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
 <div class="flex flex-col gap-4 bg-white rounded-2xl p-6 text-center">
     <h3 class="text-lg font-bold text-[#003B71]">Lorem ipsum dolor</h3>
     <p class="text-base text-[#003B71] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-    <a href="#" class="srv-btn w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center mt-auto">Lorem ipsum</a>
+    <a href="#" class="srv-btn block w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center mt-auto transition-colors duration-200 hover:bg-[#002a52]">Lorem ipsum</a>
 </div>`,ue=`
 <style>
 .srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
-.srv-btn{display:block;transition:background .2s,color .2s;}
-.srv-btn:hover{background:#002a52!important;}
 @media(max-width:768px){.srv-grid{grid-template-columns:1fr;}}
 </style>`,Ot=[{id:"service-cards-section",label:"Sección de servicios",category:"Productos y Servicios",media:Nt,content:`
-<section class="w-full bg-[#003B71] py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold text-white mb-3">Lorem ipsum dolor sit amet</h2>
-            <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-        <div class="srv-grid">
-            ${ae}
-            ${ae}
-            ${ae}
-        </div>
+<section class="w-full bg-[#003B71] py-12 px-16">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-white mb-3">Lorem ipsum dolor sit amet</h2>
+        <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+    <div class="srv-grid">
+        ${ae}
+        ${ae}
+        ${ae}
     </div>
 </section>
 ${ue}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Servicios",media:Pt,content:`${ae}${ue}`}],Rt=`<svg viewBox="0 0 32 32" width="32" height="32">
