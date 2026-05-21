@@ -65,9 +65,7 @@ if(document.readyState==="loading"){
     font-family: 'Poppins', sans-serif;
 }
 .nb-inner {
-    max-width: 1152px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
