@@ -32,41 +32,20 @@ const ICON_CARD = `
     </div>
     <h3 class="text-base font-bold text-white">Título del producto</h3>
     <p class="text-base text-white leading-relaxed">Descripción breve del producto o servicio financiero disponible para ti.</p>
-    <a href="#" class="mt-auto w-full text-center py-2 px-4 rounded-lg bg-white text-[#003B71] text-base font-semibold transition-all duration-200 hover:bg-[#dce8f5] hover:text-[#003B71]">Más información</a>
+    <a href="#" class="ig-btn mt-auto">Más información</a>
 </div>`;
 
 const ICON_GRID_STYLES = `
 <style>
-.ig-watermark {
-    position: absolute;
-    bottom: -32px;
-    right: -32px;
-    width: 320px;
-    height: 320px;
-    opacity: 0.07;
-    pointer-events: none;
-    user-select: none;
-}
-.ig-watermark img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-.ig-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-}
-@media (max-width: 900px) {
-    .ig-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media (max-width: 560px) {
-    .ig-grid {
-        grid-template-columns: 1fr;
-    }
-}
+.ig-section{width:100%;background:#003B71;padding:3rem 4rem;}
+.ig-watermark{position:absolute;bottom:-32px;right:-32px;width:320px;height:320px;opacity:0.07;pointer-events:none;user-select:none;}
+.ig-watermark img{width:100%;height:100%;object-fit:contain;}
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.ig-btn{display:block;width:100%;text-align:center;padding:0.5rem 1rem;border-radius:0.5rem;background:#ffffff;color:#003B71;font-size:1rem;font-weight:600;text-decoration:none;margin-top:auto;transition:background .2s;}
+.ig-btn:hover{background:#dce8f5;}
+@media(max-width:1280px){.ig-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.ig-section{padding:2.5rem 1.5rem;}.ig-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.ig-grid{grid-template-columns:1fr;}}
 </style>`;
 
 export const iconGridBlocks = [
@@ -76,11 +55,11 @@ export const iconGridBlocks = [
         category: "Productos y Servicios",
         media: iconGridIcon,
         content: `
-<section class="relative overflow-hidden w-full bg-[#003B71] py-12 px-6">
+<section class="ig-section relative overflow-hidden">
     <div class="ig-watermark">
         <img src="${assetUrl("images/brand-watermark.png")}" alt="">
     </div>
-    <div class="relative z-10 max-w-6xl mx-auto flex flex-col gap-12">
+    <div class="relative z-10 flex flex-col gap-12">
         <div class="flex flex-col items-center text-center gap-3">
             <h2 class="text-4xl font-bold text-white">Depósitos y Cuentas de Ahorro</h2>
             <p class="text-base text-white">Productos diseñados para hacer crecer tu dinero de forma segura.</p>

@@ -80,7 +80,7 @@ const CONTENT_COL = (variant) => {
     return `
 <div class="flex flex-col gap-4">
     <h2 class="${titleColor} text-4xl font-bold leading-tight">Lorem ipsum dolor sit amet</h2>
-    <p class="${textColor} text-base leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
+    <p class="${textColor} text-base leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
     <div class="flex flex-col gap-4">
         ${LIST_ITEM(variant)}
         ${LIST_ITEM(variant)}

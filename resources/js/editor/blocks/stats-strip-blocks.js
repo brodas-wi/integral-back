@@ -33,32 +33,38 @@ const STAT_ITEM = `
 
 const STATS_STYLES = `
 <style>
-.ss-section{position:relative;width:100%;background:#ffffff;}
-.ss-curve-left{background:#E97300;border-radius:200px 0 0 0;}
-.ss-curve-right{background:#E97300;border-radius:0 200px 0 0;}
+.ss-section{position:relative;width:100%;}
+.ss-curve-left{background:#E97300;border-radius:200px 0 0 0;padding:3rem 4rem;}
+.ss-curve-right{background:#E97300;border-radius:0 200px 0 0;padding:3rem 4rem;}
 .ss-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
-@media(max-width:900px){
+@media(max-width:1280px){
+    .ss-curve-left,.ss-curve-right{padding:3rem 2.5rem;}
+}
+@media(max-width:992px){
     .ss-curve-left{border-radius:110px 0 0 0;}
     .ss-curve-right{border-radius:0 110px 0 0;}
+    .ss-curve-left,.ss-curve-right{padding:2.5rem 1.5rem;}
     .ss-grid{grid-template-columns:repeat(2,1fr);}
 }
-@media(max-width:480px){.ss-grid{grid-template-columns:1fr;}}
+@media(max-width:480px){
+    .ss-curve-left{border-radius:60px 0 0 0;}
+    .ss-curve-right{border-radius:0 60px 0 0;}
+    .ss-grid{grid-template-columns:1fr 1fr;}
+}
 </style>`;
 
 const buildStatsSection = (curveLeft) => `
 <div class="ss-section">
     <div class="ss-curve-${curveLeft ? "left" : "right"}">
-        <div class="max-w-6xl mx-auto px-8 py-16">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-white mb-3 leading-tight">Lorem ipsum dolor sit amet</h2>
-                <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div class="ss-grid">
-                ${STAT_ITEM}
-                ${STAT_ITEM}
-                ${STAT_ITEM}
-                ${STAT_ITEM}
-            </div>
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-white mb-3 leading-tight">Lorem ipsum dolor sit amet</h2>
+            <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="ss-grid">
+            ${STAT_ITEM}
+            ${STAT_ITEM}
+            ${STAT_ITEM}
+            ${STAT_ITEM}
         </div>
     </div>
 </div>

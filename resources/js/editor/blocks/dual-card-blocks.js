@@ -40,6 +40,7 @@ const CARD_LIGHT = `
 
 const DUAL_CARD_STYLES = `
 <style>
+.dc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .dc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:stretch;}
 .dc-btn-outline{display:block;transition:background .2s,color .2s;}
 .dc-btn-outline:hover{background:#dce8f5;color:#003B71;}
@@ -48,6 +49,8 @@ const DUAL_CARD_STYLES = `
 .dc-text-primary{color:#003B71;}
 .dc-bg-primary{background-color:#003B71;}
 .dc-bg-light{background-color:#dce8f5;}
+@media(max-width:1280px){.dc-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.dc-section{padding:2.5rem 1.5rem;}}
 @media(max-width:640px){.dc-grid{grid-template-columns:1fr;}}
 </style>`;
 
@@ -58,16 +61,14 @@ export const dualCardBlocks = [
         category: "Productos y Servicios",
         media: iconDualCards,
         content: `
-<section class="w-full bg-white py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold text-[#003B71] mb-3">Lorem ipsum dolor sit amet</h2>
-            <p class="text-base text-[#003B71]">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-        <div class="dc-grid">
-            ${CARD_DARK}
-            ${CARD_LIGHT}
-        </div>
+<section class="dc-section">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-[#003B71] mb-3">Lorem ipsum dolor sit amet</h2>
+        <p class="text-base text-[#003B71]">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+    <div class="dc-grid">
+        ${CARD_DARK}
+        ${CARD_LIGHT}
     </div>
 </section>
 ${DUAL_CARD_STYLES}`,
