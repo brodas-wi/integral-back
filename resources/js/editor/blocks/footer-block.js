@@ -1,3 +1,5 @@
+import { openMediaPicker } from "@/editor/media-picker";
+
 const FOOTER_STYLES = `
 <style>
 .ft-wrapper {
@@ -201,7 +203,276 @@ function showFooterModal(editor, component) {
     const existing = document.getElementById("footer-config-modal");
     if (existing) existing.remove();
 
-    // Leer datos actuales del componente
+    // Inyectar estilos del modal si no existen
+    if (!document.getElementById("ft-modal-styles")) {
+        const style = document.createElement("style");
+        style.id = "ft-modal-styles";
+        style.textContent = `
+            .ft-overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 99999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(15, 23, 42, 0.45);
+                backdrop-filter: blur(3px);
+                padding: 1rem;
+            }
+            .ft-modal {
+                background: #ffffff;
+                border-radius: 0.75rem;
+                width: 100%;
+                max-width: 700px;
+                max-height: 90vh;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 20px 60px rgba(15,23,42,0.15), 0 4px 16px rgba(15,23,42,0.08);
+                font-family: 'Inter', sans-serif;
+                color: #1e293b;
+                border: 1px solid #e2e8f0;
+            }
+            .ft-modal-header {
+                padding: 1rem 1.25rem;
+                border-bottom: 1px solid #f1f5f9;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: #ffffff;
+                flex-shrink: 0;
+            }
+            .ft-modal-header-left {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .ft-modal-header-left i {
+                font-size: 1.125rem;
+                color: #3b82f6;
+            }
+            .ft-modal-header-left h2 {
+                margin: 0;
+                font-size: 0.9375rem;
+                font-weight: 600;
+                color: #0f172a;
+            }
+            .ft-modal-close {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 2rem;
+                height: 2rem;
+                border-radius: 0.375rem;
+                border: none;
+                background: transparent;
+                color: #94a3b8;
+                cursor: pointer;
+                transition: background 0.15s, color 0.15s;
+            }
+            .ft-modal-close:hover {
+                background: #f1f5f9;
+                color: #475569;
+            }
+            .ft-modal-close i {
+                font-size: 1.125rem;
+            }
+            .ft-modal-body {
+                flex: 1;
+                overflow-y: auto;
+                padding: 1.25rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1.25rem;
+                background: #f8fafc;
+            }
+            .ft-modal-body::-webkit-scrollbar { width: 5px; }
+            .ft-modal-body::-webkit-scrollbar-track { background: transparent; }
+            .ft-modal-body::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 3px; }
+            .ft-modal-section-box {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 0.625rem;
+                padding: 1rem;
+            }
+            .ft-modal-label {
+                display: block;
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: #64748b;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.625rem;
+            }
+            .ft-modal-row {
+                display: flex;
+                gap: 0.75rem;
+            }
+            .ft-modal-sections-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 0.75rem;
+            }
+            .ft-modal-input {
+                flex: 1;
+                padding: 0.5rem 0.75rem;
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 0.5rem;
+                color: #1e293b;
+                font-size: 0.875rem;
+                outline: none;
+                font-family: inherit;
+                transition: border-color 0.15s;
+            }
+            .ft-modal-input:focus {
+                border-color: #3b82f6;
+            }
+            .ft-modal-input-sm {
+                padding: 0.375rem 0.625rem;
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 0.375rem;
+                color: #1e293b;
+                font-size: 0.8rem;
+                outline: none;
+                font-family: inherit;
+                transition: border-color 0.15s;
+            }
+            .ft-modal-input-sm:focus {
+                border-color: #3b82f6;
+            }
+            .ft-btn-add-section {
+                padding: 0.375rem 0.75rem;
+                background: #003B71;
+                border: none;
+                border-radius: 0.5rem;
+                color: #fff;
+                font-size: 0.75rem;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 0.375rem;
+                font-family: inherit;
+                transition: background 0.15s;
+            }
+            .ft-btn-add-section:hover { background: #002a52; }
+            .ft-sections-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .ft-section-card {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 0.625rem;
+                overflow: hidden;
+            }
+            .ft-section-card-header {
+                padding: 0.75rem 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                border-bottom: 1px solid #f1f5f9;
+                background: #f8fafc;
+            }
+            .ft-section-title-input {
+                flex: 1;
+                padding: 0.375rem 0.625rem;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 0.375rem;
+                color: #1e293b;
+                font-size: 0.875rem;
+                font-weight: 600;
+                outline: none;
+                font-family: inherit;
+                transition: border-color 0.15s;
+            }
+            .ft-section-title-input:focus { border-color: #3b82f6; }
+            .ft-section-card-body { padding: 0.75rem 1rem; }
+            .ft-link-row {
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+                margin-bottom: 0.5rem;
+            }
+            .ft-link-icon-input {
+                width: 150px;
+                flex-shrink: 0;
+            }
+            .ft-btn-remove {
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #ef4444;
+                padding: 0.25rem;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 0.25rem;
+                transition: background 0.15s;
+            }
+            .ft-btn-remove:hover { background: #fef2f2; }
+            .ft-btn-add-link {
+                margin-top: 0.5rem;
+                padding: 0.375rem 0.75rem;
+                background: #0d3f6a;
+                border: none;
+                border-radius: 0.375rem;
+                color: #fff;
+                font-size: 0.75rem;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 0.375rem;
+                font-family: inherit;
+                transition: background 0.15s;
+            }
+            .ft-btn-add-link:hover { background: #003B71; }
+            .ft-modal-footer {
+                padding: 1rem 1.25rem;
+                border-top: 1px solid #f1f5f9;
+                display: flex;
+                gap: 0.75rem;
+                justify-content: flex-end;
+                background: #ffffff;
+                flex-shrink: 0;
+            }
+            .ft-btn-cancel {
+                padding: 0.5rem 1.25rem;
+                background: #ffffff;
+                border: 2px solid #e2e8f0;
+                border-radius: 0.5rem;
+                color: #475569;
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+                font-family: inherit;
+                transition: background 0.15s, border-color 0.15s;
+            }
+            .ft-btn-cancel:hover { background: #f8fafc; border-color: #cbd5e1; }
+            .ft-btn-save {
+                padding: 0.5rem 1.25rem;
+                background: #f0872a;
+                border: none;
+                border-radius: 0.5rem;
+                color: #fff;
+                font-size: 0.875rem;
+                font-weight: 600;
+                cursor: pointer;
+                font-family: inherit;
+                transition: background 0.15s;
+            }
+            .ft-btn-save:hover { background: #d97821; }
+        `;
+        document.head.appendChild(style);
+    }
+
     const currentData = (() => {
         try {
             return JSON.parse(
@@ -220,64 +491,51 @@ function showFooterModal(editor, component) {
 
     const overlay = document.createElement("div");
     overlay.id = "footer-config-modal";
-    overlay.style.cssText = `
-        position:fixed;inset:0;z-index:99999;
-        display:flex;align-items:center;justify-content:center;
-        background:rgba(0,0,0,0.6);padding:1rem;
-    `;
+    overlay.className = "ft-overlay";
 
     const modal = document.createElement("div");
-    modal.style.cssText = `
-        background:#ffffff;border-radius:0.75rem;
-        width:100%;max-width:700px;max-height:90vh;
-        overflow:hidden;display:flex;flex-direction:column;
-        box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);
-        font-family:'Inter',sans-serif;color:#1e293b;
-        border:1px solid #e2e8f0;
-    `;
+    modal.className = "ft-modal";
 
     modal.innerHTML = `
-        <div style="padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#ffffff;">
-            <div style="display:flex;align-items:center;gap:0.5rem;">
-                <i class="ri-layout-bottom-line" style="font-size:1.125rem;color:#3b82f6;"></i>
-                <h2 style="margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;">Configurar Footer</h2>
+        <div class="ft-modal-header">
+            <div class="ft-modal-header-left">
+                <i class="ri-layout-bottom-line"></i>
+                <h2>Configurar Footer</h2>
             </div>
-            <button id="ft-modal-close" style="display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;">
-                <i class="ri-close-line" style="font-size:1.125rem;"></i>
+            <button id="ft-modal-close" class="ft-modal-close">
+                <i class="ri-close-line"></i>
             </button>
         </div>
 
-        <div style="flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1.25rem;background:#f8fafc;">
-            <!-- Logo -->
-            <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;">
-                <label style="display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;">Logo</label>
-                <div style="display:flex;gap:0.75rem;">
-                    <input id="ft-logo-url" type="text" placeholder="URL del logo" value="${logoUrl}"
-                        style="flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;">
-                    <input id="ft-logo-alt" type="text" placeholder="Texto alternativo" value="${logoAlt}"
-                        style="flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;">
+        <div class="ft-modal-body">
+            <div class="ft-modal-section-box">
+                <label class="ft-modal-label">Logo</label>
+                <div class="ft-modal-row" style="align-items:center;">
+                    <div style="flex:1;position:relative;">
+                        ${logoUrl ? `<img id="ft-logo-preview" src="${logoUrl}" alt="Logo preview" style="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;">` : `<div id="ft-logo-preview" style="display:none;"></div>`}
+                        <input id="ft-logo-url" type="text" placeholder="URL del logo" value="${logoUrl}" class="ft-modal-input" style="width:100%;">
+                    </div>
+                    <button id="ft-logo-pick" type="button" style="flex-shrink:0;padding:0.5rem 0.875rem;background:#003B71;border:none;border-radius:0.5rem;color:#fff;font-size:0.8rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;font-family:inherit;white-space:nowrap;transition:background 0.15s;">
+                        <i class="ri-image-line"></i> Seleccionar
+                    </button>
+                    <input id="ft-logo-alt" type="text" placeholder="Texto alternativo" value="${logoAlt}" class="ft-modal-input">
                 </div>
             </div>
 
-            <!-- Secciones -->
             <div>
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
-                    <label style="font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;">Secciones</label>
-                    <button id="ft-add-section" style="padding:0.375rem 0.75rem;background:#003B71;border:none;border-radius:0.5rem;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;font-family:inherit;">
+                <div class="ft-modal-sections-header">
+                    <label class="ft-modal-label" style="margin-bottom:0;">Secciones</label>
+                    <button id="ft-add-section" class="ft-btn-add-section">
                         <i class="ri-add-line"></i> Agregar sección
                     </button>
                 </div>
-                <div id="ft-sections-container" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+                <div id="ft-sections-container" class="ft-sections-container"></div>
             </div>
         </div>
 
-        <div style="padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#ffffff;">
-            <button id="ft-modal-cancel" style="padding:0.5rem 1.25rem;background:#ffffff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;">
-                Cancelar
-            </button>
-            <button id="ft-modal-save" style="padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;">
-                Aplicar cambios
-            </button>
+        <div class="ft-modal-footer">
+            <button id="ft-modal-cancel" class="ft-btn-cancel">Cancelar</button>
+            <button id="ft-modal-save" class="ft-btn-save">Aplicar cambios</button>
         </div>
     `;
 
@@ -288,21 +546,20 @@ function showFooterModal(editor, component) {
 
     function renderSection(sec, index) {
         const div = document.createElement("div");
-        div.style.cssText =
-            "background:#ffffff;border:1px solid #e2e8f0;border-radius:0.625rem;overflow:hidden;";
+        div.className = "ft-section-card";
         div.dataset.sectionIndex = index;
 
         const linksHtml = (sec.links || [])
             .map(
                 (link, li) => `
-            <div class="ft-link-row" data-link-index="${li}" style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">
-                <input class="ft-link-icon" type="text" placeholder="ri-phone-line (opcional)" value="${link.icon || ""}"
-                    style="width:150px;flex-shrink:0;padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;">
-                <input class="ft-link-label" type="text" placeholder="Texto del enlace" value="${link.label || ""}"
-                    style="flex:1;padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;">
-                <input class="ft-link-href" type="text" placeholder="URL o tel:0000-0000" value="${link.href || ""}"
-                    style="flex:1;padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;">
-                <button class="ft-remove-link" style="background:none;border:none;cursor:pointer;color:#ef4444;padding:0.25rem;flex-shrink:0;">
+            <div class="ft-link-row" data-link-index="${li}">
+                <input class="ft-modal-input-sm ft-link-icon-input ft-link-icon" type="text"
+                    placeholder="ri-phone-line (opcional)" value="${link.icon || ""}">
+                <input class="ft-modal-input-sm ft-link-label" type="text"
+                    placeholder="Texto del enlace" value="${link.label || ""}">
+                <input class="ft-modal-input-sm ft-link-href" type="text"
+                    placeholder="URL o tel:0000-0000" value="${link.href || ""}">
+                <button class="ft-btn-remove ft-remove-link">
                     <i class="ri-delete-bin-line"></i>
                 </button>
             </div>
@@ -311,16 +568,16 @@ function showFooterModal(editor, component) {
             .join("");
 
         div.innerHTML = `
-            <div style="padding:0.75rem 1rem;display:flex;align-items:center;gap:0.75rem;border-bottom:1px solid #f1f5f9;background:#f8fafc;">
-                <input class="ft-section-title-input" type="text" placeholder="Título de la sección" value="${sec.title || ""}"
-                    style="flex:1;padding:0.375rem 0.625rem;background:#ffffff;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.875rem;font-weight:600;outline:none;font-family:inherit;">
-                <button class="ft-remove-section" style="background:none;border:none;cursor:pointer;color:#ef4444;padding:0.25rem;" title="Eliminar sección">
+            <div class="ft-section-card-header">
+                <input class="ft-section-title-input" type="text"
+                    placeholder="Título de la sección" value="${sec.title || ""}">
+                <button class="ft-btn-remove ft-remove-section" title="Eliminar sección">
                     <i class="ri-delete-bin-line"></i>
                 </button>
             </div>
-            <div style="padding:0.75rem 1rem;">
+            <div class="ft-section-card-body">
                 <div class="ft-links-container">${linksHtml}</div>
-                <button class="ft-add-link" style="margin-top:0.5rem;padding:0.375rem 0.75rem;background:#0d3f6a;border:none;border-radius:0.375rem;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;">
+                <button class="ft-btn-add-link">
                     <i class="ri-add-line"></i> Agregar enlace
                 </button>
             </div>
@@ -331,7 +588,7 @@ function showFooterModal(editor, component) {
             renderAllSections();
         };
 
-        div.querySelector(".ft-add-link").onclick = () => {
+        div.querySelector(".ft-btn-add-link").onclick = () => {
             sec.links = sec.links || [];
             sec.links.push({ label: "Nuevo enlace", href: "#", icon: "" });
             renderAllSections();
@@ -352,12 +609,34 @@ function showFooterModal(editor, component) {
 
     function renderAllSections() {
         sectionsContainer.innerHTML = "";
-        sections.forEach((sec, i) => {
-            sectionsContainer.appendChild(renderSection(sec, i));
-        });
+        sections.forEach((sec, i) =>
+            sectionsContainer.appendChild(renderSection(sec, i)),
+        );
     }
 
     renderAllSections();
+
+    modal.querySelector("#ft-logo-pick").addEventListener("click", () => {
+        openMediaPicker({
+            type: "image",
+            title: "Seleccionar logo",
+            onSelect: (url) => {
+                modal.querySelector("#ft-logo-url").value = url;
+                let preview = modal.querySelector("#ft-logo-preview");
+                if (!preview || preview.tagName === "DIV") {
+                    const img = document.createElement("img");
+                    img.id = "ft-logo-preview";
+                    img.style.cssText =
+                        "height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;";
+                    preview?.replaceWith(img) ??
+                        modal.querySelector("#ft-logo-url").before(img);
+                    preview = img;
+                }
+                preview.src = url;
+                preview.style.display = "block";
+            },
+        });
+    });
 
     modal.querySelector("#ft-add-section").onclick = () => {
         sections.push({ title: "Nueva Sección", links: [] });
@@ -367,11 +646,11 @@ function showFooterModal(editor, component) {
     function collectData() {
         const logoUrl = modal.querySelector("#ft-logo-url").value.trim();
         const logoAlt = modal.querySelector("#ft-logo-alt").value.trim();
-
         const updatedSections = [];
+
         sectionsContainer
             .querySelectorAll("[data-section-index]")
-            .forEach((secEl, i) => {
+            .forEach((secEl) => {
                 const title = secEl
                     .querySelector(".ft-section-title-input")
                     .value.trim();
@@ -402,12 +681,8 @@ function showFooterModal(editor, component) {
 
     modal.querySelector("#ft-modal-save").onclick = () => {
         const data = collectData();
-
         component.addAttributes({ "data-footer-config": JSON.stringify(data) });
-
-        const html = buildFooterHTML(data);
-        component.components(html + FOOTER_STYLES);
-
+        component.components(buildFooterHTML(data) + FOOTER_STYLES);
         close();
     };
 }

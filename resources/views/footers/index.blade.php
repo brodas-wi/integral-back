@@ -3,9 +3,13 @@
 @section('title', 'Footers')
 @section('page-title', 'Footers')
 
+@push('head')
+    <meta name="footers-index-url" content="{{ route('footers.index') }}">
+@endpush
+
 @section('header-actions')
-    <a href="{{ route('footers.create') }}" class="btn-primary">
-        <i class="ri-add-line mr-2"></i>
+    <a href="{{ route('footers.create') }}" class="btn-primary btn-sm">
+        <i class="ri-add-line mr-1"></i>
         Nuevo Footer
     </a>
 @endsection
@@ -15,9 +19,9 @@
         @if ($footers->isEmpty())
             <div class="text-center py-12 text-gray-500">
                 <i class="ri-layout-bottom-line text-4xl mb-3 block"></i>
-                <p>No hay footers creados aún.</p>
-                <a href="{{ route('footers.create') }}" class="btn-primary mt-4 inline-flex">
-                    <i class="ri-add-line mr-2"></i> Crear primer footer
+                <p class="mb-4">No hay footers creados aún.</p>
+                <a href="{{ route('footers.create') }}" class="btn-primary btn-sm inline-flex">
+                    <i class="ri-add-line mr-1"></i> Crear primer footer
                 </a>
             </div>
         @else
@@ -33,16 +37,19 @@
                 <tbody>
                     @foreach ($footers as $footer)
                         <tr class="table-row">
-                            <td class="py-3 px-4 font-medium text-secondary">{{ $footer->name }}</td>
+                            <td class="py-3 px-4 font-medium text-secondary">
+                                {{ $footer->name }}
+                            </td>
                             <td class="py-3 px-4">
-                                <span class="badge {{ $footer->is_active ? 'badge-success' : 'badge-danger' }}">
+                                <span class="badge {{ $footer->is_active ? 'badge-success' : 'badge-danger' }}"
+                                    id="footer-badge-{{ $footer->id }}">
                                     {{ $footer->is_active ? 'Activo' : 'Inactivo' }}
                                 </span>
                             </td>
                             <td class="py-3 px-4 text-sm text-gray-500">
                                 {{ $footer->updated_at->format('d/m/Y H:i') }}
                             </td>
-                            <td class="py-3 px-4 text-right">
+                            <td class="py-3 px-4">
                                 <div class="flex justify-end gap-2">
                                     <a href="{{ route('footers.preview', $footer->id) }}" target="_blank"
                                         class="btn-outline btn-sm">
@@ -51,8 +58,10 @@
                                     <a href="{{ route('footers.edit', $footer->id) }}" class="btn-outline btn-sm">
                                         <i class="ri-edit-line mr-1"></i> Editar
                                     </a>
-                                    <button onclick="toggleActive({{ $footer->id }}, this)"
-                                        class="btn-outline btn-sm {{ $footer->is_active ? 'btn-danger' : 'btn-success' }}">
+                                    <button data-toggle-active data-footer-id="{{ $footer->id }}"
+                                        data-active="{{ $footer->is_active ? '1' : '0' }}"
+                                        class="btn-sm {{ $footer->is_active ? 'btn-danger' : 'btn-outline' }}">
+                                        <i class="{{ $footer->is_active ? 'ri-toggle-fill' : 'ri-toggle-line' }} mr-1"></i>
                                         {{ $footer->is_active ? 'Desactivar' : 'Activar' }}
                                     </button>
                                 </div>
@@ -63,22 +72,8 @@
             </table>
         @endif
     </div>
-
-    <script>
-        async function toggleActive(id, btn) {
-            try {
-                const res = await fetch(`/footers/${id}/toggle-active`, {
-                    method: 'PATCH',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    }
-                });
-                const data = await res.json();
-                if (data.success) window.location.reload();
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    </script>
 @endsection
+
+@push('scripts')
+    @vite('resources/js/views/footers/index.js')
+@endpush

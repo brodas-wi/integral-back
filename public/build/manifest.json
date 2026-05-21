@@ -363,7 +363,7 @@
     ]
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-BbwJ567I.js",
+    "file": "assets/footer-editor-CMwIDtkl.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
@@ -457,6 +457,16 @@
     "isEntry": true,
     "imports": [
       "_notifications-Cgjr4krQ.js"
+    ]
+  },
+  "resources/js/views/footers/index.js": {
+    "file": "assets/index-D7mdNC5_.js",
+    "name": "index",
+    "src": "resources/js/views/footers/index.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js",
+      "_url-DaqOO3yL.js"
     ]
   },
   "resources/js/views/pages/index.js": {
