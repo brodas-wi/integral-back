@@ -820,21 +820,27 @@ ${qt}`,Ht=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
     <rect x="8" y="15.5" width="12" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.3"/>
     <rect x="8" y="20" width="16" height="4" rx="1.5" fill="#003B71" fill-opacity="0.5"/>
 </svg>`,ae=`
-<div class="flex flex-col gap-4 bg-white rounded-2xl p-6 text-center">
+<div class="svc-card flex flex-col gap-4 bg-white rounded-2xl p-6 text-center">
     <h3 class="text-lg font-bold text-[#003B71]">Lorem ipsum dolor</h3>
-    <p class="text-base text-[#003B71] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
-    <a href="#" class="srv-btn block w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center mt-auto transition-colors duration-200 hover:bg-[#002a52]">Lorem ipsum</a>
+    <p class="text-base leading-relaxed text-[#003B71] flex-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
+    <a href="#" class="svc-btn mt-auto">Lorem ipsum</a>
 </div>`,ue=`
 <style>
-.srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
-@media(max-width:768px){.srv-grid{grid-template-columns:1fr;}}
+.svc-section{width:100%;background:#003B71;padding:3rem 4rem;}
+.svc-header{text-align:center;margin-bottom:3rem;}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.svc-btn{display:block;width:100%;padding:0.625rem 1rem;border-radius:0.5rem;background:#003B71;color:#ffffff;font-size:1rem;font-weight:600;text-align:center;text-decoration:none;transition:background 0.2s;}
+.svc-btn:hover{background:#002a52;}
+@media(max-width:1280px){.svc-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.svc-section{padding:2.5rem 1.5rem;}.svc-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.svc-grid{grid-template-columns:1fr;}}
 </style>`,Ot=[{id:"service-cards-section",label:"Sección de servicios",category:"Productos y Servicios",media:Nt,content:`
-<section class="w-full bg-[#003B71] py-12 px-16">
-    <div class="text-center mb-12">
+<section class="svc-section">
+    <div class="svc-header">
         <h2 class="text-4xl font-bold text-white mb-3">Lorem ipsum dolor sit amet</h2>
         <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
-    <div class="srv-grid">
+    <div class="svc-grid">
         ${ae}
         ${ae}
         ${ae}
