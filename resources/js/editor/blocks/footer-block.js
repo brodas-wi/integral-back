@@ -228,55 +228,54 @@ function showFooterModal(editor, component) {
 
     const modal = document.createElement("div");
     modal.style.cssText = `
-        background:#1e293b;border-radius:0.75rem;
+        background:#ffffff;border-radius:0.75rem;
         width:100%;max-width:700px;max-height:90vh;
         overflow:hidden;display:flex;flex-direction:column;
-        box-shadow:0 25px 60px rgba(0,0,0,0.5);
-        font-family:'Inter',sans-serif;color:#e2e8f0;
+        box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);
+        font-family:'Inter',sans-serif;color:#1e293b;
+        border:1px solid #e2e8f0;
     `;
 
     modal.innerHTML = `
-        <div style="padding:1.25rem 1.5rem;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:0.75rem;">
-                <div style="width:2.25rem;height:2.25rem;border-radius:0.5rem;background:#0d3f6a;display:flex;align-items:center;justify-content:center;">
-                    <i class="ri-layout-bottom-line" style="font-size:1.125rem;color:#f0872a;"></i>
-                </div>
-                <h2 style="margin:0;font-size:1rem;font-weight:700;color:#f8fafc;">Configurar Footer</h2>
+        <div style="padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#ffffff;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+                <i class="ri-layout-bottom-line" style="font-size:1.125rem;color:#3b82f6;"></i>
+                <h2 style="margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;">Configurar Footer</h2>
             </div>
-            <button id="ft-modal-close" style="background:none;border:none;cursor:pointer;color:#94a3b8;font-size:1.25rem;padding:0.25rem;">
-                <i class="ri-close-line"></i>
+            <button id="ft-modal-close" style="display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;">
+                <i class="ri-close-line" style="font-size:1.125rem;"></i>
             </button>
         </div>
 
-        <div style="flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem;">
+        <div style="flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1.25rem;background:#f8fafc;">
             <!-- Logo -->
-            <div>
-                <label style="display:block;font-size:0.75rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.5rem;">Logo</label>
+            <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;">
+                <label style="display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;">Logo</label>
                 <div style="display:flex;gap:0.75rem;">
                     <input id="ft-logo-url" type="text" placeholder="URL del logo" value="${logoUrl}"
-                        style="flex:1;padding:0.5rem 0.75rem;background:#0f172a;border:1px solid #334155;border-radius:0.5rem;color:#e2e8f0;font-size:0.875rem;outline:none;">
+                        style="flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;">
                     <input id="ft-logo-alt" type="text" placeholder="Texto alternativo" value="${logoAlt}"
-                        style="flex:1;padding:0.5rem 0.75rem;background:#0f172a;border:1px solid #334155;border-radius:0.5rem;color:#e2e8f0;font-size:0.875rem;outline:none;">
+                        style="flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;">
                 </div>
             </div>
 
             <!-- Secciones -->
             <div>
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
-                    <label style="font-size:0.75rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Secciones</label>
-                    <button id="ft-add-section" style="padding:0.375rem 0.75rem;background:#003B71;border:none;border-radius:0.5rem;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;">
+                    <label style="font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;">Secciones</label>
+                    <button id="ft-add-section" style="padding:0.375rem 0.75rem;background:#003B71;border:none;border-radius:0.5rem;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;font-family:inherit;">
                         <i class="ri-add-line"></i> Agregar sección
                     </button>
                 </div>
-                <div id="ft-sections-container" style="display:flex;flex-direction:column;gap:1rem;"></div>
+                <div id="ft-sections-container" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
             </div>
         </div>
 
-        <div style="padding:1rem 1.5rem;border-top:1px solid #334155;display:flex;gap:0.75rem;justify-content:flex-end;">
-            <button id="ft-modal-cancel" style="padding:0.5rem 1.25rem;background:#334155;border:none;border-radius:0.5rem;color:#e2e8f0;font-size:0.875rem;font-weight:500;cursor:pointer;">
+        <div style="padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#ffffff;">
+            <button id="ft-modal-cancel" style="padding:0.5rem 1.25rem;background:#ffffff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;">
                 Cancelar
             </button>
-            <button id="ft-modal-save" style="padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;">
+            <button id="ft-modal-save" style="padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;">
                 Aplicar cambios
             </button>
         </div>
@@ -290,7 +289,7 @@ function showFooterModal(editor, component) {
     function renderSection(sec, index) {
         const div = document.createElement("div");
         div.style.cssText =
-            "background:#0f172a;border:1px solid #334155;border-radius:0.625rem;overflow:hidden;";
+            "background:#ffffff;border:1px solid #e2e8f0;border-radius:0.625rem;overflow:hidden;";
         div.dataset.sectionIndex = index;
 
         const linksHtml = (sec.links || [])
@@ -298,11 +297,11 @@ function showFooterModal(editor, component) {
                 (link, li) => `
             <div class="ft-link-row" data-link-index="${li}" style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">
                 <input class="ft-link-icon" type="text" placeholder="ri-phone-line (opcional)" value="${link.icon || ""}"
-                    style="width:160px;flex-shrink:0;padding:0.375rem 0.625rem;background:#1e293b;border:1px solid #334155;border-radius:0.375rem;color:#e2e8f0;font-size:0.8rem;outline:none;">
+                    style="width:150px;flex-shrink:0;padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;">
                 <input class="ft-link-label" type="text" placeholder="Texto del enlace" value="${link.label || ""}"
-                    style="flex:1;padding:0.375rem 0.625rem;background:#1e293b;border:1px solid #334155;border-radius:0.375rem;color:#e2e8f0;font-size:0.8rem;outline:none;">
+                    style="flex:1;padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;">
                 <input class="ft-link-href" type="text" placeholder="URL o tel:0000-0000" value="${link.href || ""}"
-                    style="flex:1;padding:0.375rem 0.625rem;background:#1e293b;border:1px solid #334155;border-radius:0.375rem;color:#e2e8f0;font-size:0.8rem;outline:none;">
+                    style="flex:1;padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;">
                 <button class="ft-remove-link" style="background:none;border:none;cursor:pointer;color:#ef4444;padding:0.25rem;flex-shrink:0;">
                     <i class="ri-delete-bin-line"></i>
                 </button>
@@ -312,9 +311,9 @@ function showFooterModal(editor, component) {
             .join("");
 
         div.innerHTML = `
-            <div style="padding:0.75rem 1rem;display:flex;align-items:center;gap:0.75rem;border-bottom:1px solid #1e293b;">
+            <div style="padding:0.75rem 1rem;display:flex;align-items:center;gap:0.75rem;border-bottom:1px solid #f1f5f9;background:#f8fafc;">
                 <input class="ft-section-title-input" type="text" placeholder="Título de la sección" value="${sec.title || ""}"
-                    style="flex:1;padding:0.375rem 0.625rem;background:#1e293b;border:1px solid #334155;border-radius:0.375rem;color:#e2e8f0;font-size:0.875rem;font-weight:600;outline:none;">
+                    style="flex:1;padding:0.375rem 0.625rem;background:#ffffff;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.875rem;font-weight:600;outline:none;font-family:inherit;">
                 <button class="ft-remove-section" style="background:none;border:none;cursor:pointer;color:#ef4444;padding:0.25rem;" title="Eliminar sección">
                     <i class="ri-delete-bin-line"></i>
                 </button>
@@ -533,16 +532,7 @@ export function initializeFooterBlock(editor) {
                         ],
                     }) + FOOTER_STYLES,
                 script: createFooterScript(),
-                toolbar: [
-                    {
-                        attributes: {
-                            class: "gjs-toolbar-item",
-                            title: "Configurar Footer",
-                        },
-                        label: '<i class="ri-settings-3-line"></i>',
-                        command: "open-footer-config",
-                    },
-                ],
+                toolbar: [],
                 traits: [
                     {
                         type: "button",
