@@ -1,3 +1,4 @@
+import { EditorService } from "./services/editor-service";
 import { initializeFooterGrapesJS } from "./editor/footer-grapes-config";
 import { initializeFooterBlock } from "./editor/blocks/footer-block";
 import {

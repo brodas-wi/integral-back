@@ -7,8 +7,8 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
-  "_editor-commands-jJ4k4Gbt.js": {
-    "file": "assets/editor-commands-jJ4k4Gbt.js",
+  "_editor-commands-DS9nLj-b.js": {
+    "file": "assets/editor-commands-DS9nLj-b.js",
     "name": "editor-commands",
     "imports": [
       "__commonjsHelpers-CqkleIqs.js"
@@ -363,12 +363,12 @@
     ]
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-VilQA5Bv.js",
+    "file": "assets/footer-editor-_aXFzYXH.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-jJ4k4Gbt.js",
+      "_editor-commands-DS9nLj-b.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
@@ -383,12 +383,12 @@
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-Bqr_YdNj.js",
+    "file": "assets/pages-editor-BW_rS5-r.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-jJ4k4Gbt.js",
+      "_editor-commands-DS9nLj-b.js",
       "_url-DaqOO3yL.js",
       "__commonjsHelpers-CqkleIqs.js"
     ],
