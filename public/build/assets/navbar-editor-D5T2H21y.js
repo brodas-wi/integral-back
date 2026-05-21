@@ -1,4 +1,4 @@
-import{i as _,t as B,d as I,f as q,e as A,s as T,g as z,c as M,E as P,j as H,h as U}from"./editor-commands-D6JSG1sv.js";import{o as O}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";const R="modulepreload",D=function(a){return"/adminintegral/public/build/"+a},S={},G=function(t,o,l){let b=Promise.resolve();if(o&&o.length>0){let c=function(n){return Promise.all(n.map(i=>Promise.resolve(i).then(u=>({status:"fulfilled",value:u}),u=>({status:"rejected",reason:u}))))};document.getElementsByTagName("link");const m=document.querySelector("meta[property=csp-nonce]"),e=m?.nonce||m?.getAttribute("nonce");b=c(o.map(n=>{if(n=D(n),n in S)return;S[n]=!0;const i=n.endsWith(".css"),u=i?'[rel="stylesheet"]':"";if(document.querySelector(`link[href="${n}"]${u}`))return;const f=document.createElement("link");if(f.rel=i?"stylesheet":R,i||(f.as="script"),f.crossOrigin="",f.href=n,e&&f.setAttribute("nonce",e),document.head.appendChild(f),i)return new Promise((g,s)=>{f.addEventListener("load",g),f.addEventListener("error",()=>s(new Error(`Unable to preload CSS for ${n}`)))})}))}function y(m){const e=new Event("vite:preloadError",{cancelable:!0});if(e.payload=m,window.dispatchEvent(e),!e.defaultPrevented)throw m}return b.then(m=>{for(const e of m||[])e.status==="rejected"&&y(e.reason);return t().catch(y)})};function J(){return _()}const V=`(function(){
+import{i as _,t as B,d as I,f as q,e as A,s as T,g as z,c as M,E as P,j as H,h as U}from"./editor-commands-5w86-EOS.js";import{o as R}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";const O="modulepreload",D=function(a){return"/adminintegral/public/build/"+a},S={},G=function(t,o,l){let b=Promise.resolve();if(o&&o.length>0){let c=function(n){return Promise.all(n.map(i=>Promise.resolve(i).then(u=>({status:"fulfilled",value:u}),u=>({status:"rejected",reason:u}))))};document.getElementsByTagName("link");const m=document.querySelector("meta[property=csp-nonce]"),e=m?.nonce||m?.getAttribute("nonce");b=c(o.map(n=>{if(n=D(n),n in S)return;S[n]=!0;const i=n.endsWith(".css"),u=i?'[rel="stylesheet"]':"";if(document.querySelector(`link[href="${n}"]${u}`))return;const f=document.createElement("link");if(f.rel=i?"stylesheet":O,i||(f.as="script"),f.crossOrigin="",f.href=n,e&&f.setAttribute("nonce",e),document.head.appendChild(f),i)return new Promise((g,s)=>{f.addEventListener("load",g),f.addEventListener("error",()=>s(new Error(`Unable to preload CSS for ${n}`)))})}))}function y(m){const e=new Event("vite:preloadError",{cancelable:!0});if(e.payload=m,window.dispatchEvent(e),!e.defaultPrevented)throw m}return b.then(m=>{for(const e of m||[])e.status==="rejected"&&y(e.reason);return t().catch(y)})};function J(){return _()}const V=`(function(){
 function initNavbar(root){
     if(!root||root.__nbInit)return;
     root.__nbInit=true;
@@ -115,14 +115,19 @@ if(document.readyState==="loading"){
     font-family: inherit;
 }
 .nb-link:hover {
-    background: rgba(0,59,113,0.06);
-    color: #002a52;
+    background: #E97300;
+    color: #ffffff;
+}
+.nb-item.nb-open > .nb-link {
+    background: #E97300;
+    color: #ffffff;
 }
 .nb-link i {
     font-size: 0.875rem;
     transition: transform 0.2s;
 }
-.nb-item.nb-open > .nb-link i.nb-chevron {
+.nb-item.nb-open > .nb-link i.nb-chevron,
+.nb-link:hover i.nb-chevron {
     transform: rotate(180deg);
 }
 .nb-submenu {
@@ -281,7 +286,7 @@ if(document.readyState==="loading"){
     border-top: 1px solid #f1f5f9;
 }
 .nb-mobile-actions .nb-btn { justify-content: center; border-radius: 0.625rem; }
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .nb-links, .nb-actions { display: none; }
     .nb-hamburger { display: flex; }
 }
@@ -476,7 +481,7 @@ if(document.readyState==="loading"){
             <button id="nb-modal-cancel" class="nb-btn-cancel">Cancelar</button>
             <button id="nb-modal-save" class="nb-btn-save">Aplicar cambios</button>
         </div>
-    `,n.appendChild(i),document.body.appendChild(n),i.querySelectorAll(".nb-tab-btn").forEach(s=>{s.addEventListener("click",()=>{i.querySelectorAll(".nb-tab-btn").forEach(r=>r.classList.remove("active")),i.querySelectorAll(".nb-tab-panel").forEach(r=>r.classList.remove("active")),s.classList.add("active"),i.querySelector(`#nb-panel-${s.dataset.tab}`).classList.add("active")})}),i.querySelector("#nb-logo-pick").addEventListener("click",()=>{O({type:"image",title:"Seleccionar logo",onSelect:s=>{i.querySelector("#nb-logo-url").value=s;let r=i.querySelector("#nb-logo-preview");if(!r||r.tagName==="DIV"){const v=document.createElement("img");v.id="nb-logo-preview",v.style.cssText="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;",r?.replaceWith(v)??i.querySelector("#nb-logo-url").before(v),r=v}r.src=s,r.style.display="block"}})});function u(){const s=i.querySelector("#nb-links-list");s.innerHTML="",e.forEach((r,v)=>{const p=document.createElement("div");if(p.className="nb-link-card",p.dataset.index=v,r.type==="submenu"){const d=(r.children||[]).map((h,k)=>`
+    `,n.appendChild(i),document.body.appendChild(n),i.querySelectorAll(".nb-tab-btn").forEach(s=>{s.addEventListener("click",()=>{i.querySelectorAll(".nb-tab-btn").forEach(r=>r.classList.remove("active")),i.querySelectorAll(".nb-tab-panel").forEach(r=>r.classList.remove("active")),s.classList.add("active"),i.querySelector(`#nb-panel-${s.dataset.tab}`).classList.add("active")})}),i.querySelector("#nb-logo-pick").addEventListener("click",()=>{R({type:"image",title:"Seleccionar logo",onSelect:s=>{i.querySelector("#nb-logo-url").value=s;let r=i.querySelector("#nb-logo-preview");if(!r||r.tagName==="DIV"){const v=document.createElement("img");v.id="nb-logo-preview",v.style.cssText="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;",r?.replaceWith(v)??i.querySelector("#nb-logo-url").before(v),r=v}r.src=s,r.style.display="block"}})});function u(){const s=i.querySelector("#nb-links-list");s.innerHTML="",e.forEach((r,v)=>{const p=document.createElement("div");if(p.className="nb-link-card",p.dataset.index=v,r.type==="submenu"){const d=(r.children||[]).map((h,k)=>`
                     <div class="nb-submenu-item" data-child="${k}">
                         <input class="nb-input-sm" style="width:120px;" placeholder="ri-icon (opcional)" value="${h.icon||""}" data-field="icon">
                         <input class="nb-input-sm" style="flex:1;" placeholder="Texto" value="${h.label||""}" data-field="label">
@@ -558,7 +563,6 @@ if(document.readyState==="loading"){
                 [data-gjs-type="navbar-component"] {
                     outline: 2px dashed rgba(240,135,42,0.4);
                     outline-offset: 2px;
-                    /* Override fixed en el editor para visibilidad */
                     position: relative !important;
                     top: auto !important;
                 }

@@ -119,14 +119,19 @@ const NAVBAR_STYLES = `
     font-family: inherit;
 }
 .nb-link:hover {
-    background: rgba(0,59,113,0.06);
-    color: #002a52;
+    background: #E97300;
+    color: #ffffff;
+}
+.nb-item.nb-open > .nb-link {
+    background: #E97300;
+    color: #ffffff;
 }
 .nb-link i {
     font-size: 0.875rem;
     transition: transform 0.2s;
 }
-.nb-item.nb-open > .nb-link i.nb-chevron {
+.nb-item.nb-open > .nb-link i.nb-chevron,
+.nb-link:hover i.nb-chevron {
     transform: rotate(180deg);
 }
 .nb-submenu {
@@ -285,7 +290,7 @@ const NAVBAR_STYLES = `
     border-top: 1px solid #f1f5f9;
 }
 .nb-mobile-actions .nb-btn { justify-content: center; border-radius: 0.625rem; }
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .nb-links, .nb-actions { display: none; }
     .nb-hamburger { display: flex; }
 }
@@ -1122,7 +1127,6 @@ function injectNavbarCanvasStyles(editor) {
                 [data-gjs-type="navbar-component"] {
                     outline: 2px dashed rgba(240,135,42,0.4);
                     outline-offset: 2px;
-                    /* Override fixed en el editor para visibilidad */
                     position: relative !important;
                     top: auto !important;
                 }

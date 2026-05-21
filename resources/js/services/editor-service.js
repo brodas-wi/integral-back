@@ -115,15 +115,6 @@ export class EditorService {
             .filter(Boolean)
             .join("\n");
 
-        console.log(
-            "[EditorService] Scripts extraídos:",
-            extractedScripts.length,
-        );
-        console.log(
-            "[EditorService] js_content combinado length:",
-            combinedJs.length,
-        );
-
         return {
             html_content: htmlWithoutScripts,
             css_content: editor.getCss(),

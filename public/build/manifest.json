@@ -7,8 +7,8 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
-  "_editor-commands-D6JSG1sv.js": {
-    "file": "assets/editor-commands-D6JSG1sv.js",
+  "_editor-commands-5w86-EOS.js": {
+    "file": "assets/editor-commands-5w86-EOS.js",
     "name": "editor-commands",
     "imports": [
       "__commonjsHelpers-CqkleIqs.js"
@@ -367,12 +367,12 @@
     ]
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-SigEMd9s.js",
+    "file": "assets/footer-editor-CGif9RFi.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-D6JSG1sv.js",
+      "_editor-commands-5w86-EOS.js",
       "_media-picker-CiKJ1Agb.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
@@ -388,23 +388,23 @@
     ]
   },
   "resources/js/navbar-editor.js": {
-    "file": "assets/navbar-editor-CsVJNKiH.js",
+    "file": "assets/navbar-editor-D5T2H21y.js",
     "name": "navbar-editor",
     "src": "resources/js/navbar-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-D6JSG1sv.js",
+      "_editor-commands-5w86-EOS.js",
       "_media-picker-CiKJ1Agb.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-CLbb8QYX.js",
+    "file": "assets/pages-editor-CuEB1Bq6.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-D6JSG1sv.js",
+      "_editor-commands-5w86-EOS.js",
       "_url-DaqOO3yL.js",
       "__commonjsHelpers-CqkleIqs.js"
     ],
