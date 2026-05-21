@@ -91,37 +91,33 @@ const CONTENT_COL = (variant) => {
 };
 
 const IMAGE_COL = () => `
-<div class="split-img-col w-full rounded-2xl overflow-hidden">
+<div class="w-full rounded-2xl overflow-hidden">
     <img src="${assetUrl("images/placeholder.svg")}"
          alt="Imagen de sección"
-         class="w-full h-full object-cover block"
-         style="min-height:320px;">
+         class="w-full object-cover block rounded-2xl"
+         style="min-height:320px;max-height:480px;">
 </div>`;
 
 const SPLIT_STYLES = `
 <style>
+.split-section{width:100%;padding:3rem 4rem;}
 .split-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
 .split-list-item{min-height:44px;}
-@media(max-width:768px){
-    .split-grid{grid-template-columns:1fr;gap:2rem;}
-    .split-img-first{order:-1;}
-}
+@media(max-width:1280px){.split-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.split-section{padding:2.5rem 1.5rem;}.split-grid{grid-template-columns:1fr;gap:2rem;}}
 </style>`;
 
 const buildSection = (imgRight, variant) => {
     const content = CONTENT_COL(variant);
     const image = IMAGE_COL();
     const bgClass = variant === "dark" ? "bg-[#003B71]" : "bg-white";
+    const cols = imgRight
+        ? `<div>${content}</div><div>${image}</div>`
+        : `<div class="split-img-mobile-first">${image}</div><div>${content}</div>`;
     return `
-<section class="w-full ${bgClass} py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="split-grid">
-            ${
-                imgRight
-                    ? `<div>${content}</div><div class="split-img-first">${image}</div>`
-                    : `<div class="split-img-first">${image}</div><div>${content}</div>`
-            }
-        </div>
+<section class="split-section ${bgClass}">
+    <div class="split-grid">
+        ${cols}
     </div>
 </section>
 ${SPLIT_STYLES}`;
@@ -161,7 +157,7 @@ export const splitContentBlocks = [
         label: "Item de lista con badge",
         category: "Contenido",
         media: iconListItem,
-        content: `${LIST_ITEM("light")}${SPLIT_STYLES}`,
+        content: LIST_ITEM("light"),
     },
     {
         id: "split-list-group",
@@ -173,7 +169,6 @@ export const splitContentBlocks = [
     ${LIST_ITEM("light")}
     ${LIST_ITEM("light")}
     ${LIST_ITEM("light")}
-</div>
-${SPLIT_STYLES}`,
+</div>`,
     },
 ];
