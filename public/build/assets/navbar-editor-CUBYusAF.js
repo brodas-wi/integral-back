@@ -1,4 +1,4 @@
-import{i as B,t as C,d as j,f as N,e as I,s as q,g as z,c as T,E as A,j as M,h as H}from"./editor-commands-C8zxOiIT.js";import{o as U}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function _(){return B()}const S=`
+import{i as B,t as C,d as j,f as N,e as I,s as q,g as z,c as T,E as A,j as M,h as H}from"./editor-commands-fD_nziht.js";import{o as U}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function _(){return B()}const S=`
 <style>
 .nb-wrapper {
     background-color: #ffffff;
