@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Footer;
+use App\Models\Navbar;
 use Cviebrock\EloquentSluggable\Sluggable;
 
 class Page extends Model
@@ -15,6 +16,7 @@ class Page extends Model
         'title',
         'slug',
         'footer_id',
+        'navbar_id',
         'html_content',
         'css_content',
         'js_content',
@@ -90,5 +92,10 @@ class Page extends Model
     public function footer()
     {
         return $this->belongsTo(Footer::class);
+    }
+
+    public function navbar()
+    {
+        return $this->belongsTo(Navbar::class);
     }
 }

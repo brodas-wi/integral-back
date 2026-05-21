@@ -110,6 +110,26 @@
             </div>
 
             <div class="card">
+                <h3 class="text-lg font-bold text-secondary mb-4">Navbar</h3>
+                <div class="space-y-3">
+                    <p class="text-sm text-gray-600">Selecciona el navbar que se mostrará en esta página.</p>
+                    <select id="navbar-select" class="input-field">
+                        <option value="">— Sin navbar —</option>
+                        @foreach (\App\Models\Navbar::orderBy('name')->get() as $navbar)
+                            <option value="{{ $navbar->id }}" {{ $page->navbar_id == $navbar->id ? 'selected' : '' }}>
+                                {{ $navbar->name }}
+                                {{ $navbar->is_active ? '✓' : '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button id="save-navbar-relation" class="btn-primary btn-sm w-full">
+                        <i class="ri-save-line mr-2"></i>
+                        Guardar navbar
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
                 <h3 class="text-lg font-bold text-secondary mb-4">Footer</h3>
                 <div class="space-y-3">
                     <p class="text-sm text-gray-600">Selecciona el footer que se mostrará en esta página.</p>

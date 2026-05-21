@@ -479,6 +479,26 @@
       "_url-DaqOO3yL.js"
     ]
   },
+  "resources/js/views/navbars/index.js": {
+    "file": "assets/index-CZzIwECw.js",
+    "name": "index",
+    "src": "resources/js/views/navbars/index.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js",
+      "_url-DaqOO3yL.js"
+    ]
+  },
+  "resources/js/views/navbars/trashed.js": {
+    "file": "assets/trashed-DSHx1OK4.js",
+    "name": "trashed",
+    "src": "resources/js/views/navbars/trashed.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js",
+      "_url-DaqOO3yL.js"
+    ]
+  },
   "resources/js/views/pages/index.js": {
     "file": "assets/index-BmaSbkJa.js",
     "name": "index",
@@ -491,7 +511,7 @@
     ]
   },
   "resources/js/views/pages/show.js": {
-    "file": "assets/show-BuAJOdr1.js",
+    "file": "assets/show-pGf6kl2G.js",
     "name": "show",
     "src": "resources/js/views/pages/show.js",
     "isEntry": true,

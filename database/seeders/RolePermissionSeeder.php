@@ -68,6 +68,13 @@ class RolePermissionSeeder extends Seeder
             'banners.edit',
             'banners.delete',
             'banners.manage',
+            'navbars.view',
+            'navbars.create',
+            'navbars.edit',
+            'navbars.delete',
+            'navbars.manage',
+            'navbars.toggle',
+            'navbars.restore',
             'footers.view',
             'footers.create',
             'footers.edit',
@@ -78,12 +85,11 @@ class RolePermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
         // Admin role - Only use .manage permissions for complete control
-        $adminRole = Role::create([
-            'name' => 'admin',
+        $adminRole = Role::firstOrCreate(['name' => 'admin'], [
             'display_name' => 'Administrador',
             'description' => 'Acceso completo al sistema con todos los permisos. Puede gestionar usuarios, roles, contenido y configuraciones.',
         ]);
@@ -96,12 +102,12 @@ class RolePermissionSeeder extends Seeder
             'media.manage',
             'agencies.manage',
             'payment_points.manage',
+            'navbars.manage',
             'footers.manage',
         ]);
 
         // Editor role - Individual permissions for content management
-        $editorRole = Role::create([
-            'name' => 'editor',
+        $editorRole = Role::firstOrCreate(['name' => 'editor'], [
             'display_name' => 'Editor',
             'description' => 'Puede crear y editar contenido, páginas y gestionar archivos multimedia. Sin acceso a usuarios y configuraciones del sistema.',
         ]);
@@ -114,13 +120,14 @@ class RolePermissionSeeder extends Seeder
             'pages.edit',
             'media.view',
             'media.upload',
+            'navbars.view',
+            'navbars.edit',
             'footers.view',
             'footers.edit',
         ]);
 
         // Viewer role - Only view permissions
-        $viewerRole = Role::create([
-            'name' => 'viewer',
+        $viewerRole = Role::firstOrCreate(['name' => 'viewer'], [
             'display_name' => 'Espectador',
             'description' => 'Solo puede visualizar contenido, páginas y archivos multimedia. Sin permisos para crear, editar o eliminar.',
         ]);

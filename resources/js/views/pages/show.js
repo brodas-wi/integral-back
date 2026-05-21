@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initTogglePublish();
     initDeletePage();
     initFooterRelation();
+    initNavbarRelation();
 });
 
 function initTogglePublish() {

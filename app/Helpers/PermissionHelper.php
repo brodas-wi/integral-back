@@ -49,6 +49,14 @@ class PermissionHelper
       'agencies.delete' => 'Eliminar agencias',
       'agencies.import' => 'Importar agencias',
       'agencies.manage' => 'Gestionar agencias',
+
+      'navbars.view' => 'Ver navbars',
+      'navbars.create' => 'Crear navbars',
+      'navbars.edit' => 'Editar navbars',
+      'navbars.delete' => 'Eliminar navbars',
+      'navbars.manage' => 'Gestionar navbars',
+      'navbars.toggle' => 'Activar/Desactivar navbars',
+      'navbars.restore' => 'Restaurar navbars',
     ];
 
     return $translations[$permission] ?? $permission;

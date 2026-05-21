@@ -98,6 +98,14 @@
                         </a>
                     @endcanany
 
+                    @canany(['navbars.view', 'navbars.manage'])
+                        <a href="{{ route('navbars.index') }}"
+                            class="sidebar-link {{ request()->routeIs('navbars.*') ? 'active' : '' }}">
+                            <i class="ri-layout-top-line text-xl"></i>
+                            <span>Navbars</span>
+                        </a>
+                    @endcanany
+
                     @canany(['footers.view', 'footers.manage'])
                         <a href="{{ route('footers.index') }}"
                             class="sidebar-link {{ request()->routeIs('footers.*') ? 'active' : '' }}">

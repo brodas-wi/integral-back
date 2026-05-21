@@ -47,6 +47,9 @@ class SecurityHeaders
     private array $editorRoutes = [
         'pages/create',
         'pages/*/edit',
+        'navbars/create',
+        'navbars/*/edit',
+        'navbars/*/preview',
         'footers/create',
         'footers/*/edit',
         'footers/*/preview',

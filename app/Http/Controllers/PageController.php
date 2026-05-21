@@ -255,6 +255,21 @@ class PageController extends Controller
         ]);
     }
 
+    public function updateNavbar(Request $request, Page $page)
+    {
+        $this->authorize('pages.edit');
+
+        $page->update([
+            'navbar_id'  => $request->navbar_id ?: null,
+            'updated_by' => Auth::id(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Navbar actualizado correctamente.',
+        ]);
+    }
+
     public function load(Page $page)
     {
         $this->authorize('pages.edit');

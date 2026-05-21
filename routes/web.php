@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\AgencyController;
@@ -154,6 +155,11 @@ Route::middleware(['auth'])->group(function () {
             ->name('update-footer')
             ->middleware('can:pages.edit,pages.manage');
 
+        // Update navbar relation
+        Route::patch('/{page}/navbar', [PageController::class, 'updateNavbar'])
+            ->name('update-navbar')
+            ->middleware('can:pages.edit,pages.manage');
+
         // Load page data for editor
         Route::get('/{page}/load', [PageController::class, 'load'])
             ->name('load')
@@ -169,6 +175,62 @@ Route::middleware(['auth'])->group(function () {
             ->name('destroy')
             ->middleware('can:pages.delete,pages.manage');
     });
+
+    // ==========================================
+    // NAVBAR MANAGEMENT ROUTES
+    // ==========================================
+    Route::prefix('navbars')->name('navbars.')->group(function () {
+        Route::get('/', [NavbarController::class, 'index'])
+            ->name('index')
+            ->middleware('can:navbars.view,navbars.manage');
+
+        Route::get('/trashed', [NavbarController::class, 'trashed'])
+            ->name('trashed')
+            ->middleware('can:navbars.restore,navbars.manage');
+
+        Route::get('/create', [NavbarController::class, 'create'])
+            ->name('create')
+            ->middleware('can:navbars.create,navbars.manage');
+
+        Route::post('/', [NavbarController::class, 'store'])
+            ->name('store')
+            ->middleware('can:navbars.create,navbars.manage');
+
+        Route::get('/{navbar}/preview', [NavbarController::class, 'preview'])
+            ->name('preview')
+            ->middleware('can:navbars.view,navbars.manage');
+
+        Route::get('/{navbar}/edit', [NavbarController::class, 'edit'])
+            ->name('edit')
+            ->middleware('can:navbars.edit,navbars.manage');
+
+        Route::put('/{navbar}', [NavbarController::class, 'update'])
+            ->name('update')
+            ->middleware('can:navbars.edit,navbars.manage');
+
+        Route::get('/{navbar}/load', [NavbarController::class, 'load'])
+            ->name('load')
+            ->middleware('can:navbars.edit,navbars.manage');
+
+        Route::patch('/{navbar}/toggle-active', [NavbarController::class, 'toggleActive'])
+            ->name('toggle-active')
+            ->middleware('can:navbars.toggle,navbars.manage');
+
+        Route::delete('/{navbar}', [NavbarController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware('can:navbars.delete,navbars.manage');
+
+        Route::patch('/{id}/restore', [NavbarController::class, 'restore'])
+            ->name('restore')
+            ->middleware('can:navbars.restore,navbars.manage');
+
+        Route::delete('/{id}/force-delete', [NavbarController::class, 'forceDelete'])
+            ->name('force-delete')
+            ->middleware('can:navbars.delete,navbars.manage');
+    });
+
+    Route::get('/api/navbars/active', [NavbarController::class, 'apiActive'])
+        ->name('api.navbars.active');
 
     // ==========================================
     // FOOTER MANAGEMENT ROUTES
