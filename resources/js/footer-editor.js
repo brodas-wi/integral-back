@@ -12,16 +12,17 @@ import {
     setupImageDoubleClick,
     addImageToolbarButton,
 } from "./editor/editor-commands";
+import { showConfirmModal, showInputModal } from "./editor/utils/modals";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const editorService = new EditorService();
 
-    const footerId = document.getElementById("footer-id")?.value || "";
-    const footerName = document.getElementById("footer-name")?.value || "";
-    const loadUrl = document.getElementById("footer-load-url")?.value || "";
-    const storeUrl = document.getElementById("footer-store-url")?.value || "";
+    let footerId = document.getElementById("footer-id")?.value || "";
+    let footerName = document.getElementById("footer-name")?.value || "";
+    let loadUrl = document.getElementById("footer-load-url")?.value || "";
+    let storeUrl = document.getElementById("footer-store-url")?.value || "";
     const isActive = document.getElementById("footer-is-active")?.value === "1";
-    const isEditMode = Boolean(footerId);
+    let isEditMode = Boolean(footerId);
 
     const editor = initializeFooterGrapesJS();
 
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         setupEditorCommands(editor);
         setupImageDoubleClick(editor);
         addImageToolbarButton(editor);
+        registerCanvasClearCommand(editor);
 
         setTimeout(() => {
             editor.runCommand("sw-visibility");
@@ -65,93 +67,128 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             try {
                 if (!isEditMode && !footerName) {
-                    const name = await promptFooterName();
-                    if (!name) {
-                        btn.disabled = false;
-                        btn.innerHTML =
-                            '<i class="ri-save-line"></i><span>Guardar</span>';
-                        return;
-                    }
-                    await saveFooter(
-                        editor,
-                        editorService,
-                        storeUrl,
-                        "POST",
-                        name,
-                        isActive,
-                    );
+                    showInputModal({
+                        title: "Nombre del Footer",
+                        description: "Ingresa un nombre descriptivo para identificar este footer.",
+                        placeholder: "Ej: Footer Principal",
+                        icon: "ri-file-text-line",
+                        iconBg: "#dbeafe",
+                        iconColor: "#2563eb",
+                        confirmLabel: "Guardar",
+                        onConfirm: async (name) => {
+                            if (!name?.trim()) {
+                                showNotification("El nombre es obligatorio", "error");
+                                btn.disabled = false;
+                                btn.innerHTML = '<i class="ri-save-line"></i><span>Guardar</span>';
+                                return;
+                            }
+                            try {
+                                await performSave(name);
+                            } catch (e) {
+                                showNotification(e.message, "error");
+                            } finally {
+                                btn.disabled = false;
+                                btn.innerHTML = '<i class="ri-save-line"></i><span>Guardar</span>';
+                            }
+                        },
+                        onCancel: () => {
+                            btn.disabled = false;
+                            btn.innerHTML = '<i class="ri-save-line"></i><span>Guardar</span>';
+                        }
+                    });
                 } else {
-                    await saveFooter(
-                        editor,
-                        editorService,
-                        storeUrl,
-                        isEditMode ? "PUT" : "POST",
-                        footerName,
-                        isActive,
-                    );
+                    await performSave(footerName);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="ri-save-line"></i><span>Guardar</span>';
                 }
             } catch (e) {
                 showNotification(e.message, "error");
-            } finally {
                 btn.disabled = false;
-                btn.innerHTML =
-                    '<i class="ri-save-line"></i><span>Guardar</span>';
+                btn.innerHTML = '<i class="ri-save-line"></i><span>Guardar</span>';
             }
         });
+
+    async function performSave(name) {
+        const method = isEditMode ? "PUT" : "POST";
+        const content = editorService.getEditorContent(editor);
+        const data = await editorService.savePage(
+            editor,
+            { ...content, name, is_active: isActive },
+            storeUrl,
+            method,
+        );
+
+        if (data.success) {
+            editorService.markAsClean();
+            showNotification(data.message, "success");
+
+            if (!isEditMode && data.footer) {
+                footerId = data.footer.id;
+                footerName = data.footer.name;
+                isEditMode = true;
+
+                const idEl = document.getElementById("footer-id");
+                if (idEl) idEl.value = footerId;
+
+                const nameEl = document.getElementById("footer-name");
+                if (nameEl) nameEl.value = footerName;
+
+                // Transición del URL
+                const appUrlMeta = document.querySelector('meta[name="app-url"]');
+                const baseUrl = appUrlMeta ? appUrlMeta.content : "";
+                
+                // Si storeUrl no termina con el id, actualizar
+                const newStoreUrl = storeUrl.endsWith("/footers") ? `${storeUrl}/${footerId}` : `${storeUrl.replace(/\/footers\/?$/, "")}/footers/${footerId}`;
+                storeUrl = newStoreUrl;
+                
+                const storeUrlEl = document.getElementById("footer-store-url");
+                if (storeUrlEl) storeUrlEl.value = storeUrl;
+
+                loadUrl = `${storeUrl}/load`;
+                const loadUrlEl = document.getElementById("footer-load-url");
+                if (loadUrlEl) loadUrlEl.value = loadUrl;
+
+                // Actualizar el título de la página
+                const titleEl = document.getElementById("editor-title");
+                if (titleEl) {
+                    titleEl.textContent = `Editando Footer: ${footerName}`;
+                }
+
+                // Cambiar la URL de la ventana sin recargar
+                const editPath = `/footers/${footerId}/edit`;
+                const newUrl = baseUrl ? `${baseUrl}${editPath}` : editPath;
+                window.history.replaceState({ path: newUrl }, "", newUrl);
+            } else if (name) {
+                footerName = name;
+                const nameEl = document.getElementById("footer-name");
+                if (nameEl) nameEl.value = footerName;
+
+                const titleEl = document.getElementById("editor-title");
+                if (titleEl) {
+                    titleEl.textContent = `Editando Footer: ${footerName}`;
+                }
+            }
+        }
+    }
 });
 
-async function saveFooter(
-    editor,
-    editorService,
-    storeUrl,
-    method,
-    name,
-    isActive,
-) {
-    const content = editorService.getEditorContent(editor);
-    const data = await editorService.savePage(
-        editor,
-        { ...content, name, is_active: isActive },
-        storeUrl,
-        method,
-    );
-    if (data.success) {
-        showNotification(data.message, "success");
-    }
-}
-
-function promptFooterName() {
-    return new Promise((resolve) => {
-        const overlay = document.createElement("div");
-        overlay.style.cssText =
-            "position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);";
-        const box = document.createElement("div");
-        box.style.cssText =
-            "background:#fff;border-radius:0.75rem;padding:1.5rem;max-width:24rem;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);";
-        box.innerHTML = `
-            <h3 style="margin:0 0 1rem;font-size:1.1rem;font-weight:700;color:#111827;">Nombre del Footer</h3>
-            <input id="footer-name-input" type="text" placeholder="Ej: Footer Principal"
-                style="width:100%;padding:0.5rem 1rem;border:2px solid #d1d5db;border-radius:0.5rem;font-size:0.875rem;box-sizing:border-box;outline:none;">
-            <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1rem;">
-                <button id="fn-cancel" style="padding:0.5rem 1rem;border-radius:0.5rem;border:2px solid #d1d5db;background:#fff;cursor:pointer;font-weight:500;">Cancelar</button>
-                <button id="fn-confirm" style="padding:0.5rem 1rem;border-radius:0.5rem;border:none;background:#f0872a;color:#fff;cursor:pointer;font-weight:500;">Guardar</button>
-            </div>
-        `;
-        overlay.appendChild(box);
-        document.body.appendChild(overlay);
-        setTimeout(() => box.querySelector("#footer-name-input").focus(), 100);
-        box.querySelector("#fn-cancel").onclick = () => {
-            overlay.remove();
-            resolve(null);
-        };
-        box.querySelector("#fn-confirm").onclick = () => {
-            const v = box.querySelector("#footer-name-input").value.trim();
-            overlay.remove();
-            resolve(v || null);
-        };
-        box.querySelector("#footer-name-input").onkeypress = (e) => {
-            if (e.key === "Enter") box.querySelector("#fn-confirm").click();
-        };
+function registerCanvasClearCommand(editor) {
+    editor.Commands.add("canvas-clear", {
+        run: (ed) => {
+            showConfirmModal({
+                title: "Limpiar canvas",
+                description: "¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",
+                icon: "ri-delete-bin-line",
+                iconBg: "#fef2f2",
+                iconColor: "#dc2626",
+                confirmLabel: "Limpiar todo",
+                confirmColor: "#dc2626",
+                onConfirm: () => {
+                    ed.DomComponents.clear();
+                    ed.CssComposer.clear();
+                },
+            });
+        },
     });
 }
 
