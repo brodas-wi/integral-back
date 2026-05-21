@@ -5,6 +5,7 @@ const FOOTER_STYLES = `
 .ft-wrapper {
     background-color: #003B71;
     width: 100%;
+    font-family: 'Poppins', sans-serif;
 }
 .ft-inner {
     max-width: 1152px;
@@ -30,11 +31,10 @@ const FOOTER_STYLES = `
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
-    justify-content: flex-end;
+    align-items: flex-start;
 }
 .ft-section {
     min-width: 120px;
-    max-width: 200px;
     flex: 1 1 120px;
 }
 .ft-section-title {
@@ -42,15 +42,6 @@ const FOOTER_STYLES = `
     font-weight: 700;
     font-size: 0.9375rem;
     margin: 0 0 0.875rem;
-    padding: 0;
-}
-.ft-section-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
     padding: 0;
 }
 .ft-links {
@@ -61,8 +52,7 @@ const FOOTER_STYLES = `
     flex-direction: column;
     gap: 0.5rem;
 }
-.ft-links li a,
-.ft-links li span {
+.ft-links li a {
     color: rgba(255,255,255,0.85);
     text-decoration: none;
     font-size: 0.875rem;
@@ -75,62 +65,31 @@ const FOOTER_STYLES = `
     color: #ffffff;
     text-decoration: none;
 }
+.ft-links li span.ft-text {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 .ft-links li a i,
-.ft-links li span i {
+.ft-links li span.ft-text i {
     font-size: 1rem;
     flex-shrink: 0;
     color: #E97300;
 }
 .ft-stripe {
     width: 100%;
-    height: 20px;
+    height: 40px;
     background: #E97300;
 }
 @media (max-width: 768px) {
     .ft-inner {
-        flex-direction: column;
         gap: 1.5rem;
     }
     .ft-logo-col {
+        flex: 0 0 100%;
         max-width: 160px;
-    }
-    .ft-sections {
-        flex-direction: column;
-        gap: 0;
-        width: 100%;
-        justify-content: flex-start;
-    }
-    .ft-section {
-        max-width: 100%;
-        width: 100%;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        padding-top: 0.75rem;
-    }
-    .ft-section-title {
-        display: none;
-    }
-    .ft-section-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: #ffffff;
-        font-weight: 700;
-        font-size: 0.9375rem;
-        margin-bottom: 0;
-    }
-    .ft-section-toggle i {
-        color: rgba(255,255,255,0.6);
-        transition: transform 0.2s;
-    }
-    .ft-section.ft-open .ft-section-toggle i {
-        transform: rotate(180deg);
-    }
-    .ft-links {
-        display: none;
-        padding: 0.75rem 0;
-    }
-    .ft-section.ft-open .ft-links {
-        display: flex;
     }
 }
 </style>`;
@@ -148,6 +107,9 @@ function buildFooterHTML(data) {
                         ? `<i class="${link.icon}"></i>`
                         : "";
                     const href = link.href || "#";
+                    if (link.isText) {
+                        return `<li><span class="ft-text">${icon}${link.label}</span></li>`;
+                    }
                     return `<li><a href="${href}">${icon}${link.label}</a></li>`;
                 })
                 .join("");
@@ -182,21 +144,7 @@ function buildFooterHTML(data) {
 }
 
 function createFooterScript() {
-    return function () {
-        const footer = this;
-
-        // Toggle mobile sections
-        footer.querySelectorAll(".ft-section-toggle").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                const section = btn.closest(".ft-section");
-                section.classList.toggle("ft-open");
-                btn.setAttribute(
-                    "aria-expanded",
-                    section.classList.contains("ft-open"),
-                );
-            });
-        });
-    };
+    return function () {};
 }
 
 function showFooterModal(editor, component) {
@@ -552,13 +500,19 @@ function showFooterModal(editor, component) {
         const linksHtml = (sec.links || [])
             .map(
                 (link, li) => `
-            <div class="ft-link-row" data-link-index="${li}">
+            <div class="ft-link-row" data-link-index="${li}" style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;flex-wrap:wrap;">
                 <input class="ft-modal-input-sm ft-link-icon-input ft-link-icon" type="text"
                     placeholder="ri-phone-line (opcional)" value="${link.icon || ""}">
                 <input class="ft-modal-input-sm ft-link-label" type="text"
-                    placeholder="Texto del enlace" value="${link.label || ""}">
+                    placeholder="Texto" value="${link.label || ""}">
                 <input class="ft-modal-input-sm ft-link-href" type="text"
-                    placeholder="URL o tel:0000-0000" value="${link.href || ""}">
+                    placeholder="URL o tel:0000-0000" value="${link.href || ""}"
+                    style="${link.isText ? "opacity:0.4;pointer-events:none;" : ""}">
+                <label style="display:flex;align-items:center;gap:0.25rem;font-size:0.75rem;color:#64748b;white-space:nowrap;cursor:pointer;">
+                    <input type="checkbox" class="ft-link-istext" ${link.isText ? "checked" : ""}
+                        style="accent-color:#003B71;cursor:pointer;">
+                    Solo texto
+                </label>
                 <button class="ft-btn-remove ft-remove-link">
                     <i class="ri-delete-bin-line"></i>
                 </button>
@@ -602,6 +556,22 @@ function showFooterModal(editor, component) {
                 sec.links.splice(li, 1);
                 renderAllSections();
             };
+        });
+
+        div.querySelectorAll(".ft-link-istext").forEach((chk) => {
+            chk.addEventListener("change", () => {
+                const hrefInput = chk
+                    .closest(".ft-link-row")
+                    .querySelector(".ft-link-href");
+                if (chk.checked) {
+                    hrefInput.style.opacity = "0.4";
+                    hrefInput.style.pointerEvents = "none";
+                    hrefInput.value = "";
+                } else {
+                    hrefInput.style.opacity = "1";
+                    hrefInput.style.pointerEvents = "auto";
+                }
+            });
         });
 
         return div;
@@ -656,10 +626,15 @@ function showFooterModal(editor, component) {
                     .value.trim();
                 const links = [];
                 secEl.querySelectorAll(".ft-link-row").forEach((row) => {
+                    const isText =
+                        row.querySelector(".ft-link-istext")?.checked ?? false;
                     links.push({
                         icon: row.querySelector(".ft-link-icon").value.trim(),
                         label: row.querySelector(".ft-link-label").value.trim(),
-                        href: row.querySelector(".ft-link-href").value.trim(),
+                        href: isText
+                            ? ""
+                            : row.querySelector(".ft-link-href").value.trim(),
+                        isText,
                     });
                 });
                 updatedSections.push({ title, links });

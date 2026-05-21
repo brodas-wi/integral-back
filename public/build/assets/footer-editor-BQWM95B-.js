@@ -1,4 +1,4 @@
-import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./editor-commands-DS9nLj-b.js";import"./_commonjsHelpers-CqkleIqs.js";function A(){return L()}const w="gjs-media-picker-modal";function F(){if(document.getElementById("gjs-media-picker-styles"))return;const e=document.createElement("style");e.id="gjs-media-picker-styles",e.textContent=`
+import{i as L,t as T,d as z,f as I,e as q,s as $,g as M,c as N,E as A}from"./editor-commands-DS9nLj-b.js";import"./_commonjsHelpers-CqkleIqs.js";function F(){return L()}const w="gjs-media-picker-modal";function H(){if(document.getElementById("gjs-media-picker-styles"))return;const e=document.createElement("style");e.id="gjs-media-picker-styles",e.textContent=`
         .mp-overlay {
             display: none;
             position: fixed;
@@ -187,7 +187,7 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
             opacity: 0.4;
             cursor: not-allowed;
         }
-    `,document.head.appendChild(e)}function H(){if(document.getElementById(w))return;F();const e=document.createElement("div");e.id=w,e.className="mp-overlay",e.innerHTML=`
+    `,document.head.appendChild(e)}function _(){if(document.getElementById(w))return;H();const e=document.createElement("div");e.id=w,e.className="mp-overlay",e.innerHTML=`
         <div class="mp-modal">
             <div class="mp-header">
                 <div class="mp-header-left">
@@ -215,26 +215,27 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
                 </div>
             </div>
         </div>
-    `,document.body.appendChild(e);let t=null,o=null,i=null;const a=()=>document.getElementById("mp-grid"),m=()=>document.getElementById("mp-confirm"),c=()=>document.getElementById("mp-footer-info"),n=()=>document.getElementById("mp-search-input");async function r(u="",b="image"){a().innerHTML=`
+    `,document.body.appendChild(e);let t=null,o=null,i=null;const a=()=>document.getElementById("mp-grid"),p=()=>document.getElementById("mp-confirm"),d=()=>document.getElementById("mp-footer-info"),r=()=>document.getElementById("mp-search-input");async function n(g="",h="image"){a().innerHTML=`
             <div class="mp-loading">
                 <div class="mp-spinner"></div>
                 <span>Cargando...</span>
-            </div>`;try{const x=document.querySelector('meta[name="media-api-url"]')?.content??"/media/api",h=new URLSearchParams({per_page:60});b&&h.append("type",b),u&&h.append("search",u);const s=(await(await fetch(`${x}?${h}`,{headers:{"X-Requested-With":"XMLHttpRequest",Accept:"application/json"}})).json()).items||[];if(!s.length){a().innerHTML=`
+            </div>`;try{const x=document.querySelector('meta[name="media-api-url"]')?.content??"/media/api",y=new URLSearchParams({per_page:60});h&&y.append("type",h),g&&y.append("search",g);const s=(await(await fetch(`${x}?${y}`,{headers:{"X-Requested-With":"XMLHttpRequest",Accept:"application/json"}})).json()).items||[];if(!s.length){a().innerHTML=`
                     <div class="mp-loading">
                         <i class="ri-image-line" style="font-size:2rem;color:#cbd5e1;"></i>
                         <span>No se encontraron archivos</span>
-                    </div>`;return}a().innerHTML="",s.forEach(g=>{const f=document.createElement("div");f.className="mp-card",f.innerHTML=`
-                    <img src="${g.url}" alt="${g.filename}" loading="lazy">
-                    <p title="${g.filename}">${g.filename}</p>
-                `,f.addEventListener("click",()=>{a().querySelectorAll(".mp-card").forEach(y=>y.classList.remove("selected")),f.classList.add("selected"),t=g.url,c().textContent=`Seleccionado: ${g.filename}`,m().disabled=!1}),a().appendChild(f)})}catch{a().innerHTML=`
+                    </div>`;return}a().innerHTML="",s.forEach(b=>{const c=document.createElement("div");c.className="mp-card",c.innerHTML=`
+                    <img src="${b.url}" alt="${b.filename}" loading="lazy">
+                    <p title="${b.filename}">${b.filename}</p>
+                `,c.addEventListener("click",()=>{a().querySelectorAll(".mp-card").forEach(m=>m.classList.remove("selected")),c.classList.add("selected"),t=b.url,d().textContent=`Seleccionado: ${b.filename}`,p().disabled=!1}),a().appendChild(c)})}catch{a().innerHTML=`
                 <div class="mp-loading">
                     <i class="ri-error-warning-line" style="font-size:2rem;color:#f87171;"></i>
                     <span style="color:#dc2626;">Error al cargar archivos</span>
-                </div>`}}function p(){e.classList.remove("open"),t=null,o=null,document.body.style.overflow=""}document.getElementById("mp-close").addEventListener("click",p),document.getElementById("mp-cancel").addEventListener("click",p),document.getElementById("mp-confirm").addEventListener("click",()=>{t&&o&&o(t),p()}),e.addEventListener("click",u=>{u.target===e&&p()}),document.getElementById("mp-search-input").addEventListener("input",u=>{clearTimeout(i),i=setTimeout(()=>{e._currentType&&r(u.target.value,e._currentType)},300)}),e._open=({type:u="image",title:b,onSelect:x})=>{o=x,t=null,e._currentType=u,document.getElementById("mp-title").textContent=b||(u==="image"?"Seleccionar imagen":"Seleccionar archivo"),n().value="",c().textContent="Ningún archivo seleccionado",m().disabled=!0,e.classList.add("open"),document.body.style.overflow="hidden",r("",u)}}function _({type:e="image",title:t,onSelect:o}={}){H(),document.getElementById(w)._open({type:e,title:t,onSelect:o})}const j=`
+                </div>`}}function u(){e.classList.remove("open"),t=null,o=null,document.body.style.overflow=""}document.getElementById("mp-close").addEventListener("click",u),document.getElementById("mp-cancel").addEventListener("click",u),document.getElementById("mp-confirm").addEventListener("click",()=>{t&&o&&o(t),u()}),e.addEventListener("click",g=>{g.target===e&&u()}),document.getElementById("mp-search-input").addEventListener("input",g=>{clearTimeout(i),i=setTimeout(()=>{e._currentType&&n(g.target.value,e._currentType)},300)}),e._open=({type:g="image",title:h,onSelect:x})=>{o=x,t=null,e._currentType=g,document.getElementById("mp-title").textContent=h||(g==="image"?"Seleccionar imagen":"Seleccionar archivo"),r().value="",d().textContent="Ningún archivo seleccionado",p().disabled=!0,e.classList.add("open"),document.body.style.overflow="hidden",n("",g)}}function D({type:e="image",title:t,onSelect:o}={}){_(),document.getElementById(w)._open({type:e,title:t,onSelect:o})}const j=`
 <style>
 .ft-wrapper {
     background-color: #003B71;
     width: 100%;
+    font-family: 'Poppins', sans-serif;
 }
 .ft-inner {
     max-width: 1152px;
@@ -260,11 +261,10 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
-    justify-content: flex-end;
+    align-items: flex-start;
 }
 .ft-section {
     min-width: 120px;
-    max-width: 200px;
     flex: 1 1 120px;
 }
 .ft-section-title {
@@ -272,15 +272,6 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
     font-weight: 700;
     font-size: 0.9375rem;
     margin: 0 0 0.875rem;
-    padding: 0;
-}
-.ft-section-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
     padding: 0;
 }
 .ft-links {
@@ -291,8 +282,7 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
     flex-direction: column;
     gap: 0.5rem;
 }
-.ft-links li a,
-.ft-links li span {
+.ft-links li a {
     color: rgba(255,255,255,0.85);
     text-decoration: none;
     font-size: 0.875rem;
@@ -305,72 +295,41 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
     color: #ffffff;
     text-decoration: none;
 }
+.ft-links li span.ft-text {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 .ft-links li a i,
-.ft-links li span i {
+.ft-links li span.ft-text i {
     font-size: 1rem;
     flex-shrink: 0;
     color: #E97300;
 }
 .ft-stripe {
     width: 100%;
-    height: 20px;
+    height: 40px;
     background: #E97300;
 }
 @media (max-width: 768px) {
     .ft-inner {
-        flex-direction: column;
         gap: 1.5rem;
     }
     .ft-logo-col {
+        flex: 0 0 100%;
         max-width: 160px;
     }
-    .ft-sections {
-        flex-direction: column;
-        gap: 0;
-        width: 100%;
-        justify-content: flex-start;
-    }
-    .ft-section {
-        max-width: 100%;
-        width: 100%;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        padding-top: 0.75rem;
-    }
-    .ft-section-title {
-        display: none;
-    }
-    .ft-section-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: #ffffff;
-        font-weight: 700;
-        font-size: 0.9375rem;
-        margin-bottom: 0;
-    }
-    .ft-section-toggle i {
-        color: rgba(255,255,255,0.6);
-        transition: transform 0.2s;
-    }
-    .ft-section.ft-open .ft-section-toggle i {
-        transform: rotate(180deg);
-    }
-    .ft-links {
-        display: none;
-        padding: 0.75rem 0;
-    }
-    .ft-section.ft-open .ft-links {
-        display: flex;
-    }
 }
-</style>`;function C(e){const t=e.logo_url?`<img src="${e.logo_url}" alt="${e.logo_alt||"Logo"}">`:'<div style="color:#fff;font-weight:800;font-size:1.25rem;">Logo</div>',o=(e.sections||[]).map((i,a)=>{const m=(i.links||[]).map(c=>{const n=c.icon?`<i class="${c.icon}"></i>`:"";return`<li><a href="${c.href||"#"}">${n}${c.label}</a></li>`}).join("");return`
+</style>`;function B(e){const t=e.logo_url?`<img src="${e.logo_url}" alt="${e.logo_alt||"Logo"}">`:'<div style="color:#fff;font-weight:800;font-size:1.25rem;">Logo</div>',o=(e.sections||[]).map((i,a)=>{const p=(i.links||[]).map(d=>{const r=d.icon?`<i class="${d.icon}"></i>`:"",n=d.href||"#";return d.isText?`<li><span class="ft-text">${r}${d.label}</span></li>`:`<li><a href="${n}">${r}${d.label}</a></li>`}).join("");return`
 <div class="ft-section" data-section-index="${a}">
     <p class="ft-section-title">${i.title}</p>
     <button class="ft-section-toggle" type="button" aria-expanded="false">
         <span>${i.title}</span>
         <i class="ri-arrow-down-s-line"></i>
     </button>
-    <ul class="ft-links">${m}</ul>
+    <ul class="ft-links">${p}</ul>
 </div>`}).join("");return`
 <div class="ft-inner"
     data-gjs-editable="false"
@@ -385,7 +344,7 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
 </div>
 <div class="ft-stripe"
     data-gjs-editable="false"
-    data-gjs-selectable="false"></div>`}function D(){return function(){this.querySelectorAll(".ft-section-toggle").forEach(t=>{t.addEventListener("click",()=>{const o=t.closest(".ft-section");o.classList.toggle("ft-open"),t.setAttribute("aria-expanded",o.classList.contains("ft-open"))})})}}function P(e,t){const o=document.getElementById("footer-config-modal");if(o&&o.remove(),!document.getElementById("ft-modal-styles")){const l=document.createElement("style");l.id="ft-modal-styles",l.textContent=`
+    data-gjs-selectable="false"></div>`}function P(){return function(){}}function U(e,t){const o=document.getElementById("footer-config-modal");if(o&&o.remove(),!document.getElementById("ft-modal-styles")){const l=document.createElement("style");l.id="ft-modal-styles",l.textContent=`
             .ft-overlay {
                 position: fixed;
                 inset: 0;
@@ -647,7 +606,7 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
                 transition: background 0.15s;
             }
             .ft-btn-save:hover { background: #d97821; }
-        `,document.head.appendChild(l)}const i=(()=>{try{return JSON.parse(t.getAttributes()["data-footer-config"]||"{}")}catch{return{}}})(),a=i.sections||[{title:"Sección",links:[{label:"Enlace",href:"#",icon:""}]}],m=i.logo_url||"",c=i.logo_alt||"",n=document.createElement("div");n.id="footer-config-modal",n.className="ft-overlay";const r=document.createElement("div");r.className="ft-modal",r.innerHTML=`
+        `,document.head.appendChild(l)}const i=(()=>{try{return JSON.parse(t.getAttributes()["data-footer-config"]||"{}")}catch{return{}}})(),a=i.sections||[{title:"Sección",links:[{label:"Enlace",href:"#",icon:""}]}],p=i.logo_url||"",d=i.logo_alt||"",r=document.createElement("div");r.id="footer-config-modal",r.className="ft-overlay";const n=document.createElement("div");n.className="ft-modal",n.innerHTML=`
         <div class="ft-modal-header">
             <div class="ft-modal-header-left">
                 <i class="ri-layout-bottom-line"></i>
@@ -663,13 +622,13 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
                 <label class="ft-modal-label">Logo</label>
                 <div class="ft-modal-row" style="align-items:center;">
                     <div style="flex:1;position:relative;">
-                        ${m?`<img id="ft-logo-preview" src="${m}" alt="Logo preview" style="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;">`:'<div id="ft-logo-preview" style="display:none;"></div>'}
-                        <input id="ft-logo-url" type="text" placeholder="URL del logo" value="${m}" class="ft-modal-input" style="width:100%;">
+                        ${p?`<img id="ft-logo-preview" src="${p}" alt="Logo preview" style="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;">`:'<div id="ft-logo-preview" style="display:none;"></div>'}
+                        <input id="ft-logo-url" type="text" placeholder="URL del logo" value="${p}" class="ft-modal-input" style="width:100%;">
                     </div>
                     <button id="ft-logo-pick" type="button" style="flex-shrink:0;padding:0.5rem 0.875rem;background:#003B71;border:none;border-radius:0.5rem;color:#fff;font-size:0.8rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;font-family:inherit;white-space:nowrap;transition:background 0.15s;">
                         <i class="ri-image-line"></i> Seleccionar
                     </button>
-                    <input id="ft-logo-alt" type="text" placeholder="Texto alternativo" value="${c}" class="ft-modal-input">
+                    <input id="ft-logo-alt" type="text" placeholder="Texto alternativo" value="${d}" class="ft-modal-input">
                 </div>
             </div>
 
@@ -688,14 +647,20 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
             <button id="ft-modal-cancel" class="ft-btn-cancel">Cancelar</button>
             <button id="ft-modal-save" class="ft-btn-save">Aplicar cambios</button>
         </div>
-    `,n.appendChild(r),document.body.appendChild(n);const p=r.querySelector("#ft-sections-container");function u(l,d){const s=document.createElement("div");s.className="ft-section-card",s.dataset.sectionIndex=d;const g=(l.links||[]).map((f,y)=>`
-            <div class="ft-link-row" data-link-index="${y}">
+    `,r.appendChild(n),document.body.appendChild(r);const u=n.querySelector("#ft-sections-container");function g(l,f){const s=document.createElement("div");s.className="ft-section-card",s.dataset.sectionIndex=f;const b=(l.links||[]).map((c,m)=>`
+            <div class="ft-link-row" data-link-index="${m}" style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;flex-wrap:wrap;">
                 <input class="ft-modal-input-sm ft-link-icon-input ft-link-icon" type="text"
-                    placeholder="ri-phone-line (opcional)" value="${f.icon||""}">
+                    placeholder="ri-phone-line (opcional)" value="${c.icon||""}">
                 <input class="ft-modal-input-sm ft-link-label" type="text"
-                    placeholder="Texto del enlace" value="${f.label||""}">
+                    placeholder="Texto" value="${c.label||""}">
                 <input class="ft-modal-input-sm ft-link-href" type="text"
-                    placeholder="URL o tel:0000-0000" value="${f.href||""}">
+                    placeholder="URL o tel:0000-0000" value="${c.href||""}"
+                    style="${c.isText?"opacity:0.4;pointer-events:none;":""}">
+                <label style="display:flex;align-items:center;gap:0.25rem;font-size:0.75rem;color:#64748b;white-space:nowrap;cursor:pointer;">
+                    <input type="checkbox" class="ft-link-istext" ${c.isText?"checked":""}
+                        style="accent-color:#003B71;cursor:pointer;">
+                    Solo texto
+                </label>
                 <button class="ft-btn-remove ft-remove-link">
                     <i class="ri-delete-bin-line"></i>
                 </button>
@@ -709,12 +674,12 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
                 </button>
             </div>
             <div class="ft-section-card-body">
-                <div class="ft-links-container">${g}</div>
+                <div class="ft-links-container">${b}</div>
                 <button class="ft-btn-add-link">
                     <i class="ri-add-line"></i> Agregar enlace
                 </button>
             </div>
-        `,s.querySelector(".ft-remove-section").onclick=()=>{a.splice(d,1),b()},s.querySelector(".ft-btn-add-link").onclick=()=>{l.links=l.links||[],l.links.push({label:"Nuevo enlace",href:"#",icon:""}),b()},s.querySelectorAll(".ft-remove-link").forEach(f=>{f.onclick=()=>{const y=parseInt(f.closest(".ft-link-row").dataset.linkIndex);l.links.splice(y,1),b()}}),s}function b(){p.innerHTML="",a.forEach((l,d)=>p.appendChild(u(l,d)))}b(),r.querySelector("#ft-logo-pick").addEventListener("click",()=>{_({type:"image",title:"Seleccionar logo",onSelect:l=>{r.querySelector("#ft-logo-url").value=l;let d=r.querySelector("#ft-logo-preview");if(!d||d.tagName==="DIV"){const s=document.createElement("img");s.id="ft-logo-preview",s.style.cssText="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;",d?.replaceWith(s)??r.querySelector("#ft-logo-url").before(s),d=s}d.src=l,d.style.display="block"}})}),r.querySelector("#ft-add-section").onclick=()=>{a.push({title:"Nueva Sección",links:[]}),b()};function x(){const l=r.querySelector("#ft-logo-url").value.trim(),d=r.querySelector("#ft-logo-alt").value.trim(),s=[];return p.querySelectorAll("[data-section-index]").forEach(g=>{const f=g.querySelector(".ft-section-title-input").value.trim(),y=[];g.querySelectorAll(".ft-link-row").forEach(k=>{y.push({icon:k.querySelector(".ft-link-icon").value.trim(),label:k.querySelector(".ft-link-label").value.trim(),href:k.querySelector(".ft-link-href").value.trim()})}),s.push({title:f,links:y})}),{logo_url:l,logo_alt:d,sections:s}}const h=()=>n.remove();r.querySelector("#ft-modal-close").onclick=h,r.querySelector("#ft-modal-cancel").onclick=h,n.onclick=l=>{l.target===n&&h()},r.querySelector("#ft-modal-save").onclick=()=>{const l=x();t.addAttributes({"data-footer-config":JSON.stringify(l)}),t.components(C(l)+j),h()}}function U(e){const t="footer-component";e.DomComponents.addType(t,{isComponent:o=>o.getAttribute?.("data-gjs-type")===t?{type:t}:!1,model:{defaults:{name:"Footer",tagName:"footer",draggable:!0,droppable:!1,removable:!0,copyable:!1,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":t,class:"ft-wrapper","data-footer-config":JSON.stringify({logo_url:"",logo_alt:"Logo",sections:[{title:"Productos",links:[{label:"Créditos",href:"#",icon:""},{label:"Depósitos",href:"#",icon:""},{label:"Otros Servicios",href:"#",icon:""}]},{title:"Sobre Nosotros",links:[{label:"Historial",href:"#",icon:""},{label:"Misión y Visión",href:"#",icon:""},{label:"Red de Agencias",href:"#",icon:""}]},{title:"Contáctanos",links:[{label:"0000 - 0000",href:"tel:0000-0000",icon:"ri-phone-line"},{label:"Correo",href:"mailto:info@banco.com",icon:"ri-mail-line"},{label:"Dirección",href:"#",icon:"ri-map-pin-line"}]}]})},components:C({logo_url:"",logo_alt:"Logo",sections:[{title:"Productos",links:[{label:"Créditos",href:"#",icon:""},{label:"Depósitos",href:"#",icon:""}]},{title:"Sobre Nosotros",links:[{label:"Historial",href:"#",icon:""},{label:"Misión y Visión",href:"#",icon:""}]},{title:"Contáctanos",links:[{label:"0000-0000",href:"tel:0000",icon:"ri-phone-line"},{label:"Correo",href:"mailto:",icon:"ri-mail-line"}]}]})+j,script:D(),toolbar:[],traits:[{type:"button",label:"Footer",text:"Administrar Footer",full:!0,command:"open-footer-config"}]},init(){this.set("type",t),this.addAttributes({"data-gjs-type":t})}}}),e.Commands.add("open-footer-config",{run(o){const i=o.getSelected();i&&P(o,i)}}),e.Commands.add("insert-default-footer",{run(o){o.DomComponents.clear(),o.addComponents({type:t})}}),e.BlockManager.add("footer-block",{label:"Footer",category:"Footer",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+        `,s.querySelector(".ft-remove-section").onclick=()=>{a.splice(f,1),h()},s.querySelector(".ft-btn-add-link").onclick=()=>{l.links=l.links||[],l.links.push({label:"Nuevo enlace",href:"#",icon:""}),h()},s.querySelectorAll(".ft-remove-link").forEach(c=>{c.onclick=()=>{const m=parseInt(c.closest(".ft-link-row").dataset.linkIndex);l.links.splice(m,1),h()}}),s.querySelectorAll(".ft-link-istext").forEach(c=>{c.addEventListener("change",()=>{const m=c.closest(".ft-link-row").querySelector(".ft-link-href");c.checked?(m.style.opacity="0.4",m.style.pointerEvents="none",m.value=""):(m.style.opacity="1",m.style.pointerEvents="auto")})}),s}function h(){u.innerHTML="",a.forEach((l,f)=>u.appendChild(g(l,f)))}h(),n.querySelector("#ft-logo-pick").addEventListener("click",()=>{D({type:"image",title:"Seleccionar logo",onSelect:l=>{n.querySelector("#ft-logo-url").value=l;let f=n.querySelector("#ft-logo-preview");if(!f||f.tagName==="DIV"){const s=document.createElement("img");s.id="ft-logo-preview",s.style.cssText="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;",f?.replaceWith(s)??n.querySelector("#ft-logo-url").before(s),f=s}f.src=l,f.style.display="block"}})}),n.querySelector("#ft-add-section").onclick=()=>{a.push({title:"Nueva Sección",links:[]}),h()};function x(){const l=n.querySelector("#ft-logo-url").value.trim(),f=n.querySelector("#ft-logo-alt").value.trim(),s=[];return u.querySelectorAll("[data-section-index]").forEach(b=>{const c=b.querySelector(".ft-section-title-input").value.trim(),m=[];b.querySelectorAll(".ft-link-row").forEach(v=>{const E=v.querySelector(".ft-link-istext")?.checked??!1;m.push({icon:v.querySelector(".ft-link-icon").value.trim(),label:v.querySelector(".ft-link-label").value.trim(),href:E?"":v.querySelector(".ft-link-href").value.trim(),isText:E})}),s.push({title:c,links:m})}),{logo_url:l,logo_alt:f,sections:s}}const y=()=>r.remove();n.querySelector("#ft-modal-close").onclick=y,n.querySelector("#ft-modal-cancel").onclick=y,r.onclick=l=>{l.target===r&&y()},n.querySelector("#ft-modal-save").onclick=()=>{const l=x();t.addAttributes({"data-footer-config":JSON.stringify(l)}),t.components(B(l)+j),y()}}function O(e){const t="footer-component";e.DomComponents.addType(t,{isComponent:o=>o.getAttribute?.("data-gjs-type")===t?{type:t}:!1,model:{defaults:{name:"Footer",tagName:"footer",draggable:!0,droppable:!1,removable:!0,copyable:!1,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":t,class:"ft-wrapper","data-footer-config":JSON.stringify({logo_url:"",logo_alt:"Logo",sections:[{title:"Productos",links:[{label:"Créditos",href:"#",icon:""},{label:"Depósitos",href:"#",icon:""},{label:"Otros Servicios",href:"#",icon:""}]},{title:"Sobre Nosotros",links:[{label:"Historial",href:"#",icon:""},{label:"Misión y Visión",href:"#",icon:""},{label:"Red de Agencias",href:"#",icon:""}]},{title:"Contáctanos",links:[{label:"0000 - 0000",href:"tel:0000-0000",icon:"ri-phone-line"},{label:"Correo",href:"mailto:info@banco.com",icon:"ri-mail-line"},{label:"Dirección",href:"#",icon:"ri-map-pin-line"}]}]})},components:B({logo_url:"",logo_alt:"Logo",sections:[{title:"Productos",links:[{label:"Créditos",href:"#",icon:""},{label:"Depósitos",href:"#",icon:""}]},{title:"Sobre Nosotros",links:[{label:"Historial",href:"#",icon:""},{label:"Misión y Visión",href:"#",icon:""}]},{title:"Contáctanos",links:[{label:"0000-0000",href:"tel:0000",icon:"ri-phone-line"},{label:"Correo",href:"mailto:",icon:"ri-mail-line"}]}]})+j,script:P(),toolbar:[],traits:[{type:"button",label:"Footer",text:"Administrar Footer",full:!0,command:"open-footer-config"}]},init(){this.set("type",t),this.addAttributes({"data-gjs-type":t})}}}),e.Commands.add("open-footer-config",{run(o){const i=o.getSelected();i&&U(o,i)}}),e.Commands.add("insert-default-footer",{run(o){o.DomComponents.clear(),o.addComponents({type:t})}}),e.BlockManager.add("footer-block",{label:"Footer",category:"Footer",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#003B71" rx="2"/>
             <rect x="2" y="6" width="8" height="8" fill="rgba(255,255,255,0.3)" rx="1"/>
             <rect x="12" y="6" width="5" height="1.5" rx="0.75" fill="rgba(255,255,255,0.8)"/>
@@ -724,12 +689,12 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
             <rect x="19" y="9" width="4" height="1" rx="0.5" fill="rgba(255,255,255,0.5)"/>
             <rect x="19" y="11" width="4" height="1" rx="0.5" fill="rgba(255,255,255,0.5)"/>
             <rect x="0" y="26" width="32" height="6" fill="#E97300"/>
-        </svg>`,activate:!0,content:{type:t,attributes:{"data-gjs-type":t}}}),O(e,t),R(e)}function O(e,t){e.on("storage:end:load",()=>{setTimeout(()=>E(e,t),800)}),e.on("component:mount",o=>{const i=o.getEl();i?.getAttribute?.("data-gjs-type")===t&&(o.set("type",t),setTimeout(()=>{const a=o.get("script");a&&typeof a=="function"&&a.call(i)},400))}),e.on("canvas:render",()=>{setTimeout(()=>E(e,t),600)})}function E(e,t){e.getWrapper().find(`[data-gjs-type="${t}"]`).forEach(o=>{o.set("type",t);const i=o.getEl();if(i?.isConnected){const a=o.get("script");a&&typeof a=="function"&&a.call(i)}})}function R(e){e.on("load",()=>{const t=e.Canvas.getFrameEl();if(!t)return;const o=t.contentDocument?.head;if(o&&!o.querySelector("#footer-component-css")){const i=document.createElement("style");i.id="footer-component-css",i.textContent=`
+        </svg>`,activate:!0,content:{type:t,attributes:{"data-gjs-type":t}}}),R(e,t),G(e)}function R(e,t){e.on("storage:end:load",()=>{setTimeout(()=>S(e,t),800)}),e.on("component:mount",o=>{const i=o.getEl();i?.getAttribute?.("data-gjs-type")===t&&(o.set("type",t),setTimeout(()=>{const a=o.get("script");a&&typeof a=="function"&&a.call(i)},400))}),e.on("canvas:render",()=>{setTimeout(()=>S(e,t),600)})}function S(e,t){e.getWrapper().find(`[data-gjs-type="${t}"]`).forEach(o=>{o.set("type",t);const i=o.getEl();if(i?.isConnected){const a=o.get("script");a&&typeof a=="function"&&a.call(i)}})}function G(e){e.on("load",()=>{const t=e.Canvas.getFrameEl();if(!t)return;const o=t.contentDocument?.head;if(o&&!o.querySelector("#footer-component-css")){const i=document.createElement("style");i.id="footer-component-css",i.textContent=`
                 [data-gjs-type="footer-component"] {
                     outline: 2px dashed rgba(240,135,42,0.4);
                     outline-offset: 2px;
                 }
-            `,o.appendChild(i)}})}document.addEventListener("DOMContentLoaded",async()=>{const e=new N,t=document.getElementById("footer-id")?.value||"",o=document.getElementById("footer-name")?.value||"",i=document.getElementById("footer-load-url")?.value||"",a=document.getElementById("footer-store-url")?.value||"",m=document.getElementById("footer-is-active")?.value==="1",c=!!t,n=A();if(U(n),n.on("load",()=>{B(n),z(),I(),T(n),q(n),$(n),M(n),setTimeout(()=>{n.runCommand("sw-visibility"),n.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),c&&i)try{await e.loadPageContent(n,i),v("Footer cargado correctamente","success")}catch{v("Error al cargar el footer","error")}document.getElementById("save-button")?.addEventListener("click",async()=>{const r=document.getElementById("save-button");r.disabled=!0,r.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{if(!c&&!o){const p=await G();if(!p){r.disabled=!1,r.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>';return}await S(n,e,a,"POST",p,m)}else await S(n,e,a,c?"PUT":"POST",o,m)}catch(p){v(p.message,"error")}finally{r.disabled=!1,r.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}})});async function S(e,t,o,i,a,m){const c=t.getEditorContent(e),n=await t.savePage(e,{...c,name:a,is_active:m},o,i);n.success&&v(n.message,"success")}function G(){return new Promise(e=>{const t=document.createElement("div");t.style.cssText="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);";const o=document.createElement("div");o.style.cssText="background:#fff;border-radius:0.75rem;padding:1.5rem;max-width:24rem;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);",o.innerHTML=`
+            `,o.appendChild(i)}})}document.addEventListener("DOMContentLoaded",async()=>{const e=new A,t=document.getElementById("footer-id")?.value||"",o=document.getElementById("footer-name")?.value||"",i=document.getElementById("footer-load-url")?.value||"",a=document.getElementById("footer-store-url")?.value||"",p=document.getElementById("footer-is-active")?.value==="1",d=!!t,r=F();if(O(r),r.on("load",()=>{T(r),z(),I(),q(r),$(r),M(r),N(r),setTimeout(()=>{r.runCommand("sw-visibility"),r.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),d&&i)try{await e.loadPageContent(r,i),k("Footer cargado correctamente","success")}catch{k("Error al cargar el footer","error")}document.getElementById("save-button")?.addEventListener("click",async()=>{const n=document.getElementById("save-button");n.disabled=!0,n.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{if(!d&&!o){const u=await J();if(!u){n.disabled=!1,n.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>';return}await C(r,e,a,"POST",u,p)}else await C(r,e,a,d?"PUT":"POST",o,p)}catch(u){k(u.message,"error")}finally{n.disabled=!1,n.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}})});async function C(e,t,o,i,a,p){const d=t.getEditorContent(e),r=await t.savePage(e,{...d,name:a,is_active:p},o,i);r.success&&k(r.message,"success")}function J(){return new Promise(e=>{const t=document.createElement("div");t.style.cssText="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);";const o=document.createElement("div");o.style.cssText="background:#fff;border-radius:0.75rem;padding:1.5rem;max-width:24rem;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);",o.innerHTML=`
             <h3 style="margin:0 0 1rem;font-size:1.1rem;font-weight:700;color:#111827;">Nombre del Footer</h3>
             <input id="footer-name-input" type="text" placeholder="Ej: Footer Principal"
                 style="width:100%;padding:0.5rem 1rem;border:2px solid #d1d5db;border-radius:0.5rem;font-size:0.875rem;box-sizing:border-box;outline:none;">
@@ -737,4 +702,4 @@ import{i as L,t as B,d as z,f as I,e as T,s as q,g as $,c as M,E as N}from"./edi
                 <button id="fn-cancel" style="padding:0.5rem 1rem;border-radius:0.5rem;border:2px solid #d1d5db;background:#fff;cursor:pointer;font-weight:500;">Cancelar</button>
                 <button id="fn-confirm" style="padding:0.5rem 1rem;border-radius:0.5rem;border:none;background:#f0872a;color:#fff;cursor:pointer;font-weight:500;">Guardar</button>
             </div>
-        `,t.appendChild(o),document.body.appendChild(t),setTimeout(()=>o.querySelector("#footer-name-input").focus(),100),o.querySelector("#fn-cancel").onclick=()=>{t.remove(),e(null)},o.querySelector("#fn-confirm").onclick=()=>{const i=o.querySelector("#footer-name-input").value.trim();t.remove(),e(i||null)},o.querySelector("#footer-name-input").onkeypress=i=>{i.key==="Enter"&&o.querySelector("#fn-confirm").click()}})}function v(e,t="info"){typeof window.showNotification=="function"&&window.showNotification(e,t)}
+        `,t.appendChild(o),document.body.appendChild(t),setTimeout(()=>o.querySelector("#footer-name-input").focus(),100),o.querySelector("#fn-cancel").onclick=()=>{t.remove(),e(null)},o.querySelector("#fn-confirm").onclick=()=>{const i=o.querySelector("#footer-name-input").value.trim();t.remove(),e(i||null)},o.querySelector("#footer-name-input").onkeypress=i=>{i.key==="Enter"&&o.querySelector("#fn-confirm").click()}})}function k(e,t="info"){typeof window.showNotification=="function"&&window.showNotification(e,t)}
