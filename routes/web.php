@@ -174,15 +174,53 @@ Route::middleware(['auth'])->group(function () {
     // FOOTER MANAGEMENT ROUTES
     // ==========================================
     Route::prefix('footers')->name('footers.')->group(function () {
-        Route::get('/', [FooterController::class, 'index'])->name('index');
-        Route::get('/create', [FooterController::class, 'create'])->name('create');
-        Route::post('/', [FooterController::class, 'store'])->name('store');
-        Route::get('/{footer}/preview', [FooterController::class, 'preview'])->name('preview');
-        Route::get('/{footer}/edit', [FooterController::class, 'edit'])->name('edit');
-        Route::put('/{footer}', [FooterController::class, 'update'])->name('update');
-        Route::get('/{footer}/load', [FooterController::class, 'load'])->name('load');
-        Route::patch('/{footer}/toggle-active', [FooterController::class, 'toggleActive'])->name('toggle-active');
-        Route::delete('/{footer}', [FooterController::class, 'destroy'])->name('destroy');
+        Route::get('/', [FooterController::class, 'index'])
+            ->name('index')
+            ->middleware('can:footers.view,footers.manage');
+
+        Route::get('/trashed', [FooterController::class, 'trashed'])
+            ->name('trashed')
+            ->middleware('can:footers.restore,footers.manage');
+
+        Route::get('/create', [FooterController::class, 'create'])
+            ->name('create')
+            ->middleware('can:footers.create,footers.manage');
+
+        Route::post('/', [FooterController::class, 'store'])
+            ->name('store')
+            ->middleware('can:footers.create,footers.manage');
+
+        Route::get('/{footer}/preview', [FooterController::class, 'preview'])
+            ->name('preview')
+            ->middleware('can:footers.view,footers.manage');
+
+        Route::get('/{footer}/edit', [FooterController::class, 'edit'])
+            ->name('edit')
+            ->middleware('can:footers.edit,footers.manage');
+
+        Route::put('/{footer}', [FooterController::class, 'update'])
+            ->name('update')
+            ->middleware('can:footers.edit,footers.manage');
+
+        Route::get('/{footer}/load', [FooterController::class, 'load'])
+            ->name('load')
+            ->middleware('can:footers.edit,footers.manage');
+
+        Route::patch('/{footer}/toggle-active', [FooterController::class, 'toggleActive'])
+            ->name('toggle-active')
+            ->middleware('can:footers.toggle,footers.manage');
+
+        Route::delete('/{footer}', [FooterController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware('can:footers.delete,footers.manage');
+
+        Route::patch('/{id}/restore', [FooterController::class, 'restore'])
+            ->name('restore')
+            ->middleware('can:footers.restore,footers.manage');
+
+        Route::delete('/{id}/force-delete', [FooterController::class, 'forceDelete'])
+            ->name('force-delete')
+            ->middleware('can:footers.delete,footers.manage');
     });
 
     Route::get('/api/footers/active', [FooterController::class, 'apiActive'])

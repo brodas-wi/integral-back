@@ -49,6 +49,7 @@ class SecurityHeaders
         'pages/*/edit',
         'footers/create',
         'footers/*/edit',
+        'footers/*/preview',
     ];
 
     public function handle(Request $request, Closure $next): Response

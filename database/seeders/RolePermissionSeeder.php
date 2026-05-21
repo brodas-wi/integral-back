@@ -73,6 +73,8 @@ class RolePermissionSeeder extends Seeder
             'footers.edit',
             'footers.delete',
             'footers.manage',
+            'footers.toggle',
+            'footers.restore',
         ];
 
         foreach ($permissions as $permission) {

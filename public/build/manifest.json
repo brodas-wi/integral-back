@@ -237,7 +237,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-B_xLBRmd.css",
+    "file": "assets/app-Bn8B5CjZ.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -460,9 +460,19 @@
     ]
   },
   "resources/js/views/footers/index.js": {
-    "file": "assets/index-BVc8is5P.js",
+    "file": "assets/index-8cI67ios.js",
     "name": "index",
     "src": "resources/js/views/footers/index.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js",
+      "_url-DaqOO3yL.js"
+    ]
+  },
+  "resources/js/views/footers/trashed.js": {
+    "file": "assets/trashed-BNMWbUrP.js",
+    "name": "trashed",
+    "src": "resources/js/views/footers/trashed.js",
     "isEntry": true,
     "imports": [
       "_notifications-Cgjr4krQ.js",

@@ -14,17 +14,22 @@ class FooterController extends Controller
 
     public function index()
     {
-        $footers = Footer::with(['creator', 'editor'])->latest()->get();
+        $this->authorize('footers.view');
+        
+        $footers = Footer::with(['creator', 'editor', 'pages'])->latest()->get();
         return view('footers.index', compact('footers'));
     }
 
     public function create()
     {
+        $this->authorize('footers.create');
         return view('layouts.footer-editor');
     }
 
     public function store(Request $request)
     {
+        $this->authorize('footers.create');
+
         $request->validate(['name' => 'required|string|max:255']);
 
         try {
@@ -53,11 +58,13 @@ class FooterController extends Controller
 
     public function edit(Footer $footer)
     {
+        $this->authorize('footers.edit');
         return view('layouts.footer-editor', compact('footer'));
     }
 
     public function update(Request $request, Footer $footer)
     {
+        $this->authorize('footers.edit');
         try {
             $data = [
                 'html_content'    => $this->sanitizeContent($request->html_content),
@@ -88,9 +95,50 @@ class FooterController extends Controller
 
     public function destroy(Footer $footer)
     {
+        $this->authorize('footers.delete');
         try {
+            if ($footer->pages()->count() > 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se puede eliminar: este footer está siendo usado por ' . $footer->pages()->count() . ' página(s).',
+                ], 422);
+            }
+
+            $footer->update(['is_active' => false, 'updated_by' => Auth::id()]);
             $footer->delete();
-            return response()->json(['success' => true, 'message' => 'Footer eliminado.']);
+
+            return response()->json(['success' => true, 'message' => 'Footer movido a la papelera.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function trashed()
+    {
+        $this->authorize('footers.restore');
+        $footers = Footer::onlyTrashed()->with(['creator'])->latest('deleted_at')->get();
+        return view('footers.trashed', compact('footers'));
+    }
+
+    public function restore(int $id)
+    {
+        $this->authorize('footers.restore');
+        try {
+            $footer = Footer::onlyTrashed()->findOrFail($id);
+            $footer->restore();
+            return response()->json(['success' => true, 'message' => 'Footer restaurado correctamente.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function forceDelete(int $id)
+    {
+        $this->authorize('footers.delete');
+        try {
+            $footer = Footer::onlyTrashed()->findOrFail($id);
+            $footer->forceDelete();
+            return response()->json(['success' => true, 'message' => 'Footer eliminado permanentemente.']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
@@ -98,6 +146,8 @@ class FooterController extends Controller
 
     public function load(Footer $footer)
     {
+        $this->authorize('footers.edit');
+
         return response()->json([
             'html'            => $footer->html_content    ?? '',
             'css'             => $footer->css_content     ?? '',
@@ -109,6 +159,15 @@ class FooterController extends Controller
 
     public function toggleActive(Footer $footer)
     {
+        $this->authorize('footers.toggle');
+
+        if ($footer->is_active && $footer->pages()->count() > 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se puede desactivar: este footer está siendo usado por ' . $footer->pages()->count() . ' página(s).',
+            ], 422);
+        }
+
         $footer->update([
             'is_active'  => !$footer->is_active,
             'updated_by' => Auth::id(),
@@ -123,6 +182,7 @@ class FooterController extends Controller
 
     public function preview(Footer $footer)
     {
+        $this->authorize('footers.view');
         return view('footers.preview', compact('footer'));
     }
 
