@@ -783,10 +783,11 @@ function showNavbarModal(editor, component) {
             .getEl()
             ?.querySelector("[id^='nb-root-']");
         const existingUid = existingInner?.id?.replace("nb-root-", "") || null;
+        const uid =
+            existingUid || "nb" + Math.random().toString(36).slice(2, 7);
+
         component.addAttributes({ "data-navbar-config": JSON.stringify(data) });
-        component.components(
-            buildNavbarHTML(data, existingUid) + NAVBAR_STYLES,
-        );
+        component.components(buildNavbarHTML(data, uid) + NAVBAR_STYLES);
         close();
     };
 }
@@ -895,7 +896,8 @@ export function initializeNavbarBlock(editor) {
                             },
                         ],
                     }) + NAVBAR_STYLES,
-                script: createNavbarScript(),
+                script: function () {},
+                "script-props": [],
                 toolbar: [],
                 traits: [
                     {

@@ -95,10 +95,24 @@ export class EditorService {
             .replace(/<\/html>/gi, "")
             .trim();
 
+        const extractedScripts = [];
+        const htmlWithoutScripts = cleanHtml.replace(
+            /<script[^>]*>([\s\S]*?)<\/script>/gi,
+            (_, content) => {
+                if (content.trim()) extractedScripts.push(content.trim());
+                return "";
+            }
+        );
+
+        const editorJs = editor.getJs() || "";
+        const combinedJs = [editorJs, ...extractedScripts]
+            .filter(Boolean)
+            .join("\n");
+
         return {
-            html_content: cleanHtml,
+            html_content: htmlWithoutScripts,
             css_content: editor.getCss(),
-            js_content: editor.getJs() || "",
+            js_content: combinedJs,
             components_json: JSON.stringify(projectData),
             styles_json: JSON.stringify(projectData.styles ?? []),
         };
