@@ -120,6 +120,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function performSave(name) {
         const method = isEditMode ? "PUT" : "POST";
         const content = editorService.getEditorContent(editor);
+        if (!content.js_content || content.js_content.trim() === "") {
+            const { NAVBAR_RUNTIME_SCRIPT } =
+                await import("./editor/blocks/navbar-block");
+            content.js_content = NAVBAR_RUNTIME_SCRIPT;
+        }
         const data = await editorService.savePage(
             editor,
             { ...content, name, is_active: isActive },

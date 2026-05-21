@@ -1,5 +1,55 @@
 import { openMediaPicker } from "@/editor/media-picker";
 
+export const NAVBAR_RUNTIME_SCRIPT = `(function(){
+function initNavbar(root){
+    if(!root||root.__nbInit)return;
+    root.__nbInit=true;
+    var id=root.querySelector("[id^='nb-root-']")?.id?.replace("nb-root-","");
+    if(!id)return;
+    function pad(){document.body.style.paddingTop=root.offsetHeight+"px";}
+    pad();
+    window.addEventListener("resize",pad);
+    var toggle=document.getElementById("nb-toggle-"+id);
+    var mobile=document.getElementById("nb-mobile-"+id);
+    if(toggle&&mobile){
+        toggle.addEventListener("click",function(){
+            mobile.classList.toggle("nb-open");
+            pad();
+        });
+    }
+    root.querySelectorAll(".nb-submenu-trigger").forEach(function(btn){
+        btn.addEventListener("click",function(e){
+            e.stopPropagation();
+            var item=btn.closest(".nb-item");
+            var open=item.classList.contains("nb-open");
+            root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
+            if(!open)item.classList.add("nb-open");
+        });
+    });
+    root.querySelectorAll(".nb-mobile-item>.nb-mobile-link").forEach(function(btn){
+        btn.addEventListener("click",function(){
+            btn.closest(".nb-mobile-item").classList.toggle("nb-open");
+            pad();
+        });
+    });
+    document.addEventListener("click",function(e){
+        if(!root.contains(e.target)){
+            root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
+        }
+    });
+}
+document.querySelectorAll("nav[data-gjs-type='navbar-component'], nav.nb-wrapper").forEach(function(el){
+    initNavbar(el);
+});
+if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",function(){
+        document.querySelectorAll("nav[data-gjs-type='navbar-component'], nav.nb-wrapper").forEach(function(el){
+            initNavbar(el);
+        });
+    });
+}
+})();`;
+
 const NAVBAR_STYLES = `
 <style>
 .nb-wrapper {
@@ -296,42 +346,7 @@ function buildNavbarHTML(data, uid) {
         })
         .join("");
 
-    const scriptContent = `(function(){
-var id="${uid}";
-function init(){
-    var inner=document.getElementById("nb-root-"+id);
-    if(!inner)return;
-    var root=inner.closest("nav")||inner.parentElement;
-    function pad(){if(root)document.body.style.paddingTop=root.offsetHeight+"px";}
-    pad();
-    window.addEventListener("resize",pad);
-    var toggle=document.getElementById("nb-toggle-"+id);
-    var mobile=document.getElementById("nb-mobile-"+id);
-    if(toggle&&mobile){toggle.addEventListener("click",function(){mobile.classList.toggle("nb-open");pad();});}
-    root.querySelectorAll(".nb-submenu-trigger").forEach(function(btn){
-        btn.addEventListener("click",function(e){
-            e.stopPropagation();
-            var item=btn.closest(".nb-item");
-            var open=item.classList.contains("nb-open");
-            root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
-            if(!open)item.classList.add("nb-open");
-        });
-    });
-    root.querySelectorAll(".nb-mobile-item>.nb-mobile-link").forEach(function(btn){
-        btn.addEventListener("click",function(){btn.closest(".nb-mobile-item").classList.toggle("nb-open");pad();});
-    });
-    document.addEventListener("click",function(e){
-        if(!root.contains(e.target))root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
-    });
-}
-if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}else{init();}
-})();`;
-
-    return `<div id="nb-root-${uid}" class="nb-inner" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="nb-logo" data-gjs-editable="false" data-gjs-selectable="false">${logoHtml}</div><ul class="nb-links" data-gjs-editable="false" data-gjs-selectable="false">${linksHtml}</ul><div class="nb-actions" data-gjs-editable="false" data-gjs-selectable="false">${actionsHtml}</div><button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false"><span></span><span></span><span></span></button></div><div class="nb-mobile-menu" id="nb-mobile-${uid}" data-gjs-editable="false" data-gjs-selectable="false">${mobileLinksHtml}${mobileActionsHtml ? `<div class="nb-mobile-actions">${mobileActionsHtml}</div>` : ""}</div><script>${scriptContent}<\/script>`;
-}
-
-function createNavbarScript() {
-    return function () {};
+    return `<div id="nb-root-${uid}" class="nb-inner" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="nb-logo" data-gjs-editable="false" data-gjs-selectable="false">${logoHtml}</div><ul class="nb-links" data-gjs-editable="false" data-gjs-selectable="false">${linksHtml}</ul><div class="nb-actions" data-gjs-editable="false" data-gjs-selectable="false">${actionsHtml}</div><button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false"><span></span><span></span><span></span></button></div><div class="nb-mobile-menu" id="nb-mobile-${uid}" data-gjs-editable="false" data-gjs-selectable="false">${mobileLinksHtml}${mobileActionsHtml ? `<div class="nb-mobile-actions">${mobileActionsHtml}</div>` : ""}</div>`;
 }
 
 function showNavbarModal(editor, component) {
@@ -896,7 +911,80 @@ export function initializeNavbarBlock(editor) {
                             },
                         ],
                     }) + NAVBAR_STYLES,
-                script: function () {},
+                script: function () {
+                    (function () {
+                        function initNavbar(root) {
+                            if (!root || root.__nbInit) return;
+                            root.__nbInit = true;
+                            var id = root
+                                .querySelector("[id^='nb-root-']")
+                                ?.id?.replace("nb-root-", "");
+                            if (!id) return;
+                            // Solo aplicar padding en página pública (no en editor)
+                            var inEditor =
+                                !!window.__gjseditor ||
+                                document.documentElement.hasAttribute(
+                                    "data-gjs-canvas",
+                                );
+                            function pad() {
+                                if (!inEditor) {
+                                    document.body.style.paddingTop =
+                                        root.offsetHeight + "px";
+                                }
+                            }
+                            pad();
+                            window.addEventListener("resize", pad);
+                            var toggle = document.getElementById(
+                                "nb-toggle-" + id,
+                            );
+                            var mobile = document.getElementById(
+                                "nb-mobile-" + id,
+                            );
+                            if (toggle && mobile) {
+                                toggle.addEventListener("click", function () {
+                                    mobile.classList.toggle("nb-open");
+                                    pad();
+                                });
+                            }
+                            root.querySelectorAll(
+                                ".nb-submenu-trigger",
+                            ).forEach(function (btn) {
+                                btn.addEventListener("click", function (e) {
+                                    e.stopPropagation();
+                                    var item = btn.closest(".nb-item");
+                                    var open =
+                                        item.classList.contains("nb-open");
+                                    root.querySelectorAll(
+                                        ".nb-item.nb-open",
+                                    ).forEach(function (el) {
+                                        el.classList.remove("nb-open");
+                                    });
+                                    if (!open) item.classList.add("nb-open");
+                                });
+                            });
+                            root.querySelectorAll(
+                                ".nb-mobile-item>.nb-mobile-link",
+                            ).forEach(function (btn) {
+                                btn.addEventListener("click", function () {
+                                    btn.closest(
+                                        ".nb-mobile-item",
+                                    ).classList.toggle("nb-open");
+                                    pad();
+                                });
+                            });
+                            document.addEventListener("click", function (e) {
+                                if (!root.contains(e.target)) {
+                                    root.querySelectorAll(
+                                        ".nb-item.nb-open",
+                                    ).forEach(function (el) {
+                                        el.classList.remove("nb-open");
+                                    });
+                                }
+                            });
+                        }
+                        initNavbar(this);
+                    })();
+                },
                 "script-props": [],
                 toolbar: [],
                 traits: [
@@ -955,16 +1043,61 @@ function setupNavbarEditorEvents(editor, componentType) {
         const el = component.getEl();
         if (el?.getAttribute?.("data-gjs-type") === componentType) {
             component.set("type", componentType);
-            setTimeout(() => {
-                const script = component.get("script");
-                if (script && typeof script === "function") script.call(el);
-            }, 400);
+            setTimeout(() => runNavbarScriptInCanvas(editor, el), 400);
         }
     });
 
     editor.on("canvas:render", () => {
         setTimeout(() => reinitNavbar(editor, componentType), 600);
     });
+}
+
+function runNavbarScriptInCanvas(editor, el) {
+    if (!el?.isConnected) return;
+    try {
+        const iframeDoc = editor.Canvas.getFrameEl()?.contentDocument;
+        if (!iframeDoc) return;
+        if (el.__nbInit) delete el.__nbInit;
+        const scriptEl = iframeDoc.createElement("script");
+        scriptEl.textContent = `(function(){
+            function initNavbar(root){
+                if(!root||root.__nbInit)return;
+                root.__nbInit=true;
+                var id=root.querySelector("[id^='nb-root-']")?.id?.replace("nb-root-","");
+                if(!id)return;
+                function pad(){document.body.style.paddingTop=root.offsetHeight+"px";}
+                pad();
+                window.addEventListener("resize",pad);
+                var toggle=document.getElementById("nb-toggle-"+id);
+                var mobile=document.getElementById("nb-mobile-"+id);
+                if(toggle&&mobile){
+                    toggle.addEventListener("click",function(){mobile.classList.toggle("nb-open");pad();});
+                }
+                root.querySelectorAll(".nb-submenu-trigger").forEach(function(btn){
+                    btn.addEventListener("click",function(e){
+                        e.stopPropagation();
+                        var item=btn.closest(".nb-item");
+                        var open=item.classList.contains("nb-open");
+                        root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
+                        if(!open)item.classList.add("nb-open");
+                    });
+                });
+                root.querySelectorAll(".nb-mobile-item>.nb-mobile-link").forEach(function(btn){
+                    btn.addEventListener("click",function(){btn.closest(".nb-mobile-item").classList.toggle("nb-open");pad();});
+                });
+                document.addEventListener("click",function(e){
+                    if(!root.contains(e.target)){root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});}
+                });
+            }
+            document.querySelectorAll("nav[data-gjs-type='navbar-component']").forEach(function(nav){
+                initNavbar(nav);
+            });
+        })();`;
+        iframeDoc.head.appendChild(scriptEl);
+        scriptEl.remove();
+    } catch (e) {
+        console.warn("[Navbar] Error inyectando script en canvas:", e);
+    }
 }
 
 function reinitNavbar(editor, componentType) {
@@ -975,8 +1108,7 @@ function reinitNavbar(editor, componentType) {
             comp.set("type", componentType);
             const el = comp.getEl();
             if (el?.isConnected) {
-                const script = comp.get("script");
-                if (script && typeof script === "function") script.call(el);
+                runNavbarScriptInCanvas(editor, el);
             }
         });
 }
@@ -985,8 +1117,10 @@ function injectNavbarCanvasStyles(editor) {
     editor.on("load", () => {
         const iframe = editor.Canvas.getFrameEl();
         if (!iframe) return;
-        const head = iframe.contentDocument?.head;
+        const iframeDoc = iframe.contentDocument;
+        const head = iframeDoc?.head;
         if (!head) return;
+        iframeDoc.documentElement?.setAttribute("data-gjs-canvas", "true");
         if (!head.querySelector("#navbar-component-css")) {
             const style = document.createElement("style");
             style.id = "navbar-component-css";
