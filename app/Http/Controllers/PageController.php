@@ -240,6 +240,21 @@ class PageController extends Controller
         }
     }
 
+    public function updateFooter(Request $request, Page $page)
+    {
+        $this->authorize('pages.edit');
+
+        $page->update([
+            'footer_id'  => $request->footer_id ?: null,
+            'updated_by' => Auth::id(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Footer actualizado correctamente.',
+        ]);
+    }
+
     public function load(Page $page)
     {
         $this->authorize('pages.edit');

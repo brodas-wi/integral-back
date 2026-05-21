@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\FooterController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\PaymentPointController;
@@ -147,6 +148,11 @@ Route::middleware(['auth'])->group(function () {
             ->name('toggle-publish')
             ->middleware('can:pages.publish,pages.manage');
 
+        // Update footer relation
+        Route::patch('/{page}/footer', [PageController::class, 'updateFooter'])
+            ->name('update-footer')
+            ->middleware('can:pages.edit,pages.manage');
+
         // Load page data for editor
         Route::get('/{page}/load', [PageController::class, 'load'])
             ->name('load')
@@ -162,6 +168,24 @@ Route::middleware(['auth'])->group(function () {
             ->name('destroy')
             ->middleware('can:pages.delete,pages.manage');
     });
+
+    // ==========================================
+    // FOOTER MANAGEMENT ROUTES
+    // ==========================================
+    Route::prefix('footers')->name('footers.')->group(function () {
+        Route::get('/', [FooterController::class, 'index'])->name('index');
+        Route::get('/create', [FooterController::class, 'create'])->name('create');
+        Route::post('/', [FooterController::class, 'store'])->name('store');
+        Route::get('/{footer}/preview', [FooterController::class, 'preview'])->name('preview');
+        Route::get('/{footer}/edit', [FooterController::class, 'edit'])->name('edit');
+        Route::put('/{footer}', [FooterController::class, 'update'])->name('update');
+        Route::get('/{footer}/load', [FooterController::class, 'load'])->name('load');
+        Route::patch('/{footer}/toggle-active', [FooterController::class, 'toggleActive'])->name('toggle-active');
+        Route::delete('/{footer}', [FooterController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::get('/api/footers/active', [FooterController::class, 'apiActive'])
+        ->name('api.footers.active');
 
     // ==========================================
     // MEDIA MANAGEMENT ROUTES

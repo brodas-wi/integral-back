@@ -8,6 +8,7 @@ const PAGES_INDEX_URL = document.querySelector('meta[name="pages-index-url"]')?.
 document.addEventListener("DOMContentLoaded", () => {
     initTogglePublish();
     initDeletePage();
+    initFooterRelation();
 });
 
 function initTogglePublish() {
@@ -154,4 +155,36 @@ async function deletePage(slug) {
         console.error("Error:", error);
         showNotification(error.message || "Error al eliminar", "error");
     }
+}
+
+function initFooterRelation() {
+    const btn = document.getElementById("save-footer-relation");
+    if (!btn) return;
+
+    btn.addEventListener("click", async () => {
+        const select = document.getElementById("footer-select");
+        const footerId = select?.value || null;
+        const slug = document.querySelector("[data-toggle-publish]")?.dataset.slug
+            || window.location.pathname.split("/").filter(Boolean).pop();
+
+        try {
+            const res = await fetch(buildUrl(`pages/${slug}/footer`), {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": CSRF.getAttribute("content"),
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({ footer_id: footerId }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                showNotification(data.message, "success");
+            } else {
+                showNotification(data.message || "Error al guardar", "error");
+            }
+        } catch (e) {
+            showNotification("Error al guardar el footer", "error");
+        }
+    });
 }

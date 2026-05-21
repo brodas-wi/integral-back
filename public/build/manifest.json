@@ -7,6 +7,10 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
+  "_editor-commands-NxX2QgS9.js": {
+    "file": "assets/editor-commands-NxX2QgS9.js",
+    "name": "editor-commands"
+  },
   "_modals-D7u3LXeA.js": {
     "file": "assets/modals-D7u3LXeA.js",
     "name": "modals"
@@ -230,7 +234,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-C2PPL5Ms.css",
+    "file": "assets/app-B_xLBRmd.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -355,6 +359,19 @@
       "assets/remixicon-BTtOSOPh.svg"
     ]
   },
+  "resources/js/footer-editor.js": {
+    "file": "assets/footer-editor-DWLNO9he.js",
+    "name": "footer-editor",
+    "src": "resources/js/footer-editor.js",
+    "isEntry": true,
+    "imports": [
+      "_editor-commands-NxX2QgS9.js"
+    ],
+    "css": [
+      "assets/grapes-kcEUIu4-.css",
+      "assets/media-modal-AbMYGL4w.css"
+    ]
+  },
   "resources/js/layouts/admin-layout.js": {
     "file": "assets/admin-layout-Cpvjqcbv.js",
     "name": "admin-layout",
@@ -366,11 +383,12 @@
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-C4UJGjjG.js",
+    "file": "assets/pages-editor-CckDuDoX.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
+      "_editor-commands-NxX2QgS9.js",
       "__commonjsHelpers-CqkleIqs.js",
       "_url-DaqOO3yL.js"
     ],
@@ -453,7 +471,7 @@
     ]
   },
   "resources/js/views/pages/show.js": {
-    "file": "assets/show-DvYJXKER.js",
+    "file": "assets/show-BuAJOdr1.js",
     "name": "show",
     "src": "resources/js/views/pages/show.js",
     "isEntry": true,

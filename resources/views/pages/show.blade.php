@@ -92,7 +92,7 @@
                             {{ $page->created_at->format('d/m/Y H:i') }}
                         </div>
                     </div>
-                    @if($page->editor)
+                    @if ($page->editor)
                         <div>
                             <div class="text-xs font-medium text-gray-600 mb-1">Última edición por</div>
                             <div class="text-sm font-semibold text-secondary">
@@ -110,6 +110,26 @@
             </div>
 
             <div class="card">
+                <h3 class="text-lg font-bold text-secondary mb-4">Footer</h3>
+                <div class="space-y-3">
+                    <p class="text-sm text-gray-600">Selecciona el footer que se mostrará en esta página.</p>
+                    <select id="footer-select" class="input-field">
+                        <option value="">— Sin footer —</option>
+                        @foreach (\App\Models\Footer::orderBy('name')->get() as $footer)
+                            <option value="{{ $footer->id }}" {{ $page->footer_id == $footer->id ? 'selected' : '' }}>
+                                {{ $footer->name }}
+                                {{ $footer->is_active ? '✓' : '' }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button id="save-footer-relation" class="btn-primary btn-sm w-full">
+                        <i class="ri-save-line mr-2"></i>
+                        Guardar footer
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
                 <h3 class="text-lg font-bold text-secondary mb-4">Acciones</h3>
                 <div class="space-y-2">
                     @canany(['pages.edit', 'pages.manage'])
@@ -120,22 +140,16 @@
                     @endcanany
 
                     @canany(['pages.publish', 'pages.manage'])
-                        <button type="button"
-                            data-toggle-publish
-                            data-slug="{{ $page->slug }}"
-                            data-published="{{ $page->is_published ? '1' : '0' }}"
-                            class="btn-primary btn-sm w-full">
+                        <button type="button" data-toggle-publish data-slug="{{ $page->slug }}"
+                            data-published="{{ $page->is_published ? '1' : '0' }}" class="btn-primary btn-sm w-full">
                             <i class="ri-{{ $page->is_published ? 'eye-off' : 'eye' }}-line mr-2"></i>
                             {{ $page->is_published ? 'Despublicar' : 'Publicar' }}
                         </button>
                     @endcanany
 
                     @canany(['pages.delete', 'pages.manage'])
-                        <button type="button"
-                            data-delete-page
-                            data-slug="{{ $page->slug }}"
-                            data-page-title="{{ addslashes($page->title) }}"
-                            class="btn-danger btn-sm w-full">
+                        <button type="button" data-delete-page data-slug="{{ $page->slug }}"
+                            data-page-title="{{ addslashes($page->title) }}" class="btn-danger btn-sm w-full">
                             <i class="ri-delete-bin-line mr-2"></i>
                             Eliminar
                         </button>

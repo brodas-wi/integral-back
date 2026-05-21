@@ -68,6 +68,11 @@ class RolePermissionSeeder extends Seeder
             'banners.edit',
             'banners.delete',
             'banners.manage',
+            'footers.view',
+            'footers.create',
+            'footers.edit',
+            'footers.delete',
+            'footers.manage',
         ];
 
         foreach ($permissions as $permission) {
@@ -89,6 +94,7 @@ class RolePermissionSeeder extends Seeder
             'media.manage',
             'agencies.manage',
             'payment_points.manage',
+            'footers.manage',
         ]);
 
         // Editor role - Individual permissions for content management
@@ -106,6 +112,8 @@ class RolePermissionSeeder extends Seeder
             'pages.edit',
             'media.view',
             'media.upload',
+            'footers.view',
+            'footers.edit',
         ]);
 
         // Viewer role - Only view permissions
