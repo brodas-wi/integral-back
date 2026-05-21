@@ -325,10 +325,6 @@ import{i as L,t as T,d as z,f as I,e as q,s as $,g as M,c as N,E as A}from"./edi
 </style>`;function B(e){const t=e.logo_url?`<img src="${e.logo_url}" alt="${e.logo_alt||"Logo"}">`:'<div style="color:#fff;font-weight:800;font-size:1.25rem;">Logo</div>',o=(e.sections||[]).map((i,a)=>{const p=(i.links||[]).map(d=>{const r=d.icon?`<i class="${d.icon}"></i>`:"",n=d.href||"#";return d.isText?`<li><span class="ft-text">${r}${d.label}</span></li>`:`<li><a href="${n}">${r}${d.label}</a></li>`}).join("");return`
 <div class="ft-section" data-section-index="${a}">
     <p class="ft-section-title">${i.title}</p>
-    <button class="ft-section-toggle" type="button" aria-expanded="false">
-        <span>${i.title}</span>
-        <i class="ri-arrow-down-s-line"></i>
-    </button>
     <ul class="ft-links">${p}</ul>
 </div>`}).join("");return`
 <div class="ft-inner"
@@ -693,6 +689,16 @@ import{i as L,t as T,d as z,f as I,e as q,s as $,g as M,c as N,E as A}from"./edi
                 [data-gjs-type="footer-component"] {
                     outline: 2px dashed rgba(240,135,42,0.4);
                     outline-offset: 2px;
+                }
+                .ft-links {
+                    display: flex !important;
+                    padding: 0 !important;
+                }
+                .ft-section-toggle {
+                    display: none !important;
+                }
+                .ft-section-title {
+                    display: block !important;
                 }
             `,o.appendChild(i)}})}document.addEventListener("DOMContentLoaded",async()=>{const e=new A,t=document.getElementById("footer-id")?.value||"",o=document.getElementById("footer-name")?.value||"",i=document.getElementById("footer-load-url")?.value||"",a=document.getElementById("footer-store-url")?.value||"",p=document.getElementById("footer-is-active")?.value==="1",d=!!t,r=F();if(O(r),r.on("load",()=>{T(r),z(),I(),q(r),$(r),M(r),N(r),setTimeout(()=>{r.runCommand("sw-visibility"),r.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),d&&i)try{await e.loadPageContent(r,i),k("Footer cargado correctamente","success")}catch{k("Error al cargar el footer","error")}document.getElementById("save-button")?.addEventListener("click",async()=>{const n=document.getElementById("save-button");n.disabled=!0,n.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{if(!d&&!o){const u=await J();if(!u){n.disabled=!1,n.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>';return}await C(r,e,a,"POST",u,p)}else await C(r,e,a,d?"PUT":"POST",o,p)}catch(u){k(u.message,"error")}finally{n.disabled=!1,n.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}})});async function C(e,t,o,i,a,p){const d=t.getEditorContent(e),r=await t.savePage(e,{...d,name:a,is_active:p},o,i);r.success&&k(r.message,"success")}function J(){return new Promise(e=>{const t=document.createElement("div");t.style.cssText="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);";const o=document.createElement("div");o.style.cssText="background:#fff;border-radius:0.75rem;padding:1.5rem;max-width:24rem;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);",o.innerHTML=`
             <h3 style="margin:0 0 1rem;font-size:1.1rem;font-weight:700;color:#111827;">Nombre del Footer</h3>

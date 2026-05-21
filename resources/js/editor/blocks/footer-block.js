@@ -117,10 +117,6 @@ function buildFooterHTML(data) {
             return `
 <div class="ft-section" data-section-index="${i}">
     <p class="ft-section-title">${sec.title}</p>
-    <button class="ft-section-toggle" type="button" aria-expanded="false">
-        <span>${sec.title}</span>
-        <i class="ri-arrow-down-s-line"></i>
-    </button>
     <ul class="ft-links">${linksHtml}</ul>
 </div>`;
         })
@@ -889,6 +885,16 @@ function injectFooterCanvasStyles(editor) {
                 [data-gjs-type="footer-component"] {
                     outline: 2px dashed rgba(240,135,42,0.4);
                     outline-offset: 2px;
+                }
+                .ft-links {
+                    display: flex !important;
+                    padding: 0 !important;
+                }
+                .ft-section-toggle {
+                    display: none !important;
+                }
+                .ft-section-title {
+                    display: block !important;
                 }
             `;
             head.appendChild(style);
