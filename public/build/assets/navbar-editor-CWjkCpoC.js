@@ -1,4 +1,4 @@
-import{i as B,t as C,d as N,f as j,e as q,s as z,g as I,c as T,E as A,j as M,h as H}from"./editor-commands-DIM4nSZH.js";import{o as _}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function U(){return B()}const $=`
+import{i as B,t as C,d as j,f as N,e as I,s as q,g as z,c as T,E as A,j as M,h as H}from"./editor-commands-DIM4nSZH.js";import{o as _}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function U(){return B()}const S=`
 <style>
 .nb-wrapper {
     background-color: #ffffff;
@@ -237,83 +237,36 @@ import{i as B,t as C,d as N,f as j,e as q,s as z,g as I,c as T,E as A,j as M,h a
     .nb-links, .nb-actions { display: none; }
     .nb-hamburger { display: flex; }
 }
-</style>`;function L(t){const n=t.logo_url?`<img src="${t.logo_url}" alt="${t.logo_alt||"Logo"}">`:`<span class="nb-logo-text">${t.logo_text||"Logo"}</span>`,r=(t.links||[]).map(e=>{if(e.type==="submenu"&&e.children?.length){const m=e.children.map(a=>{const i=a.icon?`<i class="${a.icon}"></i>`:"";return`<li><a href="${a.href||"#"}" class="nb-submenu-link">${i}${a.label}</a></li>`}).join("");return`
-<li class="nb-item nb-has-submenu">
-    <button class="nb-link nb-submenu-trigger" type="button">
-        ${e.label}<i class="ri-arrow-down-s-line nb-chevron"></i>
-    </button>
-    <ul class="nb-submenu">${m}</ul>
-</li>`}return`<li class="nb-item"><a href="${e.href||"#"}" class="nb-link">${e.label}</a></li>`}).join(""),s=(t.actions||[]).map(e=>{const m=e.icon?`<i class="${e.icon}"></i>`:"";return`<a href="${e.href||"#"}" class="nb-btn nb-btn-${e.style||"primary"}">${m}${e.label}</a>`}).join(""),c=(t.links||[]).map(e=>{if(e.type==="submenu"&&e.children?.length){const m=e.children.map(a=>{const i=a.icon?`<i class="${a.icon}"></i>`:"";return`<a href="${a.href||"#"}" class="nb-mobile-submenu-link">${i}${a.label}</a>`}).join("");return`
-<div class="nb-mobile-item">
-    <button class="nb-mobile-link" type="button">
-        ${e.label}<i class="ri-arrow-down-s-line"></i>
-    </button>
-    <div class="nb-mobile-submenu">${m}</div>
-</div>`}return`<a href="${e.href||"#"}" class="nb-mobile-link">${e.label}</a>`}).join(""),h=(t.actions||[]).map(e=>{const m=e.icon?`<i class="${e.icon}"></i>`:"";return`<a href="${e.href||"#"}" class="nb-btn nb-btn-${e.style||"primary"}">${m}${e.label}</a>`}).join(""),u="nb"+Math.random().toString(36).slice(2,7);return`
-<div class="nb-inner" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-    <div class="nb-logo" data-gjs-editable="false" data-gjs-selectable="false">${n}</div>
-    <ul class="nb-links" data-gjs-editable="false" data-gjs-selectable="false">${r}</ul>
-    <div class="nb-actions" data-gjs-editable="false" data-gjs-selectable="false">${s}</div>
-    <button class="nb-hamburger" type="button" id="nb-toggle-${u}" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false">
-        <span></span><span></span><span></span>
-    </button>
-</div>
-<div class="nb-mobile-menu" id="nb-mobile-${u}" data-gjs-editable="false" data-gjs-selectable="false">
-    ${c}
-    ${h?`<div class="nb-mobile-actions">${h}</div>`:""}
-</div>
-<script>
-(function() {
-    function initNavbar() {
-        var root = document.currentScript ? document.currentScript.closest('nav') : document.querySelector('[data-gjs-type="navbar-component"]');
-        if (!root) return;
-
-        function updatePadding() {
-            document.body.style.paddingTop = root.offsetHeight + 'px';
-        }
-        updatePadding();
-        window.addEventListener('resize', updatePadding);
-
-        var toggle = document.getElementById('nb-toggle-${u}');
-        var mobile = document.getElementById('nb-mobile-${u}');
-        if (toggle && mobile) {
-            toggle.addEventListener('click', function() {
-                mobile.classList.toggle('nb-open');
-                updatePadding();
-            });
-        }
-
-        root.querySelectorAll('.nb-submenu-trigger').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                var item = btn.closest('.nb-item');
-                var isOpen = item.classList.contains('nb-open');
-                root.querySelectorAll('.nb-item.nb-open').forEach(function(el) { el.classList.remove('nb-open'); });
-                if (!isOpen) item.classList.add('nb-open');
-            });
+</style>`;function L(t,e){e=e||"nb"+Math.random().toString(36).slice(2,7);const r=t.logo_url?`<img src="${t.logo_url}" alt="${t.logo_alt||"Logo"}">`:`<span class="nb-logo-text">${t.logo_text||"Logo"}</span>`,s=(t.links||[]).map(o=>{if(o.type==="submenu"&&o.children?.length){const i=o.children.map(n=>{const u=n.icon?`<i class="${n.icon}"></i>`:"";return`<li><a href="${n.href||"#"}" class="nb-submenu-link">${u}${n.label}</a></li>`}).join("");return`<li class="nb-item nb-has-submenu"><button class="nb-link nb-submenu-trigger" type="button">${o.label}<i class="ri-arrow-down-s-line nb-chevron"></i></button><ul class="nb-submenu">${i}</ul></li>`}return`<li class="nb-item"><a href="${o.href||"#"}" class="nb-link">${o.label}</a></li>`}).join(""),c=(t.actions||[]).map(o=>{const i=o.icon?`<i class="${o.icon}"></i>`:"";return`<a href="${o.href||"#"}" class="nb-btn nb-btn-${o.style||"primary"}">${i}${o.label}</a>`}).join(""),x=(t.links||[]).map(o=>{if(o.type==="submenu"&&o.children?.length){const i=o.children.map(n=>{const u=n.icon?`<i class="${n.icon}"></i>`:"";return`<a href="${n.href||"#"}" class="nb-mobile-submenu-link">${u}${n.label}</a>`}).join("");return`<div class="nb-mobile-item"><button class="nb-mobile-link" type="button">${o.label}<i class="ri-arrow-down-s-line"></i></button><div class="nb-mobile-submenu">${i}</div></div>`}return`<a href="${o.href||"#"}" class="nb-mobile-link">${o.label}</a>`}).join(""),p=(t.actions||[]).map(o=>{const i=o.icon?`<i class="${o.icon}"></i>`:"";return`<a href="${o.href||"#"}" class="nb-btn nb-btn-${o.style||"primary"}">${i}${o.label}</a>`}).join(""),b=`(function(){
+var id="${e}";
+function init(){
+    var inner=document.getElementById("nb-root-"+id);
+    if(!inner)return;
+    var root=inner.closest("nav")||inner.parentElement;
+    function pad(){if(root)document.body.style.paddingTop=root.offsetHeight+"px";}
+    pad();
+    window.addEventListener("resize",pad);
+    var toggle=document.getElementById("nb-toggle-"+id);
+    var mobile=document.getElementById("nb-mobile-"+id);
+    if(toggle&&mobile){toggle.addEventListener("click",function(){mobile.classList.toggle("nb-open");pad();});}
+    root.querySelectorAll(".nb-submenu-trigger").forEach(function(btn){
+        btn.addEventListener("click",function(e){
+            e.stopPropagation();
+            var item=btn.closest(".nb-item");
+            var open=item.classList.contains("nb-open");
+            root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
+            if(!open)item.classList.add("nb-open");
         });
-
-        root.querySelectorAll('.nb-mobile-item > .nb-mobile-link').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                btn.closest('.nb-mobile-item').classList.toggle('nb-open');
-                updatePadding();
-            });
-        });
-
-        document.addEventListener('click', function(e) {
-            if (!root.contains(e.target)) {
-                root.querySelectorAll('.nb-item.nb-open').forEach(function(el) { el.classList.remove('nb-open'); });
-            }
-        });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initNavbar);
-    } else {
-        initNavbar();
-    }
-})();
-<\/script>`}function O(){return function(){}}function P(t,n){const r=document.getElementById("navbar-config-modal");if(r&&r.remove(),!document.getElementById("nb-modal-styles")){const l=document.createElement("style");l.id="nb-modal-styles",l.textContent=`
+    });
+    root.querySelectorAll(".nb-mobile-item>.nb-mobile-link").forEach(function(btn){
+        btn.addEventListener("click",function(){btn.closest(".nb-mobile-item").classList.toggle("nb-open");pad();});
+    });
+    document.addEventListener("click",function(e){
+        if(!root.contains(e.target))root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
+    });
+}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}else{init();}
+})();`;return`<div id="nb-root-${e}" class="nb-inner" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="nb-logo" data-gjs-editable="false" data-gjs-selectable="false">${r}</div><ul class="nb-links" data-gjs-editable="false" data-gjs-selectable="false">${s}</ul><div class="nb-actions" data-gjs-editable="false" data-gjs-selectable="false">${c}</div><button class="nb-hamburger" type="button" id="nb-toggle-${e}" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false"><span></span><span></span><span></span></button></div><div class="nb-mobile-menu" id="nb-mobile-${e}" data-gjs-editable="false" data-gjs-selectable="false">${x}${p?`<div class="nb-mobile-actions">${p}</div>`:""}</div><script>${b}<\/script>`}function O(){return function(){}}function D(t,e){const r=document.getElementById("navbar-config-modal");if(r&&r.remove(),!document.getElementById("nb-modal-styles")){const l=document.createElement("style");l.id="nb-modal-styles",l.textContent=`
             .nb-overlay {
                 position: fixed; inset: 0; z-index: 99999;
                 display: flex; align-items: center; justify-content: center;
@@ -449,7 +402,7 @@ import{i as B,t as C,d as N,f as j,e as q,s as z,g as I,c as T,E as A,j as M,h a
                 font-family: inherit; white-space: nowrap; transition: background 0.15s;
             }
             .nb-pick-btn:hover { background: #002a52; }
-        `,document.head.appendChild(l)}const s=(()=>{try{return JSON.parse(n.getAttributes()["data-navbar-config"]||"{}")}catch{return{}}})(),c=s.logo_url||"",h=s.logo_alt||"",u=s.logo_text||"Logo",e=JSON.parse(JSON.stringify(s.links||[{type:"link",label:"Inicio",href:"/"},{type:"link",label:"Nosotros",href:"#"}])),m=JSON.parse(JSON.stringify(s.actions||[{label:"Ingresar",href:"#",style:"primary",icon:""}])),a=document.createElement("div");a.id="navbar-config-modal",a.className="nb-overlay";const i=document.createElement("div");i.className="nb-modal",i.innerHTML=`
+        `,document.head.appendChild(l)}const s=(()=>{try{return JSON.parse(e.getAttributes()["data-navbar-config"]||"{}")}catch{return{}}})(),c=s.logo_url||"",x=s.logo_alt||"",p=s.logo_text||"Logo",b=JSON.parse(JSON.stringify(s.links||[{type:"link",label:"Inicio",href:"/"},{type:"link",label:"Nosotros",href:"#"}])),o=JSON.parse(JSON.stringify(s.actions||[{label:"Ingresar",href:"#",style:"primary",icon:""}])),i=document.createElement("div");i.id="navbar-config-modal",i.className="nb-overlay";const n=document.createElement("div");n.className="nb-modal",n.innerHTML=`
         <div class="nb-modal-header">
             <div class="nb-modal-header-left">
                 <i class="ri-layout-top-line"></i>
@@ -477,8 +430,8 @@ import{i as B,t as C,d as N,f as j,e as q,s as z,g as I,c as T,E as A,j as M,h a
                 <div class="nb-card">
                     <label class="nb-label">Texto alternativo / Logo de texto</label>
                     <div class="nb-row">
-                        <input id="nb-logo-alt" type="text" placeholder="Texto alternativo" value="${h}" class="nb-input">
-                        <input id="nb-logo-text" type="text" placeholder="Texto si no hay imagen" value="${u}" class="nb-input">
+                        <input id="nb-logo-alt" type="text" placeholder="Texto alternativo" value="${x}" class="nb-input">
+                        <input id="nb-logo-text" type="text" placeholder="Texto si no hay imagen" value="${p}" class="nb-input">
                     </div>
                 </div>
             </div>
@@ -504,52 +457,52 @@ import{i as B,t as C,d as N,f as j,e as q,s as z,g as I,c as T,E as A,j as M,h a
             <button id="nb-modal-cancel" class="nb-btn-cancel">Cancelar</button>
             <button id="nb-modal-save" class="nb-btn-save">Aplicar cambios</button>
         </div>
-    `,a.appendChild(i),document.body.appendChild(a),i.querySelectorAll(".nb-tab-btn").forEach(l=>{l.addEventListener("click",()=>{i.querySelectorAll(".nb-tab-btn").forEach(o=>o.classList.remove("active")),i.querySelectorAll(".nb-tab-panel").forEach(o=>o.classList.remove("active")),l.classList.add("active"),i.querySelector(`#nb-panel-${l.dataset.tab}`).classList.add("active")})}),i.querySelector("#nb-logo-pick").addEventListener("click",()=>{_({type:"image",title:"Seleccionar logo",onSelect:l=>{i.querySelector("#nb-logo-url").value=l;let o=i.querySelector("#nb-logo-preview");if(!o||o.tagName==="DIV"){const f=document.createElement("img");f.id="nb-logo-preview",f.style.cssText="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;",o?.replaceWith(f)??i.querySelector("#nb-logo-url").before(f),o=f}o.src=l,o.style.display="block"}})});function p(){const l=i.querySelector("#nb-links-list");l.innerHTML="",e.forEach((o,f)=>{const b=document.createElement("div");if(b.className="nb-link-card",b.dataset.index=f,o.type==="submenu"){const d=(o.children||[]).map((v,k)=>`
+    `,i.appendChild(n),document.body.appendChild(i),n.querySelectorAll(".nb-tab-btn").forEach(l=>{l.addEventListener("click",()=>{n.querySelectorAll(".nb-tab-btn").forEach(a=>a.classList.remove("active")),n.querySelectorAll(".nb-tab-panel").forEach(a=>a.classList.remove("active")),l.classList.add("active"),n.querySelector(`#nb-panel-${l.dataset.tab}`).classList.add("active")})}),n.querySelector("#nb-logo-pick").addEventListener("click",()=>{_({type:"image",title:"Seleccionar logo",onSelect:l=>{n.querySelector("#nb-logo-url").value=l;let a=n.querySelector("#nb-logo-preview");if(!a||a.tagName==="DIV"){const f=document.createElement("img");f.id="nb-logo-preview",f.style.cssText="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;",a?.replaceWith(f)??n.querySelector("#nb-logo-url").before(f),a=f}a.src=l,a.style.display="block"}})});function u(){const l=n.querySelector("#nb-links-list");l.innerHTML="",b.forEach((a,f)=>{const m=document.createElement("div");if(m.className="nb-link-card",m.dataset.index=f,a.type==="submenu"){const d=(a.children||[]).map((v,k)=>`
                     <div class="nb-submenu-item" data-child="${k}">
                         <input class="nb-input-sm" style="width:120px;" placeholder="ri-icon (opcional)" value="${v.icon||""}" data-field="icon">
                         <input class="nb-input-sm" style="flex:1;" placeholder="Texto" value="${v.label||""}" data-field="label">
                         <input class="nb-input-sm" style="flex:1;" placeholder="URL" value="${v.href||""}" data-field="href">
                         <button class="nb-btn-remove nb-remove-child"><i class="ri-delete-bin-line"></i></button>
-                    </div>`).join("");b.innerHTML=`
+                    </div>`).join("");m.innerHTML=`
                     <div class="nb-link-card-header">
                         <span class="nb-type-badge nb-type-submenu">Submenú</span>
-                        <input class="nb-input-sm" style="flex:1;" placeholder="Título del submenú" value="${o.label||""}" data-field="label">
+                        <input class="nb-input-sm" style="flex:1;" placeholder="Título del submenú" value="${a.label||""}" data-field="label">
                         <button class="nb-btn-remove nb-remove-link"><i class="ri-delete-bin-line"></i></button>
                     </div>
                     <div class="nb-link-card-body">
                         <div class="nb-list nb-children-list" style="gap:0.375rem;">${d}</div>
                         <button class="nb-btn-sm-add nb-add-child"><i class="ri-add-line"></i> Agregar sub-enlace</button>
-                    </div>`}else b.innerHTML=`
+                    </div>`}else m.innerHTML=`
                     <div class="nb-link-card-header">
                         <span class="nb-type-badge nb-type-link">Link</span>
-                        <input class="nb-input-sm" style="flex:1;" placeholder="Texto del enlace" value="${o.label||""}" data-field="label">
+                        <input class="nb-input-sm" style="flex:1;" placeholder="Texto del enlace" value="${a.label||""}" data-field="label">
                         <button class="nb-btn-remove nb-remove-link"><i class="ri-delete-bin-line"></i></button>
                     </div>
                     <div class="nb-link-card-body">
                         <div class="nb-link-row">
-                            <input class="nb-input-sm" style="flex:1;" placeholder="URL del enlace" value="${o.href||""}" data-field="href">
+                            <input class="nb-input-sm" style="flex:1;" placeholder="URL del enlace" value="${a.href||""}" data-field="href">
                         </div>
-                    </div>`;b.querySelector(".nb-remove-link").onclick=()=>{e.splice(f,1),p()},b.querySelectorAll("[data-field]").forEach(d=>{d.addEventListener("input",()=>{o[d.dataset.field]=d.value})}),o.type==="submenu"&&(b.querySelector(".nb-add-child").onclick=()=>{o.children=o.children||[],o.children.push({label:"Nuevo enlace",href:"#",icon:""}),p()},b.querySelectorAll(".nb-remove-child").forEach(d=>{d.onclick=()=>{const v=parseInt(d.closest("[data-child]").dataset.child);o.children.splice(v,1),p()}}),b.querySelectorAll(".nb-submenu-item [data-field]").forEach(d=>{const v=parseInt(d.closest("[data-child]").dataset.child);d.addEventListener("input",()=>{o.children[v][d.dataset.field]=d.value})})),l.appendChild(b)})}function y(){const l=i.querySelector("#nb-actions-list");l.innerHTML="",m.forEach((o,f)=>{const b=document.createElement("div");b.className="nb-action-card",b.innerHTML=`
+                    </div>`;m.querySelector(".nb-remove-link").onclick=()=>{b.splice(f,1),u()},m.querySelectorAll("[data-field]").forEach(d=>{d.addEventListener("input",()=>{a[d.dataset.field]=d.value})}),a.type==="submenu"&&(m.querySelector(".nb-add-child").onclick=()=>{a.children=a.children||[],a.children.push({label:"Nuevo enlace",href:"#",icon:""}),u()},m.querySelectorAll(".nb-remove-child").forEach(d=>{d.onclick=()=>{const v=parseInt(d.closest("[data-child]").dataset.child);a.children.splice(v,1),u()}}),m.querySelectorAll(".nb-submenu-item [data-field]").forEach(d=>{const v=parseInt(d.closest("[data-child]").dataset.child);d.addEventListener("input",()=>{a.children[v][d.dataset.field]=d.value})})),l.appendChild(m)})}function y(){const l=n.querySelector("#nb-actions-list");l.innerHTML="",o.forEach((a,f)=>{const m=document.createElement("div");m.className="nb-action-card",m.innerHTML=`
                 <div class="nb-row">
-                    <input class="nb-input-sm" style="width:120px;flex-shrink:0;" placeholder="ri-icon (opcional)" value="${o.icon||""}" data-field="icon">
-                    <input class="nb-input-sm" style="flex:1;" placeholder="Texto del botón" value="${o.label||""}" data-field="label">
+                    <input class="nb-input-sm" style="width:120px;flex-shrink:0;" placeholder="ri-icon (opcional)" value="${a.icon||""}" data-field="icon">
+                    <input class="nb-input-sm" style="flex:1;" placeholder="Texto del botón" value="${a.label||""}" data-field="label">
                     <button class="nb-btn-remove nb-remove-action"><i class="ri-delete-bin-line"></i></button>
                 </div>
                 <div class="nb-row">
-                    <input class="nb-input-sm" style="flex:1;" placeholder="URL" value="${o.href||""}" data-field="href">
+                    <input class="nb-input-sm" style="flex:1;" placeholder="URL" value="${a.href||""}" data-field="href">
                     <select class="nb-select" data-field="style">
-                        <option value="primary" ${o.style==="primary"?"selected":""}>Azul sólido</option>
-                        <option value="outline" ${o.style==="outline"?"selected":""}>Azul outline</option>
-                        <option value="orange" ${o.style==="orange"?"selected":""}>Naranja</option>
+                        <option value="primary" ${a.style==="primary"?"selected":""}>Azul sólido</option>
+                        <option value="outline" ${a.style==="outline"?"selected":""}>Azul outline</option>
+                        <option value="orange" ${a.style==="orange"?"selected":""}>Naranja</option>
                     </select>
-                </div>`,b.querySelector(".nb-remove-action").onclick=()=>{m.splice(f,1),y()},b.querySelectorAll("[data-field]").forEach(d=>{d.addEventListener("input",()=>{o[d.dataset.field]=d.value}),d.addEventListener("change",()=>{o[d.dataset.field]=d.value})}),l.appendChild(b)})}p(),y(),i.querySelector("#nb-add-link").onclick=()=>{e.push({type:"link",label:"Nuevo enlace",href:"#"}),p()},i.querySelector("#nb-add-submenu").onclick=()=>{e.push({type:"submenu",label:"Menú",children:[{label:"Enlace",href:"#",icon:""}]}),p()},i.querySelector("#nb-add-action").onclick=()=>{m.push({label:"Botón",href:"#",style:"primary",icon:""}),y()};const g=()=>a.remove();i.querySelector("#nb-modal-close").onclick=g,i.querySelector("#nb-modal-cancel").onclick=g,a.onclick=l=>{l.target===a&&g()},i.querySelector("#nb-modal-save").onclick=()=>{const l={logo_url:i.querySelector("#nb-logo-url").value.trim(),logo_alt:i.querySelector("#nb-logo-alt").value.trim(),logo_text:i.querySelector("#nb-logo-text").value.trim(),links:e,actions:m};n.addAttributes({"data-navbar-config":JSON.stringify(l)}),n.components(L(l)+$),g()}}function D(t){const n="navbar-component";t.DomComponents.addType(n,{isComponent:r=>r.getAttribute?.("data-gjs-type")===n?{type:n}:!1,model:{defaults:{name:"Navbar",tagName:"nav",draggable:!0,droppable:!1,removable:!0,copyable:!1,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":n,class:"nb-wrapper","data-navbar-config":JSON.stringify({logo_url:"",logo_alt:"Logo",logo_text:"Logo",links:[{type:"link",label:"Sobre nosotros",href:"#"},{type:"link",label:"Créditos",href:"#"},{type:"link",label:"Depósitos",href:"#"},{type:"submenu",label:"Otros servicios",children:[{label:"Servicio 1",href:"#",icon:""},{label:"Servicio 2",href:"#",icon:""}]},{type:"link",label:"Contáctanos",href:"#"}],actions:[{label:"Ingresar",href:"#",style:"primary",icon:""}]})},components:L({logo_url:"",logo_alt:"Logo",logo_text:"Logo",links:[{type:"link",label:"Sobre nosotros",href:"#"},{type:"link",label:"Créditos",href:"#"},{type:"link",label:"Depósitos",href:"#"},{type:"submenu",label:"Otros servicios",children:[{label:"Servicio 1",href:"#",icon:""},{label:"Servicio 2",href:"#",icon:""}]},{type:"link",label:"Contáctanos",href:"#"}],actions:[{label:"Ingresar",href:"#",style:"primary",icon:""}]})+$,script:O(),toolbar:[],traits:[{type:"button",label:"Navbar",text:"Administrar Navbar",full:!0,command:"open-navbar-config"}]},init(){this.set("type",n),this.addAttributes({"data-gjs-type":n})}}}),t.Commands.add("open-navbar-config",{run(r){const s=r.getSelected();s&&P(r,s)}}),t.BlockManager.add("navbar-block",{label:"Navbar",category:"Navbar",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+                </div>`,m.querySelector(".nb-remove-action").onclick=()=>{o.splice(f,1),y()},m.querySelectorAll("[data-field]").forEach(d=>{d.addEventListener("input",()=>{a[d.dataset.field]=d.value}),d.addEventListener("change",()=>{a[d.dataset.field]=d.value})}),l.appendChild(m)})}u(),y(),n.querySelector("#nb-add-link").onclick=()=>{b.push({type:"link",label:"Nuevo enlace",href:"#"}),u()},n.querySelector("#nb-add-submenu").onclick=()=>{b.push({type:"submenu",label:"Menú",children:[{label:"Enlace",href:"#",icon:""}]}),u()},n.querySelector("#nb-add-action").onclick=()=>{o.push({label:"Botón",href:"#",style:"primary",icon:""}),y()};const g=()=>i.remove();n.querySelector("#nb-modal-close").onclick=g,n.querySelector("#nb-modal-cancel").onclick=g,i.onclick=l=>{l.target===i&&g()},n.querySelector("#nb-modal-save").onclick=()=>{const l={logo_url:n.querySelector("#nb-logo-url").value.trim(),logo_alt:n.querySelector("#nb-logo-alt").value.trim(),logo_text:n.querySelector("#nb-logo-text").value.trim(),links:b,actions:o},f=e.getEl()?.querySelector("[id^='nb-root-']")?.id?.replace("nb-root-","")||null;e.addAttributes({"data-navbar-config":JSON.stringify(l)}),e.components(L(l,f)+S),g()}}function P(t){const e="navbar-component";t.DomComponents.addType(e,{isComponent:r=>r.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Navbar",tagName:"nav",draggable:!0,droppable:!1,removable:!0,copyable:!1,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":e,class:"nb-wrapper","data-navbar-config":JSON.stringify({logo_url:"",logo_alt:"Logo",logo_text:"Logo",links:[{type:"link",label:"Sobre nosotros",href:"#"},{type:"link",label:"Créditos",href:"#"},{type:"link",label:"Depósitos",href:"#"},{type:"submenu",label:"Otros servicios",children:[{label:"Servicio 1",href:"#",icon:""},{label:"Servicio 2",href:"#",icon:""}]},{type:"link",label:"Contáctanos",href:"#"}],actions:[{label:"Ingresar",href:"#",style:"primary",icon:""}]})},components:L({logo_url:"",logo_alt:"Logo",logo_text:"Logo",links:[{type:"link",label:"Sobre nosotros",href:"#"},{type:"link",label:"Créditos",href:"#"},{type:"link",label:"Depósitos",href:"#"},{type:"submenu",label:"Otros servicios",children:[{label:"Servicio 1",href:"#",icon:""},{label:"Servicio 2",href:"#",icon:""}]},{type:"link",label:"Contáctanos",href:"#"}],actions:[{label:"Ingresar",href:"#",style:"primary",icon:""}]})+S,script:O(),toolbar:[],traits:[{type:"button",label:"Navbar",text:"Administrar Navbar",full:!0,command:"open-navbar-config"}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),t.Commands.add("open-navbar-config",{run(r){const s=r.getSelected();s&&D(r,s)}}),t.BlockManager.add("navbar-block",{label:"Navbar",category:"Navbar",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#003B71" rx="2"/>
             <rect x="2" y="12" width="8" height="8" fill="rgba(255,255,255,0.3)" rx="1"/>
             <rect x="12" y="14" width="4" height="1.5" rx="0.75" fill="rgba(255,255,255,0.7)"/>
             <rect x="17" y="14" width="4" height="1.5" rx="0.75" fill="rgba(255,255,255,0.7)"/>
             <rect x="22" y="14" width="4" height="1.5" rx="0.75" fill="rgba(255,255,255,0.7)"/>
             <rect x="24" y="11" width="6" height="10" rx="2" fill="#E97300"/>
-        </svg>`,activate:!0,content:{type:n,attributes:{"data-gjs-type":n}}}),G(t,n),J(t)}function G(t,n){t.on("storage:end:load",()=>{setTimeout(()=>S(t,n),800)}),t.on("component:mount",r=>{const s=r.getEl();s?.getAttribute?.("data-gjs-type")===n&&(r.set("type",n),setTimeout(()=>{const c=r.get("script");c&&typeof c=="function"&&c.call(s)},400))}),t.on("canvas:render",()=>{setTimeout(()=>S(t,n),600)})}function S(t,n){t.getWrapper().find(`[data-gjs-type="${n}"]`).forEach(r=>{r.set("type",n);const s=r.getEl();if(s?.isConnected){const c=r.get("script");c&&typeof c=="function"&&c.call(s)}})}function J(t){t.on("load",()=>{const n=t.Canvas.getFrameEl();if(!n)return;const r=n.contentDocument?.head;if(r&&!r.querySelector("#navbar-component-css")){const s=document.createElement("style");s.id="navbar-component-css",s.textContent=`
+        </svg>`,activate:!0,content:{type:e,attributes:{"data-gjs-type":e}}}),G(t,e),J(t)}function G(t,e){t.on("storage:end:load",()=>{setTimeout(()=>$(t,e),800)}),t.on("component:mount",r=>{const s=r.getEl();s?.getAttribute?.("data-gjs-type")===e&&(r.set("type",e),setTimeout(()=>{const c=r.get("script");c&&typeof c=="function"&&c.call(s)},400))}),t.on("canvas:render",()=>{setTimeout(()=>$(t,e),600)})}function $(t,e){t.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(r=>{r.set("type",e);const s=r.getEl();if(s?.isConnected){const c=r.get("script");c&&typeof c=="function"&&c.call(s)}})}function J(t){t.on("load",()=>{const e=t.Canvas.getFrameEl();if(!e)return;const r=e.contentDocument?.head;if(r&&!r.querySelector("#navbar-component-css")){const s=document.createElement("style");s.id="navbar-component-css",s.textContent=`
                 [data-gjs-type="navbar-component"] {
                     outline: 2px dashed rgba(240,135,42,0.4);
                     outline-offset: 2px;
@@ -560,4 +513,4 @@ import{i as B,t as C,d as N,f as j,e as q,s as z,g as I,c as T,E as A,j as M,h a
                 body {
                     padding-top: 0 !important;
                 }
-            `,r.appendChild(s)}})}document.addEventListener("DOMContentLoaded",async()=>{const t=new A;let n=document.getElementById("navbar-id")?.value||"",r=document.getElementById("navbar-name")?.value||"",s=document.getElementById("navbar-load-url")?.value||"",c=document.getElementById("navbar-store-url")?.value||"";const h=document.getElementById("navbar-is-active")?.value==="1";let u=!!n;const e=U();if(D(e),e.on("load",()=>{C(e),N(),j(),q(e),z(e),I(e),T(e),R(e),setTimeout(()=>{e.runCommand("sw-visibility"),e.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),u&&s)try{await t.loadPageContent(e,s),x("Navbar cargado correctamente","success")}catch{x("Error al cargar el navbar","error")}document.getElementById("save-button")?.addEventListener("click",async()=>{const a=document.getElementById("save-button");a.disabled=!0,a.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{!u&&!r?M({title:"Nombre del Navbar",description:"Ingresa un nombre descriptivo para identificar este navbar.",placeholder:"Ej: Navbar Principal",icon:"ri-file-text-line",iconBg:"#dbeafe",iconColor:"#2563eb",confirmLabel:"Guardar",onConfirm:async i=>{if(!i?.trim()){x("El nombre es obligatorio","error"),a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>';return}try{await m(i)}catch(p){x(p.message,"error")}finally{a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}},onCancel:()=>{a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}}):(await m(r),a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>')}catch(i){x(i.message,"error"),a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}});async function m(a){const i=u?"PUT":"POST",p=t.getEditorContent(e),y=await t.savePage(e,{...p,name:a,is_active:h},c,i);if(y.success){if(t.markAsClean(),x(y.message,"success"),!u&&y.navbar){n=y.navbar.id,r=y.navbar.name,u=!0;const g=document.getElementById("navbar-id");g&&(g.value=n);const l=document.getElementById("navbar-name");l&&(l.value=r);const o=document.querySelector('meta[name="app-url"]'),f=o?o.content:"";c=c.endsWith("/navbars")?`${c}/${n}`:`${c.replace(/\/navbars\/?$/,"")}/navbars/${n}`;const d=document.getElementById("navbar-store-url");d&&(d.value=c),s=`${c}/load`;const v=document.getElementById("navbar-load-url");v&&(v.value=s);const k=document.getElementById("editor-title");k&&(k.textContent=`Editando Navbar: ${r}`);const w=`/navbars/edit/${n}/edit`,E=f?`${f}${w}`:w;window.history.replaceState({path:E},"",E)}else if(a){r=a;const g=document.getElementById("navbar-name");g&&(g.value=r);const l=document.getElementById("editor-title");l&&(l.textContent=`Editando Navbar: ${r}`)}}}});function R(t){t.Commands.add("canvas-clear",{run:n=>{H({title:"Limpiar canvas",description:"¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",icon:"ri-delete-bin-line",iconBg:"#fef2f2",iconColor:"#dc2626",confirmLabel:"Limpiar todo",confirmColor:"#dc2626",onConfirm:()=>{n.DomComponents.clear(),n.CssComposer.clear()}})}})}function x(t,n="info"){typeof window.showNotification=="function"&&window.showNotification(t,n)}
+            `,r.appendChild(s)}})}document.addEventListener("DOMContentLoaded",async()=>{const t=new A;let e=document.getElementById("navbar-id")?.value||"",r=document.getElementById("navbar-name")?.value||"",s=document.getElementById("navbar-load-url")?.value||"",c=document.getElementById("navbar-store-url")?.value||"";const x=document.getElementById("navbar-is-active")?.value==="1";let p=!!e;const b=U();if(P(b),b.on("load",()=>{C(b),j(),N(),I(b),q(b),z(b),T(b),R(b),setTimeout(()=>{b.runCommand("sw-visibility"),b.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),p&&s)try{await t.loadPageContent(b,s),h("Navbar cargado correctamente","success")}catch{h("Error al cargar el navbar","error")}document.getElementById("save-button")?.addEventListener("click",async()=>{const i=document.getElementById("save-button");i.disabled=!0,i.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{!p&&!r?M({title:"Nombre del Navbar",description:"Ingresa un nombre descriptivo para identificar este navbar.",placeholder:"Ej: Navbar Principal",icon:"ri-file-text-line",iconBg:"#dbeafe",iconColor:"#2563eb",confirmLabel:"Guardar",onConfirm:async n=>{if(!n?.trim()){h("El nombre es obligatorio","error"),i.disabled=!1,i.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>';return}try{await o(n)}catch(u){h(u.message,"error")}finally{i.disabled=!1,i.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}},onCancel:()=>{i.disabled=!1,i.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}}):(await o(r),i.disabled=!1,i.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>')}catch(n){h(n.message,"error"),i.disabled=!1,i.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}});async function o(i){const n=p?"PUT":"POST",u=t.getEditorContent(b),y=await t.savePage(b,{...u,name:i,is_active:x},c,n);if(y.success){if(t.markAsClean(),h(y.message,"success"),!p&&y.navbar){e=y.navbar.id,r=y.navbar.name,p=!0;const g=document.getElementById("navbar-id");g&&(g.value=e);const l=document.getElementById("navbar-name");l&&(l.value=r);const a=document.querySelector('meta[name="app-url"]'),f=a?a.content:"";c=c.endsWith("/navbars")?`${c}/${e}`:`${c.replace(/\/navbars\/?$/,"")}/navbars/${e}`;const d=document.getElementById("navbar-store-url");d&&(d.value=c),s=`${c}/load`;const v=document.getElementById("navbar-load-url");v&&(v.value=s);const k=document.getElementById("editor-title");k&&(k.textContent=`Editando Navbar: ${r}`);const w=`/navbars/edit/${e}/edit`,E=f?`${f}${w}`:w;window.history.replaceState({path:E},"",E)}else if(i){r=i;const g=document.getElementById("navbar-name");g&&(g.value=r);const l=document.getElementById("editor-title");l&&(l.textContent=`Editando Navbar: ${r}`)}}}});function R(t){t.Commands.add("canvas-clear",{run:e=>{H({title:"Limpiar canvas",description:"¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",icon:"ri-delete-bin-line",iconBg:"#fef2f2",iconColor:"#dc2626",confirmLabel:"Limpiar todo",confirmColor:"#dc2626",onConfirm:()=>{e.DomComponents.clear(),e.CssComposer.clear()}})}})}function h(t,e="info"){typeof window.showNotification=="function"&&window.showNotification(t,e)}

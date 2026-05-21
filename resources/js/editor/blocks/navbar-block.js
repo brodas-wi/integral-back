@@ -241,7 +241,9 @@ const NAVBAR_STYLES = `
 }
 </style>`;
 
-function buildNavbarHTML(data) {
+function buildNavbarHTML(data, uid) {
+    uid = uid || "nb" + Math.random().toString(36).slice(2, 7);
+
     const logoHtml = data.logo_url
         ? `<img src="${data.logo_url}" alt="${data.logo_alt || "Logo"}">`
         : `<span class="nb-logo-text">${data.logo_text || "Logo"}</span>`;
@@ -257,13 +259,7 @@ function buildNavbarHTML(data) {
                         return `<li><a href="${child.href || "#"}" class="nb-submenu-link">${icon}${child.label}</a></li>`;
                     })
                     .join("");
-                return `
-<li class="nb-item nb-has-submenu">
-    <button class="nb-link nb-submenu-trigger" type="button">
-        ${item.label}<i class="ri-arrow-down-s-line nb-chevron"></i>
-    </button>
-    <ul class="nb-submenu">${childrenHtml}</ul>
-</li>`;
+                return `<li class="nb-item nb-has-submenu"><button class="nb-link nb-submenu-trigger" type="button">${item.label}<i class="ri-arrow-down-s-line nb-chevron"></i></button><ul class="nb-submenu">${childrenHtml}</ul></li>`;
             }
             return `<li class="nb-item"><a href="${item.href || "#"}" class="nb-link">${item.label}</a></li>`;
         })
@@ -287,13 +283,7 @@ function buildNavbarHTML(data) {
                         return `<a href="${child.href || "#"}" class="nb-mobile-submenu-link">${icon}${child.label}</a>`;
                     })
                     .join("");
-                return `
-<div class="nb-mobile-item">
-    <button class="nb-mobile-link" type="button">
-        ${item.label}<i class="ri-arrow-down-s-line"></i>
-    </button>
-    <div class="nb-mobile-submenu">${childrenHtml}</div>
-</div>`;
+                return `<div class="nb-mobile-item"><button class="nb-mobile-link" type="button">${item.label}<i class="ri-arrow-down-s-line"></i></button><div class="nb-mobile-submenu">${childrenHtml}</div></div>`;
             }
             return `<a href="${item.href || "#"}" class="nb-mobile-link">${item.label}</a>`;
         })
@@ -306,73 +296,38 @@ function buildNavbarHTML(data) {
         })
         .join("");
 
-    const uid = "nb" + Math.random().toString(36).slice(2, 7);
-
-    return `
-<div class="nb-inner" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-    <div class="nb-logo" data-gjs-editable="false" data-gjs-selectable="false">${logoHtml}</div>
-    <ul class="nb-links" data-gjs-editable="false" data-gjs-selectable="false">${linksHtml}</ul>
-    <div class="nb-actions" data-gjs-editable="false" data-gjs-selectable="false">${actionsHtml}</div>
-    <button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false">
-        <span></span><span></span><span></span>
-    </button>
-</div>
-<div class="nb-mobile-menu" id="nb-mobile-${uid}" data-gjs-editable="false" data-gjs-selectable="false">
-    ${mobileLinksHtml}
-    ${mobileActionsHtml ? `<div class="nb-mobile-actions">${mobileActionsHtml}</div>` : ""}
-</div>
-<script>
-(function() {
-    function initNavbar() {
-        var root = document.currentScript ? document.currentScript.closest('nav') : document.querySelector('[data-gjs-type="navbar-component"]');
-        if (!root) return;
-
-        function updatePadding() {
-            document.body.style.paddingTop = root.offsetHeight + 'px';
-        }
-        updatePadding();
-        window.addEventListener('resize', updatePadding);
-
-        var toggle = document.getElementById('nb-toggle-${uid}');
-        var mobile = document.getElementById('nb-mobile-${uid}');
-        if (toggle && mobile) {
-            toggle.addEventListener('click', function() {
-                mobile.classList.toggle('nb-open');
-                updatePadding();
-            });
-        }
-
-        root.querySelectorAll('.nb-submenu-trigger').forEach(function(btn) {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                var item = btn.closest('.nb-item');
-                var isOpen = item.classList.contains('nb-open');
-                root.querySelectorAll('.nb-item.nb-open').forEach(function(el) { el.classList.remove('nb-open'); });
-                if (!isOpen) item.classList.add('nb-open');
-            });
+    const scriptContent = `(function(){
+var id="${uid}";
+function init(){
+    var inner=document.getElementById("nb-root-"+id);
+    if(!inner)return;
+    var root=inner.closest("nav")||inner.parentElement;
+    function pad(){if(root)document.body.style.paddingTop=root.offsetHeight+"px";}
+    pad();
+    window.addEventListener("resize",pad);
+    var toggle=document.getElementById("nb-toggle-"+id);
+    var mobile=document.getElementById("nb-mobile-"+id);
+    if(toggle&&mobile){toggle.addEventListener("click",function(){mobile.classList.toggle("nb-open");pad();});}
+    root.querySelectorAll(".nb-submenu-trigger").forEach(function(btn){
+        btn.addEventListener("click",function(e){
+            e.stopPropagation();
+            var item=btn.closest(".nb-item");
+            var open=item.classList.contains("nb-open");
+            root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
+            if(!open)item.classList.add("nb-open");
         });
+    });
+    root.querySelectorAll(".nb-mobile-item>.nb-mobile-link").forEach(function(btn){
+        btn.addEventListener("click",function(){btn.closest(".nb-mobile-item").classList.toggle("nb-open");pad();});
+    });
+    document.addEventListener("click",function(e){
+        if(!root.contains(e.target))root.querySelectorAll(".nb-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
+    });
+}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}else{init();}
+})();`;
 
-        root.querySelectorAll('.nb-mobile-item > .nb-mobile-link').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                btn.closest('.nb-mobile-item').classList.toggle('nb-open');
-                updatePadding();
-            });
-        });
-
-        document.addEventListener('click', function(e) {
-            if (!root.contains(e.target)) {
-                root.querySelectorAll('.nb-item.nb-open').forEach(function(el) { el.classList.remove('nb-open'); });
-            }
-        });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initNavbar);
-    } else {
-        initNavbar();
-    }
-})();
-</script>`;
+    return `<div id="nb-root-${uid}" class="nb-inner" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="nb-logo" data-gjs-editable="false" data-gjs-selectable="false">${logoHtml}</div><ul class="nb-links" data-gjs-editable="false" data-gjs-selectable="false">${linksHtml}</ul><div class="nb-actions" data-gjs-editable="false" data-gjs-selectable="false">${actionsHtml}</div><button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false"><span></span><span></span><span></span></button></div><div class="nb-mobile-menu" id="nb-mobile-${uid}" data-gjs-editable="false" data-gjs-selectable="false">${mobileLinksHtml}${mobileActionsHtml ? `<div class="nb-mobile-actions">${mobileActionsHtml}</div>` : ""}</div><script>${scriptContent}<\/script>`;
 }
 
 function createNavbarScript() {
@@ -824,8 +779,14 @@ function showNavbarModal(editor, component) {
             links,
             actions,
         };
+        const existingInner = component
+            .getEl()
+            ?.querySelector("[id^='nb-root-']");
+        const existingUid = existingInner?.id?.replace("nb-root-", "") || null;
         component.addAttributes({ "data-navbar-config": JSON.stringify(data) });
-        component.components(buildNavbarHTML(data) + NAVBAR_STYLES);
+        component.components(
+            buildNavbarHTML(data, existingUid) + NAVBAR_STYLES,
+        );
         close();
     };
 }
