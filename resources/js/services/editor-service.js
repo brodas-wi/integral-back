@@ -104,6 +104,9 @@ export class EditorService {
             }
         );
 
+        console.log('[EditorService] Scripts extraídos:', extractedScripts.length);
+        console.log('[EditorService] js_content combinado length:', combinedJs.length);
+
         const editorJs = editor.getJs() || "";
         const combinedJs = [editorJs, ...extractedScripts]
             .filter(Boolean)
