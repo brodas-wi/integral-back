@@ -69,7 +69,7 @@ const NAVBAR_STYLES = `
     font-family: 'Poppins', sans-serif;
 }
 .nb-inner {
-    padding: 0 3rem;
+    padding: 0 4rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -238,7 +238,7 @@ const NAVBAR_STYLES = `
     flex-direction: column;
     background: #ffffff;
     border-top: 1px solid #f1f5f9;
-    padding: 1rem 1.5rem;
+    padding: 1rem 4rem;
     gap: 0.25rem;
 }
 .nb-mobile-menu.nb-open { display: flex; }
@@ -293,7 +293,13 @@ const NAVBAR_STYLES = `
     border-top: 1px solid #f1f5f9;
 }
 .nb-mobile-actions .nb-btn { justify-content: center; border-radius: 0.625rem; }
+@media (max-width: 1280px) {
+    .nb-inner { padding: 0 2.5rem; }
+    .nb-mobile-menu { padding: 1rem 2.5rem; }
+}
 @media (max-width: 992px) {
+    .nb-mobile-menu { padding: 1rem 1.5rem; }
+    .nb-inner { padding: 0 1.5rem; }
     .nb-links, .nb-actions { display: none; }
     .nb-hamburger { display: flex; }
 }
