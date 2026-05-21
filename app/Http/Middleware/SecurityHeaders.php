@@ -47,6 +47,8 @@ class SecurityHeaders
     private array $editorRoutes = [
         'pages/create',
         'pages/*/edit',
+        'footers/create',
+        'footers/*/edit',
     ];
 
     public function handle(Request $request, Closure $next): Response
