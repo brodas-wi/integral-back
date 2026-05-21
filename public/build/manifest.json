@@ -382,6 +382,16 @@
       "_dropdowns-CtvQ6cwq.js"
     ]
   },
+  "resources/js/navbar-editor.js": {
+    "file": "assets/navbar-editor-ms8N2Lnz.js",
+    "name": "navbar-editor",
+    "src": "resources/js/navbar-editor.js",
+    "isEntry": true,
+    "imports": [
+      "_editor-commands-DIM4nSZH.js",
+      "__commonjsHelpers-CqkleIqs.js"
+    ]
+  },
   "resources/js/pages-editor.js": {
     "file": "assets/pages-editor-BoqLGl2l.js",
     "name": "pages-editor",
