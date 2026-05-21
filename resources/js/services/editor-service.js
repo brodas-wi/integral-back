@@ -24,16 +24,21 @@ export class EditorService {
         if (data.components_json) {
             try {
                 const projectData = JSON.parse(data.components_json);
-                const htmlComponents = (data.html || '').match(/<section|<div class="ss-section/g);
-                const jsonComponents = projectData?.pages?.[0]?.frames?.[0]?.component?.components;
+                const htmlComponents = (data.html || "").match(
+                    /<section|<div class="ss-section/g,
+                );
+                const jsonComponents =
+                    projectData?.pages?.[0]?.frames?.[0]?.component?.components;
 
-                if (jsonComponents && htmlComponents &&
-                    jsonComponents.length >= htmlComponents.length) {
+                if (
+                    jsonComponents &&
+                    htmlComponents &&
+                    jsonComponents.length >= htmlComponents.length
+                ) {
                     editor.loadProjectData(projectData);
                     return data;
                 }
-            } catch {
-            }
+            } catch {}
         }
 
         const html = data.html || "";
@@ -44,6 +49,7 @@ export class EditorService {
             .replace(/<\/html>/gi, "")
             .trim();
 
+        await new Promise((resolve) => setTimeout(resolve, 50));
         editor.setComponents(cleanHtml);
         editor.setStyle(data.css || "");
 
@@ -101,7 +107,7 @@ export class EditorService {
             (_, content) => {
                 if (content.trim()) extractedScripts.push(content.trim());
                 return "";
-            }
+            },
         );
 
         const editorJs = editor.getJs() || "";
@@ -109,8 +115,14 @@ export class EditorService {
             .filter(Boolean)
             .join("\n");
 
-        console.log('[EditorService] Scripts extraídos:', extractedScripts.length);
-        console.log('[EditorService] js_content combinado length:', combinedJs.length);
+        console.log(
+            "[EditorService] Scripts extraídos:",
+            extractedScripts.length,
+        );
+        console.log(
+            "[EditorService] js_content combinado length:",
+            combinedJs.length,
+        );
 
         return {
             html_content: htmlWithoutScripts,

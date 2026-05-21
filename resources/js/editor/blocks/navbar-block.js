@@ -912,43 +912,38 @@ export function initializeNavbarBlock(editor) {
                         ],
                     }) + NAVBAR_STYLES,
                 script: function () {
-                    (function () {
-                        function initNavbar(root) {
-                            if (!root || root.__nbInit) return;
-                            root.__nbInit = true;
-                            var id = root
-                                .querySelector("[id^='nb-root-']")
-                                ?.id?.replace("nb-root-", "");
-                            if (!id) return;
-                            // Solo aplicar padding en página pública (no en editor)
-                            var inEditor =
-                                !!window.__gjseditor ||
-                                document.documentElement.hasAttribute(
-                                    "data-gjs-canvas",
-                                );
-                            function pad() {
-                                if (!inEditor) {
-                                    document.body.style.paddingTop =
-                                        root.offsetHeight + "px";
-                                }
-                            }
-                            pad();
-                            window.addEventListener("resize", pad);
-                            var toggle = document.getElementById(
-                                "nb-toggle-" + id,
+                    (function (root) {
+                        if (!root || typeof root.querySelector !== "function")
+                            return;
+                        if (root.__nbInit) return;
+                        root.__nbInit = true;
+                        var id = root
+                            .querySelector("[id^='nb-root-']")
+                            ?.id?.replace("nb-root-", "");
+                        if (!id) return;
+                        var inEditor =
+                            !!window.__gjseditor ||
+                            document.documentElement.hasAttribute(
+                                "data-gjs-canvas",
                             );
-                            var mobile = document.getElementById(
-                                "nb-mobile-" + id,
-                            );
-                            if (toggle && mobile) {
-                                toggle.addEventListener("click", function () {
-                                    mobile.classList.toggle("nb-open");
-                                    pad();
-                                });
+                        function pad() {
+                            if (!inEditor) {
+                                document.body.style.paddingTop =
+                                    root.offsetHeight + "px";
                             }
-                            root.querySelectorAll(
-                                ".nb-submenu-trigger",
-                            ).forEach(function (btn) {
+                        }
+                        pad();
+                        window.addEventListener("resize", pad);
+                        var toggle = document.getElementById("nb-toggle-" + id);
+                        var mobile = document.getElementById("nb-mobile-" + id);
+                        if (toggle && mobile) {
+                            toggle.addEventListener("click", function () {
+                                mobile.classList.toggle("nb-open");
+                                pad();
+                            });
+                        }
+                        root.querySelectorAll(".nb-submenu-trigger").forEach(
+                            function (btn) {
                                 btn.addEventListener("click", function (e) {
                                     e.stopPropagation();
                                     var item = btn.closest(".nb-item");
@@ -961,29 +956,28 @@ export function initializeNavbarBlock(editor) {
                                     });
                                     if (!open) item.classList.add("nb-open");
                                 });
+                            },
+                        );
+                        root.querySelectorAll(
+                            ".nb-mobile-item>.nb-mobile-link",
+                        ).forEach(function (btn) {
+                            btn.addEventListener("click", function () {
+                                btn.closest(".nb-mobile-item").classList.toggle(
+                                    "nb-open",
+                                );
+                                pad();
                             });
-                            root.querySelectorAll(
-                                ".nb-mobile-item>.nb-mobile-link",
-                            ).forEach(function (btn) {
-                                btn.addEventListener("click", function () {
-                                    btn.closest(
-                                        ".nb-mobile-item",
-                                    ).classList.toggle("nb-open");
-                                    pad();
+                        });
+                        document.addEventListener("click", function (e) {
+                            if (!root.contains(e.target)) {
+                                root.querySelectorAll(
+                                    ".nb-item.nb-open",
+                                ).forEach(function (el) {
+                                    el.classList.remove("nb-open");
                                 });
-                            });
-                            document.addEventListener("click", function (e) {
-                                if (!root.contains(e.target)) {
-                                    root.querySelectorAll(
-                                        ".nb-item.nb-open",
-                                    ).forEach(function (el) {
-                                        el.classList.remove("nb-open");
-                                    });
-                                }
-                            });
-                        }
-                        initNavbar(this);
-                    })();
+                            }
+                        });
+                    })(this);
                 },
                 "script-props": [],
                 toolbar: [],
