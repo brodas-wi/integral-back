@@ -6,8 +6,11 @@ const NAVBAR_STYLES = `
     background-color: #ffffff;
     width: 100%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    position: relative;
-    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     font-family: 'Poppins', sans-serif;
 }
 .nb-inner {
@@ -303,62 +306,77 @@ function buildNavbarHTML(data) {
         })
         .join("");
 
+    const uid = "nb" + Math.random().toString(36).slice(2, 7);
+
     return `
 <div class="nb-inner" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
     <div class="nb-logo" data-gjs-editable="false" data-gjs-selectable="false">${logoHtml}</div>
     <ul class="nb-links" data-gjs-editable="false" data-gjs-selectable="false">${linksHtml}</ul>
     <div class="nb-actions" data-gjs-editable="false" data-gjs-selectable="false">${actionsHtml}</div>
-    <button class="nb-hamburger" type="button" id="nb-toggle" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false">
+    <button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false">
         <span></span><span></span><span></span>
     </button>
 </div>
-<div class="nb-mobile-menu" id="nb-mobile" data-gjs-editable="false" data-gjs-selectable="false">
+<div class="nb-mobile-menu" id="nb-mobile-${uid}" data-gjs-editable="false" data-gjs-selectable="false">
     ${mobileLinksHtml}
     ${mobileActionsHtml ? `<div class="nb-mobile-actions">${mobileActionsHtml}</div>` : ""}
-</div>`;
-}
+</div>
+<script>
+(function() {
+    function initNavbar() {
+        var root = document.currentScript ? document.currentScript.closest('nav') : document.querySelector('[data-gjs-type="navbar-component"]');
+        if (!root) return;
 
-function createNavbarScript() {
-    return function () {
-        const root = this;
+        function updatePadding() {
+            document.body.style.paddingTop = root.offsetHeight + 'px';
+        }
+        updatePadding();
+        window.addEventListener('resize', updatePadding);
 
-        const toggle = root.querySelector("#nb-toggle");
-        const mobile = root.querySelector("#nb-mobile");
+        var toggle = document.getElementById('nb-toggle-${uid}');
+        var mobile = document.getElementById('nb-mobile-${uid}');
         if (toggle && mobile) {
-            toggle.addEventListener("click", () => {
-                mobile.classList.toggle("nb-open");
+            toggle.addEventListener('click', function() {
+                mobile.classList.toggle('nb-open');
+                updatePadding();
             });
         }
 
-        root.querySelectorAll(".nb-submenu-trigger").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
+        root.querySelectorAll('.nb-submenu-trigger').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                const item = btn.closest(".nb-item");
-                const isOpen = item.classList.contains("nb-open");
-                root.querySelectorAll(".nb-item.nb-open").forEach((el) =>
-                    el.classList.remove("nb-open"),
-                );
-                if (!isOpen) item.classList.add("nb-open");
+                var item = btn.closest('.nb-item');
+                var isOpen = item.classList.contains('nb-open');
+                root.querySelectorAll('.nb-item.nb-open').forEach(function(el) { el.classList.remove('nb-open'); });
+                if (!isOpen) item.classList.add('nb-open');
             });
         });
 
-        root.querySelectorAll(".nb-mobile-item > .nb-mobile-link").forEach(
-            (btn) => {
-                btn.addEventListener("click", () => {
-                    const item = btn.closest(".nb-mobile-item");
-                    item.classList.toggle("nb-open");
-                });
-            },
-        );
+        root.querySelectorAll('.nb-mobile-item > .nb-mobile-link').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                btn.closest('.nb-mobile-item').classList.toggle('nb-open');
+                updatePadding();
+            });
+        });
 
-        document.addEventListener("click", (e) => {
+        document.addEventListener('click', function(e) {
             if (!root.contains(e.target)) {
-                root.querySelectorAll(".nb-item.nb-open").forEach((el) =>
-                    el.classList.remove("nb-open"),
-                );
+                root.querySelectorAll('.nb-item.nb-open').forEach(function(el) { el.classList.remove('nb-open'); });
             }
         });
-    };
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNavbar);
+    } else {
+        initNavbar();
+    }
+})();
+</script>`;
+}
+
+function createNavbarScript() {
+    return function () {};
 }
 
 function showNavbarModal(editor, component) {
@@ -1013,6 +1031,12 @@ function injectNavbarCanvasStyles(editor) {
                 [data-gjs-type="navbar-component"] {
                     outline: 2px dashed rgba(240,135,42,0.4);
                     outline-offset: 2px;
+                    /* Override fixed en el editor para visibilidad */
+                    position: relative !important;
+                    top: auto !important;
+                }
+                body {
+                    padding-top: 0 !important;
                 }
             `;
             head.appendChild(style);

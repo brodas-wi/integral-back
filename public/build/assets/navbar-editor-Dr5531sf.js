@@ -1,11 +1,14 @@
-import{i as C,t as j,d as B,f as N,e as q,s as z,g as I,c as A,E as T,j as M,h as H}from"./editor-commands-DIM4nSZH.js";import{o as _}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function U(){return C()}const $=`
+import{i as B,t as C,d as N,f as j,e as q,s as z,g as I,c as T,E as A,j as M,h as H}from"./editor-commands-DIM4nSZH.js";import{o as _}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function U(){return B()}const $=`
 <style>
 .nb-wrapper {
     background-color: #ffffff;
     width: 100%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    position: relative;
-    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     font-family: 'Poppins', sans-serif;
 }
 .nb-inner {
@@ -234,31 +237,83 @@ import{i as C,t as j,d as B,f as N,e as q,s as z,g as I,c as A,E as T,j as M,h a
     .nb-links, .nb-actions { display: none; }
     .nb-hamburger { display: flex; }
 }
-</style>`;function L(e){const n=e.logo_url?`<img src="${e.logo_url}" alt="${e.logo_alt||"Logo"}">`:`<span class="nb-logo-text">${e.logo_text||"Logo"}</span>`,o=(e.links||[]).map(a=>{if(a.type==="submenu"&&a.children?.length){const r=a.children.map(m=>{const l=m.icon?`<i class="${m.icon}"></i>`:"";return`<li><a href="${m.href||"#"}" class="nb-submenu-link">${l}${m.label}</a></li>`}).join("");return`
+</style>`;function L(t){const n=t.logo_url?`<img src="${t.logo_url}" alt="${t.logo_alt||"Logo"}">`:`<span class="nb-logo-text">${t.logo_text||"Logo"}</span>`,r=(t.links||[]).map(e=>{if(e.type==="submenu"&&e.children?.length){const m=e.children.map(a=>{const i=a.icon?`<i class="${a.icon}"></i>`:"";return`<li><a href="${a.href||"#"}" class="nb-submenu-link">${i}${a.label}</a></li>`}).join("");return`
 <li class="nb-item nb-has-submenu">
     <button class="nb-link nb-submenu-trigger" type="button">
-        ${a.label}<i class="ri-arrow-down-s-line nb-chevron"></i>
+        ${e.label}<i class="ri-arrow-down-s-line nb-chevron"></i>
     </button>
-    <ul class="nb-submenu">${r}</ul>
-</li>`}return`<li class="nb-item"><a href="${a.href||"#"}" class="nb-link">${a.label}</a></li>`}).join(""),i=(e.actions||[]).map(a=>{const r=a.icon?`<i class="${a.icon}"></i>`:"";return`<a href="${a.href||"#"}" class="nb-btn nb-btn-${a.style||"primary"}">${r}${a.label}</a>`}).join(""),c=(e.links||[]).map(a=>{if(a.type==="submenu"&&a.children?.length){const r=a.children.map(m=>{const l=m.icon?`<i class="${m.icon}"></i>`:"";return`<a href="${m.href||"#"}" class="nb-mobile-submenu-link">${l}${m.label}</a>`}).join("");return`
+    <ul class="nb-submenu">${m}</ul>
+</li>`}return`<li class="nb-item"><a href="${e.href||"#"}" class="nb-link">${e.label}</a></li>`}).join(""),s=(t.actions||[]).map(e=>{const m=e.icon?`<i class="${e.icon}"></i>`:"";return`<a href="${e.href||"#"}" class="nb-btn nb-btn-${e.style||"primary"}">${m}${e.label}</a>`}).join(""),c=(t.links||[]).map(e=>{if(e.type==="submenu"&&e.children?.length){const m=e.children.map(a=>{const i=a.icon?`<i class="${a.icon}"></i>`:"";return`<a href="${a.href||"#"}" class="nb-mobile-submenu-link">${i}${a.label}</a>`}).join("");return`
 <div class="nb-mobile-item">
     <button class="nb-mobile-link" type="button">
-        ${a.label}<i class="ri-arrow-down-s-line"></i>
+        ${e.label}<i class="ri-arrow-down-s-line"></i>
     </button>
-    <div class="nb-mobile-submenu">${r}</div>
-</div>`}return`<a href="${a.href||"#"}" class="nb-mobile-link">${a.label}</a>`}).join(""),y=(e.actions||[]).map(a=>{const r=a.icon?`<i class="${a.icon}"></i>`:"";return`<a href="${a.href||"#"}" class="nb-btn nb-btn-${a.style||"primary"}">${r}${a.label}</a>`}).join("");return`
+    <div class="nb-mobile-submenu">${m}</div>
+</div>`}return`<a href="${e.href||"#"}" class="nb-mobile-link">${e.label}</a>`}).join(""),h=(t.actions||[]).map(e=>{const m=e.icon?`<i class="${e.icon}"></i>`:"";return`<a href="${e.href||"#"}" class="nb-btn nb-btn-${e.style||"primary"}">${m}${e.label}</a>`}).join(""),u="nb"+Math.random().toString(36).slice(2,7);return`
 <div class="nb-inner" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
     <div class="nb-logo" data-gjs-editable="false" data-gjs-selectable="false">${n}</div>
-    <ul class="nb-links" data-gjs-editable="false" data-gjs-selectable="false">${o}</ul>
-    <div class="nb-actions" data-gjs-editable="false" data-gjs-selectable="false">${i}</div>
-    <button class="nb-hamburger" type="button" id="nb-toggle" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false">
+    <ul class="nb-links" data-gjs-editable="false" data-gjs-selectable="false">${r}</ul>
+    <div class="nb-actions" data-gjs-editable="false" data-gjs-selectable="false">${s}</div>
+    <button class="nb-hamburger" type="button" id="nb-toggle-${u}" aria-label="Menú" data-gjs-editable="false" data-gjs-selectable="false">
         <span></span><span></span><span></span>
     </button>
 </div>
-<div class="nb-mobile-menu" id="nb-mobile" data-gjs-editable="false" data-gjs-selectable="false">
+<div class="nb-mobile-menu" id="nb-mobile-${u}" data-gjs-editable="false" data-gjs-selectable="false">
     ${c}
-    ${y?`<div class="nb-mobile-actions">${y}</div>`:""}
-</div>`}function O(){return function(){const e=this,n=e.querySelector("#nb-toggle"),o=e.querySelector("#nb-mobile");n&&o&&n.addEventListener("click",()=>{o.classList.toggle("nb-open")}),e.querySelectorAll(".nb-submenu-trigger").forEach(i=>{i.addEventListener("click",c=>{c.stopPropagation();const y=i.closest(".nb-item"),a=y.classList.contains("nb-open");e.querySelectorAll(".nb-item.nb-open").forEach(r=>r.classList.remove("nb-open")),a||y.classList.add("nb-open")})}),e.querySelectorAll(".nb-mobile-item > .nb-mobile-link").forEach(i=>{i.addEventListener("click",()=>{i.closest(".nb-mobile-item").classList.toggle("nb-open")})}),document.addEventListener("click",i=>{e.contains(i.target)||e.querySelectorAll(".nb-item.nb-open").forEach(c=>c.classList.remove("nb-open"))})}}function D(e,n){const o=document.getElementById("navbar-config-modal");if(o&&o.remove(),!document.getElementById("nb-modal-styles")){const d=document.createElement("style");d.id="nb-modal-styles",d.textContent=`
+    ${h?`<div class="nb-mobile-actions">${h}</div>`:""}
+</div>
+<script>
+(function() {
+    function initNavbar() {
+        var root = document.currentScript ? document.currentScript.closest('nav') : document.querySelector('[data-gjs-type="navbar-component"]');
+        if (!root) return;
+
+        function updatePadding() {
+            document.body.style.paddingTop = root.offsetHeight + 'px';
+        }
+        updatePadding();
+        window.addEventListener('resize', updatePadding);
+
+        var toggle = document.getElementById('nb-toggle-${u}');
+        var mobile = document.getElementById('nb-mobile-${u}');
+        if (toggle && mobile) {
+            toggle.addEventListener('click', function() {
+                mobile.classList.toggle('nb-open');
+                updatePadding();
+            });
+        }
+
+        root.querySelectorAll('.nb-submenu-trigger').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var item = btn.closest('.nb-item');
+                var isOpen = item.classList.contains('nb-open');
+                root.querySelectorAll('.nb-item.nb-open').forEach(function(el) { el.classList.remove('nb-open'); });
+                if (!isOpen) item.classList.add('nb-open');
+            });
+        });
+
+        root.querySelectorAll('.nb-mobile-item > .nb-mobile-link').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                btn.closest('.nb-mobile-item').classList.toggle('nb-open');
+                updatePadding();
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!root.contains(e.target)) {
+                root.querySelectorAll('.nb-item.nb-open').forEach(function(el) { el.classList.remove('nb-open'); });
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNavbar);
+    } else {
+        initNavbar();
+    }
+})();
+<\/script>`}function O(){return function(){}}function P(t,n){const r=document.getElementById("navbar-config-modal");if(r&&r.remove(),!document.getElementById("nb-modal-styles")){const l=document.createElement("style");l.id="nb-modal-styles",l.textContent=`
             .nb-overlay {
                 position: fixed; inset: 0; z-index: 99999;
                 display: flex; align-items: center; justify-content: center;
@@ -394,7 +449,7 @@ import{i as C,t as j,d as B,f as N,e as q,s as z,g as I,c as A,E as T,j as M,h a
                 font-family: inherit; white-space: nowrap; transition: background 0.15s;
             }
             .nb-pick-btn:hover { background: #002a52; }
-        `,document.head.appendChild(d)}const i=(()=>{try{return JSON.parse(n.getAttributes()["data-navbar-config"]||"{}")}catch{return{}}})(),c=i.logo_url||"",y=i.logo_alt||"",a=i.logo_text||"Logo",r=JSON.parse(JSON.stringify(i.links||[{type:"link",label:"Inicio",href:"/"},{type:"link",label:"Nosotros",href:"#"}])),m=JSON.parse(JSON.stringify(i.actions||[{label:"Ingresar",href:"#",style:"primary",icon:""}])),l=document.createElement("div");l.id="navbar-config-modal",l.className="nb-overlay";const s=document.createElement("div");s.className="nb-modal",s.innerHTML=`
+        `,document.head.appendChild(l)}const s=(()=>{try{return JSON.parse(n.getAttributes()["data-navbar-config"]||"{}")}catch{return{}}})(),c=s.logo_url||"",h=s.logo_alt||"",u=s.logo_text||"Logo",e=JSON.parse(JSON.stringify(s.links||[{type:"link",label:"Inicio",href:"/"},{type:"link",label:"Nosotros",href:"#"}])),m=JSON.parse(JSON.stringify(s.actions||[{label:"Ingresar",href:"#",style:"primary",icon:""}])),a=document.createElement("div");a.id="navbar-config-modal",a.className="nb-overlay";const i=document.createElement("div");i.className="nb-modal",i.innerHTML=`
         <div class="nb-modal-header">
             <div class="nb-modal-header-left">
                 <i class="ri-layout-top-line"></i>
@@ -422,8 +477,8 @@ import{i as C,t as j,d as B,f as N,e as q,s as z,g as I,c as A,E as T,j as M,h a
                 <div class="nb-card">
                     <label class="nb-label">Texto alternativo / Logo de texto</label>
                     <div class="nb-row">
-                        <input id="nb-logo-alt" type="text" placeholder="Texto alternativo" value="${y}" class="nb-input">
-                        <input id="nb-logo-text" type="text" placeholder="Texto si no hay imagen" value="${a}" class="nb-input">
+                        <input id="nb-logo-alt" type="text" placeholder="Texto alternativo" value="${h}" class="nb-input">
+                        <input id="nb-logo-text" type="text" placeholder="Texto si no hay imagen" value="${u}" class="nb-input">
                     </div>
                 </div>
             </div>
@@ -449,54 +504,60 @@ import{i as C,t as j,d as B,f as N,e as q,s as z,g as I,c as A,E as T,j as M,h a
             <button id="nb-modal-cancel" class="nb-btn-cancel">Cancelar</button>
             <button id="nb-modal-save" class="nb-btn-save">Aplicar cambios</button>
         </div>
-    `,l.appendChild(s),document.body.appendChild(l),s.querySelectorAll(".nb-tab-btn").forEach(d=>{d.addEventListener("click",()=>{s.querySelectorAll(".nb-tab-btn").forEach(t=>t.classList.remove("active")),s.querySelectorAll(".nb-tab-panel").forEach(t=>t.classList.remove("active")),d.classList.add("active"),s.querySelector(`#nb-panel-${d.dataset.tab}`).classList.add("active")})}),s.querySelector("#nb-logo-pick").addEventListener("click",()=>{_({type:"image",title:"Seleccionar logo",onSelect:d=>{s.querySelector("#nb-logo-url").value=d;let t=s.querySelector("#nb-logo-preview");if(!t||t.tagName==="DIV"){const u=document.createElement("img");u.id="nb-logo-preview",u.style.cssText="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;",t?.replaceWith(u)??s.querySelector("#nb-logo-url").before(u),t=u}t.src=d,t.style.display="block"}})});function p(){const d=s.querySelector("#nb-links-list");d.innerHTML="",r.forEach((t,u)=>{const f=document.createElement("div");if(f.className="nb-link-card",f.dataset.index=u,t.type==="submenu"){const b=(t.children||[]).map((v,k)=>`
+    `,a.appendChild(i),document.body.appendChild(a),i.querySelectorAll(".nb-tab-btn").forEach(l=>{l.addEventListener("click",()=>{i.querySelectorAll(".nb-tab-btn").forEach(o=>o.classList.remove("active")),i.querySelectorAll(".nb-tab-panel").forEach(o=>o.classList.remove("active")),l.classList.add("active"),i.querySelector(`#nb-panel-${l.dataset.tab}`).classList.add("active")})}),i.querySelector("#nb-logo-pick").addEventListener("click",()=>{_({type:"image",title:"Seleccionar logo",onSelect:l=>{i.querySelector("#nb-logo-url").value=l;let o=i.querySelector("#nb-logo-preview");if(!o||o.tagName==="DIV"){const f=document.createElement("img");f.id="nb-logo-preview",f.style.cssText="height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;margin-bottom:0.5rem;",o?.replaceWith(f)??i.querySelector("#nb-logo-url").before(f),o=f}o.src=l,o.style.display="block"}})});function p(){const l=i.querySelector("#nb-links-list");l.innerHTML="",e.forEach((o,f)=>{const b=document.createElement("div");if(b.className="nb-link-card",b.dataset.index=f,o.type==="submenu"){const d=(o.children||[]).map((v,k)=>`
                     <div class="nb-submenu-item" data-child="${k}">
                         <input class="nb-input-sm" style="width:120px;" placeholder="ri-icon (opcional)" value="${v.icon||""}" data-field="icon">
                         <input class="nb-input-sm" style="flex:1;" placeholder="Texto" value="${v.label||""}" data-field="label">
                         <input class="nb-input-sm" style="flex:1;" placeholder="URL" value="${v.href||""}" data-field="href">
                         <button class="nb-btn-remove nb-remove-child"><i class="ri-delete-bin-line"></i></button>
-                    </div>`).join("");f.innerHTML=`
+                    </div>`).join("");b.innerHTML=`
                     <div class="nb-link-card-header">
                         <span class="nb-type-badge nb-type-submenu">Submenú</span>
-                        <input class="nb-input-sm" style="flex:1;" placeholder="Título del submenú" value="${t.label||""}" data-field="label">
+                        <input class="nb-input-sm" style="flex:1;" placeholder="Título del submenú" value="${o.label||""}" data-field="label">
                         <button class="nb-btn-remove nb-remove-link"><i class="ri-delete-bin-line"></i></button>
                     </div>
                     <div class="nb-link-card-body">
-                        <div class="nb-list nb-children-list" style="gap:0.375rem;">${b}</div>
+                        <div class="nb-list nb-children-list" style="gap:0.375rem;">${d}</div>
                         <button class="nb-btn-sm-add nb-add-child"><i class="ri-add-line"></i> Agregar sub-enlace</button>
-                    </div>`}else f.innerHTML=`
+                    </div>`}else b.innerHTML=`
                     <div class="nb-link-card-header">
                         <span class="nb-type-badge nb-type-link">Link</span>
-                        <input class="nb-input-sm" style="flex:1;" placeholder="Texto del enlace" value="${t.label||""}" data-field="label">
+                        <input class="nb-input-sm" style="flex:1;" placeholder="Texto del enlace" value="${o.label||""}" data-field="label">
                         <button class="nb-btn-remove nb-remove-link"><i class="ri-delete-bin-line"></i></button>
                     </div>
                     <div class="nb-link-card-body">
                         <div class="nb-link-row">
-                            <input class="nb-input-sm" style="flex:1;" placeholder="URL del enlace" value="${t.href||""}" data-field="href">
+                            <input class="nb-input-sm" style="flex:1;" placeholder="URL del enlace" value="${o.href||""}" data-field="href">
                         </div>
-                    </div>`;f.querySelector(".nb-remove-link").onclick=()=>{r.splice(u,1),p()},f.querySelectorAll("[data-field]").forEach(b=>{b.addEventListener("input",()=>{t[b.dataset.field]=b.value})}),t.type==="submenu"&&(f.querySelector(".nb-add-child").onclick=()=>{t.children=t.children||[],t.children.push({label:"Nuevo enlace",href:"#",icon:""}),p()},f.querySelectorAll(".nb-remove-child").forEach(b=>{b.onclick=()=>{const v=parseInt(b.closest("[data-child]").dataset.child);t.children.splice(v,1),p()}}),f.querySelectorAll(".nb-submenu-item [data-field]").forEach(b=>{const v=parseInt(b.closest("[data-child]").dataset.child);b.addEventListener("input",()=>{t.children[v][b.dataset.field]=b.value})})),d.appendChild(f)})}function h(){const d=s.querySelector("#nb-actions-list");d.innerHTML="",m.forEach((t,u)=>{const f=document.createElement("div");f.className="nb-action-card",f.innerHTML=`
+                    </div>`;b.querySelector(".nb-remove-link").onclick=()=>{e.splice(f,1),p()},b.querySelectorAll("[data-field]").forEach(d=>{d.addEventListener("input",()=>{o[d.dataset.field]=d.value})}),o.type==="submenu"&&(b.querySelector(".nb-add-child").onclick=()=>{o.children=o.children||[],o.children.push({label:"Nuevo enlace",href:"#",icon:""}),p()},b.querySelectorAll(".nb-remove-child").forEach(d=>{d.onclick=()=>{const v=parseInt(d.closest("[data-child]").dataset.child);o.children.splice(v,1),p()}}),b.querySelectorAll(".nb-submenu-item [data-field]").forEach(d=>{const v=parseInt(d.closest("[data-child]").dataset.child);d.addEventListener("input",()=>{o.children[v][d.dataset.field]=d.value})})),l.appendChild(b)})}function y(){const l=i.querySelector("#nb-actions-list");l.innerHTML="",m.forEach((o,f)=>{const b=document.createElement("div");b.className="nb-action-card",b.innerHTML=`
                 <div class="nb-row">
-                    <input class="nb-input-sm" style="width:120px;flex-shrink:0;" placeholder="ri-icon (opcional)" value="${t.icon||""}" data-field="icon">
-                    <input class="nb-input-sm" style="flex:1;" placeholder="Texto del botón" value="${t.label||""}" data-field="label">
+                    <input class="nb-input-sm" style="width:120px;flex-shrink:0;" placeholder="ri-icon (opcional)" value="${o.icon||""}" data-field="icon">
+                    <input class="nb-input-sm" style="flex:1;" placeholder="Texto del botón" value="${o.label||""}" data-field="label">
                     <button class="nb-btn-remove nb-remove-action"><i class="ri-delete-bin-line"></i></button>
                 </div>
                 <div class="nb-row">
-                    <input class="nb-input-sm" style="flex:1;" placeholder="URL" value="${t.href||""}" data-field="href">
+                    <input class="nb-input-sm" style="flex:1;" placeholder="URL" value="${o.href||""}" data-field="href">
                     <select class="nb-select" data-field="style">
-                        <option value="primary" ${t.style==="primary"?"selected":""}>Azul sólido</option>
-                        <option value="outline" ${t.style==="outline"?"selected":""}>Azul outline</option>
-                        <option value="orange" ${t.style==="orange"?"selected":""}>Naranja</option>
+                        <option value="primary" ${o.style==="primary"?"selected":""}>Azul sólido</option>
+                        <option value="outline" ${o.style==="outline"?"selected":""}>Azul outline</option>
+                        <option value="orange" ${o.style==="orange"?"selected":""}>Naranja</option>
                     </select>
-                </div>`,f.querySelector(".nb-remove-action").onclick=()=>{m.splice(u,1),h()},f.querySelectorAll("[data-field]").forEach(b=>{b.addEventListener("input",()=>{t[b.dataset.field]=b.value}),b.addEventListener("change",()=>{t[b.dataset.field]=b.value})}),d.appendChild(f)})}p(),h(),s.querySelector("#nb-add-link").onclick=()=>{r.push({type:"link",label:"Nuevo enlace",href:"#"}),p()},s.querySelector("#nb-add-submenu").onclick=()=>{r.push({type:"submenu",label:"Menú",children:[{label:"Enlace",href:"#",icon:""}]}),p()},s.querySelector("#nb-add-action").onclick=()=>{m.push({label:"Botón",href:"#",style:"primary",icon:""}),h()};const g=()=>l.remove();s.querySelector("#nb-modal-close").onclick=g,s.querySelector("#nb-modal-cancel").onclick=g,l.onclick=d=>{d.target===l&&g()},s.querySelector("#nb-modal-save").onclick=()=>{const d={logo_url:s.querySelector("#nb-logo-url").value.trim(),logo_alt:s.querySelector("#nb-logo-alt").value.trim(),logo_text:s.querySelector("#nb-logo-text").value.trim(),links:r,actions:m};n.addAttributes({"data-navbar-config":JSON.stringify(d)}),n.components(L(d)+$),g()}}function P(e){const n="navbar-component";e.DomComponents.addType(n,{isComponent:o=>o.getAttribute?.("data-gjs-type")===n?{type:n}:!1,model:{defaults:{name:"Navbar",tagName:"nav",draggable:!0,droppable:!1,removable:!0,copyable:!1,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":n,class:"nb-wrapper","data-navbar-config":JSON.stringify({logo_url:"",logo_alt:"Logo",logo_text:"Logo",links:[{type:"link",label:"Sobre nosotros",href:"#"},{type:"link",label:"Créditos",href:"#"},{type:"link",label:"Depósitos",href:"#"},{type:"submenu",label:"Otros servicios",children:[{label:"Servicio 1",href:"#",icon:""},{label:"Servicio 2",href:"#",icon:""}]},{type:"link",label:"Contáctanos",href:"#"}],actions:[{label:"Ingresar",href:"#",style:"primary",icon:""}]})},components:L({logo_url:"",logo_alt:"Logo",logo_text:"Logo",links:[{type:"link",label:"Sobre nosotros",href:"#"},{type:"link",label:"Créditos",href:"#"},{type:"link",label:"Depósitos",href:"#"},{type:"submenu",label:"Otros servicios",children:[{label:"Servicio 1",href:"#",icon:""},{label:"Servicio 2",href:"#",icon:""}]},{type:"link",label:"Contáctanos",href:"#"}],actions:[{label:"Ingresar",href:"#",style:"primary",icon:""}]})+$,script:O(),toolbar:[],traits:[{type:"button",label:"Navbar",text:"Administrar Navbar",full:!0,command:"open-navbar-config"}]},init(){this.set("type",n),this.addAttributes({"data-gjs-type":n})}}}),e.Commands.add("open-navbar-config",{run(o){const i=o.getSelected();i&&D(o,i)}}),e.BlockManager.add("navbar-block",{label:"Navbar",category:"Navbar",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+                </div>`,b.querySelector(".nb-remove-action").onclick=()=>{m.splice(f,1),y()},b.querySelectorAll("[data-field]").forEach(d=>{d.addEventListener("input",()=>{o[d.dataset.field]=d.value}),d.addEventListener("change",()=>{o[d.dataset.field]=d.value})}),l.appendChild(b)})}p(),y(),i.querySelector("#nb-add-link").onclick=()=>{e.push({type:"link",label:"Nuevo enlace",href:"#"}),p()},i.querySelector("#nb-add-submenu").onclick=()=>{e.push({type:"submenu",label:"Menú",children:[{label:"Enlace",href:"#",icon:""}]}),p()},i.querySelector("#nb-add-action").onclick=()=>{m.push({label:"Botón",href:"#",style:"primary",icon:""}),y()};const g=()=>a.remove();i.querySelector("#nb-modal-close").onclick=g,i.querySelector("#nb-modal-cancel").onclick=g,a.onclick=l=>{l.target===a&&g()},i.querySelector("#nb-modal-save").onclick=()=>{const l={logo_url:i.querySelector("#nb-logo-url").value.trim(),logo_alt:i.querySelector("#nb-logo-alt").value.trim(),logo_text:i.querySelector("#nb-logo-text").value.trim(),links:e,actions:m};n.addAttributes({"data-navbar-config":JSON.stringify(l)}),n.components(L(l)+$),g()}}function D(t){const n="navbar-component";t.DomComponents.addType(n,{isComponent:r=>r.getAttribute?.("data-gjs-type")===n?{type:n}:!1,model:{defaults:{name:"Navbar",tagName:"nav",draggable:!0,droppable:!1,removable:!0,copyable:!1,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":n,class:"nb-wrapper","data-navbar-config":JSON.stringify({logo_url:"",logo_alt:"Logo",logo_text:"Logo",links:[{type:"link",label:"Sobre nosotros",href:"#"},{type:"link",label:"Créditos",href:"#"},{type:"link",label:"Depósitos",href:"#"},{type:"submenu",label:"Otros servicios",children:[{label:"Servicio 1",href:"#",icon:""},{label:"Servicio 2",href:"#",icon:""}]},{type:"link",label:"Contáctanos",href:"#"}],actions:[{label:"Ingresar",href:"#",style:"primary",icon:""}]})},components:L({logo_url:"",logo_alt:"Logo",logo_text:"Logo",links:[{type:"link",label:"Sobre nosotros",href:"#"},{type:"link",label:"Créditos",href:"#"},{type:"link",label:"Depósitos",href:"#"},{type:"submenu",label:"Otros servicios",children:[{label:"Servicio 1",href:"#",icon:""},{label:"Servicio 2",href:"#",icon:""}]},{type:"link",label:"Contáctanos",href:"#"}],actions:[{label:"Ingresar",href:"#",style:"primary",icon:""}]})+$,script:O(),toolbar:[],traits:[{type:"button",label:"Navbar",text:"Administrar Navbar",full:!0,command:"open-navbar-config"}]},init(){this.set("type",n),this.addAttributes({"data-gjs-type":n})}}}),t.Commands.add("open-navbar-config",{run(r){const s=r.getSelected();s&&P(r,s)}}),t.BlockManager.add("navbar-block",{label:"Navbar",category:"Navbar",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#003B71" rx="2"/>
             <rect x="2" y="12" width="8" height="8" fill="rgba(255,255,255,0.3)" rx="1"/>
             <rect x="12" y="14" width="4" height="1.5" rx="0.75" fill="rgba(255,255,255,0.7)"/>
             <rect x="17" y="14" width="4" height="1.5" rx="0.75" fill="rgba(255,255,255,0.7)"/>
             <rect x="22" y="14" width="4" height="1.5" rx="0.75" fill="rgba(255,255,255,0.7)"/>
             <rect x="24" y="11" width="6" height="10" rx="2" fill="#E97300"/>
-        </svg>`,activate:!0,content:{type:n,attributes:{"data-gjs-type":n}}}),G(e,n),J(e)}function G(e,n){e.on("storage:end:load",()=>{setTimeout(()=>S(e,n),800)}),e.on("component:mount",o=>{const i=o.getEl();i?.getAttribute?.("data-gjs-type")===n&&(o.set("type",n),setTimeout(()=>{const c=o.get("script");c&&typeof c=="function"&&c.call(i)},400))}),e.on("canvas:render",()=>{setTimeout(()=>S(e,n),600)})}function S(e,n){e.getWrapper().find(`[data-gjs-type="${n}"]`).forEach(o=>{o.set("type",n);const i=o.getEl();if(i?.isConnected){const c=o.get("script");c&&typeof c=="function"&&c.call(i)}})}function J(e){e.on("load",()=>{const n=e.Canvas.getFrameEl();if(!n)return;const o=n.contentDocument?.head;if(o&&!o.querySelector("#navbar-component-css")){const i=document.createElement("style");i.id="navbar-component-css",i.textContent=`
+        </svg>`,activate:!0,content:{type:n,attributes:{"data-gjs-type":n}}}),G(t,n),J(t)}function G(t,n){t.on("storage:end:load",()=>{setTimeout(()=>S(t,n),800)}),t.on("component:mount",r=>{const s=r.getEl();s?.getAttribute?.("data-gjs-type")===n&&(r.set("type",n),setTimeout(()=>{const c=r.get("script");c&&typeof c=="function"&&c.call(s)},400))}),t.on("canvas:render",()=>{setTimeout(()=>S(t,n),600)})}function S(t,n){t.getWrapper().find(`[data-gjs-type="${n}"]`).forEach(r=>{r.set("type",n);const s=r.getEl();if(s?.isConnected){const c=r.get("script");c&&typeof c=="function"&&c.call(s)}})}function J(t){t.on("load",()=>{const n=t.Canvas.getFrameEl();if(!n)return;const r=n.contentDocument?.head;if(r&&!r.querySelector("#navbar-component-css")){const s=document.createElement("style");s.id="navbar-component-css",s.textContent=`
                 [data-gjs-type="navbar-component"] {
                     outline: 2px dashed rgba(240,135,42,0.4);
                     outline-offset: 2px;
+                    /* Override fixed en el editor para visibilidad */
+                    position: relative !important;
+                    top: auto !important;
                 }
-            `,o.appendChild(i)}})}document.addEventListener("DOMContentLoaded",async()=>{const e=new T;let n=document.getElementById("navbar-id")?.value||"",o=document.getElementById("navbar-name")?.value||"",i=document.getElementById("navbar-load-url")?.value||"",c=document.getElementById("navbar-store-url")?.value||"";const y=document.getElementById("navbar-is-active")?.value==="1";let a=!!n;const r=U();if(P(r),r.on("load",()=>{j(r),B(),N(),q(r),z(r),I(r),A(r),R(r),setTimeout(()=>{r.runCommand("sw-visibility"),r.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),a&&i)try{await e.loadPageContent(r,i),x("Navbar cargado correctamente","success")}catch{x("Error al cargar el navbar","error")}document.getElementById("save-button")?.addEventListener("click",async()=>{const l=document.getElementById("save-button");l.disabled=!0,l.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{!a&&!o?M({title:"Nombre del Navbar",description:"Ingresa un nombre descriptivo para identificar este navbar.",placeholder:"Ej: Navbar Principal",icon:"ri-file-text-line",iconBg:"#dbeafe",iconColor:"#2563eb",confirmLabel:"Guardar",onConfirm:async s=>{if(!s?.trim()){x("El nombre es obligatorio","error"),l.disabled=!1,l.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>';return}try{await m(s)}catch(p){x(p.message,"error")}finally{l.disabled=!1,l.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}},onCancel:()=>{l.disabled=!1,l.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}}):(await m(o),l.disabled=!1,l.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>')}catch(s){x(s.message,"error"),l.disabled=!1,l.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}});async function m(l){const s=a?"PUT":"POST",p=e.getEditorContent(r),h=await e.savePage(r,{...p,name:l,is_active:y},c,s);if(h.success){if(e.markAsClean(),x(h.message,"success"),!a&&h.navbar){n=h.navbar.id,o=h.navbar.name,a=!0;const g=document.getElementById("navbar-id");g&&(g.value=n);const d=document.getElementById("navbar-name");d&&(d.value=o);const t=document.querySelector('meta[name="app-url"]'),u=t?t.content:"";c=c.endsWith("/navbars")?`${c}/${n}`:`${c.replace(/\/navbars\/?$/,"")}/navbars/${n}`;const b=document.getElementById("navbar-store-url");b&&(b.value=c),i=`${c}/load`;const v=document.getElementById("navbar-load-url");v&&(v.value=i);const k=document.getElementById("editor-title");k&&(k.textContent=`Editando Navbar: ${o}`);const w=`/navbars/edit/${n}/edit`,E=u?`${u}${w}`:w;window.history.replaceState({path:E},"",E)}else if(l){o=l;const g=document.getElementById("navbar-name");g&&(g.value=o);const d=document.getElementById("editor-title");d&&(d.textContent=`Editando Navbar: ${o}`)}}}});function R(e){e.Commands.add("canvas-clear",{run:n=>{H({title:"Limpiar canvas",description:"¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",icon:"ri-delete-bin-line",iconBg:"#fef2f2",iconColor:"#dc2626",confirmLabel:"Limpiar todo",confirmColor:"#dc2626",onConfirm:()=>{n.DomComponents.clear(),n.CssComposer.clear()}})}})}function x(e,n="info"){typeof window.showNotification=="function"&&window.showNotification(e,n)}
+                body {
+                    padding-top: 0 !important;
+                }
+            `,r.appendChild(s)}})}document.addEventListener("DOMContentLoaded",async()=>{const t=new A;let n=document.getElementById("navbar-id")?.value||"",r=document.getElementById("navbar-name")?.value||"",s=document.getElementById("navbar-load-url")?.value||"",c=document.getElementById("navbar-store-url")?.value||"";const h=document.getElementById("navbar-is-active")?.value==="1";let u=!!n;const e=U();if(D(e),e.on("load",()=>{C(e),N(),j(),q(e),z(e),I(e),T(e),R(e),setTimeout(()=>{e.runCommand("sw-visibility"),e.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),u&&s)try{await t.loadPageContent(e,s),x("Navbar cargado correctamente","success")}catch{x("Error al cargar el navbar","error")}document.getElementById("save-button")?.addEventListener("click",async()=>{const a=document.getElementById("save-button");a.disabled=!0,a.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{!u&&!r?M({title:"Nombre del Navbar",description:"Ingresa un nombre descriptivo para identificar este navbar.",placeholder:"Ej: Navbar Principal",icon:"ri-file-text-line",iconBg:"#dbeafe",iconColor:"#2563eb",confirmLabel:"Guardar",onConfirm:async i=>{if(!i?.trim()){x("El nombre es obligatorio","error"),a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>';return}try{await m(i)}catch(p){x(p.message,"error")}finally{a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}},onCancel:()=>{a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}}):(await m(r),a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>')}catch(i){x(i.message,"error"),a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}});async function m(a){const i=u?"PUT":"POST",p=t.getEditorContent(e),y=await t.savePage(e,{...p,name:a,is_active:h},c,i);if(y.success){if(t.markAsClean(),x(y.message,"success"),!u&&y.navbar){n=y.navbar.id,r=y.navbar.name,u=!0;const g=document.getElementById("navbar-id");g&&(g.value=n);const l=document.getElementById("navbar-name");l&&(l.value=r);const o=document.querySelector('meta[name="app-url"]'),f=o?o.content:"";c=c.endsWith("/navbars")?`${c}/${n}`:`${c.replace(/\/navbars\/?$/,"")}/navbars/${n}`;const d=document.getElementById("navbar-store-url");d&&(d.value=c),s=`${c}/load`;const v=document.getElementById("navbar-load-url");v&&(v.value=s);const k=document.getElementById("editor-title");k&&(k.textContent=`Editando Navbar: ${r}`);const w=`/navbars/edit/${n}/edit`,E=f?`${f}${w}`:w;window.history.replaceState({path:E},"",E)}else if(a){r=a;const g=document.getElementById("navbar-name");g&&(g.value=r);const l=document.getElementById("editor-title");l&&(l.textContent=`Editando Navbar: ${r}`)}}}});function R(t){t.Commands.add("canvas-clear",{run:n=>{H({title:"Limpiar canvas",description:"¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",icon:"ri-delete-bin-line",iconBg:"#fef2f2",iconColor:"#dc2626",confirmLabel:"Limpiar todo",confirmColor:"#dc2626",onConfirm:()=>{n.DomComponents.clear(),n.CssComposer.clear()}})}})}function x(t,n="info"){typeof window.showNotification=="function"&&window.showNotification(t,n)}
