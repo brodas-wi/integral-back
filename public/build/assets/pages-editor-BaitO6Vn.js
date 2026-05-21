@@ -465,10 +465,10 @@ ${ne}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
 }
 @media(max-width:580px){
     .cta-watermark-left,.cta-watermark-right{width:90px;height:90px;}
-    .cta-btn-primary,.cta-btn-secondary{width:100%;text-align:center;}
+    .cta-btn-primary,.cta-btn-secondary{width:100%;text-align:center;box-sizing:border-box;}
 }
 </style>`,mt=[{id:"cta-section",label:"Llamada a la acción",category:"Contenido",media:ft,content:`
-<section class="relative overflow-hidden w-full bg-white py-16 px-16">
+<section class="relative overflow-hidden w-full bg-white py-16 px-6 md:px-16">
     <div class="cta-watermark-left">
         <img src="${Z("images/brand-logo.png")}" alt="">
     </div>
