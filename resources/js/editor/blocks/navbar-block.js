@@ -8,7 +8,12 @@ function initNavbar(root){
     if(!id)return;
     function pad(){document.body.style.paddingTop=root.offsetHeight+"px";}
     pad();
-    window.addEventListener("resize",pad);
+    window.addEventListener("resize",function(){
+        pad();
+        if(window.innerWidth>992&&mobile&&mobile.classList.contains("nb-open")){
+            mobile.classList.remove("nb-open");
+        }
+    });
     var toggle=document.getElementById("nb-toggle-"+id);
     var mobile=document.getElementById("nb-mobile-"+id);
     if(toggle&&mobile){
@@ -1066,7 +1071,12 @@ function runNavbarScriptInCanvas(editor, el) {
                 if(!id)return;
                 function pad(){document.body.style.paddingTop=root.offsetHeight+"px";}
                 pad();
-                window.addEventListener("resize",pad);
+                window.addEventListener("resize", function () {
+                    pad();
+                    if (window.innerWidth > 992 && mobile && mobile.classList.contains("nb-open")) {
+                        mobile.classList.remove("nb-open");
+                    }
+                });
                 var toggle=document.getElementById("nb-toggle-"+id);
                 var mobile=document.getElementById("nb-mobile-"+id);
                 if(toggle&&mobile){
