@@ -38,6 +38,7 @@ export function setupEditorCommands(editor) {
     });
 
     editor.Commands.add("open-icon-picker", {
+        noStop: true,
         run(editor, sender, options = {}) {
             if (!iconPickerModal) {
                 iconPickerModal = new IconPickerModal();

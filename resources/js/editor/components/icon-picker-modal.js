@@ -149,8 +149,9 @@ export class IconPickerModal {
         grid.querySelectorAll(".icon-picker-item").forEach(btn => {
             btn.addEventListener("click", () => {
                 const selected = btn.dataset.icon;
+                const callback = this._onSelect;
                 this.close();
-                if (this._onSelect) this._onSelect(selected);
+                if (callback) callback(selected);
             });
         });
     }
