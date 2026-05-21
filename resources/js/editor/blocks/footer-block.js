@@ -81,7 +81,7 @@ const FOOTER_STYLES = `
 }
 .ft-stripe {
     width: 100%;
-    height: 6px;
+    height: 20px;
     background: #E97300;
 }
 @media (max-width: 768px) {
@@ -163,26 +163,20 @@ function buildFooterHTML(data) {
         .join("");
 
     return `
-<footer class="ft-wrapper"
+<div class="ft-inner"
     data-gjs-editable="false"
     data-gjs-selectable="false"
-    data-gjs-hoverable="false"
-    data-gjs-droppable="false">
-    <div class="ft-inner"
+    data-gjs-hoverable="false">
+    <div class="ft-logo-col"
         data-gjs-editable="false"
-        data-gjs-selectable="false"
-        data-gjs-hoverable="false">
-        <div class="ft-logo-col"
-            data-gjs-editable="false"
-            data-gjs-selectable="false">${logoHtml}</div>
-        <div class="ft-sections"
-            data-gjs-editable="false"
-            data-gjs-selectable="false">${sectionsHtml}</div>
-    </div>
-    <div class="ft-stripe"
+        data-gjs-selectable="false">${logoHtml}</div>
+    <div class="ft-sections"
         data-gjs-editable="false"
-        data-gjs-selectable="false"></div>
-</footer>`;
+        data-gjs-selectable="false">${sectionsHtml}</div>
+</div>
+<div class="ft-stripe"
+    data-gjs-editable="false"
+    data-gjs-selectable="false"></div>`;
 }
 
 function createFooterScript() {
@@ -431,7 +425,7 @@ export function initializeFooterBlock(editor) {
         model: {
             defaults: {
                 name: "Footer",
-                tagName: "div",
+                tagName: "footer",
                 draggable: true,
                 droppable: false,
                 removable: true,
@@ -442,6 +436,7 @@ export function initializeFooterBlock(editor) {
                 highlightable: false,
                 attributes: {
                     "data-gjs-type": componentType,
+                    class: "ft-wrapper",
                     "data-footer-config": JSON.stringify({
                         logo_url: "",
                         logo_alt: "Logo",
@@ -545,6 +540,15 @@ export function initializeFooterBlock(editor) {
                             title: "Configurar Footer",
                         },
                         label: '<i class="ri-settings-3-line"></i>',
+                        command: "open-footer-config",
+                    },
+                ],
+                traits: [
+                    {
+                        type: "button",
+                        label: "Footer",
+                        text: "Administrar Footer",
+                        full: true,
                         command: "open-footer-config",
                     },
                 ],
