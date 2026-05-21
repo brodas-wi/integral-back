@@ -74,6 +74,46 @@
                     </div>
                 </div>
             </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="card">
+                    <h3 class="text-lg font-bold text-secondary mb-4">Navbar</h3>
+                    <div class="space-y-3">
+                        <p class="text-sm text-gray-600">Navbar que se mostrará en esta página.</p>
+                        <select id="navbar-select" class="input-field">
+                            <option value="">— Sin navbar —</option>
+                            @foreach (\App\Models\Navbar::orderBy('name')->get() as $navbar)
+                                <option value="{{ $navbar->id }}"
+                                    {{ $page->navbar_id == $navbar->id ? 'selected' : '' }}>
+                                    {{ $navbar->name }}{{ !$navbar->is_active ? ' (inactivo)' : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button id="save-navbar-relation" class="btn-primary btn-sm w-full">
+                            <i class="ri-save-line mr-2"></i>Guardar navbar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-lg font-bold text-secondary mb-4">Footer</h3>
+                    <div class="space-y-3">
+                        <p class="text-sm text-gray-600">Footer que se mostrará en esta página.</p>
+                        <select id="footer-select" class="input-field">
+                            <option value="">— Sin footer —</option>
+                            @foreach (\App\Models\Footer::orderBy('name')->get() as $footer)
+                                <option value="{{ $footer->id }}"
+                                    {{ $page->footer_id == $footer->id ? 'selected' : '' }}>
+                                    {{ $footer->name }}{{ !$footer->is_active ? ' (inactivo)' : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button id="save-footer-relation" class="btn-primary btn-sm w-full">
+                            <i class="ri-save-line mr-2"></i>Guardar footer
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="space-y-6">
@@ -106,46 +146,6 @@
                             {{ $page->updated_at->format('d/m/Y H:i') }}
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 class="text-lg font-bold text-secondary mb-4">Navbar</h3>
-                <div class="space-y-3">
-                    <p class="text-sm text-gray-600">Selecciona el navbar que se mostrará en esta página.</p>
-                    <select id="navbar-select" class="input-field">
-                        <option value="">— Sin navbar —</option>
-                        @foreach (\App\Models\Navbar::orderBy('name')->get() as $navbar)
-                            <option value="{{ $navbar->id }}" {{ $page->navbar_id == $navbar->id ? 'selected' : '' }}>
-                                {{ $navbar->name }}
-                                {{ $navbar->is_active ? '✓' : '' }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <button id="save-navbar-relation" class="btn-primary btn-sm w-full">
-                        <i class="ri-save-line mr-2"></i>
-                        Guardar navbar
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3 class="text-lg font-bold text-secondary mb-4">Footer</h3>
-                <div class="space-y-3">
-                    <p class="text-sm text-gray-600">Selecciona el footer que se mostrará en esta página.</p>
-                    <select id="footer-select" class="input-field">
-                        <option value="">— Sin footer —</option>
-                        @foreach (\App\Models\Footer::orderBy('name')->get() as $footer)
-                            <option value="{{ $footer->id }}" {{ $page->footer_id == $footer->id ? 'selected' : '' }}>
-                                {{ $footer->name }}
-                                {{ $footer->is_active ? '✓' : '' }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <button id="save-footer-relation" class="btn-primary btn-sm w-full">
-                        <i class="ri-save-line mr-2"></i>
-                        Guardar footer
-                    </button>
                 </div>
             </div>
 
