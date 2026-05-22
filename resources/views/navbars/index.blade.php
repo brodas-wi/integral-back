@@ -5,6 +5,7 @@
 
 @push('head')
     <meta name="navbars-base-url" content="{{ route('navbars.index') }}">
+    @vite('resources/css/views/navbars/index.css')
 @endpush
 
 @section('header-actions')
@@ -67,14 +68,13 @@
                                             <i class="ri-pages-line"></i>
                                             {{ $pageCount }} {{ $pageCount === 1 ? 'página' : 'páginas' }}
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-bottom" style="min-width:220px;">
+                                        <div class="dropdown-menu dropdown-menu-bottom navbar-pages-dropdown">
                                             @foreach ($navbar->pages as $page)
                                                 <a href="{{ route('pages.show', $page->slug) }}" class="dropdown-item">
                                                     <i class="ri-file-line"></i>
                                                     <span>{{ $page->title }}</span>
                                                     @if ($page->is_published)
-                                                        <span class="ml-auto badge badge-success"
-                                                            style="font-size:0.65rem;padding:2px 6px;">Pub.</span>
+                                                        <span class="ml-auto badge badge-success badge-xs">Pub.</span>
                                                     @endif
                                                 </a>
                                             @endforeach

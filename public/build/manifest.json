@@ -330,6 +330,15 @@
       "media-modal.css"
     ]
   },
+  "resources/css/views/footers/index.css": {
+    "file": "assets/index-DB9ljs9Q.css",
+    "src": "resources/css/views/footers/index.css",
+    "isEntry": true,
+    "name": "index",
+    "names": [
+      "index.css"
+    ]
+  },
   "resources/css/views/media/show.css": {
     "file": "assets/show-DbnW5yyq.css",
     "src": "resources/css/views/media/show.css",
@@ -338,6 +347,10 @@
     "names": [
       "show.css"
     ]
+  },
+  "resources/css/views/navbars/index.css": {
+    "file": "assets/index-CHgvGxG3.css",
+    "src": "resources/css/views/navbars/index.css"
   },
   "resources/js/app.js": {
     "file": "assets/app-mTETEDQ2.js",

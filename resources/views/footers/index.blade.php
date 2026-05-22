@@ -5,6 +5,7 @@
 
 @push('head')
     <meta name="footers-base-url" content="{{ route('footers.index') }}">
+    @vite('resources/css/views/footers/index.css')
 @endpush
 
 @section('header-actions')
@@ -67,14 +68,13 @@
                                             <i class="ri-pages-line"></i>
                                             {{ $pageCount }} {{ $pageCount === 1 ? 'página' : 'páginas' }}
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-bottom" style="min-width:220px;">
+                                        <div class="dropdown-menu dropdown-menu-bottom footer-pages-dropdown">
                                             @foreach ($footer->pages as $page)
                                                 <a href="{{ route('pages.show', $page->slug) }}" class="dropdown-item">
                                                     <i class="ri-file-line"></i>
                                                     <span>{{ $page->title }}</span>
                                                     @if ($page->is_published)
-                                                        <span class="ml-auto badge badge-success"
-                                                            style="font-size:0.65rem;padding:2px 6px;">Pub.</span>
+                                                        <span class="ml-auto badge badge-success badge-xs">Pub.</span>
                                                     @endif
                                                 </a>
                                             @endforeach
@@ -92,7 +92,7 @@
                                     @canany(['footers.view', 'footers.manage'])
                                         <a href="{{ route('footers.preview', $footer->id) }}" target="_blank"
                                             class="btn-outline btn-sm">
-                                            <i class="ri-eye-line mr-1"></i> Preview
+                                            <i class="ri-eye-line mr-1"></i> Previsualizar
                                         </a>
                                     @endcanany
                                     @canany(['footers.edit', 'footers.manage'])
