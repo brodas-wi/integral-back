@@ -274,6 +274,11 @@ function showFooterModal(editor, component) {
             .ft-modal-input-sm:focus {
                 border-color: #3b82f6;
             }
+            .ft-drag-handle{cursor:grab;color:#94a3b8;display:flex;align-items:center;padding:0 0.125rem;flex-shrink:0;}
+            .ft-drag-handle:hover{color:#475569;}
+            .ft-drag-handle:active{cursor:grabbing;}
+            .ft-section-card.ft-dragging{opacity:0.4;}
+            .ft-section-card.ft-drag-over{border-color:#003B71;box-shadow:0 0 0 2px rgba(0,59,113,0.15);}
             .ft-btn-add-section {
                 padding: 0.375rem 0.75rem;
                 background: #003B71;
@@ -455,13 +460,13 @@ function showFooterModal(editor, component) {
             </div>
 
             <div>
-                <div class="ft-modal-sections-header">
-                    <label class="ft-modal-label" style="margin-bottom:0;">Secciones</label>
+                <label class="ft-modal-label">Secciones</label>
+                <div id="ft-sections-container" class="ft-sections-container"></div>
+                <div style="padding-top:0.5rem;">
                     <button id="ft-add-section" class="ft-btn-add-section">
                         <i class="ri-add-line"></i> Agregar sección
                     </button>
                 </div>
-                <div id="ft-sections-container" class="ft-sections-container"></div>
             </div>
         </div>
 
@@ -613,10 +618,43 @@ function showFooterModal(editor, component) {
         });
     }
 
+    function makeDraggable(container, arr, renderFn) {
+        let dragIdx = null;
+        container.querySelectorAll("[data-drag-idx]").forEach((card) => {
+            card.setAttribute("draggable", "true");
+            card.addEventListener("dragstart", (e) => {
+                dragIdx = parseInt(card.dataset.dragIdx);
+                setTimeout(() => card.classList.add("ft-dragging"), 0);
+                e.dataTransfer.effectAllowed = "move";
+            });
+            card.addEventListener("dragend", () => {
+                card.classList.remove("ft-dragging");
+                container.querySelectorAll(".ft-drag-over").forEach(el => el.classList.remove("ft-drag-over"));
+            });
+            card.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+                if (parseInt(card.dataset.dragIdx) !== dragIdx) card.classList.add("ft-drag-over");
+            });
+            card.addEventListener("dragleave", () => card.classList.remove("ft-drag-over"));
+            card.addEventListener("drop", (e) => {
+                e.preventDefault();
+                const overIdx = parseInt(card.dataset.dragIdx);
+                if (dragIdx !== null && overIdx !== dragIdx) {
+                    const [moved] = arr.splice(dragIdx, 1);
+                    arr.splice(overIdx, 0, moved);
+                    renderFn();
+                }
+                dragIdx = null;
+            });
+        });
+    }
+
     function renderSection(sec, index) {
         const div = document.createElement("div");
         div.className = "ft-section-card";
         div.dataset.sectionIndex = index;
+        div.dataset.dragIdx = index;
 
         const linksHtml = (sec.links || [])
             .map(
@@ -646,6 +684,7 @@ function showFooterModal(editor, component) {
 
         div.innerHTML = `
             <div class="ft-section-card-header">
+                <span class="ft-drag-handle"><i class="ri-draggable"></i></span>
                 <input class="ft-section-title-input" type="text"
                     placeholder="Título de la sección" value="${sec.title || ""}">
                 <button class="ft-btn-remove ft-remove-section" title="Eliminar sección">
@@ -711,6 +750,7 @@ function showFooterModal(editor, component) {
         sections.forEach((sec, i) =>
             sectionsContainer.appendChild(renderSection(sec, i)),
         );
+        makeDraggable(sectionsContainer, sections, renderAllSections);
     }
 
     renderAllSections();
@@ -740,6 +780,7 @@ function showFooterModal(editor, component) {
     modal.querySelector("#ft-add-section").onclick = () => {
         sections.push({ title: "Nueva Sección", links: [] });
         renderAllSections();
+        sectionsContainer.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
 
     function collectData() {
