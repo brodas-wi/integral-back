@@ -31,16 +31,19 @@ const MVV_CARD = `
 
 const ABOUT_STYLES = `
 <style>
+.ab-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
 .ab-mvv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem;}
 .ab-image{width:100%;border-radius:1.5rem;overflow:hidden;}
 .ab-image img{width:100%;height:100%;object-fit:cover;display:block;}
-@media(max-width:768px){
+@media(max-width:1280px){.ab-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){
+    .ab-section{padding:2.5rem 1.5rem;}
     .ab-grid{grid-template-columns:1fr;gap:2rem;}
     .ab-content-col{order:1;}
     .ab-image-col{order:2;}
-    .ab-mvv-grid{grid-template-columns:1fr;}
 }
+@media(max-width:580px){.ab-mvv-grid{grid-template-columns:1fr;}}
 </style>`;
 
 export const aboutBlocks = [
@@ -50,32 +53,21 @@ export const aboutBlocks = [
         category: "Contenido",
         media: iconAbout,
         content: `
-<section class="w-full bg-white py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="ab-grid">
-            <div class="ab-content-col flex flex-col gap-4">
-                <h2 class="text-4xl font-bold text-[#003B71]">Lorem ipsum dolor sit amet</h2>
-                <p class="text-base text-[#003B71] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <h2 class="text-2xl font-bold text-[#003B71] mt-4">Lorem ipsum dolor</h2>
-                <div class="ab-mvv-grid">
-                    <div class="flex flex-col gap-3 rounded-2xl p-5 text-center bg-[#E97300]">
-                        <h3 class="text-base font-bold text-white">Lorem ipsum</h3>
-                        <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet consectetur.</p>
-                    </div>
-                    <div class="flex flex-col gap-3 rounded-2xl p-5 text-center bg-[#E97300]">
-                        <h3 class="text-base font-bold text-white">Lorem ipsum</h3>
-                        <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet consectetur.</p>
-                    </div>
-                    <div class="flex flex-col gap-3 rounded-2xl p-5 text-center bg-[#E97300]">
-                        <h3 class="text-base font-bold text-white">Lorem ipsum</h3>
-                        <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet consectetur.</p>
-                    </div>
-                </div>
+<section class="ab-section">
+    <div class="ab-grid">
+        <div class="ab-content-col flex flex-col gap-4">
+            <h2 class="text-4xl font-bold text-[#003B71]">Lorem ipsum dolor sit amet</h2>
+            <p class="text-base text-[#003B71] leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <h2 class="text-2xl font-bold text-[#003B71] mt-4">Lorem ipsum dolor</h2>
+            <div class="ab-mvv-grid">
+                ${MVV_CARD}
+                ${MVV_CARD}
+                ${MVV_CARD}
             </div>
-            <div class="ab-image-col">
-                <div class="ab-image">
-                    <img src="${assetUrl("images/placeholder.svg")}" alt="Imagen de sección">
-                </div>
+        </div>
+        <div class="ab-image-col">
+            <div class="ab-image">
+                <img src="${assetUrl("images/placeholder.svg")}" alt="Imagen de sección">
             </div>
         </div>
     </div>
@@ -87,6 +79,6 @@ ${ABOUT_STYLES}`,
         label: "Tarjeta Misión/Visión/Valores",
         category: "Contenido",
         media: iconMvvCard,
-        content: `${MVV_CARD}${ABOUT_STYLES}`,
+        content: `${MVV_CARD}`,
     },
 ];

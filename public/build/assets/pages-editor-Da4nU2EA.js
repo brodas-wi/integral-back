@@ -250,54 +250,46 @@ ${W}
     <rect x="8" y="9" width="16" height="2" rx="1" fill="white" fill-opacity="0.9"/>
     <rect x="8" y="14" width="14" height="1.2" rx="0.6" fill="white" fill-opacity="0.6"/>
     <rect x="8" y="17" width="12" height="1.2" rx="0.6" fill="white" fill-opacity="0.6"/>
-</svg>`,lt=`
+</svg>`,te=`
 <div class="flex flex-col gap-3 rounded-2xl p-5 text-center bg-[#E97300]">
     <h3 class="text-base font-bold text-white">Lorem ipsum</h3>
     <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-</div>`,ce=`
+</div>`,lt=`
 <style>
+.ab-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
 .ab-mvv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem;}
 .ab-image{width:100%;border-radius:1.5rem;overflow:hidden;}
 .ab-image img{width:100%;height:100%;object-fit:cover;display:block;}
-@media(max-width:768px){
+@media(max-width:1280px){.ab-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){
+    .ab-section{padding:2.5rem 1.5rem;}
     .ab-grid{grid-template-columns:1fr;gap:2rem;}
     .ab-content-col{order:1;}
     .ab-image-col{order:2;}
-    .ab-mvv-grid{grid-template-columns:1fr;}
 }
+@media(max-width:580px){.ab-mvv-grid{grid-template-columns:1fr;}}
 </style>`,ot=[{id:"about-section",label:"Sección Nosotros",category:"Contenido",media:at,content:`
-<section class="w-full bg-white py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="ab-grid">
-            <div class="ab-content-col flex flex-col gap-4">
-                <h2 class="text-4xl font-bold text-[#003B71]">Lorem ipsum dolor sit amet</h2>
-                <p class="text-base text-[#003B71] leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <h2 class="text-2xl font-bold text-[#003B71] mt-4">Lorem ipsum dolor</h2>
-                <div class="ab-mvv-grid">
-                    <div class="flex flex-col gap-3 rounded-2xl p-5 text-center bg-[#E97300]">
-                        <h3 class="text-base font-bold text-white">Lorem ipsum</h3>
-                        <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet consectetur.</p>
-                    </div>
-                    <div class="flex flex-col gap-3 rounded-2xl p-5 text-center bg-[#E97300]">
-                        <h3 class="text-base font-bold text-white">Lorem ipsum</h3>
-                        <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet consectetur.</p>
-                    </div>
-                    <div class="flex flex-col gap-3 rounded-2xl p-5 text-center bg-[#E97300]">
-                        <h3 class="text-base font-bold text-white">Lorem ipsum</h3>
-                        <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet consectetur.</p>
-                    </div>
-                </div>
+<section class="ab-section">
+    <div class="ab-grid">
+        <div class="ab-content-col flex flex-col gap-4">
+            <h2 class="text-4xl font-bold text-[#003B71]">Lorem ipsum dolor sit amet</h2>
+            <p class="text-base text-[#003B71] leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <h2 class="text-2xl font-bold text-[#003B71] mt-4">Lorem ipsum dolor</h2>
+            <div class="ab-mvv-grid">
+                ${te}
+                ${te}
+                ${te}
             </div>
-            <div class="ab-image-col">
-                <div class="ab-image">
-                    <img src="${Z("images/placeholder.svg")}" alt="Imagen de sección">
-                </div>
+        </div>
+        <div class="ab-image-col">
+            <div class="ab-image">
+                <img src="${Z("images/placeholder.svg")}" alt="Imagen de sección">
             </div>
         </div>
     </div>
 </section>
-${ce}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"Contenido",media:rt,content:`${lt}${ce}`}],nt=`<svg viewBox="0 0 32 32" width="32" height="32">
+${lt}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"Contenido",media:rt,content:`${te}`}],nt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="6" width="7" height="20" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.4" rx="1.5"/>
     <rect x="2.5" y="8" width="4" height="3" fill="#003B71" fill-opacity="0.15" rx="0.8"/>
@@ -333,40 +325,27 @@ ${ce}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"C
         <h3 class="text-base font-bold text-[#003B71]">Título del producto</h3>
         <p class="text-base text-[#003B71] leading-relaxed">Descripción breve del producto financiero disponible para ti.</p>
     </div>
-    <a href="#" class="pc-btn w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center">Solicitar</a>
+    <a href="#" class="pc-btn w-full py-2 px-8 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center">Solicitar</a>
 </div>`,ge=`
 <style>
-.pc-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-}
-.pc-btn {
-    display: block;
-    transition: background 0.2s, color 0.2s;
-}
-.pc-btn:hover {
-    background-color: #002a52;
-}
-@media (max-width: 900px) {
-    .pc-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 480px) {
-    .pc-grid { grid-template-columns: 1fr; }
-}
+.pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
+.pc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+.pc-btn{display:block;transition:background .2s;}
+.pc-btn:hover{background-color:#002a52;}
+@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.pc-grid{grid-template-columns:1fr;}}
 </style>`,dt=[{id:"product-cards-section",label:"Sección de productos",category:"Productos y Servicios",media:nt,content:`
-<section class="w-full bg-white py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold text-[#003B71] mb-3">Créditos</h2>
-            <p class="text-base text-[#003B71]">Opciones de financiamiento diseñadas para hacer realidad tus proyectos.</p>
-        </div>
-        <div class="pc-grid">
-            ${X}
-            ${X}
-            ${X}
-            ${X}
-        </div>
+<section class="pc-section">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-[#003B71] mb-3">Créditos</h2>
+        <p class="text-base text-[#003B71]">Opciones de financiamiento diseñadas para hacer realidad tus proyectos.</p>
+    </div>
+    <div class="pc-grid">
+        ${X}
+        ${X}
+        ${X}
+        ${X}
     </div>
 </section>
 ${ge}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Servicios",media:st,content:`${X}${ge}`}],ct=`<svg viewBox="0 0 32 32" width="32" height="32">
@@ -392,7 +371,7 @@ ${ge}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
         <h3 class="text-xl font-bold text-white">Lorem ipsum dolor</h3>
         <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
-    <a href="#" class="dc-btn-outline w-full py-3 px-4 rounded-lg bg-white dc-text-primary text-base font-semibold text-center">Lorem ipsum</a>
+    <a href="#" class="dc-btn-outline w-full py-2 px-8 rounded-lg bg-white dc-text-primary text-base font-semibold text-center">Lorem ipsum</a>
 </div>`,fe=`
 <div class="flex flex-col gap-5 rounded-2xl p-8 bg-white border border-gray-200">
     <div class="w-12 h-12 rounded-xl flex items-center justify-center dc-bg-light">
@@ -402,8 +381,8 @@ ${ge}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
         <h3 class="text-xl font-bold dc-text-primary">Lorem ipsum dolor</h3>
         <p class="text-base dc-text-primary leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
-    <a href="#" class="dc-btn-solid w-full py-3 px-4 rounded-lg dc-bg-primary text-white text-base font-semibold text-center">Lorem ipsum</a>
-</div>`,ne=`
+    <a href="#" class="dc-btn-solid w-full py-2 px-8 rounded-lg dc-bg-primary text-white text-base font-semibold text-center">Lorem ipsum</a>
+</div>`,se=`
 <style>
 .dc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .dc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:stretch;}
@@ -428,7 +407,7 @@ ${ge}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
         ${fe}
     </div>
 </section>
-${ne}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y Servicios",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+${se}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y Servicios",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <rect x="2" y="2" width="28" height="28" fill="#003B71" rx="2"/>
             <rect x="5" y="5" width="6" height="6" fill="rgba(255,255,255,0.2)" rx="1.2"/>
@@ -436,7 +415,7 @@ ${ne}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
             <rect x="5" y="17" width="12" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
             <rect x="5" y="20" width="10" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
             <rect x="5" y="24" width="22" height="3.5" rx="1" fill="white"/>
-        </svg>`,content:`${he}${ne}`},{id:"dual-card-light",label:"Tarjeta blanca",category:"Productos y Servicios",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+        </svg>`,content:`${he}${se}`},{id:"dual-card-light",label:"Tarjeta blanca",category:"Productos y Servicios",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <rect x="2" y="2" width="28" height="28" fill="white" rx="2" stroke="#003B71" stroke-width="0.5" stroke-opacity="0.3"/>
             <rect x="5" y="5" width="6" height="6" fill="#dce8f5" rx="1.2"/>
@@ -444,7 +423,7 @@ ${ne}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
             <rect x="5" y="17" width="12" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.4"/>
             <rect x="5" y="20" width="10" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.4"/>
             <rect x="5" y="24" width="22" height="3.5" rx="1" fill="#003B71"/>
-        </svg>`,content:`${fe}${ne}`}],ht=`<svg viewBox="0 0 32 32" width="32" height="32">
+        </svg>`,content:`${fe}${se}`}],ht=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="3" y="3" width="26" height="26" fill="white" rx="2" stroke="#e5e7eb" stroke-width="0.8"/>
     <rect x="8" y="7" width="16" height="2.5" rx="1.25" fill="#E97300" fill-opacity="0.9"/>
@@ -554,7 +533,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
     <rect x="5" y="14" width="7" height="7" rx="1" fill="#003B71" fill-opacity="0.3"/>
     <rect x="14" y="14" width="7" height="7" rx="1" fill="#003B71" fill-opacity="0.3"/>
     <rect x="23" y="14" width="4" height="7" rx="1" fill="#003B71" fill-opacity="0.3"/>
-</svg>`,de=`
+</svg>`,ce=`
 .tabs-btn{transition:background 0.2s,color 0.2s;}
 .tabs-btn.active,.tabs-btn:hover{background:#003B71 !important;color:#ffffff !important;}
 .tabs-panel{display:none;}
@@ -598,7 +577,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
         ${Q(4)}
     </div>
 </div>
-<style>${de}</style>`,Bt=`<svg viewBox="0 0 32 32" width="32" height="32">
+<style>${ce}</style>`,Bt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="2" width="28" height="28" rx="3" fill="none" stroke="#003B71" stroke-width="2"/>
     <circle cx="16" cy="10" r="4" fill="none" stroke="#003B71" stroke-width="1.5"/>
@@ -622,7 +601,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
                         <nav class="flex flex-wrap justify-center gap-2">${c}</nav>
                         <div class="tabs-body">${d}</div>
                     </div>
-                    <style>${de}</style>`};this.components(a(r)),setTimeout(()=>{const o=this.get("script"),c=this.getEl();o&&typeof o=="function"&&c&&o.call(c)},200)}}}),$t(i,e),Ct(i,e)}function $t(i,e){i.on("component:mount",t=>{const r=t.getEl();r?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},300))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();r&&setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},300)}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getEl();if(r?.isConnected){const a=t.get("script");a&&typeof a=="function"&&a.call(r)}})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Ct(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r){if(!r.querySelector("#tabs-section-styles")){const a=document.createElement("style");a.id="tabs-section-styles",a.textContent=de,r.appendChild(a)}if(!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
+                    <style>${ce}</style>`};this.components(a(r)),setTimeout(()=>{const o=this.get("script"),c=this.getEl();o&&typeof o=="function"&&c&&o.call(c)},200)}}}),$t(i,e),Ct(i,e)}function $t(i,e){i.on("component:mount",t=>{const r=t.getEl();r?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},300))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();r&&setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},300)}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getEl();if(r?.isConnected){const a=t.get("script");a&&typeof a=="function"&&a.call(r)}})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Ct(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r){if(!r.querySelector("#tabs-section-styles")){const a=document.createElement("style");a.id="tabs-section-styles",a.textContent=ce,r.appendChild(a)}if(!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
                 [data-gjs-type="${e}"] * { pointer-events: none !important; }
                 [data-gjs-type="${e}"].gjs-selected,
                 [data-gjs-type="${e}"].gjs-hovered {
@@ -708,13 +687,13 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
 .split-list-item{min-height:44px;}
 @media(max-width:1280px){.split-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.split-section{padding:2.5rem 1.5rem;}.split-grid{grid-template-columns:1fr;gap:2rem;}}
-</style>`,te=(i,e)=>{const t=zt(e),r=It(),a=e==="dark"?"bg-[#003B71]":"bg-white",o=i?`<div>${t}</div><div>${r}</div>`:`<div class="split-img-mobile-first">${r}</div><div>${t}</div>`;return`
+</style>`,ie=(i,e)=>{const t=zt(e),r=It(),a=e==="dark"?"bg-[#003B71]":"bg-white",o=i?`<div>${t}</div><div>${r}</div>`:`<div class="split-img-mobile-first">${r}</div><div>${t}</div>`;return`
 <section class="split-section ${a}">
     <div class="split-grid">
         ${o}
     </div>
 </section>
-${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen derecha",category:"Contenido",media:Lt,content:te(!0,"light")},{id:"split-content-light-img-left",label:"Contenido claro - imagen izquierda",category:"Contenido",media:St,content:te(!1,"light")},{id:"split-content-dark-img-right",label:"Contenido azul - imagen derecha",category:"Contenido",media:jt,content:te(!0,"dark")},{id:"split-content-dark-img-left",label:"Contenido azul - imagen izquierda",category:"Contenido",media:Tt,content:te(!1,"dark")},{id:"split-list-item",label:"Item de lista con badge",category:"Contenido",media:pe,content:U("light")},{id:"split-list-group",label:"Lista con badges",category:"Contenido",media:pe,content:`
+${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen derecha",category:"Contenido",media:Lt,content:ie(!0,"light")},{id:"split-content-light-img-left",label:"Contenido claro - imagen izquierda",category:"Contenido",media:St,content:ie(!1,"light")},{id:"split-content-dark-img-right",label:"Contenido azul - imagen derecha",category:"Contenido",media:jt,content:ie(!0,"dark")},{id:"split-content-dark-img-left",label:"Contenido azul - imagen izquierda",category:"Contenido",media:Tt,content:ie(!1,"dark")},{id:"split-list-item",label:"Item de lista con badge",category:"Contenido",media:pe,content:U("light")},{id:"split-list-group",label:"Lista con badges",category:"Contenido",media:pe,content:`
 <div class="flex flex-col gap-4">
     ${U("light")}
     ${U("light")}
@@ -737,7 +716,7 @@ ${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen 
     <circle cx="10" cy="14" r="1.5" fill="white"/>
     <rect x="6" y="20" width="8" height="1.5" rx="0.75" fill="white" fill-opacity="0.8"/>
     <rect x="7" y="22.5" width="6" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
-</svg>`,ie=`
+</svg>`,ae=`
 <div class="flex flex-col items-center gap-3 text-center">
     <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white/20">
         <i class="ri-map-pin-line text-2xl text-white"></i>
@@ -774,10 +753,10 @@ ${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen 
             <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
         <div class="ss-grid">
-            ${ie}
-            ${ie}
-            ${ie}
-            ${ie}
+            ${ae}
+            ${ae}
+            ${ae}
+            ${ae}
         </div>
     </div>
 </div>
@@ -805,7 +784,7 @@ ${qt}`,Ht=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
     <rect x="8" y="13" width="14" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.3"/>
     <rect x="8" y="15.5" width="12" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.3"/>
     <rect x="8" y="20" width="16" height="4" rx="1.5" fill="#003B71" fill-opacity="0.5"/>
-</svg>`,ae=`
+</svg>`,re=`
 <div class="svc-card flex flex-col gap-4 bg-white rounded-2xl p-6 text-center">
     <h3 class="text-lg font-bold text-[#003B71]">Lorem ipsum dolor</h3>
     <p class="text-base leading-relaxed text-[#003B71] flex-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
@@ -827,12 +806,12 @@ ${qt}`,Ht=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
         <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
     <div class="svc-grid">
-        ${ae}
-        ${ae}
-        ${ae}
+        ${re}
+        ${re}
+        ${re}
     </div>
 </section>
-${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Servicios",media:Pt,content:`${ae}${be}`}],Rt=`<svg viewBox="0 0 32 32" width="32" height="32">
+${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Servicios",media:Pt,content:`${re}${be}`}],Rt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="2" width="28" height="6" rx="1" fill="#003B71"/>
     <rect x="2" y="10" width="28" height="5" rx="1" fill="#003B71" fill-opacity="0.3"/>
@@ -840,14 +819,14 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
     <rect x="2" y="24" width="28" height="5" rx="1" fill="#003B71" fill-opacity="0.15"/>
     <line x1="11" y1="2" x2="11" y2="29" stroke="#003B71" stroke-width="1" stroke-opacity="0.3"/>
     <line x1="21" y1="2" x2="21" y2="29" stroke="#003B71" stroke-width="1" stroke-opacity="0.3"/>
-</svg>`,re={blue:{headerBg:"bg-[#003B71]",headerText:"text-white",subheaderBg:"bg-[#e8f0f8]",subheaderText:"text-[#003B71]",borderColor:"#003B71",rowEvenBg:"bg-[#f4f7fb]",rowOddBg:"bg-white",rowText:"text-[#003B71]",labelBg:"bg-[#e8f0f8]",labelText:"text-[#003B71]"},orange:{headerBg:"bg-[#E97300]",headerText:"text-white",subheaderBg:"bg-[#fef3e8]",subheaderText:"text-[#E97300]",borderColor:"#E97300",rowEvenBg:"bg-[#fff8f2]",rowOddBg:"bg-white",rowText:"text-[#003B71]",labelBg:"bg-[#fef3e8]",labelText:"text-[#E97300]"}};function $e(i,e){const t=re[e]||re.blue;let r='<table class="w-full border-collapse font-[Poppins,sans-serif] table-fixed">';i.title?(r+=`<thead><tr>
+</svg>`,le={blue:{headerBg:"bg-[#003B71]",headerText:"text-white",subheaderBg:"bg-[#e8f0f8]",subheaderText:"text-[#003B71]",borderColor:"#003B71",rowEvenBg:"bg-[#f4f7fb]",rowOddBg:"bg-white",rowText:"text-[#003B71]",labelBg:"bg-[#e8f0f8]",labelText:"text-[#003B71]"},orange:{headerBg:"bg-[#E97300]",headerText:"text-white",subheaderBg:"bg-[#fef3e8]",subheaderText:"text-[#E97300]",borderColor:"#E97300",rowEvenBg:"bg-[#fff8f2]",rowOddBg:"bg-white",rowText:"text-[#003B71]",labelBg:"bg-[#fef3e8]",labelText:"text-[#E97300]"}};function $e(i,e){const t=le[e]||le.blue;let r='<table class="w-full border-collapse font-[Poppins,sans-serif] table-fixed">';i.title?(r+=`<thead><tr>
             <th colspan="${i.cols}" class="p-3 align-middle text-center text-base font-bold ${t.headerBg} ${t.headerText}">
                 ${i.title}
             </th>
         </tr>`,i.headers?.length&&(r+="<tr>",i.headers.forEach((c,d)=>{const f=d<i.headers.length-1?`border-r border-[${t.borderColor}]`:"";r+=`<th class="p-3 align-middle text-sm font-semibold ${t.subheaderBg} ${t.subheaderText} ${f} border-b border-[${t.borderColor}] text-${c.align||"center"}">${c.text||""}</th>`}),r+="</tr>"),r+="</thead>"):i.headers?.length&&(r+="<thead><tr>",i.headers.forEach((c,d)=>{const f=d<i.headers.length-1?`border-r border-[${t.borderColor}]`:"";r+=`<th class="p-3 align-middle text-sm font-semibold ${t.headerBg} ${t.headerText} ${f} border-b border-[${t.borderColor}] text-${c.align||"center"}">${c.text||""}</th>`}),r+="</tr></thead>"),r+="<tbody>";const a=i.rows.length,o={};return i.rows.forEach((c,d)=>{r+="<tr>";let f=0;c.forEach(g=>{for(;o[`${d}-${f}`];)f++;const k=g.colspan||1,$=g.rowspan||1;for(let b=d;b<d+$;b++)for(let L=f;L<f+k;L++)(b!==d||L!==f)&&(o[`${b}-${L}`]=!0);const m=k>1?`colspan="${k}"`:"",n=$>1?`rowspan="${$}"`:"",p=g.isHeader?t.labelBg:d%2===0?t.rowEvenBg:t.rowOddBg,y=g.isHeader?"font-semibold":"font-normal",_=g.isHeader?t.labelText:t.rowText,x=`text-${g.align||"center"}`,E=d+$>=a,C=f+k>=i.cols?"":`border-r border-[${t.borderColor}]`,v=E?"":`border-b border-[${t.borderColor}]`,S=`${C} ${v} p-3 align-middle text-sm ${p} ${y} ${_} ${x}`;g.image?r+=`<td ${m} ${n} class="${S}">
                     <img src="${g.image}" alt="${g.text||""}" class="max-w-full max-h-20 h-auto object-contain block mx-auto">
                     ${g.text?`<span class="block mt-1 text-xs ${_}">${g.text}</span>`:""}
-                </td>`:r+=`<td ${m} ${n} class="${S}">${g.text||""}</td>`,f+=k}),r+="</tr>"}),r+="</tbody></table>",r}function G(i,e){return{title:"Título de la tabla",cols:i,headers:Array.from({length:i},(t,r)=>({text:`Columna ${r+1}`,align:"center"})),rows:Array.from({length:e},()=>Array.from({length:i},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})))}}function Ce(i,e){return`<div class="w-full overflow-x-auto rounded-2xl border-2 border-[${(re[e]||re.blue).borderColor}]">${i}</div>`}function ue(i,e){const t={};return i.forEach((r,a)=>{let o=0;r.forEach(c=>{for(;t[`${a}-${o}`];)o++;const d=Math.min(c.colspan||1,e-o),f=c.rowspan||1;for(let g=a;g<a+f;g++)for(let k=o;k<o+d;k++)(g!==a||k!==o)&&(t[`${g}-${k}`]=`${a}-${o}`);o+=d})}),t}const Ut=`
+                </td>`:r+=`<td ${m} ${n} class="${S}">${g.text||""}</td>`,f+=k}),r+="</tr>"}),r+="</tbody></table>",r}function G(i,e){return{title:"Título de la tabla",cols:i,headers:Array.from({length:i},(t,r)=>({text:`Columna ${r+1}`,align:"center"})),rows:Array.from({length:e},()=>Array.from({length:i},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})))}}function Ce(i,e){return`<div class="w-full overflow-x-auto rounded-2xl border-2 border-[${(le[e]||le.blue).borderColor}]">${i}</div>`}function ue(i,e){const t={};return i.forEach((r,a)=>{let o=0;r.forEach(c=>{for(;t[`${a}-${o}`];)o++;const d=Math.min(c.colspan||1,e-o),f=c.rowspan||1;for(let g=a;g<a+f;g++)for(let k=o;k<o+d;k++)(g!==a||k!==o)&&(t[`${g}-${k}`]=`${a}-${o}`);o+=d})}),t}const Ut=`
 #table-admin-modal{display:none;position:fixed;inset:0;z-index:999999;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,0.5);}
 #table-admin-modal.open{display:flex;}
 .tam-container{background:#fff;border-radius:0.75rem;box-shadow:0 20px 60px rgba(0,0,0,0.3);width:100%;max-width:960px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Poppins',sans-serif;}
@@ -1004,13 +983,13 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                                 value="${q}" data-action="rowspan" data-row="${E}" data-col="${v}">
                         </div>
                     </div>
-                </td>`}).join("")}</tr>`).join(""),n.querySelectorAll("input[data-action=colspan], input[data-action=rowspan]").forEach(x=>{x.addEventListener("change",()=>{const E=parseInt(x.dataset.row),T=parseInt(x.dataset.col),C=Math.max(1,parseInt(x.value)||1);o.rows[E]?.[T]&&(x.dataset.action==="colspan"?o.rows[E][T].colspan=Math.min(C,p-T):o.rows[E][T].rowspan=Math.min(C,y-E),g())})}),n.querySelectorAll("button[data-action]").forEach(x=>{x.addEventListener("click",E=>{E.preventDefault(),E.stopPropagation();const T=x.dataset.action,C=parseInt(x.dataset.row),v=parseInt(x.dataset.col);if(!(isNaN(C)||isNaN(v)||!o.rows[C]?.[v])){if(T==="header"){o.rows[C][v].isHeader=!o.rows[C][v].isHeader;const S=n.querySelector(`td[data-row="${C}"][data-col="${v}"]`);S&&(S.dataset.isheader=o.rows[C][v].isHeader?"1":"0",S.classList.toggle("is-header-cell",o.rows[C][v].isHeader)),x.classList.toggle("active",o.rows[C][v].isHeader),x.textContent=o.rows[C][v].isHeader?"✓ Etiqueta":"Etiqueta";return}if(T==="image"){window.__openTableImagePicker&&window.__openTableImagePicker(S=>{o.rows[C][v].image=S;const b=n.querySelector(`td[data-row="${C}"][data-col="${v}"]`);if(b){b.dataset.image=S,b.classList.add("has-image");let L=b.querySelector(".tam-cell-img-preview");L||(L=document.createElement("img"),L.className="tam-cell-img-preview",b.insertBefore(L,b.firstChild)),L.src=S;const q=b.querySelector("[data-action=image]");if(q&&(q.innerHTML='<i class="ri-image-line"></i> Cambiar'),!b.querySelector("[data-action=clear-image]")){const z=document.createElement("button");z.type="button",z.className="tam-cell-btn tam-cell-btn-clear",z.dataset.action="clear-image",z.dataset.row=C,z.dataset.col=v,z.textContent="✕ Quitar",z.addEventListener("click",F=>{F.preventDefault(),F.stopPropagation(),o.rows[C][v].image=null,b.dataset.image="",b.classList.remove("has-image"),L.remove(),z.remove();const N=b.querySelector("[data-action=image]");N&&(N.innerHTML='<i class="ri-image-line"></i> Imagen')}),b.querySelector(".tam-cell-actions").appendChild(z)}}});return}T==="clear-image"&&(o.rows[C][v].image=null,$())}})})}document.getElementById("tam-close").addEventListener("click",d),document.getElementById("tam-cancel").addEventListener("click",d),r.addEventListener("click",m=>{m.target===r&&d()}),document.getElementById("tam-rebuild").addEventListener("click",()=>{const m=parseInt(document.getElementById("tam-cols").value)||3,n=parseInt(document.getElementById("tam-rows").value)||3;for(k(),f();o.headers.length<m;)o.headers.push({text:`Col ${o.headers.length+1}`,align:"center"});for(o.headers=o.headers.slice(0,m),o.cols=m;o.rows.length<n;)o.rows.push(Array.from({length:m},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})));o.rows=o.rows.slice(0,n).map(p=>{for(;p.length<m;)p.push({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null});return p.slice(0,m)}),$()}),document.getElementById("tam-apply").addEventListener("click",()=>{f();const m=document.getElementById("tam-theme").value;a&&(a.set("tableData",JSON.parse(JSON.stringify(o))),a.set("tableTheme",m),a.addAttributes({"data-table-theme":m}),se(a)),d()}),window.__openTableAdminModal=c}function se(i){const e=i.get("tableData"),t=i.get("tableTheme")||"blue";e&&i.components(Ce($e(e,t),t))}function Wt(){return function(){}}const Yt=[{id:"table-blue",label:"Tabla azul",category:"Interactivos",media:Rt,content:{type:"table-component",attributes:{"data-table-theme":"blue"}}},{id:"table-orange",label:"Tabla naranja",category:"Interactivos",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+                </td>`}).join("")}</tr>`).join(""),n.querySelectorAll("input[data-action=colspan], input[data-action=rowspan]").forEach(x=>{x.addEventListener("change",()=>{const E=parseInt(x.dataset.row),T=parseInt(x.dataset.col),C=Math.max(1,parseInt(x.value)||1);o.rows[E]?.[T]&&(x.dataset.action==="colspan"?o.rows[E][T].colspan=Math.min(C,p-T):o.rows[E][T].rowspan=Math.min(C,y-E),g())})}),n.querySelectorAll("button[data-action]").forEach(x=>{x.addEventListener("click",E=>{E.preventDefault(),E.stopPropagation();const T=x.dataset.action,C=parseInt(x.dataset.row),v=parseInt(x.dataset.col);if(!(isNaN(C)||isNaN(v)||!o.rows[C]?.[v])){if(T==="header"){o.rows[C][v].isHeader=!o.rows[C][v].isHeader;const S=n.querySelector(`td[data-row="${C}"][data-col="${v}"]`);S&&(S.dataset.isheader=o.rows[C][v].isHeader?"1":"0",S.classList.toggle("is-header-cell",o.rows[C][v].isHeader)),x.classList.toggle("active",o.rows[C][v].isHeader),x.textContent=o.rows[C][v].isHeader?"✓ Etiqueta":"Etiqueta";return}if(T==="image"){window.__openTableImagePicker&&window.__openTableImagePicker(S=>{o.rows[C][v].image=S;const b=n.querySelector(`td[data-row="${C}"][data-col="${v}"]`);if(b){b.dataset.image=S,b.classList.add("has-image");let L=b.querySelector(".tam-cell-img-preview");L||(L=document.createElement("img"),L.className="tam-cell-img-preview",b.insertBefore(L,b.firstChild)),L.src=S;const q=b.querySelector("[data-action=image]");if(q&&(q.innerHTML='<i class="ri-image-line"></i> Cambiar'),!b.querySelector("[data-action=clear-image]")){const z=document.createElement("button");z.type="button",z.className="tam-cell-btn tam-cell-btn-clear",z.dataset.action="clear-image",z.dataset.row=C,z.dataset.col=v,z.textContent="✕ Quitar",z.addEventListener("click",F=>{F.preventDefault(),F.stopPropagation(),o.rows[C][v].image=null,b.dataset.image="",b.classList.remove("has-image"),L.remove(),z.remove();const N=b.querySelector("[data-action=image]");N&&(N.innerHTML='<i class="ri-image-line"></i> Imagen')}),b.querySelector(".tam-cell-actions").appendChild(z)}}});return}T==="clear-image"&&(o.rows[C][v].image=null,$())}})})}document.getElementById("tam-close").addEventListener("click",d),document.getElementById("tam-cancel").addEventListener("click",d),r.addEventListener("click",m=>{m.target===r&&d()}),document.getElementById("tam-rebuild").addEventListener("click",()=>{const m=parseInt(document.getElementById("tam-cols").value)||3,n=parseInt(document.getElementById("tam-rows").value)||3;for(k(),f();o.headers.length<m;)o.headers.push({text:`Col ${o.headers.length+1}`,align:"center"});for(o.headers=o.headers.slice(0,m),o.cols=m;o.rows.length<n;)o.rows.push(Array.from({length:m},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})));o.rows=o.rows.slice(0,n).map(p=>{for(;p.length<m;)p.push({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null});return p.slice(0,m)}),$()}),document.getElementById("tam-apply").addEventListener("click",()=>{f();const m=document.getElementById("tam-theme").value;a&&(a.set("tableData",JSON.parse(JSON.stringify(o))),a.set("tableTheme",m),a.addAttributes({"data-table-theme":m}),de(a)),d()}),window.__openTableAdminModal=c}function de(i){const e=i.get("tableData"),t=i.get("tableTheme")||"blue";e&&i.components(Ce($e(e,t),t))}function Wt(){return function(){}}const Yt=[{id:"table-blue",label:"Tabla azul",category:"Interactivos",media:Rt,content:{type:"table-component",attributes:{"data-table-theme":"blue"}}},{id:"table-orange",label:"Tabla naranja",category:"Interactivos",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <rect x="2" y="2" width="28" height="6" rx="1" fill="#E97300"/>
             <rect x="2" y="10" width="28" height="5" rx="1" fill="#E97300" fill-opacity="0.3"/>
             <rect x="2" y="17" width="28" height="5" rx="1" fill="#E97300" fill-opacity="0.15"/>
             <rect x="2" y="24" width="28" height="5" rx="1" fill="#E97300" fill-opacity="0.15"/>
-        </svg>`,content:{type:"table-component",attributes:{"data-table-theme":"orange"}}}];function Gt(i){const e="table-component";Vt(),i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Tabla",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,propagate:["editable","selectable","hoverable","droppable","highlightable"],tableData:null,tableTheme:"blue",attributes:{"data-gjs-type":e,"data-table-theme":"blue"},components:Ce($e(G(3,3),"blue"),"blue"),script:Wt(),traits:[{type:"button",name:"edit-table",label:"Editar tabla",text:"Abrir editor de tabla",command(t){const r=t.getSelected();r&&window.__openTableAdminModal&&(r.get("tableData")||r.set("tableData",G(3,3)),window.__openTableAdminModal(r))}},{type:"select",name:"data-table-theme",label:"Color del tema",options:[{id:"blue",name:"Azul"},{id:"orange",name:"Naranja"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e});const t=this.getAttributes()["data-table-theme"]||"blue";this.set("tableTheme",t),this.get("tableData")||(this.set("tableData",G(3,3)),se(this)),this.on("change:attributes",(r,a)=>{const o=a["data-table-theme"];o&&o!==this.get("tableTheme")&&(this.set("tableTheme",o),se(this))})}}}),Zt(i,e),Xt(i,e)}function Zt(i,e){i.on("component:mount",t=>{const r=t.getEl();if(r?.getAttribute?.("data-gjs-type")===e){t.set("type",e);const a=r.getAttribute("data-table-theme")||"blue";t.set("tableTheme",a),t.get("tableData")||t.set("tableData",G(3,3))}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getAttributes()["data-table-theme"]||"blue";t.set("tableTheme",r),t.get("tableData")||t.set("tableData",G(3,3))})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Xt(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r&&!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
+        </svg>`,content:{type:"table-component",attributes:{"data-table-theme":"orange"}}}];function Gt(i){const e="table-component";Vt(),i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Tabla",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,propagate:["editable","selectable","hoverable","droppable","highlightable"],tableData:null,tableTheme:"blue",attributes:{"data-gjs-type":e,"data-table-theme":"blue"},components:Ce($e(G(3,3),"blue"),"blue"),script:Wt(),traits:[{type:"button",name:"edit-table",label:"Editar tabla",text:"Abrir editor de tabla",command(t){const r=t.getSelected();r&&window.__openTableAdminModal&&(r.get("tableData")||r.set("tableData",G(3,3)),window.__openTableAdminModal(r))}},{type:"select",name:"data-table-theme",label:"Color del tema",options:[{id:"blue",name:"Azul"},{id:"orange",name:"Naranja"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e});const t=this.getAttributes()["data-table-theme"]||"blue";this.set("tableTheme",t),this.get("tableData")||(this.set("tableData",G(3,3)),de(this)),this.on("change:attributes",(r,a)=>{const o=a["data-table-theme"];o&&o!==this.get("tableTheme")&&(this.set("tableTheme",o),de(this))})}}}),Zt(i,e),Xt(i,e)}function Zt(i,e){i.on("component:mount",t=>{const r=t.getEl();if(r?.getAttribute?.("data-gjs-type")===e){t.set("type",e);const a=r.getAttribute("data-table-theme")||"blue";t.set("tableTheme",a),t.get("tableData")||t.set("tableData",G(3,3))}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getAttributes()["data-table-theme"]||"blue";t.set("tableTheme",r),t.get("tableData")||t.set("tableData",G(3,3))})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Xt(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r&&!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
                 [data-gjs-type="${e}"] * { pointer-events: none !important; }
                 [data-gjs-type="${e}"].gjs-selected,
                 [data-gjs-type="${e}"].gjs-hovered {
@@ -1182,7 +1161,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                     <p class="text-white font-medium text-lg">No hay agencias disponibles</p>
                     <p class="text-gray-300 text-sm mt-2">Intenta ajustar los filtros de búsqueda</p>
                 </div>
-            `}function q(){const l=i.querySelectorAll(`.${e}-item`);l.forEach(s=>{s.addEventListener("click",h=>{if(h.target.closest(".agency-maps-btn"))return;h.preventDefault();const u=parseInt(s.dataset.itemIndex),B=o[u];if(!B)return;l.forEach(w=>{w.classList.remove("bg-white","border-secondary","selected-agency"),w.classList.add("bg-white/10","border-white/20");const A=w.querySelector(".agency-title"),K=w.querySelectorAll("i"),ee=w.querySelectorAll(".agency-phone-link"),le=w.querySelectorAll("p:not(:has(.agency-phone-link))"),oe=w.querySelector(".agency-maps-btn");A&&(A.classList.remove("text-secondary"),A.classList.add("text-white")),K.forEach(R=>{R.classList.remove("text-secondary","text-gray-300","text-white"),R.classList.add("text-primary")}),ee.forEach(R=>{R.classList.remove("text-secondary"),R.classList.add("text-white")}),le.forEach(R=>{R.classList.remove("text-secondary"),R.classList.add("text-gray-200")}),oe&&(oe.classList.remove("bg-secondary"),oe.classList.add("bg-primary"))}),s.classList.remove("bg-white/10","border-white/20"),s.classList.add("bg-white","border-secondary","selected-agency");const M=s.querySelector(".agency-title"),P=s.querySelectorAll("i"),V=s.querySelectorAll(".agency-phone-link"),O=s.querySelectorAll("p:not(:has(.agency-phone-link))"),H=s.querySelector(".agency-maps-btn");if(M&&(M.classList.remove("text-white"),M.classList.add("text-secondary")),P.forEach(w=>{w.classList.remove("text-secondary","text-gray-300","text-white"),w.classList.add("text-primary")}),V.forEach(w=>{w.classList.remove("text-white"),w.classList.add("text-secondary")}),O.forEach(w=>{w.classList.remove("text-gray-200"),w.classList.add("text-secondary")}),H&&(H.classList.remove("bg-primary"),H.classList.add("bg-secondary")),d&&B&&d._loaded)try{d.flyTo([B.latitude,B.longitude],14,{animate:!0,duration:1});const w=f.find(A=>A.item.id===B.id);w&&w.marker&&w.marker.openPopup()}catch(w){console.warn("Error updating map view:",w)}})})}function z(){const l=i.querySelector(`.${e}-search-input`),s=i.querySelector(`.${e}-zone-filter`),h=i.querySelector(`.${e}-department-filter`),u=i.querySelector(`.${e}-no-results`),B={Occidental:["Ahuachapán","Santa Ana","Sonsonate"],Paracentral:["Chalatenango","Cuscatlán","La Paz","Cabañas","San Vicente"],Central:["La Libertad","San Salvador"],Oriental:["Usulután","San Miguel","Morazán","La Unión"]},M=()=>{if(!s||!h)return;const V=s.value,O=h.value;if(!V)h.innerHTML='<option value="">Todos los Departamentos</option>',[...new Set(a.map(w=>w.department).filter(Boolean))].sort().forEach(w=>{const A=document.createElement("option");A.value=w,A.textContent=w,h.appendChild(A)}),O&&(h.value=O);else{const H=B[V]||[];h.innerHTML='<option value="">Todos los Departamentos</option>',H.forEach(w=>{const A=document.createElement("option");A.value=w,A.textContent=w,h.appendChild(A)}),H.includes(O)&&(h.value=O)}},P=()=>{const V=l?l.value.toLowerCase().trim():"",O=s?s.value:"",H=h?h.value:"";o=a.filter(w=>{let A=!0,K=!0,ee=!0;return V&&(A=Object.values(w).some(le=>String(le).toLowerCase().includes(V))),O&&(K=w.zone===O),H&&(ee=w.department===H),A&&K&&ee}),S(),x(),u&&u.classList.toggle("hidden",o.length>0)};l&&l.addEventListener("input",P),s&&s.addEventListener("change",()=>{M(),P()}),h&&h.addEventListener("change",P)}function F(){const l=i.querySelector("[data-title]");if(l){const u=N("map-title")||"Nuestras Agencias";l.textContent=u}const s=i.querySelector(`.${e}-search-input`);if(s){const u=N("search-placeholder")||"Buscar...";s.setAttribute("placeholder",u)}const h=i.querySelector(`.${e}-no-results`);if(h){const u=N("no-results-text")||"No se encontraron agencias";h.textContent=u}}function N(l){return i.closest(`[data-gjs-type="${e}"]`)?.getAttribute(l)}function J(l){const s=i.querySelector(`.${e}-list`);s&&(s.innerHTML=`
+            `}function q(){const l=i.querySelectorAll(`.${e}-item`);l.forEach(s=>{s.addEventListener("click",h=>{if(h.target.closest(".agency-maps-btn"))return;h.preventDefault();const u=parseInt(s.dataset.itemIndex),B=o[u];if(!B)return;l.forEach(w=>{w.classList.remove("bg-white","border-secondary","selected-agency"),w.classList.add("bg-white/10","border-white/20");const A=w.querySelector(".agency-title"),K=w.querySelectorAll("i"),ee=w.querySelectorAll(".agency-phone-link"),oe=w.querySelectorAll("p:not(:has(.agency-phone-link))"),ne=w.querySelector(".agency-maps-btn");A&&(A.classList.remove("text-secondary"),A.classList.add("text-white")),K.forEach(R=>{R.classList.remove("text-secondary","text-gray-300","text-white"),R.classList.add("text-primary")}),ee.forEach(R=>{R.classList.remove("text-secondary"),R.classList.add("text-white")}),oe.forEach(R=>{R.classList.remove("text-secondary"),R.classList.add("text-gray-200")}),ne&&(ne.classList.remove("bg-secondary"),ne.classList.add("bg-primary"))}),s.classList.remove("bg-white/10","border-white/20"),s.classList.add("bg-white","border-secondary","selected-agency");const M=s.querySelector(".agency-title"),P=s.querySelectorAll("i"),V=s.querySelectorAll(".agency-phone-link"),O=s.querySelectorAll("p:not(:has(.agency-phone-link))"),H=s.querySelector(".agency-maps-btn");if(M&&(M.classList.remove("text-white"),M.classList.add("text-secondary")),P.forEach(w=>{w.classList.remove("text-secondary","text-gray-300","text-white"),w.classList.add("text-primary")}),V.forEach(w=>{w.classList.remove("text-white"),w.classList.add("text-secondary")}),O.forEach(w=>{w.classList.remove("text-gray-200"),w.classList.add("text-secondary")}),H&&(H.classList.remove("bg-primary"),H.classList.add("bg-secondary")),d&&B&&d._loaded)try{d.flyTo([B.latitude,B.longitude],14,{animate:!0,duration:1});const w=f.find(A=>A.item.id===B.id);w&&w.marker&&w.marker.openPopup()}catch(w){console.warn("Error updating map view:",w)}})})}function z(){const l=i.querySelector(`.${e}-search-input`),s=i.querySelector(`.${e}-zone-filter`),h=i.querySelector(`.${e}-department-filter`),u=i.querySelector(`.${e}-no-results`),B={Occidental:["Ahuachapán","Santa Ana","Sonsonate"],Paracentral:["Chalatenango","Cuscatlán","La Paz","Cabañas","San Vicente"],Central:["La Libertad","San Salvador"],Oriental:["Usulután","San Miguel","Morazán","La Unión"]},M=()=>{if(!s||!h)return;const V=s.value,O=h.value;if(!V)h.innerHTML='<option value="">Todos los Departamentos</option>',[...new Set(a.map(w=>w.department).filter(Boolean))].sort().forEach(w=>{const A=document.createElement("option");A.value=w,A.textContent=w,h.appendChild(A)}),O&&(h.value=O);else{const H=B[V]||[];h.innerHTML='<option value="">Todos los Departamentos</option>',H.forEach(w=>{const A=document.createElement("option");A.value=w,A.textContent=w,h.appendChild(A)}),H.includes(O)&&(h.value=O)}},P=()=>{const V=l?l.value.toLowerCase().trim():"",O=s?s.value:"",H=h?h.value:"";o=a.filter(w=>{let A=!0,K=!0,ee=!0;return V&&(A=Object.values(w).some(oe=>String(oe).toLowerCase().includes(V))),O&&(K=w.zone===O),H&&(ee=w.department===H),A&&K&&ee}),S(),x(),u&&u.classList.toggle("hidden",o.length>0)};l&&l.addEventListener("input",P),s&&s.addEventListener("change",()=>{M(),P()}),h&&h.addEventListener("change",P)}function F(){const l=i.querySelector("[data-title]");if(l){const u=N("map-title")||"Nuestras Agencias";l.textContent=u}const s=i.querySelector(`.${e}-search-input`);if(s){const u=N("search-placeholder")||"Buscar...";s.setAttribute("placeholder",u)}const h=i.querySelector(`.${e}-no-results`);if(h){const u=N("no-results-text")||"No se encontraron agencias";h.textContent=u}}function N(l){return i.closest(`[data-gjs-type="${e}"]`)?.getAttribute(l)}function J(l){const s=i.querySelector(`.${e}-list`);s&&(s.innerHTML=`
                     <div class="flex flex-col items-center justify-center p-12 text-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
                             <i class="ri-error-warning-line text-4xl text-red-300"></i>

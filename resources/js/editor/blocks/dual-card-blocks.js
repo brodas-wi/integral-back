@@ -23,7 +23,7 @@ const CARD_DARK = `
         <h3 class="text-xl font-bold text-white">Lorem ipsum dolor</h3>
         <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
-    <a href="#" class="dc-btn-outline w-full py-3 px-4 rounded-lg bg-white dc-text-primary text-base font-semibold text-center">Lorem ipsum</a>
+    <a href="#" class="dc-btn-outline w-full py-2 px-8 rounded-lg bg-white dc-text-primary text-base font-semibold text-center">Lorem ipsum</a>
 </div>`;
 
 const CARD_LIGHT = `
@@ -35,7 +35,7 @@ const CARD_LIGHT = `
         <h3 class="text-xl font-bold dc-text-primary">Lorem ipsum dolor</h3>
         <p class="text-base dc-text-primary leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
-    <a href="#" class="dc-btn-solid w-full py-3 px-4 rounded-lg dc-bg-primary text-white text-base font-semibold text-center">Lorem ipsum</a>
+    <a href="#" class="dc-btn-solid w-full py-2 px-8 rounded-lg dc-bg-primary text-white text-base font-semibold text-center">Lorem ipsum</a>
 </div>`;
 
 const DUAL_CARD_STYLES = `

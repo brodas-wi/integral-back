@@ -38,29 +38,18 @@ const PRODUCT_CARD = `
         <h3 class="text-base font-bold text-[#003B71]">Título del producto</h3>
         <p class="text-base text-[#003B71] leading-relaxed">Descripción breve del producto financiero disponible para ti.</p>
     </div>
-    <a href="#" class="pc-btn w-full py-2 px-4 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center">Solicitar</a>
+    <a href="#" class="pc-btn w-full py-2 px-8 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center">Solicitar</a>
 </div>`;
 
 const PRODUCT_CARDS_STYLES = `
 <style>
-.pc-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-}
-.pc-btn {
-    display: block;
-    transition: background 0.2s, color 0.2s;
-}
-.pc-btn:hover {
-    background-color: #002a52;
-}
-@media (max-width: 900px) {
-    .pc-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 480px) {
-    .pc-grid { grid-template-columns: 1fr; }
-}
+.pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
+.pc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+.pc-btn{display:block;transition:background .2s;}
+.pc-btn:hover{background-color:#002a52;}
+@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.pc-grid{grid-template-columns:1fr;}}
 </style>`;
 
 export const productCardsBlocks = [
@@ -70,18 +59,16 @@ export const productCardsBlocks = [
         category: "Productos y Servicios",
         media: iconProductCards,
         content: `
-<section class="w-full bg-white py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold text-[#003B71] mb-3">Créditos</h2>
-            <p class="text-base text-[#003B71]">Opciones de financiamiento diseñadas para hacer realidad tus proyectos.</p>
-        </div>
-        <div class="pc-grid">
-            ${PRODUCT_CARD}
-            ${PRODUCT_CARD}
-            ${PRODUCT_CARD}
-            ${PRODUCT_CARD}
-        </div>
+<section class="pc-section">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold text-[#003B71] mb-3">Créditos</h2>
+        <p class="text-base text-[#003B71]">Opciones de financiamiento diseñadas para hacer realidad tus proyectos.</p>
+    </div>
+    <div class="pc-grid">
+        ${PRODUCT_CARD}
+        ${PRODUCT_CARD}
+        ${PRODUCT_CARD}
+        ${PRODUCT_CARD}
     </div>
 </section>
 ${PRODUCT_CARDS_STYLES}`,
