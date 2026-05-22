@@ -1,4 +1,4 @@
-import{i as D,t as F,d as H,f as U,e as N,s as _,g as P,c as G,E as O,j as R,h as J}from"./editor-commands-DZp-DcL4.js";import{o as V}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function W(){return D()}const A=`
+import{i as D,t as F,d as H,f as U,e as N,s as _,g as P,c as G,E as O,j as R,h as J}from"./editor-commands-fJ86LEjO.js";import{o as V}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function W(){return D()}const A=`
 <style>
 .ft-wrapper {
     background-color: #003B71;

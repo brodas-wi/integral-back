@@ -280,11 +280,13 @@ export function initializeGrapesJS() {
     });
 
     editor.on("component:selected", () => {
-        requestAnimationFrame(() => repositionToolbar(editor));
+        [0, 50, 100, 200].forEach((delay) =>
+            setTimeout(() => repositionToolbar(editor), delay),
+        );
     });
 
     editor.on("component:deselected", () => {
-        requestAnimationFrame(() => repositionToolbar(editor));
+        setTimeout(() => repositionToolbar(editor), 0);
     });
 
     editor.on("run:preview:before", () => {
@@ -302,41 +304,30 @@ function repositionToolbar(editor) {
     if (!canvasEl) return;
 
     const toolbar = canvasEl.querySelector(".gjs-toolbar");
-    if (!toolbar) return;
+    if (!toolbar || toolbar.style.display === "none") return;
+
+    toolbar.style.minWidth = "max-content";
+    void toolbar.offsetWidth;
 
     const canvasRect = canvasEl.getBoundingClientRect();
     const toolbarRect = toolbar.getBoundingClientRect();
 
+    if (toolbarRect.width === 0) return;
+
     let top = parseFloat(toolbar.style.top) || 0;
     let left = parseFloat(toolbar.style.left) || 0;
 
-    const margin = 4;
+    const margin = 6;
     const minTop = margin;
     const maxTop = canvasRect.height - toolbarRect.height - margin;
     const minLeft = margin;
     const maxLeft = canvasRect.width - toolbarRect.width - margin;
 
-    let adjusted = false;
+    if (top < minTop) top = minTop;
+    if (top > maxTop) top = Math.max(minTop, maxTop);
+    if (left < minLeft) left = minLeft;
+    if (left > maxLeft) left = Math.max(minLeft, maxLeft);
 
-    if (top < minTop) {
-        top = minTop;
-        adjusted = true;
-    }
-    if (top > maxTop) {
-        top = maxTop;
-        adjusted = true;
-    }
-    if (left < minLeft) {
-        left = minLeft;
-        adjusted = true;
-    }
-    if (left > maxLeft) {
-        left = maxLeft;
-        adjusted = true;
-    }
-
-    if (adjusted) {
-        toolbar.style.top = `${top}px`;
-        toolbar.style.left = `${left}px`;
-    }
+    toolbar.style.top = `${top}px`;
+    toolbar.style.left = `${left}px`;
 }
