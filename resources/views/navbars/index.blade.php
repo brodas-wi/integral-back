@@ -92,7 +92,7 @@
                                     @canany(['navbars.view', 'navbars.manage'])
                                         <a href="{{ route('navbars.preview', $navbar->id) }}" target="_blank"
                                             class="btn-outline btn-sm">
-                                            <i class="ri-eye-line mr-1"></i> Preview
+                                            <i class="ri-eye-line mr-1"></i> Previsualizar
                                         </a>
                                     @endcanany
                                     @canany(['navbars.edit', 'navbars.manage'])
