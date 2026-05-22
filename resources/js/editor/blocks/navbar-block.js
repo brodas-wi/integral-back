@@ -86,6 +86,11 @@ const NAVBAR_STYLES = `
     width: auto;
     display: block;
 }
+.nb-logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
 .nb-logo-text {
     font-size: 1.25rem;
     font-weight: 800;
@@ -308,9 +313,11 @@ const NAVBAR_STYLES = `
 function buildNavbarHTML(data, uid) {
     uid = uid || "nb" + Math.random().toString(36).slice(2, 7);
 
-    const logoHtml = data.logo_url
+    const logoHref = data.logo_href || "/";
+    const logoInner = data.logo_url
         ? `<img src="${data.logo_url}" alt="${data.logo_alt || "Logo"}">`
         : `<span class="nb-logo-text">${data.logo_text || "Logo"}</span>`;
+    const logoHtml = `<a href="${logoHref}" class="nb-logo-link">${logoInner}</a>`;
 
     const linksHtml = (data.links || [])
         .map((item) => {
@@ -371,141 +378,69 @@ function showNavbarModal(editor, component) {
         const style = document.createElement("style");
         style.id = "nb-modal-styles";
         style.textContent = `
-            .nb-overlay {
-                position: fixed; inset: 0; z-index: 99999;
-                display: flex; align-items: center; justify-content: center;
-                background: rgba(15,23,42,0.45); backdrop-filter: blur(3px); padding: 1rem;
-            }
-            .nb-modal {
-                background: #fff; border-radius: 0.75rem; width: 100%; max-width: 780px;
-                max-height: 92vh; overflow: hidden; display: flex; flex-direction: column;
-                box-shadow: 0 20px 60px rgba(15,23,42,0.15), 0 4px 16px rgba(15,23,42,0.08);
-                font-family: 'Inter', sans-serif; color: #1e293b; border: 1px solid #e2e8f0;
-            }
-            .nb-modal-header {
-                padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9;
-                display: flex; align-items: center; justify-content: space-between;
-                background: #fff; flex-shrink: 0;
-            }
-            .nb-modal-header-left { display: flex; align-items: center; gap: 0.5rem; }
-            .nb-modal-header-left i { font-size: 1.125rem; color: #3b82f6; }
-            .nb-modal-header-left h2 { margin: 0; font-size: 0.9375rem; font-weight: 600; color: #0f172a; }
-            .nb-modal-close {
-                display: flex; align-items: center; justify-content: center;
-                width: 2rem; height: 2rem; border-radius: 0.375rem; border: none;
-                background: transparent; color: #94a3b8; cursor: pointer; transition: background 0.15s;
-            }
-            .nb-modal-close:hover { background: #f1f5f9; color: #475569; }
-            .nb-modal-tabs {
-                display: flex; border-bottom: 1px solid #e2e8f0; background: #fff; flex-shrink: 0;
-            }
-            .nb-tab-btn {
-                padding: 0.75rem 1.25rem; background: transparent; border: none;
-                border-bottom: 2px solid transparent; color: #94a3b8; font-size: 0.875rem;
-                font-weight: 500; cursor: pointer; font-family: inherit; transition: color 0.15s;
-                display: flex; align-items: center; gap: 0.375rem; margin-bottom: -1px;
-            }
-            .nb-tab-btn.active { color: #003B71; border-bottom-color: #003B71; }
-            .nb-tab-btn i { font-size: 1rem; }
-            .nb-modal-body {
-                flex: 1; overflow-y: auto; padding: 1.25rem;
-                display: flex; flex-direction: column; gap: 1rem; background: #f8fafc;
-            }
-            .nb-modal-body::-webkit-scrollbar { width: 5px; }
-            .nb-modal-body::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 3px; }
-            .nb-tab-panel { display: none; flex-direction: column; gap: 1rem; }
-            .nb-tab-panel.active { display: flex; }
-            .nb-card {
-                background: #fff; border: 1px solid #e2e8f0; border-radius: 0.625rem; padding: 1rem;
-            }
-            .nb-label {
-                display: block; font-size: 0.75rem; font-weight: 600; color: #64748b;
-                text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.625rem;
-            }
-            .nb-row { display: flex; gap: 0.75rem; align-items: center; }
-            .nb-input {
-                flex: 1; padding: 0.5rem 0.75rem; background: #f8fafc;
-                border: 1px solid #e2e8f0; border-radius: 0.5rem; color: #1e293b;
-                font-size: 0.875rem; outline: none; font-family: inherit; transition: border-color 0.15s;
-            }
-            .nb-input:focus { border-color: #3b82f6; }
-            .nb-input-sm {
-                padding: 0.375rem 0.625rem; background: #f8fafc; border: 1px solid #e2e8f0;
-                border-radius: 0.375rem; color: #1e293b; font-size: 0.8rem;
-                outline: none; font-family: inherit; transition: border-color 0.15s;
-            }
-            .nb-input-sm:focus { border-color: #3b82f6; }
-            .nb-section-header {
-                display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;
-            }
-            .nb-btn-add {
-                padding: 0.375rem 0.75rem; background: #003B71; border: none; border-radius: 0.5rem;
-                color: #fff; font-size: 0.75rem; font-weight: 600; cursor: pointer;
-                display: flex; align-items: center; gap: 0.375rem; font-family: inherit; transition: background 0.15s;
-            }
-            .nb-btn-add:hover { background: #002a52; }
-            .nb-list { display: flex; flex-direction: column; gap: 0.625rem; }
-            .nb-link-card {
-                background: #fff; border: 1px solid #e2e8f0; border-radius: 0.5rem; overflow: hidden;
-            }
-            .nb-link-card-header {
-                padding: 0.625rem 0.875rem; background: #f8fafc; border-bottom: 1px solid #f1f5f9;
-                display: flex; align-items: center; gap: 0.5rem;
-            }
-            .nb-link-card-body { padding: 0.75rem 0.875rem; display: flex; flex-direction: column; gap: 0.5rem; }
-            .nb-link-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-            .nb-type-badge {
-                font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 4px;
-                text-transform: uppercase; letter-spacing: 0.05em;
-            }
-            .nb-type-link { background: #dbeafe; color: #1d4ed8; }
-            .nb-type-submenu { background: #fef3c7; color: #b45309; }
-            .nb-btn-remove {
-                background: none; border: none; cursor: pointer; color: #ef4444; padding: 0.25rem;
-                flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-                border-radius: 0.25rem; transition: background 0.15s;
-            }
-            .nb-btn-remove:hover { background: #fef2f2; }
-            .nb-btn-sm-add {
-                margin-top: 0.25rem; padding: 0.25rem 0.625rem; background: #e8f0f8; border: none;
-                border-radius: 0.375rem; color: #003B71; font-size: 0.7rem; font-weight: 600;
-                cursor: pointer; display: flex; align-items: center; gap: 0.25rem; font-family: inherit;
-            }
-            .nb-btn-sm-add:hover { background: #d1e3f5; }
-            .nb-submenu-item { display: flex; gap: 0.5rem; align-items: center; }
-            .nb-action-card {
-                background: #fff; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 0.75rem;
-                display: flex; flex-direction: column; gap: 0.5rem;
-            }
-            .nb-select {
-                padding: 0.375rem 0.625rem; background: #f8fafc; border: 1px solid #e2e8f0;
-                border-radius: 0.375rem; color: #1e293b; font-size: 0.8rem;
-                outline: none; font-family: inherit;
-            }
-            .nb-modal-footer {
-                padding: 1rem 1.25rem; border-top: 1px solid #f1f5f9;
-                display: flex; gap: 0.75rem; justify-content: flex-end;
-                background: #fff; flex-shrink: 0;
-            }
-            .nb-btn-cancel {
-                padding: 0.5rem 1.25rem; background: #fff; border: 2px solid #e2e8f0;
-                border-radius: 0.5rem; color: #475569; font-size: 0.875rem; font-weight: 500;
-                cursor: pointer; font-family: inherit; transition: background 0.15s;
-            }
-            .nb-btn-cancel:hover { background: #f8fafc; border-color: #cbd5e1; }
-            .nb-btn-save {
-                padding: 0.5rem 1.25rem; background: #f0872a; border: none;
-                border-radius: 0.5rem; color: #fff; font-size: 0.875rem; font-weight: 600;
-                cursor: pointer; font-family: inherit; transition: background 0.15s;
-            }
-            .nb-btn-save:hover { background: #d97821; }
-            .nb-pick-btn {
-                flex-shrink: 0; padding: 0.5rem 0.875rem; background: #003B71; border: none;
-                border-radius: 0.5rem; color: #fff; font-size: 0.8rem; font-weight: 600;
-                cursor: pointer; display: flex; align-items: center; gap: 0.375rem;
-                font-family: inherit; white-space: nowrap; transition: background 0.15s;
-            }
-            .nb-pick-btn:hover { background: #002a52; }
+            .nb-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
+            .nb-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:780px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
+            .nb-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
+            .nb-modal-header-left{display:flex;align-items:center;gap:0.5rem;}
+            .nb-modal-header-left i{font-size:1.125rem;color:#3b82f6;}
+            .nb-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
+            .nb-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;}
+            .nb-modal-close:hover{background:#f1f5f9;color:#475569;}
+            .nb-modal-tabs{display:flex;border-bottom:1px solid #e2e8f0;background:#fff;flex-shrink:0;}
+            .nb-tab-btn{padding:0.75rem 1.25rem;background:transparent;border:none;border-bottom:2px solid transparent;color:#94a3b8;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:color 0.15s;display:flex;align-items:center;gap:0.375rem;margin-bottom:-1px;}
+            .nb-tab-btn.active{color:#003B71;border-bottom-color:#003B71;}
+            .nb-tab-btn i{font-size:1rem;}
+            .nb-modal-body{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;background:#f8fafc;}
+            .nb-modal-body::-webkit-scrollbar{width:5px;}
+            .nb-modal-body::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:3px;}
+            .nb-tab-panel{display:none;flex-direction:column;gap:1rem;}
+            .nb-tab-panel.active{display:flex;}
+            .nb-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;}
+            .nb-label{display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;}
+            .nb-row{display:flex;gap:0.75rem;align-items:center;}
+            .nb-input{flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;}
+            .nb-input:focus{border-color:#3b82f6;}
+            .nb-input-sm{padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;transition:border-color 0.15s;}
+            .nb-input-sm:focus{border-color:#3b82f6;}
+            .nb-list{display:flex;flex-direction:column;gap:0.625rem;}
+            .nb-link-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;overflow:hidden;cursor:default;}
+            .nb-link-card.nb-dragging{opacity:0.4;}
+            .nb-link-card.nb-drag-over{border-color:#003B71;box-shadow:0 0 0 2px rgba(0,59,113,0.15);}
+            .nb-link-card-header{padding:0.625rem 0.875rem;background:#f8fafc;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:0.5rem;}
+            .nb-link-card-body{padding:0.75rem 0.875rem;display:flex;flex-direction:column;gap:0.5rem;}
+            .nb-link-row{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;}
+            .nb-drag-handle{cursor:grab;color:#94a3b8;display:flex;align-items:center;padding:0 0.125rem;flex-shrink:0;}
+            .nb-drag-handle:hover{color:#475569;}
+            .nb-drag-handle:active{cursor:grabbing;}
+            .nb-type-badge{font-size:0.65rem;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:0.05em;cursor:pointer;transition:opacity 0.15s;user-select:none;}
+            .nb-type-badge:hover{opacity:0.75;}
+            .nb-type-link{background:#dbeafe;color:#1d4ed8;}
+            .nb-type-submenu{background:#fef3c7;color:#b45309;}
+            .nb-type-badge-hint{font-size:0.6rem;color:#94a3b8;margin-left:0.125rem;}
+            .nb-btn-remove{background:none;border:none;cursor:pointer;color:#ef4444;padding:0.25rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:0.25rem;transition:background 0.15s;}
+            .nb-btn-remove:hover{background:#fef2f2;}
+            .nb-btn-sm-add{padding:0.25rem 0.625rem;background:#e8f0f8;border:none;border-radius:0.375rem;color:#003B71;font-size:0.7rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.25rem;font-family:inherit;}
+            .nb-btn-sm-add:hover{background:#d1e3f5;}
+            .nb-submenu-item{display:flex;gap:0.5rem;align-items:center;}
+            .nb-action-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem;}
+            .nb-action-card.nb-dragging{opacity:0.4;}
+            .nb-action-card.nb-drag-over{border-color:#003B71;box-shadow:0 0 0 2px rgba(0,59,113,0.15);}
+            .nb-select{padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;}
+            .nb-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
+            .nb-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .nb-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
+            .nb-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .nb-btn-save:hover{background:#d97821;}
+            .nb-pick-btn{flex-shrink:0;padding:0.5rem 0.875rem;background:#003B71;border:none;border-radius:0.5rem;color:#fff;font-size:0.8rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;font-family:inherit;white-space:nowrap;transition:background 0.15s;}
+            .nb-pick-btn:hover{background:#002a52;}
+            .nb-add-row{display:flex;gap:0.5rem;padding-top:0.25rem;}
+            .nb-btn-add{padding:0.375rem 0.75rem;border:none;border-radius:0.5rem;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;font-family:inherit;transition:background 0.15s;}
+            .nb-btn-add-link{background:#003B71;}
+            .nb-btn-add-link:hover{background:#002a52;}
+            .nb-btn-add-submenu{background:#b45309;}
+            .nb-btn-add-submenu:hover{background:#92400e;}
+            .nb-btn-add-action{background:#003B71;}
+            .nb-btn-add-action:hover{background:#002a52;}
         `;
         document.head.appendChild(style);
     }
@@ -523,6 +458,7 @@ function showNavbarModal(editor, component) {
     const logoUrl = currentData.logo_url || "";
     const logoAlt = currentData.logo_alt || "";
     const logoText = currentData.logo_text || "Logo";
+    const logoHref = currentData.logo_href || "/";
     const links = JSON.parse(
         JSON.stringify(
             currentData.links || [
@@ -545,13 +481,9 @@ function showNavbarModal(editor, component) {
 
     const modal = document.createElement("div");
     modal.className = "nb-modal";
-
     modal.innerHTML = `
         <div class="nb-modal-header">
-            <div class="nb-modal-header-left">
-                <i class="ri-layout-top-line"></i>
-                <h2>Configurar Navbar</h2>
-            </div>
+            <div class="nb-modal-header-left"><i class="ri-layout-top-line"></i><h2>Configurar Navbar</h2></div>
             <button id="nb-modal-close" class="nb-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
         </div>
         <div class="nb-modal-tabs">
@@ -572,36 +504,35 @@ function showNavbarModal(editor, component) {
                     </div>
                 </div>
                 <div class="nb-card">
+                    <label class="nb-label">Enlace del logo</label>
+                    <input id="nb-logo-href" type="text" placeholder="Ej: / o https://..." value="${logoHref}" class="nb-input" style="width:100%;">
+                </div>
+                <div class="nb-card">
                     <label class="nb-label">Texto alternativo / Logo de texto</label>
                     <div class="nb-row">
-                        <input id="nb-logo-alt" type="text" placeholder="Texto alternativo" value="${logoAlt}" class="nb-input">
+                        <input id="nb-logo-alt"  type="text" placeholder="Texto alternativo"      value="${logoAlt}"  class="nb-input">
                         <input id="nb-logo-text" type="text" placeholder="Texto si no hay imagen" value="${logoText}" class="nb-input">
                     </div>
                 </div>
             </div>
             <div class="nb-tab-panel" id="nb-panel-links">
-                <div class="nb-section-header">
-                    <label class="nb-label" style="margin-bottom:0;">Elementos de navegación</label>
-                    <div style="display:flex;gap:0.5rem;">
-                        <button id="nb-add-link" class="nb-btn-add"><i class="ri-link"></i> Link</button>
-                        <button id="nb-add-submenu" class="nb-btn-add" style="background:#b45309;"><i class="ri-arrow-down-s-line"></i> Submenú</button>
-                    </div>
-                </div>
                 <div id="nb-links-list" class="nb-list"></div>
+                <div class="nb-add-row">
+                    <button id="nb-add-link"    class="nb-btn-add nb-btn-add-link"><i class="ri-link"></i> Agregar link</button>
+                    <button id="nb-add-submenu" class="nb-btn-add nb-btn-add-submenu"><i class="ri-arrow-down-s-line"></i> Agregar submenú</button>
+                </div>
             </div>
             <div class="nb-tab-panel" id="nb-panel-actions">
-                <div class="nb-section-header">
-                    <label class="nb-label" style="margin-bottom:0;">Botones de acción</label>
-                    <button id="nb-add-action" class="nb-btn-add"><i class="ri-add-line"></i> Agregar botón</button>
-                </div>
                 <div id="nb-actions-list" class="nb-list"></div>
+                <div class="nb-add-row">
+                    <button id="nb-add-action" class="nb-btn-add nb-btn-add-action"><i class="ri-add-line"></i> Agregar botón</button>
+                </div>
             </div>
         </div>
         <div class="nb-modal-footer">
             <button id="nb-modal-cancel" class="nb-btn-cancel">Cancelar</button>
-            <button id="nb-modal-save" class="nb-btn-save">Aplicar cambios</button>
-        </div>
-    `;
+            <button id="nb-modal-save"   class="nb-btn-save">Aplicar cambios</button>
+        </div>`;
 
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
@@ -643,20 +574,194 @@ function showNavbarModal(editor, component) {
         });
     });
 
+    function makeDraggable(container, arr, renderFn) {
+        let dragIdx = null;
+        container.querySelectorAll("[data-drag-idx]").forEach((card) => {
+            card.setAttribute("draggable", "true");
+            card.addEventListener("dragstart", (e) => {
+                dragIdx = parseInt(card.dataset.dragIdx);
+                setTimeout(() => card.classList.add("nb-dragging"), 0);
+                e.dataTransfer.effectAllowed = "move";
+            });
+            card.addEventListener("dragend", () => {
+                card.classList.remove("nb-dragging");
+                container
+                    .querySelectorAll(".nb-drag-over")
+                    .forEach((el) => el.classList.remove("nb-drag-over"));
+            });
+            card.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+                const overIdx = parseInt(card.dataset.dragIdx);
+                if (overIdx !== dragIdx) card.classList.add("nb-drag-over");
+            });
+            card.addEventListener("dragleave", () =>
+                card.classList.remove("nb-drag-over"),
+            );
+            card.addEventListener("drop", (e) => {
+                e.preventDefault();
+                const overIdx = parseInt(card.dataset.dragIdx);
+                if (dragIdx !== null && overIdx !== dragIdx) {
+                    const [moved] = arr.splice(dragIdx, 1);
+                    arr.splice(overIdx, 0, moved);
+                    renderFn();
+                }
+                dragIdx = null;
+            });
+        });
+    }
+
+    const appBase =
+        document
+            .querySelector('meta[name="app-url"]')
+            ?.content?.replace(/\/$/, "") ?? "";
+    const searchUrl = `${appBase}/api/pages/search`;
+
+    function attachUrlAutocomplete(input) {
+        if (input.dataset.autocompleteAttached) return;
+        input.dataset.autocompleteAttached = "true";
+
+        const wrapper = document.createElement("div");
+        wrapper.style.cssText = "position:relative;flex:1;";
+        input.parentNode.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+        input.style.width = "100%";
+
+        const dropdown = document.createElement("ul");
+        dropdown.style.cssText = `
+            position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:999999;
+            background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;
+            box-shadow:0 8px 24px rgba(0,0,0,0.1);list-style:none;margin:0;padding:0.25rem;
+            max-height:200px;overflow-y:auto;display:none;
+        `;
+        wrapper.appendChild(dropdown);
+
+        let debounceTimer = null;
+        let currentQuery = "";
+
+        async function search(q) {
+            if (q.length < 1) {
+                dropdown.style.display = "none";
+                return;
+            }
+            try {
+                const res = await fetch(
+                    `${searchUrl}?q=${encodeURIComponent(q)}`,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                    },
+                );
+                const pages = await res.json();
+                renderDropdown(pages, q);
+            } catch {
+                dropdown.style.display = "none";
+            }
+        }
+
+        function renderDropdown(pages, q) {
+            dropdown.innerHTML = "";
+            if (!pages.length) {
+                dropdown.style.display = "none";
+                return;
+            }
+            pages.forEach((page) => {
+                const li = document.createElement("li");
+                li.style.cssText =
+                    "padding:0.375rem 0.625rem;border-radius:0.375rem;cursor:pointer;display:flex;flex-direction:column;gap:0.125rem;";
+                li.innerHTML = `
+                    <span style="font-size:0.8rem;font-weight:600;color:#1e293b;">${highlight(page.title, q)}</span>
+                    <span style="font-size:0.7rem;color:#64748b;">/${page.slug}</span>`;
+                li.addEventListener(
+                    "mouseenter",
+                    () => (li.style.background = "#f1f5f9"),
+                );
+                li.addEventListener(
+                    "mouseleave",
+                    () => (li.style.background = ""),
+                );
+                li.addEventListener("mousedown", (e) => {
+                    e.preventDefault();
+                    input.value = "/" + page.slug;
+                    input.dispatchEvent(new Event("input"));
+                    dropdown.style.display = "none";
+                });
+                dropdown.appendChild(li);
+            });
+            dropdown.style.display = "block";
+        }
+
+        function highlight(text, q) {
+            if (!q) return text;
+            return text.replace(
+                new RegExp(
+                    `(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+                    "gi",
+                ),
+                '<mark style="background:#fef3c7;color:#92400e;border-radius:2px;padding:0 1px;">$1</mark>',
+            );
+        }
+
+        input.addEventListener("input", () => {
+            clearTimeout(debounceTimer);
+            currentQuery = input.value.trim();
+            debounceTimer = setTimeout(() => search(currentQuery), 220);
+        });
+
+        input.addEventListener("focus", () => {
+            if (currentQuery) search(currentQuery);
+        });
+
+        input.addEventListener("blur", () => {
+            setTimeout(() => {
+                dropdown.style.display = "none";
+            }, 150);
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (dropdown.style.display === "none") return;
+            const items = dropdown.querySelectorAll("li");
+            const active = dropdown.querySelector("li.nb-ac-active");
+            let idx = Array.from(items).indexOf(active);
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                if (active) active.classList.remove("nb-ac-active");
+                const next = items[idx + 1] || items[0];
+                next?.classList.add("nb-ac-active");
+                next.style.background = "#f1f5f9";
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                if (active) active.classList.remove("nb-ac-active");
+                const prev = items[idx - 1] || items[items.length - 1];
+                prev?.classList.add("nb-ac-active");
+                prev.style.background = "#f1f5f9";
+            } else if (e.key === "Enter" && active) {
+                e.preventDefault();
+                active.dispatchEvent(new MouseEvent("mousedown"));
+            } else if (e.key === "Escape") {
+                dropdown.style.display = "none";
+            }
+        });
+    }
+
     function renderLinks() {
         const list = modal.querySelector("#nb-links-list");
         list.innerHTML = "";
         links.forEach((item, idx) => {
             const card = document.createElement("div");
             card.className = "nb-link-card";
-            card.dataset.index = idx;
+            card.dataset.dragIdx = idx;
+
+            const typeBadge = `<span class="nb-type-badge ${item.type === "submenu" ? "nb-type-submenu" : "nb-type-link"}" data-toggle-type title="Clic para cambiar tipo">${item.type === "submenu" ? "Submenú" : "Link"}<span class="nb-type-badge-hint">↕</span></span>`;
 
             if (item.type === "submenu") {
                 const childrenHtml = (item.children || [])
                     .map(
                         (child, ci) => `
                     <div class="nb-submenu-item" data-child="${ci}">
-                        <input class="nb-input-sm" style="width:120px;" placeholder="ri-icon (opcional)" value="${child.icon || ""}" data-field="icon">
+                        <input class="nb-input-sm" style="width:110px;" placeholder="ri-icon (opcional)" value="${child.icon || ""}" data-field="icon">
                         <input class="nb-input-sm" style="flex:1;" placeholder="Texto" value="${child.label || ""}" data-field="label">
                         <input class="nb-input-sm" style="flex:1;" placeholder="URL" value="${child.href || ""}" data-field="href">
                         <button class="nb-btn-remove nb-remove-child"><i class="ri-delete-bin-line"></i></button>
@@ -666,27 +771,45 @@ function showNavbarModal(editor, component) {
 
                 card.innerHTML = `
                     <div class="nb-link-card-header">
-                        <span class="nb-type-badge nb-type-submenu">Submenú</span>
+                        <span class="nb-drag-handle"><i class="ri-draggable"></i></span>
+                        ${typeBadge}
                         <input class="nb-input-sm" style="flex:1;" placeholder="Título del submenú" value="${item.label || ""}" data-field="label">
                         <button class="nb-btn-remove nb-remove-link"><i class="ri-delete-bin-line"></i></button>
                     </div>
                     <div class="nb-link-card-body">
                         <div class="nb-list nb-children-list" style="gap:0.375rem;">${childrenHtml}</div>
-                        <button class="nb-btn-sm-add nb-add-child"><i class="ri-add-line"></i> Agregar sub-enlace</button>
+                        <button class="nb-btn-sm-add nb-add-child" style="margin-top:0.25rem;"><i class="ri-add-line"></i> Agregar sub-enlace</button>
                     </div>`;
             } else {
                 card.innerHTML = `
                     <div class="nb-link-card-header">
-                        <span class="nb-type-badge nb-type-link">Link</span>
+                        <span class="nb-drag-handle"><i class="ri-draggable"></i></span>
+                        ${typeBadge}
                         <input class="nb-input-sm" style="flex:1;" placeholder="Texto del enlace" value="${item.label || ""}" data-field="label">
                         <button class="nb-btn-remove nb-remove-link"><i class="ri-delete-bin-line"></i></button>
                     </div>
                     <div class="nb-link-card-body">
-                        <div class="nb-link-row">
-                            <input class="nb-input-sm" style="flex:1;" placeholder="URL del enlace" value="${item.href || ""}" data-field="href">
+                        <div style="flex:1;position:relative;">
+                            <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL o buscar página..." value="${item.href || ""}" data-field="href">
                         </div>
                     </div>`;
             }
+
+            // Toggle tipo al hacer clic en el badge
+            card.querySelector("[data-toggle-type]").onclick = () => {
+                if (item.type === "link") {
+                    item.type = "submenu";
+                    item.children = item.children?.length
+                        ? item.children
+                        : [{ label: "Enlace", href: "#", icon: "" }];
+                    delete item.href;
+                } else {
+                    item.type = "link";
+                    item.href = "#";
+                    delete item.children;
+                }
+                renderLinks();
+            };
 
             card.querySelector(".nb-remove-link").onclick = () => {
                 links.splice(idx, 1);
@@ -698,6 +821,9 @@ function showNavbarModal(editor, component) {
                     item[input.dataset.field] = input.value;
                 });
             });
+
+            const urlInput = card.querySelector(".nb-url-input");
+            if (urlInput) attachUrlAutocomplete(urlInput);
 
             if (item.type === "submenu") {
                 card.querySelector(".nb-add-child").onclick = () => {
@@ -727,12 +853,16 @@ function showNavbarModal(editor, component) {
                             item.children[ci][input.dataset.field] =
                                 input.value;
                         });
+                        if (input.dataset.field === "href")
+                            attachUrlAutocomplete(input);
                     },
                 );
             }
 
             list.appendChild(card);
         });
+
+        makeDraggable(list, links, renderLinks);
     }
 
     function renderActions() {
@@ -741,18 +871,20 @@ function showNavbarModal(editor, component) {
         actions.forEach((btn, idx) => {
             const card = document.createElement("div");
             card.className = "nb-action-card";
+            card.dataset.dragIdx = idx;
             card.innerHTML = `
                 <div class="nb-row">
-                    <input class="nb-input-sm" style="width:120px;flex-shrink:0;" placeholder="ri-icon (opcional)" value="${btn.icon || ""}" data-field="icon">
+                    <span class="nb-drag-handle"><i class="ri-draggable"></i></span>
+                    <input class="nb-input-sm" style="width:110px;flex-shrink:0;" placeholder="ri-icon (opcional)" value="${btn.icon || ""}" data-field="icon">
                     <input class="nb-input-sm" style="flex:1;" placeholder="Texto del botón" value="${btn.label || ""}" data-field="label">
                     <button class="nb-btn-remove nb-remove-action"><i class="ri-delete-bin-line"></i></button>
                 </div>
                 <div class="nb-row">
-                    <input class="nb-input-sm" style="flex:1;" placeholder="URL" value="${btn.href || ""}" data-field="href">
+                    <input class="nb-input-sm nb-url-input" style="flex:1;" placeholder="URL o buscar página..." value="${btn.href || ""}" data-field="href">
                     <select class="nb-select" data-field="style">
                         <option value="primary" ${btn.style === "primary" ? "selected" : ""}>Azul sólido</option>
                         <option value="outline" ${btn.style === "outline" ? "selected" : ""}>Azul outline</option>
-                        <option value="orange" ${btn.style === "orange" ? "selected" : ""}>Naranja</option>
+                        <option value="orange"  ${btn.style === "orange" ? "selected" : ""}>Naranja</option>
                     </select>
                 </div>`;
 
@@ -768,17 +900,27 @@ function showNavbarModal(editor, component) {
                     btn[input.dataset.field] = input.value;
                 });
             });
-
+            const urlInput = card.querySelector(".nb-url-input");
+            if (urlInput) attachUrlAutocomplete(urlInput);
             list.appendChild(card);
         });
+
+        makeDraggable(list, actions, renderActions);
     }
 
     renderLinks();
     renderActions();
 
+    const logoHrefInput = modal.querySelector("#nb-logo-href");
+    if (logoHrefInput) attachUrlAutocomplete(logoHrefInput);
+
     modal.querySelector("#nb-add-link").onclick = () => {
         links.push({ type: "link", label: "Nuevo enlace", href: "#" });
         renderLinks();
+        modal.querySelector("#nb-links-list").lastElementChild?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
     };
     modal.querySelector("#nb-add-submenu").onclick = () => {
         links.push({
@@ -787,10 +929,20 @@ function showNavbarModal(editor, component) {
             children: [{ label: "Enlace", href: "#", icon: "" }],
         });
         renderLinks();
+        modal.querySelector("#nb-links-list").lastElementChild?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
     };
     modal.querySelector("#nb-add-action").onclick = () => {
         actions.push({ label: "Botón", href: "#", style: "primary", icon: "" });
         renderActions();
+        modal
+            .querySelector("#nb-actions-list")
+            .lastElementChild?.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+            });
     };
 
     const close = () => overlay.remove();
@@ -805,16 +957,16 @@ function showNavbarModal(editor, component) {
             logo_url: modal.querySelector("#nb-logo-url").value.trim(),
             logo_alt: modal.querySelector("#nb-logo-alt").value.trim(),
             logo_text: modal.querySelector("#nb-logo-text").value.trim(),
+            logo_href: modal.querySelector("#nb-logo-href").value.trim() || "/",
             links,
             actions,
         };
         const existingInner = component
             .getEl()
             ?.querySelector("[id^='nb-root-']");
-        const existingUid = existingInner?.id?.replace("nb-root-", "") || null;
         const uid =
-            existingUid || "nb" + Math.random().toString(36).slice(2, 7);
-
+            existingInner?.id?.replace("nb-root-", "") ||
+            "nb" + Math.random().toString(36).slice(2, 7);
         component.addAttributes({ "data-navbar-config": JSON.stringify(data) });
         component.components(buildNavbarHTML(data, uid) + NAVBAR_STYLES);
         close();
@@ -849,6 +1001,7 @@ export function initializeNavbarBlock(editor) {
                         logo_url: "",
                         logo_alt: "Logo",
                         logo_text: "Logo",
+                        logo_href: "/",
                         links: [
                             {
                                 type: "link",

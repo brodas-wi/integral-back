@@ -229,6 +229,19 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('can:navbars.delete,navbars.manage');
     });
 
+    Route::get('/api/pages/search', function (\Illuminate\Http\Request $request) {
+        $q = $request->query('q', '');
+        $pages = \App\Models\Page::published()
+            ->where(function ($query) use ($q) {
+                $query->where('title', 'like', "%{$q}%")
+                    ->orWhere('slug', 'like', "%{$q}%");
+            })
+            ->select('id', 'title', 'slug')
+            ->limit(8)
+            ->get();
+        return response()->json($pages);
+    })->name('api.pages.search');
+
     Route::get('/api/navbars/active', [NavbarController::class, 'apiActive'])
         ->name('api.navbars.active');
 
