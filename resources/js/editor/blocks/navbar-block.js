@@ -621,20 +621,20 @@ function showNavbarModal(editor, component) {
         if (input.dataset.autocompleteAttached) return;
         input.dataset.autocompleteAttached = "true";
 
-        const wrapper = document.createElement("div");
-        wrapper.style.cssText = "position:relative;flex:1;";
-        input.parentNode.insertBefore(wrapper, input);
-        wrapper.appendChild(input);
-        input.style.width = "100%";
+        const parent = input.parentNode;
+        const prevPosition = parent.style.position;
+        if (!prevPosition || prevPosition === "static") {
+            parent.style.position = "relative";
+        }
 
         const dropdown = document.createElement("ul");
         dropdown.style.cssText = `
-            position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:999999;
+            position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:999999;
             background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;
             box-shadow:0 8px 24px rgba(0,0,0,0.1);list-style:none;margin:0;padding:0.25rem;
             max-height:200px;overflow-y:auto;display:none;
         `;
-        wrapper.appendChild(dropdown);
+        parent.appendChild(dropdown);
 
         let debounceTimer = null;
         let currentQuery = "";
@@ -711,6 +711,8 @@ function showNavbarModal(editor, component) {
         });
 
         input.addEventListener("focus", () => {
+            input.select();
+            currentQuery = input.value.trim();
             if (currentQuery) search(currentQuery);
         });
 
@@ -763,7 +765,9 @@ function showNavbarModal(editor, component) {
                     <div class="nb-submenu-item" data-child="${ci}">
                         <input class="nb-input-sm" style="width:110px;" placeholder="ri-icon (opcional)" value="${child.icon || ""}" data-field="icon">
                         <input class="nb-input-sm" style="flex:1;" placeholder="Texto" value="${child.label || ""}" data-field="label">
-                        <input class="nb-input-sm" style="flex:1;" placeholder="URL" value="${child.href || ""}" data-field="href">
+                        <div style="flex:1;position:relative;">
+                            <input class="nb-input-sm" style="width:100%;box-sizing:border-box;" placeholder="URL" value="${child.href || ""}" data-field="href">
+                        </div>
                         <button class="nb-btn-remove nb-remove-child"><i class="ri-delete-bin-line"></i></button>
                     </div>`,
                     )
@@ -789,9 +793,7 @@ function showNavbarModal(editor, component) {
                         <button class="nb-btn-remove nb-remove-link"><i class="ri-delete-bin-line"></i></button>
                     </div>
                     <div class="nb-link-card-body">
-                        <div style="flex:1;position:relative;">
-                            <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL o buscar página..." value="${item.href || ""}" data-field="href">
-                        </div>
+                        <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL o buscar página..." value="${item.href || ""}" data-field="href">
                     </div>`;
             }
 
