@@ -33,7 +33,7 @@ export function initializeGrapesJS() {
     ].filter(Boolean);
     const canvasScripts = [mapLoaderJs].filter(Boolean);
 
-    return grapesjs.init({
+    const editor = grapesjs.init({
         container: "#gjs",
         fromElement: false,
         height: "calc(100vh - 50px)",
@@ -278,4 +278,65 @@ export function initializeGrapesJS() {
             },
         },
     });
+
+    editor.on("component:selected", () => {
+        requestAnimationFrame(() => repositionToolbar(editor));
+    });
+
+    editor.on("component:deselected", () => {
+        requestAnimationFrame(() => repositionToolbar(editor));
+    });
+
+    editor.on("run:preview:before", () => {
+        const toolbar = editor.Canvas.getFrameEl()
+            ?.closest(".gjs-cv-canvas")
+            ?.querySelector(".gjs-toolbar");
+        if (toolbar) toolbar.style.display = "none";
+    });
+
+    return editor;
+}
+
+function repositionToolbar(editor) {
+    const canvasEl = editor.Canvas.getFrameEl()?.closest(".gjs-cv-canvas");
+    if (!canvasEl) return;
+
+    const toolbar = canvasEl.querySelector(".gjs-toolbar");
+    if (!toolbar) return;
+
+    const canvasRect = canvasEl.getBoundingClientRect();
+    const toolbarRect = toolbar.getBoundingClientRect();
+
+    let top = parseFloat(toolbar.style.top) || 0;
+    let left = parseFloat(toolbar.style.left) || 0;
+
+    const margin = 4;
+    const minTop = margin;
+    const maxTop = canvasRect.height - toolbarRect.height - margin;
+    const minLeft = margin;
+    const maxLeft = canvasRect.width - toolbarRect.width - margin;
+
+    let adjusted = false;
+
+    if (top < minTop) {
+        top = minTop;
+        adjusted = true;
+    }
+    if (top > maxTop) {
+        top = maxTop;
+        adjusted = true;
+    }
+    if (left < minLeft) {
+        left = minLeft;
+        adjusted = true;
+    }
+    if (left > maxLeft) {
+        left = maxLeft;
+        adjusted = true;
+    }
+
+    if (adjusted) {
+        toolbar.style.top = `${top}px`;
+        toolbar.style.left = `${left}px`;
+    }
 }

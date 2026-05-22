@@ -103,71 +103,90 @@ body {
 .gjs-one-bg {
     background-color: #f9fafb;
 }
+
 .gjs-two-color {
     color: #0d3f6a;
 }
+
 .gjs-three-bg {
     background-color: #0d3f6a;
     color: white;
 }
+
 .gjs-four-color,
 .gjs-four-color-h:hover {
     color: #0d3f6a;
 }
+
 .gjs-pn-panel {
     background-color: #0d3f6a;
 }
+
 .gjs-pn-btn {
     color: white;
 }
+
 .gjs-pn-btn:hover {
     background-color: rgba(13, 63, 106, 0.8);
 }
+
 .gjs-pn-active,
 .gjs-pn-btn.gjs-pn-active {
     background-color: #0d3f6a !important;
     box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3) !important;
 }
+
 .gjs-block-category .gjs-title {
     background-color: #0d3f6a;
     color: white;
 }
+
 .gjs-block:hover {
     box-shadow: 0 0 0 2px #0d3f6a;
 }
+
 .gjs-sm-sector .gjs-sm-title {
     background-color: #f3f4f6;
     color: #0d3f6a;
     font-weight: 600;
 }
+
 .gjs-sm-property:hover {
     background-color: rgba(13, 63, 106, 0.05);
 }
+
 .gjs-cv-canvas {
     background-color: #e5e7eb;
 }
+
 .gjs-trt-trait__wrp {
     border-bottom: 1px solid #e5e7eb;
 }
+
 .gjs-trt-trait__wrp:hover {
     background-color: rgba(13, 63, 106, 0.05);
 }
+
 .gjs-layer-title {
     color: #374151;
 }
+
 .gjs-layer-title:hover {
     background-color: rgba(13, 63, 106, 0.05);
 }
+
 .gjs-layer.gjs-selected .gjs-layer-title {
     background-color: #0d3f6a;
     color: white;
 }
+
 .gjs-field input,
 .gjs-field select,
 .gjs-field textarea {
     border: 1px solid #d1d5db;
     border-radius: 0.375rem;
 }
+
 .gjs-field input:focus,
 .gjs-field select:focus,
 .gjs-field textarea:focus {
@@ -175,6 +194,24 @@ body {
     outline: none;
     box-shadow: 0 0 0 3px rgba(13, 63, 106, 0.1);
 }
+
+.gjs-toolbar {
+    max-width: calc(100% - 1rem);
+    flex-wrap: wrap;
+}
+
+.gjs-cv-canvas {
+    overflow: visible !important;
+}
+
+.gjs-cv-canvas .gjs-toolbar {
+    z-index: 99 !important;
+}
+
+.gjs-frame-wrapper {
+    overflow: visible !important;
+}
+
 #title-modal input:focus {
     border-color: #f0872a;
     box-shadow: 0 0 0 3px rgba(240, 135, 42, 0.1);

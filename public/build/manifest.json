@@ -7,8 +7,8 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
-  "_editor-commands-5w86-EOS.js": {
-    "file": "assets/editor-commands-5w86-EOS.js",
+  "_editor-commands-DZp-DcL4.js": {
+    "file": "assets/editor-commands-DZp-DcL4.js",
     "name": "editor-commands",
     "imports": [
       "__commonjsHelpers-CqkleIqs.js"
@@ -259,7 +259,7 @@
     ]
   },
   "resources/css/editor.css": {
-    "file": "assets/editor-DXshyZx_.css",
+    "file": "assets/editor-UgquXQWZ.css",
     "src": "resources/css/editor.css",
     "isEntry": true,
     "name": "editor",
@@ -380,12 +380,12 @@
     ]
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-2oiT9kKf.js",
+    "file": "assets/footer-editor-C63Qmueu.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-5w86-EOS.js",
+      "_editor-commands-DZp-DcL4.js",
       "_media-picker-CiKJ1Agb.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
@@ -401,23 +401,23 @@
     ]
   },
   "resources/js/navbar-editor.js": {
-    "file": "assets/navbar-editor-CnJF1E0-.js",
+    "file": "assets/navbar-editor-CkmMhVth.js",
     "name": "navbar-editor",
     "src": "resources/js/navbar-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-5w86-EOS.js",
+      "_editor-commands-DZp-DcL4.js",
       "_media-picker-CiKJ1Agb.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-Da4nU2EA.js",
+    "file": "assets/pages-editor-CPoF5PNN.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-5w86-EOS.js",
+      "_editor-commands-DZp-DcL4.js",
       "_url-DaqOO3yL.js",
       "__commonjsHelpers-CqkleIqs.js"
     ],
