@@ -110,7 +110,9 @@ function buildFooterHTML(data) {
         .map((sec, i) => {
             const linksHtml = (sec.links || [])
                 .map((link) => {
-                    const icon = link.icon ? `<i class="${link.icon}"></i>` : "";
+                    const icon = link.icon
+                        ? `<i class="${link.icon}"></i>`
+                        : "";
                     if (link.isText) {
                         return `<li><span class="ft-text">${icon}${link.label}</span></li>`;
                     }
@@ -297,7 +299,7 @@ function showFooterModal(editor, component) {
                 background: #ffffff;
                 border: 1px solid #e2e8f0;
                 border-radius: 0.625rem;
-                overflow: hidden;
+                overflow: visible;
             }
             .ft-section-card-header {
                 padding: 0.75rem 1rem;
@@ -306,6 +308,7 @@ function showFooterModal(editor, component) {
                 gap: 0.75rem;
                 border-bottom: 1px solid #f1f5f9;
                 background: #f8fafc;
+                border-radius: 0.625rem 0.625rem 0 0;
             }
             .ft-section-title-input {
                 flex: 1;
@@ -473,6 +476,143 @@ function showFooterModal(editor, component) {
 
     const sectionsContainer = modal.querySelector("#ft-sections-container");
 
+    const appBase =
+        document
+            .querySelector('meta[name="app-url"]')
+            ?.content?.replace(/\/$/, "") ?? "";
+    const searchUrl = `${appBase}/api/pages/search`;
+
+    function attachUrlAutocomplete(input) {
+        if (input.dataset.autocompleteAttached) return;
+        input.dataset.autocompleteAttached = "true";
+
+        const parent = input.parentNode;
+        const prevPosition = parent.style.position;
+        if (!prevPosition || prevPosition === "static") {
+            parent.style.position = "relative";
+        }
+
+        const dropdown = document.createElement("ul");
+        dropdown.style.cssText = `
+            position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:999999;
+            background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;
+            box-shadow:0 8px 24px rgba(0,0,0,0.1);list-style:none;margin:0;padding:0.25rem;
+            max-height:200px;overflow-y:auto;display:none;
+        `;
+        parent.appendChild(dropdown);
+
+        let debounceTimer = null;
+        let currentQuery = "";
+
+        async function search(q) {
+            if (q.length < 1) {
+                dropdown.style.display = "none";
+                return;
+            }
+            try {
+                const res = await fetch(
+                    `${searchUrl}?q=${encodeURIComponent(q)}`,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                    },
+                );
+                const pages = await res.json();
+                renderDropdown(pages, q);
+            } catch {
+                dropdown.style.display = "none";
+            }
+        }
+
+        function renderDropdown(pages, q) {
+            dropdown.innerHTML = "";
+            if (!pages.length) {
+                dropdown.style.display = "none";
+                return;
+            }
+            pages.forEach((page) => {
+                const li = document.createElement("li");
+                li.style.cssText =
+                    "padding:0.375rem 0.625rem;border-radius:0.375rem;cursor:pointer;display:flex;flex-direction:column;gap:0.125rem;";
+                li.innerHTML = `
+                    <span style="font-size:0.8rem;font-weight:600;color:#1e293b;">${highlight(page.title, q)}</span>
+                    <span style="font-size:0.7rem;color:#64748b;">/${page.slug}</span>`;
+                li.addEventListener(
+                    "mouseenter",
+                    () => (li.style.background = "#f1f5f9"),
+                );
+                li.addEventListener(
+                    "mouseleave",
+                    () => (li.style.background = ""),
+                );
+                li.addEventListener("mousedown", (e) => {
+                    e.preventDefault();
+                    input.value = "/" + page.slug;
+                    input.dispatchEvent(new Event("input"));
+                    dropdown.style.display = "none";
+                });
+                dropdown.appendChild(li);
+            });
+            dropdown.style.display = "block";
+        }
+
+        function highlight(text, q) {
+            if (!q) return text;
+            return text.replace(
+                new RegExp(
+                    `(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+                    "gi",
+                ),
+                '<mark style="background:#fef3c7;color:#92400e;border-radius:2px;padding:0 1px;">$1</mark>',
+            );
+        }
+
+        input.addEventListener("input", () => {
+            clearTimeout(debounceTimer);
+            currentQuery = input.value.trim();
+            debounceTimer = setTimeout(() => search(currentQuery), 220);
+        });
+
+        input.addEventListener("focus", () => {
+            input.select();
+            currentQuery = input.value.trim();
+            if (currentQuery) search(currentQuery);
+        });
+
+        input.addEventListener("blur", () => {
+            setTimeout(() => {
+                dropdown.style.display = "none";
+            }, 150);
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (dropdown.style.display === "none") return;
+            const items = dropdown.querySelectorAll("li");
+            const active = dropdown.querySelector("li.ft-ac-active");
+            let idx = Array.from(items).indexOf(active);
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                if (active) active.classList.remove("ft-ac-active");
+                const next = items[idx + 1] || items[0];
+                next?.classList.add("ft-ac-active");
+                if (next) next.style.background = "#f1f5f9";
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                if (active) active.classList.remove("ft-ac-active");
+                const prev = items[idx - 1] || items[items.length - 1];
+                prev?.classList.add("ft-ac-active");
+                if (prev) prev.style.background = "#f1f5f9";
+            } else if (e.key === "Enter" && active) {
+                e.preventDefault();
+                active.dispatchEvent(new MouseEvent("mousedown"));
+            } else if (e.key === "Escape") {
+                dropdown.style.display = "none";
+            }
+        });
+    }
+
     function renderSection(sec, index) {
         const div = document.createElement("div");
         div.className = "ft-section-card";
@@ -486,9 +626,11 @@ function showFooterModal(editor, component) {
                     placeholder="ri-phone-line (opcional)" value="${link.icon || ""}">
                 <input class="ft-modal-input-sm ft-link-label" type="text"
                     placeholder="Texto" value="${link.label || ""}">
-                <input class="ft-modal-input-sm ft-link-href" type="text"
-                    placeholder="URL o tel:0000-0000" value="${link.href || ""}"
-                    style="${link.isText ? "opacity:0.4;pointer-events:none;" : ""}">
+                <div style="flex:1;position:relative;">
+                    <input class="ft-modal-input-sm ft-link-href" type="text"
+                        placeholder="URL o buscar página..." value="${link.href || ""}"
+                        style="width:100%;box-sizing:border-box;${link.isText ? "opacity:0.4;pointer-events:none;" : ""}">
+                </div>
                 <label style="display:flex;align-items:center;gap:0.25rem;font-size:0.75rem;color:#64748b;white-space:nowrap;cursor:pointer;">
                     <input type="checkbox" class="ft-link-istext" ${link.isText ? "checked" : ""}
                         style="accent-color:#003B71;cursor:pointer;">
@@ -537,6 +679,12 @@ function showFooterModal(editor, component) {
                 sec.links.splice(li, 1);
                 renderAllSections();
             };
+        });
+
+        div.querySelectorAll(".ft-link-href").forEach((input) => {
+            if (!input.closest("[style*='pointer-events:none']")) {
+                attachUrlAutocomplete(input);
+            }
         });
 
         div.querySelectorAll(".ft-link-istext").forEach((chk) => {
