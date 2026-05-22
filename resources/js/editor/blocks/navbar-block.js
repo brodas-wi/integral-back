@@ -403,10 +403,10 @@ function showNavbarModal(editor, component) {
             .nb-input-sm{padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;transition:border-color 0.15s;}
             .nb-input-sm:focus{border-color:#3b82f6;}
             .nb-list{display:flex;flex-direction:column;gap:0.625rem;}
-            .nb-link-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;overflow:hidden;cursor:default;}
+            .nb-link-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;overflow:visible;cursor:default;}
             .nb-link-card.nb-dragging{opacity:0.4;}
             .nb-link-card.nb-drag-over{border-color:#003B71;box-shadow:0 0 0 2px rgba(0,59,113,0.15);}
-            .nb-link-card-header{padding:0.625rem 0.875rem;background:#f8fafc;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:0.5rem;}
+            .nb-link-card-header{padding:0.625rem 0.875rem;background:#f8fafc;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:0.5rem;border-radius:0.5rem 0.5rem 0 0;}
             .nb-link-card-body{padding:0.75rem 0.875rem;display:flex;flex-direction:column;gap:0.5rem;}
             .nb-link-row{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;}
             .nb-drag-handle{cursor:grab;color:#94a3b8;display:flex;align-items:center;padding:0 0.125rem;flex-shrink:0;}
