@@ -204,10 +204,6 @@ body {
     overflow: visible !important;
 }
 
-.gjs-cv-canvas .gjs-toolbar {
-    z-index: 99 !important;
-}
-
 .gjs-frame-wrapper {
     overflow: visible !important;
 }
