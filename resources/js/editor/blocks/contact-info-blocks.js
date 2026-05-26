@@ -1,12 +1,28 @@
 const contactInfoIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
-    <rect x="10" y="7" width="14" height="10" fill="#F07C28" rx="2"/>
-    <rect x="4" y="18" width="14" height="10" fill="#F07C28" rx="2"/>
-    <rect x="4" y="7" width="4" height="4" fill="rgba(255,255,255,0.5)" rx="1"/>
-    <rect x="14" y="22" width="8" height="1.5" fill="rgba(255,255,255,0.7)" rx="1"/>
-    <rect x="14" y="25" width="5" height="1.5" fill="rgba(255,255,255,0.5)" rx="1"/>
-    <rect x="10" y="10" width="8" height="1.5" fill="rgba(255,255,255,0.7)" rx="1"/>
-    <rect x="10" y="13" width="5" height="1.5" fill="rgba(255,255,255,0.5)" rx="1"/>
+    <circle cx="10" cy="12" r="4" fill="none" stroke="#F07C28" stroke-width="1.5"/>
+    <rect x="6" y="19" width="8" height="1.5" fill="rgba(255,255,255,0.7)" rx="1"/>
+    <rect x="6" y="22" width="6" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
+    <rect x="18" y="8" width="10" height="7" fill="#F07C28" rx="1.5"/>
+    <rect x="18" y="18" width="10" height="1.5" fill="rgba(255,255,255,0.7)" rx="1"/>
+    <rect x="18" y="21" width="7" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
+</svg>`;
+
+const contactInfoLeftIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#003B71" rx="2"/>
+    <circle cx="8" cy="11" r="3.5" fill="#F07C28"/>
+    <rect x="14" y="9" width="12" height="2" fill="rgba(255,255,255,0.8)" rx="1"/>
+    <rect x="14" y="12.5" width="8" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
+    <rect x="4" y="19" width="7" height="7" fill="#F07C28" rx="1.5"/>
+    <rect x="14" y="20" width="12" height="2" fill="rgba(255,255,255,0.8)" rx="1"/>
+    <rect x="14" y="23.5" width="8" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
+</svg>`;
+
+const contactInfoItemIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#003B71" rx="2"/>
+    <circle cx="10" cy="16" r="5" fill="#F07C28"/>
+    <rect x="18" y="13" width="10" height="2" fill="rgba(255,255,255,0.8)" rx="1"/>
+    <rect x="18" y="17" width="7" height="1.5" fill="rgba(255,255,255,0.4)" rx="1"/>
 </svg>`;
 
 const CONTACT_ITEM = (remixIcon, label, value, href) => `
@@ -35,7 +51,7 @@ export const contactInfoBlocks = [
         id: "contact-info-left",
         label: "Información de contacto (izquierda)",
         category: "Contacto",
-        media: contactInfoIcon,
+        media: contactInfoLeftIcon,
         content: `
 <section class="ci-section">
     <div class="flex flex-col gap-6">
@@ -63,7 +79,7 @@ ${CONTACT_INFO_STYLES}`,
         id: "contact-info-item",
         label: "Ítem de contacto",
         category: "Contacto",
-        media: contactInfoIcon,
+        media: contactInfoItemIcon,
         content: `
 <section class="ci-section">
     <div class="flex flex-col gap-6">

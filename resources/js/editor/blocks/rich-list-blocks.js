@@ -10,6 +10,14 @@ const richListIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="10" y="24.5" width="12" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
 </svg>`;
 
+const richListItemIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#003B71" rx="2"/>
+    <circle cx="6" cy="14" r="2.5" fill="#F07C28"/>
+    <rect x="11" y="12" width="15" height="2.5" fill="rgba(255,255,255,0.9)" rx="1"/>
+    <rect x="11" y="17" width="13" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
+    <rect x="11" y="20" width="10" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
+</svg>`;
+
 const RICH_LIST_ITEM = `
 <div class="rl-item">
     <div class="flex items-center gap-2 mb-1">
@@ -51,7 +59,7 @@ ${RICH_LIST_STYLES}`,
         id: "rich-list-item",
         label: "Ítem de lista con descripción",
         category: "Contenido",
-        media: richListIcon,
+        media: richListItemIcon,
         content: `
 <section class="rl-section">
     <div class="rl-list">
