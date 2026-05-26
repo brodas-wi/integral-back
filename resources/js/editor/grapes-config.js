@@ -366,46 +366,91 @@ function repositionToolbar(editor, toolbarElement = null) {
 
     if (toolbar.style.display === "none") return;
 
+    // Ensure toolbar renders at full width before measuring
     toolbar.style.minWidth = "max-content";
+    toolbar.style.top = "-9999px";
+    toolbar.style.left = "-9999px";
     void toolbar.offsetWidth;
 
-    const canvasRect = canvasEl.getBoundingClientRect();
-    const toolbarRect = toolbar.getBoundingClientRect();
+    const toolbarW = toolbar.offsetWidth;
+    const toolbarH = toolbar.offsetHeight;
 
-    if (toolbarRect.width === 0 || toolbarRect.height === 0) return;
-
-    const currentStyleTop = parseFloat(toolbar.style.top) || 0;
-    const currentStyleLeft = parseFloat(toolbar.style.left) || 0;
+    if (toolbarW === 0 || toolbarH === 0) return;
 
     const margin = 6;
 
-    // Calculate physical offsets relative to the canvas viewport top-left corner
-    const physicalLeft = toolbarRect.left - canvasRect.left;
-    const physicalRight = toolbarRect.right - canvasRect.left;
-    const physicalTop = toolbarRect.top - canvasRect.top;
-    const physicalBottom = toolbarRect.bottom - canvasRect.top;
+    // Get the selected component's position relative to the canvas element
+    const selected = editor.getSelected();
+    if (!selected) return;
 
-    let adjustedLeft = currentStyleLeft;
-    let adjustedTop = currentStyleTop;
+    const canvasRect = canvasEl.getBoundingClientRect();
 
-    // Correct left overflow
-    if (physicalLeft < margin) {
-        adjustedLeft = currentStyleLeft + (margin - physicalLeft);
-    } 
-    // Correct right overflow
-    else if (physicalRight > canvasRect.width - margin) {
-        adjustedLeft = currentStyleLeft - (physicalRight - (canvasRect.width - margin));
+    // Try to get the element's bounding rect inside the iframe
+    let elRect = null;
+    try {
+        const frameDoc = editor.Canvas.getFrameEl()?.contentDocument;
+        const elId = selected.getId();
+        const domEl = frameDoc?.querySelector(`[id="${elId}"]`) || frameDoc?.querySelector(`[data-gjs-id="${elId}"]`);
+        if (domEl) {
+            const frameEl = editor.Canvas.getFrameEl();
+            const frameRect = frameEl.getBoundingClientRect();
+            const domRect = domEl.getBoundingClientRect();
+            // domRect is relative to the iframe's viewport; convert to canvas coordinates
+            elRect = {
+                top: frameRect.top - canvasRect.top + domRect.top,
+                bottom: frameRect.top - canvasRect.top + domRect.bottom,
+                left: frameRect.left - canvasRect.left + domRect.left,
+                right: frameRect.left - canvasRect.left + domRect.right,
+                width: domRect.width,
+                height: domRect.height,
+            };
+        }
+    } catch (e) {
+        // cross-origin or other error — fall back to style-based position
     }
 
-    // Correct top overflow
-    if (physicalTop < margin) {
-        adjustedTop = currentStyleTop + (margin - physicalTop);
-    } 
-    // Correct bottom overflow
-    else if (physicalBottom > canvasRect.height - margin) {
-        adjustedTop = currentStyleTop - (physicalBottom - (canvasRect.height - margin));
+    // Fallback: use the toolbar's original style position as anchor
+    if (!elRect) {
+        const origTop = parseFloat(toolbar.dataset.origTop) || 0;
+        const origLeft = parseFloat(toolbar.dataset.origLeft) || 0;
+        elRect = {
+            top: origTop,
+            bottom: origTop + toolbarH,
+            left: origLeft,
+            right: origLeft + toolbarW,
+            width: toolbarW,
+            height: toolbarH,
+        };
     }
 
-    toolbar.style.top = `${adjustedTop}px`;
-    toolbar.style.left = `${adjustedLeft}px`;
+    const canvasW = canvasEl.offsetWidth;
+    const canvasH = canvasEl.offsetHeight;
+
+    // Preferred position: centered above the element
+    let idealLeft = elRect.left + (elRect.width - toolbarW) / 2;
+    let idealTop = elRect.top - toolbarH - margin;
+
+    // If no space above, place below the element
+    if (idealTop < margin) {
+        idealTop = elRect.bottom + margin;
+    }
+
+    // If still no space below either (element fills canvas), clamp to top margin
+    if (idealTop + toolbarH > canvasH - margin) {
+        idealTop = margin;
+    }
+
+    // Clamp horizontal position within canvas bounds
+    if (idealLeft < margin) {
+        idealLeft = margin;
+    } else if (idealLeft + toolbarW > canvasW - margin) {
+        idealLeft = canvasW - toolbarW - margin;
+    }
+
+    // Final safety clamp (e.g. toolbar wider than canvas)
+    idealLeft = Math.max(margin, idealLeft);
+    idealTop = Math.max(margin, idealTop);
+
+    toolbar.style.top = `${idealTop}px`;
+    toolbar.style.left = `${idealLeft}px`;
 }
