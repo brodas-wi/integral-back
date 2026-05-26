@@ -32,6 +32,20 @@ const CONTACT_INFO_STYLES = `
 
 export const contactInfoBlocks = [
     {
+        id: "contact-info-left",
+        label: "Información de contacto (izquierda)",
+        category: "Contacto",
+        media: contactInfoIcon,
+        content: `
+<section class="ci-section">
+    <div class="flex flex-col gap-6">
+        ${CONTACT_ITEM("ri-phone-fill", "Contáctenos", "(503)-2250-6090", "tel:+50322506090")}
+        ${CONTACT_ITEM("ri-mail-fill", "Correo", "servicio.cliente@bancointegral.com", "mailto:servicio.cliente@bancointegral.com")}
+    </div>
+</section>
+${CONTACT_INFO_STYLES}`,
+    },
+    {
         id: "contact-info",
         label: "Información de contacto",
         category: "Contacto",
