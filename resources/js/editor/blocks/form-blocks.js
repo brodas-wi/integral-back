@@ -11,7 +11,7 @@ const formIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
 const FORM_STYLES = `
 <style>
 .fm-section{width:100%;padding:3.5rem 4rem;background:#ffffff;box-sizing:border-box;}
-.fm-form{display:flex;flex-direction:column;gap:1.25rem;max-width:680px;}
+.fm-form{display:flex;flex-direction:column;gap:1.25rem;max-width:680px;margin:0 auto;}
 .fm-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
 .fm-field{display:flex;flex-direction:column;gap:0.4rem;}
 .fm-label{font-size:0.9rem;font-weight:500;color:#F07C28;}
