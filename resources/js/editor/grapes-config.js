@@ -289,6 +289,25 @@ export function initializeGrapesJS() {
         setTimeout(() => repositionToolbar(editor), 0);
     });
 
+    editor.on("rte:enable", () => {
+        const canvasEl = editor.Canvas.getFrameEl()?.closest(".gjs-cv-canvas");
+        const toolbar = canvasEl?.querySelector(".gjs-toolbar");
+        if (toolbar) toolbar.style.display = "none";
+    });
+
+    editor.on("rte:disable", () => {
+        const canvasEl = editor.Canvas.getFrameEl()?.closest(".gjs-cv-canvas");
+        const toolbar = canvasEl?.querySelector(".gjs-toolbar");
+        if (toolbar) {
+            toolbar.style.display = "";
+            repositionToolbar(editor, toolbar);
+        }
+    });
+
+    editor.on("load", () => {
+        setupToolbarObserver(editor);
+    });
+
     editor.on("run:preview:before", () => {
         const toolbar = editor.Canvas.getFrameEl()
             ?.closest(".gjs-cv-canvas")
@@ -299,12 +318,53 @@ export function initializeGrapesJS() {
     return editor;
 }
 
-function repositionToolbar(editor) {
+function setupToolbarObserver(editor) {
+    const canvasEl = editor.Canvas.getFrameEl()?.closest(".gjs-cv-canvas");
+    const toolbar = canvasEl?.querySelector(".gjs-toolbar");
+    if (!toolbar) return;
+
+    let isAdjusting = false;
+
+    const observer = new MutationObserver((mutations) => {
+        if (isAdjusting) return;
+
+        const styleChanged = mutations.some(
+            (m) => m.type === "attributes" && m.attributeName === "style"
+        );
+
+        if (styleChanged) {
+            isAdjusting = true;
+            observer.disconnect();
+
+            repositionToolbar(editor, toolbar);
+
+            observer.observe(toolbar, {
+                attributes: true,
+                attributeFilter: ["style"],
+            });
+            isAdjusting = false;
+        }
+    });
+
+    observer.observe(toolbar, {
+        attributes: true,
+        attributeFilter: ["style"],
+    });
+}
+
+function repositionToolbar(editor, toolbarElement = null) {
     const canvasEl = editor.Canvas.getFrameEl()?.closest(".gjs-cv-canvas");
     if (!canvasEl) return;
 
-    const toolbar = canvasEl.querySelector(".gjs-toolbar");
-    if (!toolbar || toolbar.style.display === "none") return;
+    const toolbar = toolbarElement || canvasEl.querySelector(".gjs-toolbar");
+    if (!toolbar) return;
+
+    if (editor.isEditing()) {
+        toolbar.style.display = "none";
+        return;
+    }
+
+    if (toolbar.style.display === "none") return;
 
     toolbar.style.minWidth = "max-content";
     void toolbar.offsetWidth;
