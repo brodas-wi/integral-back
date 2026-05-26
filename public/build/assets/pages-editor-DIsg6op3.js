@@ -1,4 +1,4 @@
-/* empty css                   *//* empty css                    *//* empty css                          *//* empty css                           */import{M as je,j as Te,E as ze,i as Ie,t as _e,d as Ae,f as De,e as Me,s as qe,g as He,c as Ne,b as Pe,a as Oe,h as Re}from"./editor-commands-fJ86LEjO.js";import{a as Z}from"./url-DaqOO3yL.js";import"./_commonjsHelpers-CqkleIqs.js";class Ue{constructor(){this.pageId=this.getElementValue("page-id"),this.pageSlug=this.getElementValue("page-slug"),this.pageTitle=this.getPageTitle(),this.loadUrl=this.getElementValue("page-load-url"),this.storeUrl=this.getElementValue("page-store-url"),this.isPublished=this.getElementValue("page-is-published")==="1",this.isEditMode=!!this.pageId}getElementValue(e,t=""){const r=document.getElementById(e);return r?r.value.trim():t}getPageTitle(){const e=document.getElementById("editor-title");if(!e)return"";const r=e.textContent.match(/(?:Editando:|Nueva Página)\s*(.+)?/);return r&&r[1]?r[1].trim():""}updatePageInfo(e){if(e.page){this.pageId=e.page.id,this.pageSlug=e.page.slug,this.pageTitle=e.page.title,this.isEditMode=!0,document.getElementById("page-id").value=this.pageId,document.getElementById("page-slug").value=this.pageSlug;const t=this.storeUrl.replace("/pages",`/pages/${this.pageSlug}`);this.storeUrl=t,document.getElementById("page-store-url").value=t,this.loadUrl=`/pages/${this.pageSlug}/load`,document.getElementById("page-load-url").value=this.loadUrl}}updateTitle(e){this.pageTitle=e;const t=document.getElementById("editor-title");t&&(t.textContent=`Editando: ${e}`)}getHttpMethod(){return this.isEditMode?"PUT":"POST"}needsTitle(){return!this.isEditMode}}class Fe{constructor(e){this.editorService=e,this.setupBackButton(),this.setupBeforeUnload()}setupBackButton(){const e=document.querySelector("#editor-navbar a[href]");e&&e.addEventListener("click",t=>{this.editorService.shouldPreventUnload()&&(t.preventDefault(),this.showUnsavedChangesModal(()=>{this.editorService.startNavigation(),window.location.href=e.href}))})}setupBeforeUnload(){window.addEventListener("beforeunload",e=>{if(this.editorService.shouldPreventUnload())return e.preventDefault(),e.returnValue="Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?",e.returnValue})}showUnsavedChangesModal(e){const t=document.createElement("div");t.style.cssText=`
+/* empty css                   *//* empty css                    *//* empty css                          *//* empty css                           */import{M as Ie,j as Ae,E as De,i as Me,t as qe,d as Ne,f as He,e as Pe,s as Oe,g as Re,c as Ue,b as Fe,a as Ye,h as Ve}from"./editor-commands-fJ86LEjO.js";import{a as F}from"./url-DaqOO3yL.js";import"./_commonjsHelpers-CqkleIqs.js";class We{constructor(){this.pageId=this.getElementValue("page-id"),this.pageSlug=this.getElementValue("page-slug"),this.pageTitle=this.getPageTitle(),this.loadUrl=this.getElementValue("page-load-url"),this.storeUrl=this.getElementValue("page-store-url"),this.isPublished=this.getElementValue("page-is-published")==="1",this.isEditMode=!!this.pageId}getElementValue(e,t=""){const r=document.getElementById(e);return r?r.value.trim():t}getPageTitle(){const e=document.getElementById("editor-title");if(!e)return"";const r=e.textContent.match(/(?:Editando:|Nueva Página)\s*(.+)?/);return r&&r[1]?r[1].trim():""}updatePageInfo(e){if(e.page){this.pageId=e.page.id,this.pageSlug=e.page.slug,this.pageTitle=e.page.title,this.isEditMode=!0,document.getElementById("page-id").value=this.pageId,document.getElementById("page-slug").value=this.pageSlug;const t=this.storeUrl.replace("/pages",`/pages/${this.pageSlug}`);this.storeUrl=t,document.getElementById("page-store-url").value=t,this.loadUrl=`/pages/${this.pageSlug}/load`,document.getElementById("page-load-url").value=this.loadUrl}}updateTitle(e){this.pageTitle=e;const t=document.getElementById("editor-title");t&&(t.textContent=`Editando: ${e}`)}getHttpMethod(){return this.isEditMode?"PUT":"POST"}needsTitle(){return!this.isEditMode}}class Ge{constructor(e){this.editorService=e,this.setupBackButton(),this.setupBeforeUnload()}setupBackButton(){const e=document.querySelector("#editor-navbar a[href]");e&&e.addEventListener("click",t=>{this.editorService.shouldPreventUnload()&&(t.preventDefault(),this.showUnsavedChangesModal(()=>{this.editorService.startNavigation(),window.location.href=e.href}))})}setupBeforeUnload(){window.addEventListener("beforeunload",e=>{if(this.editorService.shouldPreventUnload())return e.preventDefault(),e.returnValue="Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?",e.returnValue})}showUnsavedChangesModal(e){const t=document.createElement("div");t.style.cssText=`
             position: fixed;
             inset: 0;
             z-index: 9999;
@@ -52,7 +52,7 @@
             color: #ffffff;
             border: 2px solid #dc2626;
             font-family: inherit;
-        `,[c,d].forEach(g=>{g.addEventListener("mouseenter",()=>{g.style.opacity="0.85"}),g.addEventListener("mouseleave",()=>{g.style.opacity="1"})});const f=()=>t.remove();c.addEventListener("click",f),d.addEventListener("click",()=>{f(),e()}),t.addEventListener("click",g=>{g.target===t&&f()}),o.appendChild(c),o.appendChild(d),r.appendChild(a),r.appendChild(o),t.appendChild(r),document.body.appendChild(t)}}const Ve="Básico";class We{constructor(){this.blocks=new Map}registerBlock(e,t){this.blocks.has(t.category)||this.blocks.set(t.category,[]),this.blocks.get(t.category).push({id:e,...t})}registerBlocks(e){e.forEach(t=>{this.registerBlock(t.id,t)})}applyToEditor(e){this.blocks.forEach(t=>{t.forEach(r=>{const{id:a,...o}=r;e.BlockManager.add(a,o)})}),this.applyCollapseSettings(e),this.hideDefaultCategories(e)}applyCollapseSettings(e){setTimeout(()=>{e.BlockManager.getCategories().each(t=>{t.set("open",t.get("label")===Ve)})},500)}hideDefaultCategories(e){setTimeout(()=>{const t=["Basic","Extra"];document.querySelectorAll(".gjs-block-category").forEach(r=>{const a=r.querySelector(".gjs-title");a&&t.includes(a.textContent.trim())&&(r.style.display="none")})},100)}}const I=new We,Ye=[{id:"heading1",label:"Título H1",category:"Básico",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+        `,[c,d].forEach(g=>{g.addEventListener("mouseenter",()=>{g.style.opacity="0.85"}),g.addEventListener("mouseleave",()=>{g.style.opacity="1"})});const f=()=>t.remove();c.addEventListener("click",f),d.addEventListener("click",()=>{f(),e()}),t.addEventListener("click",g=>{g.target===t&&f()}),o.appendChild(c),o.appendChild(d),r.appendChild(a),r.appendChild(o),t.appendChild(r),document.body.appendChild(t)}}const Ze="Básico";class Xe{constructor(){this.blocks=new Map}registerBlock(e,t){this.blocks.has(t.category)||this.blocks.set(t.category,[]),this.blocks.get(t.category).push({id:e,...t})}registerBlocks(e){e.forEach(t=>{this.registerBlock(t.id,t)})}applyToEditor(e){this.blocks.forEach(t=>{t.forEach(r=>{const{id:a,...o}=r;e.BlockManager.add(a,o)})}),this.applyCollapseSettings(e),this.hideDefaultCategories(e)}applyCollapseSettings(e){setTimeout(()=>{e.BlockManager.getCategories().each(t=>{t.set("open",t.get("label")===Ze)})},500)}hideDefaultCategories(e){setTimeout(()=>{const t=["Basic","Extra"];document.querySelectorAll(".gjs-block-category").forEach(r=>{const a=r.querySelector(".gjs-title");a&&t.includes(a.textContent.trim())&&(r.style.display="none")})},100)}}const j=new Xe,Ke=[{id:"heading1",label:"Título H1",category:"Básico",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <text x="16" y="22" text-anchor="middle" font-size="18" font-weight="800" fill="#003B71">H1</text>
         </svg>`,content:'<h1 class="text-4xl font-bold leading-tight text-[#003B71]">Título Principal</h1>'},{id:"heading2",label:"Título H2",category:"Básico",media:`<svg viewBox="0 0 32 32" width="32" height="32">
@@ -77,7 +77,7 @@
             <rect x="3" y="6" width="26" height="20" rx="2" fill="#003B71" fill-opacity="0.15" stroke="#003B71" stroke-width="1.5"/>
             <circle cx="10" cy="13" r="2.5" fill="#003B71" fill-opacity="0.5"/>
             <path d="M3 22l7-7 5 5 3-3 9 9" stroke="#003B71" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
-        </svg>`,content:{type:"image",attributes:{src:Z("images/placeholder.svg"),alt:"Imagen"},classes:["max-w-full","h-auto","block"],activeOnRender:1}},{id:"unordered-list",label:"Lista no ordenada",category:"Básico",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+        </svg>`,content:{type:"image",attributes:{src:F("images/placeholder.svg"),alt:"Imagen"},classes:["max-w-full","h-auto","block"],activeOnRender:1}},{id:"unordered-list",label:"Lista no ordenada",category:"Básico",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <circle cx="7" cy="10" r="2" fill="#003B71"/>
             <rect x="12" y="9" width="14" height="2" rx="1" fill="#003B71" fill-opacity="0.6"/>
@@ -115,123 +115,123 @@
             <rect x="14" y="4" width="4" height="24" rx="2" fill="#003B71" fill-opacity="0.2"/>
             <rect x="4" y="4" width="24" height="2" rx="1" fill="#003B71" fill-opacity="0.4"/>
             <rect x="4" y="26" width="24" height="2" rx="1" fill="#003B71" fill-opacity="0.4"/>
-        </svg>`,content:'<div class="h-12 w-full"></div>'}],Ge=`<svg viewBox="0 0 32 32" width="32" height="32">
+        </svg>`,content:'<div class="h-12 w-full"></div>'}],Qe=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="4" y="4" width="24" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
-</svg>`,Ze=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,Je=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="13" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="17" y="4" width="13" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
-</svg>`,Xe=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,et=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="8" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="12" y="4" width="8" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="22" y="4" width="8" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
-</svg>`,Qe=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,tt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="4" width="6" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="9" y="4" width="6" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="17" y="4" width="6" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="25" y="4" width="6" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
-</svg>`,Je=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,it=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="9" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="13" y="4" width="17" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
-</svg>`,Ke=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,at=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="17" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="21" y="4" width="9" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
-</svg>`,et=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,rt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="10" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="14" y="4" width="7" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="23" y="4" width="7" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
-</svg>`,tt=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,lt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="7" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="11" y="4" width="7" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="20" y="4" width="10" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
-</svg>`,j='<div class="flex flex-col gap-4 py-1" style="min-height:60px;"></div>',W="<style>@media(max-width:768px){.col-grid{grid-template-columns:1fr !important;}}</style>",it=[{id:"columns-1",label:"1 Columna",category:"Columnas",media:Ge,content:`
+</svg>`,T='<div class="flex flex-col gap-4 py-1" style="min-height:60px;"></div>',W="<style>@media(max-width:768px){.col-grid{grid-template-columns:1fr !important;}}</style>",ot=[{id:"columns-1",label:"1 Columna",category:"Columnas",media:Qe,content:`
 <div class="w-full py-12 px-6">
     <div class="max-w-6xl mx-auto flex flex-col gap-4 py-1" style="min-height:60px;">
     </div>
 </div>
-        `},{id:"columns-2",label:"2 Columnas",category:"Columnas",media:Ze,content:`
+        `},{id:"columns-2",label:"2 Columnas",category:"Columnas",media:Je,content:`
 <div class="w-full py-12 px-6">
     <div class="max-w-6xl mx-auto">
         <div class="col-grid grid grid-cols-2 gap-6">
-            ${j}
-            ${j}
+            ${T}
+            ${T}
         </div>
     </div>
 </div>
 ${W}
-        `},{id:"columns-3",label:"3 Columnas",category:"Columnas",media:Xe,content:`
+        `},{id:"columns-3",label:"3 Columnas",category:"Columnas",media:et,content:`
 <div class="w-full py-12 px-6">
     <div class="max-w-6xl mx-auto">
         <div class="col-grid grid grid-cols-3 gap-6">
-            ${j}
-            ${j}
-            ${j}
+            ${T}
+            ${T}
+            ${T}
         </div>
     </div>
 </div>
 ${W}
-        `},{id:"columns-4",label:"4 Columnas",category:"Columnas",media:Qe,content:`
+        `},{id:"columns-4",label:"4 Columnas",category:"Columnas",media:tt,content:`
 <div class="w-full py-12 px-6">
     <div class="max-w-6xl mx-auto">
         <div class="col-grid grid grid-cols-4 gap-6">
-            ${j}
-            ${j}
-            ${j}
-            ${j}
+            ${T}
+            ${T}
+            ${T}
+            ${T}
         </div>
     </div>
 </div>
 ${W}
-        `},{id:"columns-1-3",label:"1/3 — 2/3",category:"Columnas",media:Je,content:`
+        `},{id:"columns-1-3",label:"1/3 — 2/3",category:"Columnas",media:it,content:`
 <div class="w-full py-12 px-6">
     <div class="max-w-6xl mx-auto">
         <div class="col-grid grid gap-6" style="grid-template-columns:1fr 2fr;">
-            ${j}
-            ${j}
+            ${T}
+            ${T}
         </div>
     </div>
 </div>
 ${W}
-        `},{id:"columns-3-1",label:"2/3 — 1/3",category:"Columnas",media:Ke,content:`
+        `},{id:"columns-3-1",label:"2/3 — 1/3",category:"Columnas",media:at,content:`
 <div class="w-full py-12 px-6">
     <div class="max-w-6xl mx-auto">
         <div class="col-grid grid gap-6" style="grid-template-columns:2fr 1fr;">
-            ${j}
-            ${j}
+            ${T}
+            ${T}
         </div>
     </div>
 </div>
 ${W}
-        `},{id:"columns-1-2",label:"1/4 — 1/4 — 1/2",category:"Columnas",media:et,content:`
+        `},{id:"columns-1-2",label:"1/4 — 1/4 — 1/2",category:"Columnas",media:rt,content:`
 <div class="w-full py-12 px-6">
     <div class="max-w-6xl mx-auto">
         <div class="col-grid grid gap-6" style="grid-template-columns:1fr 1fr 2fr;">
-            ${j}
-            ${j}
-            ${j}
+            ${T}
+            ${T}
+            ${T}
         </div>
     </div>
 </div>
 ${W}
-        `},{id:"columns-2-1",label:"1/2 — 1/4 — 1/4",category:"Columnas",media:tt,content:`
+        `},{id:"columns-2-1",label:"1/2 — 1/4 — 1/4",category:"Columnas",media:lt,content:`
 <div class="w-full py-12 px-6">
     <div class="max-w-6xl mx-auto">
         <div class="col-grid grid gap-6" style="grid-template-columns:2fr 1fr 1fr;">
-            ${j}
-            ${j}
-            ${j}
+            ${T}
+            ${T}
+            ${T}
         </div>
     </div>
 </div>
 ${W}
-        `}],at=`<svg viewBox="0 0 32 32" width="32" height="32">
+        `}],nt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="3" width="14" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1.5"/>
     <rect x="4" y="5" width="10" height="2" rx="1" fill="#003B71" fill-opacity="0.7"/>
@@ -244,17 +244,17 @@ ${W}
     <rect x="12" y="21" width="3" height="5" rx="1" fill="#E97300"/>
     <rect x="18" y="3" width="12" height="26" fill="#E97300" fill-opacity="0.15" rx="2"/>
     <rect x="20" y="5" width="8" height="22" fill="#E97300" fill-opacity="0.3" rx="1.5"/>
-</svg>`,rt=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,st=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="4" y="4" width="24" height="24" fill="#E97300" rx="2"/>
     <rect x="8" y="9" width="16" height="2" rx="1" fill="white" fill-opacity="0.9"/>
     <rect x="8" y="14" width="14" height="1.2" rx="0.6" fill="white" fill-opacity="0.6"/>
     <rect x="8" y="17" width="12" height="1.2" rx="0.6" fill="white" fill-opacity="0.6"/>
-</svg>`,te=`
+</svg>`,ae=`
 <div class="flex flex-col gap-3 rounded-2xl p-5 text-center bg-[#E97300]">
     <h3 class="text-base font-bold text-white">Lorem ipsum</h3>
     <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-</div>`,lt=`
+</div>`,dt=`
 <style>
 .ab-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
@@ -269,7 +269,7 @@ ${W}
     .ab-image-col{order:2;}
 }
 @media(max-width:580px){.ab-mvv-grid{grid-template-columns:1fr;}}
-</style>`,ot=[{id:"about-section",label:"Sección Nosotros",category:"Contenido",media:at,content:`
+</style>`,ct=[{id:"about-section",label:"Sección Nosotros",category:"Contenido",media:nt,content:`
 <section class="ab-section">
     <div class="ab-grid">
         <div class="ab-content-col flex flex-col gap-4">
@@ -277,19 +277,19 @@ ${W}
             <p class="text-base text-[#003B71] leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
             <h2 class="text-2xl font-bold text-[#003B71] mt-4">Lorem ipsum dolor</h2>
             <div class="ab-mvv-grid">
-                ${te}
-                ${te}
-                ${te}
+                ${ae}
+                ${ae}
+                ${ae}
             </div>
         </div>
         <div class="ab-image-col">
             <div class="ab-image">
-                <img src="${Z("images/placeholder.svg")}" alt="Imagen de sección">
+                <img src="${F("images/placeholder.svg")}" alt="Imagen de sección">
             </div>
         </div>
     </div>
 </section>
-${lt}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"Contenido",media:rt,content:`${te}`}],nt=`<svg viewBox="0 0 32 32" width="32" height="32">
+${dt}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"Contenido",media:st,content:`${ae}`}],gt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="6" width="7" height="20" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.4" rx="1.5"/>
     <rect x="2.5" y="8" width="4" height="3" fill="#003B71" fill-opacity="0.15" rx="0.8"/>
@@ -309,7 +309,7 @@ ${lt}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"C
     <rect x="26.5" y="6" width="4.5" height="20" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.4" rx="1.5"/>
     <rect x="27.5" y="8" width="2.5" height="3" fill="#003B71" fill-opacity="0.15" rx="0.8"/>
     <rect x="27.5" y="20" width="2.5" height="2.5" rx="1" fill="#003B71" fill-opacity="0.5"/>
-</svg>`,st=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,ht=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="3" y="3" width="26" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.4" rx="2"/>
     <rect x="6" y="6" width="7" height="7" fill="#003B71" fill-opacity="0.12" rx="1.5"/>
@@ -326,7 +326,7 @@ ${lt}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"C
         <p class="text-base text-[#003B71] leading-relaxed">Descripción breve del producto financiero disponible para ti.</p>
     </div>
     <a href="#" class="pc-btn w-full py-2 px-8 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center">Solicitar</a>
-</div>`,ge=`
+</div>`,me=`
 <style>
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .pc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
@@ -335,7 +335,7 @@ ${lt}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"C
 @media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:480px){.pc-grid{grid-template-columns:1fr;}}
-</style>`,dt=[{id:"product-cards-section",label:"Sección de productos",category:"Productos y Servicios",media:nt,content:`
+</style>`,ft=[{id:"product-cards-section",label:"Sección de productos",category:"Productos y Servicios",media:gt,content:`
 <section class="pc-section">
     <div class="text-center mb-12">
         <h2 class="text-4xl font-bold text-[#003B71] mb-3">Créditos</h2>
@@ -348,7 +348,7 @@ ${lt}`},{id:"about-mvv-card",label:"Tarjeta Misión/Visión/Valores",category:"C
         ${X}
     </div>
 </section>
-${ge}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Servicios",media:st,content:`${X}${ge}`}],ct=`<svg viewBox="0 0 32 32" width="32" height="32">
+${me}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Servicios",media:ht,content:`${X}${me}`}],pt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="5" width="14" height="22" fill="#003B71" rx="2"/>
     <rect x="3" y="7" width="5" height="5" fill="rgba(255,255,255,0.2)" rx="1.2"/>
@@ -362,7 +362,7 @@ ${ge}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
     <rect x="19" y="17" width="8" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
     <rect x="19" y="19" width="9" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
     <rect x="19" y="23" width="10" height="2.5" rx="1" fill="#003B71" fill-opacity="0.5"/>
-</svg>`,he=`
+</svg>`,be=`
 <div class="flex flex-col gap-5 rounded-2xl p-8 dc-bg-primary">
     <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-white/20">
         <i class="ri-map-pin-line text-2xl text-white"></i>
@@ -372,7 +372,7 @@ ${ge}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
         <p class="text-base text-white leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
     <a href="#" class="dc-btn-outline w-full py-2 px-8 rounded-lg bg-white dc-text-primary text-base font-semibold text-center">Lorem ipsum</a>
-</div>`,fe=`
+</div>`,ue=`
 <div class="flex flex-col gap-5 rounded-2xl p-8 bg-white border border-gray-200">
     <div class="w-12 h-12 rounded-xl flex items-center justify-center dc-bg-light">
         <i class="ri-bank-line text-2xl dc-text-primary"></i>
@@ -382,7 +382,7 @@ ${ge}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
         <p class="text-base dc-text-primary leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
     <a href="#" class="dc-btn-solid w-full py-2 px-8 rounded-lg dc-bg-primary text-white text-base font-semibold text-center">Lorem ipsum</a>
-</div>`,se=`
+</div>`,ce=`
 <style>
 .dc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .dc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:stretch;}
@@ -396,18 +396,18 @@ ${ge}`},{id:"product-card",label:"Tarjeta de producto",category:"Productos y Ser
 @media(max-width:1280px){.dc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.dc-section{padding:2.5rem 1.5rem;}}
 @media(max-width:640px){.dc-grid{grid-template-columns:1fr;}}
-</style>`,gt=[{id:"dual-card-section",label:"Sección dos tarjetas",category:"Productos y Servicios",media:ct,content:`
+</style>`,mt=[{id:"dual-card-section",label:"Sección dos tarjetas",category:"Productos y Servicios",media:pt,content:`
 <section class="dc-section">
     <div class="text-center mb-12">
         <h2 class="text-4xl font-bold text-[#003B71] mb-3">Lorem ipsum dolor sit amet</h2>
         <p class="text-base text-[#003B71]">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
     <div class="dc-grid">
-        ${he}
-        ${fe}
+        ${be}
+        ${ue}
     </div>
 </section>
-${se}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y Servicios",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+${ce}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y Servicios",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <rect x="2" y="2" width="28" height="28" fill="#003B71" rx="2"/>
             <rect x="5" y="5" width="6" height="6" fill="rgba(255,255,255,0.2)" rx="1.2"/>
@@ -415,7 +415,7 @@ ${se}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
             <rect x="5" y="17" width="12" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
             <rect x="5" y="20" width="10" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
             <rect x="5" y="24" width="22" height="3.5" rx="1" fill="white"/>
-        </svg>`,content:`${he}${se}`},{id:"dual-card-light",label:"Tarjeta blanca",category:"Productos y Servicios",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+        </svg>`,content:`${be}${ce}`},{id:"dual-card-light",label:"Tarjeta blanca",category:"Productos y Servicios",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <rect x="2" y="2" width="28" height="28" fill="white" rx="2" stroke="#003B71" stroke-width="0.5" stroke-opacity="0.3"/>
             <rect x="5" y="5" width="6" height="6" fill="#dce8f5" rx="1.2"/>
@@ -423,7 +423,7 @@ ${se}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
             <rect x="5" y="17" width="12" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.4"/>
             <rect x="5" y="20" width="10" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.4"/>
             <rect x="5" y="24" width="22" height="3.5" rx="1" fill="#003B71"/>
-        </svg>`,content:`${fe}${se}`}],ht=`<svg viewBox="0 0 32 32" width="32" height="32">
+        </svg>`,content:`${ue}${ce}`}],bt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="3" y="3" width="26" height="26" fill="white" rx="2" stroke="#e5e7eb" stroke-width="0.8"/>
     <rect x="8" y="7" width="16" height="2.5" rx="1.25" fill="#E97300" fill-opacity="0.9"/>
@@ -431,7 +431,7 @@ ${se}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
     <rect x="11" y="13.5" width="10" height="1.5" rx="0.75" fill="#E97300" fill-opacity="0.5"/>
     <rect x="6" y="18" width="9" height="5" rx="1.5" fill="#E97300"/>
     <rect x="17" y="18" width="9" height="5" rx="1.5" fill="white" stroke="#e5e7eb" stroke-width="0.8"/>
-</svg>`,ft=`
+</svg>`,ut=`
 <style>
 .cta-watermark-left{position:absolute;bottom:-16px;left:-16px;width:220px;height:220px;opacity:0.2;pointer-events:none;user-select:none;transform:scaleX(-1);}
 .cta-watermark-right{position:absolute;bottom:-16px;right:-16px;width:220px;height:220px;opacity:0.2;pointer-events:none;user-select:none;}
@@ -447,13 +447,13 @@ ${se}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
     .cta-watermark-left,.cta-watermark-right{width:90px;height:90px;}
     .cta-btn-primary,.cta-btn-secondary{width:100%;text-align:center;box-sizing:border-box;}
 }
-</style>`,pt=[{id:"cta-section",label:"Llamada a la acción",category:"Contenido",media:ht,content:`
+</style>`,xt=[{id:"cta-section",label:"Llamada a la acción",category:"Contenido",media:bt,content:`
 <section class="relative overflow-hidden w-full bg-white py-16 px-6 md:px-16">
     <div class="cta-watermark-left">
-        <img src="${Z("images/brand-logo.png")}" alt="">
+        <img src="${F("images/brand-logo.png")}" alt="">
     </div>
     <div class="cta-watermark-right">
-        <img src="${Z("images/brand-logo.png")}" alt="">
+        <img src="${F("images/brand-logo.png")}" alt="">
     </div>
     <div class="relative z-10 max-w-2xl mx-auto flex flex-col items-center text-center gap-6">
         <h2 class="text-4xl font-bold text-[#E97300] leading-tight">Lorem ipsum dolor sit amet consectetur</h2>
@@ -464,7 +464,7 @@ ${se}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
         </div>
     </div>
 </section>
-${ft}`}],mt=`<svg viewBox="0 0 32 32" width="32" height="32">
+${ut}`}],yt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="2" y="2" width="13" height="13" fill="rgba(255,255,255,0.15)" rx="2"/>
     <rect x="17" y="2" width="13" height="13" fill="rgba(255,255,255,0.15)" rx="2"/>
@@ -478,14 +478,14 @@ ${ft}`}],mt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="19" y="10" width="9" height="1.2" fill="rgba(255,255,255,0.6)" rx="0.6"/>
     <rect x="4" y="25" width="9" height="1.2" fill="rgba(255,255,255,0.6)" rx="0.6"/>
     <rect x="19" y="25" width="9" height="1.2" fill="rgba(255,255,255,0.6)" rx="0.6"/>
-</svg>`,bt=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,wt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="4" y="4" width="24" height="24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="0.8" rx="2"/>
     <rect x="7" y="7" width="6" height="6" fill="white" rx="1.2"/>
     <rect x="7" y="15" width="14" height="1.2" fill="rgba(255,255,255,0.7)" rx="0.5"/>
     <rect x="7" y="17.5" width="10" height="1.2" fill="rgba(255,255,255,0.5)" rx="0.5"/>
     <rect x="7" y="22" width="18" height="3" fill="white" rx="1"/>
-</svg>`,Y=`
+</svg>`,G=`
 <div class="flex flex-col gap-3 border-2 border-white rounded-2xl p-6 bg-transparent">
     <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center shrink-0">
         <i class="ri-safe-line text-2xl text-[#003B71]"></i>
@@ -493,7 +493,7 @@ ${ft}`}],mt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <h3 class="text-base font-bold text-white">Título del producto</h3>
     <p class="text-base text-white leading-relaxed">Descripción breve del producto o servicio financiero disponible para ti.</p>
     <a href="#" class="ig-btn mt-auto">Más información</a>
-</div>`,ut=`
+</div>`,vt=`
 <style>
 .ig-section{width:100%;background:#003B71;padding:3rem 4rem;}
 .ig-watermark{position:absolute;bottom:-32px;right:-32px;width:320px;height:320px;opacity:0.07;pointer-events:none;user-select:none;}
@@ -504,10 +504,10 @@ ${ft}`}],mt=`<svg viewBox="0 0 32 32" width="32" height="32">
 @media(max-width:1280px){.ig-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.ig-section{padding:2.5rem 1.5rem;}.ig-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:580px){.ig-grid{grid-template-columns:1fr;}}
-</style>`,xt=[{id:"icon-grid-hero",label:"Sección de características",category:"Productos y Servicios",media:mt,content:`
+</style>`,Bt=[{id:"icon-grid-hero",label:"Sección de características",category:"Productos y Servicios",media:yt,content:`
 <section class="ig-section relative overflow-hidden">
     <div class="ig-watermark">
-        <img src="${Z("images/brand-watermark.png")}" alt="">
+        <img src="${F("images/brand-watermark.png")}" alt="">
     </div>
     <div class="relative z-10 flex flex-col gap-12">
         <div class="flex flex-col items-center text-center gap-3">
@@ -515,16 +515,70 @@ ${ft}`}],mt=`<svg viewBox="0 0 32 32" width="32" height="32">
             <p class="text-base text-white">Productos diseñados para hacer crecer tu dinero de forma segura.</p>
         </div>
         <div class="ig-grid">
-            ${Y}
-            ${Y}
-            ${Y}
-            ${Y}
-            ${Y}
-            ${Y}
+            ${G}
+            ${G}
+            ${G}
+            ${G}
+            ${G}
+            ${G}
         </div>
     </div>
 </section>
-${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicios",media:bt,content:`${Y}`}],yt=`<svg viewBox="0 0 32 32" width="32" height="32">
+${vt}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicios",media:wt,content:`${G}`}],ge=`<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#003B71" rx="2"/>
+    <rect x="2" y="2" width="13" height="8" fill="#F07C28" rx="1.5"/>
+    <rect x="17" y="2" width="13" height="8" fill="rgba(255,255,255,0.2)" rx="1.5"/>
+    <rect x="2" y="12" width="13" height="8" fill="rgba(255,255,255,0.2)" rx="1.5"/>
+    <rect x="17" y="12" width="13" height="8" fill="#F07C28" rx="1.5"/>
+    <rect x="2" y="22" width="13" height="8" fill="#F07C28" rx="1.5"/>
+    <rect x="17" y="22" width="13" height="8" fill="rgba(255,255,255,0.2)" rx="1.5"/>
+</svg>`,K=`
+<a href="#" class="plc-card plc-card--orange">
+    <span class="plc-card__title">NOMBRE DEL PRODUCTO</span>
+    <div class="plc-card__watermark">
+        <img src="${F("images/brand-watermark.png")}" alt="">
+    </div>
+</a>`,Q=`
+<a href="#" class="plc-card plc-card--blue">
+    <span class="plc-card__title">NOMBRE DEL PRODUCTO</span>
+    <div class="plc-card__watermark">
+        <img src="${F("images/brand-watermark.png")}" alt="">
+    </div>
+</a>`,he=`
+<style>
+.plc-section{width:100%;padding:3rem 4rem;background:#ffffff;}
+.plc-header{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.75rem;margin-bottom:2.5rem;}
+.plc-header__title{font-size:2.25rem;font-weight:700;color:#003B71;line-height:1.2;}
+.plc-header__subtitle{font-size:1rem;color:#4b5563;}
+.plc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;}
+.plc-card{position:relative;display:flex;align-items:flex-end;padding:1.5rem;border-radius:1rem;overflow:hidden;min-height:140px;text-decoration:none;transition:transform .2s,box-shadow .2s;}
+.plc-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.15);}
+.plc-card--orange{background:#F07C28;}
+.plc-card--blue{background:#003B71;}
+.plc-card__title{position:relative;z-index:2;font-size:1rem;font-weight:800;color:#ffffff;text-transform:uppercase;line-height:1.3;max-width:70%;}
+.plc-card__watermark{position:absolute;bottom:-12px;right:-12px;width:110px;height:110px;opacity:0.25;pointer-events:none;user-select:none;}
+.plc-card__watermark img{width:100%;height:100%;object-fit:contain;}
+@media(max-width:1280px){.plc-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.plc-section{padding:2.5rem 1.5rem;}.plc-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.plc-grid{grid-template-columns:1fr;}.plc-header__title{font-size:1.75rem;}}
+</style>`,kt=[{id:"product-link-cards",label:"Tarjetas de productos con enlace",category:"Productos y Servicios",media:ge,content:`
+<section class="plc-section">
+    <div class="plc-header">
+        <h2 class="plc-header__title">Nuestros Productos</h2>
+        <p class="plc-header__subtitle">Encuentra el producto financiero ideal para ti.</p>
+    </div>
+    <div class="plc-grid">
+        ${K}
+        ${Q}
+        ${K}
+        ${Q}
+        ${Q}
+        ${K}
+        ${Q}
+        ${K}
+    </div>
+</section>
+${he}`},{id:"product-link-card-orange",label:"Tarjeta producto naranja",category:"Productos y Servicios",media:ge,content:`${K}${he}`},{id:"product-link-card-blue",label:"Tarjeta producto azul",category:"Productos y Servicios",media:ge,content:`${Q}${he}`}],$t=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="8" height="5" rx="1" fill="#003B71"/>
     <rect x="12" y="4" width="8" height="5" rx="1" fill="#003B71" fill-opacity="0.3"/>
@@ -533,7 +587,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
     <rect x="5" y="14" width="7" height="7" rx="1" fill="#003B71" fill-opacity="0.3"/>
     <rect x="14" y="14" width="7" height="7" rx="1" fill="#003B71" fill-opacity="0.3"/>
     <rect x="23" y="14" width="4" height="7" rx="1" fill="#003B71" fill-opacity="0.3"/>
-</svg>`,ce=`
+</svg>`,pe=`
 .tabs-btn{transition:background 0.2s,color 0.2s;}
 .tabs-btn.active,.tabs-btn:hover{background:#003B71 !important;color:#ffffff !important;}
 .tabs-panel{display:none;}
@@ -541,14 +595,14 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
 .tab-card:hover{background:#003B71;}
 .tab-card:hover .tab-card-icon{color:#ffffff;border-color:rgba(255,255,255,0.6);}
 .tab-card:hover .tab-card-title{color:#ffffff;}
-.tab-card:hover .tab-card-text{color:#ffffff;}`;function wt(){return function(){const i=this,e=".tabs-btn{transition:background 0.2s,color 0.2s;}.tabs-btn.active,.tabs-btn:hover{background:#003B71 !important;color:#ffffff !important;}.tabs-panel{display:none;}.tabs-panel.active{display:grid;}.tab-card:hover{background:#003B71;}.tab-card:hover .tab-card-icon{color:#ffffff;border-color:rgba(255,255,255,0.6);}.tab-card:hover .tab-card-title{color:#ffffff;}.tab-card:hover .tab-card-text{color:#ffffff;}";(function(){const a=i.ownerDocument??document;if(!a.getElementById("tabs-section-styles")){const o=a.createElement("style");o.id="tabs-section-styles",o.textContent=e,a.head.appendChild(o)}})();function t(r){i.querySelectorAll(".tabs-btn").forEach((a,o)=>{a.classList.toggle("active",o===r)}),i.querySelectorAll(".tabs-panel").forEach((a,o)=>{a.classList.toggle("active",o===r)})}i.querySelectorAll(".tabs-btn").forEach((r,a)=>{r.addEventListener("click",()=>t(a))}),t(0)}}const D=()=>`
+.tab-card:hover .tab-card-text{color:#ffffff;}`;function Et(){return function(){const i=this,e=".tabs-btn{transition:background 0.2s,color 0.2s;}.tabs-btn.active,.tabs-btn:hover{background:#003B71 !important;color:#ffffff !important;}.tabs-panel{display:none;}.tabs-panel.active{display:grid;}.tab-card:hover{background:#003B71;}.tab-card:hover .tab-card-icon{color:#ffffff;border-color:rgba(255,255,255,0.6);}.tab-card:hover .tab-card-title{color:#ffffff;}.tab-card:hover .tab-card-text{color:#ffffff;}";(function(){const a=i.ownerDocument??document;if(!a.getElementById("tabs-section-styles")){const o=a.createElement("style");o.id="tabs-section-styles",o.textContent=e,a.head.appendChild(o)}})();function t(r){i.querySelectorAll(".tabs-btn").forEach((a,o)=>{a.classList.toggle("active",o===r)}),i.querySelectorAll(".tabs-panel").forEach((a,o)=>{a.classList.toggle("active",o===r)})}i.querySelectorAll(".tabs-btn").forEach((r,a)=>{r.addEventListener("click",()=>t(a))}),t(0)}}const D=()=>`
 <div class="tab-card flex flex-col items-center text-center p-8 border-2 border-[#003B71] rounded-2xl gap-4 cursor-pointer transition-all duration-200">
     <div class="tab-card-icon w-14 h-14 rounded-full border-2 border-[#003B71] flex items-center justify-center text-2xl text-[#003B71] shrink-0 transition-all duration-200">
         <i class="ri-lightbulb-line"></i>
     </div>
     <h3 class="tab-card-title text-lg font-bold text-[#003B71] transition-colors duration-200">Lorem ipsum</h3>
     <p class="tab-card-text text-base font-normal leading-relaxed text-[#003B71] transition-colors duration-200">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-</div>`,Q=i=>`
+</div>`,J=i=>`
 <div class="tabs-panel${i===0?" active":""} grid-cols-3 gap-5">
     ${D()}
     ${D()}
@@ -556,7 +610,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
     ${D()}
     ${D()}
     ${D()}
-</div>`,vt=`
+</div>`,Ct=`
 <div class="max-w-6xl mx-auto px-6 flex flex-col gap-8 py-16">
     <div class="text-center flex flex-col gap-4 max-w-2xl mx-auto">
         <h2 class="text-4xl font-bold leading-tight text-[#003B71]">Lorem ipsum dolor sit amet consectetur</h2>
@@ -570,20 +624,20 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
         <button class="tabs-btn inline-block px-6 py-2 rounded-full border-2 border-[#003B71] bg-transparent text-[#003B71] text-sm font-medium">Lorem Ipsum</button>
     </nav>
     <div class="tabs-body">
-        ${Q(0)}
-        ${Q(1)}
-        ${Q(2)}
-        ${Q(3)}
-        ${Q(4)}
+        ${J(0)}
+        ${J(1)}
+        ${J(2)}
+        ${J(3)}
+        ${J(4)}
     </div>
 </div>
-<style>${ce}</style>`,Bt=`<svg viewBox="0 0 32 32" width="32" height="32">
+<style>${pe}</style>`,Lt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="2" width="28" height="28" rx="3" fill="none" stroke="#003B71" stroke-width="2"/>
     <circle cx="16" cy="10" r="4" fill="none" stroke="#003B71" stroke-width="1.5"/>
     <rect x="8" y="17" width="16" height="2" rx="1" fill="#003B71"/>
     <rect x="6" y="22" width="20" height="2" rx="1" fill="#003B71" fill-opacity="0.5"/>
-</svg>`,kt=[{id:"tabs-cards",label:"Sección con tabs",category:"Contenido",media:yt,content:{type:"tabs-cards-component"}},{id:"tab-card-single",label:"Tarjeta de tab",category:"Contenido",media:Bt,content:`${D()}`}];function Et(i){const e="tabs-cards-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Sección con tabs",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,attributes:{"data-gjs-type":e,"data-tab-count":"5"},components:vt,script:wt(),traits:[{type:"number",name:"data-tab-count",label:"Número de tabs (2-10)",min:2,max:10,changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",(t,r)=>{const a=parseInt(r["data-tab-count"]);isNaN(a)||this.updateTabCount(a)})},updateTabCount(t){const r=Math.min(10,Math.max(2,t)),a=o=>{const c=Array.from({length:o},()=>'<button class="tabs-btn inline-block px-6 py-2 rounded-full border-2 border-[#003B71] bg-transparent text-[#003B71] text-sm font-medium">Lorem Ipsum</button>').join(`
+</svg>`,St=[{id:"tabs-cards",label:"Sección con tabs",category:"Contenido",media:$t,content:{type:"tabs-cards-component"}},{id:"tab-card-single",label:"Tarjeta de tab",category:"Contenido",media:Lt,content:`${D()}`}];function jt(i){const e="tabs-cards-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Sección con tabs",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,attributes:{"data-gjs-type":e,"data-tab-count":"5"},components:Ct,script:Et(),traits:[{type:"number",name:"data-tab-count",label:"Número de tabs (2-10)",min:2,max:10,changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",(t,r)=>{const a=parseInt(r["data-tab-count"]);isNaN(a)||this.updateTabCount(a)})},updateTabCount(t){const r=Math.min(10,Math.max(2,t)),a=o=>{const c=Array.from({length:o},()=>'<button class="tabs-btn inline-block px-6 py-2 rounded-full border-2 border-[#003B71] bg-transparent text-[#003B71] text-sm font-medium">Lorem Ipsum</button>').join(`
 `),d=Array.from({length:o},(f,g)=>`<div class="tabs-panel${g===0?" active":""} grid-cols-3 gap-5">
                             ${D()}
                             ${D()}
@@ -601,14 +655,14 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
                         <nav class="flex flex-wrap justify-center gap-2">${c}</nav>
                         <div class="tabs-body">${d}</div>
                     </div>
-                    <style>${ce}</style>`};this.components(a(r)),setTimeout(()=>{const o=this.get("script"),c=this.getEl();o&&typeof o=="function"&&c&&o.call(c)},200)}}}),$t(i,e),Ct(i,e)}function $t(i,e){i.on("component:mount",t=>{const r=t.getEl();r?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},300))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();r&&setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},300)}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getEl();if(r?.isConnected){const a=t.get("script");a&&typeof a=="function"&&a.call(r)}})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Ct(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r){if(!r.querySelector("#tabs-section-styles")){const a=document.createElement("style");a.id="tabs-section-styles",a.textContent=ce,r.appendChild(a)}if(!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
+                    <style>${pe}</style>`};this.components(a(r)),setTimeout(()=>{const o=this.get("script"),c=this.getEl();o&&typeof o=="function"&&c&&o.call(c)},200)}}}),Tt(i,e),_t(i,e)}function Tt(i,e){i.on("component:mount",t=>{const r=t.getEl();r?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},300))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();r&&setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},300)}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getEl();if(r?.isConnected){const a=t.get("script");a&&typeof a=="function"&&a.call(r)}})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function _t(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r){if(!r.querySelector("#tabs-section-styles")){const a=document.createElement("style");a.id="tabs-section-styles",a.textContent=pe,r.appendChild(a)}if(!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
                 [data-gjs-type="${e}"] * { pointer-events: none !important; }
                 [data-gjs-type="${e}"].gjs-selected,
                 [data-gjs-type="${e}"].gjs-hovered {
                     outline: 2px dashed rgba(0,59,113,0.5) !important;
                     outline-offset: 2px;
                 }
-            `,r.appendChild(a)}}})}const Lt=`<svg viewBox="0 0 32 32" width="32" height="32">
+            `,r.appendChild(a)}}})}const zt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="13" height="24" rx="2" fill="#e0e7ef"/>
     <rect x="17" y="4" width="13" height="24" rx="2" fill="#003B71" fill-opacity="0.15"/>
@@ -619,7 +673,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
     <rect x="23" y="19.2" width="7" height="1.5" rx="0.75" fill="#E97300" fill-opacity="0.5"/>
     <circle cx="20" cy="23" r="1.5" fill="#E97300"/>
     <rect x="23" y="22.2" width="5" height="1.5" rx="0.75" fill="#E97300" fill-opacity="0.5"/>
-</svg>`,St=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,It=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="17" y="4" width="13" height="24" rx="2" fill="#e0e7ef"/>
     <rect x="2" y="4" width="13" height="24" rx="2" fill="#003B71" fill-opacity="0.15"/>
@@ -630,7 +684,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
     <rect x="8" y="19.2" width="7" height="1.5" rx="0.75" fill="#E97300" fill-opacity="0.5"/>
     <circle cx="5" cy="23" r="1.5" fill="#E97300"/>
     <rect x="8" y="22.2" width="5" height="1.5" rx="0.75" fill="#E97300" fill-opacity="0.5"/>
-</svg>`,jt=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,At=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="2" y="4" width="13" height="24" rx="2" fill="rgba(255,255,255,0.1)"/>
     <rect x="17" y="4" width="13" height="24" rx="2" fill="rgba(255,255,255,0.18)"/>
@@ -641,7 +695,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
     <rect x="23" y="19.2" width="7" height="1.5" rx="0.75" fill="white" fill-opacity="0.4"/>
     <circle cx="20" cy="23" r="1.5" fill="#E97300"/>
     <rect x="23" y="22.2" width="5" height="1.5" rx="0.75" fill="white" fill-opacity="0.4"/>
-</svg>`,Tt=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,Dt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="17" y="4" width="13" height="24" rx="2" fill="rgba(255,255,255,0.1)"/>
     <rect x="2" y="4" width="13" height="24" rx="2" fill="rgba(255,255,255,0.18)"/>
@@ -652,7 +706,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
     <rect x="8" y="19.2" width="7" height="1.5" rx="0.75" fill="white" fill-opacity="0.4"/>
     <circle cx="5" cy="23" r="1.5" fill="#E97300"/>
     <rect x="8" y="22.2" width="5" height="1.5" rx="0.75" fill="white" fill-opacity="0.4"/>
-</svg>`,pe=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,xe=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <circle cx="7" cy="10" r="4" fill="#E97300" fill-opacity="0.85"/>
     <rect x="14" y="8.5" width="14" height="2" rx="1" fill="#003B71" fill-opacity="0.7"/>
@@ -664,7 +718,7 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
         <i class="ri-shield-check-line text-xl ${e?"text-[#003B71]":"text-white"}"></i>
     </div>
     <p class="${e?"text-[#003B71]":"text-white"} text-base font-bold leading-snug">Lorem ipsum dolor sit amet consectetur</p>
-</div>`},zt=i=>{const e=i==="light";return`
+</div>`},Mt=i=>{const e=i==="light";return`
 <div class="flex flex-col gap-4">
     <h2 class="${e?"text-[#003B71]":"text-white"} text-4xl font-bold leading-tight">Lorem ipsum dolor sit amet</h2>
     <p class="${e?"text-[#003B71]":"text-white"} text-base leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
@@ -674,31 +728,31 @@ ${ut}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
         ${U(i)}
         ${U(i)}
     </div>
-</div>`},It=()=>`
+</div>`},qt=()=>`
 <div class="w-full rounded-2xl overflow-hidden">
-    <img src="${Z("images/placeholder.svg")}"
+    <img src="${F("images/placeholder.svg")}"
          alt="Imagen de sección"
          class="w-full object-cover block rounded-2xl"
          style="min-height:320px;max-height:480px;">
-</div>`,_t=`
+</div>`,Nt=`
 <style>
 .split-section{width:100%;padding:3rem 4rem;}
 .split-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
 .split-list-item{min-height:44px;}
 @media(max-width:1280px){.split-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.split-section{padding:2.5rem 1.5rem;}.split-grid{grid-template-columns:1fr;gap:2rem;}}
-</style>`,ie=(i,e)=>{const t=zt(e),r=It(),a=e==="dark"?"bg-[#003B71]":"bg-white",o=i?`<div>${t}</div><div>${r}</div>`:`<div class="split-img-mobile-first">${r}</div><div>${t}</div>`;return`
+</style>`,re=(i,e)=>{const t=Mt(e),r=qt(),a=e==="dark"?"bg-[#003B71]":"bg-white",o=i?`<div>${t}</div><div>${r}</div>`:`<div class="split-img-mobile-first">${r}</div><div>${t}</div>`;return`
 <section class="split-section ${a}">
     <div class="split-grid">
         ${o}
     </div>
 </section>
-${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen derecha",category:"Contenido",media:Lt,content:ie(!0,"light")},{id:"split-content-light-img-left",label:"Contenido claro - imagen izquierda",category:"Contenido",media:St,content:ie(!1,"light")},{id:"split-content-dark-img-right",label:"Contenido azul - imagen derecha",category:"Contenido",media:jt,content:ie(!0,"dark")},{id:"split-content-dark-img-left",label:"Contenido azul - imagen izquierda",category:"Contenido",media:Tt,content:ie(!1,"dark")},{id:"split-list-item",label:"Item de lista con badge",category:"Contenido",media:pe,content:U("light")},{id:"split-list-group",label:"Lista con badges",category:"Contenido",media:pe,content:`
+${Nt}`},Ht=[{id:"split-content-light-img-right",label:"Contenido claro - imagen derecha",category:"Contenido",media:zt,content:re(!0,"light")},{id:"split-content-light-img-left",label:"Contenido claro - imagen izquierda",category:"Contenido",media:It,content:re(!1,"light")},{id:"split-content-dark-img-right",label:"Contenido azul - imagen derecha",category:"Contenido",media:At,content:re(!0,"dark")},{id:"split-content-dark-img-left",label:"Contenido azul - imagen izquierda",category:"Contenido",media:Dt,content:re(!1,"dark")},{id:"split-list-item",label:"Item de lista con badge",category:"Contenido",media:xe,content:U("light")},{id:"split-list-group",label:"Lista con badges",category:"Contenido",media:xe,content:`
 <div class="flex flex-col gap-4">
     ${U("light")}
     ${U("light")}
     ${U("light")}
-</div>`}],Dt=`<svg viewBox="0 0 32 32" width="32" height="32">
+</div>`}],Pt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="0" y="6" width="32" height="22" fill="#E97300"/>
     <rect x="0" y="6" width="10" height="22" fill="white"/>
@@ -707,7 +761,7 @@ ${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen 
     <circle cx="22" cy="14" r="1.5" fill="white"/>
     <rect x="18" y="20" width="8" height="1.5" rx="0.75" fill="white" fill-opacity="0.8"/>
     <rect x="19" y="22.5" width="6" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
-</svg>`,Mt=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,Ot=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="0" y="6" width="32" height="22" fill="#E97300"/>
     <rect x="22" y="6" width="10" height="22" fill="white"/>
@@ -716,7 +770,7 @@ ${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen 
     <circle cx="10" cy="14" r="1.5" fill="white"/>
     <rect x="6" y="20" width="8" height="1.5" rx="0.75" fill="white" fill-opacity="0.8"/>
     <rect x="7" y="22.5" width="6" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
-</svg>`,ae=`
+</svg>`,le=`
 <div class="flex flex-col items-center gap-3 text-center">
     <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white/20">
         <i class="ri-map-pin-line text-2xl text-white"></i>
@@ -725,7 +779,7 @@ ${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen 
         <p class="text-lg font-bold text-white">Lorem ipsum</p>
         <p class="text-base text-white">Lorem ipsum dolor sit amet</p>
     </div>
-</div>`,qt=`
+</div>`,Rt=`
 <style>
 .ss-section{position:relative;width:100%;}
 .ss-curve-left{background:#E97300;border-radius:200px 0 0 0;padding:3rem 4rem;}
@@ -745,7 +799,7 @@ ${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen 
     .ss-curve-right{border-radius:0 60px 0 0;}
     .ss-grid{grid-template-columns:1fr 1fr;}
 }
-</style>`,me=i=>`
+</style>`,ye=i=>`
 <div class="ss-section">
     <div class="ss-curve-${i?"left":"right"}">
         <div class="text-center mb-12">
@@ -753,14 +807,14 @@ ${_t}`},At=[{id:"split-content-light-img-right",label:"Contenido claro - imagen 
             <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
         <div class="ss-grid">
-            ${ae}
-            ${ae}
-            ${ae}
-            ${ae}
+            ${le}
+            ${le}
+            ${le}
+            ${le}
         </div>
     </div>
 </div>
-${qt}`,Ht=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",category:"Heroes",media:Dt,content:me(!0)},{id:"stats-strip-right",label:"Franja estadísticas - derecha",category:"Heroes",media:Mt,content:me(!1)}],Nt=`<svg viewBox="0 0 32 32" width="32" height="32">
+${Rt}`,Ut=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",category:"Heroes",media:Pt,content:ye(!0)},{id:"stats-strip-right",label:"Franja estadísticas - derecha",category:"Heroes",media:Ot,content:ye(!1)}],Ft=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="2" y="8" width="8" height="16" fill="white" rx="2"/>
     <rect x="12" y="8" width="8" height="16" fill="white" rx="2"/>
@@ -777,19 +831,19 @@ ${qt}`,Ht=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
     <rect x="23" y="13" width="5" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
     <rect x="23" y="15" width="4" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
     <rect x="23" y="19" width="6" height="2.5" rx="1" fill="#003B71" fill-opacity="0.4"/>
-</svg>`,Pt=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,Yt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="4" y="4" width="24" height="24" fill="white" rx="2"/>
     <rect x="8" y="9" width="16" height="2" rx="1" fill="#003B71" fill-opacity="0.6"/>
     <rect x="8" y="13" width="14" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.3"/>
     <rect x="8" y="15.5" width="12" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.3"/>
     <rect x="8" y="20" width="16" height="4" rx="1.5" fill="#003B71" fill-opacity="0.5"/>
-</svg>`,re=`
+</svg>`,oe=`
 <div class="svc-card flex flex-col gap-4 bg-white rounded-2xl p-6 text-center">
     <h3 class="text-lg font-bold text-[#003B71]">Lorem ipsum dolor</h3>
     <p class="text-base leading-relaxed text-[#003B71] flex-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.</p>
     <a href="#" class="svc-btn mt-auto">Lorem ipsum</a>
-</div>`,be=`
+</div>`,we=`
 <style>
 .svc-section{width:100%;background:#003B71;padding:3rem 4rem;}
 .svc-header{text-align:center;margin-bottom:3rem;}
@@ -799,19 +853,19 @@ ${qt}`,Ht=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
 @media(max-width:1280px){.svc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.svc-section{padding:2.5rem 1.5rem;}.svc-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:580px){.svc-grid{grid-template-columns:1fr;}}
-</style>`,Ot=[{id:"service-cards-section",label:"Sección de servicios",category:"Productos y Servicios",media:Nt,content:`
+</style>`,Vt=[{id:"service-cards-section",label:"Sección de servicios",category:"Productos y Servicios",media:Ft,content:`
 <section class="svc-section">
     <div class="svc-header">
         <h2 class="text-4xl font-bold text-white mb-3">Lorem ipsum dolor sit amet</h2>
         <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
     <div class="svc-grid">
-        ${re}
-        ${re}
-        ${re}
+        ${oe}
+        ${oe}
+        ${oe}
     </div>
 </section>
-${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Servicios",media:Pt,content:`${re}${be}`}],Rt=`<svg viewBox="0 0 32 32" width="32" height="32">
+${we}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Servicios",media:Yt,content:`${oe}${we}`}],Wt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="2" width="28" height="6" rx="1" fill="#003B71"/>
     <rect x="2" y="10" width="28" height="5" rx="1" fill="#003B71" fill-opacity="0.3"/>
@@ -819,14 +873,14 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
     <rect x="2" y="24" width="28" height="5" rx="1" fill="#003B71" fill-opacity="0.15"/>
     <line x1="11" y1="2" x2="11" y2="29" stroke="#003B71" stroke-width="1" stroke-opacity="0.3"/>
     <line x1="21" y1="2" x2="21" y2="29" stroke="#003B71" stroke-width="1" stroke-opacity="0.3"/>
-</svg>`,le={blue:{headerBg:"bg-[#003B71]",headerText:"text-white",subheaderBg:"bg-[#e8f0f8]",subheaderText:"text-[#003B71]",borderColor:"#003B71",rowEvenBg:"bg-[#f4f7fb]",rowOddBg:"bg-white",rowText:"text-[#003B71]",labelBg:"bg-[#e8f0f8]",labelText:"text-[#003B71]"},orange:{headerBg:"bg-[#E97300]",headerText:"text-white",subheaderBg:"bg-[#fef3e8]",subheaderText:"text-[#E97300]",borderColor:"#E97300",rowEvenBg:"bg-[#fff8f2]",rowOddBg:"bg-white",rowText:"text-[#003B71]",labelBg:"bg-[#fef3e8]",labelText:"text-[#E97300]"}};function $e(i,e){const t=le[e]||le.blue;let r='<table class="w-full border-collapse font-[Poppins,sans-serif] table-fixed">';i.title?(r+=`<thead><tr>
+</svg>`,ne={blue:{headerBg:"bg-[#003B71]",headerText:"text-white",subheaderBg:"bg-[#e8f0f8]",subheaderText:"text-[#003B71]",borderColor:"#003B71",rowEvenBg:"bg-[#f4f7fb]",rowOddBg:"bg-white",rowText:"text-[#003B71]",labelBg:"bg-[#e8f0f8]",labelText:"text-[#003B71]"},orange:{headerBg:"bg-[#E97300]",headerText:"text-white",subheaderBg:"bg-[#fef3e8]",subheaderText:"text-[#E97300]",borderColor:"#E97300",rowEvenBg:"bg-[#fff8f2]",rowOddBg:"bg-white",rowText:"text-[#003B71]",labelBg:"bg-[#fef3e8]",labelText:"text-[#E97300]"}};function je(i,e){const t=ne[e]||ne.blue;let r='<table class="w-full border-collapse font-[Poppins,sans-serif] table-fixed">';i.title?(r+=`<thead><tr>
             <th colspan="${i.cols}" class="p-3 align-middle text-center text-base font-bold ${t.headerBg} ${t.headerText}">
                 ${i.title}
             </th>
-        </tr>`,i.headers?.length&&(r+="<tr>",i.headers.forEach((c,d)=>{const f=d<i.headers.length-1?`border-r border-[${t.borderColor}]`:"";r+=`<th class="p-3 align-middle text-sm font-semibold ${t.subheaderBg} ${t.subheaderText} ${f} border-b border-[${t.borderColor}] text-${c.align||"center"}">${c.text||""}</th>`}),r+="</tr>"),r+="</thead>"):i.headers?.length&&(r+="<thead><tr>",i.headers.forEach((c,d)=>{const f=d<i.headers.length-1?`border-r border-[${t.borderColor}]`:"";r+=`<th class="p-3 align-middle text-sm font-semibold ${t.headerBg} ${t.headerText} ${f} border-b border-[${t.borderColor}] text-${c.align||"center"}">${c.text||""}</th>`}),r+="</tr></thead>"),r+="<tbody>";const a=i.rows.length,o={};return i.rows.forEach((c,d)=>{r+="<tr>";let f=0;c.forEach(g=>{for(;o[`${d}-${f}`];)f++;const k=g.colspan||1,$=g.rowspan||1;for(let b=d;b<d+$;b++)for(let L=f;L<f+k;L++)(b!==d||L!==f)&&(o[`${b}-${L}`]=!0);const m=k>1?`colspan="${k}"`:"",n=$>1?`rowspan="${$}"`:"",p=g.isHeader?t.labelBg:d%2===0?t.rowEvenBg:t.rowOddBg,y=g.isHeader?"font-semibold":"font-normal",_=g.isHeader?t.labelText:t.rowText,x=`text-${g.align||"center"}`,E=d+$>=a,C=f+k>=i.cols?"":`border-r border-[${t.borderColor}]`,v=E?"":`border-b border-[${t.borderColor}]`,S=`${C} ${v} p-3 align-middle text-sm ${p} ${y} ${_} ${x}`;g.image?r+=`<td ${m} ${n} class="${S}">
+        </tr>`,i.headers?.length&&(r+="<tr>",i.headers.forEach((c,d)=>{const f=d<i.headers.length-1?`border-r border-[${t.borderColor}]`:"";r+=`<th class="p-3 align-middle text-sm font-semibold ${t.subheaderBg} ${t.subheaderText} ${f} border-b border-[${t.borderColor}] text-${c.align||"center"}">${c.text||""}</th>`}),r+="</tr>"),r+="</thead>"):i.headers?.length&&(r+="<thead><tr>",i.headers.forEach((c,d)=>{const f=d<i.headers.length-1?`border-r border-[${t.borderColor}]`:"";r+=`<th class="p-3 align-middle text-sm font-semibold ${t.headerBg} ${t.headerText} ${f} border-b border-[${t.borderColor}] text-${c.align||"center"}">${c.text||""}</th>`}),r+="</tr></thead>"),r+="<tbody>";const a=i.rows.length,o={};return i.rows.forEach((c,d)=>{r+="<tr>";let f=0;c.forEach(g=>{for(;o[`${d}-${f}`];)f++;const k=g.colspan||1,E=g.rowspan||1;for(let b=d;b<d+E;b++)for(let L=f;L<f+k;L++)(b!==d||L!==f)&&(o[`${b}-${L}`]=!0);const m=k>1?`colspan="${k}"`:"",n=E>1?`rowspan="${E}"`:"",p=g.isHeader?t.labelBg:d%2===0?t.rowEvenBg:t.rowOddBg,y=g.isHeader?"font-semibold":"font-normal",I=g.isHeader?t.labelText:t.rowText,x=`text-${g.align||"center"}`,$=d+E>=a,C=f+k>=i.cols?"":`border-r border-[${t.borderColor}]`,v=$?"":`border-b border-[${t.borderColor}]`,S=`${C} ${v} p-3 align-middle text-sm ${p} ${y} ${I} ${x}`;g.image?r+=`<td ${m} ${n} class="${S}">
                     <img src="${g.image}" alt="${g.text||""}" class="max-w-full max-h-20 h-auto object-contain block mx-auto">
-                    ${g.text?`<span class="block mt-1 text-xs ${_}">${g.text}</span>`:""}
-                </td>`:r+=`<td ${m} ${n} class="${S}">${g.text||""}</td>`,f+=k}),r+="</tr>"}),r+="</tbody></table>",r}function G(i,e){return{title:"Título de la tabla",cols:i,headers:Array.from({length:i},(t,r)=>({text:`Columna ${r+1}`,align:"center"})),rows:Array.from({length:e},()=>Array.from({length:i},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})))}}function Ce(i,e){return`<div class="w-full overflow-x-auto rounded-2xl border-2 border-[${(le[e]||le.blue).borderColor}]">${i}</div>`}function ue(i,e){const t={};return i.forEach((r,a)=>{let o=0;r.forEach(c=>{for(;t[`${a}-${o}`];)o++;const d=Math.min(c.colspan||1,e-o),f=c.rowspan||1;for(let g=a;g<a+f;g++)for(let k=o;k<o+d;k++)(g!==a||k!==o)&&(t[`${g}-${k}`]=`${a}-${o}`);o+=d})}),t}const Ut=`
+                    ${g.text?`<span class="block mt-1 text-xs ${I}">${g.text}</span>`:""}
+                </td>`:r+=`<td ${m} ${n} class="${S}">${g.text||""}</td>`,f+=k}),r+="</tr>"}),r+="</tbody></table>",r}function Z(i,e){return{title:"Título de la tabla",cols:i,headers:Array.from({length:i},(t,r)=>({text:`Columna ${r+1}`,align:"center"})),rows:Array.from({length:e},()=>Array.from({length:i},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})))}}function Te(i,e){return`<div class="w-full overflow-x-auto rounded-2xl border-2 border-[${(ne[e]||ne.blue).borderColor}]">${i}</div>`}function ve(i,e){const t={};return i.forEach((r,a)=>{let o=0;r.forEach(c=>{for(;t[`${a}-${o}`];)o++;const d=Math.min(c.colspan||1,e-o),f=c.rowspan||1;for(let g=a;g<a+f;g++)for(let k=o;k<o+d;k++)(g!==a||k!==o)&&(t[`${g}-${k}`]=`${a}-${o}`);o+=d})}),t}const Gt=`
 #table-admin-modal{display:none;position:fixed;inset:0;z-index:999999;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,0.5);}
 #table-admin-modal.open{display:flex;}
 .tam-container{background:#fff;border-radius:0.75rem;box-shadow:0 20px 60px rgba(0,0,0,0.3);width:100%;max-width:960px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Poppins',sans-serif;}
@@ -885,7 +939,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
 .tam-img-spinner{width:2rem;height:2rem;border:3px solid #e5e7eb;border-top-color:#003B71;border-radius:50%;animation:tam-spin 0.8s linear infinite;}
 @keyframes tam-spin{to{transform:rotate(360deg);}}
 .tam-img-footer{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-top:1px solid #e5e7eb;background:#f9fafb;flex-shrink:0;}
-.tam-img-selected-info{font-size:0.8rem;color:#6b7280;}`;function Ft(){if(document.getElementById("tam-img-modal"))return;const i=document.createElement("div");i.id="tam-img-modal",i.innerHTML=`
+.tam-img-selected-info{font-size:0.8rem;color:#6b7280;}`;function Zt(){if(document.getElementById("tam-img-modal"))return;const i=document.createElement("div");i.id="tam-img-modal",i.innerHTML=`
         <div class="tam-img-container">
             <div class="tam-img-header">
                 <h3><i class="ri-image-line" style="margin-right:6px;"></i>Seleccionar imagen</h3>
@@ -902,7 +956,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                     <button class="tam-btn tam-btn-primary" id="tam-img-confirm" disabled><i class="ri-check-line"></i> Usar imagen</button>
                 </div>
             </div>
-        </div>`,document.body.appendChild(i);let e=null,t=null;async function r(d=""){const f=document.getElementById("tam-img-grid");f.innerHTML='<div class="tam-img-loading"><div class="tam-img-spinner"></div><span>Cargando...</span></div>';try{const g=new URLSearchParams({type:"image",per_page:50});d&&g.append("search",d);const k=document.querySelector('meta[name="media-api-url"]')?.content??"/media/api",n=(await(await fetch(`${k}?${g}`,{headers:{"X-Requested-With":"XMLHttpRequest",Accept:"application/json"}})).json()).items||[];if(!n.length){f.innerHTML='<div class="tam-img-loading"><i class="ri-image-line" style="font-size:2rem;"></i><span>No se encontraron imágenes</span></div>';return}f.innerHTML="",n.forEach(p=>{const y=document.createElement("div");y.className="tam-img-card",y.innerHTML=`<img src="${p.url}" alt="${p.filename}"><p title="${p.filename}">${p.filename}</p>`,y.addEventListener("click",()=>{f.querySelectorAll(".tam-img-card").forEach(_=>_.classList.remove("selected")),y.classList.add("selected"),e=p.url,document.getElementById("tam-img-selected-info").textContent=`Seleccionada: ${p.filename}`,document.getElementById("tam-img-confirm").disabled=!1}),f.appendChild(y)})}catch{f.innerHTML='<div class="tam-img-loading"><i class="ri-error-warning-line" style="font-size:2rem;color:#f87171;"></i><span style="color:#dc2626;">Error al cargar imágenes</span></div>'}}function a(d){t=d,e=null,document.getElementById("tam-img-selected-info").textContent="Ninguna imagen seleccionada",document.getElementById("tam-img-confirm").disabled=!0,document.getElementById("tam-img-search-input").value="",i.classList.add("open"),r()}function o(){i.classList.remove("open"),e=null,t=null}document.getElementById("tam-img-close").addEventListener("click",o),document.getElementById("tam-img-cancel").addEventListener("click",o),document.getElementById("tam-img-confirm").addEventListener("click",()=>{e&&t&&(t(e),o())});let c;document.getElementById("tam-img-search-input").addEventListener("input",d=>{clearTimeout(c),c=setTimeout(()=>r(d.target.value),300)}),i.addEventListener("click",d=>{d.target===i&&o()}),window.__openTableImagePicker=a}function Vt(i,e){if(document.getElementById("table-admin-modal"))return;const t=document.createElement("style");t.id="table-admin-modal-styles",t.textContent=Ut,document.head.appendChild(t),Ft();const r=document.createElement("div");r.id="table-admin-modal",r.innerHTML=`
+        </div>`,document.body.appendChild(i);let e=null,t=null;async function r(d=""){const f=document.getElementById("tam-img-grid");f.innerHTML='<div class="tam-img-loading"><div class="tam-img-spinner"></div><span>Cargando...</span></div>';try{const g=new URLSearchParams({type:"image",per_page:50});d&&g.append("search",d);const k=document.querySelector('meta[name="media-api-url"]')?.content??"/media/api",n=(await(await fetch(`${k}?${g}`,{headers:{"X-Requested-With":"XMLHttpRequest",Accept:"application/json"}})).json()).items||[];if(!n.length){f.innerHTML='<div class="tam-img-loading"><i class="ri-image-line" style="font-size:2rem;"></i><span>No se encontraron imágenes</span></div>';return}f.innerHTML="",n.forEach(p=>{const y=document.createElement("div");y.className="tam-img-card",y.innerHTML=`<img src="${p.url}" alt="${p.filename}"><p title="${p.filename}">${p.filename}</p>`,y.addEventListener("click",()=>{f.querySelectorAll(".tam-img-card").forEach(I=>I.classList.remove("selected")),y.classList.add("selected"),e=p.url,document.getElementById("tam-img-selected-info").textContent=`Seleccionada: ${p.filename}`,document.getElementById("tam-img-confirm").disabled=!1}),f.appendChild(y)})}catch{f.innerHTML='<div class="tam-img-loading"><i class="ri-error-warning-line" style="font-size:2rem;color:#f87171;"></i><span style="color:#dc2626;">Error al cargar imágenes</span></div>'}}function a(d){t=d,e=null,document.getElementById("tam-img-selected-info").textContent="Ninguna imagen seleccionada",document.getElementById("tam-img-confirm").disabled=!0,document.getElementById("tam-img-search-input").value="",i.classList.add("open"),r()}function o(){i.classList.remove("open"),e=null,t=null}document.getElementById("tam-img-close").addEventListener("click",o),document.getElementById("tam-img-cancel").addEventListener("click",o),document.getElementById("tam-img-confirm").addEventListener("click",()=>{e&&t&&(t(e),o())});let c;document.getElementById("tam-img-search-input").addEventListener("input",d=>{clearTimeout(c),c=setTimeout(()=>r(d.target.value),300)}),i.addEventListener("click",d=>{d.target===i&&o()}),window.__openTableImagePicker=a}function Xt(i,e){if(document.getElementById("table-admin-modal"))return;const t=document.createElement("style");t.id="table-admin-modal-styles",t.textContent=Gt,document.head.appendChild(t),Zt();const r=document.createElement("div");r.id="table-admin-modal",r.innerHTML=`
         <div class="tam-container">
             <div class="tam-header">
                 <h2><i class="ri-table-line" style="margin-right:8px;"></i>Administrar tabla</h2>
@@ -941,18 +995,18 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                 <button class="tam-btn tam-btn-ghost" id="tam-cancel">Cancelar</button>
                 <button class="tam-btn tam-btn-primary" id="tam-apply"><i class="ri-check-line"></i> Aplicar cambios</button>
             </div>
-        </div>`,document.body.appendChild(r);let a=null,o=null;function c(m){a=m;const n=m.get("tableData");o=n?JSON.parse(JSON.stringify(n)):G(3,3);const p=o.cols||3;o.rows=o.rows.map((y,_)=>Array.from({length:p},(E,T)=>y[T]||{text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})),document.getElementById("tam-title").value=o.title||"",document.getElementById("tam-theme").value=m.get("tableTheme")||"blue",document.getElementById("tam-cols").value=o.cols||3,document.getElementById("tam-rows").value=o.rows.length||3,k(),$(),r.classList.add("open"),document.body.style.overflow="hidden"}function d(){r.classList.remove("open"),document.body.style.overflow="",a=null}function f(){o.title=document.getElementById("tam-title").value.trim(),o.cols=parseInt(document.getElementById("tam-cols").value)||3,o.headers=Array.from(document.querySelectorAll(".tam-header-input")).map(n=>({text:n.value,align:n.closest("th")?.querySelector(".tam-align-select")?.value||"center"})),document.querySelectorAll("#tam-tbody td.tam-cell:not(.is-spanned)").forEach(n=>{const p=parseInt(n.dataset.row),y=parseInt(n.dataset.col);o.rows[p]?.[y]&&(o.rows[p][y].text=n.querySelector(".tam-cell-input")?.value||"",o.rows[p][y].align=n.querySelector(".tam-align-select")?.value||"center",o.rows[p][y].isHeader=n.dataset.isheader==="1",o.rows[p][y].image=n.dataset.image||null)});const m=ue(o.rows,o.cols);o.rows=o.rows.map((n,p)=>n.filter((y,_)=>!m[`${p}-${_}`]))}function g(){if(r.querySelector("#tam-rebuild-notice"))return;const n=document.createElement("div");n.id="tam-rebuild-notice",n.style.cssText="background:#fef9c3;border:1.5px solid #ca8a04;border-radius:0.5rem;padding:0.5rem 1rem;font-size:0.8rem;color:#92400e;display:flex;align-items:center;gap:0.5rem;margin:0 1.5rem 0;flex-shrink:0;",n.innerHTML='<i class="ri-error-warning-line"></i> Has modificado el colspan/rowspan. Haz clic en <strong style="margin:0 4px;">Reconstruir</strong> para aplicar los cambios de fusión.',r.querySelector(".tam-toolbar").after(n)}function k(){r.querySelector("#tam-rebuild-notice")?.remove()}function $(){const m=document.getElementById("tam-thead"),n=document.getElementById("tam-tbody"),p=o.cols,y=o.rows.length,_=ue(o.rows,p);m.innerHTML=`<tr>${o.headers.map((x,E)=>`
+        </div>`,document.body.appendChild(r);let a=null,o=null;function c(m){a=m;const n=m.get("tableData");o=n?JSON.parse(JSON.stringify(n)):Z(3,3);const p=o.cols||3;o.rows=o.rows.map((y,I)=>Array.from({length:p},($,_)=>y[_]||{text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})),document.getElementById("tam-title").value=o.title||"",document.getElementById("tam-theme").value=m.get("tableTheme")||"blue",document.getElementById("tam-cols").value=o.cols||3,document.getElementById("tam-rows").value=o.rows.length||3,k(),E(),r.classList.add("open"),document.body.style.overflow="hidden"}function d(){r.classList.remove("open"),document.body.style.overflow="",a=null}function f(){o.title=document.getElementById("tam-title").value.trim(),o.cols=parseInt(document.getElementById("tam-cols").value)||3,o.headers=Array.from(document.querySelectorAll(".tam-header-input")).map(n=>({text:n.value,align:n.closest("th")?.querySelector(".tam-align-select")?.value||"center"})),document.querySelectorAll("#tam-tbody td.tam-cell:not(.is-spanned)").forEach(n=>{const p=parseInt(n.dataset.row),y=parseInt(n.dataset.col);o.rows[p]?.[y]&&(o.rows[p][y].text=n.querySelector(".tam-cell-input")?.value||"",o.rows[p][y].align=n.querySelector(".tam-align-select")?.value||"center",o.rows[p][y].isHeader=n.dataset.isheader==="1",o.rows[p][y].image=n.dataset.image||null)});const m=ve(o.rows,o.cols);o.rows=o.rows.map((n,p)=>n.filter((y,I)=>!m[`${p}-${I}`]))}function g(){if(r.querySelector("#tam-rebuild-notice"))return;const n=document.createElement("div");n.id="tam-rebuild-notice",n.style.cssText="background:#fef9c3;border:1.5px solid #ca8a04;border-radius:0.5rem;padding:0.5rem 1rem;font-size:0.8rem;color:#92400e;display:flex;align-items:center;gap:0.5rem;margin:0 1.5rem 0;flex-shrink:0;",n.innerHTML='<i class="ri-error-warning-line"></i> Has modificado el colspan/rowspan. Haz clic en <strong style="margin:0 4px;">Reconstruir</strong> para aplicar los cambios de fusión.',r.querySelector(".tam-toolbar").after(n)}function k(){r.querySelector("#tam-rebuild-notice")?.remove()}function E(){const m=document.getElementById("tam-thead"),n=document.getElementById("tam-tbody"),p=o.cols,y=o.rows.length,I=ve(o.rows,p);m.innerHTML=`<tr>${o.headers.map((x,$)=>`
             <th>
-                <input class="tam-cell-input tam-header-input" value="${x.text||""}" placeholder="Col ${E+1}" style="font-weight:600;">
+                <input class="tam-cell-input tam-header-input" value="${x.text||""}" placeholder="Col ${$+1}" style="font-weight:600;">
                 <select class="tam-align-select" style="margin-top:4px;width:100%;font-size:0.7rem;padding:2px;">
                     <option value="left" ${x.align==="left"?"selected":""}>Izquierda</option>
                     <option value="center" ${x.align==="center"?"selected":""}>Centro</option>
                     <option value="right" ${x.align==="right"?"selected":""}>Derecha</option>
                 </select>
-            </th>`).join("")}</tr>`,n.innerHTML=o.rows.map((x,E)=>`<tr>${Array.from({length:p},(C,v)=>{const S=_[`${E}-${v}`];if(S)return`<td class="tam-cell is-spanned" data-row="${E}" data-col="${v}">
+            </th>`).join("")}</tr>`,n.innerHTML=o.rows.map((x,$)=>`<tr>${Array.from({length:p},(C,v)=>{const S=I[`${$}-${v}`];if(S)return`<td class="tam-cell is-spanned" data-row="${$}" data-col="${v}">
                         <div class="tam-spanned-label">Combinada con [${S}]</div>
                     </td>`;const b=x[v]||{text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null},L=b.colspan||1,q=b.rowspan||1,z=L>1||q>1;return`<td class="tam-cell ${b.isHeader?"is-header-cell":""} ${b.image?"has-image":""} ${z?"has-span":""}"
-                    data-row="${E}" data-col="${v}"
+                    data-row="${$}" data-col="${v}"
                     data-isheader="${b.isHeader?"1":"0"}"
                     data-colspan="${L}"
                     data-rowspan="${q}"
@@ -966,37 +1020,37 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                     </select>
                     <div class="tam-cell-actions">
                         <button type="button" class="tam-cell-btn tam-cell-btn-header ${b.isHeader?"active":""}"
-                            data-action="header" data-row="${E}" data-col="${v}">
+                            data-action="header" data-row="${$}" data-col="${v}">
                             ${b.isHeader?"✓ Etiqueta":"Etiqueta"}
                         </button>
                         <button type="button" class="tam-cell-btn tam-cell-btn-img"
-                            data-action="image" data-row="${E}" data-col="${v}">
+                            data-action="image" data-row="${$}" data-col="${v}">
                             <i class="ri-image-line"></i> ${b.image?"Cambiar":"Imagen"}
                         </button>
-                        ${b.image?`<button type="button" class="tam-cell-btn tam-cell-btn-clear" data-action="clear-image" data-row="${E}" data-col="${v}">✕ Quitar</button>`:""}
+                        ${b.image?`<button type="button" class="tam-cell-btn tam-cell-btn-clear" data-action="clear-image" data-row="${$}" data-col="${v}">✕ Quitar</button>`:""}
                         <div class="tam-cell-span-group">
                             <label title="Columnas que ocupa">CS</label>
                             <input type="number" class="tam-cell-span-input" min="1" max="${p-v}"
-                                value="${L}" data-action="colspan" data-row="${E}" data-col="${v}">
+                                value="${L}" data-action="colspan" data-row="${$}" data-col="${v}">
                             <label title="Filas que ocupa">RS</label>
-                            <input type="number" class="tam-cell-span-input" min="1" max="${y-E}"
-                                value="${q}" data-action="rowspan" data-row="${E}" data-col="${v}">
+                            <input type="number" class="tam-cell-span-input" min="1" max="${y-$}"
+                                value="${q}" data-action="rowspan" data-row="${$}" data-col="${v}">
                         </div>
                     </div>
-                </td>`}).join("")}</tr>`).join(""),n.querySelectorAll("input[data-action=colspan], input[data-action=rowspan]").forEach(x=>{x.addEventListener("change",()=>{const E=parseInt(x.dataset.row),T=parseInt(x.dataset.col),C=Math.max(1,parseInt(x.value)||1);o.rows[E]?.[T]&&(x.dataset.action==="colspan"?o.rows[E][T].colspan=Math.min(C,p-T):o.rows[E][T].rowspan=Math.min(C,y-E),g())})}),n.querySelectorAll("button[data-action]").forEach(x=>{x.addEventListener("click",E=>{E.preventDefault(),E.stopPropagation();const T=x.dataset.action,C=parseInt(x.dataset.row),v=parseInt(x.dataset.col);if(!(isNaN(C)||isNaN(v)||!o.rows[C]?.[v])){if(T==="header"){o.rows[C][v].isHeader=!o.rows[C][v].isHeader;const S=n.querySelector(`td[data-row="${C}"][data-col="${v}"]`);S&&(S.dataset.isheader=o.rows[C][v].isHeader?"1":"0",S.classList.toggle("is-header-cell",o.rows[C][v].isHeader)),x.classList.toggle("active",o.rows[C][v].isHeader),x.textContent=o.rows[C][v].isHeader?"✓ Etiqueta":"Etiqueta";return}if(T==="image"){window.__openTableImagePicker&&window.__openTableImagePicker(S=>{o.rows[C][v].image=S;const b=n.querySelector(`td[data-row="${C}"][data-col="${v}"]`);if(b){b.dataset.image=S,b.classList.add("has-image");let L=b.querySelector(".tam-cell-img-preview");L||(L=document.createElement("img"),L.className="tam-cell-img-preview",b.insertBefore(L,b.firstChild)),L.src=S;const q=b.querySelector("[data-action=image]");if(q&&(q.innerHTML='<i class="ri-image-line"></i> Cambiar'),!b.querySelector("[data-action=clear-image]")){const z=document.createElement("button");z.type="button",z.className="tam-cell-btn tam-cell-btn-clear",z.dataset.action="clear-image",z.dataset.row=C,z.dataset.col=v,z.textContent="✕ Quitar",z.addEventListener("click",F=>{F.preventDefault(),F.stopPropagation(),o.rows[C][v].image=null,b.dataset.image="",b.classList.remove("has-image"),L.remove(),z.remove();const N=b.querySelector("[data-action=image]");N&&(N.innerHTML='<i class="ri-image-line"></i> Imagen')}),b.querySelector(".tam-cell-actions").appendChild(z)}}});return}T==="clear-image"&&(o.rows[C][v].image=null,$())}})})}document.getElementById("tam-close").addEventListener("click",d),document.getElementById("tam-cancel").addEventListener("click",d),r.addEventListener("click",m=>{m.target===r&&d()}),document.getElementById("tam-rebuild").addEventListener("click",()=>{const m=parseInt(document.getElementById("tam-cols").value)||3,n=parseInt(document.getElementById("tam-rows").value)||3;for(k(),f();o.headers.length<m;)o.headers.push({text:`Col ${o.headers.length+1}`,align:"center"});for(o.headers=o.headers.slice(0,m),o.cols=m;o.rows.length<n;)o.rows.push(Array.from({length:m},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})));o.rows=o.rows.slice(0,n).map(p=>{for(;p.length<m;)p.push({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null});return p.slice(0,m)}),$()}),document.getElementById("tam-apply").addEventListener("click",()=>{f();const m=document.getElementById("tam-theme").value;a&&(a.set("tableData",JSON.parse(JSON.stringify(o))),a.set("tableTheme",m),a.addAttributes({"data-table-theme":m}),de(a)),d()}),window.__openTableAdminModal=c}function de(i){const e=i.get("tableData"),t=i.get("tableTheme")||"blue";e&&i.components(Ce($e(e,t),t))}function Wt(){return function(){}}const Yt=[{id:"table-blue",label:"Tabla azul",category:"Interactivos",media:Rt,content:{type:"table-component",attributes:{"data-table-theme":"blue"}}},{id:"table-orange",label:"Tabla naranja",category:"Interactivos",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+                </td>`}).join("")}</tr>`).join(""),n.querySelectorAll("input[data-action=colspan], input[data-action=rowspan]").forEach(x=>{x.addEventListener("change",()=>{const $=parseInt(x.dataset.row),_=parseInt(x.dataset.col),C=Math.max(1,parseInt(x.value)||1);o.rows[$]?.[_]&&(x.dataset.action==="colspan"?o.rows[$][_].colspan=Math.min(C,p-_):o.rows[$][_].rowspan=Math.min(C,y-$),g())})}),n.querySelectorAll("button[data-action]").forEach(x=>{x.addEventListener("click",$=>{$.preventDefault(),$.stopPropagation();const _=x.dataset.action,C=parseInt(x.dataset.row),v=parseInt(x.dataset.col);if(!(isNaN(C)||isNaN(v)||!o.rows[C]?.[v])){if(_==="header"){o.rows[C][v].isHeader=!o.rows[C][v].isHeader;const S=n.querySelector(`td[data-row="${C}"][data-col="${v}"]`);S&&(S.dataset.isheader=o.rows[C][v].isHeader?"1":"0",S.classList.toggle("is-header-cell",o.rows[C][v].isHeader)),x.classList.toggle("active",o.rows[C][v].isHeader),x.textContent=o.rows[C][v].isHeader?"✓ Etiqueta":"Etiqueta";return}if(_==="image"){window.__openTableImagePicker&&window.__openTableImagePicker(S=>{o.rows[C][v].image=S;const b=n.querySelector(`td[data-row="${C}"][data-col="${v}"]`);if(b){b.dataset.image=S,b.classList.add("has-image");let L=b.querySelector(".tam-cell-img-preview");L||(L=document.createElement("img"),L.className="tam-cell-img-preview",b.insertBefore(L,b.firstChild)),L.src=S;const q=b.querySelector("[data-action=image]");if(q&&(q.innerHTML='<i class="ri-image-line"></i> Cambiar'),!b.querySelector("[data-action=clear-image]")){const z=document.createElement("button");z.type="button",z.className="tam-cell-btn tam-cell-btn-clear",z.dataset.action="clear-image",z.dataset.row=C,z.dataset.col=v,z.textContent="✕ Quitar",z.addEventListener("click",Y=>{Y.preventDefault(),Y.stopPropagation(),o.rows[C][v].image=null,b.dataset.image="",b.classList.remove("has-image"),L.remove(),z.remove();const H=b.querySelector("[data-action=image]");H&&(H.innerHTML='<i class="ri-image-line"></i> Imagen')}),b.querySelector(".tam-cell-actions").appendChild(z)}}});return}_==="clear-image"&&(o.rows[C][v].image=null,E())}})})}document.getElementById("tam-close").addEventListener("click",d),document.getElementById("tam-cancel").addEventListener("click",d),r.addEventListener("click",m=>{m.target===r&&d()}),document.getElementById("tam-rebuild").addEventListener("click",()=>{const m=parseInt(document.getElementById("tam-cols").value)||3,n=parseInt(document.getElementById("tam-rows").value)||3;for(k(),f();o.headers.length<m;)o.headers.push({text:`Col ${o.headers.length+1}`,align:"center"});for(o.headers=o.headers.slice(0,m),o.cols=m;o.rows.length<n;)o.rows.push(Array.from({length:m},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})));o.rows=o.rows.slice(0,n).map(p=>{for(;p.length<m;)p.push({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null});return p.slice(0,m)}),E()}),document.getElementById("tam-apply").addEventListener("click",()=>{f();const m=document.getElementById("tam-theme").value;a&&(a.set("tableData",JSON.parse(JSON.stringify(o))),a.set("tableTheme",m),a.addAttributes({"data-table-theme":m}),fe(a)),d()}),window.__openTableAdminModal=c}function fe(i){const e=i.get("tableData"),t=i.get("tableTheme")||"blue";e&&i.components(Te(je(e,t),t))}function Kt(){return function(){}}const Qt=[{id:"table-blue",label:"Tabla azul",category:"Interactivos",media:Wt,content:{type:"table-component",attributes:{"data-table-theme":"blue"}}},{id:"table-orange",label:"Tabla naranja",category:"Interactivos",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <rect x="2" y="2" width="28" height="6" rx="1" fill="#E97300"/>
             <rect x="2" y="10" width="28" height="5" rx="1" fill="#E97300" fill-opacity="0.3"/>
             <rect x="2" y="17" width="28" height="5" rx="1" fill="#E97300" fill-opacity="0.15"/>
             <rect x="2" y="24" width="28" height="5" rx="1" fill="#E97300" fill-opacity="0.15"/>
-        </svg>`,content:{type:"table-component",attributes:{"data-table-theme":"orange"}}}];function Gt(i){const e="table-component";Vt(),i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Tabla",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,propagate:["editable","selectable","hoverable","droppable","highlightable"],tableData:null,tableTheme:"blue",attributes:{"data-gjs-type":e,"data-table-theme":"blue"},components:Ce($e(G(3,3),"blue"),"blue"),script:Wt(),traits:[{type:"button",name:"edit-table",label:"Editar tabla",text:"Abrir editor de tabla",command(t){const r=t.getSelected();r&&window.__openTableAdminModal&&(r.get("tableData")||r.set("tableData",G(3,3)),window.__openTableAdminModal(r))}},{type:"select",name:"data-table-theme",label:"Color del tema",options:[{id:"blue",name:"Azul"},{id:"orange",name:"Naranja"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e});const t=this.getAttributes()["data-table-theme"]||"blue";this.set("tableTheme",t),this.get("tableData")||(this.set("tableData",G(3,3)),de(this)),this.on("change:attributes",(r,a)=>{const o=a["data-table-theme"];o&&o!==this.get("tableTheme")&&(this.set("tableTheme",o),de(this))})}}}),Zt(i,e),Xt(i,e)}function Zt(i,e){i.on("component:mount",t=>{const r=t.getEl();if(r?.getAttribute?.("data-gjs-type")===e){t.set("type",e);const a=r.getAttribute("data-table-theme")||"blue";t.set("tableTheme",a),t.get("tableData")||t.set("tableData",G(3,3))}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getAttributes()["data-table-theme"]||"blue";t.set("tableTheme",r),t.get("tableData")||t.set("tableData",G(3,3))})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Xt(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r&&!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
+        </svg>`,content:{type:"table-component",attributes:{"data-table-theme":"orange"}}}];function Jt(i){const e="table-component";Xt(),i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Tabla",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,propagate:["editable","selectable","hoverable","droppable","highlightable"],tableData:null,tableTheme:"blue",attributes:{"data-gjs-type":e,"data-table-theme":"blue"},components:Te(je(Z(3,3),"blue"),"blue"),script:Kt(),traits:[{type:"button",name:"edit-table",label:"Editar tabla",text:"Abrir editor de tabla",command(t){const r=t.getSelected();r&&window.__openTableAdminModal&&(r.get("tableData")||r.set("tableData",Z(3,3)),window.__openTableAdminModal(r))}},{type:"select",name:"data-table-theme",label:"Color del tema",options:[{id:"blue",name:"Azul"},{id:"orange",name:"Naranja"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e});const t=this.getAttributes()["data-table-theme"]||"blue";this.set("tableTheme",t),this.get("tableData")||(this.set("tableData",Z(3,3)),fe(this)),this.on("change:attributes",(r,a)=>{const o=a["data-table-theme"];o&&o!==this.get("tableTheme")&&(this.set("tableTheme",o),fe(this))})}}}),ei(i,e),ti(i,e)}function ei(i,e){i.on("component:mount",t=>{const r=t.getEl();if(r?.getAttribute?.("data-gjs-type")===e){t.set("type",e);const a=r.getAttribute("data-table-theme")||"blue";t.set("tableTheme",a),t.get("tableData")||t.set("tableData",Z(3,3))}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getAttributes()["data-table-theme"]||"blue";t.set("tableTheme",r),t.get("tableData")||t.set("tableData",Z(3,3))})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function ti(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r&&!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
                 [data-gjs-type="${e}"] * { pointer-events: none !important; }
                 [data-gjs-type="${e}"].gjs-selected,
                 [data-gjs-type="${e}"].gjs-hovered {
                     outline: 2px dashed rgba(0,59,113,0.5) !important;
                     outline-offset: 2px;
                 }
-            `,r.appendChild(a)}})}const Qt=`<svg viewBox="0 0 80 32" width="80" height="32">
+            `,r.appendChild(a)}})}const ii=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="76" height="24" rx="10" fill="none" stroke="#003B71" stroke-width="2"/>
     <rect x="6" y="8" width="16" height="16" rx="4" fill="#003B71"/>
@@ -1004,7 +1058,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
     <rect x="27" y="18" width="20" height="2.5" rx="1.2" fill="#003B71" fill-opacity="0.4"/>
     <rect x="62" y="10" width="12" height="12" rx="3" fill="#003B71" fill-opacity="0.15"/>
     <path d="M68 13v5m0 0l-2-2m2 2l2-2" stroke="#003B71" stroke-width="1.5" stroke-linecap="round"/>
-</svg>`,Jt=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,ai=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="76" height="24" rx="10" fill="none" stroke="#E97300" stroke-width="2"/>
     <rect x="6" y="8" width="16" height="16" rx="4" fill="#E97300"/>
@@ -1012,43 +1066,43 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
     <rect x="27" y="18" width="20" height="2.5" rx="1.2" fill="#E97300" fill-opacity="0.4"/>
     <rect x="62" y="10" width="12" height="12" rx="3" fill="#E97300" fill-opacity="0.15"/>
     <path d="M68 13v5m0 0l-2-2m2 2l2-2" stroke="#E97300" stroke-width="1.5" stroke-linecap="round"/>
-</svg>`,Kt=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,ri=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="76" height="24" rx="10" fill="none" stroke="#003B71" stroke-width="2"/>
     <rect x="10" y="12" width="44" height="4" rx="2" fill="#003B71"/>
     <rect x="62" y="10" width="12" height="12" rx="3" fill="#003B71" fill-opacity="0.15"/>
     <path d="M68 13v5m0 0l-2-2m2 2l2-2" stroke="#003B71" stroke-width="1.5" stroke-linecap="round"/>
-</svg>`,ei=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,li=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="76" height="24" rx="10" fill="none" stroke="#E97300" stroke-width="2"/>
     <rect x="10" y="12" width="44" height="4" rx="2" fill="#E97300"/>
     <rect x="62" y="10" width="12" height="12" rx="3" fill="#E97300" fill-opacity="0.15"/>
     <path d="M68 13v5m0 0l-2-2m2 2l2-2" stroke="#E97300" stroke-width="1.5" stroke-linecap="round"/>
-</svg>`,ti=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,oi=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="#003B71"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="rgba(255,255,255,0.85)"/>
-</svg>`,ii=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,ni=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="#E97300"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="rgba(255,255,255,0.85)"/>
-</svg>`,ai=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,si=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="none" stroke="#003B71" stroke-width="2"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="#003B71" fill-opacity="0.7"/>
-</svg>`,ri=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,di=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="none" stroke="#E97300" stroke-width="2"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="#E97300" fill-opacity="0.7"/>
-</svg>`,li=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,ci=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#003B71" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="#ffffff"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="#003B71" fill-opacity="0.5"/>
-</svg>`,oi=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,gi=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#003B71" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="none" stroke="#ffffff" stroke-width="2"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="rgba(255,255,255,0.7)"/>
-</svg>`,xe=i=>{const e=i==="#003B71"?"blue":"orange";return`
+</svg>`,Be=i=>{const e=i==="#003B71"?"blue":"orange";return`
 <div class="dld-full-wrap-${e}" style="display:inline-block;max-width:480px;width:100%;">
 <style>
 .dld-full-${e}{display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:12px;border:2px solid ${i};background:transparent;text-decoration:none;cursor:pointer;box-sizing:border-box;width:100%;transition:background 0.2s,border-color 0.2s;}
@@ -1072,7 +1126,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
     </div>
     <i class="dld-full-${e}-arrow ri-download-2-line" style="font-size:1.25rem;color:${i};flex-shrink:0;margin-left:8px;transition:color 0.2s;"></i>
 </a>
-</div>`},ye=i=>{const e=i==="#003B71"?"blue":"orange";return`
+</div>`},ke=i=>{const e=i==="#003B71"?"blue":"orange";return`
 <div class="dld-simple-wrap-${e}" style="display:inline-block;max-width:480px;width:100%;">
 <style>
 .dld-simple-${e}{display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:12px;border:2px solid ${i};background:transparent;text-decoration:none;cursor:pointer;box-sizing:border-box;width:100%;transition:background 0.2s,border-color 0.2s;}
@@ -1086,19 +1140,19 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
     <span class="dld-simple-${e}-filename" style="font-size:1rem;font-weight:700;color:${i};flex:1;transition:color 0.2s;">Nombre del archivo</span>
     <i class="dld-simple-${e}-arrow ri-download-2-line" style="font-size:1.25rem;color:${i};flex-shrink:0;transition:color 0.2s;"></i>
 </a>
-</div>`},we={"button-fill-blue":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#003B71] bg-[#003B71] text-white transition-all duration-200 hover:bg-[#002a52] hover:border-[#002a52]","button-fill-orange":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#E97300] bg-[#E97300] text-white transition-all duration-200 hover:bg-[#c96200] hover:border-[#c96200]","button-outline-blue":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#003B71] bg-transparent text-[#003B71] transition-all duration-200 hover:bg-[#003B71] hover:text-white","button-outline-orange":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#E97300] bg-transparent text-[#E97300] transition-all duration-200 hover:bg-[#E97300] hover:text-white","button-fill-white":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-white bg-white text-[#003B71] transition-all duration-200 hover:bg-[#dce8f5] hover:border-[#dce8f5]","button-outline-white":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-white bg-transparent text-white transition-all duration-200 hover:bg-white hover:text-[#003B71]"},ni=[{id:"button-fill-blue",label:"Botón azul sólido",category:"Botones",media:ti,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-blue"}}},{id:"button-fill-orange",label:"Botón naranja sólido",category:"Botones",media:ii,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-orange"}}},{id:"button-outline-blue",label:"Botón azul outline",category:"Botones",media:ai,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-blue"}}},{id:"button-outline-orange",label:"Botón naranja outline",category:"Botones",media:ri,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-orange"}}},{id:"button-fill-white",label:"Botón blanco sólido",category:"Botones",media:li,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-white"}}},{id:"button-outline-white",label:"Botón blanco outline",category:"Botones",media:oi,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-white"}}},{id:"button-download-full-blue",label:"Descarga completa azul",category:"Botones",media:Qt,content:xe("#003B71")},{id:"button-download-full-orange",label:"Descarga completa naranja",category:"Botones",media:Jt,content:xe("#E97300")},{id:"button-download-simple-blue",label:"Descarga simple azul",category:"Botones",media:Kt,content:ye("#003B71")},{id:"button-download-simple-orange",label:"Descarga simple naranja",category:"Botones",media:ei,content:ye("#E97300")}];function si(i){const e=[{type:"button",label:"Documento",name:"select-document",text:"Seleccionar documento",full:!0,command:"open-document-picker"},{type:"text",name:"href",label:"URL / Enlace",placeholder:"https://..."},{type:"select",name:"target",label:"Abrir en",options:[{id:"_self",name:"Misma ventana"},{id:"_blank",name:"Nueva ventana"}]}];i.DomComponents.addType("link",{model:{defaults:{traits:e}}}),i.DomComponents.addType("integral-button",{isComponent:a=>a.tagName==="A"&&a.hasAttribute("data-btn-variant"),model:{defaults:{tagName:"a",draggable:!0,droppable:!1,editable:!0,attributes:{href:"#",target:"_self","data-btn-variant":"button-fill-blue"},components:"Texto del botón",traits:e},init(){const a=this.getAttributes()["data-btn-variant"]??"button-fill-blue",o=we[a]??we["button-fill-blue"];this.setClass(o.split(" "))}}});function t(a,o){if(a.getEl()?.matches?.(o))return a;let d=null;const f=a.components?.();return f?(f.each(g=>{d||(d=t(g,o))}),d):null}function r(a,o){const d={pdf:"ri-file-pdf-line",xlsx:"ri-file-excel-line",xls:"ri-file-excel-line",doc:"ri-file-word-line",docx:"ri-file-word-line"}[o]??"ri-file-line";function f(k){const $=k.getEl?.();if($?.tagName==="I"){const p=$.parentElement;if(p&&[...p.classList].some(y=>y.includes("-icon")))return k}let m=null;const n=k.components?.();return n?(n.each(p=>{m||(m=f(p))}),m):null}const g=f(a);if(g){const k=g.getClasses().find($=>$.startsWith("ri-"));k&&g.removeClass(k),g.addClass(d)}else{const $=a.getEl()?.querySelector("[class*='-icon'] i");if($){const m=[...$.classList].filter(n=>!n.startsWith("ri-"));$.className=[...m,d].join(" ")}}}i.Commands.add("open-document-picker",{run(a){const o=a.getSelected();if(o){if(a._documentPicker)try{a._documentPicker.destroy()}catch{}a._documentPicker=new je,a._documentPicker.open(c=>{const d=c.filename.split(".").pop().toLowerCase();o.addAttributes({href:c.url});const f=o.getTrait("href");f&&f.set("value",c.url);const g=t(o,"[class*='-filename']");g&&g.components(c.filename),r(o,d)},{filters:{type:"document"}})}}})}const di=`<svg viewBox="0 0 80 32" width="80" height="32">
+</div>`},$e={"button-fill-blue":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#003B71] bg-[#003B71] text-white transition-all duration-200 hover:bg-[#002a52] hover:border-[#002a52]","button-fill-orange":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#E97300] bg-[#E97300] text-white transition-all duration-200 hover:bg-[#c96200] hover:border-[#c96200]","button-outline-blue":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#003B71] bg-transparent text-[#003B71] transition-all duration-200 hover:bg-[#003B71] hover:text-white","button-outline-orange":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#E97300] bg-transparent text-[#E97300] transition-all duration-200 hover:bg-[#E97300] hover:text-white","button-fill-white":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-white bg-white text-[#003B71] transition-all duration-200 hover:bg-[#dce8f5] hover:border-[#dce8f5]","button-outline-white":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-white bg-transparent text-white transition-all duration-200 hover:bg-white hover:text-[#003B71]"},hi=[{id:"button-fill-blue",label:"Botón azul sólido",category:"Botones",media:oi,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-blue"}}},{id:"button-fill-orange",label:"Botón naranja sólido",category:"Botones",media:ni,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-orange"}}},{id:"button-outline-blue",label:"Botón azul outline",category:"Botones",media:si,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-blue"}}},{id:"button-outline-orange",label:"Botón naranja outline",category:"Botones",media:di,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-orange"}}},{id:"button-fill-white",label:"Botón blanco sólido",category:"Botones",media:ci,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-white"}}},{id:"button-outline-white",label:"Botón blanco outline",category:"Botones",media:gi,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-white"}}},{id:"button-download-full-blue",label:"Descarga completa azul",category:"Botones",media:ii,content:Be("#003B71")},{id:"button-download-full-orange",label:"Descarga completa naranja",category:"Botones",media:ai,content:Be("#E97300")},{id:"button-download-simple-blue",label:"Descarga simple azul",category:"Botones",media:ri,content:ke("#003B71")},{id:"button-download-simple-orange",label:"Descarga simple naranja",category:"Botones",media:li,content:ke("#E97300")}];function fi(i){const e=[{type:"button",label:"Documento",name:"select-document",text:"Seleccionar documento",full:!0,command:"open-document-picker"},{type:"text",name:"href",label:"URL / Enlace",placeholder:"https://..."},{type:"select",name:"target",label:"Abrir en",options:[{id:"_self",name:"Misma ventana"},{id:"_blank",name:"Nueva ventana"}]}];i.DomComponents.addType("link",{model:{defaults:{traits:e}}}),i.DomComponents.addType("integral-button",{isComponent:a=>a.tagName==="A"&&a.hasAttribute("data-btn-variant"),model:{defaults:{tagName:"a",draggable:!0,droppable:!1,editable:!0,attributes:{href:"#",target:"_self","data-btn-variant":"button-fill-blue"},components:"Texto del botón",traits:e},init(){const a=this.getAttributes()["data-btn-variant"]??"button-fill-blue",o=$e[a]??$e["button-fill-blue"];this.setClass(o.split(" "))}}});function t(a,o){if(a.getEl()?.matches?.(o))return a;let d=null;const f=a.components?.();return f?(f.each(g=>{d||(d=t(g,o))}),d):null}function r(a,o){const d={pdf:"ri-file-pdf-line",xlsx:"ri-file-excel-line",xls:"ri-file-excel-line",doc:"ri-file-word-line",docx:"ri-file-word-line"}[o]??"ri-file-line";function f(k){const E=k.getEl?.();if(E?.tagName==="I"){const p=E.parentElement;if(p&&[...p.classList].some(y=>y.includes("-icon")))return k}let m=null;const n=k.components?.();return n?(n.each(p=>{m||(m=f(p))}),m):null}const g=f(a);if(g){const k=g.getClasses().find(E=>E.startsWith("ri-"));k&&g.removeClass(k),g.addClass(d)}else{const E=a.getEl()?.querySelector("[class*='-icon'] i");if(E){const m=[...E.classList].filter(n=>!n.startsWith("ri-"));E.className=[...m,d].join(" ")}}}i.Commands.add("open-document-picker",{run(a){const o=a.getSelected();if(o){if(a._documentPicker)try{a._documentPicker.destroy()}catch{}a._documentPicker=new Ie,a._documentPicker.open(c=>{const d=c.filename.split(".").pop().toLowerCase();o.addAttributes({href:c.url});const f=o.getTrait("href");f&&f.set("value",c.url);const g=t(o,"[class*='-filename']");g&&g.components(c.filename),r(o,d)},{filters:{type:"document"}})}}})}const pi=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="16" y="8" width="48" height="16" rx="8" fill="none" stroke="#003B71" stroke-width="2"/>
     <rect x="24" y="13" width="32" height="6" rx="3" fill="#003B71" fill-opacity="0.7"/>
-</svg>`,ci=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,mi=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="16" y="8" width="48" height="16" rx="8" fill="none" stroke="#E97300" stroke-width="2"/>
     <rect x="24" y="13" width="32" height="6" rx="3" fill="#E97300" fill-opacity="0.7"/>
-</svg>`,gi=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,bi=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#003B71" rx="2"/>
     <rect x="16" y="8" width="48" height="16" rx="8" fill="none" stroke="#ffffff" stroke-width="2"/>
     <rect x="24" y="13" width="32" height="6" rx="3" fill="rgba(255,255,255,0.7)"/>
-</svg>`,hi=[{id:"badge-outline-blue",label:"Badge azul outline",category:"Badges",media:di,content:'<span class="inline-block border border-[#003B71] rounded-full px-4 py-1 text-base font-medium bg-transparent text-[#003B71]">Etiqueta</span>'},{id:"badge-outline-orange",label:"Badge naranja outline",category:"Badges",media:ci,content:'<span class="inline-block border border-[#E97300] rounded-full px-4 py-1 text-base font-medium bg-transparent text-[#E97300]">Etiqueta</span>'},{id:"badge-outline-white",label:"Badge blanco outline",category:"Badges",media:gi,content:'<span class="inline-block border border-white rounded-full px-4 py-1 text-base font-medium bg-transparent text-white">Etiqueta</span>'}],fi=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,ui=[{id:"badge-outline-blue",label:"Badge azul outline",category:"Badges",media:pi,content:'<span class="inline-block border border-[#003B71] rounded-full px-4 py-1 text-base font-medium bg-transparent text-[#003B71]">Etiqueta</span>'},{id:"badge-outline-orange",label:"Badge naranja outline",category:"Badges",media:mi,content:'<span class="inline-block border border-[#E97300] rounded-full px-4 py-1 text-base font-medium bg-transparent text-[#E97300]">Etiqueta</span>'},{id:"badge-outline-white",label:"Badge blanco outline",category:"Badges",media:bi,content:'<span class="inline-block border border-white rounded-full px-4 py-1 text-base font-medium bg-transparent text-white">Etiqueta</span>'}],xi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="2" width="9" height="28" fill="#e9ecef" rx="1"/>
     <rect x="3" y="3" width="7" height="3" fill="#dee2e6" rx="0.5"/>
@@ -1115,7 +1169,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
     <line x1="3" y1="17" x2="10" y2="17" stroke="#0d3f6a" stroke-width="0.8"/>
     <line x1="3" y1="21" x2="10" y2="21" stroke="#0d3f6a" stroke-width="0.8"/>
     <rect x="3" y="25" width="7" height="2.5" fill="#dee2e6" rx="0.5"/>
-</svg>`;function pi(){return function(){const i=this,e="agencies-map-component",t="/api/agencies/active",r="agencies";let a=[],o=[],c={},d=null,f=[];const g=async()=>{try{k(),await m(),await y(),_(),S(),z(),F(),$()}catch(l){console.error("Error initializing map:",l),J("Error al cargar las agencias"),$()}};function k(){const l=i.querySelector(`.${e}-list`);l&&(l.innerHTML=`
+</svg>`;function yi(){return function(){const i=this,e="agencies-map-component",t="/api/agencies/active",r="agencies";let a=[],o=[],c={},d=null,f=[];const g=async()=>{try{k(),await m(),await y(),I(),S(),z(),Y(),E()}catch(l){console.error("Error initializing map:",l),ee("Error al cargar las agencias"),E()}};function k(){const l=i.querySelector(`.${e}-list`);l&&(l.innerHTML=`
                     <div class="flex flex-col items-center justify-center p-12 space-y-4">
                         <div class="relative w-16 h-16">
                             <div class="absolute top-0 left-0 w-full h-full border-4 border-gray-200 rounded-full"></div>
@@ -1123,7 +1177,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                         </div>
                         <p class="text-white font-medium">Cargando agencias...</p>
                     </div>
-                `);const s=i.querySelector(`.${e}-map-container`);s&&(s.style.opacity="0.5")}function $(){const l=i.querySelector(`.${e}-map-container`);l&&(l.style.transition="opacity 0.3s ease",l.style.opacity="1")}async function m(){try{const s=await(await fetch(t)).json(),h=r?s[r]:s;Array.isArray(h)?(a=h.filter(u=>u.latitude&&u.longitude&&!isNaN(u.latitude)&&!isNaN(u.longitude)),o=[...a],n()):(a=[],o=[])}catch(l){console.error("Error loading items:",l),a=[],o=[]}}function n(){const l=[...new Set(a.map(h=>h.zone).filter(Boolean))].sort(),s=[...new Set(a.map(h=>h.department).filter(Boolean))].sort();c={zone:l,department:s},setTimeout(()=>{const h=i.querySelector(`.${e}-filters-container`);h&&!h.hasChildNodes()&&(h.innerHTML=`
+                `);const s=i.querySelector(`.${e}-map-container`);s&&(s.style.opacity="0.5")}function E(){const l=i.querySelector(`.${e}-map-container`);l&&(l.style.transition="opacity 0.3s ease",l.style.opacity="1")}async function m(){try{const s=await(await fetch(t)).json(),h=r?s[r]:s;Array.isArray(h)?(a=h.filter(u=>u.latitude&&u.longitude&&!isNaN(u.latitude)&&!isNaN(u.longitude)),o=[...a],n()):(a=[],o=[])}catch(l){console.error("Error loading items:",l),a=[],o=[]}}function n(){const l=[...new Set(a.map(h=>h.zone).filter(Boolean))].sort(),s=[...new Set(a.map(h=>h.department).filter(Boolean))].sort();c={zone:l,department:s},setTimeout(()=>{const h=i.querySelector(`.${e}-filters-container`);h&&!h.hasChildNodes()&&(h.innerHTML=`
                         <select class="${e}-zone-filter flex-1 px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200">
                             <option value="">Todas las Zonas</option>
                         </select>
@@ -1135,7 +1189,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                             <path fill="#f0872a" d="M12 0C7.6 0 4 3.6 4 8c0 5.4 8 16 8 16s8-10.6 8-16c0-4.4-3.6-8-8-8z"/>
                             <circle cx="12" cy="8" r="3" fill="#fff"/>
                         </svg>
-                    `),iconSize:[30,45],iconAnchor:[15,45],popupAnchor:[0,-45]});window.customOrangeIcon=l}}function _(){const l=i.querySelector(`.${e}-map`);if(!l||!window.L)return;l._leaflet_id&&l._map&&(l._map.remove(),delete l._map),d=window.L.map(l).setView([13.7942,-88.8965],8),window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(d),l._map=d,d.whenReady(function(){x(),setTimeout(()=>{d&&d.invalidateSize&&d.invalidateSize()},300)})}function x(){E(),T(),v()}function E(){f.forEach(l=>{l.marker&&d.removeLayer(l.marker)}),f=[]}function T(){o.forEach((l,s)=>{if(l.latitude&&l.longitude){const h=C(l),u=window.L.marker([l.latitude,l.longitude],{icon:window.customOrangeIcon||new window.L.Icon.Default}).addTo(d).bindPopup(h);f.push({marker:u,item:l,index:s})}})}function C(l){let s=`<div style="min-width: 200px;"><h4 style="font-weight: 700; margin-bottom: 12px; color: #0d3f6a; font-size: 16px; border-bottom: 2px solid #f0872a; padding-bottom: 8px;">${l.name}</h4>`;if(l.address&&(s+=`<p style="margin: 8px 0 0 0; font-size: 14px; display: flex; align-items: start; gap: 8px;"><i class="ri-map-pin-line" style="color: #f0872a; font-size: 16px; margin-top: 2px;"></i><span style="color: #4b5563;">${l.address}</span></p>`),l.municipality||l.department){const h=[l.municipality,l.department].filter(Boolean).join(", ");s+=`<p style="margin: 0 0 8px 0; font-size: 13px; color: #6b7280; padding-left: 24px;">${h}</p>`}return l.schedule&&(s+=`<p style="margin: 8px 0; font-size: 14px; display: flex; align-items: start; gap: 8px;"><i class="ri-time-line" style="color: #f0872a; font-size: 16px; margin-top: 2px;"></i><span style="color: #4b5563;">${l.schedule}</span></p>`),s+="</div>",s}function v(){if(o.length>0){const l=o.filter(s=>s.latitude&&s.longitude).map(s=>[s.latitude,s.longitude]);l.length>1?d.once("moveend",function(){setTimeout(()=>{try{d&&d._loaded&&typeof d.fitBounds=="function"&&d.fitBounds(l,{padding:[50,50],maxZoom:12,animate:!1})}catch(s){console.warn("Error fitting bounds:",s)}},100)}):l.length===1&&d.setView(l[0],14)}}function S(){const l=i.querySelector(`.${e}-list`);if(!l)return;if(o.length===0){L(l);return}const s=o.map((h,u)=>b(h,u)).join("");l.innerHTML=s,q()}function b(l,s){const h=l.phones&&l.phones.length>0?l.phones.map(B=>`
+                    `),iconSize:[30,45],iconAnchor:[15,45],popupAnchor:[0,-45]});window.customOrangeIcon=l}}function I(){const l=i.querySelector(`.${e}-map`);if(!l||!window.L)return;l._leaflet_id&&l._map&&(l._map.remove(),delete l._map),d=window.L.map(l).setView([13.7942,-88.8965],8),window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(d),l._map=d,d.whenReady(function(){x(),setTimeout(()=>{d&&d.invalidateSize&&d.invalidateSize()},300)})}function x(){$(),_(),v()}function $(){f.forEach(l=>{l.marker&&d.removeLayer(l.marker)}),f=[]}function _(){o.forEach((l,s)=>{if(l.latitude&&l.longitude){const h=C(l),u=window.L.marker([l.latitude,l.longitude],{icon:window.customOrangeIcon||new window.L.Icon.Default}).addTo(d).bindPopup(h);f.push({marker:u,item:l,index:s})}})}function C(l){let s=`<div style="min-width: 200px;"><h4 style="font-weight: 700; margin-bottom: 12px; color: #0d3f6a; font-size: 16px; border-bottom: 2px solid #f0872a; padding-bottom: 8px;">${l.name}</h4>`;if(l.address&&(s+=`<p style="margin: 8px 0 0 0; font-size: 14px; display: flex; align-items: start; gap: 8px;"><i class="ri-map-pin-line" style="color: #f0872a; font-size: 16px; margin-top: 2px;"></i><span style="color: #4b5563;">${l.address}</span></p>`),l.municipality||l.department){const h=[l.municipality,l.department].filter(Boolean).join(", ");s+=`<p style="margin: 0 0 8px 0; font-size: 13px; color: #6b7280; padding-left: 24px;">${h}</p>`}return l.schedule&&(s+=`<p style="margin: 8px 0; font-size: 14px; display: flex; align-items: start; gap: 8px;"><i class="ri-time-line" style="color: #f0872a; font-size: 16px; margin-top: 2px;"></i><span style="color: #4b5563;">${l.schedule}</span></p>`),s+="</div>",s}function v(){if(o.length>0){const l=o.filter(s=>s.latitude&&s.longitude).map(s=>[s.latitude,s.longitude]);l.length>1?d.once("moveend",function(){setTimeout(()=>{try{d&&d._loaded&&typeof d.fitBounds=="function"&&d.fitBounds(l,{padding:[50,50],maxZoom:12,animate:!1})}catch(s){console.warn("Error fitting bounds:",s)}},100)}):l.length===1&&d.setView(l[0],14)}}function S(){const l=i.querySelector(`.${e}-list`);if(!l)return;if(o.length===0){L(l);return}const s=o.map((h,u)=>b(h,u)).join("");l.innerHTML=s,q()}function b(l,s){const h=l.phones&&l.phones.length>0?l.phones.map(B=>`
                         <p class="text-gray-200 flex items-center gap-2 mt-2">
                             <i class="ri-phone-line text-primary text-lg"></i>
                             <a href="tel:${B.replace(/\s+/g,"")}" class="agency-phone-link text-white font-medium hover:underline">${B}</a>
@@ -1161,7 +1215,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                     <p class="text-white font-medium text-lg">No hay agencias disponibles</p>
                     <p class="text-gray-300 text-sm mt-2">Intenta ajustar los filtros de búsqueda</p>
                 </div>
-            `}function q(){const l=i.querySelectorAll(`.${e}-item`);l.forEach(s=>{s.addEventListener("click",h=>{if(h.target.closest(".agency-maps-btn"))return;h.preventDefault();const u=parseInt(s.dataset.itemIndex),B=o[u];if(!B)return;l.forEach(w=>{w.classList.remove("bg-white","border-secondary","selected-agency"),w.classList.add("bg-white/10","border-white/20");const A=w.querySelector(".agency-title"),K=w.querySelectorAll("i"),ee=w.querySelectorAll(".agency-phone-link"),oe=w.querySelectorAll("p:not(:has(.agency-phone-link))"),ne=w.querySelector(".agency-maps-btn");A&&(A.classList.remove("text-secondary"),A.classList.add("text-white")),K.forEach(R=>{R.classList.remove("text-secondary","text-gray-300","text-white"),R.classList.add("text-primary")}),ee.forEach(R=>{R.classList.remove("text-secondary"),R.classList.add("text-white")}),oe.forEach(R=>{R.classList.remove("text-secondary"),R.classList.add("text-gray-200")}),ne&&(ne.classList.remove("bg-secondary"),ne.classList.add("bg-primary"))}),s.classList.remove("bg-white/10","border-white/20"),s.classList.add("bg-white","border-secondary","selected-agency");const M=s.querySelector(".agency-title"),P=s.querySelectorAll("i"),V=s.querySelectorAll(".agency-phone-link"),O=s.querySelectorAll("p:not(:has(.agency-phone-link))"),H=s.querySelector(".agency-maps-btn");if(M&&(M.classList.remove("text-white"),M.classList.add("text-secondary")),P.forEach(w=>{w.classList.remove("text-secondary","text-gray-300","text-white"),w.classList.add("text-primary")}),V.forEach(w=>{w.classList.remove("text-white"),w.classList.add("text-secondary")}),O.forEach(w=>{w.classList.remove("text-gray-200"),w.classList.add("text-secondary")}),H&&(H.classList.remove("bg-primary"),H.classList.add("bg-secondary")),d&&B&&d._loaded)try{d.flyTo([B.latitude,B.longitude],14,{animate:!0,duration:1});const w=f.find(A=>A.item.id===B.id);w&&w.marker&&w.marker.openPopup()}catch(w){console.warn("Error updating map view:",w)}})})}function z(){const l=i.querySelector(`.${e}-search-input`),s=i.querySelector(`.${e}-zone-filter`),h=i.querySelector(`.${e}-department-filter`),u=i.querySelector(`.${e}-no-results`),B={Occidental:["Ahuachapán","Santa Ana","Sonsonate"],Paracentral:["Chalatenango","Cuscatlán","La Paz","Cabañas","San Vicente"],Central:["La Libertad","San Salvador"],Oriental:["Usulután","San Miguel","Morazán","La Unión"]},M=()=>{if(!s||!h)return;const V=s.value,O=h.value;if(!V)h.innerHTML='<option value="">Todos los Departamentos</option>',[...new Set(a.map(w=>w.department).filter(Boolean))].sort().forEach(w=>{const A=document.createElement("option");A.value=w,A.textContent=w,h.appendChild(A)}),O&&(h.value=O);else{const H=B[V]||[];h.innerHTML='<option value="">Todos los Departamentos</option>',H.forEach(w=>{const A=document.createElement("option");A.value=w,A.textContent=w,h.appendChild(A)}),H.includes(O)&&(h.value=O)}},P=()=>{const V=l?l.value.toLowerCase().trim():"",O=s?s.value:"",H=h?h.value:"";o=a.filter(w=>{let A=!0,K=!0,ee=!0;return V&&(A=Object.values(w).some(oe=>String(oe).toLowerCase().includes(V))),O&&(K=w.zone===O),H&&(ee=w.department===H),A&&K&&ee}),S(),x(),u&&u.classList.toggle("hidden",o.length>0)};l&&l.addEventListener("input",P),s&&s.addEventListener("change",()=>{M(),P()}),h&&h.addEventListener("change",P)}function F(){const l=i.querySelector("[data-title]");if(l){const u=N("map-title")||"Nuestras Agencias";l.textContent=u}const s=i.querySelector(`.${e}-search-input`);if(s){const u=N("search-placeholder")||"Buscar...";s.setAttribute("placeholder",u)}const h=i.querySelector(`.${e}-no-results`);if(h){const u=N("no-results-text")||"No se encontraron agencias";h.textContent=u}}function N(l){return i.closest(`[data-gjs-type="${e}"]`)?.getAttribute(l)}function J(l){const s=i.querySelector(`.${e}-list`);s&&(s.innerHTML=`
+            `}function q(){const l=i.querySelectorAll(`.${e}-item`);l.forEach(s=>{s.addEventListener("click",h=>{if(h.target.closest(".agency-maps-btn"))return;h.preventDefault();const u=parseInt(s.dataset.itemIndex),B=o[u];if(!B)return;l.forEach(w=>{w.classList.remove("bg-white","border-secondary","selected-agency"),w.classList.add("bg-white/10","border-white/20");const A=w.querySelector(".agency-title"),te=w.querySelectorAll("i"),ie=w.querySelectorAll(".agency-phone-link"),se=w.querySelectorAll("p:not(:has(.agency-phone-link))"),de=w.querySelector(".agency-maps-btn");A&&(A.classList.remove("text-secondary"),A.classList.add("text-white")),te.forEach(R=>{R.classList.remove("text-secondary","text-gray-300","text-white"),R.classList.add("text-primary")}),ie.forEach(R=>{R.classList.remove("text-secondary"),R.classList.add("text-white")}),se.forEach(R=>{R.classList.remove("text-secondary"),R.classList.add("text-gray-200")}),de&&(de.classList.remove("bg-secondary"),de.classList.add("bg-primary"))}),s.classList.remove("bg-white/10","border-white/20"),s.classList.add("bg-white","border-secondary","selected-agency");const M=s.querySelector(".agency-title"),P=s.querySelectorAll("i"),V=s.querySelectorAll(".agency-phone-link"),O=s.querySelectorAll("p:not(:has(.agency-phone-link))"),N=s.querySelector(".agency-maps-btn");if(M&&(M.classList.remove("text-white"),M.classList.add("text-secondary")),P.forEach(w=>{w.classList.remove("text-secondary","text-gray-300","text-white"),w.classList.add("text-primary")}),V.forEach(w=>{w.classList.remove("text-white"),w.classList.add("text-secondary")}),O.forEach(w=>{w.classList.remove("text-gray-200"),w.classList.add("text-secondary")}),N&&(N.classList.remove("bg-primary"),N.classList.add("bg-secondary")),d&&B&&d._loaded)try{d.flyTo([B.latitude,B.longitude],14,{animate:!0,duration:1});const w=f.find(A=>A.item.id===B.id);w&&w.marker&&w.marker.openPopup()}catch(w){console.warn("Error updating map view:",w)}})})}function z(){const l=i.querySelector(`.${e}-search-input`),s=i.querySelector(`.${e}-zone-filter`),h=i.querySelector(`.${e}-department-filter`),u=i.querySelector(`.${e}-no-results`),B={Occidental:["Ahuachapán","Santa Ana","Sonsonate"],Paracentral:["Chalatenango","Cuscatlán","La Paz","Cabañas","San Vicente"],Central:["La Libertad","San Salvador"],Oriental:["Usulután","San Miguel","Morazán","La Unión"]},M=()=>{if(!s||!h)return;const V=s.value,O=h.value;if(!V)h.innerHTML='<option value="">Todos los Departamentos</option>',[...new Set(a.map(w=>w.department).filter(Boolean))].sort().forEach(w=>{const A=document.createElement("option");A.value=w,A.textContent=w,h.appendChild(A)}),O&&(h.value=O);else{const N=B[V]||[];h.innerHTML='<option value="">Todos los Departamentos</option>',N.forEach(w=>{const A=document.createElement("option");A.value=w,A.textContent=w,h.appendChild(A)}),N.includes(O)&&(h.value=O)}},P=()=>{const V=l?l.value.toLowerCase().trim():"",O=s?s.value:"",N=h?h.value:"";o=a.filter(w=>{let A=!0,te=!0,ie=!0;return V&&(A=Object.values(w).some(se=>String(se).toLowerCase().includes(V))),O&&(te=w.zone===O),N&&(ie=w.department===N),A&&te&&ie}),S(),x(),u&&u.classList.toggle("hidden",o.length>0)};l&&l.addEventListener("input",P),s&&s.addEventListener("change",()=>{M(),P()}),h&&h.addEventListener("change",P)}function Y(){const l=i.querySelector("[data-title]");if(l){const u=H("map-title")||"Nuestras Agencias";l.textContent=u}const s=i.querySelector(`.${e}-search-input`);if(s){const u=H("search-placeholder")||"Buscar...";s.setAttribute("placeholder",u)}const h=i.querySelector(`.${e}-no-results`);if(h){const u=H("no-results-text")||"No se encontraron agencias";h.textContent=u}}function H(l){return i.closest(`[data-gjs-type="${e}"]`)?.getAttribute(l)}function ee(l){const s=i.querySelector(`.${e}-list`);s&&(s.innerHTML=`
                     <div class="flex flex-col items-center justify-center p-12 text-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
                             <i class="ri-error-warning-line text-4xl text-red-300"></i>
@@ -1169,7 +1223,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                         <p class="text-white font-medium text-lg">${l}</p>
                         <p class="text-gray-300 text-sm mt-2">Por favor, intenta nuevamente más tarde</p>
                     </div>
-                `)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",g):g()}}const mi=[{id:"agencies-map",label:"Mapa de Agencias",category:"Interactivos",media:fi,content:{type:"agencies-map-component"}}];function bi(i){const e="agencies-map-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute&&t.getAttribute("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Mapa de Agencias",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{class:"py-12 bg-secondary","data-gjs-type":e},components:`
+                `)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",g):g()}}const wi=[{id:"agencies-map",label:"Mapa de Agencias",category:"Interactivos",media:xi,content:{type:"agencies-map-component"}}];function vi(i){const e="agencies-map-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute&&t.getAttribute("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Mapa de Agencias",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{class:"py-12 bg-secondary","data-gjs-type":e},components:`
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-layerable="false" data-gjs-droppable="false">
                         <div class="mb-8">
                             <h2 class="text-4xl md:text-5xl font-bold text-white" contenteditable="true" data-gjs-editable="true" data-gjs-selectable="true" data-gjs-type="text">Nuestras Agencias</h2>
@@ -1202,7 +1256,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                             </div>
                         </div>
                     </div>
-                `,script:pi()},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),ui(i,e),xi(i,e)}function ui(i,e){i.on("component:selected",t=>{if(t.get("type")===e){const r=t.getEl();if(r){const a=r.querySelector(`.${e}-map`);a&&a._map&&setTimeout(()=>{a._map.invalidateSize()},100)}}}),i.on("storage:end:load",()=>{setTimeout(()=>{ve(i,e)},1e3)}),i.on("component:mount",t=>{const r=t.getEl();r&&r.getAttribute&&r.getAttribute("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&r&&a.call(r)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();if(r){const a=r.querySelector(`.${e}-map`);a&&a._map&&(a._map.remove(),delete a._map),setTimeout(()=>{const o=t.get("script");o&&typeof o=="function"&&o.call(r)},500)}}}),i.on("canvas:render",()=>{setTimeout(()=>{ve(i,e)},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(a=>{a.set("type",e),a.addAttributes({"data-gjs-type":e})})})}function ve(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(a=>{a.set("type",e);const o=a.getEl();if(o&&o.isConnected){const c=a.get("script");c&&typeof c=="function"&&c.call(o)}})}function xi(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument.head;if(!r.querySelector("#leaflet-css")){const a=document.createElement("link");a.id="leaflet-css",a.rel="stylesheet",a.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",r.appendChild(a)}if(!r.querySelector(`#${e}-css`)){const a=document.createElement("style");a.id=`${e}-css`,a.innerHTML=`
+                `,script:yi()},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),Bi(i,e),ki(i,e)}function Bi(i,e){i.on("component:selected",t=>{if(t.get("type")===e){const r=t.getEl();if(r){const a=r.querySelector(`.${e}-map`);a&&a._map&&setTimeout(()=>{a._map.invalidateSize()},100)}}}),i.on("storage:end:load",()=>{setTimeout(()=>{Ee(i,e)},1e3)}),i.on("component:mount",t=>{const r=t.getEl();r&&r.getAttribute&&r.getAttribute("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&r&&a.call(r)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();if(r){const a=r.querySelector(`.${e}-map`);a&&a._map&&(a._map.remove(),delete a._map),setTimeout(()=>{const o=t.get("script");o&&typeof o=="function"&&o.call(r)},500)}}}),i.on("canvas:render",()=>{setTimeout(()=>{Ee(i,e)},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(a=>{a.set("type",e),a.addAttributes({"data-gjs-type":e})})})}function Ee(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(a=>{a.set("type",e);const o=a.getEl();if(o&&o.isConnected){const c=a.get("script");c&&typeof c=="function"&&c.call(o)}})}function ki(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument.head;if(!r.querySelector("#leaflet-css")){const a=document.createElement("link");a.id="leaflet-css",a.rel="stylesheet",a.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",r.appendChild(a)}if(!r.querySelector(`#${e}-css`)){const a=document.createElement("style");a.id=`${e}-css`,a.innerHTML=`
                 .leaflet-container {
                     height: 100%;
                     width: 100%;
@@ -1288,7 +1342,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                 .${e}-item.selected-agency .agency-maps-btn:hover {
                     background-color: rgba(240, 135, 42, 0.9);
                 }
-            `,r.appendChild(a)}})}const yi=`<svg viewBox="0 0 32 32" width="32" height="32">
+            `,r.appendChild(a)}})}const $i=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="6" width="30" height="20" fill="#003B71" rx="2"/>
     <rect x="1" y="22" width="30" height="4" fill="#E97300" rx="0"/>
@@ -1297,7 +1351,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
     <rect x="3" y="16" width="8" height="1.2" fill="rgba(255,255,255,0.6)" rx="0.6"/>
     <circle cx="23" cy="14" r="5" fill="#E97300"/>
     <circle cx="23" cy="14" r="4" fill="#f8e7d8"/>
-</svg>`,wi=`
+</svg>`,Ei=`
 .banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}
 .banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;}
 .banner-slide-container:active{cursor:grabbing;}
@@ -1322,7 +1376,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
 @media(max-width:768px){.banner-slide-inner{min-height:340px;}.banner-bg img{object-position:right center;}.banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}.banner-buttons{flex-wrap:wrap;gap:12px;}.banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.banner-btn{flex:1 1 100%;min-width:0;}}
 @media(max-width:480px){
     .banner-btn{flex:1 1 100%;min-width:0;}
-}`;function vi(){return function(){const i=this,e=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",t={"fill-blue":{bg:"#003B71",color:"#ffffff",border:"#003B71",hoverBg:"#002a52",hoverColor:"#ffffff"},"outline-blue":{bg:"transparent",color:"#003B71",border:"#003B71",hoverBg:"#003B71",hoverColor:"#ffffff"},"fill-orange":{bg:"#E97300",color:"#ffffff",border:"#E97300",hoverBg:"#c96200",hoverColor:"#ffffff"},"outline-orange":{bg:"transparent",color:"#E97300",border:"#E97300",hoverBg:"#E97300",hoverColor:"#ffffff"},"fill-white":{bg:"#ffffff",color:"#003B71",border:"#ffffff",hoverBg:"#dce8f5",hoverColor:"#003B71"},"outline-white":{bg:"transparent",color:"#ffffff",border:"#ffffff",hoverBg:"#ffffff",hoverColor:"#003B71"}},r=".banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;}.banner-slide-container:active{cursor:grabbing;}.banner-slide-container{display:grid;}.banner-slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity 0.7s ease;visibility:hidden;display:flex;flex-direction:column;}.banner-slide.banner-slide--active{opacity:1;pointer-events:auto;visibility:visible;}.banner-slide-inner{position:relative;width:100%;flex:1;min-height:480px;display:flex;align-items:center;}.banner-bg{position:absolute;inset:0;z-index:0;}.banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.banner-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.banner-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.banner-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.banner-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.banner-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.banner-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.banner-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.banner-dots-wrapper{display:none;}.banner-stripe{position:relative;width:100%;height:48px;background:#E97300;z-index:20;display:flex;align-items:center;justify-content:center;}.banner-dots{display:flex;gap:8px;align-items:center;}.banner-dot{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;background:rgba(255,255,255,0.5);transition:all 0.3s ease;padding:0;flex-shrink:0;}.banner-dot--active{width:28px;background:#ffffff;}@media(max-width:768px){.banner-slide-inner{min-height:340px;}.banner-bg img{object-position:right center;}.banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}.banner-buttons{flex-wrap:wrap;gap:12px;}.banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.banner-btn{flex:1 1 100%;min-width:0;}}";(function(){const s=i.ownerDocument??document;if(!s.getElementById("banner-hero-styles")){const h=s.createElement("style");h.id="banner-hero-styles",h.textContent=r,s.head.appendChild(h)}})();let a=[],o=0,c=null,d=!1,f=0,g=0;const k=50,$=i.dataset.autoplay!=="false",m=i.dataset.category??"",n=i.querySelector(".banner-slide-container");i.querySelector(".banner-dots");async function p(){y();try{const s=await(await fetch(e)).json();if(a=Array.isArray(s)?m?s.filter(h=>h.category===m):s:[],a.length===0){J();return}E(),q(),z(0,!1),$&&F()}catch{J()}}function y(){n.innerHTML=`
+}`;function Ci(){return function(){const i=this,e=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",t={"fill-blue":{bg:"#003B71",color:"#ffffff",border:"#003B71",hoverBg:"#002a52",hoverColor:"#ffffff"},"outline-blue":{bg:"transparent",color:"#003B71",border:"#003B71",hoverBg:"#003B71",hoverColor:"#ffffff"},"fill-orange":{bg:"#E97300",color:"#ffffff",border:"#E97300",hoverBg:"#c96200",hoverColor:"#ffffff"},"outline-orange":{bg:"transparent",color:"#E97300",border:"#E97300",hoverBg:"#E97300",hoverColor:"#ffffff"},"fill-white":{bg:"#ffffff",color:"#003B71",border:"#ffffff",hoverBg:"#dce8f5",hoverColor:"#003B71"},"outline-white":{bg:"transparent",color:"#ffffff",border:"#ffffff",hoverBg:"#ffffff",hoverColor:"#003B71"}},r=".banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;}.banner-slide-container:active{cursor:grabbing;}.banner-slide-container{display:grid;}.banner-slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity 0.7s ease;visibility:hidden;display:flex;flex-direction:column;}.banner-slide.banner-slide--active{opacity:1;pointer-events:auto;visibility:visible;}.banner-slide-inner{position:relative;width:100%;flex:1;min-height:480px;display:flex;align-items:center;}.banner-bg{position:absolute;inset:0;z-index:0;}.banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.banner-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.banner-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.banner-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.banner-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.banner-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.banner-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.banner-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.banner-dots-wrapper{display:none;}.banner-stripe{position:relative;width:100%;height:48px;background:#E97300;z-index:20;display:flex;align-items:center;justify-content:center;}.banner-dots{display:flex;gap:8px;align-items:center;}.banner-dot{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;background:rgba(255,255,255,0.5);transition:all 0.3s ease;padding:0;flex-shrink:0;}.banner-dot--active{width:28px;background:#ffffff;}@media(max-width:768px){.banner-slide-inner{min-height:340px;}.banner-bg img{object-position:right center;}.banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}.banner-buttons{flex-wrap:wrap;gap:12px;}.banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.banner-btn{flex:1 1 100%;min-width:0;}}";(function(){const s=i.ownerDocument??document;if(!s.getElementById("banner-hero-styles")){const h=s.createElement("style");h.id="banner-hero-styles",h.textContent=r,s.head.appendChild(h)}})();let a=[],o=0,c=null,d=!1,f=0,g=0;const k=50,E=i.dataset.autoplay!=="false",m=i.dataset.category??"",n=i.querySelector(".banner-slide-container");i.querySelector(".banner-dots");async function p(){y();try{const s=await(await fetch(e)).json();if(a=Array.isArray(s)?m?s.filter(h=>h.category===m):s:[],a.length===0){ee();return}$(),q(),z(0,!1),E&&Y()}catch{ee()}}function y(){n.innerHTML=`
                 <div class="banner-slide banner-slide--active">
                     <div class="banner-slide-inner">
                         <div class="banner-bg bsk-bg-img"></div>
@@ -1390,7 +1444,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                     @media(max-width:768px){
                         .bsk-buttons{flex-direction:column;}
                     }
-                `,l.head.appendChild(s)}}function _(l){return t[l]?t[l]:l==="outline-blue"||l==="outline-orange"?t["outline-white"]:t["fill-white"]}function x(l,s,h,u){const B=_(h),M=s?"a":"span",P=s?`href="${s}"${u?' target="_blank" rel="noopener noreferrer"':""}`:"";return`<${M} ${P}
+                `,l.head.appendChild(s)}}function I(l){return t[l]?t[l]:l==="outline-blue"||l==="outline-orange"?t["outline-white"]:t["fill-white"]}function x(l,s,h,u){const B=I(h),M=s?"a":"span",P=s?`href="${s}"${u?' target="_blank" rel="noopener noreferrer"':""}`:"";return`<${M} ${P}
                 class="banner-btn"
                 data-bg="${B.bg}"
                 data-color="${B.color}"
@@ -1398,7 +1452,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                 data-hover-color="${B.hoverColor}"
                 style="background:${B.bg};color:${B.color};border:2px solid ${B.border};">
                 ${l}
-            </${M}>`}function E(){n.innerHTML=a.map((l,s)=>`
+            </${M}>`}function $(){n.innerHTML=a.map((l,s)=>`
                 <div class="banner-slide" data-index="${s}">
                     <div class="banner-slide-inner">
                         <div class="banner-bg">
@@ -1422,11 +1476,11 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                         </div>
                     </div>
                 </div>
-            `).join(""),T(),C(),v()}function T(){i.querySelectorAll(".banner-btn").forEach(l=>{const s=l.style.borderColor;l.addEventListener("mouseenter",()=>{l.style.background=l.dataset.hoverBg,l.style.color=l.dataset.hoverColor,l.style.borderColor=l.dataset.hoverBg}),l.addEventListener("mouseleave",()=>{l.style.background=l.dataset.bg,l.style.color=l.dataset.color,l.style.borderColor=s})})}function C(){n.addEventListener("mousedown",S),n.addEventListener("touchstart",S,{passive:!0}),n.addEventListener("mousemove",b),n.addEventListener("touchmove",b,{passive:!0}),n.addEventListener("mouseup",L),n.addEventListener("touchend",L),n.addEventListener("mouseleave",L)}function v(){a.forEach(l=>{const s=new Image;s.src=l.image_url})}function S(l){d=!0,f=l.touches?l.touches[0].clientX:l.clientX,g=0}function b(l){d&&(g=(l.touches?l.touches[0].clientX:l.clientX)-f)}function L(){d&&(d=!1,Math.abs(g)>=k&&(z(g<0?(o+1)%a.length:(o-1+a.length)%a.length),N()),g=0)}function q(){const l=i.querySelector(".banner-stripe");if(!l||a.length<=1)return;const s=document.createElement("div");s.className="banner-dots",a.forEach((h,u)=>{const B=document.createElement("button");B.className="banner-dot",B.dataset.index=String(u),B.setAttribute("aria-label",`Banner ${u+1}`),B.addEventListener("click",()=>{z(u),N()}),s.appendChild(B)}),l.innerHTML="",l.appendChild(s)}function z(l,s=!0){const h=n.querySelectorAll(".banner-slide"),u=i.querySelectorAll(".banner-dot");h.forEach((B,M)=>{const P=M===l;s||(B.style.transition="none"),B.classList.toggle("banner-slide--active",P),s||requestAnimationFrame(()=>{B.style.transition=""})}),u.forEach((B,M)=>{B.classList.toggle("banner-dot--active",M===l)}),o=l}function F(){a.length<=1||!$||(c=setInterval(()=>{z((o+1)%a.length)},5e3))}function N(){$&&(clearInterval(c),F())}function J(){const l=i.querySelector(".banner-wrapper");l&&(l.innerHTML=`
+            `).join(""),_(),C(),v()}function _(){i.querySelectorAll(".banner-btn").forEach(l=>{const s=l.style.borderColor;l.addEventListener("mouseenter",()=>{l.style.background=l.dataset.hoverBg,l.style.color=l.dataset.hoverColor,l.style.borderColor=l.dataset.hoverBg}),l.addEventListener("mouseleave",()=>{l.style.background=l.dataset.bg,l.style.color=l.dataset.color,l.style.borderColor=s})})}function C(){n.addEventListener("mousedown",S),n.addEventListener("touchstart",S,{passive:!0}),n.addEventListener("mousemove",b),n.addEventListener("touchmove",b,{passive:!0}),n.addEventListener("mouseup",L),n.addEventListener("touchend",L),n.addEventListener("mouseleave",L)}function v(){a.forEach(l=>{const s=new Image;s.src=l.image_url})}function S(l){d=!0,f=l.touches?l.touches[0].clientX:l.clientX,g=0}function b(l){d&&(g=(l.touches?l.touches[0].clientX:l.clientX)-f)}function L(){d&&(d=!1,Math.abs(g)>=k&&(z(g<0?(o+1)%a.length:(o-1+a.length)%a.length),H()),g=0)}function q(){const l=i.querySelector(".banner-stripe");if(!l||a.length<=1)return;const s=document.createElement("div");s.className="banner-dots",a.forEach((h,u)=>{const B=document.createElement("button");B.className="banner-dot",B.dataset.index=String(u),B.setAttribute("aria-label",`Banner ${u+1}`),B.addEventListener("click",()=>{z(u),H()}),s.appendChild(B)}),l.innerHTML="",l.appendChild(s)}function z(l,s=!0){const h=n.querySelectorAll(".banner-slide"),u=i.querySelectorAll(".banner-dot");h.forEach((B,M)=>{const P=M===l;s||(B.style.transition="none"),B.classList.toggle("banner-slide--active",P),s||requestAnimationFrame(()=>{B.style.transition=""})}),u.forEach((B,M)=>{B.classList.toggle("banner-dot--active",M===l)}),o=l}function Y(){a.length<=1||!E||(c=setInterval(()=>{z((o+1)%a.length)},5e3))}function H(){E&&(clearInterval(c),Y())}function ee(){const l=i.querySelector(".banner-wrapper");l&&(l.innerHTML=`
                     <div style="display:flex;align-items:center;justify-content:center;
                                 min-height:480px;color:rgba(255,255,255,0.5);font-size:14px;padding:40px;">
                         Sin contenido.
-                    </div>`)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",p):p()}}const Bi=[{id:"banner-hero",label:"Banner Slider",category:"Banners",media:yi,content:{type:"banner-hero-component"}}];function ki(i){const e="banner-hero-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner Slider",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-autoplay":"true","data-category":""},components:`
+                    </div>`)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",p):p()}}const Li=[{id:"banner-hero",label:"Banner Slider",category:"Banners",media:$i,content:{type:"banner-hero-component"}}];function Si(i){const e="banner-hero-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner Slider",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-autoplay":"true","data-category":""},components:`
                     <div class="banner-wrapper"
                          data-gjs-editable="false" data-gjs-selectable="false"
                          data-gjs-hoverable="false" data-gjs-droppable="false"
@@ -1448,14 +1502,14 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                              data-gjs-highlightable="false">
                         </div>
                     </div>
-                `,script:vi(),traits:[{type:"select",name:"data-autoplay",label:"Avance automático",options:[{id:"true",name:"Activado"},{id:"false",name:"Desactivado"}],changeProp:!1},{type:"select",name:"data-category",label:"Filtrar por categoría",options:[{id:"",name:"Todas las categorías"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const t=this.getEl();if(!t)return;const r=this.get("script");r&&typeof r=="function"&&setTimeout(()=>r.call(t),100)})}}}),$i(i,e),Ci(i,e),Ei(i,e)}async function Ei(i,e){try{const t=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",a=await(await fetch(t)).json();if(!Array.isArray(a))return;const o=[...new Set(a.map(g=>g.category).filter(Boolean))].sort();if(o.length===0)return;const c=i.DomComponents.getType(e);if(!c)return;const f=c.model.prototype.defaults.traits.find(g=>g.name==="data-category");if(!f)return;f.options=[{id:"",name:"Todas las categorías"},...o.map(g=>({id:g,name:g}))]}catch{}}function $i(i,e){i.on("storage:end:load",()=>{setTimeout(()=>Be(i,e),1e3)}),i.on("component:mount",t=>{const r=t.getEl();r?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();r&&setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},500)}}),i.on("canvas:render",()=>{setTimeout(()=>Be(i,e),800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Be(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getEl();if(r?.isConnected){const a=t.get("script");a&&typeof a=="function"&&a.call(r)}})}function Ci(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r){if(!r.querySelector("#banner-hero-styles")){const a=document.createElement("style");a.id="banner-hero-styles",a.textContent=wi,r.appendChild(a)}if(!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
+                `,script:Ci(),traits:[{type:"select",name:"data-autoplay",label:"Avance automático",options:[{id:"true",name:"Activado"},{id:"false",name:"Desactivado"}],changeProp:!1},{type:"select",name:"data-category",label:"Filtrar por categoría",options:[{id:"",name:"Todas las categorías"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const t=this.getEl();if(!t)return;const r=this.get("script");r&&typeof r=="function"&&setTimeout(()=>r.call(t),100)})}}}),Ti(i,e),_i(i,e),ji(i,e)}async function ji(i,e){try{const t=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",a=await(await fetch(t)).json();if(!Array.isArray(a))return;const o=[...new Set(a.map(g=>g.category).filter(Boolean))].sort();if(o.length===0)return;const c=i.DomComponents.getType(e);if(!c)return;const f=c.model.prototype.defaults.traits.find(g=>g.name==="data-category");if(!f)return;f.options=[{id:"",name:"Todas las categorías"},...o.map(g=>({id:g,name:g}))]}catch{}}function Ti(i,e){i.on("storage:end:load",()=>{setTimeout(()=>Ce(i,e),1e3)}),i.on("component:mount",t=>{const r=t.getEl();r?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();r&&setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},500)}}),i.on("canvas:render",()=>{setTimeout(()=>Ce(i,e),800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Ce(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getEl();if(r?.isConnected){const a=t.get("script");a&&typeof a=="function"&&a.call(r)}})}function _i(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r){if(!r.querySelector("#banner-hero-styles")){const a=document.createElement("style");a.id="banner-hero-styles",a.textContent=Ei,r.appendChild(a)}if(!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
                 [data-gjs-type="${e}"] * { pointer-events: none !important; }
                 [data-gjs-type="${e}"].gjs-selected,
                 [data-gjs-type="${e}"].gjs-hovered {
                     outline: 2px dashed rgba(240,135,42,0.6) !important;
                     outline-offset: 2px;
                 }
-            `,r.appendChild(a)}}})}const Li=`<svg viewBox="0 0 32 32" width="32" height="32">
+            `,r.appendChild(a)}}})}const zi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="6" width="30" height="20" fill="#003B71" rx="2"/>
     <rect x="1" y="22" width="30" height="4" fill="#E97300" rx="0"/>
@@ -1464,7 +1518,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
     <rect x="3" y="16" width="8" height="1.2" fill="rgba(255,255,255,0.6)" rx="0.6"/>
     <rect x="17" y="8" width="12" height="14" fill="#E97300" rx="2"/>
     <rect x="19" y="10" width="8" height="10" fill="#f8e7d8" rx="1"/>
-</svg>`,Si=`
+</svg>`,Ii=`
 .bsingle-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}
 .bsingle-inner{position:relative;width:100%;min-height:480px;display:flex;align-items:center;}
 .bsingle-bg{position:absolute;inset:0;z-index:0;}
@@ -1486,7 +1540,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
 }
 @media(max-width:480px){
     .bsingle-btn{flex:1 1 100%;min-width:0;}
-}`;function ji(){return function(){const i=this,e=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",t={"fill-blue":{bg:"#003B71",color:"#ffffff",border:"#003B71",hoverBg:"#002a52",hoverColor:"#ffffff"},"outline-blue":{bg:"transparent",color:"#003B71",border:"#003B71",hoverBg:"#003B71",hoverColor:"#ffffff"},"fill-orange":{bg:"#E97300",color:"#ffffff",border:"#E97300",hoverBg:"#c96200",hoverColor:"#ffffff"},"outline-orange":{bg:"transparent",color:"#E97300",border:"#E97300",hoverBg:"#E97300",hoverColor:"#ffffff"},"fill-white":{bg:"#ffffff",color:"#003B71",border:"#ffffff",hoverBg:"#dce8f5",hoverColor:"#003B71"},"outline-white":{bg:"transparent",color:"#ffffff",border:"#ffffff",hoverBg:"#ffffff",hoverColor:"#003B71"}},r=".bsingle-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.bsingle-inner{position:relative;width:100%;min-height:480px;display:flex;align-items:center;}.bsingle-bg{position:absolute;inset:0;z-index:0;}.bsingle-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.bsingle-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.bsingle-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.bsingle-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.bsingle-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.bsingle-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.bsingle-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.bsingle-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.bsingle-stripe{position:relative;width:100%;height:40px;background:#E97300;z-index:20;}@media(max-width:768px){.bsingle-inner{min-height:340px;}.bsingle-bg img{object-position:right center;}.bsingle-content{max-width:100%;width:100%;padding:32px 24px 80px;}.bsingle-buttons{flex-wrap:wrap;gap:12px;}.bsingle-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.bsingle-btn{flex:1 1 100%;min-width:0;}}";(function(){const p=i.ownerDocument??document;if(!p.getElementById("banner-single-styles")){const y=p.createElement("style");y.id="banner-single-styles",y.textContent=r,p.head.appendChild(y)}})();const a=i.dataset.bannerId??"",o=i.querySelector(".bsingle-content-wrapper");async function c(){d();try{const p=await(await fetch(e)).json();if(!Array.isArray(p)||p.length===0){m();return}const y=a?p.find(_=>String(_.id)===String(a)):p[0];if(!y){m();return}k(y)}catch{m()}}function d(){o.innerHTML=`
+}`;function Ai(){return function(){const i=this,e=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",t={"fill-blue":{bg:"#003B71",color:"#ffffff",border:"#003B71",hoverBg:"#002a52",hoverColor:"#ffffff"},"outline-blue":{bg:"transparent",color:"#003B71",border:"#003B71",hoverBg:"#003B71",hoverColor:"#ffffff"},"fill-orange":{bg:"#E97300",color:"#ffffff",border:"#E97300",hoverBg:"#c96200",hoverColor:"#ffffff"},"outline-orange":{bg:"transparent",color:"#E97300",border:"#E97300",hoverBg:"#E97300",hoverColor:"#ffffff"},"fill-white":{bg:"#ffffff",color:"#003B71",border:"#ffffff",hoverBg:"#dce8f5",hoverColor:"#003B71"},"outline-white":{bg:"transparent",color:"#ffffff",border:"#ffffff",hoverBg:"#ffffff",hoverColor:"#003B71"}},r=".bsingle-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.bsingle-inner{position:relative;width:100%;min-height:480px;display:flex;align-items:center;}.bsingle-bg{position:absolute;inset:0;z-index:0;}.bsingle-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.bsingle-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.bsingle-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.bsingle-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.bsingle-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.bsingle-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.bsingle-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.bsingle-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.bsingle-stripe{position:relative;width:100%;height:40px;background:#E97300;z-index:20;}@media(max-width:768px){.bsingle-inner{min-height:340px;}.bsingle-bg img{object-position:right center;}.bsingle-content{max-width:100%;width:100%;padding:32px 24px 80px;}.bsingle-buttons{flex-wrap:wrap;gap:12px;}.bsingle-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.bsingle-btn{flex:1 1 100%;min-width:0;}}";(function(){const p=i.ownerDocument??document;if(!p.getElementById("banner-single-styles")){const y=p.createElement("style");y.id="banner-single-styles",y.textContent=r,p.head.appendChild(y)}})();const a=i.dataset.bannerId??"",o=i.querySelector(".bsingle-content-wrapper");async function c(){d();try{const p=await(await fetch(e)).json();if(!Array.isArray(p)||p.length===0){m();return}const y=a?p.find(I=>String(I.id)===String(a)):p[0];if(!y){m();return}k(y)}catch{m()}}function d(){o.innerHTML=`
                 <div class="bsingle-inner">
                     <div class="bsingle-bg bsk-bg-img"></div>
                     <div class="bsingle-overlay"></div>
@@ -1502,7 +1556,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                             <div class="bsk-btn"></div>
                         </div>
                     </div>
-                </div>`;const n=i.ownerDocument??document;if(!n.getElementById("banner-skeleton-styles")){const p=n.createElement("style");p.id="banner-skeleton-styles",p.textContent="@keyframes bsk-shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}.bsk-badge{width:120px;height:32px;margin-bottom:20px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title{height:40px;margin-bottom:12px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title--short{width:60%;}.bsk-line{height:16px;margin-bottom:10px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-line--short{width:55%;}.bsk-buttons{display:flex;gap:16px;margin-top:36px;}.bsk-btn{height:48px;flex:1;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-bg-img{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}@media(max-width:768px){.bsk-buttons{flex-direction:column;}}",n.head.appendChild(p)}}function f(n){return t[n]??t["fill-white"]}function g(n,p,y,_){const x=f(y),E=p?"a":"span",T=p?`href="${p}"${_?' target="_blank" rel="noopener noreferrer"':""}`:"";return`<${E} ${T}
+                </div>`;const n=i.ownerDocument??document;if(!n.getElementById("banner-skeleton-styles")){const p=n.createElement("style");p.id="banner-skeleton-styles",p.textContent="@keyframes bsk-shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}.bsk-badge{width:120px;height:32px;margin-bottom:20px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title{height:40px;margin-bottom:12px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title--short{width:60%;}.bsk-line{height:16px;margin-bottom:10px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-line--short{width:55%;}.bsk-buttons{display:flex;gap:16px;margin-top:36px;}.bsk-btn{height:48px;flex:1;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-bg-img{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}@media(max-width:768px){.bsk-buttons{flex-direction:column;}}",n.head.appendChild(p)}}function f(n){return t[n]??t["fill-white"]}function g(n,p,y,I){const x=f(y),$=p?"a":"span",_=p?`href="${p}"${I?' target="_blank" rel="noopener noreferrer"':""}`:"";return`<${$} ${_}
                 class="bsingle-btn"
                 data-bg="${x.bg}"
                 data-color="${x.color}"
@@ -1511,7 +1565,7 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                 data-hover-color="${x.hoverColor}"
                 style="background:${x.bg};color:${x.color};border:2px solid ${x.border};">
                 ${n}
-            </${E}>`}function k(n){o.innerHTML=`
+            </${$}>`}function k(n){o.innerHTML=`
                 <div class="bsingle-inner">
                     <div class="bsingle-bg">
                         <img src="${n.image_url}"
@@ -1532,11 +1586,11 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                                 ${n.btn_secondary_text?g(n.btn_secondary_text,n.btn_secondary_url,n.btn_secondary_style,n.btn_secondary_external):""}
                             </div>`:""}
                     </div>
-                </div>`,$()}function $(){i.querySelectorAll(".bsingle-btn").forEach(n=>{const p=n.style.borderColor;n.addEventListener("mouseenter",()=>{n.style.background=n.dataset.hoverBg,n.style.color=n.dataset.hoverColor,n.style.borderColor=n.dataset.hoverBg}),n.addEventListener("mouseleave",()=>{n.style.background=n.dataset.bg,n.style.color=n.dataset.color,n.style.borderColor=p})})}function m(){o.innerHTML=`
+                </div>`,E()}function E(){i.querySelectorAll(".bsingle-btn").forEach(n=>{const p=n.style.borderColor;n.addEventListener("mouseenter",()=>{n.style.background=n.dataset.hoverBg,n.style.color=n.dataset.hoverColor,n.style.borderColor=n.dataset.hoverBg}),n.addEventListener("mouseleave",()=>{n.style.background=n.dataset.bg,n.style.color=n.dataset.color,n.style.borderColor=p})})}function m(){o.innerHTML=`
                 <div style="display:flex;align-items:center;justify-content:center;
                             min-height:480px;color:rgba(255,255,255,0.5);font-size:14px;padding:40px;">
                     No hay banner seleccionado o no está activo.
-                </div>`}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",c):c()}}const Ti=[{id:"banner-single",label:"Banner Individual",category:"Banners",media:Li,content:{type:"banner-single-component"}}];function zi(i){const e="banner-single-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner Individual",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-banner-id":""},components:`
+                </div>`}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",c):c()}}const Di=[{id:"banner-single",label:"Banner Individual",category:"Banners",media:zi,content:{type:"banner-single-component"}}];function Mi(i){const e="banner-single-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner Individual",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-banner-id":""},components:`
                     <div class="bsingle-wrapper"
                          data-gjs-editable="false" data-gjs-selectable="false"
                          data-gjs-hoverable="false" data-gjs-droppable="false"
@@ -1552,11 +1606,11 @@ ${be}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
                              data-gjs-highlightable="false">
                         </div>
                     </div>
-                `,script:ji(),traits:[{type:"select",name:"data-banner-id",label:"Banner a mostrar",options:[{id:"",name:"Cargando banners..."}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const t=this.getEl();if(!t)return;const r=this.get("script");r&&typeof r=="function"&&setTimeout(()=>r.call(t),100)})}}}),_i(i,e),Ai(i,e),Ii(i,e)}async function Ii(i,e){try{const t=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",a=await(await fetch(t)).json();if(!Array.isArray(a)||a.length===0)return;const o=i.DomComponents.getType(e);if(!o)return;const d=o.model.prototype.defaults.traits.find(f=>f.name==="data-banner-id");if(!d)return;d.options=[{id:"",name:"— Seleccionar banner —"},...a.map(f=>({id:String(f.id),name:f.category?`[${f.category}] ${f.title}`:f.title}))]}catch{}}function _i(i,e){i.on("storage:end:load",()=>{setTimeout(()=>ke(i,e),1e3)}),i.on("component:mount",t=>{const r=t.getEl();r?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();r&&setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},500)}}),i.on("canvas:render",()=>{setTimeout(()=>ke(i,e),800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function ke(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getEl();if(r?.isConnected){const a=t.get("script");a&&typeof a=="function"&&a.call(r)}})}function Ai(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r){if(!r.querySelector("#banner-single-styles")){const a=document.createElement("style");a.id="banner-single-styles",a.textContent=Si,r.appendChild(a)}if(!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
+                `,script:Ai(),traits:[{type:"select",name:"data-banner-id",label:"Banner a mostrar",options:[{id:"",name:"Cargando banners..."}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const t=this.getEl();if(!t)return;const r=this.get("script");r&&typeof r=="function"&&setTimeout(()=>r.call(t),100)})}}}),Ni(i,e),Hi(i,e),qi(i,e)}async function qi(i,e){try{const t=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",a=await(await fetch(t)).json();if(!Array.isArray(a)||a.length===0)return;const o=i.DomComponents.getType(e);if(!o)return;const d=o.model.prototype.defaults.traits.find(f=>f.name==="data-banner-id");if(!d)return;d.options=[{id:"",name:"— Seleccionar banner —"},...a.map(f=>({id:String(f.id),name:f.category?`[${f.category}] ${f.title}`:f.title}))]}catch{}}function Ni(i,e){i.on("storage:end:load",()=>{setTimeout(()=>Le(i,e),1e3)}),i.on("component:mount",t=>{const r=t.getEl();r?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const r=t.getEl();r&&setTimeout(()=>{const a=t.get("script");a&&typeof a=="function"&&a.call(r)},500)}}),i.on("canvas:render",()=>{setTimeout(()=>Le(i,e),800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Le(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const r=t.getEl();if(r?.isConnected){const a=t.get("script");a&&typeof a=="function"&&a.call(r)}})}function Hi(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const r=t.contentDocument?.head;if(r){if(!r.querySelector("#banner-single-styles")){const a=document.createElement("style");a.id="banner-single-styles",a.textContent=Ii,r.appendChild(a)}if(!r.querySelector(`#${e}-editor-css`)){const a=document.createElement("style");a.id=`${e}-editor-css`,a.textContent=`
                 [data-gjs-type="${e}"] * { pointer-events: none !important; }
                 [data-gjs-type="${e}"].gjs-selected,
                 [data-gjs-type="${e}"].gjs-hovered {
                     outline: 2px dashed rgba(240,135,42,0.6) !important;
                     outline-offset: 2px;
                 }
-            `,r.appendChild(a)}}})}function Di(i){I.registerBlocks(Ye),I.registerBlocks(it),I.registerBlocks(Bi),I.registerBlocks(Ti),I.registerBlocks(Ht),I.registerBlocks(kt),I.registerBlocks(ot),I.registerBlocks(dt),I.registerBlocks(xt),I.registerBlocks(gt),I.registerBlocks(At),I.registerBlocks(pt),I.registerBlocks(Ot),I.registerBlocks(Yt),I.registerBlocks(ni),I.registerBlocks(hi),I.registerBlocks(mi),I.applyToEditor(i),bi(i),ki(i),zi(i),si(i),Et(i),Gt(i)}function Mi(i,e,t){i.on("component:add",()=>e.markAsDirty()),i.on("component:remove",()=>e.markAsDirty()),i.on("component:update",()=>e.markAsDirty()),i.on("style:update",()=>e.markAsDirty());const r=document.getElementById("save-button");r&&r.addEventListener("click",async()=>{await qi(i,e,t,r)}),document.addEventListener("keydown",a=>{(a.ctrlKey||a.metaKey)&&a.key==="s"&&(a.preventDefault(),r&&!r.disabled&&r.click())})}async function qi(i,e,t,r){r.disabled=!0,r.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{t.needsTitle()?await Hi(i,e,t):await Le(i,e,t)}catch(a){Se(a.message,"error")}finally{r.disabled=!1,r.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}}async function Hi(i,e,t){return new Promise((r,a)=>{Te({title:"Título de la Página",description:"Ingresa un título descriptivo para identificar esta página",placeholder:"Ej: Acerca de Nosotros",icon:"ri-file-text-line",iconBg:"#dbeafe",iconColor:"#2563eb",confirmLabel:"Guardar",onConfirm:async o=>{if(!o?.trim()){a(new Error("El título es obligatorio"));return}try{await Le(i,e,t,o),r()}catch(c){a(c)}},onCancel:()=>{a(new Error("Guardado cancelado"))}})})}async function Le(i,e,t,r=null){const o={...e.getEditorContent(i),is_published:t.isPublished};r&&(o.title=r);const c=await e.savePage(i,o,t.storeUrl,t.getHttpMethod());c.success&&(e.markAsClean(),Se(c.message,"success"),!t.isEditMode&&c.page?(t.updatePageInfo(c),t.updateTitle(c.page.title)):r&&t.updateTitle(r))}function Se(i,e){typeof window.showNotification=="function"&&window.showNotification(i,e)}document.addEventListener("DOMContentLoaded",async()=>{const i=new ze,e=new Ue;new Fe(i);const t=Ie();if(t.on("load",()=>{Di(t),_e(t),Ae(),De(),Me(t),qe(t),He(t),Ne(t),Pe(t),Oe(t),Ni(t),Pi(t),Oi(t),setTimeout(()=>{t.runCommand("sw-visibility"),t.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),e.isEditMode)try{await i.loadPageContent(t,e.loadUrl),Ee("Contenido cargado correctamente","success")}catch(r){Ee("Error al cargar el contenido","error"),console.error(r)}Mi(t,i,e)});function Ni(i){const e=[{cmd:"set-device-desktop",device:"Desktop"},{cmd:"set-device-tablet",device:"Tablet"},{cmd:"set-device-mobile",device:"Mobile"}];e.forEach(({cmd:t,device:r})=>{i.Commands.add(t,{run:a=>{a.setDevice(r),e.forEach(({cmd:o})=>{a.Panels.getButton("devices-c",o)?.set("active",o===t)})}})})}function Pi(i){i.Commands.add("canvas-clear",{run:e=>{Re({title:"Limpiar canvas",description:"¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",icon:"ri-delete-bin-line",iconBg:"#fef2f2",iconColor:"#dc2626",confirmLabel:"Limpiar todo",confirmColor:"#dc2626",onConfirm:()=>{e.DomComponents.clear(),e.CssComposer.clear()}})}})}function Oi(i){const e=i.Canvas.getFrameEl();if(!e?.contentDocument?.head)return;const t=e.contentDocument.createElement("style");t.id="gjs-dashed-fix",t.textContent="body,body.gjs-dashed{margin:0!important;padding:0 0 160px 0!important;}",e.contentDocument.head.appendChild(t)}function Ee(i,e="info"){typeof window.showNotification=="function"&&window.showNotification(i,e)}
+            `,r.appendChild(a)}}})}function Pi(i){j.registerBlocks(Ke),j.registerBlocks(ot),j.registerBlocks(Li),j.registerBlocks(Di),j.registerBlocks(Ut),j.registerBlocks(St),j.registerBlocks(ct),j.registerBlocks(ft),j.registerBlocks(Bt),j.registerBlocks(kt),j.registerBlocks(mt),j.registerBlocks(Ht),j.registerBlocks(xt),j.registerBlocks(Vt),j.registerBlocks(Qt),j.registerBlocks(hi),j.registerBlocks(ui),j.registerBlocks(wi),j.applyToEditor(i),vi(i),Si(i),Mi(i),fi(i),jt(i),Jt(i)}function Oi(i,e,t){i.on("component:add",()=>e.markAsDirty()),i.on("component:remove",()=>e.markAsDirty()),i.on("component:update",()=>e.markAsDirty()),i.on("style:update",()=>e.markAsDirty());const r=document.getElementById("save-button");r&&r.addEventListener("click",async()=>{await Ri(i,e,t,r)}),document.addEventListener("keydown",a=>{(a.ctrlKey||a.metaKey)&&a.key==="s"&&(a.preventDefault(),r&&!r.disabled&&r.click())})}async function Ri(i,e,t,r){r.disabled=!0,r.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{t.needsTitle()?await Ui(i,e,t):await _e(i,e,t)}catch(a){ze(a.message,"error")}finally{r.disabled=!1,r.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}}async function Ui(i,e,t){return new Promise((r,a)=>{Ae({title:"Título de la Página",description:"Ingresa un título descriptivo para identificar esta página",placeholder:"Ej: Acerca de Nosotros",icon:"ri-file-text-line",iconBg:"#dbeafe",iconColor:"#2563eb",confirmLabel:"Guardar",onConfirm:async o=>{if(!o?.trim()){a(new Error("El título es obligatorio"));return}try{await _e(i,e,t,o),r()}catch(c){a(c)}},onCancel:()=>{a(new Error("Guardado cancelado"))}})})}async function _e(i,e,t,r=null){const o={...e.getEditorContent(i),is_published:t.isPublished};r&&(o.title=r);const c=await e.savePage(i,o,t.storeUrl,t.getHttpMethod());c.success&&(e.markAsClean(),ze(c.message,"success"),!t.isEditMode&&c.page?(t.updatePageInfo(c),t.updateTitle(c.page.title)):r&&t.updateTitle(r))}function ze(i,e){typeof window.showNotification=="function"&&window.showNotification(i,e)}document.addEventListener("DOMContentLoaded",async()=>{const i=new De,e=new We;new Ge(i);const t=Me();if(t.on("load",()=>{Pi(t),qe(t),Ne(),He(),Pe(t),Oe(t),Re(t),Ue(t),Fe(t),Ye(t),Fi(t),Yi(t),Vi(t),setTimeout(()=>{t.runCommand("sw-visibility"),t.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),e.isEditMode)try{await i.loadPageContent(t,e.loadUrl),Se("Contenido cargado correctamente","success")}catch(r){Se("Error al cargar el contenido","error"),console.error(r)}Oi(t,i,e)});function Fi(i){const e=[{cmd:"set-device-desktop",device:"Desktop"},{cmd:"set-device-tablet",device:"Tablet"},{cmd:"set-device-mobile",device:"Mobile"}];e.forEach(({cmd:t,device:r})=>{i.Commands.add(t,{run:a=>{a.setDevice(r),e.forEach(({cmd:o})=>{a.Panels.getButton("devices-c",o)?.set("active",o===t)})}})})}function Yi(i){i.Commands.add("canvas-clear",{run:e=>{Ve({title:"Limpiar canvas",description:"¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",icon:"ri-delete-bin-line",iconBg:"#fef2f2",iconColor:"#dc2626",confirmLabel:"Limpiar todo",confirmColor:"#dc2626",onConfirm:()=>{e.DomComponents.clear(),e.CssComposer.clear()}})}})}function Vi(i){const e=i.Canvas.getFrameEl();if(!e?.contentDocument?.head)return;const t=e.contentDocument.createElement("style");t.id="gjs-dashed-fix",t.textContent="body,body.gjs-dashed{margin:0!important;padding:0 0 160px 0!important;}",e.contentDocument.head.appendChild(t)}function Se(i,e="info"){typeof window.showNotification=="function"&&window.showNotification(i,e)}

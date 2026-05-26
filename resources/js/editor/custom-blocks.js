@@ -6,6 +6,7 @@ import { productCardsBlocks } from "./blocks/product-cards-blocks";
 import { dualCardBlocks } from "./blocks/dual-card-blocks";
 import { ctaBlocks } from "./blocks/cta-blocks";
 import { iconGridBlocks } from "./blocks/icon-grid-blocks";
+import { productLinkCardsBlocks } from "./blocks/product-link-cards-blocks";
 import { tabsBlocks, initializeTabsBlocks } from "./blocks/tabs-blocks";
 import { splitContentBlocks } from "./blocks/split-content-blocks";
 import { statsStripBlocks } from "./blocks/stats-strip-blocks";
@@ -27,6 +28,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(aboutBlocks);
     blockRegistry.registerBlocks(productCardsBlocks);
     blockRegistry.registerBlocks(iconGridBlocks);
+    blockRegistry.registerBlocks(productLinkCardsBlocks);
     blockRegistry.registerBlocks(dualCardBlocks)
     blockRegistry.registerBlocks(splitContentBlocks);
     blockRegistry.registerBlocks(ctaBlocks);
