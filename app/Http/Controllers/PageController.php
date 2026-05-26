@@ -86,6 +86,7 @@ class PageController extends Controller
                     'title'      => $page->title,
                     'edit_url'   => route('pages.edit', $page->slug),
                     'update_url' => route('pages.update', $page->slug),
+                    'load_url'   => route('pages.load', $page->slug),
                 ],
             ]);
         } catch (\Exception $e) {

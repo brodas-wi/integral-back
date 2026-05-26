@@ -7,6 +7,7 @@ export class EditorState {
         this.storeUrl = this.getElementValue("page-store-url");
         this.isPublished = this.getElementValue("page-is-published") === "1";
         this.isEditMode = Boolean(this.pageId);
+        this.appUrl = (document.querySelector('meta[name="app-url"]')?.content ?? "").replace(/\/$/, "");
     }
 
     getElementValue(id, defaultValue = "") {
@@ -33,14 +34,19 @@ export class EditorState {
             document.getElementById("page-id").value = this.pageId;
             document.getElementById("page-slug").value = this.pageSlug;
 
+            // Use server-provided URLs when available, otherwise build from appUrl
             if (data.page.update_url) {
                 this.storeUrl = data.page.update_url;
             } else {
-                this.storeUrl = this.storeUrl.replace(/\/pages\/?$/, `/pages/${this.pageSlug}`);
+                this.storeUrl = `${this.appUrl}/pages/${this.pageSlug}`;
             }
             document.getElementById("page-store-url").value = this.storeUrl;
 
-            this.loadUrl = `/pages/${this.pageSlug}/load`;
+            if (data.page.load_url) {
+                this.loadUrl = data.page.load_url;
+            } else {
+                this.loadUrl = `${this.appUrl}/pages/${this.pageSlug}/load`;
+            }
             document.getElementById("page-load-url").value = this.loadUrl;
 
             if (data.page.edit_url) {
