@@ -15,6 +15,7 @@ import { statsStripBlocks } from "./blocks/stats-strip-blocks";
 import { serviceCardsBlocks } from "./blocks/service-cards-blocks";
 import { contactInfoBlocks } from "./blocks/contact-info-blocks";
 import { richListBlocks } from "./blocks/rich-list-blocks";
+import { formBlocks } from "./blocks/form-blocks";
 import { tableBlocks, initializeTableBlocks } from "./blocks/table-blocks";
 import { buttonBlocks, initializeButtonBlocks } from "./blocks/button-blocks";
 import { badgeBlocks } from "./blocks/badge-blocks";
@@ -41,6 +42,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(serviceCardsBlocks);
     blockRegistry.registerBlocks(contactInfoBlocks);
     blockRegistry.registerBlocks(richListBlocks);
+    blockRegistry.registerBlocks(formBlocks);
     blockRegistry.registerBlocks(tableBlocks);
     blockRegistry.registerBlocks(buttonBlocks);
     blockRegistry.registerBlocks(badgeBlocks);
