@@ -32,7 +32,7 @@ export const ctaBlocks = [
     {
         id: "cta-section",
         label: "Llamada a la acción",
-        category: "Contenido",
+        category: "Llamadas a la acción",
         media: iconCta,
         content: `
 <section class="relative overflow-hidden w-full bg-white py-16 px-6 md:px-16">
