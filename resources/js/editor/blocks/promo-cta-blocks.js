@@ -17,16 +17,15 @@ const PROMO_CTA_STYLES = `
 <style>
 .pc-section{width:100%;padding:4rem;background:#ffffff;box-sizing:border-box;}
 .pc-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
-.pc-description{font-size:1rem;color:#003B71;line-height:1.75;}
-.pc-right{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1rem;}
-.pc-eyebrow{font-size:0.95rem;font-weight:700;color:#F07C28;text-transform:uppercase;letter-spacing:0.05em;}
-.pc-title{font-size:2.25rem;font-weight:700;color:#003B71;line-height:1.2;}
-.pc-price{font-size:5rem;font-weight:800;color:#F07C28;line-height:1;margin:0.25rem 0;}
-.pc-btn{display:inline-block;padding:1rem 2.5rem;background:#F07C28;color:#ffffff;font-size:0.95rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;text-decoration:none;border-radius:0.5rem;transition:background .2s ease;}
+.pc-description{color:#003B71;}
+.pc-eyebrow{color:#F07C28;}
+.pc-title{color:#003B71;}
+.pc-price{font-size:5rem;line-height:1;color:#F07C28;}
+.pc-btn{background:#F07C28;transition:background .2s ease;}
 .pc-btn:hover{background:#d96a1a;}
 @media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
-@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-inner{grid-template-columns:1fr;gap:2.5rem;}.pc-right{align-items:flex-start;text-align:left;}.pc-price{font-size:4rem;}}
-@media(max-width:480px){.pc-price{font-size:3rem;}.pc-title{font-size:1.75rem;}}
+@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-inner{grid-template-columns:1fr;gap:2.5rem;}}
+@media(max-width:480px){.pc-price{font-size:3rem;}}
 </style>`;
 
 export const promoCtaBlocks = [
@@ -38,12 +37,12 @@ export const promoCtaBlocks = [
         content: `
 <section class="pc-section">
     <div class="pc-inner">
-        <p class="pc-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt nisi eu pellentesque fringilla. Proin tincidunt, dolor vitae pellentesque scelerisque, sapien augue lobortis orci, quis blandit magna enim a magna. Duis feugiat eros magna, at fermentum velit interdum non. Vestibulum rhoncus sagittis lorem, eu placerat sem pellentesque et. Phasellus ac mauris pulvinar, fringilla neque quis, mollis sapien.</p>
-        <div class="pc-right">
-            <span class="pc-eyebrow">¡Invierte con propósito!</span>
-            <h2 class="pc-title">Invierte desde</h2>
-            <span class="pc-price">$150.00</span>
-            <a href="#" class="pc-btn">Adquiere tu cuenta</a>
+        <p class="pc-description text-base leading-loose">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt nisi eu pellentesque fringilla. Proin tincidunt, dolor vitae pellentesque scelerisque, sapien augue lobortis orci, quis blandit magna enim a magna. Duis feugiat eros magna, at fermentum velit interdum non. Vestibulum rhoncus sagittis lorem, eu placerat sem pellentesque et. Phasellus ac mauris pulvinar, fringilla neque quis, mollis sapien.</p>
+        <div class="flex flex-col items-center text-center gap-4">
+            <span class="pc-eyebrow text-base font-bold uppercase tracking-wide">¡Invierte con propósito!</span>
+            <h2 class="pc-title text-4xl font-bold leading-tight">Invierte desde</h2>
+            <span class="pc-price font-extrabold">$150.00</span>
+            <a href="#" class="pc-btn inline-block px-10 py-4 text-white text-base font-bold uppercase tracking-wider no-underline rounded-lg">Adquiere tu cuenta</a>
         </div>
     </div>
 </section>
