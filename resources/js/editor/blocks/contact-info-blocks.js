@@ -18,6 +18,15 @@ const contactInfoRightIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="10" y="24.5" width="8" height="1.2" fill="#F07C28" rx="1"/>
 </svg>`;
 
+const contactInfoRowIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#ffffff" rx="2" stroke="#e5e7eb" stroke-width="1"/>
+    <circle cx="9" cy="16" r="3.5" fill="#F07C28"/>
+    <rect x="14" y="14" width="7" height="2" fill="#003B71" rx="1"/>
+    <rect x="14" y="17.5" width="5" height="1.2" fill="#F07C28" rx="1"/>
+    <circle cx="24" cy="16" r="3.5" fill="#F07C28"/>
+    <rect x="3" y="14" width="4" height="1" fill="#e5e7eb" rx="0.5"/>
+</svg>`;
+
 const contactInfoItemIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#ffffff" rx="2" stroke="#e5e7eb" stroke-width="1"/>
     <circle cx="8" cy="16" r="3.5" fill="#F07C28"/>
@@ -41,6 +50,7 @@ const CONTACT_INFO_STYLES = `
 .ci-section{width:100%;padding:3rem 4rem;background:#ffffff;box-sizing:border-box;}
 .ci-list{display:flex;flex-direction:column;gap:1.5rem;}
 .ci-list--right{align-items:flex-end;text-align:right;}
+.ci-row{display:flex;flex-direction:row;gap:3rem;flex-wrap:wrap;}
 .ci-item{display:flex;align-items:center;gap:1.25rem;}
 .ci-item--right{flex-direction:row-reverse;}
 .ci-item__label{color:#003B71;}
@@ -51,6 +61,20 @@ const CONTACT_INFO_STYLES = `
 </style>`;
 
 export const contactInfoBlocks = [
+    {
+        id: "contact-info-row",
+        label: "Información de contacto (fila)",
+        category: "Contacto",
+        media: contactInfoRowIcon,
+        content: `
+<section class="ci-section">
+    <div class="ci-row">
+        ${CONTACT_ITEM("ri-phone-fill", "Contáctenos", "(503)-2250-6090", "tel:+50322506090")}
+        ${CONTACT_ITEM("ri-mail-fill", "Correo", "servicio.cliente@bancointegral.com", "mailto:servicio.cliente@bancointegral.com")}
+    </div>
+</section>
+${CONTACT_INFO_STYLES}`,
+    },
     {
         id: "contact-info-left",
         label: "Info de contacto (izquierda)",

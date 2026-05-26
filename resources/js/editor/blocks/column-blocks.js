@@ -50,9 +50,23 @@ const columnsIcon21 = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="20" y="4" width="10" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
 </svg>`;
 
-const COL = `<div class="flex flex-col gap-4 py-1" style="min-height:60px;"></div>`;
+const COL = `<div class="col-cell"></div>`;
 
-const RESPONSIVE_STYLES = `<style>@media(max-width:768px){.col-grid{grid-template-columns:1fr !important;}}</style>`;
+const COLUMN_STYLES = `
+<style>
+.col-section{width:100%;padding:3.5rem 4rem;box-sizing:border-box;}
+.col-grid{display:grid;gap:1.5rem;}
+.col-grid--2{grid-template-columns:repeat(2,1fr);}
+.col-grid--3{grid-template-columns:repeat(3,1fr);}
+.col-grid--4{grid-template-columns:repeat(4,1fr);}
+.col-grid--1-2{grid-template-columns:1fr 2fr;}
+.col-grid--2-1{grid-template-columns:2fr 1fr;}
+.col-grid--1-1-2{grid-template-columns:1fr 1fr 2fr;}
+.col-grid--2-1-1{grid-template-columns:2fr 1fr 1fr;}
+.col-cell{min-height:60px;display:flex;flex-direction:column;gap:1rem;}
+@media(max-width:1280px){.col-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.col-section{padding:2.5rem 1.5rem;}.col-grid{grid-template-columns:1fr !important;}}
+</style>`;
 
 export const columnBlocks = [
     {
@@ -61,11 +75,10 @@ export const columnBlocks = [
         category: "Columnas",
         media: columnsIcon1,
         content: `
-<div class="w-full py-12 px-6">
-    <div class="max-w-6xl mx-auto flex flex-col gap-4 py-1" style="min-height:60px;">
-    </div>
+<div class="col-section">
+    <div class="col-cell"></div>
 </div>
-        `,
+${COLUMN_STYLES}`,
     },
     {
         id: "columns-2",
@@ -73,16 +86,13 @@ export const columnBlocks = [
         category: "Columnas",
         media: columnsIcon2,
         content: `
-<div class="w-full py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="col-grid grid grid-cols-2 gap-6">
-            ${COL}
-            ${COL}
-        </div>
+<div class="col-section">
+    <div class="col-grid col-grid--2">
+        ${COL}
+        ${COL}
     </div>
 </div>
-${RESPONSIVE_STYLES}
-        `,
+${COLUMN_STYLES}`,
     },
     {
         id: "columns-3",
@@ -90,17 +100,14 @@ ${RESPONSIVE_STYLES}
         category: "Columnas",
         media: columnsIcon3,
         content: `
-<div class="w-full py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="col-grid grid grid-cols-3 gap-6">
-            ${COL}
-            ${COL}
-            ${COL}
-        </div>
+<div class="col-section">
+    <div class="col-grid col-grid--3">
+        ${COL}
+        ${COL}
+        ${COL}
     </div>
 </div>
-${RESPONSIVE_STYLES}
-        `,
+${COLUMN_STYLES}`,
     },
     {
         id: "columns-4",
@@ -108,18 +115,15 @@ ${RESPONSIVE_STYLES}
         category: "Columnas",
         media: columnsIcon4,
         content: `
-<div class="w-full py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="col-grid grid grid-cols-4 gap-6">
-            ${COL}
-            ${COL}
-            ${COL}
-            ${COL}
-        </div>
+<div class="col-section">
+    <div class="col-grid col-grid--4">
+        ${COL}
+        ${COL}
+        ${COL}
+        ${COL}
     </div>
 </div>
-${RESPONSIVE_STYLES}
-        `,
+${COLUMN_STYLES}`,
     },
     {
         id: "columns-1-3",
@@ -127,16 +131,13 @@ ${RESPONSIVE_STYLES}
         category: "Columnas",
         media: columnsIcon13,
         content: `
-<div class="w-full py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="col-grid grid gap-6" style="grid-template-columns:1fr 2fr;">
-            ${COL}
-            ${COL}
-        </div>
+<div class="col-section">
+    <div class="col-grid col-grid--1-2">
+        ${COL}
+        ${COL}
     </div>
 </div>
-${RESPONSIVE_STYLES}
-        `,
+${COLUMN_STYLES}`,
     },
     {
         id: "columns-3-1",
@@ -144,16 +145,13 @@ ${RESPONSIVE_STYLES}
         category: "Columnas",
         media: columnsIcon31,
         content: `
-<div class="w-full py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="col-grid grid gap-6" style="grid-template-columns:2fr 1fr;">
-            ${COL}
-            ${COL}
-        </div>
+<div class="col-section">
+    <div class="col-grid col-grid--2-1">
+        ${COL}
+        ${COL}
     </div>
 </div>
-${RESPONSIVE_STYLES}
-        `,
+${COLUMN_STYLES}`,
     },
     {
         id: "columns-1-2",
@@ -161,17 +159,14 @@ ${RESPONSIVE_STYLES}
         category: "Columnas",
         media: columnsIcon12,
         content: `
-<div class="w-full py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="col-grid grid gap-6" style="grid-template-columns:1fr 1fr 2fr;">
-            ${COL}
-            ${COL}
-            ${COL}
-        </div>
+<div class="col-section">
+    <div class="col-grid col-grid--1-1-2">
+        ${COL}
+        ${COL}
+        ${COL}
     </div>
 </div>
-${RESPONSIVE_STYLES}
-        `,
+${COLUMN_STYLES}`,
     },
     {
         id: "columns-2-1",
@@ -179,16 +174,13 @@ ${RESPONSIVE_STYLES}
         category: "Columnas",
         media: columnsIcon21,
         content: `
-<div class="w-full py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="col-grid grid gap-6" style="grid-template-columns:2fr 1fr 1fr;">
-            ${COL}
-            ${COL}
-            ${COL}
-        </div>
+<div class="col-section">
+    <div class="col-grid col-grid--2-1-1">
+        ${COL}
+        ${COL}
+        ${COL}
     </div>
 </div>
-${RESPONSIVE_STYLES}
-        `,
+${COLUMN_STYLES}`,
     },
 ];
