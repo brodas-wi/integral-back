@@ -359,11 +359,7 @@ function repositionToolbar(editor, toolbarElement = null) {
     const toolbar = toolbarElement || canvasEl.querySelector(".gjs-toolbar");
     if (!toolbar) return;
 
-    if (editor.isEditing()) {
-        toolbar.style.display = "none";
-        return;
-    }
-
+    // If toolbar is hidden, nothing to do
     if (toolbar.style.display === "none") return;
 
     // Force full natural width before measuring

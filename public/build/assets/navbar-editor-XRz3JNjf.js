@@ -1,4 +1,4 @@
-import{i as D,t as U,d as P,f as O,e as R,s as G,g as J,c as V,E as W,j as F,h as X}from"./editor-commands-Cf22P4TW.js";import{o as Q}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function Y(){return D()}const K=`(function(){
+import{i as D,t as U,d as P,f as O,e as R,s as G,g as J,c as V,E as W,j as F,h as X}from"./editor-commands-BCLnuKp4.js";import{o as Q}from"./media-picker-CiKJ1Agb.js";import"./_commonjsHelpers-CqkleIqs.js";function Y(){return D()}const K=`(function(){
 function initNavbar(root){
     if(!root||root.__nbInit)return;
     root.__nbInit=true;
