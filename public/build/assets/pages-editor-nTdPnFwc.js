@@ -954,28 +954,28 @@ ${ti}`,ii=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
     </div>
 </section>
 ${Ce}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Servicios",media:ri,content:`${ce}${Ce}`}],oi=`<svg viewBox="0 0 32 32" width="32" height="32">
-    <rect width="32" height="32" fill="#003B71" rx="2"/>
-    <circle cx="10" cy="12" r="4" fill="none" stroke="#F07C28" stroke-width="1.5"/>
-    <rect x="6" y="19" width="8" height="1.5" fill="rgba(255,255,255,0.7)" rx="1"/>
-    <rect x="6" y="22" width="6" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
-    <rect x="18" y="8" width="10" height="7" fill="#F07C28" rx="1.5"/>
-    <rect x="18" y="18" width="10" height="1.5" fill="rgba(255,255,255,0.7)" rx="1"/>
-    <rect x="18" y="21" width="7" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
-</svg>`,ni=`<svg viewBox="0 0 32 32" width="32" height="32">
-    <rect width="32" height="32" fill="#003B71" rx="2"/>
+    <rect width="32" height="32" fill="#ffffff" rx="2" stroke="#e5e7eb" stroke-width="1"/>
     <circle cx="8" cy="11" r="3.5" fill="#F07C28"/>
-    <rect x="14" y="9" width="12" height="2" fill="rgba(255,255,255,0.8)" rx="1"/>
-    <rect x="14" y="12.5" width="8" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
-    <rect x="4" y="19" width="7" height="7" fill="#F07C28" rx="1.5"/>
-    <rect x="14" y="20" width="12" height="2" fill="rgba(255,255,255,0.8)" rx="1"/>
-    <rect x="14" y="23.5" width="8" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
+    <rect x="14" y="9" width="12" height="2" fill="#003B71" rx="1"/>
+    <rect x="14" y="12.5" width="8" height="1.2" fill="#F07C28" rx="1"/>
+    <circle cx="8" cy="23" r="3.5" fill="#F07C28"/>
+    <rect x="14" y="21" width="12" height="2" fill="#003B71" rx="1"/>
+    <rect x="14" y="24.5" width="8" height="1.2" fill="#F07C28" rx="1"/>
+</svg>`,ni=`<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#ffffff" rx="2" stroke="#e5e7eb" stroke-width="1"/>
+    <circle cx="24" cy="11" r="3.5" fill="#F07C28"/>
+    <rect x="6" y="9" width="12" height="2" fill="#003B71" rx="1"/>
+    <rect x="10" y="12.5" width="8" height="1.2" fill="#F07C28" rx="1"/>
+    <circle cx="24" cy="23" r="3.5" fill="#F07C28"/>
+    <rect x="6" y="21" width="12" height="2" fill="#003B71" rx="1"/>
+    <rect x="10" y="24.5" width="8" height="1.2" fill="#F07C28" rx="1"/>
 </svg>`,si=`<svg viewBox="0 0 32 32" width="32" height="32">
-    <rect width="32" height="32" fill="#003B71" rx="2"/>
-    <circle cx="10" cy="16" r="5" fill="#F07C28"/>
-    <rect x="18" y="13" width="10" height="2" fill="rgba(255,255,255,0.8)" rx="1"/>
-    <rect x="18" y="17" width="7" height="1.5" fill="rgba(255,255,255,0.4)" rx="1"/>
-</svg>`,te=(i,e,t,r)=>`
-<div class="flex items-center gap-5">
+    <rect width="32" height="32" fill="#ffffff" rx="2" stroke="#e5e7eb" stroke-width="1"/>
+    <circle cx="8" cy="16" r="3.5" fill="#F07C28"/>
+    <rect x="14" y="14" width="12" height="2" fill="#003B71" rx="1"/>
+    <rect x="14" y="17.5" width="8" height="1.2" fill="#F07C28" rx="1"/>
+</svg>`,te=(i,e,t,r,a=!1)=>`
+<div class="ci-item${a?" ci-item--right":""}">
     <div class="ci-item__icon w-14 h-14 shrink-0 flex items-center justify-center">
         <i class="${i} ci-item__icon-i"></i>
     </div>
@@ -986,28 +986,32 @@ ${Ce}`},{id:"service-card",label:"Tarjeta de servicio",category:"Productos y Ser
 </div>`,me=`
 <style>
 .ci-section{width:100%;padding:3rem 4rem;background:#ffffff;box-sizing:border-box;}
+.ci-list{display:flex;flex-direction:column;gap:1.5rem;}
+.ci-list--right{align-items:flex-end;text-align:right;}
+.ci-item{display:flex;align-items:center;gap:1.25rem;}
+.ci-item--right{flex-direction:row-reverse;}
 .ci-item__label{color:#003B71;}
 .ci-item__value{color:#F07C28;}
 .ci-item__icon-i{font-size:2.5rem;color:#F07C28;}
 @media(max-width:1280px){.ci-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.ci-section{padding:2.5rem 1.5rem;}}
-</style>`,ci=[{id:"contact-info-left",label:"Información de contacto (izquierda)",category:"Contacto",media:ni,content:`
+</style>`,ci=[{id:"contact-info-left",label:"Info de contacto (izquierda)",category:"Contacto",media:oi,content:`
 <section class="ci-section">
-    <div class="flex flex-col gap-6">
+    <div class="ci-list">
         ${te("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090")}
         ${te("ri-mail-fill","Correo","servicio.cliente@bancointegral.com","mailto:servicio.cliente@bancointegral.com")}
     </div>
 </section>
-${me}`},{id:"contact-info",label:"Información de contacto",category:"Contacto",media:oi,content:`
+${me}`},{id:"contact-info-right",label:"Info de contacto (derecha)",category:"Contacto",media:ni,content:`
 <section class="ci-section">
-    <div class="flex flex-col gap-6">
-        ${te("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090")}
-        ${te("ri-mail-fill","Correo","servicio.cliente@bancointegral.com","mailto:servicio.cliente@bancointegral.com")}
+    <div class="ci-list ci-list--right">
+        ${te("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090",!0)}
+        ${te("ri-mail-fill","Correo","servicio.cliente@bancointegral.com","mailto:servicio.cliente@bancointegral.com",!0)}
     </div>
 </section>
 ${me}`},{id:"contact-info-item",label:"Ítem de contacto",category:"Contacto",media:si,content:`
 <section class="ci-section">
-    <div class="flex flex-col gap-6">
+    <div class="ci-list">
         ${te("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090")}
     </div>
 </section>
