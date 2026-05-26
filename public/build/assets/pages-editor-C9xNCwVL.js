@@ -561,11 +561,12 @@ ${vt}`},{id:"icon-card",label:"Tarjeta con icono",category:"Productos y Servicio
 .plc-section{width:100%;padding:3rem 4rem;background:#ffffff;}
 .plc-header{display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.75rem;margin-bottom:2.5rem;}
 .plc-header__title{font-size:2.25rem;font-weight:700;color:#003B71;line-height:1.2;}
-.plc-header__subtitle{font-size:1rem;color:#4b5563;}
+.plc-header__subtitle{font-size:1rem;color:#003B71;}
 .plc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;}
 .plc-card{position:relative;display:flex;align-items:flex-end;padding:1.5rem;border-radius:1rem;overflow:hidden;min-height:140px;text-decoration:none;transition:transform .2s,box-shadow .2s;}
-.plc-card--orange:hover{filter:brightness(1.1);}
-.plc-card--blue:hover{filter:brightness(1.15);}
+.plc-card{transition:box-shadow .25s ease,filter .25s ease;}
+.plc-card--orange:hover{filter:brightness(1.08);box-shadow:0 6px 20px rgba(240,124,40,0.35);}
+.plc-card--blue:hover{filter:brightness(1.12);box-shadow:0 6px 20px rgba(0,59,113,0.4);}
 .plc-card--orange{background:#F07C28;}
 .plc-card--blue{background:#003B71;}
 .plc-card__title{position:relative;z-index:2;font-size:1rem;font-weight:800;color:#ffffff;text-transform:uppercase;line-height:1.3;max-width:70%;}
