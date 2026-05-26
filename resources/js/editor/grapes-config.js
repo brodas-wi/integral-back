@@ -372,22 +372,40 @@ function repositionToolbar(editor, toolbarElement = null) {
     const canvasRect = canvasEl.getBoundingClientRect();
     const toolbarRect = toolbar.getBoundingClientRect();
 
-    if (toolbarRect.width === 0) return;
+    if (toolbarRect.width === 0 || toolbarRect.height === 0) return;
 
-    let top = parseFloat(toolbar.style.top) || 0;
-    let left = parseFloat(toolbar.style.left) || 0;
+    const currentStyleTop = parseFloat(toolbar.style.top) || 0;
+    const currentStyleLeft = parseFloat(toolbar.style.left) || 0;
 
     const margin = 6;
-    const minTop = margin;
-    const maxTop = canvasRect.height - toolbarRect.height - margin;
-    const minLeft = margin;
-    const maxLeft = canvasRect.width - toolbarRect.width - margin;
 
-    if (top < minTop) top = minTop;
-    if (top > maxTop) top = Math.max(minTop, maxTop);
-    if (left < minLeft) left = minLeft;
-    if (left > maxLeft) left = Math.max(minLeft, maxLeft);
+    // Calculate physical offsets relative to the canvas viewport top-left corner
+    const physicalLeft = toolbarRect.left - canvasRect.left;
+    const physicalRight = toolbarRect.right - canvasRect.left;
+    const physicalTop = toolbarRect.top - canvasRect.top;
+    const physicalBottom = toolbarRect.bottom - canvasRect.top;
 
-    toolbar.style.top = `${top}px`;
-    toolbar.style.left = `${left}px`;
+    let adjustedLeft = currentStyleLeft;
+    let adjustedTop = currentStyleTop;
+
+    // Correct left overflow
+    if (physicalLeft < margin) {
+        adjustedLeft = currentStyleLeft + (margin - physicalLeft);
+    } 
+    // Correct right overflow
+    else if (physicalRight > canvasRect.width - margin) {
+        adjustedLeft = currentStyleLeft - (physicalRight - (canvasRect.width - margin));
+    }
+
+    // Correct top overflow
+    if (physicalTop < margin) {
+        adjustedTop = currentStyleTop + (margin - physicalTop);
+    } 
+    // Correct bottom overflow
+    else if (physicalBottom > canvasRect.height - margin) {
+        adjustedTop = currentStyleTop - (physicalBottom - (canvasRect.height - margin));
+    }
+
+    toolbar.style.top = `${adjustedTop}px`;
+    toolbar.style.left = `${adjustedLeft}px`;
 }
