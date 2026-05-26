@@ -18,7 +18,7 @@ const ICON_LINK_ITEM = `
     <div class="w-14 h-14 flex items-center justify-center">
         <img src="${assetUrl("images/placeholder.svg")}" alt="" class="w-full h-full object-contain">
     </div>
-    <span class="il-item__label text-sm font-semibold leading-snug" style="color:#003B71;">Nombre del servicio</span>
+    <span class="il-item__label text-lg font-semibold leading-snug">Nombre del servicio</span>
 </a>`;
 
 const ICON_LINKS_STYLES = `
@@ -27,6 +27,7 @@ const ICON_LINKS_STYLES = `
 .il-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;pointer-events:none;user-select:none;}
 .il-bg img{height:100%;width:auto;object-fit:contain;opacity:0.06;}
 .il-grid{grid-template-columns:repeat(4,1fr);}
+.il-item__label{color:#003B71;}
 .il-item:hover .il-item__label{color:#F07C28;transition:color .2s ease;}
 @media(max-width:992px){.il-grid{grid-template-columns:repeat(2,1fr);}}
 </style>`;
