@@ -81,9 +81,11 @@ class PageController extends Controller
                 'success' => true,
                 'message' => 'Página creada exitosamente.',
                 'page'    => [
-                    'id'    => $page->id,
-                    'slug'  => $page->slug,
-                    'title' => $page->title,
+                    'id'         => $page->id,
+                    'slug'       => $page->slug,
+                    'title'      => $page->title,
+                    'edit_url'   => route('pages.edit', $page->slug),
+                    'update_url' => route('pages.update', $page->slug),
                 ],
             ]);
         } catch (\Exception $e) {

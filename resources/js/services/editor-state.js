@@ -33,15 +33,27 @@ export class EditorState {
             document.getElementById("page-id").value = this.pageId;
             document.getElementById("page-slug").value = this.pageSlug;
 
-            const newEditUrl = this.storeUrl.replace(
-                "/pages",
-                `/pages/${this.pageSlug}`,
-            );
-            this.storeUrl = newEditUrl;
-            document.getElementById("page-store-url").value = newEditUrl;
+            if (data.page.update_url) {
+                this.storeUrl = data.page.update_url;
+            } else {
+                this.storeUrl = this.storeUrl.replace(/\/pages\/?$/, `/pages/${this.pageSlug}`);
+            }
+            document.getElementById("page-store-url").value = this.storeUrl;
 
             this.loadUrl = `/pages/${this.pageSlug}/load`;
             document.getElementById("page-load-url").value = this.loadUrl;
+
+            if (data.page.edit_url) {
+                window.history.replaceState(null, "", data.page.edit_url);
+            } else {
+                try {
+                    const url = new URL(window.location.href);
+                    url.pathname = url.pathname.replace(/\/pages\/create\/?$/, `/pages/${this.pageSlug}/edit`);
+                    window.history.replaceState(null, "", url.toString());
+                } catch (e) {
+                    console.error("Error updating browser URL:", e);
+                }
+            }
         }
     }
 
@@ -51,6 +63,7 @@ export class EditorState {
         if (titleElement) {
             titleElement.textContent = `Editando: ${title}`;
         }
+        document.title = `Editar: ${title} - Editor`;
     }
 
     getHttpMethod() {
