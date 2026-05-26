@@ -10,6 +10,22 @@ const productLinkCardsIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="17" y="22" width="13" height="8" fill="rgba(255,255,255,0.2)" rx="1.5"/>
 </svg>`;
 
+const productLinkCardOrangeIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#F07C28" rx="2"/>
+    <rect x="4" y="10" width="14" height="2.5" fill="white" rx="1"/>
+    <rect x="4" y="15" width="10" height="2" fill="rgba(255,255,255,0.6)" rx="1"/>
+    <ellipse cx="24" cy="20" rx="7" ry="9" fill="rgba(255,255,255,0.18)"/>
+    <circle cx="22" cy="10" r="3.5" fill="rgba(255,255,255,0.25)"/>
+</svg>`;
+
+const productLinkCardBlueIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#003B71" rx="2"/>
+    <rect x="4" y="10" width="14" height="2.5" fill="white" rx="1"/>
+    <rect x="4" y="15" width="10" height="2" fill="rgba(255,255,255,0.6)" rx="1"/>
+    <ellipse cx="24" cy="20" rx="7" ry="9" fill="rgba(255,255,255,0.18)"/>
+    <circle cx="22" cy="10" r="3.5" fill="rgba(255,255,255,0.25)"/>
+</svg>`;
+
 const PRODUCT_LINK_CARD_ORANGE = `
 <a href="#" class="plc-card plc-card--orange">
     <span class="plc-card__title">NOMBRE DEL PRODUCTO</span>
@@ -34,7 +50,8 @@ const PRODUCT_LINK_CARDS_STYLES = `
 .plc-header__subtitle{font-size:1rem;color:#4b5563;}
 .plc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;}
 .plc-card{position:relative;display:flex;align-items:flex-end;padding:1.5rem;border-radius:1rem;overflow:hidden;min-height:140px;text-decoration:none;transition:transform .2s,box-shadow .2s;}
-.plc-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.15);}
+.plc-card--orange:hover{filter:brightness(1.1);}
+.plc-card--blue:hover{filter:brightness(1.15);}
 .plc-card--orange{background:#F07C28;}
 .plc-card--blue{background:#003B71;}
 .plc-card__title{position:relative;z-index:2;font-size:1rem;font-weight:800;color:#ffffff;text-transform:uppercase;line-height:1.3;max-width:70%;}
@@ -75,13 +92,14 @@ ${PRODUCT_LINK_CARDS_STYLES}`,
         label: "Tarjeta producto naranja",
         category: "Productos y Servicios",
         media: productLinkCardsIcon,
+        media: productLinkCardOrangeIcon,
         content: `${PRODUCT_LINK_CARD_ORANGE}${PRODUCT_LINK_CARDS_STYLES}`,
     },
     {
         id: "product-link-card-blue",
         label: "Tarjeta producto azul",
         category: "Productos y Servicios",
-        media: productLinkCardsIcon,
+        media: productLinkCardBlueIcon,
         content: `${PRODUCT_LINK_CARD_BLUE}${PRODUCT_LINK_CARDS_STYLES}`,
     },
 ];
