@@ -613,7 +613,7 @@ ${he}`},{id:"product-link-card-orange",label:"Tarjeta producto naranja",category
 <style>
 .il-section{position:relative;overflow:hidden;}
 .il-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;pointer-events:none;user-select:none;}
-.il-bg img{height:100%;width:auto;object-fit:contain;opacity:0.06;}
+.il-bg img{height:100%;width:auto;object-fit:contain;opacity:0.2;}
 .il-grid{grid-template-columns:repeat(4,1fr);}
 .il-item__label{color:#003B71;}
 .il-item:hover .il-item__label{color:#F07C28;transition:color .2s ease;}
