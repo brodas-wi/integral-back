@@ -11,7 +11,7 @@ const formIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
 const FORM_STYLES = `
 <style>
 .fm-section{width:100%;padding:3.5rem 4rem;background:#ffffff;box-sizing:border-box;}
-.fm-form{display:flex;flex-direction:column;gap:1.25rem;}
+.fm-form{display:flex;flex-direction:column;gap:1.25rem;max-width:680px;}
 .fm-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
 .fm-field{display:flex;flex-direction:column;gap:0.4rem;}
 .fm-label{font-size:0.9rem;font-weight:500;color:#F07C28;}
@@ -29,18 +29,6 @@ const FORM_STYLES = `
 @media(max-width:1280px){.fm-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.fm-section{padding:2.5rem 1.5rem;}.fm-row{grid-template-columns:1fr;}}
 </style>
-<script>
-(function(){
-    document.querySelectorAll('.fm-select-btn').forEach(function(btn){
-        btn.addEventListener('click', function(){
-            var select = btn.previousElementSibling;
-            select.focus();
-            var event = new MouseEvent('mousedown', {bubbles:true});
-            select.dispatchEvent(event);
-        });
-    });
-})();
-</script>
 `;
 
 export const formBlocks = [
@@ -120,6 +108,23 @@ export const formBlocks = [
         <button type="button" class="fm-btn">Enviar</button>
     </div>
 </section>
-${FORM_STYLES}`,
+${FORM_STYLES}
+<script>
+(function(){
+    function initFormSelects(root){
+        root.querySelectorAll('.fm-select-btn').forEach(function(btn){
+            btn.addEventListener('click', function(){
+                var select = btn.previousElementSibling;
+                select.click();
+            });
+        });
+    }
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', function(){ initFormSelects(document); });
+    } else {
+        initFormSelects(document);
+    }
+})();
+</script>`,
     },
 ];

@@ -1080,7 +1080,7 @@ ${Le}`}],pi=`<svg viewBox="0 0 32 32" width="32" height="32">
 </svg>`,mi=`
 <style>
 .fm-section{width:100%;padding:3.5rem 4rem;background:#ffffff;box-sizing:border-box;}
-.fm-form{display:flex;flex-direction:column;gap:1.25rem;}
+.fm-form{display:flex;flex-direction:column;gap:1.25rem;max-width:680px;}
 .fm-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
 .fm-field{display:flex;flex-direction:column;gap:0.4rem;}
 .fm-label{font-size:0.9rem;font-weight:500;color:#F07C28;}
@@ -1098,18 +1098,6 @@ ${Le}`}],pi=`<svg viewBox="0 0 32 32" width="32" height="32">
 @media(max-width:1280px){.fm-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.fm-section{padding:2.5rem 1.5rem;}.fm-row{grid-template-columns:1fr;}}
 </style>
-<script>
-(function(){
-    document.querySelectorAll('.fm-select-btn').forEach(function(btn){
-        btn.addEventListener('click', function(){
-            var select = btn.previousElementSibling;
-            select.focus();
-            var event = new MouseEvent('mousedown', {bubbles:true});
-            select.dispatchEvent(event);
-        });
-    });
-})();
-<\/script>
 `,bi=[{id:"contact-form",label:"Formulario de contacto",category:"Formularios",media:pi,content:`
 <section class="fm-section">
     <div class="fm-form">
@@ -1181,7 +1169,24 @@ ${Le}`}],pi=`<svg viewBox="0 0 32 32" width="32" height="32">
         <button type="button" class="fm-btn">Enviar</button>
     </div>
 </section>
-${mi}`}],xi=`<svg viewBox="0 0 32 32" width="32" height="32">
+${mi}
+<script>
+(function(){
+    function initFormSelects(root){
+        root.querySelectorAll('.fm-select-btn').forEach(function(btn){
+            btn.addEventListener('click', function(){
+                var select = btn.previousElementSibling;
+                select.click();
+            });
+        });
+    }
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', function(){ initFormSelects(document); });
+    } else {
+        initFormSelects(document);
+    }
+})();
+<\/script>`}],xi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="2" width="28" height="6" rx="1" fill="#003B71"/>
     <rect x="2" y="10" width="28" height="5" rx="1" fill="#003B71" fill-opacity="0.3"/>
