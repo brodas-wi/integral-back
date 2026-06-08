@@ -35,7 +35,8 @@
                             class="input-field @error('correspondent') border-red-500 @enderror">
                             <option value="">Seleccionar corresponsal</option>
                             @foreach ($correspondents as $key => $name)
-                                <option value="{{ $key }}" {{ old('correspondent', $paymentPoint->correspondent) == $key ? 'selected' : '' }}>
+                                <option value="{{ $key }}"
+                                    {{ old('correspondent', $paymentPoint->correspondent) == $key ? 'selected' : '' }}>
                                     {{ $name }}
                                 </option>
                             @endforeach
@@ -53,7 +54,8 @@
                             class="input-field @error('zone') border-red-500 @enderror">
                             <option value="">Seleccionar zona</option>
                             @foreach ($zones as $zone)
-                                <option value="{{ $zone }}" {{ old('zone', $paymentPoint->zone) == $zone ? 'selected' : '' }}>
+                                <option value="{{ $zone }}"
+                                    {{ old('zone', $paymentPoint->zone) == $zone ? 'selected' : '' }}>
                                     {{ $zone }}
                                 </option>
                             @endforeach
@@ -69,8 +71,7 @@
                         </label>
                         <select id="department" name="department" required
                             class="input-field @error('department') border-red-500 @enderror"
-                            data-saved-value="{{ old('department', $paymentPoint->department) }}"
-                            disabled>
+                            data-saved-value="{{ old('department', $paymentPoint->department) }}" disabled>
                             <option value="">Seleccionar distrito</option>
                         </select>
                         @error('department')
@@ -84,8 +85,7 @@
                         </label>
                         <select id="municipality" name="municipality" required
                             class="input-field @error('municipality') border-red-500 @enderror"
-                            data-saved-value="{{ old('municipality', $paymentPoint->municipality) }}"
-                            disabled>
+                            data-saved-value="{{ old('municipality', $paymentPoint->municipality) }}" disabled>
                             <option value="">Seleccionar municipio</option>
                         </select>
                         @error('municipality')
@@ -110,8 +110,9 @@
                         <label for="branch" class="block text-sm font-medium text-secondary mb-2">
                             Sucursal <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="branch" name="branch" value="{{ old('branch', $paymentPoint->branch) }}"
-                            required class="input-field @error('branch') border-red-500 @enderror"
+                        <input type="text" id="branch" name="branch"
+                            value="{{ old('branch', $paymentPoint->branch) }}" required
+                            class="input-field @error('branch') border-red-500 @enderror"
                             placeholder="Ej: SELECTOS AHUACHAPAN">
                         @error('branch')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -123,8 +124,7 @@
                             Dirección <span class="text-red-500">*</span>
                         </label>
                         <textarea id="address" name="address" rows="2" required
-                            class="input-field @error('address') border-red-500 @enderror"
-                            placeholder="Dirección completa del punto de pago">{{ old('address', $paymentPoint->address) }}</textarea>
+                            class="input-field @error('address') border-red-500 @enderror" placeholder="Dirección completa del punto de pago">{{ old('address', $paymentPoint->address) }}</textarea>
                         @error('address')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -135,8 +135,7 @@
                             <label class="block text-sm font-medium text-secondary">
                                 Coordenadas (Opcional)
                             </label>
-                            <button type="button" id="geocode-btn"
-                                class="text-sm text-primary hover:underline">
+                            <button type="button" id="geocode-btn" class="text-sm text-primary hover:underline">
                                 <i class="ri-map-pin-line mr-1"></i>
                                 Obtener Coordenadas
                             </button>
@@ -153,7 +152,8 @@
                             <div>
                                 <input type="text" id="longitude" name="longitude"
                                     value="{{ old('longitude', $paymentPoint->longitude) }}"
-                                    class="input-field @error('longitude') border-red-500 @enderror" placeholder="Longitud">
+                                    class="input-field @error('longitude') border-red-500 @enderror"
+                                    placeholder="Longitud">
                                 @error('longitude')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
@@ -167,7 +167,8 @@
                         <label class="block text-sm font-medium text-secondary mb-2">
                             Vista Previa de Ubicación
                         </label>
-                        <div class="bg-gray-100 rounded-lg overflow-hidden border border-gray-300 payment-point-form-map-container">
+                        <div
+                            class="bg-gray-100 rounded-lg overflow-hidden border border-gray-300 payment-point-form-map-container">
                             <div id="agency-form-map"></div>
                         </div>
                         <p class="text-xs text-gray-600 mt-1">

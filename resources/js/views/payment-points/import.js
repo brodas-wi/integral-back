@@ -1,16 +1,3 @@
-/**
- * Payment Points Import View
- *
- * Handles:
- *  - Drag-and-drop / click file selection
- *  - File validation (type & size)
- *  - Progress bar during import
- *  - AJAX form submission
- *
- * No inline onclick / onchange attributes are used in the blade template.
- * The import form action URL is read directly from the <form action="..."> attribute.
- */
-
 import { showNotification } from "@/utils/notifications.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
@@ -32,10 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const progressText    = document.getElementById("progress-text");
     const progressDetails = document.getElementById("progress-details");
 
-    // ── Drop zone click ─────────────────────────────────────────────────────
     dropZone?.addEventListener("click", () => fileInput?.click());
 
-    // ── Drag over / leave ───────────────────────────────────────────────────
     dropZone?.addEventListener("dragover", (e) => {
         e.preventDefault();
         dropZone.classList.add("border-primary", "bg-blue-50");
@@ -45,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
         dropZone.classList.remove("border-primary", "bg-blue-50");
     });
 
-    // ── Drop ────────────────────────────────────────────────────────────────
     dropZone?.addEventListener("drop", (e) => {
         e.preventDefault();
         dropZone.classList.remove("border-primary", "bg-blue-50");
@@ -53,12 +37,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (files.length > 0) handleFile(files[0]);
     });
 
-    // ── File input change ───────────────────────────────────────────────────
     fileInput?.addEventListener("change", (e) => {
         if (e.target.files.length > 0) handleFile(e.target.files[0]);
     });
-
-    // ── Remove file ─────────────────────────────────────────────────────────
     removeFileBtn?.addEventListener("click", (e) => {
         e.stopPropagation();
         if (fileInput) fileInput.value = "";
@@ -67,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (importBtn) importBtn.disabled = true;
     });
 
-    // ── Form submit ─────────────────────────────────────────────────────────
     importForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -120,8 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
             progressContainer?.classList.add("hidden");
         }
     });
-
-    // ── Helpers ─────────────────────────────────────────────────────────────
 
     function handleFile(file) {
         const validTypes = [

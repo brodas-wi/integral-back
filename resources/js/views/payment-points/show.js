@@ -1,28 +1,10 @@
-/**
- * Payment Points Show View
- *
- * Handles:
- *  - Delete confirmation from the show page
- *  - Leaflet map initialization (read-only, shows payment point location)
- *
- * Data passed from blade via data-* attributes:
- *  - #delete-form[data-point-name]   → point name for confirm dialog
- *  - #agency-map[data-latitude]      → latitude
- *  - #agency-map[data-longitude]     → longitude
- *  - #agency-map[data-name]          → point name
- *  - #agency-map[data-municipality]  → municipality
- *  - #agency-map[data-department]    → department
- */
-
 import { initAgencyMap } from "@/modules/agency-map.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-    // ── Map ─────────────────────────────────────────────────────────────────
     if (document.getElementById("agency-map")) {
         initAgencyMap();
     }
 
-    // ── Delete button ───────────────────────────────────────────────────────
     const deleteBtn  = document.getElementById("delete-payment-point-btn");
     const deleteForm = document.getElementById("delete-form");
 
@@ -33,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-
-// ── Delete helpers ──────────────────────────────────────────────────────────
 
 function confirmDelete(pointName, deleteForm) {
     if (typeof window.showConfirmModal !== "function") {

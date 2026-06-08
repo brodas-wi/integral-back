@@ -1,18 +1,3 @@
-/**
- * Payment Points Form View (shared by create.blade.php & edit.blade.php)
- *
- * Handles:
- *  - Zone → Department → Municipality cascading selects
- *  - Geocode address button
- *  - Interactive Leaflet map (agency-form-map)
- *
- * Data passed from blade via data-* attributes and <meta> tags:
- *  - <meta name="payment-points-geocode-url">        → geocode endpoint
- *  - <meta name="payment-points-municipalities-url"> → municipalities endpoint
- *  - #department[data-saved-value]                   → pre-selected department (edit mode)
- *  - #municipality[data-saved-value]                 → pre-selected municipality (edit mode)
- */
-
 import { showNotification } from "@/utils/notifications.js";
 import { initAgencyFormMap, updateMapCoordinates } from "@/modules/agency-form-map.js";
 
@@ -37,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const departmentSelect   = document.getElementById("department");
     const geocodeBtn         = document.getElementById("geocode-btn");
 
-    // ── Cascading selects ───────────────────────────────────────────────────
     zoneSelect?.addEventListener("change", () => {
         isLoadingMunicipalities = false;
         filterDepartmentsByZone();
@@ -48,22 +32,17 @@ document.addEventListener("DOMContentLoaded", function () {
         loadMunicipalities();
     });
 
-    // ── Geocode button ──────────────────────────────────────────────────────
     geocodeBtn?.addEventListener("click", geocodeAddress);
 
-    // ── Map ─────────────────────────────────────────────────────────────────
     if (document.getElementById("agency-form-map")) {
         initAgencyFormMap();
     }
 
-    // ── Restore saved values on edit mode ───────────────────────────────────
     const isEditMode = paymentPointForm.querySelector('input[name="_method"]')?.value === "PUT";
     if (isEditMode && zoneSelect?.value) {
         filterDepartmentsByZone();
     }
 });
-
-// ── Zone → Department ───────────────────────────────────────────────────────
 
 function filterDepartmentsByZone() {
     const zoneSelect         = document.getElementById("zone");
@@ -101,8 +80,6 @@ function filterDepartmentsByZone() {
         requestAnimationFrame(() => loadMunicipalities());
     }
 }
-
-// ── Department → Municipality ───────────────────────────────────────────────
 
 function loadMunicipalities() {
     if (isLoadingMunicipalities) return;
@@ -164,8 +141,6 @@ function loadMunicipalities() {
             isLoadingMunicipalities = false;
         });
 }
-
-// ── Geocode address ─────────────────────────────────────────────────────────
 
 function geocodeAddress() {
     const addressInput       = document.getElementById("address");

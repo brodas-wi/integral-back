@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
         initAgencyBulkGeocode();
     }
 
-    // ── Checkbox change → update bulk-actions bar ───────────────────────────
     document.querySelectorAll(".agency-checkbox").forEach((checkbox) => {
         checkbox.addEventListener("change", () => {
             if (typeof window.updateBulkActions === "function") {
@@ -19,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ── Bulk action buttons ─────────────────────────────────────────────────
     const selectAllBtn = document.getElementById("select-all-btn");
     const deselectAllBtn = document.getElementById("deselect-all-btn");
     const geocodeSelectedBtn = document.getElementById("geocode-selected-btn");
@@ -42,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ── Dropdown triggers ───────────────────────────────────────────────────
     document.querySelectorAll(".dropdown-trigger").forEach((btn) => {
         btn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -52,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ── Delete buttons ──────────────────────────────────────────────────────
     document.querySelectorAll(".delete-agency-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
             const id   = btn.dataset.agencyId;
@@ -61,8 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
-// ── Delete helpers ──────────────────────────────────────────────────────────
 
 function confirmDeleteAgency(agencyId, agencyName) {
     if (typeof window.showConfirmModal !== "function") {

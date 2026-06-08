@@ -22,7 +22,7 @@
                                 <span class="badge {{ $agency->is_active ? 'badge-success' : 'badge-danger' }}">
                                     {{ $agency->is_active ? 'Activa' : 'Inactiva' }}
                                 </span>
-                                @if($agency->coordinates)
+                                @if ($agency->coordinates)
                                     <span class="badge badge-info">
                                         <i class="ri-map-pin-line mr-1"></i>
                                         Geolocalizada
@@ -54,14 +54,14 @@
                             </div>
                         </div>
 
-                        @if($agency->phones->count() > 0)
+                        @if ($agency->phones->count() > 0)
                             <div class="bg-gray-50 rounded-lg p-4">
                                 <h3 class="font-semibold text-secondary mb-3 flex items-center">
                                     <i class="ri-phone-line text-primary mr-2"></i>
                                     Teléfonos de Contacto
                                 </h3>
                                 <div class="space-y-2">
-                                    @foreach($agency->phones as $phone)
+                                    @foreach ($agency->phones as $phone)
                                         <div class="flex items-center gap-2">
                                             <a href="tel:{{ $phone->phone }}" class="text-sm text-primary hover:underline">
                                                 {{ $phone->phone }}
@@ -72,7 +72,7 @@
                             </div>
                         @endif
 
-                        @if($agency->schedule)
+                        @if ($agency->schedule)
                             <div class="bg-gray-50 rounded-lg p-4">
                                 <h3 class="font-semibold text-secondary mb-3 flex items-center">
                                     <i class="ri-time-line text-primary mr-2"></i>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
 
-                @if($agency->coordinates)
+                @if ($agency->coordinates)
                     <div class="card">
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
                             <div class="flex-1">
@@ -108,10 +108,8 @@
                             </a>
                         </div>
                         <div class="bg-gray-100 rounded-lg overflow-hidden agency-map-container">
-                            <div id="agency-map"
-                                data-latitude="{{ $agency->latitude }}"
-                                data-longitude="{{ $agency->longitude }}"
-                                data-name="{{ $agency->name }}"
+                            <div id="agency-map" data-latitude="{{ $agency->latitude }}"
+                                data-longitude="{{ $agency->longitude }}" data-name="{{ $agency->name }}"
                                 data-municipality="{{ $agency->municipality }}"
                                 data-department="{{ $agency->department }}">
                             </div>
@@ -132,15 +130,11 @@
                         @endcanany
 
                         @canany(['agencies.delete', 'agencies.manage'])
-                            <form id="delete-form"
-                                action="{{ route('agencies.destroy', $agency) }}"
-                                method="POST"
+                            <form id="delete-form" action="{{ route('agencies.destroy', $agency) }}" method="POST"
                                 data-agency-name="{{ $agency->name }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button"
-                                    id="delete-agency-btn"
-                                    class="btn-danger w-full btn-sm">
+                                <button type="button" id="delete-agency-btn" class="btn-danger w-full btn-sm">
                                     <i class="ri-delete-bin-line mr-2"></i>
                                     Eliminar
                                 </button>
@@ -160,7 +154,7 @@
                             <p class="text-xs text-gray-600 mb-1">Fecha de creación</p>
                             <p class="text-sm text-secondary">{{ $agency->created_at->format('d/m/Y H:i') }}</p>
                         </div>
-                        @if($agency->updated_by)
+                        @if ($agency->updated_by)
                             <div>
                                 <p class="text-xs text-gray-600 mb-1">Actualizado por</p>
                                 <p class="text-sm text-secondary">{{ $agency->updater->name }}</p>
@@ -178,9 +172,9 @@
 @endsection
 
 @push('styles')
-  @vite('resources/css/views/agencies/agencies.css')
+    @vite('resources/css/views/agencies/agencies.css')
 @endpush
 
 @push('scripts')
-  @vite('resources/js/views/agencies/show.js')
+    @vite('resources/js/views/agencies/show.js')
 @endpush

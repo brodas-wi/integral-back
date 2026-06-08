@@ -1,15 +1,3 @@
-/**
- * Payment Points Index View
- *
- * Handles:
- *  - Bulk selection & geocoding progress
- *  - Delete confirmation (index list)
- *  - Dropdown toggles
- *
- * All interactions are wired via data-* attributes and event listeners.
- * No inline onclick / onchange attributes are used in the blade template.
- */
-
 import { showNotification } from "@/utils/notifications.js";
 import { initBulkGeocode } from "@/modules/payment-point-bulk-geocode.js";
 
@@ -17,12 +5,10 @@ const CSRF     = document.querySelector('meta[name="csrf-token"]')?.content;
 const BASE_URL = document.querySelector('meta[name="payment-points-base-url"]')?.content;
 
 document.addEventListener("DOMContentLoaded", function () {
-    // ── Bulk geocode ────────────────────────────────────────────────────────
     if (document.getElementById("bulk-actions-bar")) {
         initBulkGeocode();
     }
 
-    // ── Checkbox change → update bulk-actions bar ───────────────────────────
     document.querySelectorAll(".point-checkbox").forEach((checkbox) => {
         checkbox.addEventListener("change", () => {
             if (typeof window.updateBulkActions === "function") {
@@ -31,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ── Bulk action buttons ─────────────────────────────────────────────────
     const selectAllBtn      = document.getElementById("select-all-btn");
     const deselectAllBtn    = document.getElementById("deselect-all-btn");
     const geocodeSelectedBtn = document.getElementById("geocode-selected-btn");
@@ -54,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ── Dropdown triggers ───────────────────────────────────────────────────
     document.querySelectorAll(".dropdown-trigger").forEach((btn) => {
         btn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -64,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ── Delete buttons ──────────────────────────────────────────────────────
     document.querySelectorAll(".delete-payment-point-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
             const id   = btn.dataset.pointId;
@@ -73,8 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
-// ── Delete helpers ──────────────────────────────────────────────────────────
 
 function confirmDeletePaymentPoint(pointId, pointName) {
     if (typeof window.showConfirmModal !== "function") {

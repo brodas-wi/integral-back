@@ -1,19 +1,3 @@
-/**
- * Agencies Form View (shared by create.blade.php & edit.blade.php)
- *
- * Handles:
- *  - Zone → Department → Municipality cascading selects
- *  - Add / Remove phone inputs (event delegation, no inline onclick)
- *  - Geocode address button
- *  - Interactive Leaflet map (agency-form-map)
- *
- * Data passed from blade via data-* attributes and <meta> tags:
- *  - <meta name="agencies-geocode-url">   → geocode endpoint
- *  - <meta name="agencies-municipalities-url"> → municipalities endpoint
- *  - #department[data-saved-value]        → pre-selected department (edit mode)
- *  - #municipality[data-saved-value]      → pre-selected municipality (edit mode)
- */
-
 import { showNotification } from "@/utils/notifications.js";
 import { initAgencyFormMap, updateMapCoordinates } from "@/modules/agency-form-map.js";
 
@@ -41,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const addPhoneBtn       = document.getElementById("add-phone-btn");
     const phonesContainer   = document.getElementById("phones-container");
 
-    // ── Cascading selects ───────────────────────────────────────────────────
     zoneSelect?.addEventListener("change", () => {
         isLoadingMunicipalities = false;
         filterDepartmentsByZone();
@@ -52,13 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
         loadMunicipalities();
     });
 
-    // ── Geocode button ──────────────────────────────────────────────────────
     geocodeBtn?.addEventListener("click", geocodeAddress);
 
-    // ── Add phone button ────────────────────────────────────────────────────
     addPhoneBtn?.addEventListener("click", addPhone);
 
-    // ── Remove phone — event delegation on container ────────────────────────
     phonesContainer?.addEventListener("click", (e) => {
         const removeBtn = e.target.closest(".remove-phone-btn");
         if (removeBtn) {
@@ -66,19 +46,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ── Map ─────────────────────────────────────────────────────────────────
     if (document.getElementById("agency-form-map")) {
         initAgencyFormMap();
     }
-
-    // ── Restore saved values on edit mode ───────────────────────────────────
     const isEditMode = agencyForm.querySelector('input[name="_method"]')?.value === "PUT";
     if (isEditMode && zoneSelect?.value) {
         filterDepartmentsByZone();
     }
 });
-
-// ── Zone → Department ───────────────────────────────────────────────────────
 
 function filterDepartmentsByZone() {
     const zoneSelect         = document.getElementById("zone");
@@ -116,8 +91,6 @@ function filterDepartmentsByZone() {
         requestAnimationFrame(() => loadMunicipalities());
     }
 }
-
-// ── Department → Municipality ───────────────────────────────────────────────
 
 function loadMunicipalities() {
     if (isLoadingMunicipalities) return;
@@ -180,8 +153,6 @@ function loadMunicipalities() {
         });
 }
 
-// ── Phone management ────────────────────────────────────────────────────────
-
 function addPhone() {
     const container = document.getElementById("phones-container");
     if (!container) return;
@@ -203,8 +174,6 @@ function removePhone(button) {
         button.closest(".flex").remove();
     }
 }
-
-// ── Geocode address ─────────────────────────────────────────────────────────
 
 function geocodeAddress() {
     const addressInput       = document.getElementById("address");

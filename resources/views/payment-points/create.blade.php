@@ -68,8 +68,7 @@
                         </label>
                         <select id="department" name="department" required
                             class="input-field @error('department') border-red-500 @enderror"
-                            data-saved-value="{{ old('department') }}"
-                            disabled>
+                            data-saved-value="{{ old('department') }}" disabled>
                             <option value="">Seleccionar distrito</option>
                         </select>
                         @error('department')
@@ -83,8 +82,7 @@
                         </label>
                         <select id="municipality" name="municipality" required
                             class="input-field @error('municipality') border-red-500 @enderror"
-                            data-saved-value="{{ old('municipality') }}"
-                            disabled>
+                            data-saved-value="{{ old('municipality') }}" disabled>
                             <option value="">Seleccionar municipio</option>
                         </select>
                         @error('municipality')
@@ -121,8 +119,7 @@
                             Dirección <span class="text-red-500">*</span>
                         </label>
                         <textarea id="address" name="address" rows="2" required
-                            class="input-field @error('address') border-red-500 @enderror"
-                            placeholder="Dirección completa del punto de pago">{{ old('address') }}</textarea>
+                            class="input-field @error('address') border-red-500 @enderror" placeholder="Dirección completa del punto de pago">{{ old('address') }}</textarea>
                         @error('address')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -133,8 +130,7 @@
                             <label class="block text-sm font-medium text-secondary">
                                 Coordenadas (Opcional)
                             </label>
-                            <button type="button" id="geocode-btn"
-                                class="text-sm text-primary hover:underline">
+                            <button type="button" id="geocode-btn" class="text-sm text-primary hover:underline">
                                 <i class="ri-map-pin-line mr-1"></i>
                                 Obtener Coordenadas
                             </button>
@@ -164,7 +160,8 @@
                         <label class="block text-sm font-medium text-secondary mb-2">
                             Vista Previa de Ubicación
                         </label>
-                        <div class="bg-gray-100 rounded-lg overflow-hidden border border-gray-300 payment-point-form-map-container">
+                        <div
+                            class="bg-gray-100 rounded-lg overflow-hidden border border-gray-300 payment-point-form-map-container">
                             <div id="agency-form-map"></div>
                         </div>
                         <p class="text-xs text-gray-600 mt-1">

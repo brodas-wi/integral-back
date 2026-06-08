@@ -44,19 +44,19 @@
                             </h3>
                             <div class="space-y-2">
                                 <div class="flex items-start gap-2">
-                                    <span class="text-sm text-gray-600 w-24 flex-shrink-0">Dirección:</span>
+                                    <span class="text-sm text-gray-600 w-24 shrink-0">Dirección:</span>
                                     <span class="text-sm text-secondary flex-1">{{ $paymentPoint->address }}</span>
                                 </div>
                                 <div class="flex items-start gap-2">
-                                    <span class="text-sm text-gray-600 w-24 flex-shrink-0">Municipio:</span>
+                                    <span class="text-sm text-gray-600 w-24 shrink-0">Municipio:</span>
                                     <span class="text-sm text-secondary flex-1">{{ $paymentPoint->municipality }}</span>
                                 </div>
                                 <div class="flex items-start gap-2">
-                                    <span class="text-sm text-gray-600 w-24 flex-shrink-0">Distrito:</span>
+                                    <span class="text-sm text-gray-600 w-24 shrink-0">Distrito:</span>
                                     <span class="text-sm text-secondary flex-1">{{ $paymentPoint->department }}</span>
                                 </div>
                                 <div class="flex items-start gap-2">
-                                    <span class="text-sm text-gray-600 w-24 flex-shrink-0">Zona:</span>
+                                    <span class="text-sm text-gray-600 w-24 shrink-0">Zona:</span>
                                     <span class="text-sm text-secondary flex-1">{{ $paymentPoint->zone }}</span>
                                 </div>
                             </div>
@@ -84,14 +84,13 @@
                                 </div>
                             </div>
                             <a href="{{ $paymentPoint->google_maps_link }}" target="_blank"
-                                class="btn-outline btn-sm inline-flex items-center whitespace-nowrap flex-shrink-0">
+                                class="btn-outline btn-sm inline-flex items-center whitespace-nowrap shrink-0">
                                 <i class="ri-map-pin-line mr-2"></i>
                                 Google Maps
                             </a>
                         </div>
                         <div class="bg-gray-100 rounded-lg overflow-hidden payment-point-map-container">
-                            <div id="agency-map"
-                                data-latitude="{{ $paymentPoint->latitude }}"
+                            <div id="agency-map" data-latitude="{{ $paymentPoint->latitude }}"
                                 data-longitude="{{ $paymentPoint->longitude }}"
                                 data-name="{{ $paymentPoint->affiliate }} - {{ $paymentPoint->branch }}"
                                 data-municipality="{{ $paymentPoint->municipality }}"
@@ -114,15 +113,11 @@
                         @endcanany
 
                         @canany(['payment_points.delete', 'payment_points.manage'])
-                            <form id="delete-form"
-                                action="{{ route('payment-points.destroy', $paymentPoint) }}"
-                                method="POST"
+                            <form id="delete-form" action="{{ route('payment-points.destroy', $paymentPoint) }}" method="POST"
                                 data-point-name="{{ $paymentPoint->affiliate }} - {{ $paymentPoint->branch }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button"
-                                    id="delete-payment-point-btn"
-                                    class="btn-danger w-full btn-sm">
+                                <button type="button" id="delete-payment-point-btn" class="btn-danger w-full btn-sm">
                                     <i class="ri-delete-bin-line mr-2"></i>
                                     Eliminar
                                 </button>
