@@ -84,15 +84,15 @@
       <span class="text-sm font-medium text-secondary">
         <span id="selected-count">0</span> seleccionados
       </span>
-      <button type="button" onclick="selectAllVisible()" class="text-sm text-primary hover:underline">
+      <button type="button" id="select-all-btn" class="text-sm text-primary hover:underline">
         Seleccionar página
       </button>
-      <button type="button" onclick="deselectAll()" class="text-sm text-gray-600 hover:underline">
+      <button type="button" id="deselect-all-btn" class="text-sm text-gray-600 hover:underline">
         Deseleccionar todos
       </button>
     </div>
     <div class="flex items-center gap-2">
-      <button type="button" onclick="geocodeSelected()" id="geocode-selected-btn" class="btn-secondary btn-sm">
+      <button type="button" id="geocode-selected-btn" class="btn-secondary btn-sm">
         <i class="ri-map-pin-line mr-2"></i>
         Obtener Coordenadas
       </button>
@@ -118,14 +118,18 @@
   <div class="space-y-4">
     @foreach($agencies as $agency)
     <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors agency-item"
-      id="agency-item-{{ $agency->id }}" data-agency-id="{{ $agency->id }}" data-address="{{ $agency->address }}"
-      data-municipality="{{ $agency->municipality }}" data-department="{{ $agency->department }}"
-      data-name="{{ $agency->name }}" data-has-coordinates="{{ $agency->has_coordinates ? 'true' : 'false' }}">
+      id="agency-item-{{ $agency->id }}"
+      data-agency-id="{{ $agency->id }}"
+      data-address="{{ $agency->address }}"
+      data-municipality="{{ $agency->municipality }}"
+      data-department="{{ $agency->department }}"
+      data-name="{{ $agency->name }}"
+      data-has-coordinates="{{ $agency->has_coordinates ? 'true' : 'false' }}">
       <div class="flex items-start gap-4">
         <div class="flex items-start pt-1">
           <input type="checkbox"
             class="agency-checkbox w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer"
-            data-agency-id="{{ $agency->id }}" onchange="updateBulkActions()">
+            data-agency-id="{{ $agency->id }}">
         </div>
 
         <div class="flex-1 min-w-0">
@@ -169,8 +173,8 @@
         </div>
 
         <div class="dropdown" data-dropdown>
-          <button type="button" class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center"
-            onclick="toggleDropdown(this.closest('.dropdown'))">
+          <button type="button"
+            class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center dropdown-trigger">
             <i class="ri-more-2-fill text-xl"></i>
           </button>
           <div class="dropdown-menu">
@@ -187,8 +191,10 @@
             </a>
             @endcanany
             @canany(['agencies.delete', 'agencies.manage'])
-            <button type="button" onclick="confirmDelete({{ $agency->id }}, '{{ addslashes($agency->name) }}')"
-              class="dropdown-item-danger">
+            <button type="button"
+              class="dropdown-item-danger delete-agency-btn"
+              data-agency-id="{{ $agency->id }}"
+              data-agency-name="{{ addslashes($agency->name) }}">
               <i class="ri-delete-bin-line"></i>
               <span>Eliminar</span>
             </button>
@@ -231,3 +237,15 @@
 </div>
 @endif
 @endsection
+
+@push('head')
+  <meta name="agencies-base-url" content="{{ route('agencies.index') }}">
+@endpush
+
+@push('styles')
+  @vite('resources/css/views/agencies/agencies.css')
+@endpush
+
+@push('scripts')
+  @vite('resources/js/views/agencies/index.js')
+@endpush

@@ -42,12 +42,11 @@
           <label for="zone" class="block text-sm font-medium text-secondary mb-2">
             Zona <span class="text-red-500">*</span>
           </label>
-          <select id="zone" name="zone" required class="input-field @error('zone') border-red-500 @enderror"
-            onchange="filterDepartmentsByZone()">
+          <select id="zone" name="zone" required
+            class="input-field @error('zone') border-red-500 @enderror">
             <option value="">Seleccionar zona</option>
             @foreach($zones as $zone)
-            <option value="{{ $zone }}" {{ old('zone', $agency->zone) == $zone ? 'selected' : '' }}>{{ $zone
-              }}</option>
+            <option value="{{ $zone }}" {{ old('zone', $agency->zone) == $zone ? 'selected' : '' }}>{{ $zone }}</option>
             @endforeach
           </select>
           @error('zone')
@@ -60,7 +59,7 @@
             Departamento <span class="text-red-500">*</span>
           </label>
           <select id="department" name="department" required
-            class="input-field @error('department') border-red-500 @enderror" onchange="loadMunicipalities()"
+            class="input-field @error('department') border-red-500 @enderror"
             data-saved-value="{{ old('department', $agency->department) }}">
             <option value="">Seleccionar departamento</option>
           </select>
@@ -117,7 +116,7 @@
             <div class="flex gap-2 mb-2">
               <input type="text" name="phones[]" value="{{ $phone->phone }}" class="input-field flex-1"
                 placeholder="Ej: 2222-2222">
-              <button type="button" onclick="removePhone(this)" class="btn-danger">
+              <button type="button" class="btn-danger remove-phone-btn" aria-label="Eliminar teléfono">
                 <i class="ri-delete-bin-line"></i>
               </button>
             </div>
@@ -125,13 +124,10 @@
             @else
             <div class="flex gap-2 mb-2">
               <input type="text" name="phones[]" class="input-field flex-1" placeholder="Ej: 2222-2222">
-              <button type="button" onclick="addPhone()" class="btn-outline">
-                <i class="ri-add-line"></i>
-              </button>
             </div>
             @endif
           </div>
-          <button type="button" onclick="addPhone()" class="text-sm text-primary hover:underline mt-2">
+          <button type="button" id="add-phone-btn" class="text-sm text-primary hover:underline mt-2">
             <i class="ri-add-line mr-1"></i>
             Agregar teléfono
           </button>
@@ -142,8 +138,7 @@
             <label class="block text-sm font-medium text-secondary">
               Coordenadas (Opcional)
             </label>
-            <button type="button" onclick="geocodeAddress()" class="text-sm text-primary hover:underline"
-              id="geocode-btn">
+            <button type="button" id="geocode-btn" class="text-sm text-primary hover:underline">
               <i class="ri-map-pin-line mr-1"></i>
               Obtener Coordenadas
             </button>
@@ -171,8 +166,8 @@
           <label class="block text-sm font-medium text-secondary mb-2">
             Vista Previa
           </label>
-          <div class="bg-gray-100 rounded-lg overflow-hidden border border-gray-300" style="height: 400px;">
-            <div id="agency-form-map" style="width: 100%; height: 100%;"></div>
+          <div class="bg-gray-100 rounded-lg overflow-hidden border border-gray-300 agency-form-map-container">
+            <div id="agency-form-map"></div>
           </div>
           <p class="text-xs text-gray-600 mt-1">
             <i class="ri-information-line"></i>
@@ -183,15 +178,16 @@
         <div class="md:col-span-2">
           <input type="hidden" name="is_active" value="0">
           <label class="flex items-center">
-            <input type="checkbox" name="is_active" value="1" {{ old('is_active', $agency->is_active ? '1' :
-            '0') == '1' ? 'checked' : '' }} class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+            <input type="checkbox" name="is_active" value="1"
+              {{ old('is_active', $agency->is_active ? '1' : '0') == '1' ? 'checked' : '' }}
+              class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
             <span class="ml-2 text-sm text-secondary">Agencia activa</span>
           </label>
         </div>
       </div>
 
       <div class="flex justify-between items-center gap-4">
-        <a href="{{ route('agencies.index', $agency) }}" class="btn-outline">
+        <a href="{{ route('agencies.index') }}" class="btn-outline">
           <i class="ri-arrow-left-line mr-2"></i>
           Cancelar
         </a>
@@ -204,3 +200,16 @@
   </div>
 </div>
 @endsection
+
+@push('head')
+  <meta name="agencies-geocode-url" content="{{ route('agencies.geocode') }}">
+  <meta name="agencies-municipalities-url" content="{{ route('agencies.municipalities') }}">
+@endpush
+
+@push('styles')
+  @vite('resources/css/views/agencies/agencies.css')
+@endpush
+
+@push('scripts')
+  @vite('resources/js/views/agencies/form.js')
+@endpush

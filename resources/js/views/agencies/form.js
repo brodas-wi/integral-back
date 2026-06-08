@@ -1,0 +1,286 @@
+/**
+ * Agencies Form View (shared by create.blade.php & edit.blade.php)
+ *
+ * Handles:
+ *  - Zone → Department → Municipality cascading selects
+ *  - Add / Remove phone inputs (event delegation, no inline onclick)
+ *  - Geocode address button
+ *  - Interactive Leaflet map (agency-form-map)
+ *
+ * Data passed from blade via data-* attributes and <meta> tags:
+ *  - <meta name="agencies-geocode-url">   → geocode endpoint
+ *  - <meta name="agencies-municipalities-url"> → municipalities endpoint
+ *  - #department[data-saved-value]        → pre-selected department (edit mode)
+ *  - #municipality[data-saved-value]      → pre-selected municipality (edit mode)
+ */
+
+import { showNotification } from "@/utils/notifications.js";
+import { initAgencyFormMap, updateMapCoordinates } from "@/modules/agency-form-map.js";
+
+const CSRF             = document.querySelector('meta[name="csrf-token"]')?.content;
+const GEOCODE_URL      = document.querySelector('meta[name="agencies-geocode-url"]')?.content;
+const MUNICIPALITIES_URL = document.querySelector('meta[name="agencies-municipalities-url"]')?.content;
+
+const DEPARTMENTS_BY_ZONE = {
+    Occidental:  ["Ahuachapán", "Santa Ana", "Sonsonate"],
+    Paracentral: ["Chalatenango", "Cuscatlán", "La Paz", "Cabañas", "San Vicente"],
+    Central:     ["La Libertad", "San Salvador"],
+    Oriental:    ["Usulután", "San Miguel", "Morazán", "La Unión"],
+};
+
+let isLoadingMunicipalities = false;
+
+document.addEventListener("DOMContentLoaded", function () {
+    const agencyForm        = document.getElementById("agencyForm");
+    if (!agencyForm) return;
+
+    const zoneSelect        = document.getElementById("zone");
+    const departmentSelect  = document.getElementById("department");
+    const municipalitySelect = document.getElementById("municipality");
+    const geocodeBtn        = document.getElementById("geocode-btn");
+    const addPhoneBtn       = document.getElementById("add-phone-btn");
+    const phonesContainer   = document.getElementById("phones-container");
+
+    // ── Cascading selects ───────────────────────────────────────────────────
+    zoneSelect?.addEventListener("change", () => {
+        isLoadingMunicipalities = false;
+        filterDepartmentsByZone();
+    });
+
+    departmentSelect?.addEventListener("change", () => {
+        isLoadingMunicipalities = false;
+        loadMunicipalities();
+    });
+
+    // ── Geocode button ──────────────────────────────────────────────────────
+    geocodeBtn?.addEventListener("click", geocodeAddress);
+
+    // ── Add phone button ────────────────────────────────────────────────────
+    addPhoneBtn?.addEventListener("click", addPhone);
+
+    // ── Remove phone — event delegation on container ────────────────────────
+    phonesContainer?.addEventListener("click", (e) => {
+        const removeBtn = e.target.closest(".remove-phone-btn");
+        if (removeBtn) {
+            removePhone(removeBtn);
+        }
+    });
+
+    // ── Map ─────────────────────────────────────────────────────────────────
+    if (document.getElementById("agency-form-map")) {
+        initAgencyFormMap();
+    }
+
+    // ── Restore saved values on edit mode ───────────────────────────────────
+    const isEditMode = agencyForm.querySelector('input[name="_method"]')?.value === "PUT";
+    if (isEditMode && zoneSelect?.value) {
+        filterDepartmentsByZone();
+    }
+});
+
+// ── Zone → Department ───────────────────────────────────────────────────────
+
+function filterDepartmentsByZone() {
+    const zoneSelect         = document.getElementById("zone");
+    const departmentSelect   = document.getElementById("department");
+    const municipalitySelect = document.getElementById("municipality");
+
+    if (!zoneSelect || !departmentSelect || !municipalitySelect) return;
+
+    const zone           = zoneSelect.value;
+    const savedDepartment = departmentSelect.dataset.savedValue;
+
+    departmentSelect.innerHTML  = '<option value="">Seleccionar departamento</option>';
+    municipalitySelect.innerHTML = '<option value="">Seleccionar municipio</option>';
+    departmentSelect.disabled   = true;
+    municipalitySelect.disabled = true;
+
+    if (!zone) return;
+
+    const departments = DEPARTMENTS_BY_ZONE[zone] || [];
+    const fragment    = document.createDocumentFragment();
+
+    departments.forEach((dept) => {
+        const option       = document.createElement("option");
+        option.value       = dept;
+        option.textContent = dept;
+        fragment.appendChild(option);
+    });
+
+    departmentSelect.appendChild(fragment);
+    departmentSelect.disabled = false;
+
+    if (savedDepartment && departments.includes(savedDepartment)) {
+        departmentSelect.value = savedDepartment;
+        delete departmentSelect.dataset.savedValue;
+        requestAnimationFrame(() => loadMunicipalities());
+    }
+}
+
+// ── Department → Municipality ───────────────────────────────────────────────
+
+function loadMunicipalities() {
+    if (isLoadingMunicipalities) return;
+
+    const departmentSelect   = document.getElementById("department");
+    const municipalitySelect = document.getElementById("municipality");
+
+    if (!departmentSelect || !municipalitySelect) return;
+
+    const department = departmentSelect.value;
+    if (!department) {
+        municipalitySelect.innerHTML = '<option value="">Seleccionar municipio</option>';
+        municipalitySelect.disabled  = true;
+        return;
+    }
+
+    const savedMunicipality = municipalitySelect.dataset.savedValue;
+
+    isLoadingMunicipalities  = true;
+    municipalitySelect.innerHTML = '<option value="">Cargando...</option>';
+    municipalitySelect.disabled  = true;
+
+    const url = MUNICIPALITIES_URL || "/agencies/municipalities";
+
+    fetch(`${url}?department=${encodeURIComponent(department)}`)
+        .then((r) => r.json())
+        .then((data) => {
+            if (data.success && data.municipalities) {
+                municipalitySelect.innerHTML = '<option value="">Seleccionar municipio</option>';
+
+                const fragment = document.createDocumentFragment();
+                const added    = new Set();
+
+                data.municipalities.forEach((m) => {
+                    if (!added.has(m)) {
+                        const option       = document.createElement("option");
+                        option.value       = m;
+                        option.textContent = m;
+                        fragment.appendChild(option);
+                        added.add(m);
+                    }
+                });
+
+                municipalitySelect.appendChild(fragment);
+                municipalitySelect.disabled = false;
+
+                if (savedMunicipality) {
+                    municipalitySelect.value = savedMunicipality;
+                    delete municipalitySelect.dataset.savedValue;
+                }
+            }
+        })
+        .catch((error) => {
+            console.error("Error loading municipalities:", error);
+            municipalitySelect.innerHTML = '<option value="">Error al cargar</option>';
+            showNotification("Error al cargar municipios", "error");
+        })
+        .finally(() => {
+            isLoadingMunicipalities = false;
+        });
+}
+
+// ── Phone management ────────────────────────────────────────────────────────
+
+function addPhone() {
+    const container = document.getElementById("phones-container");
+    if (!container) return;
+
+    const phoneDiv       = document.createElement("div");
+    phoneDiv.className   = "flex gap-2 mb-2";
+    phoneDiv.innerHTML   = `
+        <input type="text" name="phones[]" class="input-field flex-1" placeholder="Ej: 2222-2222">
+        <button type="button" class="btn-danger remove-phone-btn" aria-label="Eliminar teléfono">
+            <i class="ri-delete-bin-line"></i>
+        </button>
+    `;
+    container.appendChild(phoneDiv);
+}
+
+function removePhone(button) {
+    const container = document.getElementById("phones-container");
+    if (container && container.children.length > 1) {
+        button.closest(".flex").remove();
+    }
+}
+
+// ── Geocode address ─────────────────────────────────────────────────────────
+
+function geocodeAddress() {
+    const addressInput       = document.getElementById("address");
+    const departmentSelect   = document.getElementById("department");
+    const municipalitySelect = document.getElementById("municipality");
+    const latitudeInput      = document.getElementById("latitude");
+    const longitudeInput     = document.getElementById("longitude");
+    const geocodeBtn         = document.getElementById("geocode-btn");
+
+    if (!addressInput || !departmentSelect || !municipalitySelect) {
+        console.error("Required form elements not found");
+        return;
+    }
+
+    const address      = addressInput.value;
+    const department   = departmentSelect.value;
+    const municipality = municipalitySelect.value;
+
+    if (!address || !department || !municipality) {
+        showNotification("Completa dirección, departamento y municipio", "warning");
+        return;
+    }
+
+    if (geocodeBtn) {
+        geocodeBtn.disabled = true;
+        geocodeBtn.classList.add("opacity-50");
+        geocodeBtn.innerHTML = '<i class="ri-loader-4-line mr-1 animate-spin"></i> Analizando ubicación...';
+    }
+
+    const url = GEOCODE_URL || "/agencies/geocode";
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": CSRF,
+            Accept: "application/json",
+        },
+        body: JSON.stringify({ address, department, municipality }),
+    })
+        .then((r) => r.json())
+        .then((data) => {
+            if (data.success) {
+                if (latitudeInput)  latitudeInput.value  = data.latitude;
+                if (longitudeInput) longitudeInput.value = data.longitude;
+
+                if (typeof updateMapCoordinates === "function") {
+                    updateMapCoordinates(data.latitude, data.longitude);
+                }
+
+                const messages = {
+                    exact:        { text: "Ubicación exacta encontrada (punto de referencia identificado)", type: "success" },
+                    street:       { text: "Ubicación de calle encontrada con buena precisión", type: "success" },
+                    neighborhood: { text: "Ubicación de colonia/barrio encontrada", type: "success" },
+                    address:      { text: "Ubicación aproximada encontrada. Verifica en el mapa.", type: "warning" },
+                    municipality: { text: "Ubicación del municipio. Ajusta en el mapa si es necesario.", type: "warning" },
+                    department:   { text: "Solo se encontró el departamento. Ajusta en el mapa manualmente.", type: "warning" },
+                    fallback:     { text: data.message || "Usando coordenadas aproximadas. Ajusta en el mapa.", type: "error" },
+                };
+
+                const accuracy    = data.accuracy || "municipality";
+                const messageInfo = messages[accuracy] || messages.address;
+                showNotification(messageInfo.text, messageInfo.type);
+            } else {
+                showNotification(data.message || "No se encontró la ubicación", "error");
+            }
+        })
+        .catch((error) => {
+            console.error("Geocoding error:", error);
+            showNotification("Error de conexión. Intenta nuevamente.", "error");
+        })
+        .finally(() => {
+            if (geocodeBtn) {
+                geocodeBtn.disabled = false;
+                geocodeBtn.classList.remove("opacity-50");
+                geocodeBtn.innerHTML = '<i class="ri-map-pin-line mr-1"></i> Obtener Coordenadas';
+            }
+        });
+}

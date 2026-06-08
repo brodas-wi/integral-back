@@ -173,3 +173,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+  @vite('resources/js/views/agencies/import.js')
+@endpush

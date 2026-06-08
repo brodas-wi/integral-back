@@ -107,11 +107,13 @@
                                 Google Maps
                             </a>
                         </div>
-                        <div class="bg-gray-100 rounded-lg overflow-hidden" style="height: 450px;">
-                            <div id="agency-map" data-latitude="{{ $agency->latitude }}"
-                                data-longitude="{{ $agency->longitude }}" data-name="{{ $agency->name }}"
-                                data-municipality="{{ $agency->municipality }}" data-department="{{ $agency->department }}"
-                                style="width: 100%; height: 100%;">
+                        <div class="bg-gray-100 rounded-lg overflow-hidden agency-map-container">
+                            <div id="agency-map"
+                                data-latitude="{{ $agency->latitude }}"
+                                data-longitude="{{ $agency->longitude }}"
+                                data-name="{{ $agency->name }}"
+                                data-municipality="{{ $agency->municipality }}"
+                                data-department="{{ $agency->department }}">
                             </div>
                         </div>
                     </div>
@@ -130,11 +132,14 @@
                         @endcanany
 
                         @canany(['agencies.delete', 'agencies.manage'])
-                            <form id="delete-form" action="{{ route('agencies.destroy', $agency) }}" method="POST">
+                            <form id="delete-form"
+                                action="{{ route('agencies.destroy', $agency) }}"
+                                method="POST"
+                                data-agency-name="{{ $agency->name }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button"
-                                    onclick="confirmDelete({{ $agency->id }}, '{{ addslashes($agency->name) }}')"
+                                    id="delete-agency-btn"
                                     class="btn-danger w-full btn-sm">
                                     <i class="ri-delete-bin-line mr-2"></i>
                                     Eliminar
@@ -171,3 +176,11 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+  @vite('resources/css/views/agencies/agencies.css')
+@endpush
+
+@push('scripts')
+  @vite('resources/js/views/agencies/show.js')
+@endpush

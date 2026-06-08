@@ -26,18 +26,6 @@ import {
 } from "./modules/media.js";
 import { initProfileEdit } from "./modules/profile.js";
 import {
-    filterDepartmentsByZone as agencyFilterDepartments,
-    loadMunicipalities as agencyLoadMunicipalities,
-    addPhone,
-    removePhone,
-    geocodeAddress as agencyGeocodeAddress,
-    confirmDeleteAgency,
-    deleteAgency,
-    confirmDeleteAgencyShow,
-} from "./modules/agencies.js";
-import { initAgencyImport } from "./modules/agency-import.js";
-import { initAgencyBulkGeocode } from "./modules/agency-bulk-geocode.js";
-import {
     filterDepartmentsByZone as paymentPointFilterDepartments,
     loadMunicipalities as paymentPointLoadMunicipalities,
     geocodeAddress as paymentPointGeocodeAddress,
@@ -48,8 +36,8 @@ import { initAgencyMap } from "./modules/agency-map.js";
 import { initAgencyFormMap } from "./modules/agency-form-map.js";
 import { initPaymentPointImport } from "./modules/payment-point-import.js";
 import { initBulkGeocode } from "./modules/payment-point-bulk-geocode.js";
-import { initAnnouncementModal } from "./components/announcement-modal.js";
 
+// ── Global helpers exposed to all views ────────────────────────────────────
 window.toggleDropdown = toggleDropdown;
 
 window.confirmToggleStatus = confirmToggleStatus;
@@ -67,34 +55,17 @@ window.confirmDeleteMediaShow = confirmDeleteMediaShow;
 
 window.initProfileEdit = initProfileEdit;
 
-window.addPhone = addPhone;
-window.removePhone = removePhone;
-
-function isAgencyPage() {
-    return window.location.pathname.includes("/agencies");
-}
-
-function isPaymentPointPage() {
-    return window.location.pathname.includes("/payment-points");
-}
-
-if (isAgencyPage()) {
-    window.filterDepartmentsByZone = agencyFilterDepartments;
-    window.loadMunicipalities = agencyLoadMunicipalities;
-    window.geocodeAddress = agencyGeocodeAddress;
-    window.confirmDeleteAgency = confirmDeleteAgency;
-    window.confirmDelete = confirmDeleteAgency;
-    window.deleteAgency = deleteAgency;
-    window.confirmDeleteAgencyShow = confirmDeleteAgencyShow;
-} else if (isPaymentPointPage()) {
+// ── Payment-points globals (still use window.* pattern) ───────────────────
+if (window.location.pathname.includes("/payment-points")) {
     window.filterDepartmentsByZone = paymentPointFilterDepartments;
-    window.loadMunicipalities = paymentPointLoadMunicipalities;
-    window.geocodeAddress = paymentPointGeocodeAddress;
-    window.confirmDelete = confirmDeletePaymentPoint;
+    window.loadMunicipalities      = paymentPointLoadMunicipalities;
+    window.geocodeAddress          = paymentPointGeocodeAddress;
+    window.confirmDelete           = confirmDeletePaymentPoint;
     window.confirmDeletePaymentPoint = confirmDeletePaymentPoint;
-    window.deletePaymentPoint = deletePaymentPoint;
+    window.deletePaymentPoint      = deletePaymentPoint;
 }
 
+// ── DOMContentLoaded initializations ──────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector(".permission-checkbox")) {
         initPermissionCheckboxes();
@@ -116,25 +87,17 @@ document.addEventListener("DOMContentLoaded", function () {
         initAgencyFormMap();
     }
 
-    if (document.getElementById("import-form")) {
+    if (document.getElementById("import-form") && window.location.pathname.includes("/payment-points")) {
         initPaymentPointImport();
     }
 
-    if (document.getElementById("bulk-actions-bar")) {
+    if (document.getElementById("bulk-actions-bar") && window.location.pathname.includes("/payment-points")) {
         initBulkGeocode();
     }
 
-    if (document.getElementById("import-form")) {
-        initAgencyImport();
-    }
-
-    if (document.getElementById("bulk-actions-bar")) {
-        initAgencyBulkGeocode();
-    }
-
-    // Solo inicializar el modal de avisos en páginas públicas (preview)
-    // NO en páginas de admin ni en páginas de autenticación
+    // ── Announcement modal (public preview pages only) ─────────────────────
     const path = window.location.pathname;
+
     const isAdminRoute =
         path.startsWith("/dashboard") ||
         path.startsWith("/users") ||
@@ -157,6 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const isPublicPreviewRoute = path.startsWith("/p/");
 
     if (isPublicPreviewRoute && !isAdminRoute && !isAuthRoute) {
-        initAnnouncementModal();
+        import("./components/announcement-modal.js").then(({ initAnnouncementModal }) => {
+            initAnnouncementModal();
+        });
     }
 });
