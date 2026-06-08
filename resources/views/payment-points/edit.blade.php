@@ -49,8 +49,8 @@
                         <label for="zone" class="block text-sm font-medium text-secondary mb-2">
                             Zona <span class="text-red-500">*</span>
                         </label>
-                        <select id="zone" name="zone" required class="input-field @error('zone') border-red-500 @enderror"
-                            onchange="filterDepartmentsByZone()">
+                        <select id="zone" name="zone" required
+                            class="input-field @error('zone') border-red-500 @enderror">
                             <option value="">Seleccionar zona</option>
                             @foreach ($zones as $zone)
                                 <option value="{{ $zone }}" {{ old('zone', $paymentPoint->zone) == $zone ? 'selected' : '' }}>
@@ -69,8 +69,8 @@
                         </label>
                         <select id="department" name="department" required
                             class="input-field @error('department') border-red-500 @enderror"
-                            onchange="loadMunicipalities()"
-                            data-saved-value="{{ old('department', $paymentPoint->department) }}">
+                            data-saved-value="{{ old('department', $paymentPoint->department) }}"
+                            disabled>
                             <option value="">Seleccionar distrito</option>
                         </select>
                         @error('department')
@@ -84,7 +84,8 @@
                         </label>
                         <select id="municipality" name="municipality" required
                             class="input-field @error('municipality') border-red-500 @enderror"
-                            data-saved-value="{{ old('municipality', $paymentPoint->municipality) }}">
+                            data-saved-value="{{ old('municipality', $paymentPoint->municipality) }}"
+                            disabled>
                             <option value="">Seleccionar municipio</option>
                         </select>
                         @error('municipality')
@@ -134,8 +135,8 @@
                             <label class="block text-sm font-medium text-secondary">
                                 Coordenadas (Opcional)
                             </label>
-                            <button type="button" onclick="geocodeAddress()" class="text-sm text-primary hover:underline"
-                                id="geocode-btn">
+                            <button type="button" id="geocode-btn"
+                                class="text-sm text-primary hover:underline">
                                 <i class="ri-map-pin-line mr-1"></i>
                                 Obtener Coordenadas
                             </button>
@@ -166,8 +167,8 @@
                         <label class="block text-sm font-medium text-secondary mb-2">
                             Vista Previa de Ubicación
                         </label>
-                        <div class="bg-gray-100 rounded-lg overflow-hidden border border-gray-300" style="height: 400px;">
-                            <div id="agency-form-map" style="width: 100%; height: 100%;"></div>
+                        <div class="bg-gray-100 rounded-lg overflow-hidden border border-gray-300 payment-point-form-map-container">
+                            <div id="agency-form-map"></div>
                         </div>
                         <p class="text-xs text-gray-600 mt-1">
                             <i class="ri-information-line"></i>
@@ -178,7 +179,8 @@
                     <div class="md:col-span-2">
                         <input type="hidden" name="is_active" value="0">
                         <label class="flex items-center">
-                            <input type="checkbox" name="is_active" value="1" {{ old('is_active', $paymentPoint->is_active ? '1' : '0') == '1' ? 'checked' : '' }}
+                            <input type="checkbox" name="is_active" value="1"
+                                {{ old('is_active', $paymentPoint->is_active ? '1' : '0') == '1' ? 'checked' : '' }}
                                 class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
                             <span class="ml-2 text-sm text-secondary">Punto de pago activo</span>
                         </label>
@@ -199,3 +201,16 @@
         </div>
     </div>
 @endsection
+
+@push('head')
+    <meta name="payment-points-geocode-url" content="{{ route('payment-points.geocode') }}">
+    <meta name="payment-points-municipalities-url" content="{{ route('payment-points.municipalities') }}">
+@endpush
+
+@push('styles')
+    @vite('resources/css/views/payment-points/payment-points.css')
+@endpush
+
+@push('scripts')
+    @vite('resources/js/views/payment-points/form.js')
+@endpush

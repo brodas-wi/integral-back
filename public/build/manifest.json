@@ -394,8 +394,17 @@
     "file": "assets/index-CHgvGxG3.css",
     "src": "resources/css/views/navbars/index.css"
   },
+  "resources/css/views/payment-points/payment-points.css": {
+    "file": "assets/payment-points-C_aQmSuU.css",
+    "src": "resources/css/views/payment-points/payment-points.css",
+    "isEntry": true,
+    "name": "payment-points",
+    "names": [
+      "payment-points.css"
+    ]
+  },
   "resources/js/app.js": {
-    "file": "assets/app-8DMcAQzl.js",
+    "file": "assets/app-BgzTimd9.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -403,11 +412,7 @@
       "_notifications-Cgjr4krQ.js",
       "_modals-D7u3LXeA.js",
       "_dropdowns-CtvQ6cwq.js",
-      "_url-DaqOO3yL.js",
-      "_agency-form-map-kJYU71Cd.js",
-      "_agency-map-CIkQKVsm.js",
-      "_leaflet-DrSzxzmd.js",
-      "__commonjsHelpers-CqkleIqs.js"
+      "_url-DaqOO3yL.js"
     ],
     "dynamicImports": [
       "resources/js/components/announcement-modal.js"
@@ -639,6 +644,47 @@
       "_notifications-Cgjr4krQ.js",
       "_modals-D7u3LXeA.js",
       "_url-DaqOO3yL.js"
+    ]
+  },
+  "resources/js/views/payment-points/form.js": {
+    "file": "assets/form-hSWLqTNR.js",
+    "name": "form",
+    "src": "resources/js/views/payment-points/form.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js",
+      "_agency-form-map-kJYU71Cd.js",
+      "_leaflet-DrSzxzmd.js",
+      "__commonjsHelpers-CqkleIqs.js"
+    ]
+  },
+  "resources/js/views/payment-points/import.js": {
+    "file": "assets/import-bpei014y.js",
+    "name": "import",
+    "src": "resources/js/views/payment-points/import.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js"
+    ]
+  },
+  "resources/js/views/payment-points/index.js": {
+    "file": "assets/index-S0wTHsuH.js",
+    "name": "index",
+    "src": "resources/js/views/payment-points/index.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js"
+    ]
+  },
+  "resources/js/views/payment-points/show.js": {
+    "file": "assets/show-Bt2ljPsU.js",
+    "name": "show",
+    "src": "resources/js/views/payment-points/show.js",
+    "isEntry": true,
+    "imports": [
+      "_agency-map-CIkQKVsm.js",
+      "_leaflet-DrSzxzmd.js",
+      "__commonjsHelpers-CqkleIqs.js"
     ]
   }
 }

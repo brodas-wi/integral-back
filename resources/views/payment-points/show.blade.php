@@ -89,12 +89,13 @@
                                 Google Maps
                             </a>
                         </div>
-                        <div class="bg-gray-100 rounded-lg overflow-hidden" style="height: 450px;">
-                            <div id="agency-map" data-latitude="{{ $paymentPoint->latitude }}"
+                        <div class="bg-gray-100 rounded-lg overflow-hidden payment-point-map-container">
+                            <div id="agency-map"
+                                data-latitude="{{ $paymentPoint->latitude }}"
                                 data-longitude="{{ $paymentPoint->longitude }}"
                                 data-name="{{ $paymentPoint->affiliate }} - {{ $paymentPoint->branch }}"
                                 data-municipality="{{ $paymentPoint->municipality }}"
-                                data-department="{{ $paymentPoint->department }}" style="width: 100%; height: 100%;">
+                                data-department="{{ $paymentPoint->department }}">
                             </div>
                         </div>
                     </div>
@@ -113,11 +114,14 @@
                         @endcanany
 
                         @canany(['payment_points.delete', 'payment_points.manage'])
-                            <form id="delete-form" action="{{ route('payment-points.destroy', $paymentPoint) }}" method="POST">
+                            <form id="delete-form"
+                                action="{{ route('payment-points.destroy', $paymentPoint) }}"
+                                method="POST"
+                                data-point-name="{{ $paymentPoint->affiliate }} - {{ $paymentPoint->branch }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button"
-                                    onclick="confirmDelete({{ $paymentPoint->id }}, '{{ addslashes($paymentPoint->affiliate) }} - {{ addslashes($paymentPoint->branch) }}')"
+                                    id="delete-payment-point-btn"
                                     class="btn-danger w-full btn-sm">
                                     <i class="ri-delete-bin-line mr-2"></i>
                                     Eliminar
@@ -154,3 +158,11 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+    @vite('resources/css/views/payment-points/payment-points.css')
+@endpush
+
+@push('scripts')
+    @vite('resources/js/views/payment-points/show.js')
+@endpush

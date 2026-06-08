@@ -172,3 +172,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    @vite('resources/js/views/payment-points/import.js')
+@endpush

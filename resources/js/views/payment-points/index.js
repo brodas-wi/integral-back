@@ -1,17 +1,29 @@
-import { showNotification } from "@/utils/notifications.js";
-import { initAgencyBulkGeocode } from "@/modules/agency-bulk-geocode.js";
+/**
+ * Payment Points Index View
+ *
+ * Handles:
+ *  - Bulk selection & geocoding progress
+ *  - Delete confirmation (index list)
+ *  - Dropdown toggles
+ *
+ * All interactions are wired via data-* attributes and event listeners.
+ * No inline onclick / onchange attributes are used in the blade template.
+ */
 
-const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
-const BASE_URL = document.querySelector('meta[name="agencies-base-url"]')?.content;
+import { showNotification } from "@/utils/notifications.js";
+import { initBulkGeocode } from "@/modules/payment-point-bulk-geocode.js";
+
+const CSRF     = document.querySelector('meta[name="csrf-token"]')?.content;
+const BASE_URL = document.querySelector('meta[name="payment-points-base-url"]')?.content;
 
 document.addEventListener("DOMContentLoaded", function () {
-
+    // ── Bulk geocode ────────────────────────────────────────────────────────
     if (document.getElementById("bulk-actions-bar")) {
-        initAgencyBulkGeocode();
+        initBulkGeocode();
     }
 
     // ── Checkbox change → update bulk-actions bar ───────────────────────────
-    document.querySelectorAll(".agency-checkbox").forEach((checkbox) => {
+    document.querySelectorAll(".point-checkbox").forEach((checkbox) => {
         checkbox.addEventListener("change", () => {
             if (typeof window.updateBulkActions === "function") {
                 window.updateBulkActions();
@@ -20,8 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // ── Bulk action buttons ─────────────────────────────────────────────────
-    const selectAllBtn = document.getElementById("select-all-btn");
-    const deselectAllBtn = document.getElementById("deselect-all-btn");
+    const selectAllBtn      = document.getElementById("select-all-btn");
+    const deselectAllBtn    = document.getElementById("deselect-all-btn");
     const geocodeSelectedBtn = document.getElementById("geocode-selected-btn");
 
     selectAllBtn?.addEventListener("click", () => {
@@ -53,40 +65,40 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // ── Delete buttons ──────────────────────────────────────────────────────
-    document.querySelectorAll(".delete-agency-btn").forEach((btn) => {
+    document.querySelectorAll(".delete-payment-point-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
-            const id   = btn.dataset.agencyId;
-            const name = btn.dataset.agencyName;
-            confirmDeleteAgency(id, name);
+            const id   = btn.dataset.pointId;
+            const name = btn.dataset.pointName;
+            confirmDeletePaymentPoint(id, name);
         });
     });
 });
 
 // ── Delete helpers ──────────────────────────────────────────────────────────
 
-function confirmDeleteAgency(agencyId, agencyName) {
+function confirmDeletePaymentPoint(pointId, pointName) {
     if (typeof window.showConfirmModal !== "function") {
-        if (confirm(`¿Eliminar "${agencyName}"? Esta acción no se puede deshacer.`)) {
-            deleteAgency(agencyId);
+        if (confirm(`¿Eliminar "${pointName}"? Esta acción no se puede deshacer.`)) {
+            deletePaymentPoint(pointId);
         }
         return;
     }
 
     window.showConfirmModal({
-        title: "¿Eliminar agencia?",
-        message: `¿Estás seguro de que deseas eliminar "<strong>${agencyName}</strong>"? Esta acción no se puede deshacer.`,
+        title: "¿Eliminar punto de pago?",
+        message: `¿Estás seguro de que deseas eliminar "<strong>${pointName}</strong>"? Esta acción no se puede deshacer.`,
         confirmText: "Eliminar",
         cancelText: "Cancelar",
         type: "danger",
-        onConfirm: () => deleteAgency(agencyId),
+        onConfirm: () => deletePaymentPoint(pointId),
     });
 }
 
-async function deleteAgency(agencyId) {
-    showNotification("Eliminando agencia...", "info");
+async function deletePaymentPoint(pointId) {
+    showNotification("Eliminando punto de pago...", "info");
 
     try {
-        const response = await fetch(`${BASE_URL}/${agencyId}`, {
+        const response = await fetch(`${BASE_URL}/${pointId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -104,14 +116,14 @@ async function deleteAgency(agencyId) {
         const data = await response.json();
 
         if (data.success) {
-            showNotification(data.message || "Agencia eliminada exitosamente", "success");
+            showNotification(data.message || "Punto de pago eliminado exitosamente", "success");
 
-            const agencyItem = document.getElementById(`agency-item-${agencyId}`);
-            if (agencyItem) {
-                agencyItem.classList.add("announcement-removing"); // reuse existing CSS transition
+            const pointItem = document.getElementById(`payment-point-item-${pointId}`);
+            if (pointItem) {
+                pointItem.classList.add("announcement-removing");
                 setTimeout(() => {
-                    agencyItem.remove();
-                    if (document.querySelectorAll('[id^="agency-item-"]').length === 0) {
+                    pointItem.remove();
+                    if (document.querySelectorAll('[id^="payment-point-item-"]').length === 0) {
                         window.location.reload();
                     }
                 }, 300);
@@ -124,7 +136,7 @@ async function deleteAgency(agencyId) {
             throw new Error(data.message || "Error al eliminar");
         }
     } catch (error) {
-        console.error("Error deleting agency:", error);
-        showNotification("Error al eliminar la agencia. " + error.message, "error");
+        console.error("Error deleting payment point:", error);
+        showNotification("Error al eliminar el punto de pago. " + error.message, "error");
     }
 }

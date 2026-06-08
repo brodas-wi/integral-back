@@ -133,15 +133,15 @@
             <span class="text-sm font-medium text-secondary">
                 <span id="selected-count">0</span> seleccionados
             </span>
-            <button type="button" onclick="selectAllVisible()" class="text-sm text-primary hover:underline">
+            <button type="button" id="select-all-btn" class="text-sm text-primary hover:underline">
                 Seleccionar página
             </button>
-            <button type="button" onclick="deselectAll()" class="text-sm text-gray-600 hover:underline">
+            <button type="button" id="deselect-all-btn" class="text-sm text-gray-600 hover:underline">
                 Deseleccionar todos
             </button>
         </div>
         <div class="flex items-center gap-2">
-            <button type="button" onclick="geocodeSelected()" id="geocode-selected-btn" class="btn-secondary btn-sm">
+            <button type="button" id="geocode-selected-btn" class="btn-secondary btn-sm">
                 <i class="ri-map-pin-line mr-2"></i>
                 Obtener Coordenadas
             </button>
@@ -167,15 +167,19 @@
     <div class="space-y-4">
         @foreach ($paymentPoints as $point)
         <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors payment-point-item"
-            id="payment-point-item-{{ $point->id }}" data-point-id="{{ $point->id }}"
-            data-address="{{ $point->address }}" data-municipality="{{ $point->municipality }}"
-            data-department="{{ $point->department }}" data-affiliate="{{ $point->affiliate }}"
-            data-branch="{{ $point->branch }}" data-has-coordinates="{{ $point->has_coordinates ? 'true' : 'false' }}">
+            id="payment-point-item-{{ $point->id }}"
+            data-point-id="{{ $point->id }}"
+            data-address="{{ $point->address }}"
+            data-municipality="{{ $point->municipality }}"
+            data-department="{{ $point->department }}"
+            data-affiliate="{{ $point->affiliate }}"
+            data-branch="{{ $point->branch }}"
+            data-has-coordinates="{{ $point->has_coordinates ? 'true' : 'false' }}">
             <div class="flex items-start gap-4">
                 <div class="flex items-start pt-1">
                     <input type="checkbox"
                         class="point-checkbox w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer"
-                        data-point-id="{{ $point->id }}" onchange="updateBulkActions()">
+                        data-point-id="{{ $point->id }}">
                 </div>
 
                 <div class="flex-1 min-w-0">
@@ -208,8 +212,8 @@
                 </div>
 
                 <div class="dropdown" data-dropdown>
-                    <button type="button" class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center"
-                        onclick="toggleDropdown(this.closest('.dropdown'))">
+                    <button type="button"
+                        class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center dropdown-trigger">
                         <i class="ri-more-2-fill text-xl"></i>
                     </button>
                     <div class="dropdown-menu">
@@ -227,8 +231,9 @@
                         @endcanany
                         @canany(['payment_points.delete', 'payment_points.manage'])
                         <button type="button"
-                            onclick="confirmDelete({{ $point->id }}, '{{ addslashes($point->affiliate) }} - {{ addslashes($point->branch) }}')"
-                            class="dropdown-item-danger">
+                            class="dropdown-item-danger delete-payment-point-btn"
+                            data-point-id="{{ $point->id }}"
+                            data-point-name="{{ addslashes($point->affiliate) }} - {{ addslashes($point->branch) }}">
                             <i class="ri-delete-bin-line"></i>
                             <span>Eliminar</span>
                         </button>
@@ -257,3 +262,15 @@
     @endif
 </div>
 @endsection
+
+@push('head')
+    <meta name="payment-points-base-url" content="{{ route('payment-points.index') }}">
+@endpush
+
+@push('styles')
+    @vite('resources/css/views/payment-points/payment-points.css')
+@endpush
+
+@push('scripts')
+    @vite('resources/js/views/payment-points/index.js')
+@endpush

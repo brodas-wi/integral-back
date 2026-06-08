@@ -14,7 +14,7 @@
 
     <div class="card mb-6">
         <div class="flex items-start gap-3 mb-4">
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">
                 <i class="ri-information-line text-2xl text-blue-600"></i>
             </div>
             <div class="flex-1">

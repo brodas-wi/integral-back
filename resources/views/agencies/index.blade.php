@@ -155,7 +155,7 @@
 
           <div class="space-y-2 text-sm">
             <div class="flex items-start gap-2">
-              <i class="ri-map-pin-2-line text-primary mt-0.5 flex-shrink-0"></i>
+              <i class="ri-map-pin-2-line text-primary mt-0.5 shrink-0"></i>
               <div class="flex-1">
                 <p class="text-gray-700">{{ $agency->address }}</p>
                 <p class="text-gray-600 text-xs">{{ $agency->municipality }}, {{ $agency->department }}</p>
@@ -163,7 +163,7 @@
             </div>
 
             <div class="flex items-start gap-2">
-              <i class="ri-time-line text-primary mt-0.5 flex-shrink-0"></i>
+              <i class="ri-time-line text-primary mt-0.5 shrink-0"></i>
               <div class="flex-1">
                 <p class="text-gray-700">Actualizado: {{ $agency->updated_at->format('d/m/Y H:i') }}</p>
                 <p class="text-gray-600 text-xs">Por {{ $agency->updater->name }}</p>

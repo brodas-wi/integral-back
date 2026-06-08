@@ -25,17 +25,6 @@ import {
     confirmDeleteMediaShow,
 } from "./modules/media.js";
 import { initProfileEdit } from "./modules/profile.js";
-import {
-    filterDepartmentsByZone as paymentPointFilterDepartments,
-    loadMunicipalities as paymentPointLoadMunicipalities,
-    geocodeAddress as paymentPointGeocodeAddress,
-    confirmDeletePaymentPoint,
-    deletePaymentPoint,
-} from "./modules/payment-points.js";
-import { initAgencyMap } from "./modules/agency-map.js";
-import { initAgencyFormMap } from "./modules/agency-form-map.js";
-import { initPaymentPointImport } from "./modules/payment-point-import.js";
-import { initBulkGeocode } from "./modules/payment-point-bulk-geocode.js";
 
 // ── Global helpers exposed to all views ────────────────────────────────────
 window.toggleDropdown = toggleDropdown;
@@ -55,16 +44,6 @@ window.confirmDeleteMediaShow = confirmDeleteMediaShow;
 
 window.initProfileEdit = initProfileEdit;
 
-// ── Payment-points globals (still use window.* pattern) ───────────────────
-if (window.location.pathname.includes("/payment-points")) {
-    window.filterDepartmentsByZone = paymentPointFilterDepartments;
-    window.loadMunicipalities      = paymentPointLoadMunicipalities;
-    window.geocodeAddress          = paymentPointGeocodeAddress;
-    window.confirmDelete           = confirmDeletePaymentPoint;
-    window.confirmDeletePaymentPoint = confirmDeletePaymentPoint;
-    window.deletePaymentPoint      = deletePaymentPoint;
-}
-
 // ── DOMContentLoaded initializations ──────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector(".permission-checkbox")) {
@@ -77,22 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (document.getElementById("toggleEditMode")) {
         initProfileEdit();
-    }
-
-    if (document.getElementById("agency-map")) {
-        initAgencyMap();
-    }
-
-    if (document.getElementById("agency-form-map")) {
-        initAgencyFormMap();
-    }
-
-    if (document.getElementById("import-form") && window.location.pathname.includes("/payment-points")) {
-        initPaymentPointImport();
-    }
-
-    if (document.getElementById("bulk-actions-bar") && window.location.pathname.includes("/payment-points")) {
-        initBulkGeocode();
     }
 
     // ── Announcement modal (public preview pages only) ─────────────────────

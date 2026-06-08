@@ -40,15 +40,15 @@
                             </h3>
                             <div class="space-y-2">
                                 <div class="flex items-start gap-2">
-                                    <span class="text-sm text-gray-600 w-24 flex-shrink-0">Dirección:</span>
+                                    <span class="text-sm text-gray-600 w-24 shrink-0">Dirección:</span>
                                     <span class="text-sm text-secondary flex-1">{{ $agency->address }}</span>
                                 </div>
                                 <div class="flex items-start gap-2">
-                                    <span class="text-sm text-gray-600 w-24 flex-shrink-0">Departamento:</span>
+                                    <span class="text-sm text-gray-600 w-24 shrink-0">Departamento:</span>
                                     <span class="text-sm text-secondary flex-1">{{ $agency->department }}</span>
                                 </div>
                                 <div class="flex items-start gap-2">
-                                    <span class="text-sm text-gray-600 w-24 flex-shrink-0">Municipio:</span>
+                                    <span class="text-sm text-gray-600 w-24 shrink-0">Municipio:</span>
                                     <span class="text-sm text-secondary flex-1">{{ $agency->municipality }}</span>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                                 </div>
                             </div>
                             <a href="{{ $agency->google_maps_link }}" target="_blank"
-                                class="btn-outline btn-sm inline-flex items-center whitespace-nowrap flex-shrink-0">
+                                class="btn-outline btn-sm inline-flex items-center whitespace-nowrap shrink-0">
                                 <i class="ri-map-pin-line mr-2"></i>
                                 Google Maps
                             </a>
