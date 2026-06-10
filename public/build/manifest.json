@@ -274,7 +274,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CyV2yxxk.css",
+    "file": "assets/app-DdmCATVc.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -446,7 +446,7 @@
     ]
   },
   "resources/js/layouts/admin-layout.js": {
-    "file": "assets/admin-layout-Cpvjqcbv.js",
+    "file": "assets/admin-layout-DFT044Je.js",
     "name": "admin-layout",
     "src": "resources/js/layouts/admin-layout.js",
     "isEntry": true,

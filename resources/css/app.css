@@ -100,6 +100,37 @@
         @apply bg-primary text-white;
     }
 
+    .sidebar-group {
+        @apply rounded-lg overflow-hidden;
+    }
+
+    .sidebar-group-btn {
+        @apply w-full flex items-center justify-between px-4 py-3 text-gray hover:bg-primary hover:text-white rounded-lg transition-all duration-200 cursor-pointer;
+    }
+
+    .sidebar-group.is-open .sidebar-group-btn {
+        background-color: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+        @apply text-secondary;
+    }
+
+    .sidebar-group-arrow {
+        @apply transition-transform duration-300 flex-shrink-0;
+    }
+
+    .sidebar-group-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .sidebar-child-link {
+        @apply flex items-center gap-3 pl-10 pr-4 py-2.5 text-sm text-gray hover:bg-primary hover:text-white rounded-lg transition-all duration-200 mt-0.5;
+    }
+
+    .sidebar-child-link.active {
+        @apply bg-primary text-white;
+    }
+
     .table-header {
         @apply bg-secondary text-white font-semibold py-3 px-4 text-left;
     }

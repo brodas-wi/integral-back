@@ -27,92 +27,140 @@
                     </button>
                 </div>
 
-                <nav class="flex-1 overflow-y-auto p-4">
+                <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+
                     <a href="{{ route('dashboard') }}"
                         class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         <i class="ri-home-line text-xl"></i>
                         <span>Inicio</span>
                     </a>
 
-                    @canany(['users.view', 'users.manage'])
-                        <a href="{{ route('users.index') }}"
-                            class="sidebar-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                            <i class="ri-user-line text-xl"></i>
-                            <span>Usuarios</span>
-                        </a>
+                    @php
+                        $adminGroupActive = request()->routeIs('users.*') || request()->routeIs('roles.*');
+                    @endphp
+                    @canany(['users.view', 'users.manage', 'roles.view', 'roles.manage'])
+                        <div class="sidebar-group" data-group="administracion" data-open="{{ $adminGroupActive ? 'true' : 'false' }}">
+                            <button type="button" class="sidebar-group-btn">
+                                <div class="flex items-center gap-3">
+                                    <i class="ri-settings-3-line text-xl"></i>
+                                    <span>Administración</span>
+                                </div>
+                                <i class="ri-arrow-down-s-line sidebar-group-arrow text-lg"></i>
+                            </button>
+                            <div class="sidebar-group-content">
+                                @canany(['users.view', 'users.manage'])
+                                    <a href="{{ route('users.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                                        <i class="ri-user-line text-lg"></i>
+                                        <span>Usuarios</span>
+                                    </a>
+                                @endcanany
+                                @canany(['roles.view', 'roles.manage'])
+                                    <a href="{{ route('roles.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                                        <i class="ri-shield-user-line text-lg"></i>
+                                        <span>Roles</span>
+                                    </a>
+                                @endcanany
+                            </div>
+                        </div>
                     @endcanany
 
-                    @canany(['roles.view', 'roles.manage'])
-                        <a href="{{ route('roles.index') }}"
-                            class="sidebar-link {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                            <i class="ri-shield-user-line text-xl"></i>
-                            <span>Roles</span>
-                        </a>
+                    @php
+                        $contentGroupActive = request()->routeIs('pages.*')
+                            || request()->routeIs('navbars.*')
+                            || request()->routeIs('footers.*')
+                            || request()->routeIs('media.*')
+                            || request()->routeIs('banners.*')
+                            || request()->routeIs('announcements.*');
+                    @endphp
+                    @canany(['pages.view', 'pages.manage', 'navbars.view', 'navbars.manage', 'footers.view', 'footers.manage', 'media.view', 'media.manage', 'banners.view', 'banners.manage', 'announcements.view', 'announcements.manage'])
+                        <div class="sidebar-group" data-group="contenido" data-open="{{ $contentGroupActive ? 'true' : 'false' }}">
+                            <button type="button" class="sidebar-group-btn">
+                                <div class="flex items-center gap-3">
+                                    <i class="ri-layout-line text-xl"></i>
+                                    <span>Contenido Web</span>
+                                </div>
+                                <i class="ri-arrow-down-s-line sidebar-group-arrow text-lg"></i>
+                            </button>
+                            <div class="sidebar-group-content">
+                                @canany(['pages.view', 'pages.manage'])
+                                    <a href="{{ route('pages.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('pages.*') ? 'active' : '' }}">
+                                        <i class="ri-pages-line text-lg"></i>
+                                        <span>Páginas</span>
+                                    </a>
+                                @endcanany
+                                @canany(['navbars.view', 'navbars.manage'])
+                                    <a href="{{ route('navbars.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('navbars.*') ? 'active' : '' }}">
+                                        <i class="ri-layout-top-line text-lg"></i>
+                                        <span>Navbars</span>
+                                    </a>
+                                @endcanany
+                                @canany(['footers.view', 'footers.manage'])
+                                    <a href="{{ route('footers.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('footers.*') ? 'active' : '' }}">
+                                        <i class="ri-layout-bottom-line text-lg"></i>
+                                        <span>Footers</span>
+                                    </a>
+                                @endcanany
+                                @canany(['media.view', 'media.manage'])
+                                    <a href="{{ route('media.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('media.*') ? 'active' : '' }}">
+                                        <i class="ri-image-line text-lg"></i>
+                                        <span>Medios</span>
+                                    </a>
+                                @endcanany
+                                @canany(['banners.view', 'banners.manage'])
+                                    <a href="{{ route('banners.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('banners.*') ? 'active' : '' }}">
+                                        <i class="ri-image-2-line text-lg"></i>
+                                        <span>Banners</span>
+                                    </a>
+                                @endcanany
+                                @canany(['announcements.view', 'announcements.manage'])
+                                    <a href="{{ route('announcements.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('announcements.*') ? 'active' : '' }}">
+                                        <i class="ri-notification-line text-lg"></i>
+                                        <span>Avisos</span>
+                                    </a>
+                                @endcanany
+                            </div>
+                        </div>
                     @endcanany
 
-                    @canany(['pages.view', 'pages.manage'])
-                        <a href="{{ route('pages.index') }}"
-                            class="sidebar-link {{ request()->routeIs('pages.*') ? 'active' : '' }}">
-                            <i class="ri-pages-line text-xl"></i>
-                            <span>Páginas</span>
-                        </a>
+                    @php
+                        $servicesGroupActive = request()->routeIs('agencies.*') || request()->routeIs('payment-points.*');
+                    @endphp
+                    @canany(['agencies.view', 'agencies.manage', 'payment_points.view', 'payment_points.manage'])
+                        <div class="sidebar-group" data-group="servicios" data-open="{{ $servicesGroupActive ? 'true' : 'false' }}">
+                            <button type="button" class="sidebar-group-btn">
+                                <div class="flex items-center gap-3">
+                                    <i class="ri-map-pin-line text-xl"></i>
+                                    <span>Red de Servicios</span>
+                                </div>
+                                <i class="ri-arrow-down-s-line sidebar-group-arrow text-lg"></i>
+                            </button>
+                            <div class="sidebar-group-content">
+                                @canany(['agencies.view', 'agencies.manage'])
+                                    <a href="{{ route('agencies.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('agencies.*') ? 'active' : '' }}">
+                                        <i class="ri-building-line text-lg"></i>
+                                        <span>Agencias</span>
+                                    </a>
+                                @endcanany
+                                @canany(['payment_points.view', 'payment_points.manage'])
+                                    <a href="{{ route('payment-points.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('payment-points.*') ? 'active' : '' }}">
+                                        <i class="ri-store-line text-lg"></i>
+                                        <span>Puntos de Pago</span>
+                                    </a>
+                                @endcanany
+                            </div>
+                        </div>
                     @endcanany
 
-                    @canany(['navbars.view', 'navbars.manage'])
-                        <a href="{{ route('navbars.index') }}"
-                            class="sidebar-link {{ request()->routeIs('navbars.*') ? 'active' : '' }}">
-                            <i class="ri-layout-top-line text-xl"></i>
-                            <span>Navbars</span>
-                        </a>
-                    @endcanany
-
-                    @canany(['footers.view', 'footers.manage'])
-                        <a href="{{ route('footers.index') }}"
-                            class="sidebar-link {{ request()->routeIs('footers.*') ? 'active' : '' }}">
-                            <i class="ri-layout-bottom-line text-xl"></i>
-                            <span>Footers</span>
-                        </a>
-                    @endcanany
-
-                    @canany(['media.view', 'media.manage'])
-                        <a href="{{ route('media.index') }}"
-                            class="sidebar-link {{ request()->routeIs('media.*') ? 'active' : '' }}">
-                            <i class="ri-image-line text-xl"></i>
-                            <span>Medios</span>
-                        </a>
-                    @endcanany
-
-                    @canany(['agencies.view', 'agencies.manage'])
-                        <a href="{{ route('agencies.index') }}"
-                            class="sidebar-link {{ request()->routeIs('agencies.*') ? 'active' : '' }}">
-                            <i class="ri-building-line text-xl"></i>
-                            <span>Agencias</span>
-                        </a>
-                    @endcanany
-
-                    @canany(['payment_points.view', 'payment_points.manage'])
-                        <a href="{{ route('payment-points.index') }}"
-                            class="sidebar-link {{ request()->routeIs('payment-points.*') ? 'active' : '' }}">
-                            <i class="ri-store-line text-xl"></i>
-                            <span>Puntos de Pago</span>
-                        </a>
-                    @endcanany
-
-                    @canany(['announcements.view', 'announcements.manage'])
-                        <a href="{{ route('announcements.index') }}"
-                            class="sidebar-link {{ request()->routeIs('announcements.*') ? 'active' : '' }}">
-                            <i class="ri-notification-line text-xl"></i>
-                            <span>Avisos</span>
-                        </a>
-                    @endcanany
-
-                    @canany(['banners.view', 'banners.manage'])
-                        <a href="{{ route('banners.index') }}"
-                            class="sidebar-link {{ request()->routeIs('banners.*') ? 'active' : '' }}">
-                            <i class="ri-image-2-line text-xl"></i>
-                            <span>Banners</span>
-                        </a>
-                    @endcanany
                 </nav>
 
                 @auth
