@@ -12,6 +12,7 @@ use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\PaymentPointController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\ScriptController;
 use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
@@ -557,6 +558,55 @@ Route::middleware(['auth'])->group(function () {
     // API pública para el bloque GrapesJS
     Route::get('/api/banners/active', [BannerController::class, 'apiIndex'])
         ->name('api.banners.active');
+
+    // ==========================================
+    // SCRIPTS MODULE ROUTES
+    // ==========================================
+    Route::prefix('scripts')->name('scripts.')->group(function () {
+        Route::get('/', [ScriptController::class, 'index'])
+            ->name('index')
+            ->middleware('can:scripts.view,scripts.manage');
+
+        Route::get('/create', [ScriptController::class, 'create'])
+            ->name('create')
+            ->middleware('can:scripts.create,scripts.manage');
+
+        Route::post('/', [ScriptController::class, 'store'])
+            ->name('store')
+            ->middleware('can:scripts.create,scripts.manage');
+
+        Route::get('/{script}/edit', [ScriptController::class, 'edit'])
+            ->name('edit')
+            ->middleware('can:scripts.edit,scripts.manage');
+
+        Route::put('/{script}', [ScriptController::class, 'update'])
+            ->name('update')
+            ->middleware('can:scripts.edit,scripts.manage');
+
+        Route::get('/{script}', [ScriptController::class, 'show'])
+            ->name('show')
+            ->middleware('can:scripts.view,scripts.manage');
+
+        Route::patch('/{script}/toggle-active', [ScriptController::class, 'toggleActive'])
+            ->name('toggle-active')
+            ->middleware('can:scripts.activate,scripts.manage');
+
+        Route::patch('/{script}/approve', [ScriptController::class, 'approve'])
+            ->name('approve')
+            ->middleware('can:scripts.approve,scripts.manage');
+
+        Route::patch('/{script}/reject', [ScriptController::class, 'reject'])
+            ->name('reject')
+            ->middleware('can:scripts.approve,scripts.manage');
+
+        Route::delete('/{script}', [ScriptController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware('can:scripts.delete,scripts.manage');
+    });
+
+    // API endpoint for scripts (shared DB - public frontend consumes this)
+    Route::get('/api/scripts/active', [ScriptController::class, 'apiActive'])
+        ->name('api.scripts.active');
 
     // ==========================================
     // ROUTES (Coming Soon)

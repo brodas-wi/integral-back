@@ -72,14 +72,15 @@
                             || request()->routeIs('footers.*')
                             || request()->routeIs('media.*')
                             || request()->routeIs('banners.*')
-                            || request()->routeIs('announcements.*');
+                            || request()->routeIs('announcements.*')
+                            || request()->routeIs('scripts.*');
                     @endphp
-                    @canany(['pages.view', 'pages.manage', 'navbars.view', 'navbars.manage', 'footers.view', 'footers.manage', 'media.view', 'media.manage', 'banners.view', 'banners.manage', 'announcements.view', 'announcements.manage'])
+                    @canany(['pages.view', 'pages.manage', 'navbars.view', 'navbars.manage', 'footers.view', 'footers.manage', 'media.view', 'media.manage', 'banners.view', 'banners.manage', 'announcements.view', 'announcements.manage', 'scripts.view', 'scripts.manage'])
                         <div class="sidebar-group" data-group="contenido" data-open="{{ $contentGroupActive ? 'true' : 'false' }}">
                             <button type="button" class="sidebar-group-btn">
                                 <div class="flex items-center gap-3">
                                     <i class="ri-layout-line text-xl"></i>
-                                    <span>Contenido Web</span>
+                                    <span>Contenido</span>
                                 </div>
                                 <i class="ri-arrow-down-s-line sidebar-group-arrow text-lg"></i>
                             </button>
@@ -124,6 +125,13 @@
                                         class="sidebar-child-link {{ request()->routeIs('announcements.*') ? 'active' : '' }}">
                                         <i class="ri-notification-line text-lg"></i>
                                         <span>Avisos</span>
+                                    </a>
+                                @endcanany
+                                @canany(['scripts.view', 'scripts.manage'])
+                                    <a href="{{ route('scripts.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('scripts.*') ? 'active' : '' }}">
+                                        <i class="ri-code-s-slash-line text-lg"></i>
+                                        <span>Scripts</span>
                                     </a>
                                 @endcanany
                             </div>

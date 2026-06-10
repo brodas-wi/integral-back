@@ -70,6 +70,10 @@ document.addEventListener("DOMContentLoaded", function () {
         path.startsWith("/agencies") ||
         path.startsWith("/payment-points") ||
         path.startsWith("/announcements") ||
+        path.startsWith("/banners") ||
+        path.startsWith("/navbars") ||
+        path.startsWith("/footers") ||
+        path.startsWith("/scripts") ||
         path.startsWith("/profile");
 
     const isAuthRoute =

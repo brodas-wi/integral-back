@@ -44,6 +44,24 @@ class SecurityHeaders
         "upgrade-insecure-requests" => [],
     ];
 
+    private array $scriptsCsp = [
+        "default-src"               => ["'self'"],
+        "script-src"                => ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        "style-src"                 => ["'self'", "'unsafe-inline'"],
+        "img-src"                   => ["'self'", "data:", "blob:", "https:"],
+        "font-src"                  => ["'self'", "data:"],
+        "connect-src"               => ["'self'"],
+        "media-src"                 => ["'self'"],
+        "object-src"                => ["'none'"],
+        "frame-src"                 => ["'self'"],
+        "frame-ancestors"           => ["'self'"],
+        "base-uri"                  => ["'self'"],
+        "form-action"               => ["'self'"],
+        "worker-src"                => ["'self'", "blob:"],
+        "manifest-src"              => ["'self'"],
+        "upgrade-insecure-requests" => [],
+    ];
+
     private array $editorRoutes = [
         'pages/create',
         'pages/*/edit',
@@ -55,6 +73,11 @@ class SecurityHeaders
         'footers/*/preview',
     ];
 
+    private array $scriptsEditorRoutes = [
+        'scripts/create',
+        'scripts/*/edit',
+    ];
+
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
@@ -62,6 +85,7 @@ class SecurityHeaders
         $assetUrl = config('app.asset_url', config('app.url'));
         $this->defaultCsp['frame-src'][] = $assetUrl;
         $this->editorCsp['frame-src'][] = $assetUrl;
+        $this->scriptsCsp['frame-src'][] = $assetUrl;
 
         $viteSources = $this->getViteDevSources();
 
@@ -75,6 +99,10 @@ class SecurityHeaders
                     $this->editorCsp[$directive] ?? [],
                     $viteSources
                 );
+                $this->scriptsCsp[$directive] = array_merge(
+                    $this->scriptsCsp[$directive] ?? [],
+                    $viteSources
+                );
             }
 
             $viteStyleSources = array_merge($viteSources, ["'unsafe-inline'"]);
@@ -86,11 +114,19 @@ class SecurityHeaders
                 $this->editorCsp['style-src'] ?? [],
                 $viteStyleSources
             );
+            $this->scriptsCsp['style-src'] = array_merge(
+                $this->scriptsCsp['style-src'] ?? [],
+                $viteStyleSources
+            );
         }
 
-        $csp = $this->isEditorRoute($request)
-            ? $this->buildCsp($this->editorCsp)
-            : $this->buildCsp($this->defaultCsp);
+        if ($this->isScriptsEditorRoute($request)) {
+            $csp = $this->buildCsp($this->scriptsCsp);
+        } elseif ($this->isEditorRoute($request)) {
+            $csp = $this->buildCsp($this->editorCsp);
+        } else {
+            $csp = $this->buildCsp($this->defaultCsp);
+        }
 
         $response->headers->set('Content-Security-Policy', $csp);
         $response->headers->set('X-Content-Type-Options', 'nosniff');
@@ -108,6 +144,16 @@ class SecurityHeaders
     private function isEditorRoute(Request $request): bool
     {
         foreach ($this->editorRoutes as $pattern) {
+            if ($request->is($pattern)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function isScriptsEditorRoute(Request $request): bool
+    {
+        foreach ($this->scriptsEditorRoutes as $pattern) {
             if ($request->is($pattern)) {
                 return true;
             }

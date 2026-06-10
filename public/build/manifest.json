@@ -28,6 +28,10 @@
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
+  "_index-DcNlVx-A.js": {
+    "file": "assets/index-DcNlVx-A.js",
+    "name": "index"
+  },
   "_leaflet-DrSzxzmd.js": {
     "file": "assets/leaflet-DrSzxzmd.js",
     "name": "leaflet",
@@ -274,7 +278,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DdmCATVc.css",
+    "file": "assets/app-Cnz_O5CY.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -403,12 +407,22 @@
       "payment-points.css"
     ]
   },
+  "resources/css/views/scripts/scripts.css": {
+    "file": "assets/scripts-Cq_b2Djl.css",
+    "src": "resources/css/views/scripts/scripts.css",
+    "isEntry": true,
+    "name": "scripts",
+    "names": [
+      "scripts.css"
+    ]
+  },
   "resources/js/app.js": {
-    "file": "assets/app-BgzTimd9.js",
+    "file": "assets/app-CHRs9GfR.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
+      "_index-DcNlVx-A.js",
       "_notifications-Cgjr4krQ.js",
       "_modals-D7u3LXeA.js",
       "_dropdowns-CtvQ6cwq.js",
@@ -685,6 +699,21 @@
       "_agency-map-CIkQKVsm.js",
       "_leaflet-DrSzxzmd.js",
       "__commonjsHelpers-CqkleIqs.js"
+    ]
+  },
+  "resources/js/views/scripts/form.js": {
+    "file": "assets/form-BTY0AOwl.js",
+    "name": "form",
+    "src": "resources/js/views/scripts/form.js",
+    "isEntry": true
+  },
+  "resources/js/views/scripts/index.js": {
+    "file": "assets/index-BLrvtdSN.js",
+    "name": "index",
+    "src": "resources/js/views/scripts/index.js",
+    "isEntry": true,
+    "imports": [
+      "_index-DcNlVx-A.js"
     ]
   }
 }

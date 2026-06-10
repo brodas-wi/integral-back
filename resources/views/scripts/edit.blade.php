@@ -1,0 +1,254 @@
+@extends('layouts.admin')
+
+@section('title', 'Editar Script')
+@section('page-title', 'Editar Script')
+
+@section('content')
+<div class="max-w-5xl">
+    <div class="mb-6 flex items-center gap-3">
+        <a href="{{ route('scripts.show', $script) }}" class="btn-outline inline-flex items-center">
+            <i class="ri-arrow-left-line mr-2"></i>
+            Volver
+        </a>
+        @if($script->isRejected())
+            <div class="flex-1 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <p class="text-sm text-red-700 font-medium">
+                    <i class="ri-close-circle-line mr-1"></i>
+                    Script rechazado. Motivo: <span class="font-normal">{{ $script->rejection_reason }}</span>
+                </p>
+            </div>
+        @endif
+    </div>
+
+    @php $canAutoApprove = auth()->user()->can('scripts.auto_approve') || auth()->user()->can('scripts.manage'); @endphp
+
+    <form id="scriptForm" method="POST" action="{{ route('scripts.update', $script) }}" class="space-y-6">
+        @csrf
+        @method('PUT')
+
+        <div class="card">
+            <h3 class="text-lg font-semibold text-secondary mb-4">Información General</h3>
+            <div class="space-y-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-secondary mb-2">
+                        Nombre <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="name" name="name" value="{{ old('name', $script->name) }}" required
+                        class="input-field @error('name') border-red-500 @enderror"
+                        placeholder="Ej: Google Analytics, Botón flotante WhatsApp">
+                    @error('name')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="description" class="block text-sm font-medium text-secondary mb-2">Descripción</label>
+                    <textarea id="description" name="description" rows="2"
+                        class="input-field @error('description') border-red-500 @enderror"
+                        placeholder="Describe brevemente el propósito de este script...">{{ old('description', $script->description) }}</textarea>
+                    @error('description')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="text-lg font-semibold text-secondary mb-4">Tipo y Alcance</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-secondary mb-3">Tipo de Script <span class="text-red-500">*</span></label>
+                    <div class="space-y-2">
+                        @foreach(['js' => ['label' => 'JavaScript', 'icon' => 'ri-javascript-line', 'color' => 'text-yellow-500', 'desc' => 'Analytics, widgets, botones flotantes, chat, etc.'], 'css' => ['label' => 'CSS', 'icon' => 'ri-css3-line', 'color' => 'text-blue-500', 'desc' => 'Estilos adicionales, personalizaciones visuales, etc.']] as $val => $opt)
+                            @php $checked = old('type', $script->type) === $val; @endphp
+                            <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-colors {{ $checked ? 'border-primary bg-primary bg-opacity-5' : 'border-gray-200 hover:border-primary' }}">
+                                <input type="radio" name="type" value="{{ $val }}" {{ $checked ? 'checked' : '' }}
+                                    class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary script-type-radio">
+                                <div class="ml-3">
+                                    <div class="flex items-center gap-2">
+                                        <i class="{{ $opt['icon'] }} {{ $opt['color'] }} text-lg"></i>
+                                        <p class="font-medium text-secondary">{{ $opt['label'] }}</p>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mt-1">{{ $opt['desc'] }}</p>
+                                </div>
+                            </label>
+                        @endforeach
+                    </div>
+                    @error('type')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-secondary mb-3">Alcance <span class="text-red-500">*</span></label>
+                    <div class="space-y-2">
+                        @foreach(['global' => ['label' => 'Global', 'icon' => 'ri-global-line', 'color' => 'text-green-500', 'desc' => 'Se aplica en todas las páginas del sitio.'], 'per_page' => ['label' => 'Por página', 'icon' => 'ri-pages-line', 'color' => 'text-purple-500', 'desc' => 'Solo en las páginas que selecciones.']] as $val => $opt)
+                            @php $checked = old('scope', $script->scope) === $val; @endphp
+                            <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-colors {{ $checked ? 'border-primary bg-primary bg-opacity-5' : 'border-gray-200 hover:border-primary' }}">
+                                <input type="radio" name="scope" value="{{ $val }}" {{ $checked ? 'checked' : '' }}
+                                    class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary script-scope-radio">
+                                <div class="ml-3">
+                                    <div class="flex items-center gap-2">
+                                        <i class="{{ $opt['icon'] }} {{ $opt['color'] }} text-lg"></i>
+                                        <p class="font-medium text-secondary">{{ $opt['label'] }}</p>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mt-1">{{ $opt['desc'] }}</p>
+                                </div>
+                            </label>
+                        @endforeach
+                    </div>
+                    @error('scope')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                </div>
+            </div>
+
+            <div id="page-selector" class="{{ old('scope', $script->scope) === 'per_page' ? '' : 'hidden' }} mt-4">
+                <label class="block text-sm font-medium text-secondary mb-2">Seleccionar Páginas <span class="text-red-500">*</span></label>
+                @if($pages->count() > 0)
+                    <div class="max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3 space-y-2 bg-gray-50">
+                        @foreach($pages as $page)
+                            @php
+                                $selectedSlugs = old('page_slugs', $script->page_slugs ?? []);
+                                $isChecked = is_array($selectedSlugs) && in_array($page->slug, $selectedSlugs);
+                            @endphp
+                            <div class="flex items-center">
+                                <input type="checkbox" id="page_{{ $page->id }}" name="page_slugs[]"
+                                    value="{{ $page->slug }}" {{ $isChecked ? 'checked' : '' }}
+                                    class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                                <label for="page_{{ $page->id }}" class="ml-2 text-sm text-gray-700 cursor-pointer">
+                                    {{ $page->title }}
+                                    <span class="text-gray-400 text-xs">/{{ $page->slug }}</span>
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-sm text-gray-500 italic">No hay páginas publicadas disponibles.</p>
+                @endif
+                @error('page_slugs')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-secondary">
+                    Código
+                    <span id="editor-type-label" class="text-sm font-normal text-gray-500 ml-2">
+                        {{ $script->type === 'js' ? 'JavaScript' : 'CSS' }}
+                    </span>
+                </h3>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="btn-format" class="btn-outline btn-sm">
+                        <i class="ri-magic-line mr-1"></i>Formatear
+                    </button>
+                    <button type="button" id="btn-help" class="btn-ghost btn-sm">
+                        <i class="ri-question-line mr-1"></i>Ayuda
+                    </button>
+                </div>
+            </div>
+
+            <div id="security-warning" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <div class="flex items-start gap-2">
+                    <i class="ri-error-warning-line text-red-500 text-lg shrink-0 mt-0.5"></i>
+                    <div>
+                        <p class="text-sm font-medium text-red-700">Patrones no permitidos detectados</p>
+                        <p id="security-warning-detail" class="text-xs text-red-600 mt-1"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="js-editor-wrapper" class="script-editor-wrapper {{ $script->type === 'css' ? 'hidden' : '' }}">
+                <div id="js-editor" class="script-codemirror-editor" data-content="{{ old('js_content', $script->js_content) }}"></div>
+                <textarea id="js_content" name="js_content" class="hidden">{{ old('js_content', $script->js_content) }}</textarea>
+                @error('js_content')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+            </div>
+
+            <div id="css-editor-wrapper" class="script-editor-wrapper {{ $script->type === 'js' ? 'hidden' : '' }}">
+                <div id="css-editor" class="script-codemirror-editor" data-content="{{ old('css_content', $script->css_content) }}"></div>
+                <textarea id="css_content" name="css_content" class="hidden">{{ old('css_content', $script->css_content) }}</textarea>
+                @error('css_content')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="text-lg font-semibold text-secondary mb-3">Publicación</h3>
+            @if($canAutoApprove)
+                <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <i class="ri-shield-check-line text-green-600 text-lg"></i>
+                        <p class="text-sm text-green-700 font-medium">Tienes permiso de auto-aprobación.</p>
+                    </div>
+                    <p class="text-xs text-green-600 mt-1">El script será aprobado automáticamente al guardarlo.</p>
+                </div>
+            @else
+                <div class="space-y-3">
+                    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <p class="text-sm text-yellow-700">
+                            <i class="ri-information-line mr-1"></i>
+                            Al editar, el script volverá a estado borrador o pendiente de revisión.
+                        </p>
+                    </div>
+                    <label class="flex items-start p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                        <input type="checkbox" name="submit_for_review" value="1"
+                            {{ old('submit_for_review') ? 'checked' : '' }}
+                            id="submit_for_review"
+                            class="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                        <div class="ml-3">
+                            <p class="font-medium text-secondary">Enviar a revisión</p>
+                            <p class="text-sm text-gray-500 mt-1">Envía el script al revisor para su aprobación.</p>
+                        </div>
+                    </label>
+                </div>
+            @endif
+        </div>
+
+        <div class="flex justify-between gap-4">
+            <a href="{{ route('scripts.show', $script) }}" class="btn-outline">
+                <i class="ri-close-line mr-2"></i>Cancelar
+            </a>
+            <button type="submit" id="btn-submit" class="btn-primary">
+                <i class="ri-save-line mr-2"></i>
+                {{ $canAutoApprove ? 'Guardar y Aprobar' : 'Guardar Cambios' }}
+            </button>
+        </div>
+    </form>
+</div>
+
+<div id="help-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div class="flex items-center justify-between p-6 border-b shrink-0">
+            <h3 class="text-xl font-semibold text-secondary flex items-center gap-2">
+                <i class="ri-question-line text-primary"></i>Guía de Scripts
+            </h3>
+            <button type="button" id="close-help-modal" class="text-gray-400 hover:text-gray-600">
+                <i class="ri-close-line text-2xl"></i>
+            </button>
+        </div>
+        <div class="p-6 overflow-y-auto space-y-4">
+            <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                <h4 class="font-semibold text-red-700 mb-2">⚠️ Restricciones de Seguridad (CSP)</h4>
+                <ul class="text-sm text-red-600 space-y-1 list-disc list-inside">
+                    <li>Eventos inline: <code class="bg-red-100 px-1 rounded">onclick</code>, <code class="bg-red-100 px-1 rounded">onload</code>, <code class="bg-red-100 px-1 rounded">onerror</code></li>
+                    <li>URLs: <code class="bg-red-100 px-1 rounded">javascript:</code></li>
+                    <li>Estilos inline: <code class="bg-red-100 px-1 rounded">style="..."</code></li>
+                    <li>Funciones: <code class="bg-red-100 px-1 rounded">document.write()</code></li>
+                </ul>
+            </div>
+            <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 class="font-semibold text-blue-700 mb-2">💡 Buenas Prácticas</h4>
+                <ul class="text-sm text-blue-600 space-y-1 list-disc list-inside">
+                    <li>Envuelve JS en IIFE: <code class="bg-blue-100 px-1 rounded">(function() {{ '{}' }})();</code></li>
+                    <li>Usa <code class="bg-blue-100 px-1 rounded">DOMContentLoaded</code> para esperar el DOM</li>
+                    <li>Evita variables globales</li>
+                    <li>Usa clases CSS específicas para evitar conflictos</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endsection
+
+@push('styles')
+    @vite('resources/css/views/scripts/scripts.css')
+@endpush
+
+@push('scripts')
+    @vite('resources/js/views/scripts/form.js')
+@endpush

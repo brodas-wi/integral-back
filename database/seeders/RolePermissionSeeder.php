@@ -82,6 +82,14 @@ class RolePermissionSeeder extends Seeder
             'footers.manage',
             'footers.toggle',
             'footers.restore',
+            'scripts.view',
+            'scripts.create',
+            'scripts.edit',
+            'scripts.delete',
+            'scripts.activate',
+            'scripts.approve',
+            'scripts.auto_approve',
+            'scripts.manage',
         ];
 
         foreach ($permissions as $permission) {
