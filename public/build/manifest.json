@@ -278,7 +278,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Cnz_O5CY.css",
+    "file": "assets/app-QS8DCnhx.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -408,7 +408,7 @@
     ]
   },
   "resources/css/views/scripts/scripts.css": {
-    "file": "assets/scripts-Cq_b2Djl.css",
+    "file": "assets/scripts-CS0n6arA.css",
     "src": "resources/css/views/scripts/scripts.css",
     "isEntry": true,
     "name": "scripts",
@@ -702,7 +702,7 @@
     ]
   },
   "resources/js/views/scripts/form.js": {
-    "file": "assets/form-BTY0AOwl.js",
+    "file": "assets/form-HYctqziV.js",
     "name": "form",
     "src": "resources/js/views/scripts/form.js",
     "isEntry": true

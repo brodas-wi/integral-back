@@ -3,20 +3,22 @@
 @section('title', 'Crear Script')
 @section('page-title', 'Crear Nuevo Script')
 
+@section('header-actions')
+    <a href="{{ route('scripts.index') }}" class="btn-outline inline-flex items-center">
+        <i class="ri-arrow-left-line mr-2"></i>
+        Volver
+    </a>
+@endsection
+
 @section('content')
 <div class="max-w-5xl">
-    <div class="mb-6">
-        <a href="{{ route('scripts.index') }}" class="btn-outline inline-flex items-center">
-            <i class="ri-arrow-left-line mr-2"></i>
-            Volver
-        </a>
-    </div>
 
     @php $canAutoApprove = auth()->user()->can('scripts.auto_approve') || auth()->user()->can('scripts.manage'); @endphp
 
     <form id="scriptForm" method="POST" action="{{ route('scripts.store') }}" class="space-y-6">
         @csrf
 
+        {{-- Información General --}}
         <div class="card">
             <h3 class="text-lg font-semibold text-secondary mb-4">Información General</h3>
             <div class="space-y-4">
@@ -46,79 +48,44 @@
             </div>
         </div>
 
+        {{-- Alcance --}}
         <div class="card">
-            <h3 class="text-lg font-semibold text-secondary mb-4">Tipo y Alcance</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-medium text-secondary mb-3">
-                        Tipo de Script <span class="text-red-500">*</span>
-                    </label>
-                    <div class="space-y-2">
-                        <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-colors
-                            {{ old('type', 'js') === 'js' ? 'border-primary bg-primary bg-opacity-5' : 'border-gray-200 hover:border-primary' }}">
-                            <input type="radio" name="type" value="js" {{ old('type', 'js') === 'js' ? 'checked' : '' }}
-                                class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary script-type-radio">
-                            <div class="ml-3">
-                                <div class="flex items-center gap-2">
-                                    <i class="ri-javascript-line text-yellow-500 text-lg"></i>
-                                    <p class="font-medium text-secondary">JavaScript</p>
-                                </div>
-                                <p class="text-sm text-gray-500 mt-1">Analytics, widgets, botones flotantes, chat, etc.</p>
-                            </div>
-                        </label>
-                        <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-colors
-                            {{ old('type') === 'css' ? 'border-primary bg-primary bg-opacity-5' : 'border-gray-200 hover:border-primary' }}">
-                            <input type="radio" name="type" value="css" {{ old('type') === 'css' ? 'checked' : '' }}
-                                class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary script-type-radio">
-                            <div class="ml-3">
-                                <div class="flex items-center gap-2">
-                                    <i class="ri-css3-line text-blue-500 text-lg"></i>
-                                    <p class="font-medium text-secondary">CSS</p>
-                                </div>
-                                <p class="text-sm text-gray-500 mt-1">Estilos adicionales, personalizaciones visuales, etc.</p>
-                            </div>
-                        </label>
+            <h3 class="text-lg font-semibold text-secondary mb-4">Alcance</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label class="script-option-card {{ old('scope', 'global') === 'global' ? 'script-option-selected' : '' }}">
+                    <input type="radio" name="scope" value="global"
+                        {{ old('scope', 'global') === 'global' ? 'checked' : '' }}
+                        class="sr-only script-scope-radio">
+                    <div class="flex items-start gap-3">
+                        <div class="script-option-icon bg-green-100 text-green-600">
+                            <i class="ri-global-line text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-secondary text-sm">Global</p>
+                            <p class="text-xs text-gray-500 mt-0.5">Se aplica en todas las páginas del sitio.</p>
+                        </div>
                     </div>
-                    @error('type')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                </label>
 
-                <div>
-                    <label class="block text-sm font-medium text-secondary mb-3">
-                        Alcance <span class="text-red-500">*</span>
-                    </label>
-                    <div class="space-y-2">
-                        <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-colors
-                            {{ old('scope', 'global') === 'global' ? 'border-primary bg-primary bg-opacity-5' : 'border-gray-200 hover:border-primary' }}">
-                            <input type="radio" name="scope" value="global" {{ old('scope', 'global') === 'global' ? 'checked' : '' }}
-                                class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary script-scope-radio">
-                            <div class="ml-3">
-                                <div class="flex items-center gap-2">
-                                    <i class="ri-global-line text-green-500 text-lg"></i>
-                                    <p class="font-medium text-secondary">Global</p>
-                                </div>
-                                <p class="text-sm text-gray-500 mt-1">Se aplica en todas las páginas del sitio.</p>
-                            </div>
-                        </label>
-                        <label class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-colors
-                            {{ old('scope') === 'per_page' ? 'border-primary bg-primary bg-opacity-5' : 'border-gray-200 hover:border-primary' }}">
-                            <input type="radio" name="scope" value="per_page" {{ old('scope') === 'per_page' ? 'checked' : '' }}
-                                class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary script-scope-radio">
-                            <div class="ml-3">
-                                <div class="flex items-center gap-2">
-                                    <i class="ri-pages-line text-purple-500 text-lg"></i>
-                                    <p class="font-medium text-secondary">Por página</p>
-                                </div>
-                                <p class="text-sm text-gray-500 mt-1">Solo en las páginas que selecciones.</p>
-                            </div>
-                        </label>
+                <label class="script-option-card {{ old('scope') === 'per_page' ? 'script-option-selected' : '' }}">
+                    <input type="radio" name="scope" value="per_page"
+                        {{ old('scope') === 'per_page' ? 'checked' : '' }}
+                        class="sr-only script-scope-radio">
+                    <div class="flex items-start gap-3">
+                        <div class="script-option-icon bg-purple-100 text-purple-600">
+                            <i class="ri-pages-line text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-secondary text-sm">Por página</p>
+                            <p class="text-xs text-gray-500 mt-0.5">Solo en las páginas que selecciones.</p>
+                        </div>
                     </div>
-                    @error('scope')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+                </label>
             </div>
+            @error('scope')
+                <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+            @enderror
+
             <div id="page-selector" class="{{ old('scope') === 'per_page' ? '' : 'hidden' }} mt-4">
                 <label class="block text-sm font-medium text-secondary mb-2">
                     Seleccionar Páginas <span class="text-red-500">*</span>
@@ -147,14 +114,19 @@
             </div>
         </div>
 
+        {{-- Editor JavaScript (obligatorio) --}}
         <div class="card">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-secondary">
-                    Código
-                    <span id="editor-type-label" class="text-sm font-normal text-gray-500 ml-2">JavaScript</span>
-                </h3>
+                <div>
+                    <h3 class="text-lg font-semibold text-secondary flex items-center gap-2">
+                        <i class="ri-javascript-line text-yellow-500"></i>
+                        Código JavaScript
+                        <span class="text-xs font-normal text-white bg-secondary px-2 py-0.5 rounded-full">Requerido</span>
+                    </h3>
+                    <p class="text-xs text-gray-500 mt-1">Analytics, widgets, botones flotantes, chat, integraciones, etc.</p>
+                </div>
                 <div class="flex items-center gap-2">
-                    <button type="button" id="btn-format" class="btn-outline btn-sm" title="Formatear código">
+                    <button type="button" id="btn-format-js" class="btn-outline btn-sm" title="Formatear JavaScript">
                         <i class="ri-magic-line mr-1"></i>
                         Formatear
                     </button>
@@ -178,20 +150,48 @@
             <div id="js-editor-wrapper" class="script-editor-wrapper">
                 <div id="js-editor" class="script-codemirror-editor"></div>
                 <textarea id="js_content" name="js_content" class="hidden">{{ old('js_content') }}</textarea>
-                @error('js_content')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+            </div>
+            @error('js_content')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Editor CSS (opcional) --}}
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-secondary flex items-center gap-2">
+                        <i class="ri-css3-line text-blue-500"></i>
+                        Estilos CSS
+                        <span class="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">Opcional</span>
+                    </h3>
+                    <p class="text-xs text-gray-500 mt-1">Estilos para los elementos creados por el JS. Evita estilos inline.</p>
+                </div>
+                <button type="button" id="btn-toggle-css"
+                    class="btn-outline btn-sm flex items-center gap-1">
+                    <i class="ri-add-line" id="css-toggle-icon"></i>
+                    <span id="css-toggle-label">Agregar CSS</span>
+                </button>
             </div>
 
-            <div id="css-editor-wrapper" class="script-editor-wrapper hidden">
-                <div id="css-editor" class="script-codemirror-editor"></div>
-                <textarea id="css_content" name="css_content" class="hidden">{{ old('css_content') }}</textarea>
+            <div id="css-editor-section" class="hidden mt-4">
+                <div class="flex justify-end mb-2">
+                    <button type="button" id="btn-format-css" class="btn-outline btn-sm" title="Formatear CSS">
+                        <i class="ri-magic-line mr-1"></i>
+                        Formatear CSS
+                    </button>
+                </div>
+                <div id="css-editor-wrapper" class="script-editor-wrapper">
+                    <div id="css-editor" class="script-codemirror-editor"></div>
+                    <textarea id="css_content" name="css_content" class="hidden">{{ old('css_content') }}</textarea>
+                </div>
                 @error('css_content')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
         </div>
 
+        {{-- Publicación --}}
         <div class="card">
             <h3 class="text-lg font-semibold text-secondary mb-3">Publicación</h3>
 
@@ -211,23 +211,28 @@
                             Los scripts deben ser revisados antes de activarse en el sitio público.
                         </p>
                     </div>
-                    <label class="flex items-start p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-primary transition-colors">
+                    <label class="script-option-card {{ old('submit_for_review') ? 'script-option-selected' : '' }}">
                         <input type="checkbox" name="submit_for_review" value="1"
                             {{ old('submit_for_review') ? 'checked' : '' }}
                             id="submit_for_review"
-                            class="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
-                        <div class="ml-3">
-                            <p class="font-medium text-secondary">Enviar a revisión</p>
-                            <p class="text-sm text-gray-500 mt-1">
-                                Marca esta opción para enviar el script al revisor. Si no la marcas, se guardará como borrador.
-                            </p>
+                            class="sr-only">
+                        <div class="flex items-start gap-3">
+                            <div class="script-option-icon bg-blue-100 text-blue-600">
+                                <i class="ri-send-plane-line text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-secondary text-sm">Enviar a revisión</p>
+                                <p class="text-xs text-gray-500 mt-0.5">
+                                    Marca esta opción para enviar el script al revisor. Si no la marcas, se guardará como borrador.
+                                </p>
+                            </div>
                         </div>
                     </label>
                 </div>
             @endif
         </div>
 
-        <div class="flex justify-between gap-4">
+        <div class="flex justify-end gap-4">
             <a href="{{ route('scripts.index') }}" class="btn-outline">
                 <i class="ri-close-line mr-2"></i>
                 Cancelar
@@ -240,6 +245,7 @@
     </form>
 </div>
 
+{{-- Modal de Ayuda --}}
 <div id="help-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         <div class="flex items-center justify-between p-6 border-b shrink-0">
@@ -273,13 +279,11 @@
                     Ejemplo: Botón Flotante con Link
                 </h4>
                 <pre class="bg-gray-900 text-green-400 p-4 rounded-lg text-xs overflow-x-auto"><code>(function() {
-  // Crear el botón
   var btn = document.createElement('a');
   btn.href = 'https://wa.me/50212345678';
   btn.target = '_blank';
   btn.rel = 'noopener noreferrer';
 
-  // Crear ícono (usar clase CSS, no inline style)
   var icon = document.createElement('span');
   icon.className = 'floating-btn-icon';
   icon.textContent = '💬';
@@ -288,13 +292,13 @@
   btn.className = 'floating-whatsapp-btn';
   document.body.appendChild(btn);
 })();</code></pre>
-                <p class="text-xs text-gray-500 mt-2">💡 Usa clases CSS en lugar de estilos inline. Define los estilos en un script de tipo CSS.</p>
+                <p class="text-xs text-gray-500 mt-2">💡 Usa clases CSS en lugar de estilos inline. Define los estilos en el campo CSS opcional.</p>
             </div>
 
             <div>
                 <h4 class="font-semibold text-secondary mb-3 flex items-center gap-2">
                     <i class="ri-css3-line text-blue-500"></i>
-                    Ejemplo: Estilos para Botón Flotante (CSS)
+                    Ejemplo: Estilos para Botón Flotante (CSS opcional)
                 </h4>
                 <pre class="bg-gray-900 text-blue-300 p-4 rounded-lg text-xs overflow-x-auto"><code>.floating-whatsapp-btn {
   position: fixed;
@@ -323,8 +327,7 @@
                     <i class="ri-bar-chart-line text-orange-500"></i>
                     Ejemplo: Google Analytics (GA4)
                 </h4>
-                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg text-xs overflow-x-auto"><code>// Cargar GA4 dinámicamente (compatible con CSP)
-(function() {
+                <pre class="bg-gray-900 text-green-400 p-4 rounded-lg text-xs overflow-x-auto"><code>(function() {
   var script = document.createElement('script');
   script.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX';
   script.async = true;
@@ -344,7 +347,7 @@
                     <li>Envuelve tu código JS en una IIFE: <code class="bg-blue-100 px-1 rounded">(function() {{ '{}' }})();</code></li>
                     <li>Usa <code class="bg-blue-100 px-1 rounded">document.addEventListener('DOMContentLoaded', ...)</code> para esperar el DOM</li>
                     <li>Evita variables globales que puedan colisionar con otros scripts</li>
-                    <li>Para CSS, usa clases específicas para evitar conflictos con los estilos del sitio</li>
+                    <li>Para estilos, usa el campo CSS opcional con clases específicas</li>
                     <li>Prueba siempre en la vista previa antes de activar</li>
                 </ul>
             </div>

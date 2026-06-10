@@ -1,4 +1,33 @@
-/* ── Script Module Styles ─────────────────────────────────────────────── */
+.script-option-card {
+    display: block;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    user-select: none;
+}
+
+.script-option-card:hover {
+    border-color: #94a3b8;
+    background-color: #f8fafc;
+}
+
+.script-option-card.script-option-selected {
+    border-color: #64748b;
+    background-color: #f1f5f9;
+}
+
+.script-option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+}
+
 
 /* CodeMirror editor wrapper */
 .script-editor-wrapper {
