@@ -88,7 +88,7 @@ const NAVBAR_STYLES = `
 .nb-mega-cta-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;}
 .nb-mega-cta-btn:hover{opacity:0.88;}
 /* ── BOTTOM CTA ── */
-.nb-bottom-cta{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;text-align:center;word-break:break-word;white-space:normal;min-width:120px;max-width:180px;line-height:1.25;margin-left:auto;flex-shrink:0;}
+.nb-bottom-cta{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;text-align:center;word-break:break-word;white-space:normal;min-width:120px;max-width:180px;line-height:1.25;margin-left:1.25rem;flex-shrink:0;align-self:center;margin-top:0.375rem;margin-bottom:0.375rem;}
 .nb-bottom-cta:hover{opacity:0.88;}
 .nb-bottom-cta-line1{text-transform:uppercase;letter-spacing:0.04em;}
 .nb-bottom-cta-line2{font-size:0.6875rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;opacity:0.85;}
@@ -407,7 +407,6 @@ function showNavbarModal(editor, component) {
             <button class="nb-tab-btn" data-tab="bottom-cta"><i class="ri-cursor-line"></i> CTA inferior</button>
         </div>
         <div class="nb-modal-body">
-            <!-- LOGO -->
             <div class="nb-tab-panel active" id="nb-panel-logo">
                 <div class="nb-card">
                     <label class="nb-label">Imagen del logo</label>
@@ -433,8 +432,6 @@ function showNavbarModal(editor, component) {
                     </div>
                 </div>
             </div>
-
-            <!-- TOP ACTIONS -->
             <div class="nb-tab-panel" id="nb-panel-top-actions">
                 <div class="nb-card" style="padding:0.75rem;">
                     <p style="font-size:0.8rem;color:#64748b;margin:0 0 0.75rem;">Botones de acción de la barra superior (Contáctanos, Sucursales, etc.). Puedes reordenarlos arrastrando.</p>
@@ -444,8 +441,6 @@ function showNavbarModal(editor, component) {
                     </div>
                 </div>
             </div>
-
-            <!-- BANKING BTN -->
             <div class="nb-tab-panel" id="nb-panel-banking">
                 <div class="nb-card">
                     <label class="nb-label">Botón de Banca en Línea</label>
@@ -468,8 +463,6 @@ function showNavbarModal(editor, component) {
                     </div>
                 </div>
             </div>
-
-            <!-- NAV LINKS -->
             <div class="nb-tab-panel" id="nb-panel-nav">
                 <div class="nb-card" style="padding:0.75rem;">
                     <p style="font-size:0.8rem;color:#64748b;margin:0 0 0.75rem;">Links de la barra inferior. Los submenús generan mega-menús con columnas.</p>
@@ -480,8 +473,6 @@ function showNavbarModal(editor, component) {
                     </div>
                 </div>
             </div>
-
-            <!-- BOTTOM CTA -->
             <div class="nb-tab-panel" id="nb-panel-bottom-cta">
                 <div class="nb-card">
                     <label class="nb-label">Botón CTA de la barra inferior</label>
