@@ -52,11 +52,10 @@ if(document.readyState==="loading"){
 const NAVBAR_STYLES = `
 <style>
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
-/* ── TOP BAR ── */
 .nb-top{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 4rem;border-bottom:1px solid #f1f5f9;gap:1.5rem;}
 .nb-logo-link{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
-.nb-logo-link img{height:52px;width:auto;display:block;}
-.nb-logo-text{font-size:1.25rem;font-weight:800;color:#003B71;}
+.nb-logo-link img{height:40px;width:auto;display:block;}
+.nb-logo-text{font-size:1.125rem;font-weight:800;color:#003B71;}
 .nb-top-actions{display:flex;align-items:center;gap:1.5rem;flex:1;justify-content:center;}
 .nb-top-action{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#003B71;font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;transition:color 0.15s;white-space:nowrap;}
 .nb-top-action i{font-size:1.5rem;color:#E97300;}
@@ -65,18 +64,16 @@ const NAVBAR_STYLES = `
 .nb-banking-btn:hover{opacity:0.88;}
 .nb-banking-blue{background:#003B71;color:#fff;}
 .nb-banking-orange{background:#E97300;color:#fff;}
-/* ── BOTTOM BAR ── */
 .nb-bottom{display:flex;align-items:stretch;padding:0 4rem;gap:0;position:relative;border-bottom:3px solid #E97300;}
 .nb-nav-list{display:flex;align-items:center;justify-content:space-between;gap:0;list-style:none;margin:0;padding:0;flex:1;}
 .nb-nav-item{position:static;}
 .nb-nav-link{display:inline-flex;align-items:center;gap:0;padding:0.875rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;}
 .nb-nav-link:hover,.nb-nav-item.nb-open>.nb-nav-link{color:#003B71;}
-/* ── MEGA MENU ── */
-.nb-mega{display:none;position:absolute;top:calc(100% + 3px);left:0;right:0;background:#fff;border-top:2px solid #E97300;box-shadow:0 8px 32px rgba(0,0,0,0.1);z-index:200;padding:2rem 4rem;}
+.nb-mega{display:none;position:absolute;top:calc(100% + 3px);left:0;right:0;background:#fff;border-top:2px solid #E97300;box-shadow:0 8px 32px rgba(0,0,0,0.1);z-index:200;padding:1rem 4rem;}
 .nb-nav-item.nb-open>.nb-mega{display:block;}
 .nb-mega-grid{display:grid;gap:2rem;grid-template-columns:1fr 1fr 1fr minmax(200px,260px);}
-.nb-mega-col{display:flex;flex-direction:column;gap:1rem;min-width:0;}
-.nb-mega-badge{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-align:center;margin-bottom:0.5rem;cursor:default;}
+.nb-mega-col{display:flex;flex-direction:column;gap:0.5rem;min-width:0;}
+.nb-mega-badge{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-align:center;margin-bottom:0;cursor:default;}
 .nb-badge-blue{background:#003B71;color:#fff;}
 .nb-badge-orange{background:#E97300;color:#fff;}
 .nb-mega-item{display:flex;flex-direction:column;gap:0.125rem;text-decoration:none;padding:0.375rem 0;border-bottom:1px solid transparent;transition:border-color 0.15s;}
@@ -87,20 +84,23 @@ const NAVBAR_STYLES = `
 .nb-mega-cta-text{font-size:1.125rem;font-weight:800;text-align:center;line-height:1.3;text-transform:uppercase;}
 .nb-mega-cta-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;}
 .nb-mega-cta-btn:hover{opacity:0.88;}
-/* ── BOTTOM CTA ── */
 .nb-bottom-cta{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;text-align:center;word-break:break-word;white-space:normal;min-width:120px;max-width:180px;line-height:1.25;margin-left:1.25rem;flex-shrink:0;align-self:center;margin-top:0.375rem;margin-bottom:0.375rem;}
 .nb-bottom-cta:hover{opacity:0.88;}
 .nb-bottom-cta-line1{text-transform:uppercase;letter-spacing:0.04em;}
 .nb-bottom-cta-line2{font-size:0.6875rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;opacity:0.85;}
 .nb-cta-blue{background:#003B71;color:#fff;}
 .nb-cta-orange{background:#E97300;color:#fff;}
-/* ── HAMBURGER ── */
-.nb-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:0.5rem;border-radius:0.375rem;transition:background 0.15s;margin-left:auto;}
+.nb-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:0.5rem;border-radius:0.375rem;transition:background 0.15s;flex-shrink:0;}
 .nb-hamburger:hover{background:rgba(0,59,113,0.06);}
 .nb-hamburger span{display:block;width:24px;height:2px;background:#003B71;border-radius:2px;transition:all 0.25s;}
-/* ── MOBILE MENU ── */
-.nb-mobile-menu{display:none;flex-direction:column;background:#fff;border-top:1px solid #f1f5f9;padding:1rem 2rem;gap:0.25rem;}
+.nb-mobile-bar{display:none;align-items:center;justify-content:space-between;padding:0.625rem 1.25rem;border-bottom:3px solid #E97300;}
+.nb-mobile-menu{display:none;flex-direction:column;background:#fff;border-top:1px solid #f1f5f9;padding:0.75rem 1.25rem;gap:0;}
 .nb-mobile-menu.nb-open{display:flex;}
+.nb-mobile-top-actions{display:flex;flex-direction:column;gap:0;border-bottom:1px solid #f1f5f9;padding-bottom:0.5rem;margin-bottom:0.25rem;}
+.nb-mobile-top-action{display:flex;align-items:center;gap:0.625rem;padding:0.625rem 0.5rem;color:#003B71;text-decoration:none;font-size:0.875rem;font-weight:600;border-bottom:1px solid #f8fafc;}
+.nb-mobile-top-action i{font-size:1.25rem;color:#E97300;flex-shrink:0;}
+.nb-mobile-banking{padding:0.625rem 0.5rem;border-bottom:1px solid #f1f5f9;margin-bottom:0.25rem;}
+.nb-mobile-banking .nb-banking-btn{width:100%;justify-content:center;border-radius:0.625rem;}
 .nb-mobile-link{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0.5rem;color:#003B71;text-decoration:none;font-size:0.9375rem;font-weight:600;border-bottom:1px solid #f1f5f9;cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left;font-family:inherit;}
 .nb-mobile-link i{color:#94a3b8;font-size:0.875rem;transition:transform 0.2s;}
 .nb-mobile-item.nb-open>.nb-mobile-link i{transform:rotate(180deg);}
@@ -110,19 +110,15 @@ const NAVBAR_STYLES = `
 .nb-mobile-sub-link:hover{background:rgba(0,59,113,0.04);}
 .nb-mobile-sub-title{font-size:0.8125rem;font-weight:700;color:#003B71;text-transform:uppercase;}
 .nb-mobile-sub-desc{font-size:0.75rem;color:#E97300;}
-.nb-mobile-actions{display:flex;flex-direction:column;gap:0.5rem;padding-top:0.75rem;margin-top:0.25rem;border-top:1px solid #f1f5f9;}
-.nb-mobile-actions .nb-banking-btn,.nb-mobile-actions .nb-bottom-cta{justify-content:center;max-width:100%;width:100%;border-radius:0.625rem;}
-/* ── RESPONSIVE ── */
 @media(max-width:1280px){
     .nb-top{padding:0.75rem 2.5rem;}
     .nb-bottom{padding:0 2.5rem;}
     .nb-mega{padding:2rem 2.5rem;}
 }
 @media(max-width:992px){
-    .nb-top{padding:0.75rem 1.5rem;}
-    .nb-bottom{padding:0 1.5rem;}
-    .nb-top-actions,.nb-nav-list,.nb-bottom-cta{display:none;}
-    .nb-banking-btn{display:none;}
+    .nb-top{display:none;}
+    .nb-bottom{display:none;}
+    .nb-mobile-bar{display:flex;}
     .nb-hamburger{display:flex;}
 }
 </style>`;
@@ -205,6 +201,12 @@ function buildNavbarHTML(data, uid) {
     const bottomCtaHtml = bottomCta.label
         ? `<a href="${bottomCta.href || "#"}" class="nb-bottom-cta ${bottomCtaColorClass}"><span class="nb-bottom-cta-line1">${bottomCta.label}</span>${bottomCtaLine2}</a>`
         : "";
+    const mobileTopActionsHtml = (data.top_actions || [])
+        .map((a) => {
+            const icon = a.icon ? `<i class="${a.icon}"></i>` : "";
+            return `<a href="${a.href || "#"}" class="nb-mobile-top-action">${icon}${a.label || ""}</a>`;
+        })
+        .join("");
     const mobileLinksHtml = (data.nav_links || [])
         .map((item) => {
             if (item.type === "submenu" && item.columns?.length) {
@@ -226,11 +228,6 @@ function buildNavbarHTML(data, uid) {
         })
         .join("");
 
-    const mobileActionsHtml = `<div class="nb-mobile-actions">
-        ${bankingHtml}
-        ${bottomCta.label ? `<a href="${bottomCta.href || "#"}" class="nb-bottom-cta ${bottomCtaColorClass}" style="max-width:100%;width:100%;border-radius:0.625rem;"><span class="nb-bottom-cta-line1">${bottomCta.label}</span>${bottomCtaLine2}</a>` : ""}
-    </div>`;
-
     return `<div id="nb-root-${uid}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="nb-top">
             <div class="nb-logo">${logoHtml}</div>
@@ -240,9 +237,16 @@ function buildNavbarHTML(data, uid) {
         <div class="nb-bottom">
             <ul class="nb-nav-list">${navLinksHtml}</ul>
             ${bottomCtaHtml}
+        </div>
+        <div class="nb-mobile-bar">
+            ${logoHtml}
             <button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú"><span></span><span></span><span></span></button>
         </div>
-        <div class="nb-mobile-menu" id="nb-mobile-${uid}">${mobileLinksHtml}${mobileActionsHtml}</div>
+        <div class="nb-mobile-menu" id="nb-mobile-${uid}">
+            <div class="nb-mobile-top-actions">${mobileTopActionsHtml}</div>
+            <div class="nb-mobile-banking">${bankingHtml}</div>
+            ${mobileLinksHtml}
+        </div>
     </div>`;
 }
 const DEFAULT_DATA = {
