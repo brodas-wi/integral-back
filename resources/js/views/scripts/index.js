@@ -1,4 +1,5 @@
 import axios from "axios";
+import { showNotification } from "@/utils/notifications.js";
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 
@@ -49,7 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function toggleScriptActive(scriptId, checked, itemEl, checkbox) {
-    const url = `/scripts/${scriptId}/toggle-active`;
+    const baseUrl = document.querySelector('meta[name="scripts-base-url"]')?.content || "/scripts";
+    const url = `${baseUrl}/${scriptId}/toggle-active`;
 
     axios
         .patch(url, {}, { headers: { "X-CSRF-TOKEN": csrfToken } })
@@ -262,10 +264,12 @@ window.submitRejectShow = function () {
 };
 
 window.approveScript = function (scriptId, scriptName) {
+    const baseUrl = document.querySelector('meta[name="scripts-base-url"]')?.content || "/scripts";
+
     if (!confirm(`¿Confirmas que deseas aprobar "${scriptName}"?`)) return;
 
     axios
-        .patch(`/scripts/${scriptId}/approve`, {}, { headers: { "X-CSRF-TOKEN": csrfToken } })
+        .patch(`${baseUrl}/${scriptId}/approve`, {}, { headers: { "X-CSRF-TOKEN": csrfToken } })
         .then((res) => {
             if (res.data.success) {
                 showNotification(res.data.message, "success");
@@ -304,6 +308,7 @@ window.closeRejectModal = function () {
 
 window.submitReject = function () {
     if (!rejectScriptId) return;
+    const baseUrl = document.querySelector('meta[name="scripts-base-url"]')?.content || "/scripts";
     const reason = document.getElementById("rejection-reason")?.value.trim();
 
     if (!reason) {
@@ -313,7 +318,7 @@ window.submitReject = function () {
 
     axios
         .patch(
-            `/scripts/${rejectScriptId}/reject`,
+            `${baseUrl}/${rejectScriptId}/reject`,
             { rejection_reason: reason },
             { headers: { "X-CSRF-TOKEN": csrfToken } }
         )
@@ -344,9 +349,10 @@ window.confirmDeleteScript = function (scriptId, scriptName) {
 
     const deleteUrl =
         document.querySelector('meta[name="delete-url"]')?.content ||
-        `/scripts/${scriptId}`;
+        `${document.querySelector('meta[name="scripts-base-url"]')?.content || "/scripts"}/${scriptId}`;
     const indexUrl =
         document.querySelector('meta[name="scripts-index-url"]')?.content ||
+        document.querySelector('meta[name="scripts-base-url"]')?.content ||
         "/scripts";
 
     axios
@@ -368,21 +374,3 @@ window.confirmDeleteScript = function (scriptId, scriptName) {
             );
         });
 };
-
-function showNotification(message, type = "info") {
-    if (window.__notify) {
-        window.__notify(message, type);
-        return;
-    }
-    const colors = {
-        success: "#16a34a",
-        error: "#dc2626",
-        warning: "#d97706",
-        info: "#2563eb",
-    };
-    const toast = document.createElement("div");
-    toast.style.cssText = `position:fixed;top:20px;right:20px;z-index:9999;background:${colors[type] || colors.info};color:white;padding:12px 20px;border-radius:8px;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.15);max-width:360px;`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3500);
-}

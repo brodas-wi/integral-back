@@ -27,6 +27,7 @@
     <form id="scriptForm" method="POST" action="{{ route('scripts.update', $script) }}" class="space-y-6">
         @csrf
         @method('PUT')
+        <input type="hidden" name="type" id="form-type" value="{{ old('type', $script->type) }}">
 
         {{-- Información General --}}
         <div class="card">

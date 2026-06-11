@@ -2,6 +2,7 @@ import { EditorView, basicSetup } from "codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { css } from "@codemirror/lang-css";
 import { oneDark } from "@codemirror/theme-one-dark";
+import { showNotification } from "@/utils/notifications.js";
 
 // ── Security patterns blocked by CSP ──────────────────────────────────────
 const BLOCKED_PATTERNS = [
@@ -324,13 +325,3 @@ function initFormSubmit() {
     });
 }
 
-// ── Notification helper ────────────────────────────────────────────────────
-function showNotification(message, type = "info") {
-    if (window.__notify) { window.__notify(message, type); return; }
-    const colors = { success: "#16a34a", error: "#dc2626", warning: "#d97706", info: "#2563eb" };
-    const toast = document.createElement("div");
-    toast.style.cssText = `position:fixed;top:20px;right:20px;z-index:9999;background:${colors[type] || colors.info};color:white;padding:12px 20px;border-radius:8px;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.15);max-width:360px;`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3500);
-}

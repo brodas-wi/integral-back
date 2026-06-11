@@ -702,18 +702,22 @@
     ]
   },
   "resources/js/views/scripts/form.js": {
-    "file": "assets/form-HYctqziV.js",
+    "file": "assets/form-Coi9ZB3Q.js",
     "name": "form",
     "src": "resources/js/views/scripts/form.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_notifications-Cgjr4krQ.js"
+    ]
   },
   "resources/js/views/scripts/index.js": {
-    "file": "assets/index-BLrvtdSN.js",
+    "file": "assets/index-C7KjhFIN.js",
     "name": "index",
     "src": "resources/js/views/scripts/index.js",
     "isEntry": true,
     "imports": [
-      "_index-DcNlVx-A.js"
+      "_index-DcNlVx-A.js",
+      "_notifications-Cgjr4krQ.js"
     ]
   }
 }

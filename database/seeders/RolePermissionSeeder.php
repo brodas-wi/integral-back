@@ -112,6 +112,9 @@ class RolePermissionSeeder extends Seeder
             'payment_points.manage',
             'navbars.manage',
             'footers.manage',
+            'announcements.manage',
+            'banners.manage',
+            'scripts.manage',
         ]);
 
         // Editor role - Individual permissions for content management
