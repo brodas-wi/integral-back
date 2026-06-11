@@ -96,11 +96,12 @@ const NAVBAR_STYLES = `
 .nb-mobile-bar{display:none;align-items:center;justify-content:space-between;padding:0.625rem 1.25rem;border-bottom:3px solid #E97300;}
 .nb-mobile-menu{display:none;flex-direction:column;background:#fff;border-top:1px solid #f1f5f9;padding:0.75rem 1.25rem;gap:0;}
 .nb-mobile-menu.nb-open{display:flex;}
-.nb-mobile-top-actions{display:flex;flex-direction:column;gap:0;border-bottom:1px solid #f1f5f9;padding-bottom:0.5rem;margin-bottom:0.25rem;}
-.nb-mobile-top-action{display:flex;align-items:center;gap:0.625rem;padding:0.625rem 0.5rem;color:#003B71;text-decoration:none;font-size:0.875rem;font-weight:600;border-bottom:1px solid #f8fafc;}
-.nb-mobile-top-action i{font-size:1.25rem;color:#E97300;flex-shrink:0;}
-.nb-mobile-banking{padding:0.625rem 0.5rem;border-bottom:1px solid #f1f5f9;margin-bottom:0.25rem;}
-.nb-mobile-banking .nb-banking-btn{width:100%;justify-content:center;border-radius:0.625rem;}
+.nb-mobile-top-actions{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:0.25rem 1rem;border-bottom:1px solid #f1f5f9;padding:0.5rem 0.25rem 0.75rem;margin-bottom:0.25rem;}
+.nb-mobile-top-action{display:flex;align-items:center;gap:0.5rem;padding:0.375rem 0.5rem;color:#003B71;text-decoration:none;font-size:0.8125rem;font-weight:600;white-space:nowrap;}
+.nb-mobile-top-action i{font-size:1.125rem;color:#E97300;flex-shrink:0;}
+.nb-mobile-banking{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:0.625rem;padding:0.625rem 0.5rem;border-bottom:1px solid #f1f5f9;margin-bottom:0.25rem;}
+.nb-mobile-banking .nb-banking-btn{width:auto;justify-content:center;}
+.nb-mobile-banking .nb-bottom-cta{margin-left:0;margin-top:0;margin-bottom:0;align-self:auto;}
 .nb-mobile-link{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0.5rem;color:#003B71;text-decoration:none;font-size:0.9375rem;font-weight:600;border-bottom:1px solid #f1f5f9;cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left;font-family:inherit;}
 .nb-mobile-link i{color:#94a3b8;font-size:0.875rem;transition:transform 0.2s;}
 .nb-mobile-item.nb-open>.nb-mobile-link i{transform:rotate(180deg);}
@@ -227,6 +228,10 @@ function buildNavbarHTML(data, uid) {
             return `<a href="${item.href || "#"}" class="nb-mobile-link">${item.label || ""}</a>`;
         })
         .join("");
+    const mobileBankingHtml = [
+        bankingHtml,
+        bottomCta.label ? `<a href="${bottomCta.href || "#"}" class="nb-bottom-cta ${bottomCtaColorClass}"><span class="nb-bottom-cta-line1">${bottomCta.label}</span>${bottomCtaLine2}</a>` : "",
+    ].filter(Boolean).join("");
 
     return `<div id="nb-root-${uid}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="nb-top">
@@ -244,7 +249,7 @@ function buildNavbarHTML(data, uid) {
         </div>
         <div class="nb-mobile-menu" id="nb-mobile-${uid}">
             <div class="nb-mobile-top-actions">${mobileTopActionsHtml}</div>
-            <div class="nb-mobile-banking">${bankingHtml}</div>
+            <div class="nb-mobile-banking">${mobileBankingHtml}</div>
             ${mobileLinksHtml}
         </div>
     </div>`;
