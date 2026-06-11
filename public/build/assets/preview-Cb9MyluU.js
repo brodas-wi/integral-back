@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("navbar-preview-bar");if(!e)return;const t=()=>{document.body.style.paddingBottom=e.offsetHeight+"px"};t(),window.addEventListener("resize",t)});

@@ -324,12 +324,7 @@
   },
   "resources/css/preview.css": {
     "file": "assets/preview-QY_h3XMt.css",
-    "src": "resources/css/preview.css",
-    "isEntry": true,
-    "name": "preview",
-    "names": [
-      "preview.css"
-    ]
+    "src": "resources/css/preview.css"
   },
   "resources/css/views/agencies/agencies.css": {
     "file": "assets/agencies-4lBk2Gbm.css",
@@ -397,6 +392,15 @@
   "resources/css/views/navbars/index.css": {
     "file": "assets/index-CHgvGxG3.css",
     "src": "resources/css/views/navbars/index.css"
+  },
+  "resources/css/views/navbars/preview.css": {
+    "file": "assets/preview-BtlELnSE.css",
+    "src": "resources/css/views/navbars/preview.css",
+    "isEntry": true,
+    "name": "preview",
+    "names": [
+      "preview.css"
+    ]
   },
   "resources/css/views/payment-points/payment-points.css": {
     "file": "assets/payment-points-C_aQmSuU.css",
@@ -627,6 +631,12 @@
       "_notifications-Cgjr4krQ.js",
       "_url-DaqOO3yL.js"
     ]
+  },
+  "resources/js/views/navbars/preview.js": {
+    "file": "assets/preview-Cb9MyluU.js",
+    "name": "preview",
+    "src": "resources/js/views/navbars/preview.js",
+    "isEntry": true
   },
   "resources/js/views/navbars/trashed.js": {
     "file": "assets/trashed-DSHx1OK4.js",
