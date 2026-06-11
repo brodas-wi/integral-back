@@ -13,6 +13,7 @@ function initNavbar(root){
         if(window.innerWidth>992){
             var mob=document.getElementById("nb-mobile-"+id);
             if(mob&&mob.classList.contains("nb-open"))mob.classList.remove("nb-open");
+            root.querySelectorAll(".nb-mobile-item.nb-open").forEach(function(el){el.classList.remove("nb-open");});
         }
     });
     var toggle=document.getElementById("nb-toggle-"+id);
@@ -97,7 +98,8 @@ const NAVBAR_STYLES = `
 .nb-mobile-menu{display:none;flex-direction:column;background:#fff;border-top:1px solid #f1f5f9;padding:0.75rem 1.25rem;gap:0;}
 .nb-mobile-menu.nb-open{display:flex;}
 .nb-mobile-top-actions{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:0.25rem 1rem;border-bottom:1px solid #f1f5f9;padding:0.25rem 0.75rem;}
-.nb-mobile-top-action{display:flex;align-items:center;gap:0.5rem;padding:0.375rem 0.5rem;color:#E97300;text-decoration:none;font-size:0.8125rem;font-weight:600;white-space:nowrap;text-transform:uppercase;letter-spacing:0.04em;}
+.nb-mobile-top-action{display:flex;align-items:center;gap:0.5rem;padding:0.375rem 0.5rem;color:#003B71;text-decoration:none;font-size:0.8125rem;font-weight:600;white-space:nowrap;text-transform:uppercase;letter-spacing:0.04em;transition:color 0.15s;}
+.nb-mobile-top-action:hover{color:#E97300;}
 .nb-mobile-top-action i{font-size:1.125rem;color:#E97300;flex-shrink:0;}
 .nb-mobile-banking{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:0.625rem;padding:0.625rem 0.5rem;border-bottom:1px solid #f1f5f9;}
 .nb-mobile-banking .nb-banking-btn{width:auto;justify-content:center;}
@@ -988,7 +990,14 @@ export function initializeNavbarBlock(editor) {
                         var inEditor = !!window.__gjseditor || document.documentElement.hasAttribute("data-gjs-canvas");
                         function pad() { if (!inEditor) document.body.style.paddingTop = root.offsetHeight + "px"; }
                         pad();
-                        window.addEventListener("resize", pad);
+                        window.addEventListener("resize", function () {
+                            pad();
+                            if (window.innerWidth > 992) {
+                                var mob = document.getElementById("nb-mobile-" + id);
+                                if (mob && mob.classList.contains("nb-open")) mob.classList.remove("nb-open");
+                                root.querySelectorAll(".nb-mobile-item.nb-open").forEach(function (el) { el.classList.remove("nb-open"); });
+                            }
+                        });
                         var toggle = document.getElementById("nb-toggle-" + id);
                         var mobile = document.getElementById("nb-mobile-" + id);
                         if (toggle && mobile) {
