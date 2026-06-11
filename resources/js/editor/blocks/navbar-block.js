@@ -73,8 +73,8 @@ const NAVBAR_STYLES = `
 .nb-mega{display:none;position:absolute;top:calc(100% + 3px);left:0;right:0;background:#fff;border-top:2px solid #E97300;box-shadow:0 8px 32px rgba(0,0,0,0.1);z-index:200;padding:1rem 4rem;}
 .nb-nav-item.nb-open>.nb-mega{display:block;}
 .nb-mega-grid{display:grid;gap:2rem;grid-template-columns:1fr 1fr 1fr minmax(200px,260px);}
-.nb-mega-col{display:flex;flex-direction:column;gap:0.5rem;min-width:0;border-right:1px solid #E97300;padding-right:1.5rem;}
-.nb-mega-col:last-of-type{border-right:none;padding-right:0;}
+.nb-mega-col{display:flex;flex-direction:column;gap:0.5rem;min-width:0;border-right:2px solid #E97300;padding-right:1.5rem;}
+.nb-mega-col:last-of-type{border-right:2px solid #E97300;}
 .nb-mega-badge{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-align:center;margin-bottom:0;cursor:default;}
 .nb-badge-blue{background:#003B71;color:#fff;}
 .nb-badge-orange{background:#E97300;color:#fff;}
@@ -82,7 +82,7 @@ const NAVBAR_STYLES = `
 .nb-mega-item:hover{border-bottom-color:#e2e8f0;}
 .nb-mega-item-title{font-size:0.8125rem;font-weight:700;color:#003B71;text-transform:uppercase;letter-spacing:0.03em;line-height:1.3;}
 .nb-mega-item-desc{font-size:0.8125rem;font-weight:400;color:#E97300;line-height:1.4;}
-.nb-mega-cta-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;padding:1rem;border-left:1px solid #E97300;}
+.nb-mega-cta-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;padding:1rem;}
 .nb-mega-cta-text{font-size:1.125rem;font-weight:800;text-align:center;line-height:1.3;text-transform:uppercase;}
 .nb-mega-cta-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;}
 .nb-mega-cta-btn:hover{opacity:0.88;}
