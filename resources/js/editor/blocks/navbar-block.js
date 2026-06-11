@@ -1,9 +1,5 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { IconPickerModal } from "@/editor/components/icon-picker-modal";
-
-// ─────────────────────────────────────────────────────────────────────────────
-// RUNTIME SCRIPT (se inyecta en el sitio público)
-// ─────────────────────────────────────────────────────────────────────────────
 export const NAVBAR_RUNTIME_SCRIPT = `(function(){
 function initNavbar(root){
     if(!root||root.__nbInit)return;
@@ -53,10 +49,6 @@ if(document.readyState==="loading"){
     });
 }
 })();`;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ESTILOS DEL NAVBAR (se inyectan dentro del componente)
-// ─────────────────────────────────────────────────────────────────────────────
 const NAVBAR_STYLES = `
 <style>
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
@@ -74,21 +66,16 @@ const NAVBAR_STYLES = `
 .nb-banking-blue{background:#003B71;color:#fff;}
 .nb-banking-orange{background:#E97300;color:#fff;}
 /* ── BOTTOM BAR ── */
-.nb-bottom{display:flex;align-items:center;padding:0 4rem;gap:0.25rem;position:relative;}
-.nb-nav-list{display:flex;align-items:center;gap:0;list-style:none;margin:0;padding:0;flex:1;}
+.nb-bottom{display:flex;align-items:stretch;padding:0 4rem;gap:0;position:relative;border-bottom:3px solid #E97300;}
+.nb-nav-list{display:flex;align-items:center;justify-content:space-between;gap:0;list-style:none;margin:0;padding:0;flex:1;}
 .nb-nav-item{position:static;}
-.nb-nav-link{display:inline-flex;align-items:center;gap:0.25rem;padding:0.875rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;border-bottom:3px solid transparent;}
-.nb-nav-link:hover,.nb-nav-item.nb-open>.nb-nav-link{color:#003B71;border-bottom-color:#003B71;}
-.nb-nav-link i{font-size:0.875rem;transition:transform 0.2s;}
-.nb-nav-item.nb-open>.nb-nav-link i.nb-chevron{transform:rotate(180deg);}
+.nb-nav-link{display:inline-flex;align-items:center;gap:0;padding:0.875rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;}
+.nb-nav-link:hover,.nb-nav-item.nb-open>.nb-nav-link{color:#003B71;}
 /* ── MEGA MENU ── */
-.nb-mega{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-top:2px solid #E97300;box-shadow:0 8px 32px rgba(0,0,0,0.1);z-index:200;padding:2rem 4rem;}
+.nb-mega{display:none;position:absolute;top:calc(100% + 3px);left:0;right:0;background:#fff;border-top:2px solid #E97300;box-shadow:0 8px 32px rgba(0,0,0,0.1);z-index:200;padding:2rem 4rem;}
 .nb-nav-item.nb-open>.nb-mega{display:block;}
-.nb-mega-grid{display:grid;gap:2rem;}
-.nb-mega-grid-1{grid-template-columns:1fr;}
-.nb-mega-grid-2{grid-template-columns:repeat(2,1fr) minmax(200px,280px);}
-.nb-mega-grid-3{grid-template-columns:repeat(3,1fr) minmax(200px,280px);}
-.nb-mega-col{display:flex;flex-direction:column;gap:1rem;}
+.nb-mega-grid{display:grid;gap:2rem;grid-template-columns:1fr 1fr 1fr minmax(200px,260px);}
+.nb-mega-col{display:flex;flex-direction:column;gap:1rem;min-width:0;}
 .nb-mega-badge{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-align:center;margin-bottom:0.5rem;cursor:default;}
 .nb-badge-blue{background:#003B71;color:#fff;}
 .nb-badge-orange{background:#E97300;color:#fff;}
@@ -139,10 +126,6 @@ const NAVBAR_STYLES = `
     .nb-hamburger{display:flex;}
 }
 </style>`;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPER: texto alternando colores naranja/azul por palabra
-// ─────────────────────────────────────────────────────────────────────────────
 function buildAlternatingText(text) {
     if (!text) return "";
     return text
@@ -154,43 +137,28 @@ function buildAlternatingText(text) {
         })
         .join(" ");
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// BUILDER: genera el HTML del navbar
-// ─────────────────────────────────────────────────────────────────────────────
 function buildNavbarHTML(data, uid) {
     uid = uid || "nb" + Math.random().toString(36).slice(2, 7);
-
-    // ── Logo ──
     const logoHref = data.logo_href || "/";
     const logoInner = data.logo_url
         ? `<img src="${data.logo_url}" alt="${data.logo_alt || "Logo"}">`
         : `<span class="nb-logo-text">${data.logo_text || "Logo"}</span>`;
     const logoHtml = `<a href="${logoHref}" class="nb-logo-link">${logoInner}</a>`;
-
-    // ── Top actions ──
     const topActionsHtml = (data.top_actions || [])
         .map((a) => {
             const icon = a.icon ? `<i class="${a.icon}"></i>` : "";
             return `<a href="${a.href || "#"}" class="nb-top-action">${icon}${a.label || ""}</a>`;
         })
         .join("");
-
-    // ── Banking button ──
     const bankingBtn = data.banking_btn || {};
     const bankingColorClass = bankingBtn.color === "orange" ? "nb-banking-orange" : "nb-banking-blue";
     const bankingHtml = `<a href="${bankingBtn.href || "#"}" class="nb-banking-btn ${bankingColorClass}">${bankingBtn.label || "Banca en Línea"}</a>`;
-
-    // ── Nav links + mega menus ──
     const navLinksHtml = (data.nav_links || [])
         .map((item) => {
             if (item.type === "submenu" && item.columns?.length) {
-                const colCount = Math.min(item.columns.length, 3);
-                const gridClass = `nb-mega-grid-${colCount}`;
                 const hasCta = !!(item.cta_column && (item.cta_column.text || item.cta_column.btn_label));
-
-                const colsHtml = item.columns
-                    .slice(0, 3)
+                const contentCols = item.columns.slice(0, 3);
+                const colsHtml = contentCols
                     .map((col) => {
                         const badgeColor = col.badge_color === "orange" ? "nb-badge-orange" : "nb-badge-blue";
                         const badgeHtml = col.badge
@@ -207,7 +175,6 @@ function buildNavbarHTML(data, uid) {
                         return `<div class="nb-mega-col">${badgeHtml}${itemsHtml}</div>`;
                     })
                     .join("");
-
                 let ctaColHtml = "";
                 if (hasCta) {
                     const cta = item.cta_column;
@@ -218,21 +185,18 @@ function buildNavbarHTML(data, uid) {
                         <a href="${cta.btn_href || "#"}" class="nb-mega-cta-btn ${ctaBtnColor}">${cta.btn_label || "Ver más"}</a>
                     </div>`;
                 }
-
-                const megaContent = hasCta
-                    ? `<div class="nb-mega-grid ${gridClass}">${colsHtml}${ctaColHtml}</div>`
-                    : `<div class="nb-mega-grid ${gridClass}" style="grid-template-columns:repeat(${colCount},1fr);">${colsHtml}</div>`;
+                const gridStyle = hasCta
+                    ? `grid-template-columns:1fr 1fr 1fr minmax(200px,260px);`
+                    : `grid-template-columns:repeat(${contentCols.length},minmax(0,280px));justify-content:start;`;
 
                 return `<li class="nb-nav-item nb-has-submenu">
-                    <button class="nb-nav-link nb-nav-trigger" type="button">${item.label || "Menú"}<i class="ri-arrow-down-s-line nb-chevron"></i></button>
-                    <div class="nb-mega">${megaContent}</div>
+                    <button class="nb-nav-link nb-nav-trigger" type="button">${item.label || "Menú"}</button>
+                    <div class="nb-mega"><div class="nb-mega-grid" style="${gridStyle}">${colsHtml}${ctaColHtml}</div></div>
                 </li>`;
             }
             return `<li class="nb-nav-item"><a href="${item.href || "#"}" class="nb-nav-link">${item.label || ""}</a></li>`;
         })
         .join("");
-
-    // ── Bottom CTA ──
     const bottomCta = data.bottom_cta || {};
     const bottomCtaColorClass = bottomCta.color === "blue" ? "nb-cta-blue" : "nb-cta-orange";
     const bottomCtaLine2 = bottomCta.sublabel
@@ -241,8 +205,6 @@ function buildNavbarHTML(data, uid) {
     const bottomCtaHtml = bottomCta.label
         ? `<a href="${bottomCta.href || "#"}" class="nb-bottom-cta ${bottomCtaColorClass}"><span class="nb-bottom-cta-line1">${bottomCta.label}</span>${bottomCtaLine2}</a>`
         : "";
-
-    // ── Mobile menu ──
     const mobileLinksHtml = (data.nav_links || [])
         .map((item) => {
             if (item.type === "submenu" && item.columns?.length) {
@@ -283,10 +245,6 @@ function buildNavbarHTML(data, uid) {
         <div class="nb-mobile-menu" id="nb-mobile-${uid}">${mobileLinksHtml}${mobileActionsHtml}</div>
     </div>`;
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// DATOS POR DEFECTO
-// ─────────────────────────────────────────────────────────────────────────────
 const DEFAULT_DATA = {
     logo_url: "",
     logo_alt: "Logo",
@@ -325,10 +283,6 @@ const DEFAULT_DATA = {
     ],
     bottom_cta: { label: "Programa Surge", sublabel: "Formación Empresarial", href: "#", color: "orange" },
 };
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MODAL DE ADMINISTRACIÓN
-// ─────────────────────────────────────────────────────────────────────────────
 function showNavbarModal(editor, component) {
     const existing = document.getElementById("navbar-config-modal");
     if (existing) existing.remove();
@@ -419,8 +373,6 @@ function showNavbarModal(editor, component) {
         `;
         document.head.appendChild(style);
     }
-
-    // ── Leer datos actuales ──
     const currentData = (() => {
         try {
             return JSON.parse(component.getAttributes()["data-navbar-config"] || "{}");
@@ -436,8 +388,6 @@ function showNavbarModal(editor, component) {
     const bankingBtn = JSON.parse(JSON.stringify(currentData.banking_btn || DEFAULT_DATA.banking_btn));
     const navLinks   = JSON.parse(JSON.stringify(currentData.nav_links   || DEFAULT_DATA.nav_links));
     const bottomCta  = JSON.parse(JSON.stringify(currentData.bottom_cta  || DEFAULT_DATA.bottom_cta));
-
-    // ── Crear overlay ──
     const overlay = document.createElement("div");
     overlay.id = "navbar-config-modal";
     overlay.className = "nb-overlay";
@@ -566,11 +516,7 @@ function showNavbarModal(editor, component) {
 
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
-
-    // ── Instancia del icon picker ──
     const iconPicker = new IconPickerModal();
-
-    // ── Tabs ──
     modal.querySelectorAll(".nb-tab-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
             modal.querySelectorAll(".nb-tab-btn").forEach((b) => b.classList.remove("active"));
@@ -579,8 +525,6 @@ function showNavbarModal(editor, component) {
             modal.querySelector(`#nb-panel-${btn.dataset.tab}`).classList.add("active");
         });
     });
-
-    // ── Logo pick ──
     modal.querySelector("#nb-logo-pick").addEventListener("click", () => {
         openMediaPicker({
             type: "image",
@@ -600,8 +544,6 @@ function showNavbarModal(editor, component) {
             },
         });
     });
-
-    // ── Autocomplete de URLs ──
     const appBase = document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
     const searchUrl = `${appBase}/api/pages/search`;
 
@@ -658,8 +600,6 @@ function showNavbarModal(editor, component) {
             else if (e.key === "Escape") { dropdown.style.display = "none"; }
         });
     }
-
-    // ── Drag & drop genérico ──
     function makeDraggable(container, arr, renderFn) {
         let dragIdx = null;
         container.querySelectorAll("[data-drag-idx]").forEach((card) => {
@@ -671,10 +611,6 @@ function showNavbarModal(editor, component) {
             card.addEventListener("drop", (e) => { e.preventDefault(); const overIdx = parseInt(card.dataset.dragIdx); if (dragIdx !== null && overIdx !== dragIdx) { const [moved] = arr.splice(dragIdx, 1); arr.splice(overIdx, 0, moved); renderFn(); } dragIdx = null; });
         });
     }
-
-    // ────────────────────────────────────────────────────────────────────────
-    // RENDER: Top Actions
-    // ────────────────────────────────────────────────────────────────────────
     function renderTopActions() {
         const list = modal.querySelector("#nb-top-actions-list");
         list.innerHTML = "";
@@ -698,8 +634,6 @@ function showNavbarModal(editor, component) {
                 <div style="position:relative;">
                     <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL o buscar página..." value="${action.href || "#"}" data-field="href">
                 </div>`;
-
-            // Icono picker
             card.querySelector(".nb-pick-icon-btn").addEventListener("click", () => {
                 iconPicker.open((selected) => {
                     action.icon = selected;
@@ -727,10 +661,6 @@ function showNavbarModal(editor, component) {
         });
         makeDraggable(list, topActions, renderTopActions);
     }
-
-    // ────────────────────────────────────────────────────────────────────────
-    // RENDER: Nav Links
-    // ────────────────────────────────────────────────────────────────────────
     function renderNavLinks() {
         const list = modal.querySelector("#nb-nav-list");
         list.innerHTML = "";
@@ -777,23 +707,18 @@ function showNavbarModal(editor, component) {
                             </div>
                         </div>
                     </div>`;
-
-                // Toggle tipo
                 card.querySelector("[data-toggle-type]").onclick = () => {
                     item.type = "link"; item.href = "#"; delete item.columns; delete item.cta_column;
                     renderNavLinks();
                 };
                 card.querySelector(".nb-remove-link").onclick = () => { navLinks.splice(idx, 1); renderNavLinks(); };
                 card.querySelector("[data-field='label']").addEventListener("input", (e) => { item.label = e.target.value; });
-
-                // CTA fields
                 card.querySelectorAll("[data-cta-field]").forEach((input) => {
                     input.addEventListener("input", () => {
                         if (!item.cta_column) item.cta_column = {};
                         item.cta_column[input.dataset.ctaField] = input.value;
                     });
                 });
-                // CTA URL autocomplete
                 const ctaUrlInput = card.querySelector("[data-cta-field='btn_href']");
                 if (ctaUrlInput) {
                     const wrapper = document.createElement("div");
@@ -802,7 +727,6 @@ function showNavbarModal(editor, component) {
                     wrapper.appendChild(ctaUrlInput);
                     attachUrlAutocomplete(ctaUrlInput);
                 }
-                // CTA color toggle
                 card.querySelectorAll("[data-cta-color]").forEach((btn) => {
                     btn.addEventListener("click", () => {
                         if (!item.cta_column) item.cta_column = {};
@@ -812,8 +736,6 @@ function showNavbarModal(editor, component) {
                         });
                     });
                 });
-
-                // Render columns
                 const colsList = card.querySelector(".nb-columns-list");
                 function renderColumns() {
                     colsList.innerHTML = "";
@@ -846,11 +768,7 @@ function showNavbarModal(editor, component) {
                             <div class="nb-add-row" style="margin-top:0.375rem;">
                                 <button class="nb-btn-add nb-btn-add-item nb-add-item-btn" style="font-size:0.7rem;padding:0.25rem 0.5rem;"><i class="ri-add-line"></i> Agregar item</button>
                             </div>`;
-
-                        // Col badge field
                         colCard.querySelector("[data-col-field='badge']").addEventListener("input", (e) => { col.badge = e.target.value; });
-
-                        // Col color toggle
                         colCard.querySelectorAll("[data-col-color]").forEach((btn) => {
                             btn.addEventListener("click", () => {
                                 col.badge_color = btn.dataset.colColor;
@@ -859,22 +777,16 @@ function showNavbarModal(editor, component) {
                                 });
                             });
                         });
-
-                        // Remove col
                         colCard.querySelector(".nb-remove-col").onclick = () => {
                             item.columns.splice(ci, 1);
                             renderColumns();
                             const addColBtn = card.querySelector(".nb-add-col-btn");
                             if (addColBtn) { addColBtn.disabled = false; addColBtn.style.opacity = ""; addColBtn.style.cursor = ""; }
                         };
-
-                        // Item fields
                         colCard.querySelectorAll("[data-item-field]").forEach((input) => {
                             const ii = parseInt(input.closest("[data-item-idx]").dataset.itemIdx);
                             input.addEventListener("input", () => { col.items[ii][input.dataset.itemField] = input.value; });
                         });
-
-                        // Item URL autocomplete
                         colCard.querySelectorAll(".nb-url-input").forEach((urlInput) => {
                             const wrapper = document.createElement("div");
                             wrapper.style.position = "relative";
@@ -882,8 +794,6 @@ function showNavbarModal(editor, component) {
                             wrapper.appendChild(urlInput);
                             attachUrlAutocomplete(urlInput);
                         });
-
-                        // Remove item
                         colCard.querySelectorAll(".nb-remove-item").forEach((btn) => {
                             btn.onclick = () => {
                                 const ii = parseInt(btn.closest("[data-item-idx]").dataset.itemIdx);
@@ -891,8 +801,6 @@ function showNavbarModal(editor, component) {
                                 renderColumns();
                             };
                         });
-
-                        // Add item
                         colCard.querySelector(".nb-add-item-btn").onclick = () => {
                             col.items = col.items || [];
                             col.items.push({ label: "Nuevo item", desc: "", href: "#" });
@@ -903,8 +811,6 @@ function showNavbarModal(editor, component) {
                     });
                 }
                 renderColumns();
-
-                // Add column
                 card.querySelector(".nb-add-col-btn").onclick = () => {
                     if ((item.columns || []).length >= 3) return;
                     item.columns = item.columns || [];
@@ -917,7 +823,6 @@ function showNavbarModal(editor, component) {
                 };
 
             } else {
-                // Link simple
                 card.innerHTML = `
                     <div class="nb-link-card-header">
                         <span class="nb-drag-handle"><i class="ri-draggable"></i></span>
@@ -954,8 +859,6 @@ function showNavbarModal(editor, component) {
         });
         makeDraggable(list, navLinks, renderNavLinks);
     }
-
-    // ── Banking color toggle ──
     modal.querySelectorAll("#nb-banking-blue, #nb-banking-orange").forEach((btn) => {
         btn.addEventListener("click", () => {
             bankingBtn.color = btn.dataset.color;
@@ -963,8 +866,6 @@ function showNavbarModal(editor, component) {
             modal.querySelector("#nb-banking-orange").classList.toggle("nb-color-inactive", bankingBtn.color !== "orange");
         });
     });
-
-    // ── Bottom CTA color toggle ──
     modal.querySelectorAll("#nb-bcta-blue, #nb-bcta-orange").forEach((btn) => {
         btn.addEventListener("click", () => {
             bottomCta.color = btn.dataset.color;
@@ -972,8 +873,6 @@ function showNavbarModal(editor, component) {
             modal.querySelector("#nb-bcta-orange").classList.toggle("nb-color-inactive", bottomCta.color !== "orange");
         });
     });
-
-    // ── Banking href autocomplete ──
     const bankingHrefInput = modal.querySelector("#nb-banking-href");
     if (bankingHrefInput) {
         const wrapper = document.createElement("div");
@@ -982,8 +881,6 @@ function showNavbarModal(editor, component) {
         wrapper.appendChild(bankingHrefInput);
         attachUrlAutocomplete(bankingHrefInput);
     }
-
-    // ── Bottom CTA href autocomplete ──
     const bctaHrefInput = modal.querySelector("#nb-bcta-href");
     if (bctaHrefInput) {
         const wrapper = document.createElement("div");
@@ -992,8 +889,6 @@ function showNavbarModal(editor, component) {
         wrapper.appendChild(bctaHrefInput);
         attachUrlAutocomplete(bctaHrefInput);
     }
-
-    // ── Logo href autocomplete ──
     const logoHrefInput = modal.querySelector("#nb-logo-href");
     if (logoHrefInput) {
         const wrapper = document.createElement("div");
@@ -1002,8 +897,6 @@ function showNavbarModal(editor, component) {
         wrapper.appendChild(logoHrefInput);
         attachUrlAutocomplete(logoHrefInput);
     }
-
-    // ── Add buttons ──
     modal.querySelector("#nb-add-top-action").onclick = () => {
         topActions.push({ label: "Nueva acción", href: "#", icon: "ri-star-line" });
         renderTopActions();
@@ -1023,18 +916,12 @@ function showNavbarModal(editor, component) {
         renderNavLinks();
         modal.querySelector("#nb-nav-list").lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
-
-    // ── Render inicial ──
     renderTopActions();
     renderNavLinks();
-
-    // ── Cerrar ──
     const close = () => { iconPicker.close(); overlay.remove(); };
     modal.querySelector("#nb-modal-close").onclick = close;
     modal.querySelector("#nb-modal-cancel").onclick = close;
     overlay.onclick = (e) => { if (e.target === overlay) close(); };
-
-    // ── Guardar ──
     modal.querySelector("#nb-modal-save").onclick = () => {
         const data = {
             logo_url:   modal.querySelector("#nb-logo-url").value.trim(),
@@ -1063,10 +950,6 @@ function showNavbarModal(editor, component) {
         close();
     };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// INICIALIZACIÓN DEL BLOQUE EN GRAPESJS
-// ─────────────────────────────────────────────────────────────────────────────
 export function initializeNavbarBlock(editor) {
     const componentType = "navbar-component";
 
@@ -1183,10 +1066,6 @@ export function initializeNavbarBlock(editor) {
     setupNavbarEditorEvents(editor, componentType);
     injectNavbarCanvasStyles(editor);
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EVENTOS DEL EDITOR
-// ─────────────────────────────────────────────────────────────────────────────
 function setupNavbarEditorEvents(editor, componentType) {
     editor.on("storage:end:load", () => {
         setTimeout(() => reinitNavbar(editor, componentType), 800);
