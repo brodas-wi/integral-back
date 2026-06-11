@@ -73,7 +73,8 @@ const NAVBAR_STYLES = `
 .nb-mega{display:none;position:absolute;top:calc(100% + 3px);left:0;right:0;background:#fff;border-top:2px solid #E97300;box-shadow:0 8px 32px rgba(0,0,0,0.1);z-index:200;padding:1rem 4rem;}
 .nb-nav-item.nb-open>.nb-mega{display:block;}
 .nb-mega-grid{display:grid;gap:2rem;grid-template-columns:1fr 1fr 1fr minmax(200px,260px);}
-.nb-mega-col{display:flex;flex-direction:column;gap:0.5rem;min-width:0;}
+.nb-mega-col{display:flex;flex-direction:column;gap:0.5rem;min-width:0;border-right:1px solid #E97300;padding-right:1.5rem;}
+.nb-mega-col:last-of-type{border-right:none;padding-right:0;}
 .nb-mega-badge{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-align:center;margin-bottom:0;cursor:default;}
 .nb-badge-blue{background:#003B71;color:#fff;}
 .nb-badge-orange{background:#E97300;color:#fff;}
@@ -81,7 +82,7 @@ const NAVBAR_STYLES = `
 .nb-mega-item:hover{border-bottom-color:#e2e8f0;}
 .nb-mega-item-title{font-size:0.8125rem;font-weight:700;color:#003B71;text-transform:uppercase;letter-spacing:0.03em;line-height:1.3;}
 .nb-mega-item-desc{font-size:0.8125rem;font-weight:400;color:#E97300;line-height:1.4;}
-.nb-mega-cta-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;padding:1rem;border-left:1px solid #f1f5f9;}
+.nb-mega-cta-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;padding:1rem;border-left:1px solid #E97300;}
 .nb-mega-cta-text{font-size:1.125rem;font-weight:800;text-align:center;line-height:1.3;text-transform:uppercase;}
 .nb-mega-cta-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;}
 .nb-mega-cta-btn:hover{opacity:0.88;}
@@ -382,6 +383,23 @@ function showNavbarModal(editor, component) {
             .nb-color-opt-orange{background:#E97300;color:#fff;}
             .nb-color-opt.nb-color-inactive{opacity:0.35;border-color:#e2e8f0;}
             .nb-color-opt.nb-color-inactive:hover{opacity:0.6;}
+            .nb-btn-backup{padding:0.5rem 1rem;background:#fff;border:2px solid #003B71;border-radius:0.5rem;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;}
+            .nb-btn-backup:hover{background:#003B71;color:#fff;}
+            .nb-btn-restore{padding:0.5rem 1rem;background:#fff;border:2px solid #0d9488;border-radius:0.5rem;color:#0d9488;font-size:0.8125rem;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;user-select:none;}
+            .nb-btn-restore:hover{background:#0d9488;color:#fff;}
+            .nb-confirm-overlay{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);padding:1rem;}
+            .nb-confirm-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(15,23,42,0.18);font-family:'Inter',sans-serif;overflow:hidden;border:1px solid #e2e8f0;}
+            .nb-confirm-header{padding:1rem 1.25rem 0.75rem;display:flex;align-items:center;gap:0.625rem;border-bottom:1px solid #f1f5f9;}
+            .nb-confirm-header i{font-size:1.25rem;color:#E97300;}
+            .nb-confirm-header h3{margin:0;font-size:0.9375rem;font-weight:700;color:#0f172a;}
+            .nb-confirm-body{padding:1rem 1.25rem;}
+            .nb-confirm-body p{margin:0 0 0.5rem;font-size:0.875rem;color:#475569;line-height:1.5;}
+            .nb-confirm-filename{display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;background:#f1f5f9;border-radius:0.375rem;font-size:0.8rem;font-weight:600;color:#003B71;margin-top:0.25rem;}
+            .nb-confirm-footer{padding:0.75rem 1.25rem 1rem;display:flex;gap:0.625rem;justify-content:flex-end;background:#f8fafc;border-top:1px solid #f1f5f9;}
+            .nb-confirm-cancel{padding:0.5rem 1.125rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .nb-confirm-cancel:hover{background:#f1f5f9;}
+            .nb-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .nb-confirm-ok:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
     }
@@ -514,6 +532,10 @@ function showNavbarModal(editor, component) {
         </div>
         <div class="nb-modal-footer">
             <button id="nb-modal-cancel" class="nb-btn-cancel">Cancelar</button>
+            <div style="display:flex;gap:0.5rem;margin-right:auto;">
+                <button id="nb-modal-backup" class="nb-btn-backup" title="Descargar configuración como JSON"><i class="ri-download-2-line"></i> Respaldar</button>
+                <label id="nb-modal-restore-label" class="nb-btn-restore" title="Restaurar configuración desde JSON" style="cursor:pointer;"><i class="ri-upload-2-line"></i> Restaurar<input id="nb-modal-restore-input" type="file" accept=".json,application/json" style="display:none;"></label>
+            </div>
             <button id="nb-modal-save"   class="nb-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
         </div>`;
 
@@ -921,6 +943,86 @@ function showNavbarModal(editor, component) {
     };
     renderTopActions();
     renderNavLinks();
+    modal.querySelector("#nb-modal-backup").onclick = () => {
+        const snapshot = {
+            logo_url:    modal.querySelector("#nb-logo-url").value.trim(),
+            logo_alt:    modal.querySelector("#nb-logo-alt").value.trim(),
+            logo_text:   modal.querySelector("#nb-logo-text").value.trim(),
+            logo_href:   modal.querySelector("#nb-logo-href").value.trim() || "/",
+            top_actions: JSON.parse(JSON.stringify(topActions)),
+            banking_btn: {
+                label: modal.querySelector("#nb-banking-label").value.trim(),
+                href:  modal.querySelector("#nb-banking-href").value.trim() || "#",
+                color: bankingBtn.color || "blue",
+            },
+            nav_links: JSON.parse(JSON.stringify(navLinks)),
+            bottom_cta: {
+                label:    modal.querySelector("#nb-bcta-label").value.trim(),
+                sublabel: modal.querySelector("#nb-bcta-sublabel").value.trim(),
+                href:     modal.querySelector("#nb-bcta-href").value.trim() || "#",
+                color:    bottomCta.color || "orange",
+            },
+        };
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: "application/json" });
+        const url  = URL.createObjectURL(blob);
+        const ts   = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const a    = document.createElement("a");
+        a.href     = url;
+        a.download = `navbar-backup-${ts}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    };
+    modal.querySelector("#nb-modal-restore-input").onchange = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            let parsed;
+            try { parsed = JSON.parse(ev.target.result); } catch {
+                const errOverlay = document.createElement("div");
+                errOverlay.className = "nb-confirm-overlay";
+                errOverlay.innerHTML = `<div class="nb-confirm-modal"><div class="nb-confirm-header"><i class="ri-error-warning-line" style="color:#ef4444;"></i><h3>Archivo inválido</h3></div><div class="nb-confirm-body"><p>El archivo seleccionado no es un JSON válido.</p></div><div class="nb-confirm-footer"><button class="nb-confirm-ok" style="background:#ef4444;">Cerrar</button></div></div>`;
+                document.body.appendChild(errOverlay);
+                errOverlay.querySelector(".nb-confirm-ok").onclick = () => errOverlay.remove();
+                e.target.value = "";
+                return;
+            }
+            const confirmOverlay = document.createElement("div");
+            confirmOverlay.className = "nb-confirm-overlay";
+            confirmOverlay.innerHTML = `
+                <div class="nb-confirm-modal">
+                    <div class="nb-confirm-header">
+                        <i class="ri-refresh-line"></i>
+                        <h3>Restaurar configuración</h3>
+                    </div>
+                    <div class="nb-confirm-body">
+                        <p>¿Deseas restaurar la configuración del navbar desde el archivo de respaldo?</p>
+                        <p>Esta acción reemplazará la configuración actual del formulario.</p>
+                        <span class="nb-confirm-filename"><i class="ri-file-code-line"></i>${file.name}</span>
+                    </div>
+                    <div class="nb-confirm-footer">
+                        <button class="nb-confirm-cancel">Cancelar</button>
+                        <button class="nb-confirm-ok"><i class="ri-check-line"></i> Sí, restaurar</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(confirmOverlay);
+            confirmOverlay.querySelector(".nb-confirm-cancel").onclick = () => { confirmOverlay.remove(); e.target.value = ""; };
+            confirmOverlay.querySelector(".nb-confirm-ok").onclick = () => {
+                confirmOverlay.remove();
+                e.target.value = "";
+                const existingInner = component.getEl()?.querySelector("[id^='nb-root-']");
+                const uid = existingInner?.id?.replace("nb-root-", "") || "nb" + Math.random().toString(36).slice(2, 7);
+                component.addAttributes({ "data-navbar-config": JSON.stringify(parsed) });
+                component.components(buildNavbarHTML(parsed, uid) + NAVBAR_STYLES);
+                close();
+                showNavbarModal(editor, component);
+            };
+        };
+        reader.readAsText(file);
+    };
+
     const close = () => { iconPicker.close(); overlay.remove(); };
     modal.querySelector("#nb-modal-close").onclick = close;
     modal.querySelector("#nb-modal-cancel").onclick = close;
