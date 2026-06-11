@@ -263,7 +263,7 @@
             <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
                 <h4 class="font-semibold text-red-700 mb-2 flex items-center gap-2">
                     <i class="ri-shield-cross-line"></i>
-                    ⚠️ Restricciones de Seguridad (CSP)
+                    Restricciones de Seguridad (CSP)
                 </h4>
                 <p class="text-sm text-red-600 mb-2">Los siguientes patrones están <strong>bloqueados</strong> por los headers de seguridad del sitio:</p>
                 <ul class="text-sm text-red-600 space-y-1 list-disc list-inside">

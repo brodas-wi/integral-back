@@ -28,8 +28,6 @@
     flex-shrink: 0;
 }
 
-
-/* CodeMirror editor wrapper */
 .script-editor-wrapper {
     border: 1px solid #e5e7eb;
     border-radius: 0.5rem;
@@ -51,7 +49,6 @@
     line-height: 1.6;
 }
 
-/* Code viewer (show page) */
 .script-code-viewer {
     background: #1e1e2e;
     border-radius: 0.5rem;
@@ -71,7 +68,6 @@
     overflow-x: auto;
 }
 
-/* Scrollbar styling for code areas */
 .script-code-viewer::-webkit-scrollbar,
 .script-codemirror-editor .cm-scroller::-webkit-scrollbar {
     width: 6px;
@@ -94,7 +90,6 @@
     background: #585b70;
 }
 
-/* Script item hover animation */
 .script-item {
     transition: box-shadow 0.15s ease, background-color 0.15s ease;
 }
@@ -103,17 +98,18 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-/* Toggle switch animation */
 .peer:checked ~ div {
     transition: background-color 0.2s ease;
 }
 
-/* Sandbox iframe */
+.preview-container {
+    height: 400px;
+}
+
 #preview-iframe {
     background: #ffffff;
 }
 
-/* Line clamp utility */
 .line-clamp-1 {
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -121,7 +117,6 @@
     overflow: hidden;
 }
 
-/* Badge variants used in scripts */
 .badge-info {
     background-color: #dbeafe;
     color: #1d4ed8;
@@ -144,7 +139,6 @@
     align-items: center;
 }
 
-/* btn-success and btn-danger for show page */
 .btn-success {
     display: inline-flex;
     align-items: center;
@@ -191,7 +185,6 @@
     font-size: 0.8125rem;
 }
 
-/* Dropdown item danger variant */
 .dropdown-item-danger {
     display: flex;
     align-items: center;

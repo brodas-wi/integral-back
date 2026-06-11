@@ -53,7 +53,7 @@ class SecurityHeaders
         "connect-src"               => ["'self'"],
         "media-src"                 => ["'self'"],
         "object-src"                => ["'none'"],
-        "frame-src"                 => ["'self'"],
+        "frame-src"                 => ["'self'", "blob:"],
         "frame-ancestors"           => ["'self'"],
         "base-uri"                  => ["'self'"],
         "form-action"               => ["'self'"],
@@ -76,6 +76,7 @@ class SecurityHeaders
     private array $scriptsEditorRoutes = [
         'scripts/create',
         'scripts/*/edit',
+        'scripts/*/show',
     ];
 
     public function handle(Request $request, Closure $next): Response

@@ -163,7 +163,7 @@
             La vista previa se ejecuta en un iframe aislado (sandbox). El comportamiento puede diferir ligeramente del sitio real.
         </div>
 
-        <div class="border border-gray-200 rounded-lg overflow-hidden bg-white" style="height: 400px;">
+        <div class="border border-gray-200 rounded-lg overflow-hidden bg-white preview-container">
             <iframe id="preview-iframe"
                 sandbox="allow-scripts allow-same-origin"
                 class="w-full h-full border-0"
@@ -232,9 +232,6 @@
     @canany(['scripts.delete', 'scripts.manage'])
         @if(!$script->is_active)
             <div class="card border border-red-200">
-                <h3 class="text-base font-semibold text-red-600 mb-3">
-                    <i class="ri-error-warning-line mr-2"></i>Zona de Peligro
-                </h3>
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-600">Eliminar este script permanentemente.</p>
