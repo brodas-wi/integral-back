@@ -62,21 +62,21 @@ class SecurityHeaders
         "upgrade-insecure-requests" => [],
     ];
 
-    private array $editorRoutes = [
-        'pages/create',
-        'pages/*/edit',
-        'navbars/create',
-        'navbars/*/edit',
-        'navbars/*/preview',
-        'footers/create',
-        'footers/*/edit',
-        'footers/*/preview',
+    private array $editorRouteNames = [
+        'pages.create',
+        'pages.edit',
+        'navbars.create',
+        'navbars.edit',
+        'navbars.preview',
+        'footers.create',
+        'footers.edit',
+        'footers.preview',
     ];
 
-    private array $scriptsEditorRoutes = [
-        'scripts/create',
-        'scripts/*/edit',
-        'scripts/*/show',
+    private array $scriptsRouteNames = [
+        'scripts.create',
+        'scripts.edit',
+        'scripts.show',
     ];
 
     public function handle(Request $request, Closure $next): Response
@@ -144,8 +144,8 @@ class SecurityHeaders
 
     private function isEditorRoute(Request $request): bool
     {
-        foreach ($this->editorRoutes as $pattern) {
-            if ($request->is($pattern)) {
+        foreach ($this->editorRouteNames as $routeName) {
+            if ($request->routeIs($routeName)) {
                 return true;
             }
         }
@@ -154,8 +154,8 @@ class SecurityHeaders
 
     private function isScriptsEditorRoute(Request $request): bool
     {
-        foreach ($this->scriptsEditorRoutes as $pattern) {
-            if ($request->is($pattern)) {
+        foreach ($this->scriptsRouteNames as $routeName) {
+            if ($request->routeIs($routeName)) {
                 return true;
             }
         }
