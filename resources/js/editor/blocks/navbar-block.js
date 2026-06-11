@@ -96,7 +96,7 @@ const NAVBAR_STYLES = `
 .nb-hamburger:hover{background:rgba(0,59,113,0.06);}
 .nb-hamburger span{display:block;width:24px;height:2px;background:#003B71;border-radius:2px;transition:all 0.25s;}
 .nb-mobile-bar{display:none;align-items:center;justify-content:space-between;padding:0.625rem 1.25rem;border-bottom:3px solid #E97300;}
-.nb-mobile-menu{display:none;flex-direction:column;background:#fff;border-top:1px solid #f1f5f9;padding:0.75rem 1.25rem;gap:0;}
+.nb-mobile-menu{display:none;flex-direction:column;background:#fff;border-top:1px solid #f1f5f9;padding:0.75rem 1.25rem;gap:0;max-height:calc(100vh - 64px);overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .nb-mobile-menu.nb-open{display:flex;}
 .nb-mobile-top-actions{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:0.25rem 1rem;border-bottom:1px solid #f1f5f9;padding:0.25rem 0.75rem;}
 .nb-mobile-top-action{display:flex;align-items:center;gap:0.5rem;padding:0.375rem 0.5rem;color:#003B71;text-decoration:none;font-size:0.8125rem;font-weight:600;white-space:nowrap;text-transform:uppercase;letter-spacing:0.04em;transition:color 0.15s;}
@@ -109,12 +109,14 @@ const NAVBAR_STYLES = `
 .nb-mobile-link:hover,.nb-mobile-item.nb-open>.nb-mobile-link{color:#003B71;}
 .nb-mobile-link i{color:#94a3b8;font-size:0.875rem;transition:transform 0.2s;}
 .nb-mobile-item.nb-open>.nb-mobile-link i{transform:rotate(180deg);}
-.nb-mobile-submenu{display:none;flex-direction:column;padding:0.25rem 0 0.5rem 1rem;gap:0.125rem;}
+.nb-mobile-submenu{display:none;flex-direction:row;flex-wrap:wrap;padding:0.5rem 0 0.75rem 0;gap:0.75rem;border-bottom:1px solid #f1f5f9;}
 .nb-mobile-item.nb-open>.nb-mobile-submenu{display:flex;}
-.nb-mobile-sub-link{display:flex;flex-direction:column;gap:0.125rem;padding:0.5rem;text-decoration:none;border-radius:0.375rem;transition:background 0.15s;}
+.nb-mobile-sub-col{display:flex;flex-direction:column;gap:0.25rem;flex:1 1 140px;min-width:130px;}
+.nb-mobile-sub-badge{display:inline-flex;align-items:center;justify-content:center;padding:0.3rem 0.875rem;border-radius:9999px;font-size:0.75rem;font-weight:700;margin-bottom:0.25rem;cursor:default;white-space:nowrap;}
+.nb-mobile-sub-link{display:flex;flex-direction:column;gap:0.125rem;padding:0.375rem 0.25rem;text-decoration:none;border-radius:0.375rem;transition:background 0.15s;}
 .nb-mobile-sub-link:hover{background:rgba(0,59,113,0.04);}
-.nb-mobile-sub-title{font-size:0.8125rem;font-weight:700;color:#003B71;text-transform:uppercase;}
-.nb-mobile-sub-desc{font-size:0.75rem;color:#E97300;}
+.nb-mobile-sub-title{font-size:0.8rem;font-weight:700;color:#003B71;text-transform:uppercase;line-height:1.3;}
+.nb-mobile-sub-desc{font-size:0.7rem;color:#E97300;line-height:1.3;}
 @media(max-width:1280px){
     .nb-top{padding:0.75rem 2.5rem;}
     .nb-bottom{padding:0 2.5rem;}
@@ -215,18 +217,20 @@ function buildNavbarHTML(data, uid) {
     const mobileLinksHtml = (data.nav_links || [])
         .map((item) => {
             if (item.type === "submenu" && item.columns?.length) {
-                const subItemsHtml = item.columns
-                    .flatMap((col) => col.items || [])
-                    .map((it) => {
-                        const desc = it.desc
-                            ? `<span class="nb-mobile-sub-desc">${it.desc}</span>`
-                            : "";
+                const colsHtml = item.columns.slice(0, 3).map((col) => {
+                    const badgeColor = col.badge_color === "orange" ? "nb-badge-orange" : "nb-badge-blue";
+                    const badgeHtml = col.badge
+                        ? `<span class="nb-mobile-sub-badge ${badgeColor}">${col.badge}</span>`
+                        : "";
+                    const itemsHtml = (col.items || []).map((it) => {
+                        const desc = it.desc ? `<span class="nb-mobile-sub-desc">${it.desc}</span>` : "";
                         return `<a href="${it.href || "#"}" class="nb-mobile-sub-link"><span class="nb-mobile-sub-title">${it.label || ""}</span>${desc}</a>`;
-                    })
-                    .join("");
+                    }).join("");
+                    return `<div class="nb-mobile-sub-col">${badgeHtml}${itemsHtml}</div>`;
+                }).join("");
                 return `<div class="nb-mobile-item">
                     <button class="nb-mobile-link" type="button">${item.label || "Menú"}<i class="ri-arrow-down-s-line"></i></button>
-                    <div class="nb-mobile-submenu">${subItemsHtml}</div>
+                    <div class="nb-mobile-submenu">${colsHtml}</div>
                 </div>`;
             }
             return `<a href="${item.href || "#"}" class="nb-mobile-link">${item.label || ""}</a>`;
