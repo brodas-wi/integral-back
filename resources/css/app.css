@@ -1,13 +1,9 @@
 @import "../fonts/inter.css";
 @import "./components/media-picker.css";
-@import "tailwindcss";
 
-@theme {
-    --color-primary: #f0872a;
-    --color-secondary: #003b71;
-    --color-light: #f8fafc;
-    --color-gray: #6b7280;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
     body {
@@ -93,7 +89,7 @@
     }
 
     .sidebar-link {
-        @apply flex items-center gap-3 px-4 py-3 text-gray hover:bg-primary hover:text-white rounded-lg transition-all duration-200;
+        @apply flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-primary hover:text-white rounded-lg transition-all duration-200;
     }
 
     .sidebar-link.active {
@@ -105,11 +101,11 @@
     }
 
     .sidebar-group-btn {
-        @apply w-full flex items-center justify-between px-4 py-3 text-gray hover:bg-primary hover:text-white rounded-lg transition-all duration-200 cursor-pointer;
+        @apply w-full flex items-center justify-between px-4 py-3 text-gray-500 hover:bg-primary hover:text-white rounded-lg transition-all duration-200 cursor-pointer;
     }
 
     .sidebar-group.is-open .sidebar-group-btn {
-        background-color: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+        background-color: rgba(13, 63, 106, 0.1);
         @apply text-secondary;
     }
 
@@ -124,7 +120,7 @@
     }
 
     .sidebar-child-link {
-        @apply flex items-center gap-3 pl-10 pr-4 py-2.5 text-sm text-gray hover:bg-primary hover:text-white rounded-lg transition-all duration-200 mt-0.5;
+        @apply flex items-center gap-3 pl-10 pr-4 py-2.5 text-sm text-gray-500 hover:bg-primary hover:text-white rounded-lg transition-all duration-200 mt-0.5;
     }
 
     .sidebar-child-link.active {
@@ -159,15 +155,17 @@
         @apply bg-blue-100 text-blue-800;
     }
 
+    .badge-gray {
+        @apply bg-gray-100 text-gray-700;
+    }
+
     .notification-toast {
         @apply px-4 py-3 rounded-lg flex items-start justify-between gap-4 shadow-lg min-w-[300px] max-w-md;
         word-wrap: break-word;
     }
 
     .announcement-removing {
-        transition:
-            opacity 0.3s,
-            transform 0.3s;
+        transition: opacity 0.3s, transform 0.3s;
         opacity: 0;
         transform: scale(0.9);
     }
@@ -188,7 +186,7 @@
 
     .media-card-btn {
         opacity: 0;
-        background-color: var(--color-primary, #f0872a);
+        background-color: #f0872a;
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 0.5rem;

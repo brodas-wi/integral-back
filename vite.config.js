@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
-import tailwindcss from "@tailwindcss/vite";
 import { glob } from 'glob';
 
 const viewJs  = glob.sync('resources/js/views/**/*.js');
@@ -17,7 +16,6 @@ export default defineConfig({
         port: 5173,
     },
     plugins: [
-        tailwindcss(),
         laravel({
             input: [
                 "resources/css/app.css",
