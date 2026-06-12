@@ -83,7 +83,7 @@
                             </a>
                             @canany(['navbars.create', 'navbars.manage'])
                                 <a href="{{ route('navbars.create') }}"
-                                    class="flex-1 bg-white text-teal-600 hover:bg-teal-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-teal-400 hover:bg-teal-300 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -110,7 +110,7 @@
                             </a>
                             @canany(['footers.create', 'footers.manage'])
                                 <a href="{{ route('footers.create') }}"
-                                    class="flex-1 bg-white text-cyan-600 hover:bg-cyan-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-cyan-400 hover:bg-cyan-300 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
