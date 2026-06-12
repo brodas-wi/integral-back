@@ -17,39 +17,9 @@
 
 @section('content')
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-        <div class="card text-center py-4">
-            <p class="text-2xl font-bold text-secondary">{{ $stats['active'] }}</p>
-            <p class="text-xs text-gray-500 mt-1">Activos</p>
-        </div>
-        <div class="card text-center py-4">
-            @canany(['scripts.approve', 'scripts.manage'])
-                <a href="{{ route('scripts.index', ['status' => 'pending_review']) }}" class="block hover:opacity-80 transition-opacity">
-                    <p class="text-2xl font-bold text-yellow-600">{{ $stats['pending_review'] }}</p>
-                    <p class="text-xs text-gray-500 mt-1">Pendientes</p>
-                </a>
-            @else
-                <p class="text-2xl font-bold text-yellow-600">{{ $stats['pending_review'] }}</p>
-                <p class="text-xs text-gray-500 mt-1">Pendientes</p>
-            @endcanany
-        </div>
-        <div class="card text-center py-4">
-            <p class="text-2xl font-bold text-green-600">{{ $stats['approved'] }}</p>
-            <p class="text-xs text-gray-500 mt-1">Aprobados</p>
-        </div>
-        <div class="card text-center py-4">
-            <p class="text-2xl font-bold text-gray-500">{{ $stats['draft'] }}</p>
-            <p class="text-xs text-gray-500 mt-1">Borradores</p>
-        </div>
-        <div class="card text-center py-4">
-            <p class="text-2xl font-bold text-red-500">{{ $stats['rejected'] }}</p>
-            <p class="text-xs text-gray-500 mt-1">Rechazados</p>
-        </div>
-    </div>
-
     <div class="card mb-6">
         <form method="GET" action="{{ route('scripts.index') }}" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <input type="text" name="search" value="{{ request('search') }}"
                     placeholder="Buscar por nombre o descripción..." class="input-field">
 
@@ -59,12 +29,6 @@
                     <option value="pending_review" {{ request('status') === 'pending_review' ? 'selected' : '' }}>Pendiente de revisión</option>
                     <option value="approved" {{ request('status') === 'approved' ? 'selected' : '' }}>Aprobado</option>
                     <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Rechazado</option>
-                </select>
-
-                <select name="type" class="input-field">
-                    <option value="">Todos los tipos</option>
-                    <option value="js" {{ request('type') === 'js' ? 'selected' : '' }}>JavaScript</option>
-                    <option value="css" {{ request('type') === 'css' ? 'selected' : '' }}>CSS</option>
                 </select>
 
                 <select name="scope" class="input-field">
@@ -79,7 +43,7 @@
                     <i class="ri-search-line mr-2"></i>
                     Filtrar
                 </button>
-                @if(request('search') || request('status') || request('type') || request('scope'))
+                @if(request('search') || request('status') || request('scope'))
                     <a href="{{ route('scripts.index') }}" class="btn-outline whitespace-nowrap">
                         <i class="ri-close-line mr-2"></i>
                         Limpiar
@@ -97,9 +61,8 @@
                         id="script-item-{{ $script->id }}">
                         <div class="flex items-start gap-4">
 
-                            <div class="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center
-                                {{ $script->type === 'js' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700' }}">
-                                <i class="{{ $script->type === 'js' ? 'ri-javascript-line' : 'ri-css3-line' }} text-xl"></i>
+                            <div class="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-yellow-100 text-yellow-700">
+                                <i class="ri-javascript-line text-xl"></i>
                             </div>
 
                             <div class="flex-1 min-w-0">
@@ -116,9 +79,6 @@
                                         {{ $script->status_label }}
                                     </span>
 
-                                    <span class="badge {{ $script->type === 'js' ? 'badge-warning' : 'badge-info' }}">
-                                        {{ $script->type_label }}
-                                    </span>
                                     <span class="badge badge-gray">
                                         <i class="{{ $script->scope === 'global' ? 'ri-global-line' : 'ri-pages-line' }} mr-1"></i>
                                         {{ $script->scope === 'global' ? 'Global' : 'Por página' }}
@@ -242,13 +202,13 @@
             <i class="ri-code-s-slash-line text-6xl text-gray-300 mb-4"></i>
             <h3 class="text-xl font-semibold text-secondary mb-2">No hay scripts</h3>
             <p class="text-gray-500 mb-6">
-                @if(request('search') || request('status') || request('type') || request('scope'))
+                @if(request('search') || request('status') || request('scope'))
                     No se encontraron scripts que coincidan con los filtros aplicados.
                 @else
                     Comienza creando tu primer script para el sitio público.
                 @endif
             </p>
-            @if(request('search') || request('status') || request('type') || request('scope'))
+            @if(request('search') || request('status') || request('scope'))
                 <a href="{{ route('scripts.index') }}" class="btn-outline inline-flex items-center">
                     <i class="ri-close-line mr-2"></i>
                     Limpiar filtros

@@ -36,10 +36,6 @@ class ScriptController extends Controller
             $query->where('status', $request->status);
         }
 
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
-        }
-
         if ($request->filled('scope')) {
             $query->where('scope', $request->scope);
         }
@@ -47,12 +43,7 @@ class ScriptController extends Controller
         $scripts = $query->latest()->paginate($perPage)->withQueryString();
 
         $stats = [
-            'total'          => Script::count(),
-            'active'         => Script::active()->count(),
-            'pending_review' => Script::pendingReview()->count(),
-            'approved'       => Script::approved()->count(),
-            'draft'          => Script::where('status', 'draft')->count(),
-            'rejected'       => Script::where('status', 'rejected')->count(),
+            'total' => Script::count(),
         ];
 
         return view('scripts.index', compact('scripts', 'stats'));
@@ -74,8 +65,6 @@ class ScriptController extends Controller
         try {
             $canAutoApprove = Auth::user()->can('scripts.auto_approve') || Auth::user()->can('scripts.manage');
             $submitForReview = $request->boolean('submit_for_review', false);
-
-            // Determine status based on permissions and user intent
             if ($canAutoApprove) {
                 $status = 'approved';
                 $approvedBy = Auth::id();
@@ -138,8 +127,6 @@ class ScriptController extends Controller
     public function edit(Script $script)
     {
         $this->authorize('scripts.edit');
-
-        // Cannot edit an approved+active script directly — must deactivate first
         if ($script->isApproved() && $script->is_active) {
             return redirect()
                 ->route('scripts.show', $script)
@@ -154,8 +141,6 @@ class ScriptController extends Controller
     public function update(UpdateScriptRequest $request, Script $script)
     {
         $this->authorize('scripts.edit');
-
-        // Cannot edit an approved+active script
         if ($script->isApproved() && $script->is_active) {
             return back()->with('error', 'No puedes editar un script activo. Desactívalo primero.');
         }
@@ -163,8 +148,6 @@ class ScriptController extends Controller
         try {
             $canAutoApprove = Auth::user()->can('scripts.auto_approve') || Auth::user()->can('scripts.manage');
             $submitForReview = $request->boolean('submit_for_review', false);
-
-            // When editing, reset approval if not auto-approve
             if ($canAutoApprove) {
                 $status = 'approved';
                 $approvedBy = Auth::id();
@@ -178,7 +161,6 @@ class ScriptController extends Controller
                 $reviewedBy = null;
                 $reviewedAt = null;
             } else {
-                // Keep as draft when just saving
                 $status = 'draft';
                 $approvedBy = null;
                 $approvedAt = null;
@@ -231,8 +213,6 @@ class ScriptController extends Controller
 
         try {
             $name = $script->name;
-
-            // Cannot delete an active script
             if ($script->is_active) {
                 if (request()->expectsJson()) {
                     return response()->json([
@@ -277,7 +257,6 @@ class ScriptController extends Controller
         $this->authorize('scripts.activate');
 
         try {
-            // Can only activate approved scripts
             if (!$script->isApproved()) {
                 return response()->json([
                     'success' => false,

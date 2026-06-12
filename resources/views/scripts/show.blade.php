@@ -27,9 +27,8 @@
 
     <div class="card">
         <div class="flex items-start gap-4">
-            <div class="shrink-0 w-14 h-14 rounded-xl flex items-center justify-center
-                {{ $script->type === 'js' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700' }}">
-                <i class="{{ $script->type === 'js' ? 'ri-javascript-line' : 'ri-css3-line' }} text-3xl"></i>
+            <div class="shrink-0 w-14 h-14 rounded-xl flex items-center justify-center bg-yellow-100 text-yellow-700">
+                <i class="ri-javascript-line text-3xl"></i>
             </div>
             <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-center gap-2 mb-2">
@@ -44,13 +43,15 @@
                     <span class="badge {{ $statusClasses[$script->status] ?? 'badge-gray' }} text-sm px-3 py-1">
                         {{ $script->status_label }}
                     </span>
-                    <span class="badge {{ $script->type === 'js' ? 'badge-warning' : 'badge-info' }}">
-                        {{ $script->type_label }}
-                    </span>
                     <span class="badge badge-gray">
                         <i class="{{ $script->scope === 'global' ? 'ri-global-line' : 'ri-pages-line' }} mr-1"></i>
                         {{ $script->scope_label }}
                     </span>
+                    @if($script->css_content)
+                        <span class="badge badge-info">
+                            <i class="ri-css3-line mr-1"></i>CSS incluido
+                        </span>
+                    @endif
                     @if($script->is_active)
                         <span class="badge badge-success">
                             <i class="ri-checkbox-circle-line mr-1"></i>Activo
@@ -125,21 +126,43 @@
         </div>
     @endif
 
+    {{-- Código JavaScript (siempre presente) --}}
     <div class="card">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-base font-semibold text-secondary">
-                <i class="{{ $script->type === 'js' ? 'ri-javascript-line text-yellow-500' : 'ri-css3-line text-blue-500' }} mr-2"></i>
-                Código {{ $script->type_label }}
+            <h3 class="text-base font-semibold text-secondary flex items-center gap-2">
+                <i class="ri-javascript-line text-yellow-500"></i>
+                Código JavaScript
+                <span class="text-xs font-normal text-white bg-secondary px-2 py-0.5 rounded-full">Requerido</span>
             </h3>
-            <button type="button" id="btn-copy-code" class="btn-ghost btn-sm" title="Copiar código">
-                <i class="ri-file-copy-line mr-1"></i>Copiar
+            <button type="button" id="btn-copy-js" class="btn-ghost btn-sm" title="Copiar JavaScript">
+                <i class="ri-file-copy-line mr-1"></i>Copiar JS
             </button>
         </div>
-        <div id="show-code-viewer" class="script-code-viewer">
-            <pre id="show-code-content" class="script-code-pre">{{ $script->type === 'js' ? $script->js_content : $script->css_content }}</pre>
+        <div class="script-code-viewer">
+            <pre id="show-js-content" class="script-code-pre">{{ $script->js_content ?? '' }}</pre>
         </div>
     </div>
 
+    {{-- Estilos CSS (opcional, solo si existe) --}}
+    @if($script->css_content)
+        <div class="card">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-semibold text-secondary flex items-center gap-2">
+                    <i class="ri-css3-line text-blue-500"></i>
+                    Estilos CSS
+                    <span class="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">Opcional</span>
+                </h3>
+                <button type="button" id="btn-copy-css" class="btn-ghost btn-sm" title="Copiar CSS">
+                    <i class="ri-file-copy-line mr-1"></i>Copiar CSS
+                </button>
+            </div>
+            <div class="script-code-viewer">
+                <pre id="show-css-content" class="script-code-pre">{{ $script->css_content }}</pre>
+            </div>
+        </div>
+    @endif
+
+    {{-- Vista Previa Sandbox --}}
     <div class="card">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-base font-semibold text-secondary">
@@ -271,8 +294,8 @@
 
 @push('head')
     <meta name="script-id" content="{{ $script->id }}">
-    <meta name="script-type" content="{{ $script->type }}">
-    <meta name="script-content" content="{{ base64_encode($script->type === 'js' ? ($script->js_content ?? '') : ($script->css_content ?? '')) }}">
+    <meta name="script-js-content" content="{{ base64_encode($script->js_content ?? '') }}">
+    <meta name="script-css-content" content="{{ base64_encode($script->css_content ?? '') }}">
     <meta name="toggle-active-url" content="{{ route('scripts.toggle-active', $script) }}">
     <meta name="approve-url" content="{{ route('scripts.approve', $script) }}">
     <meta name="reject-url" content="{{ route('scripts.reject', $script) }}">

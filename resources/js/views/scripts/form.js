@@ -3,8 +3,6 @@ import { javascript } from "@codemirror/lang-javascript";
 import { css } from "@codemirror/lang-css";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { showNotification } from "@/utils/notifications.js";
-
-// ── Security patterns blocked by CSP ──────────────────────────────────────
 const BLOCKED_PATTERNS = [
     { regex: /\bon\w+\s*=/i,          label: "Atributos de eventos inline (onclick, onload, etc.)" },
     { regex: /javascript\s*:/i,       label: "URLs con protocolo javascript:" },
@@ -24,15 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
     initFormatButtons();
     initHelpModal();
     initFormSubmit();
-
-    // If CSS section is already open (edit page with existing CSS), init editor
     const cssSection = document.getElementById("css-editor-section");
     if (cssSection && !cssSection.classList.contains("hidden")) {
         initCssEditor();
     }
 });
-
-// ── JS Editor (always visible, required) ──────────────────────────────────
 function initJsEditor() {
     const jsEditorEl = document.getElementById("js-editor");
     if (!jsEditorEl) return;
@@ -67,12 +61,8 @@ function initJsEditor() {
         ],
         parent: jsEditorEl,
     });
-
-    // Initial security check
     checkSecurityWarnings(initialContent);
 }
-
-// ── CSS Editor (lazy init, optional) ──────────────────────────────────────
 function initCssEditor() {
     if (cssEditorInitialized) return;
 
@@ -111,8 +101,6 @@ function initCssEditor() {
 
     cssEditorInitialized = true;
 }
-
-// ── CSS Toggle button ──────────────────────────────────────────────────────
 function initCssToggle() {
     const btn       = document.getElementById("btn-toggle-css");
     const section   = document.getElementById("css-editor-section");
@@ -126,18 +114,14 @@ function initCssToggle() {
         const isHidden = section.classList.contains("hidden");
 
         if (isHidden) {
-            // Show CSS section
             section.classList.remove("hidden");
             if (icon)  { icon.className  = "ri-subtract-line"; }
             if (label) { label.textContent = "Quitar CSS"; }
-            // Init editor lazily on first open
             initCssEditor();
         } else {
-            // Hide CSS section and clear content
             section.classList.add("hidden");
             if (icon)  { icon.className  = "ri-add-line"; }
             if (label) { label.textContent = "Agregar CSS"; }
-            // Clear the textarea so no CSS is submitted
             if (cssTA) cssTA.value = "";
             if (cssEditor) {
                 cssEditor.dispatch({
@@ -147,8 +131,6 @@ function initCssToggle() {
         }
     });
 }
-
-// ── Scope switch (global / per_page) ──────────────────────────────────────
 function initScopeSwitch() {
     document.querySelectorAll(".script-scope-radio").forEach((radio) => {
         radio.addEventListener("change", function () {
@@ -159,10 +141,7 @@ function initScopeSwitch() {
         });
     });
 }
-
-// ── Option card visual styles (scope + submit_for_review) ─────────────────
 function initOptionCardStyles() {
-    // Scope radio cards
     document.querySelectorAll(".script-scope-radio").forEach((radio) => {
         radio.addEventListener("change", function () {
             document.querySelectorAll(".script-scope-radio").forEach((r) => {
@@ -171,8 +150,6 @@ function initOptionCardStyles() {
             this.closest("label")?.classList.add("script-option-selected");
         });
     });
-
-    // Submit for review checkbox card
     const reviewCheckbox = document.getElementById("submit_for_review");
     if (reviewCheckbox) {
         reviewCheckbox.addEventListener("change", function () {
@@ -183,8 +160,6 @@ function initOptionCardStyles() {
         });
     }
 }
-
-// ── Security warnings (JS only) ────────────────────────────────────────────
 function checkSecurityWarnings(content) {
     const warningEl = document.getElementById("security-warning");
     const detailEl  = document.getElementById("security-warning-detail");
@@ -199,10 +174,7 @@ function checkSecurityWarnings(content) {
         warningEl.classList.add("hidden");
     }
 }
-
-// ── Format buttons ─────────────────────────────────────────────────────────
 function initFormatButtons() {
-    // JS format button
     const btnJs = document.getElementById("btn-format-js");
     if (btnJs) {
         btnJs.addEventListener("click", function () {
@@ -220,8 +192,6 @@ function initFormatButtons() {
             }
         });
     }
-
-    // CSS format button
     const btnCss = document.getElementById("btn-format-css");
     if (btnCss) {
         btnCss.addEventListener("click", function () {
@@ -273,8 +243,6 @@ function showFormatFeedback(btn) {
     btn.innerHTML = '<i class="ri-check-line mr-1"></i>Formateado';
     setTimeout(() => { btn.innerHTML = original; }, 2000);
 }
-
-// ── Help Modal ─────────────────────────────────────────────────────────────
 function initHelpModal() {
     const openBtn  = document.getElementById("btn-help");
     const closeBtn = document.getElementById("close-help-modal");
@@ -286,27 +254,20 @@ function initHelpModal() {
         if (e.target === modal) modal.classList.add("hidden");
     });
 }
-
-// ── Form submit: sync editors → textareas ─────────────────────────────────
 function initFormSubmit() {
     const form = document.getElementById("scriptForm");
     if (!form) return;
 
     form.addEventListener("submit", function (e) {
-        // Sync JS editor
         if (jsEditor) {
             const ta = document.getElementById("js_content");
             if (ta) ta.value = jsEditor.state.doc.toString();
         }
-
-        // Sync CSS editor only if section is visible
         const cssSection = document.getElementById("css-editor-section");
         if (cssEditor && cssSection && !cssSection.classList.contains("hidden")) {
             const ta = document.getElementById("css_content");
             if (ta) ta.value = cssEditor.state.doc.toString();
         }
-
-        // Warn if security issues detected in JS
         if (jsEditor) {
             const content = jsEditor.state.doc.toString();
             const found = BLOCKED_PATTERNS.filter((p) => p.regex.test(content));

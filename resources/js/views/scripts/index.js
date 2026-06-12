@@ -22,20 +22,36 @@ document.addEventListener("DOMContentLoaded", function () {
             toggleScriptActive(scriptId, checked, null, this);
         });
     }
-
-    const copyBtn = document.getElementById("btn-copy-code");
-    if (copyBtn) {
-        copyBtn.addEventListener("click", function () {
-            const codeEl = document.getElementById("show-code-content");
+    const copyJsBtn = document.getElementById("btn-copy-js");
+    if (copyJsBtn) {
+        copyJsBtn.addEventListener("click", function () {
+            const codeEl = document.getElementById("show-js-content");
             if (codeEl) {
                 navigator.clipboard
                     .writeText(codeEl.textContent)
                     .then(() => {
-                        copyBtn.innerHTML =
-                            '<i class="ri-check-line mr-1"></i>Copiado';
+                        copyJsBtn.innerHTML = '<i class="ri-check-line mr-1"></i>Copiado';
                         setTimeout(() => {
-                            copyBtn.innerHTML =
-                                '<i class="ri-file-copy-line mr-1"></i>Copiar';
+                            copyJsBtn.innerHTML = '<i class="ri-file-copy-line mr-1"></i>Copiar JS';
+                        }, 2000);
+                    })
+                    .catch(() => {
+                        showNotification("No se pudo copiar el código.", "error");
+                    });
+            }
+        });
+    }
+    const copyCssBtn = document.getElementById("btn-copy-css");
+    if (copyCssBtn) {
+        copyCssBtn.addEventListener("click", function () {
+            const codeEl = document.getElementById("show-css-content");
+            if (codeEl) {
+                navigator.clipboard
+                    .writeText(codeEl.textContent)
+                    .then(() => {
+                        copyCssBtn.innerHTML = '<i class="ri-check-line mr-1"></i>Copiado';
+                        setTimeout(() => {
+                            copyCssBtn.innerHTML = '<i class="ri-file-copy-line mr-1"></i>Copiar CSS';
                         }, 2000);
                     })
                     .catch(() => {
@@ -103,35 +119,30 @@ function initSandboxPreview() {
 
     if (!runBtn || !iframe) return;
 
-    const scriptType = document
-        .querySelector('meta[name="script-type"]')
-        ?.content;
-    const encodedContent = document
-        .querySelector('meta[name="script-content"]')
-        ?.content;
+    const encodedJs = document.querySelector('meta[name="script-js-content"]')?.content;
+    const encodedCss = document.querySelector('meta[name="script-css-content"]')?.content;
 
-    if (!encodedContent) return;
+    if (!encodedJs) return;
 
-    const content = atob(encodedContent);
+    const jsContent = atob(encodedJs);
+    const cssContent = encodedCss ? atob(encodedCss) : "";
 
     runBtn.addEventListener("click", function () {
-        let html = "";
+        const cssBlock = cssContent.trim()
+            ? `<style>\n  body { font-family: sans-serif; padding: 20px; background: #f8fafc; color: #333; }\n  .preview-notice { background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #0369a1; }\n  ${cssContent}\n</style>`
+            : `<style>\n  body { font-family: sans-serif; padding: 20px; background: #f8fafc; color: #333; }\n  .preview-notice { background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #0369a1; }\n</style>`;
 
-        if (scriptType === "js") {
-            html = `<!DOCTYPE html>
+        const html = `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vista Previa</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; background: #f8fafc; color: #333; }
-    .preview-notice { background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #0369a1; }
-  </style>
+  ${cssBlock}
 </head>
 <body>
   <div class="preview-notice">
-    <strong>Sandbox activo</strong> — El script se ejecuta en un entorno aislado.
+    <strong>Sandbox activo</strong> — El script se ejecuta en un entorno aislado.${cssContent.trim() ? ' <span style="color:#0369a1;">CSS incluido.</span>' : ''}
   </div>
   <div id="app">
     <p>Contenido de ejemplo de la página pública.</p>
@@ -139,39 +150,13 @@ function initSandboxPreview() {
   </div>
   <script>
     try {
-      ${content}
+      ${jsContent}
     } catch(e) {
       document.body.innerHTML += '<div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:12px;margin-top:16px;color:#dc2626;font-size:13px;"><strong>Error en el script:</strong> ' + e.message + '</div>';
     }
   <\/script>
 </body>
 </html>`;
-        } else {
-            html = `<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vista Previa CSS</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; background: #f8fafc; color: #333; }
-    .preview-notice { background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #0369a1; }
-    ${content}
-  </style>
-</head>
-<body>
-  <div class="preview-notice">
-    <strong>Sandbox activo</strong> — Los estilos CSS se aplican a este contenido de ejemplo.
-  </div>
-  <div id="app">
-    <h1>Título de ejemplo</h1>
-    <p>Párrafo de ejemplo para visualizar los estilos.</p>
-    <button class="btn">Botón de ejemplo</button>
-    <a href="#" class="link">Enlace de ejemplo</a>
-  </div>
-</body>
-</html>`;
-        }
 
         const blob = new Blob([html], { type: "text/html" });
         const url = URL.createObjectURL(blob);
