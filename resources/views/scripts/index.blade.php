@@ -60,11 +60,6 @@
                     <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors script-item"
                         id="script-item-{{ $script->id }}">
                         <div class="flex items-start gap-4">
-
-                            <div class="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-yellow-100 text-yellow-700">
-                                <i class="ri-javascript-line text-xl"></i>
-                            </div>
-
                             <div class="flex-1 min-w-0">
                                 <div class="flex flex-wrap items-center gap-2 mb-1">
                                     @php
