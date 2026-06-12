@@ -23,7 +23,7 @@
                         <p class="text-sm text-gray-600">{{ $role->name }}</p>
                     </div>
                     <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
-                        <i class="ri-shield-user-line text-2xl text-primary"></i>
+                        <i class="ri-shield-user-line text-2xl text-white"></i>
                     </div>
                 </div>
 
