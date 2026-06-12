@@ -1270,8 +1270,6 @@ function injectNavbarCanvasStyles(editor) {
             style.id = "navbar-component-css";
             style.textContent = `
                 [data-gjs-type="navbar-component"] {
-                    outline: 2px dashed rgba(240,135,42,0.4);
-                    outline-offset: 2px;
                     position: relative !important;
                     top: auto !important;
                 }

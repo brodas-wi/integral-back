@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         setupImageDoubleClick(editor);
         addImageToolbarButton(editor);
         registerCanvasClearCommand(editor);
+        registerDeviceCommands(editor);
 
         setTimeout(() => {
             editor.runCommand("sw-visibility");
@@ -55,8 +56,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             showNotification("Error al cargar el navbar", "error");
         }
     }
-
-    // Guardar
     document
         .getElementById("save-button")
         ?.addEventListener("click", async () => {
@@ -144,14 +143,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const nameEl = document.getElementById("navbar-name");
                 if (nameEl) nameEl.value = navbarName;
-
-                // Transición del URL
                 const appUrlMeta = document.querySelector(
                     'meta[name="app-url"]',
                 );
                 const baseUrl = appUrlMeta ? appUrlMeta.content : "";
-
-                // Si storeUrl no termina con el id, actualizar
                 const newStoreUrl = storeUrl.endsWith("/navbars")
                     ? `${storeUrl}/${navbarId}`
                     : `${storeUrl.replace(/\/navbars\/?$/, "")}/navbars/${navbarId}`;
@@ -163,14 +158,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 loadUrl = `${storeUrl}/load`;
                 const loadUrlEl = document.getElementById("navbar-load-url");
                 if (loadUrlEl) loadUrlEl.value = loadUrl;
-
-                // Actualizar el título de la página
                 const titleEl = document.getElementById("editor-title");
                 if (titleEl) {
                     titleEl.textContent = `Editando Navbar: ${navbarName}`;
                 }
-
-                // Cambiar la URL de la ventana sin recargar
                 const editPath = `/navbars/edit/${navbarId}/edit`;
                 const newUrl = baseUrl ? `${baseUrl}${editPath}` : editPath;
                 window.history.replaceState({ path: newUrl }, "", newUrl);
@@ -207,6 +198,50 @@ function registerCanvasClearCommand(editor) {
             });
         },
     });
+}
+
+function registerDeviceCommands(editor) {
+    const deviceIds = ["desktop", "tablet", "mobile"];
+    const cmdIds = ["set-device-desktop", "set-device-tablet", "set-device-mobile"];
+
+    function updateDeviceButtons(activeCmd) {
+        cmdIds.forEach((cmd) => {
+            editor.Panels.getButton("devices-c", cmd)?.set("active", cmd === activeCmd);
+        });
+    }
+
+    editor.Commands.add("set-device-desktop", {
+        run(ed) {
+            ed.setDevice("desktop");
+            updateDeviceButtons("set-device-desktop");
+        },
+    });
+
+    editor.Commands.add("set-device-tablet", {
+        run(ed) {
+            ed.setDevice("tablet");
+            updateDeviceButtons("set-device-tablet");
+        },
+    });
+
+    editor.Commands.add("set-device-mobile", {
+        run(ed) {
+            ed.setDevice("mobile");
+            updateDeviceButtons("set-device-mobile");
+        },
+    });
+    editor.on("device:select", (device) => {
+        const deviceId = device.get ? device.get("id") : device.id;
+        const cmdMap = {
+            desktop: "set-device-desktop",
+            tablet:  "set-device-tablet",
+            mobile:  "set-device-mobile",
+        };
+        if (cmdMap[deviceId]) updateDeviceButtons(cmdMap[deviceId]);
+    });
+    setTimeout(() => {
+        updateDeviceButtons("set-device-desktop");
+    }, 200);
 }
 
 function showNotification(message, type = "info") {
