@@ -5,7 +5,7 @@
 @section('page-title')
     <div class="flex items-center gap-3">
         <span>Usuarios</span>
-        <span class="badge badge-info">{{ $users->total() }} {{ $users->total() === 1 ? 'usuario' : 'usuarios' }}</span>
+        <span class="badge bg-primary text-white text-sm">{{ $users->total() }} {{ $users->total() === 1 ? 'usuario' : 'usuarios' }}</span>
     </div>
 @endsection
 
@@ -20,10 +20,8 @@
 @endsection
 
 @section('content')
-    {{-- Filters Section --}}
     <div class="card mb-6">
         <form method="GET" action="{{ route('users.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {{-- Search Input --}}
             <div>
                 <label for="search" class="block text-sm font-medium text-secondary mb-2">
                     Buscar
@@ -34,8 +32,6 @@
                     <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
             </div>
-
-            {{-- Role Filter --}}
             <div>
                 <label for="role" class="block text-sm font-medium text-secondary mb-2">
                     Rol
@@ -49,8 +45,6 @@
                     @endforeach
                 </select>
             </div>
-
-            {{-- Status Filter --}}
             <div>
                 <label for="status" class="block text-sm font-medium text-secondary mb-2">
                     Estado
@@ -61,8 +55,6 @@
                     <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactivos</option>
                 </select>
             </div>
-
-            {{-- Filter Actions --}}
             <div class="md:col-span-3 flex gap-3 justify-end">
                 <a href="{{ route('users.index') }}" class="btn-outline">
                     <i class="ri-close-line mr-2"></i>
@@ -75,8 +67,6 @@
             </div>
         </form>
     </div>
-
-    {{-- Statistics Cards (Optional) --}}
     @if(isset($stats))
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div class="card">
@@ -128,27 +118,24 @@
             </div>
         </div>
     @endif
-
-    {{-- Users Grid (existing code) --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         @forelse($users as $user)
             <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4">
-                {{-- ... rest of your existing card code ... --}}
                 <div class="flex items-start justify-between mb-3">
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
                             <h3 class="text-base font-bold text-secondary truncate">{{ $user->name }}</h3>
                             @if($user->isRootAdmin())
                                 <span
-                                    class="inline-flex items-center justify-center w-6 h-6 bg-primary bg-opacity-10 rounded-full text-primary flex-shrink-0"
+                                    class="inline-flex items-center justify-center w-6 h-6 bg-primary rounded-full text-white flex-shrink-0"
                                     title="Root Admin">
-                                    <i class="ri-shield-user-fill text-sm text-white"></i>
+                                    <i class="ri-shield-user-fill text-sm"></i>
                                 </span>
                             @endif
                         </div>
                         <p class="text-[11px] text-gray-500 font-mono truncate mb-2">{{ $user->username }}</p>
                         <div class="flex flex-wrap items-center gap-1.5">
-                            <span class="badge badge-info text-xs">
+                            <span class="badge bg-secondary text-white text-xs">
                                 {{ $user->roles->first()->display_name ?? $user->getRoleNames()->first() }}
                             </span>
                             <span class="badge {{ $user->is_active ? 'badge-success' : 'badge-danger' }} text-xs">

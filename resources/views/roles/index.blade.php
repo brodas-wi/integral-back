@@ -22,7 +22,7 @@
                         <h3 class="text-xl font-bold text-secondary mb-1">{{ $role->display_name ?? ucfirst($role->name) }}</h3>
                         <p class="text-sm text-gray-600">{{ $role->name }}</p>
                     </div>
-                    <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center flex-shrink-0">
                         <i class="ri-shield-user-line text-2xl text-white"></i>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                 <div class="mt-auto">
                     @if(in_array($role->name, ['admin', 'editor', 'viewer']))
                         <div class="mb-4">
-                            <span class="badge badge-info">
+                            <span class="badge bg-secondary text-white">
                                 <i class="ri-star-line mr-1"></i>
                                 Rol del Sistema
                             </span>
