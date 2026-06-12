@@ -14,7 +14,6 @@ class Script extends Model
     protected $fillable = [
         'name',
         'description',
-        'type',
         'scope',
         'page_slugs',
         'js_content',
@@ -102,9 +101,12 @@ class Script extends Model
         });
     }
 
-    public function scopeByType(Builder $query, string $type): Builder
+    /**
+     * Scope: scripts that have CSS content.
+     */
+    public function scopeWithCss(Builder $query): Builder
     {
-        return $query->where('type', $type);
+        return $query->whereNotNull('css_content')->where('css_content', '!=', '');
     }
 
     // ── Computed Attributes ────────────────────────────────────────────────
@@ -131,15 +133,6 @@ class Script extends Model
         };
     }
 
-    public function getTypeLabelAttribute(): string
-    {
-        return match ($this->type) {
-            'js'  => 'JavaScript',
-            'css' => 'CSS',
-            default => 'Desconocido',
-        };
-    }
-
     public function getScopeLabelAttribute(): string
     {
         return match ($this->scope) {
@@ -149,9 +142,12 @@ class Script extends Model
         };
     }
 
+    /**
+     * Returns the JS content (always the primary content).
+     */
     public function getContentAttribute(): ?string
     {
-        return $this->type === 'js' ? $this->js_content : $this->css_content;
+        return $this->js_content;
     }
 
     // ── State Helpers ──────────────────────────────────────────────────────
@@ -184,5 +180,13 @@ class Script extends Model
     public function canBeActivated(): bool
     {
         return $this->isApproved();
+    }
+
+    /**
+     * Whether this script has optional CSS styles.
+     */
+    public function hasCss(): bool
+    {
+        return !empty($this->css_content);
     }
 }

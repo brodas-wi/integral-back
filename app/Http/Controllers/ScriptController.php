@@ -82,11 +82,10 @@ class ScriptController extends Controller
             $script = Script::create([
                 'name'        => $request->name,
                 'description' => $request->description,
-                'type'        => $request->type,
                 'scope'       => $request->scope,
                 'page_slugs'  => $request->scope === 'per_page' ? $request->page_slugs : null,
-                'js_content'  => $request->type === 'js' ? $request->js_content : null,
-                'css_content' => $request->type === 'css' ? $request->css_content : null,
+                'js_content'  => $request->js_content,
+                'css_content' => !empty(trim($request->css_content ?? '')) ? $request->css_content : null,
                 'status'      => $status,
                 'is_active'   => false,
                 'approved_by' => $approvedBy,
@@ -171,11 +170,10 @@ class ScriptController extends Controller
             $script->update([
                 'name'        => $request->name,
                 'description' => $request->description,
-                'type'        => $request->type,
                 'scope'       => $request->scope,
                 'page_slugs'  => $request->scope === 'per_page' ? $request->page_slugs : null,
-                'js_content'  => $request->type === 'js' ? $request->js_content : null,
-                'css_content' => $request->type === 'css' ? $request->css_content : null,
+                'js_content'  => $request->js_content,
+                'css_content' => !empty(trim($request->css_content ?? '')) ? $request->css_content : null,
                 'status'      => $status,
                 'is_active'   => $canAutoApprove ? $script->is_active : false,
                 'rejection_reason' => null,
@@ -404,7 +402,7 @@ class ScriptController extends Controller
      */
     public function serveJs(Script $script)
     {
-        if (!$script->isCurrentlyActive() || $script->type !== 'js') {
+        if (!$script->isCurrentlyActive()) {
             abort(404);
         }
 
@@ -414,15 +412,16 @@ class ScriptController extends Controller
     }
 
     /**
-     * Serve approved+active CSS script as external file (for public frontend consumption).
+     * Serve approved+active CSS styles as external file (for public frontend consumption).
+     * Only available if the script has css_content.
      */
     public function serveCss(Script $script)
     {
-        if (!$script->isCurrentlyActive() || $script->type !== 'css') {
+        if (!$script->isCurrentlyActive() || !$script->hasCss()) {
             abort(404);
         }
 
-        return response($script->css_content ?? '', 200)
+        return response($script->css_content, 200)
             ->header('Content-Type', 'text/css')
             ->header('Cache-Control', 'public, max-age=300');
     }
@@ -438,11 +437,7 @@ class ScriptController extends Controller
             $query->forPage($request->page_slug);
         }
 
-        if ($request->filled('type')) {
-            $query->byType($request->type);
-        }
-
-        $scripts = $query->get(['id', 'name', 'type', 'scope', 'page_slugs']);
+        $scripts = $query->get(['id', 'name', 'scope', 'page_slugs']);
 
         return response()->json($scripts);
     }

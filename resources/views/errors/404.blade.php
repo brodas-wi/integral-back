@@ -7,7 +7,7 @@
 <div class="flex flex-col items-center justify-center py-20">
   <div class="text-center max-w-2xl">
     <div class="w-32 h-32 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-6">
-      <i class="ri-error-warning-line text-6xl text-primary"></i>
+      <i class="ri-alert-line text-6xl text-primary"></i>
     </div>
 
     <h2 class="text-4xl font-bold text-secondary mb-4">Página No Encontrada</h2>

@@ -13,16 +13,13 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
 
-            // Type: js or css
-            $table->enum('type', ['js', 'css'])->default('js');
-
             // Scope: global (all pages) or per_page (specific pages)
             $table->enum('scope', ['global', 'per_page'])->default('global');
 
             // JSON array of page slugs when scope = per_page
             $table->json('page_slugs')->nullable();
 
-            // Script content
+            // Script content — JS is required, CSS is optional
             $table->longText('js_content')->nullable();
             $table->longText('css_content')->nullable();
 

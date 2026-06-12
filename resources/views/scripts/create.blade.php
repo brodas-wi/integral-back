@@ -17,7 +17,6 @@
 
     <form id="scriptForm" method="POST" action="{{ route('scripts.store') }}" class="space-y-6">
         @csrf
-        <input type="hidden" name="type" id="form-type" value="{{ old('type', 'js') }}">
 
         {{-- Información General --}}
         <div class="card">

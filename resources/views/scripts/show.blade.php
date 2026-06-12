@@ -47,11 +47,13 @@
                         <i class="{{ $script->scope === 'global' ? 'ri-global-line' : 'ri-pages-line' }} mr-1"></i>
                         {{ $script->scope_label }}
                     </span>
-                    @if($script->css_content)
-                        <span class="badge badge-info">
-                            <i class="ri-css3-line mr-1"></i>CSS incluido
-                        </span>
-                    @endif
+                    <span class="badge badge-gray">
+                        <i class="ri-javascript-line mr-1 text-yellow-500"></i>JavaScript
+                        @if($script->hasCss())
+                            <span class="mx-1 text-gray-300">+</span>
+                            <i class="ri-css3-line mr-1 text-blue-500"></i>CSS
+                        @endif
+                    </span>
                     @if($script->is_active)
                         <span class="badge badge-success">
                             <i class="ri-checkbox-circle-line mr-1"></i>Activo
