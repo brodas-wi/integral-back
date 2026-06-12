@@ -10,6 +10,7 @@
     <meta name="media-api-url" content="{{ route('media.api') }}">
     <title>@yield('title', 'Dashboard') - CMS Integral</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link href="{{ Vite::asset('node_modules/remixicon/fonts/remixicon.css') }}" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/css/notifications.css', 'resources/js/app.js', 'resources/js/layouts/admin-layout.js'])
     @stack('styles')
     @stack('head')

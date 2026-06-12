@@ -278,7 +278,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-BmRzJyqn.css",
+    "file": "assets/app-B3Yr3G3f.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -421,7 +421,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-CHRs9GfR.js",
+    "file": "assets/app-DXyU_8mv.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -434,16 +434,6 @@
     ],
     "dynamicImports": [
       "resources/js/components/announcement-modal.js"
-    ],
-    "css": [
-      "assets/remixicon-0cTTCQVh.css"
-    ],
-    "assets": [
-      "assets/remixicon-B25hvfAs.eot",
-      "assets/remixicon-CZw4FkzQ.woff2",
-      "assets/remixicon-S6an_USy.woff",
-      "assets/remixicon-sqouR8Ox.ttf",
-      "assets/remixicon-BTtOSOPh.svg"
     ]
   },
   "resources/js/components/announcement-modal.js": {
