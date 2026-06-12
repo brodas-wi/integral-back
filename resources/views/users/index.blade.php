@@ -142,7 +142,7 @@
                                 <span
                                     class="inline-flex items-center justify-center w-6 h-6 bg-primary bg-opacity-10 rounded-full text-primary flex-shrink-0"
                                     title="Root Admin">
-                                    <i class="ri-shield-user-fill text-sm"></i>
+                                    <i class="ri-shield-user-fill text-sm text-white"></i>
                                 </span>
                             @endif
                         </div>
