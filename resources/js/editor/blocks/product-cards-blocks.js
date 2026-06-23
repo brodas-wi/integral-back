@@ -119,8 +119,8 @@ function buildProductCardsHTML(data) {
     const cardsHTML = cards.map(buildCardHTML).join("\n");
     return `<section class="pc-section" data-autoplay="${autoplay}">
     <div style="text-align:center;margin-bottom:2rem;">
-        <h2 style="font-size:2.25rem;font-weight:800;color:#003B71;margin:0 0 0.75rem;">${heading}</h2>
-        <p style="font-size:1rem;color:#003B71;margin:0;">${subheading}</p>
+        <h2 class="pc-section-heading">${heading}</h2>
+        <p class="pc-section-subheading">${subheading}</p>
     </div>
     <div class="pc-carousel-wrap">
         <div class="pc-track">${cardsHTML}</div>
@@ -128,8 +128,7 @@ function buildProductCardsHTML(data) {
     <div class="pc-more-wrap">
         <a href="${moreHref}" class="pc-more-btn">${moreLabel}</a>
     </div>
-</section>
-${PRODUCT_CARDS_STYLES}`;
+</section>`;
 }
 
 const DEFAULT_DATA = {
@@ -425,12 +424,10 @@ function showProductCardsModal(editor, component) {
             btn_label: "Solicitar",
         });
         renderCards();
-        modal
-            .querySelector("#pc-cards-list")
-            .lastElementChild?.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-            });
+        modal.querySelector("#pc-cards-list").lastElementChild?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
     });
 
     const close = () => overlay.remove();
@@ -457,10 +454,8 @@ function showProductCardsModal(editor, component) {
         component.addAttributes({
             "data-product-cards-config": JSON.stringify(data),
         });
-        component.components(
-            buildProductCardsHTML(data) +
-                `<script>${PRODUCT_CARDS_RUNTIME_SCRIPT}<\/script>`,
-        );
+        component.components(buildProductCardsHTML(data));
+        setTimeout(() => runProductCardsScriptInCanvas(editor), 300);
         close();
     });
 }
@@ -487,6 +482,57 @@ const iconProductCards = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="27.5" y="20" width="2.5" height="2.5" rx="1" fill="#003B71" fill-opacity="0.5"/>
 </svg>`;
 
+function runProductCardsScriptInCanvas(editor) {
+    try {
+        const iframeDoc = editor.Canvas.getFrameEl()?.contentDocument;
+        if (!iframeDoc) return;
+        const existing = iframeDoc.getElementById("pc-runtime-script");
+        if (existing) existing.remove();
+        const scriptEl = iframeDoc.createElement("script");
+        scriptEl.id = "pc-runtime-script";
+        scriptEl.textContent = PRODUCT_CARDS_RUNTIME_SCRIPT;
+        iframeDoc.head.appendChild(scriptEl);
+    } catch (e) {
+        console.warn("[ProductCards] Error inyectando script en canvas:", e);
+    }
+}
+
+function injectProductCardsCanvasStyles(editor) {
+    editor.on("load", () => {
+        const iframe = editor.Canvas.getFrameEl();
+        if (!iframe) return;
+        const iframeDoc = iframe.contentDocument;
+        const head = iframeDoc?.head;
+        if (!head) return;
+        if (!head.querySelector("#pc-canvas-styles")) {
+            const style = iframeDoc.createElement("style");
+            style.id = "pc-canvas-styles";
+            style.textContent = `
+                .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
+                .pc-carousel-wrap{overflow:hidden;width:100%;cursor:grab;}
+                .pc-carousel-wrap:active{cursor:grabbing;}
+                .pc-track{display:flex;gap:1.5rem;width:max-content;user-select:none;}
+                .pc-card{flex:0 0 260px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
+                .pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
+                .pc-card-img{width:100%;height:100%;object-fit:cover;display:block;}
+                .pc-card-body{display:flex;flex-direction:column;align-items:center;gap:0.4rem;text-align:center;flex:1;}
+                .pc-card-title{font-size:0.95rem;font-weight:700;color:#003B71;text-transform:uppercase;}
+                .pc-card-desc{font-size:0.9rem;color:#003B71;line-height:1.5;text-align:center;}
+                .pc-btn{display:block;width:100%;padding:0.5rem 1rem;border-radius:9999px;background:#003B71;color:#ffffff;font-size:0.95rem;font-weight:600;text-align:center;text-decoration:none;}
+                .pc-more-wrap{display:flex;justify-content:center;margin-top:2rem;}
+                .pc-more-btn{display:inline-block;padding:0.6rem 2.5rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;}
+                .pc-track.is-dragging{cursor:grabbing;}
+                .pc-section-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0 0 0.75rem;text-align:center;}
+                .pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
+                @media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
+                @media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-card{flex:0 0 220px;}}
+                @media(max-width:480px){.pc-card{flex:0 0 80vw;}}
+            `;
+            head.appendChild(style);
+        }
+    });
+}
+
 export function initializeProductCardsBlock(editor) {
     const componentType = "product-cards-component";
 
@@ -508,14 +554,19 @@ export function initializeProductCardsBlock(editor) {
                 hoverable: true,
                 editable: false,
                 highlightable: false,
-                propagate: ["selectable", "hoverable", "editable", "highlightable", "draggable", "droppable"],
+                propagate: [
+                    "selectable",
+                    "hoverable",
+                    "editable",
+                    "highlightable",
+                    "draggable",
+                    "droppable",
+                ],
                 attributes: {
                     "data-gjs-type": componentType,
                     "data-product-cards-config": JSON.stringify(DEFAULT_DATA),
                 },
-                components:
-                    buildProductCardsHTML(DEFAULT_DATA) +
-                    `<script>${PRODUCT_CARDS_RUNTIME_SCRIPT}<\/script>`,
+                components: buildProductCardsHTML(DEFAULT_DATA),
                 traits: [
                     {
                         type: "button",
@@ -552,10 +603,36 @@ export function initializeProductCardsBlock(editor) {
         },
     });
 
-    editor.on("component:mount", (component) => {
-        const el = component.getEl();
+    editor.on("component:mount", (comp) => {
+        const el = comp.getEl();
         if (el?.getAttribute?.("data-gjs-type") === componentType) {
-            component.set("type", componentType);
+            comp.set("type", componentType);
+            setTimeout(() => runProductCardsScriptInCanvas(editor), 400);
         }
     });
+
+    editor.on("component:selected", (comp) => {
+        const el = comp.getEl();
+        if (!el) return;
+        const root = el.closest(`[data-gjs-type="${componentType}"]`);
+        if (root && !el.hasAttribute("data-gjs-type")) {
+            const rootComp = editor
+                .getWrapper()
+                .find(`[data-gjs-type="${componentType}"]`)
+                .find((c) => c.getEl() === root);
+            if (rootComp) {
+                setTimeout(() => editor.select(rootComp), 0);
+            }
+        }
+    });
+
+    editor.on("canvas:render", () => {
+        setTimeout(() => runProductCardsScriptInCanvas(editor), 600);
+    });
+
+    editor.on("storage:end:load", () => {
+        setTimeout(() => runProductCardsScriptInCanvas(editor), 800);
+    });
+
+    injectProductCardsCanvasStyles(editor);
 }
