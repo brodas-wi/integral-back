@@ -6,15 +6,13 @@ function initCarousel(section){
     if(!section||section.__pcInit)return;
     section.__pcInit=true;
     var track=section.querySelector('.pc-track');
-    if(!track)return;
+    var wrap=section.querySelector('.pc-carousel-wrap');
+    if(!track||!wrap)return;
     var autoplay=section.dataset.autoplay==='true';
     var isDragging=false;
     var startX=0;
     var scrollLeft=0;
     var autoTimer=null;
-    var wrap=section.querySelector('.pc-carousel-wrap');
-    if(!wrap)return;
-    var origCount=track.children.length;
     Array.from(track.children).forEach(function(item){
         var clone=item.cloneNode(true);
         clone.setAttribute('aria-hidden','true');
@@ -24,20 +22,23 @@ function initCarousel(section){
     function halfWidth(){return track.scrollWidth/2;}
     function checkInfinite(){
         if(wrap.scrollLeft>=halfWidth()){wrap.scrollLeft-=halfWidth();}
-        else if(wrap.scrollLeft<=0&&!isDragging){wrap.scrollLeft=halfWidth()-wrap.offsetWidth;}
+        else if(wrap.scrollLeft<=0){wrap.scrollLeft=halfWidth()-wrap.offsetWidth;}
     }
     if(autoplay){
         autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);
     }
     wrap.addEventListener('scroll',checkInfinite,{passive:true});
     wrap.addEventListener('mousedown',function(e){
-        isDragging=true;track.classList.add('is-dragging');
-        startX=e.pageX-wrap.offsetLeft;scrollLeft=wrap.scrollLeft;
+        isDragging=true;
+        track.classList.add('is-dragging');
+        startX=e.pageX-wrap.offsetLeft;
+        scrollLeft=wrap.scrollLeft;
         if(autoTimer)clearInterval(autoTimer);
     });
     document.addEventListener('mouseup',function(){
         if(!isDragging)return;
-        isDragging=false;track.classList.remove('is-dragging');
+        isDragging=false;
+        track.classList.remove('is-dragging');
         if(autoplay){autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);}
     });
     document.addEventListener('mousemove',function(e){
@@ -48,7 +49,8 @@ function initCarousel(section){
         checkInfinite();
     });
     wrap.addEventListener('touchstart',function(e){
-        startX=e.touches[0].pageX-wrap.offsetLeft;scrollLeft=wrap.scrollLeft;
+        startX=e.touches[0].pageX-wrap.offsetLeft;
+        scrollLeft=wrap.scrollLeft;
         if(autoTimer)clearInterval(autoTimer);
     },{passive:true});
     wrap.addEventListener('touchend',function(){
@@ -60,20 +62,22 @@ function initCarousel(section){
         checkInfinite();
     },{passive:true});
 }
-document.querySelectorAll('.pc-section').forEach(function(s){initCarousel(s);});
-if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',function(){
-        document.querySelectorAll('.pc-section').forEach(function(s){initCarousel(s);});
+function init(){
+    document.querySelectorAll('.pc-section').forEach(function(s){
+        delete s.__pcInit;
+        initCarousel(s);
     });
 }
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}
+else{init();}
 })();`;
 
-const PRODUCT_CARDS_STYLES = `
-<style>
+const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .pc-carousel-wrap{overflow:hidden;width:100%;cursor:grab;}
 .pc-carousel-wrap:active{cursor:grabbing;}
 .pc-track{display:flex;gap:1.5rem;width:max-content;user-select:none;}
+.pc-track.is-dragging{cursor:grabbing;}
 .pc-card{flex:0 0 260px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
 .pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
 .pc-card-img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -85,11 +89,11 @@ const PRODUCT_CARDS_STYLES = `
 .pc-more-wrap{display:flex;justify-content:center;margin-top:2rem;}
 .pc-more-btn{display:inline-block;padding:0.6rem 2.5rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
 .pc-more-btn:hover{background:#c96200;}
-.pc-track.is-dragging{cursor:grabbing;}
+.pc-section-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0 0 0.75rem;text-align:center;}
+.pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
 @media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-card{flex:0 0 220px;}}
-@media(max-width:480px){.pc-card{flex:0 0 80vw;}}
-</style>`;
+@media(max-width:480px){.pc-card{flex:0 0 80vw;}}`;
 
 function buildCardHTML(card) {
     const img = card.img || assetUrl("images/placeholder.svg");
@@ -97,14 +101,7 @@ function buildCardHTML(card) {
     const desc = card.desc || "Descripción breve del producto financiero.";
     const href = card.href || "#";
     const btnLabel = card.btn_label || "Solicitar";
-    return `<div class="pc-card">
-    <div class="pc-card-img-wrap"><img src="${img}" alt="${title}" class="pc-card-img"></div>
-    <div class="pc-card-body">
-        <h3 class="pc-card-title">${title}</h3>
-        <p class="pc-card-desc">${desc}</p>
-    </div>
-    <a href="${href}" class="pc-btn">${btnLabel}</a>
-</div>`;
+    return `<div class="pc-card"><div class="pc-card-img-wrap"><img src="${img}" alt="${title}" class="pc-card-img"></div><div class="pc-card-body"><h3 class="pc-card-title">${title}</h3><p class="pc-card-desc">${desc}</p></div><a href="${href}" class="pc-btn">${btnLabel}</a></div>`;
 }
 
 function buildProductCardsHTML(data) {
@@ -116,19 +113,8 @@ function buildProductCardsHTML(data) {
     const moreHref = data.more_href || "#";
     const moreLabel = data.more_label || "Ver más";
     const cards = data.cards || [];
-    const cardsHTML = cards.map(buildCardHTML).join("\n");
-    return `<section class="pc-section" data-autoplay="${autoplay}">
-    <div style="text-align:center;margin-bottom:2rem;">
-        <h2 class="pc-section-heading">${heading}</h2>
-        <p class="pc-section-subheading">${subheading}</p>
-    </div>
-    <div class="pc-carousel-wrap">
-        <div class="pc-track">${cardsHTML}</div>
-    </div>
-    <div class="pc-more-wrap">
-        <a href="${moreHref}" class="pc-more-btn">${moreLabel}</a>
-    </div>
-</section>`;
+    const cardsHTML = cards.map(buildCardHTML).join("");
+    return `<section class="pc-section" data-autoplay="${autoplay}"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${cardsHTML}</div></div><div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div></section>`;
 }
 
 const DEFAULT_DATA = {
@@ -199,8 +185,8 @@ function showProductCardsModal(editor, component) {
             .pc-label{display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.375rem;}
             .pc-input{width:100%;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;box-sizing:border-box;}
             .pc-input:focus{border-color:#003B71;}
-            .pc-input-sm{padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;box-sizing:border-box;}
-            .pc-row{display:flex;gap:0.75rem;align-items:center;}
+            .pc-input-sm{padding:0.375rem 0.625rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.375rem;color:#1e293b;font-size:0.8rem;outline:none;font-family:inherit;box-sizing:border-box;width:100%;}
+            .pc-row{display:flex;gap:0.75rem;align-items:flex-start;}
             .pc-img-preview{width:64px;height:64px;border-radius:0.5rem;object-fit:cover;border:1px solid #e2e8f0;background:#f1f5f9;flex-shrink:0;}
             .pc-img-placeholder{width:64px;height:64px;border-radius:0.5rem;background:#f1f5f9;border:1px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
             .pc-img-placeholder i{font-size:1.5rem;color:#94a3b8;}
@@ -211,7 +197,7 @@ function showProductCardsModal(editor, component) {
             .pc-btn-add{padding:0.5rem 1.25rem;border:none;border-radius:9999px;color:#fff;font-size:0.8125rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;font-family:inherit;transition:background 0.15s;background:#003B71;}
             .pc-btn-add:hover{background:#002a52;}
             .pc-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
-            .pc-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .pc-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;}
             .pc-btn-cancel:hover{background:#f8fafc;}
             .pc-btn-save{padding:0.5rem 1.25rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .pc-btn-save:hover{background:#c96200;}
@@ -222,8 +208,9 @@ function showProductCardsModal(editor, component) {
             .pc-toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform 0.2s;}
             .pc-toggle input:checked+.pc-toggle-slider{background:#003B71;}
             .pc-toggle input:checked+.pc-toggle-slider:before{transform:translateX(18px);}
-            .pc-section-title{font-size:0.75rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.05em;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;margin-bottom:0.25rem;}
+            .pc-section-title{font-size:0.75rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.05em;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;margin-bottom:0.75rem;}
             .pc-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
+            .pc-config-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;}
         `;
         document.head.appendChild(style);
     }
@@ -239,13 +226,13 @@ function showProductCardsModal(editor, component) {
     })();
 
     const data = {
-        heading: currentData.heading || DEFAULT_DATA.heading,
-        subheading: currentData.subheading || DEFAULT_DATA.subheading,
+        heading: currentData.heading ?? DEFAULT_DATA.heading,
+        subheading: currentData.subheading ?? DEFAULT_DATA.subheading,
         autoplay: currentData.autoplay ?? DEFAULT_DATA.autoplay,
-        more_href: currentData.more_href || DEFAULT_DATA.more_href,
-        more_label: currentData.more_label || DEFAULT_DATA.more_label,
+        more_href: currentData.more_href ?? DEFAULT_DATA.more_href,
+        more_label: currentData.more_label ?? DEFAULT_DATA.more_label,
         cards: JSON.parse(
-            JSON.stringify(currentData.cards || DEFAULT_DATA.cards),
+            JSON.stringify(currentData.cards ?? DEFAULT_DATA.cards),
         ),
     };
 
@@ -266,7 +253,7 @@ function showProductCardsModal(editor, component) {
         </div>
         <div class="pc-modal-body">
             <div class="pc-tab-panel active" id="pc-panel-general">
-                <div style="background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;">
+                <div class="pc-config-card">
                     <div class="pc-section-title">Encabezado</div>
                     <div>
                         <label class="pc-label">Título principal</label>
@@ -277,8 +264,8 @@ function showProductCardsModal(editor, component) {
                         <input id="pc-subheading" type="text" class="pc-input" value="${data.subheading}">
                     </div>
                 </div>
-                <div style="background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;">
-                    <div class="pc-section-title">Botón "Ver más"</div>
+                <div class="pc-config-card">
+                    <div class="pc-section-title">Botón Ver más</div>
                     <div>
                         <label class="pc-label">Texto del botón</label>
                         <input id="pc-more-label" type="text" class="pc-input" value="${data.more_label}">
@@ -288,8 +275,8 @@ function showProductCardsModal(editor, component) {
                         <input id="pc-more-href" type="text" class="pc-input" value="${data.more_href}">
                     </div>
                 </div>
-                <div style="background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;">
-                    <div class="pc-section-title" style="margin-bottom:0.75rem;">Reproducción automática</div>
+                <div class="pc-config-card">
+                    <div class="pc-section-title">Reproducción automática</div>
                     <div class="pc-toggle-wrap">
                         <label class="pc-toggle">
                             <input type="checkbox" id="pc-autoplay" ${data.autoplay ? "checked" : ""}>
@@ -342,12 +329,12 @@ function showProductCardsModal(editor, component) {
                 <div class="pc-card-config-header">
                     <span class="pc-card-num">${idx + 1}</span>
                     <span style="font-size:0.875rem;font-weight:600;color:#1e293b;flex:1;">Tarjeta ${idx + 1}</span>
-                    <button class="pc-btn-remove pc-remove-card" title="Eliminar tarjeta"><i class="ri-delete-bin-line"></i></button>
+                    <button class="pc-btn-remove pc-remove-card"><i class="ri-delete-bin-line"></i></button>
                 </div>
                 <div class="pc-row">
-                    <div id="pc-img-preview-${idx}">${imgHtml}</div>
+                    <div id="pc-img-wrap-${idx}">${imgHtml}</div>
                     <div style="flex:1;display:flex;flex-direction:column;gap:0.5rem;">
-                        <input class="pc-input-sm" style="width:100%;" placeholder="URL de la imagen" value="${card.img || ""}" data-field="img">
+                        <input class="pc-input-sm" placeholder="URL de la imagen" value="${card.img || ""}" data-field="img">
                         <button class="pc-pick-btn pc-pick-img"><i class="ri-image-line"></i> Seleccionar imagen</button>
                     </div>
                 </div>
@@ -374,10 +361,8 @@ function showProductCardsModal(editor, component) {
                 input.addEventListener("input", () => {
                     card[input.dataset.field] = input.value;
                     if (input.dataset.field === "img") {
-                        const preview = div.querySelector(
-                            `#pc-img-preview-${idx}`,
-                        );
-                        preview.innerHTML = input.value
+                        const wrap = div.querySelector(`#pc-img-wrap-${idx}`);
+                        wrap.innerHTML = input.value
                             ? `<img class="pc-img-preview" src="${input.value}" alt="">`
                             : `<div class="pc-img-placeholder"><i class="ri-image-line"></i></div>`;
                     }
@@ -390,13 +375,9 @@ function showProductCardsModal(editor, component) {
                     title: "Seleccionar imagen de tarjeta",
                     onSelect: (url) => {
                         card.img = url;
-                        const imgInput =
-                            div.querySelector("[data-field='img']");
-                        if (imgInput) imgInput.value = url;
-                        const preview = div.querySelector(
-                            `#pc-img-preview-${idx}`,
-                        );
-                        preview.innerHTML = `<img class="pc-img-preview" src="${url}" alt="">`;
+                        div.querySelector("[data-field='img']").value = url;
+                        div.querySelector(`#pc-img-wrap-${idx}`).innerHTML =
+                            `<img class="pc-img-preview" src="${url}" alt="">`;
                     },
                 });
             });
@@ -424,10 +405,12 @@ function showProductCardsModal(editor, component) {
             btn_label: "Solicitar",
         });
         renderCards();
-        modal.querySelector("#pc-cards-list").lastElementChild?.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-        });
+        modal
+            .querySelector("#pc-cards-list")
+            .lastElementChild?.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+            });
     });
 
     const close = () => overlay.remove();
@@ -455,9 +438,27 @@ function showProductCardsModal(editor, component) {
             "data-product-cards-config": JSON.stringify(data),
         });
         component.components(buildProductCardsHTML(data));
-        setTimeout(() => runProductCardsScriptInCanvas(editor), 300);
+        setTimeout(() => reinitCarouselInCanvas(editor), 300);
         close();
     });
+}
+
+function reinitCarouselInCanvas(editor) {
+    try {
+        const iframeDoc = editor.Canvas.getFrameEl()?.contentDocument;
+        if (!iframeDoc) return;
+        const existing = iframeDoc.getElementById("pc-runtime-script");
+        if (existing) existing.remove();
+        iframeDoc.querySelectorAll(".pc-section").forEach((s) => {
+            delete s.__pcInit;
+        });
+        const scriptEl = iframeDoc.createElement("script");
+        scriptEl.id = "pc-runtime-script";
+        scriptEl.textContent = PRODUCT_CARDS_RUNTIME_SCRIPT;
+        iframeDoc.head.appendChild(scriptEl);
+    } catch (e) {
+        console.warn("[ProductCards] Error reiniciando carrusel:", e);
+    }
 }
 
 const iconProductCards = `<svg viewBox="0 0 32 32" width="32" height="32">
@@ -482,57 +483,6 @@ const iconProductCards = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="27.5" y="20" width="2.5" height="2.5" rx="1" fill="#003B71" fill-opacity="0.5"/>
 </svg>`;
 
-function runProductCardsScriptInCanvas(editor) {
-    try {
-        const iframeDoc = editor.Canvas.getFrameEl()?.contentDocument;
-        if (!iframeDoc) return;
-        const existing = iframeDoc.getElementById("pc-runtime-script");
-        if (existing) existing.remove();
-        const scriptEl = iframeDoc.createElement("script");
-        scriptEl.id = "pc-runtime-script";
-        scriptEl.textContent = PRODUCT_CARDS_RUNTIME_SCRIPT;
-        iframeDoc.head.appendChild(scriptEl);
-    } catch (e) {
-        console.warn("[ProductCards] Error inyectando script en canvas:", e);
-    }
-}
-
-function injectProductCardsCanvasStyles(editor) {
-    editor.on("load", () => {
-        const iframe = editor.Canvas.getFrameEl();
-        if (!iframe) return;
-        const iframeDoc = iframe.contentDocument;
-        const head = iframeDoc?.head;
-        if (!head) return;
-        if (!head.querySelector("#pc-canvas-styles")) {
-            const style = iframeDoc.createElement("style");
-            style.id = "pc-canvas-styles";
-            style.textContent = `
-                .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
-                .pc-carousel-wrap{overflow:hidden;width:100%;cursor:grab;}
-                .pc-carousel-wrap:active{cursor:grabbing;}
-                .pc-track{display:flex;gap:1.5rem;width:max-content;user-select:none;}
-                .pc-card{flex:0 0 260px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
-                .pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
-                .pc-card-img{width:100%;height:100%;object-fit:cover;display:block;}
-                .pc-card-body{display:flex;flex-direction:column;align-items:center;gap:0.4rem;text-align:center;flex:1;}
-                .pc-card-title{font-size:0.95rem;font-weight:700;color:#003B71;text-transform:uppercase;}
-                .pc-card-desc{font-size:0.9rem;color:#003B71;line-height:1.5;text-align:center;}
-                .pc-btn{display:block;width:100%;padding:0.5rem 1rem;border-radius:9999px;background:#003B71;color:#ffffff;font-size:0.95rem;font-weight:600;text-align:center;text-decoration:none;}
-                .pc-more-wrap{display:flex;justify-content:center;margin-top:2rem;}
-                .pc-more-btn{display:inline-block;padding:0.6rem 2.5rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;}
-                .pc-track.is-dragging{cursor:grabbing;}
-                .pc-section-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0 0 0.75rem;text-align:center;}
-                .pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
-                @media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
-                @media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-card{flex:0 0 220px;}}
-                @media(max-width:480px){.pc-card{flex:0 0 80vw;}}
-            `;
-            head.appendChild(style);
-        }
-    });
-}
-
 export function initializeProductCardsBlock(editor) {
     const componentType = "product-cards-component";
 
@@ -554,14 +504,6 @@ export function initializeProductCardsBlock(editor) {
                 hoverable: true,
                 editable: false,
                 highlightable: false,
-                propagate: [
-                    "selectable",
-                    "hoverable",
-                    "editable",
-                    "highlightable",
-                    "draggable",
-                    "droppable",
-                ],
                 attributes: {
                     "data-gjs-type": componentType,
                     "data-product-cards-config": JSON.stringify(DEFAULT_DATA),
@@ -607,7 +549,7 @@ export function initializeProductCardsBlock(editor) {
         const el = comp.getEl();
         if (el?.getAttribute?.("data-gjs-type") === componentType) {
             comp.set("type", componentType);
-            setTimeout(() => runProductCardsScriptInCanvas(editor), 400);
+            setTimeout(() => reinitCarouselInCanvas(editor), 400);
         }
     });
 
@@ -616,23 +558,19 @@ export function initializeProductCardsBlock(editor) {
         if (!el) return;
         const root = el.closest(`[data-gjs-type="${componentType}"]`);
         if (root && !el.hasAttribute("data-gjs-type")) {
-            const rootComp = editor
+            const all = editor
                 .getWrapper()
-                .find(`[data-gjs-type="${componentType}"]`)
-                .find((c) => c.getEl() === root);
-            if (rootComp) {
-                setTimeout(() => editor.select(rootComp), 0);
-            }
+                .find(`[data-gjs-type="${componentType}"]`);
+            const rootComp = all.find((c) => c.getEl() === root);
+            if (rootComp) setTimeout(() => editor.select(rootComp), 0);
         }
     });
 
     editor.on("canvas:render", () => {
-        setTimeout(() => runProductCardsScriptInCanvas(editor), 600);
+        setTimeout(() => reinitCarouselInCanvas(editor), 600);
     });
 
     editor.on("storage:end:load", () => {
-        setTimeout(() => runProductCardsScriptInCanvas(editor), 800);
+        setTimeout(() => reinitCarouselInCanvas(editor), 800);
     });
-
-    injectProductCardsCanvasStyles(editor);
 }
