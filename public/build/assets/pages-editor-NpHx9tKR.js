@@ -300,8 +300,8 @@ ${U}`}],pt=`<svg viewBox="0 0 32 32" width="32" height="32">
 .mvv-card-title{font-size:1.1rem;font-weight:700;color:#ffffff;}
 .mvv-card-text{font-size:0.9rem;color:#ffffff;line-height:1.6;}
 .mvv-bullet-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.3rem;}
-.mvv-bullet-list li{position:relative;padding-left:1.1rem;color:#ffffff;font-size:0.9rem;line-height:1.5;text-align:center;}
-.mvv-bullet-list li::before{content:"•";position:absolute;left:0;color:#ffffff;}
+.mvv-bullet-list li{color:#ffffff;font-size:0.9rem;line-height:1.5;text-align:center;}
+.mvv-bullet-list li::before{content:"• ";color:#ffffff;}
 @media(max-width:1280px){.ab-section{padding:3rem 2.5rem;}.mvv-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){
     .ab-section{padding:2.5rem 1.5rem;}
