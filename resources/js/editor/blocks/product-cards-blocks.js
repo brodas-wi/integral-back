@@ -30,27 +30,145 @@ const iconProductCard = `<svg viewBox="0 0 32 32" width="32" height="32">
 </svg>`;
 
 const PRODUCT_CARD = `
-<div class="flex flex-col gap-4 bg-white border-2 border-[#003B71] rounded-2xl p-5">
-    <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-[#dce8f5]">
-        <i class="ri-bank-card-line text-2xl text-[#003B71]"></i>
+<div class="pc-card">
+    <div class="pc-card-img-wrap">
+        <img src="${assetUrl("images/placeholder.svg")}" alt="Producto" class="pc-card-img">
     </div>
-    <div class="flex flex-col gap-2 flex-1">
-        <h3 class="text-base font-bold text-[#003B71]">Título del producto</h3>
-        <p class="text-base text-[#003B71] leading-relaxed">Descripción breve del producto financiero disponible para ti.</p>
+    <div class="pc-card-body">
+        <h3 class="pc-card-title">TÍTULO DEL PRODUCTO</h3>
+        <p class="pc-card-desc">Descripción breve del producto financiero.</p>
     </div>
-    <a href="#" class="pc-btn w-full py-2 px-8 rounded-lg bg-[#003B71] text-white text-base font-semibold text-center">Solicitar</a>
+    <a href="#" class="pc-btn">Solicitar</a>
 </div>`;
 
 const PRODUCT_CARDS_STYLES = `
 <style>
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
-.pc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
-.pc-btn{display:block;transition:background .2s;}
-.pc-btn:hover{background-color:#002a52;}
+.pc-carousel-wrap{position:relative;overflow:hidden;width:100%;}
+.pc-track{display:flex;gap:1.5rem;cursor:grab;user-select:none;width:max-content;}
+.pc-track.is-dragging{cursor:grabbing;}
+.pc-card{flex:0 0 260px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
+.pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
+.pc-card-img{width:100%;height:100%;object-fit:cover;display:block;}
+.pc-card-body{display:flex;flex-direction:column;align-items:center;gap:0.4rem;text-align:center;flex:1;}
+.pc-card-title{font-size:0.95rem;font-weight:700;color:#003B71;text-transform:uppercase;}
+.pc-card-desc{font-size:0.9rem;color:#003B71;line-height:1.5;text-align:center;}
+.pc-btn{display:block;width:100%;padding:0.5rem 1rem;border-radius:0.5rem;background:#003B71;color:#ffffff;font-size:0.95rem;font-weight:600;text-align:center;text-decoration:none;transition:background .2s;}
+.pc-btn:hover{background:#002a52;}
+.pc-more-wrap{display:flex;justify-content:center;margin-top:2rem;}
+.pc-more-btn{display:inline-block;padding:0.6rem 2.5rem;border-radius:2rem;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
+.pc-more-btn:hover{background:#c96200;}
 @media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
-@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:480px){.pc-grid{grid-template-columns:1fr;}}
+@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-card{flex:0 0 220px;}}
+@media(max-width:480px){.pc-card{flex:0 0 80vw;}}
 </style>`;
+
+const PRODUCT_CARDS_SCRIPT = `
+<script>
+(function(){
+    function initCarousel(section){
+        var track = section.querySelector('.pc-track');
+        if(!track) return;
+        var autoplay = section.dataset.autoplay === 'true';
+        var speed = parseInt(section.dataset.speed || '3000');
+        var isDragging = false;
+        var startX = 0;
+        var scrollLeft = 0;
+        var autoTimer = null;
+
+        var origItems = Array.from(track.children);
+        origItems.forEach(function(item){
+            var clone = item.cloneNode(true);
+            clone.setAttribute('aria-hidden','true');
+            track.appendChild(clone);
+        });
+
+        function getMaxScroll(){
+            return track.scrollWidth / 2;
+        }
+
+        function checkInfinite(){
+            if(track.parentElement.scrollLeft >= getMaxScroll()){
+                track.parentElement.scrollLeft -= getMaxScroll();
+            }
+            if(track.parentElement.scrollLeft <= 0 && !isDragging){
+            }
+        }
+
+        if(autoplay){
+            autoTimer = setInterval(function(){
+                track.parentElement.scrollLeft += 1;
+                checkInfinite();
+            }, 16);
+        }
+
+        track.parentElement.addEventListener('scroll', checkInfinite);
+
+        track.addEventListener('mousedown', function(e){
+            isDragging = true;
+            track.classList.add('is-dragging');
+            startX = e.pageX - track.parentElement.offsetLeft;
+            scrollLeft = track.parentElement.scrollLeft;
+            if(autoTimer) clearInterval(autoTimer);
+        });
+
+        document.addEventListener('mouseup', function(){
+            if(!isDragging) return;
+            isDragging = false;
+            track.classList.remove('is-dragging');
+            if(autoplay){
+                autoTimer = setInterval(function(){
+                    track.parentElement.scrollLeft += 1;
+                    checkInfinite();
+                }, 16);
+            }
+        });
+
+        document.addEventListener('mousemove', function(e){
+            if(!isDragging) return;
+            e.preventDefault();
+            var x = e.pageX - track.parentElement.offsetLeft;
+            var walk = (x - startX) * 1.5;
+            track.parentElement.scrollLeft = scrollLeft - walk;
+            checkInfinite();
+        });
+
+        track.parentElement.addEventListener('touchstart', function(e){
+            startX = e.touches[0].pageX - track.parentElement.offsetLeft;
+            scrollLeft = track.parentElement.scrollLeft;
+            if(autoTimer) clearInterval(autoTimer);
+        }, {passive:true});
+
+        track.parentElement.addEventListener('touchend', function(){
+            if(autoplay){
+                autoTimer = setInterval(function(){
+                    track.parentElement.scrollLeft += 1;
+                    checkInfinite();
+                }, 16);
+            }
+        });
+
+        track.parentElement.addEventListener('touchmove', function(e){
+            var x = e.touches[0].pageX - track.parentElement.offsetLeft;
+            var walk = (x - startX) * 1.5;
+            track.parentElement.scrollLeft = scrollLeft - walk;
+            checkInfinite();
+        }, {passive:true});
+    }
+
+    function init(){
+        document.querySelectorAll('.pc-section').forEach(function(section){
+            initCarousel(section);
+        });
+    }
+
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>`;
 
 export const productCardsBlocks = [
     {
@@ -59,19 +177,25 @@ export const productCardsBlocks = [
         category: "Productos y Servicios",
         media: iconProductCards,
         content: `
-<section class="pc-section">
-    <div class="text-center mb-12">
+<section class="pc-section" data-autoplay="false" data-speed="3000">
+    <div class="text-center mb-8">
         <h2 class="text-4xl font-bold text-[#003B71] mb-3">Créditos</h2>
         <p class="text-base text-[#003B71]">Opciones de financiamiento diseñadas para hacer realidad tus proyectos.</p>
     </div>
-    <div class="pc-grid">
-        ${PRODUCT_CARD}
-        ${PRODUCT_CARD}
-        ${PRODUCT_CARD}
-        ${PRODUCT_CARD}
+    <div class="pc-carousel-wrap">
+        <div class="pc-track">
+            ${PRODUCT_CARD}
+            ${PRODUCT_CARD}
+            ${PRODUCT_CARD}
+            ${PRODUCT_CARD}
+        </div>
+    </div>
+    <div class="pc-more-wrap">
+        <a href="#" class="pc-more-btn">Ver más</a>
     </div>
 </section>
-${PRODUCT_CARDS_STYLES}`,
+${PRODUCT_CARDS_STYLES}
+${PRODUCT_CARDS_SCRIPT}`,
     },
     {
         id: "product-card",
