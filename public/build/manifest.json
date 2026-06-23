@@ -21,8 +21,8 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
-  "_editor-commands-C7f79RQP.js": {
-    "file": "assets/editor-commands-C7f79RQP.js",
+  "_editor-commands-Bq37dEX4.js": {
+    "file": "assets/editor-commands-Bq37dEX4.js",
     "name": "editor-commands",
     "imports": [
       "__commonjsHelpers-CqkleIqs.js"
@@ -50,10 +50,6 @@
       "assets/layers-2x-Bpkbi35X.png",
       "assets/marker-icon-hN30_KVU.png"
     ]
-  },
-  "_media-picker-CiKJ1Agb.js": {
-    "file": "assets/media-picker-CiKJ1Agb.js",
-    "name": "media-picker"
   },
   "_modals-D7u3LXeA.js": {
     "file": "assets/modals-D7u3LXeA.js",
@@ -443,13 +439,12 @@
     "isDynamicEntry": true
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-BrmKHMuo.js",
+    "file": "assets/footer-editor-D7dzgtUt.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-C7f79RQP.js",
-      "_media-picker-CiKJ1Agb.js",
+      "_editor-commands-Bq37dEX4.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
@@ -464,23 +459,22 @@
     ]
   },
   "resources/js/navbar-editor.js": {
-    "file": "assets/navbar-editor-DTrY-rso.js",
+    "file": "assets/navbar-editor-DZ5OWWnA.js",
     "name": "navbar-editor",
     "src": "resources/js/navbar-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-C7f79RQP.js",
-      "_media-picker-CiKJ1Agb.js",
+      "_editor-commands-Bq37dEX4.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-DlSk_IUL.js",
+    "file": "assets/pages-editor-DNY_Rict.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-C7f79RQP.js",
+      "_editor-commands-Bq37dEX4.js",
       "_url-DaqOO3yL.js",
       "__commonjsHelpers-CqkleIqs.js"
     ],
