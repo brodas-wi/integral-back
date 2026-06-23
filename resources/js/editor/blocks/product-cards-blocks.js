@@ -507,6 +507,8 @@ export function initializeProductCardsBlock(editor) {
                 selectable: true,
                 hoverable: true,
                 editable: false,
+                highlightable: false,
+                propagate: ["selectable", "hoverable", "editable", "highlightable", "draggable", "droppable"],
                 attributes: {
                     "data-gjs-type": componentType,
                     "data-product-cards-config": JSON.stringify(DEFAULT_DATA),
