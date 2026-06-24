@@ -509,6 +509,75 @@ export function initializeProductCardsBlock(editor) {
                     "data-product-cards-config": JSON.stringify(DEFAULT_DATA),
                 },
                 components: buildProductCardsHTML(DEFAULT_DATA),
+                script: function() {
+                    (function(){
+                        function initCarousel(section){
+                            if(!section||section.__pcInit)return;
+                            section.__pcInit=true;
+                            var track=section.querySelector('.pc-track');
+                            var wrap=section.querySelector('.pc-carousel-wrap');
+                            if(!track||!wrap)return;
+                            var autoplay=section.dataset.autoplay==='true';
+                            var isDragging=false;
+                            var startX=0;
+                            var scrollLeft=0;
+                            var autoTimer=null;
+                            Array.from(track.children).forEach(function(item){
+                                var clone=item.cloneNode(true);
+                                clone.setAttribute('aria-hidden','true');
+                                clone.classList.add('pc-clone');
+                                track.appendChild(clone);
+                            });
+                            function halfWidth(){return track.scrollWidth/2;}
+                            function checkInfinite(){
+                                if(wrap.scrollLeft>=halfWidth()){wrap.scrollLeft-=halfWidth();}
+                                else if(wrap.scrollLeft<=0){wrap.scrollLeft=halfWidth()-wrap.offsetWidth;}
+                            }
+                            if(autoplay){
+                                autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);
+                            }
+                            wrap.addEventListener('scroll',checkInfinite,{passive:true});
+                            wrap.addEventListener('mousedown',function(e){
+                                isDragging=true;
+                                track.classList.add('is-dragging');
+                                startX=e.pageX-wrap.offsetLeft;
+                                scrollLeft=wrap.scrollLeft;
+                                if(autoTimer)clearInterval(autoTimer);
+                            });
+                            document.addEventListener('mouseup',function(){
+                                if(!isDragging)return;
+                                isDragging=false;
+                                track.classList.remove('is-dragging');
+                                if(autoplay){autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);}
+                            });
+                            document.addEventListener('mousemove',function(e){
+                                if(!isDragging)return;
+                                e.preventDefault();
+                                var x=e.pageX-wrap.offsetLeft;
+                                wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
+                                checkInfinite();
+                            });
+                            wrap.addEventListener('touchstart',function(e){
+                                startX=e.touches[0].pageX-wrap.offsetLeft;
+                                scrollLeft=wrap.scrollLeft;
+                                if(autoTimer)clearInterval(autoTimer);
+                            },{passive:true});
+                            wrap.addEventListener('touchend',function(){
+                                if(autoplay){autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);}
+                            },{passive:true});
+                            wrap.addEventListener('touchmove',function(e){
+                                var x=e.touches[0].pageX-wrap.offsetLeft;
+                                wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
+                                checkInfinite();
+                            },{passive:true});
+                        }
+                        var el=this;
+                        var section=el.querySelector('.pc-section')||el;
+                        delete section.__pcInit;
+                        initCarousel(section);
+                    }).call(this);
+                },
+                "script-props": ["data-product-cards-config"],
                 traits: [
                     {
                         type: "button",
