@@ -114,7 +114,7 @@ function buildProductCardsHTML(data) {
     const moreLabel = data.more_label || "Ver más";
     const cards = data.cards || [];
     const cardsHTML = cards.map(buildCardHTML).join("");
-    return `<section class="pc-section" data-autoplay="${autoplay}"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${cardsHTML}</div></div><div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div></section>`;
+    return `<section class="pc-section" data-autoplay="${autoplay}"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${cardsHTML}</div></div><div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div></section><script>${PRODUCT_CARDS_RUNTIME_SCRIPT}<\/script>`;
 }
 
 const DEFAULT_DATA = {
