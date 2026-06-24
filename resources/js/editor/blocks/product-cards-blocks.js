@@ -8,58 +8,37 @@ function initCarousel(section){
     var track=section.querySelector('.pc-track');
     var wrap=section.querySelector('.pc-carousel-wrap');
     if(!track||!wrap)return;
-    var autoplay=section.dataset.autoplay==='true';
     var isDragging=false;
     var startX=0;
     var scrollLeft=0;
-    var autoTimer=null;
-    Array.from(track.children).forEach(function(item){
-        var clone=item.cloneNode(true);
-        clone.setAttribute('aria-hidden','true');
-        clone.classList.add('pc-clone');
-        track.appendChild(clone);
+    wrap.querySelectorAll('img').forEach(function(img){
+        img.addEventListener('dragstart',function(e){e.preventDefault();});
     });
-    function halfWidth(){return track.scrollWidth/2;}
-    function checkInfinite(){
-        if(wrap.scrollLeft>=halfWidth()){wrap.scrollLeft-=halfWidth();}
-        else if(wrap.scrollLeft<=0){wrap.scrollLeft=halfWidth()-wrap.offsetWidth;}
-    }
-    if(autoplay){
-        autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);
-    }
-    wrap.addEventListener('scroll',checkInfinite,{passive:true});
     wrap.addEventListener('mousedown',function(e){
         isDragging=true;
         track.classList.add('is-dragging');
         startX=e.pageX-wrap.offsetLeft;
         scrollLeft=wrap.scrollLeft;
-        if(autoTimer)clearInterval(autoTimer);
+        e.preventDefault();
     });
     document.addEventListener('mouseup',function(){
         if(!isDragging)return;
         isDragging=false;
         track.classList.remove('is-dragging');
-        if(autoplay){autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);}
     });
     document.addEventListener('mousemove',function(e){
         if(!isDragging)return;
         e.preventDefault();
         var x=e.pageX-wrap.offsetLeft;
         wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
-        checkInfinite();
     });
     wrap.addEventListener('touchstart',function(e){
         startX=e.touches[0].pageX-wrap.offsetLeft;
         scrollLeft=wrap.scrollLeft;
-        if(autoTimer)clearInterval(autoTimer);
-    },{passive:true});
-    wrap.addEventListener('touchend',function(){
-        if(autoplay){autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);}
     },{passive:true});
     wrap.addEventListener('touchmove',function(e){
         var x=e.touches[0].pageX-wrap.offsetLeft;
         wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
-        checkInfinite();
     },{passive:true});
 }
 function init(){
@@ -106,22 +85,16 @@ function buildCardHTML(card) {
 
 function buildProductCardsHTML(data) {
     const heading = data.heading || "Créditos";
-    const subheading =
-        data.subheading ||
-        "Opciones de financiamiento diseñadas para hacer realidad tus proyectos.";
-    const autoplay = data.autoplay ? "true" : "false";
+    const subheading = data.subheading || "Opciones de financiamiento diseñadas para hacer realidad tus proyectos.";
     const moreHref = data.more_href || "#";
     const moreLabel = data.more_label || "Ver más";
     const cards = data.cards || [];
     const cardsHTML = cards.map(buildCardHTML).join("");
-    return `<section class="pc-section" data-autoplay="${autoplay}"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${cardsHTML}</div></div><div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div></section><script>${PRODUCT_CARDS_RUNTIME_SCRIPT}<\/script>`;
+    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${cardsHTML}</div></div><div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div></section>`;
 }
-
 const DEFAULT_DATA = {
     heading: "Créditos",
-    subheading:
-        "Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",
-    autoplay: false,
+    subheading: "Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",
     more_href: "#",
     more_label: "Ver más",
     cards: [
@@ -277,13 +250,7 @@ function showProductCardsModal(editor, component) {
                 </div>
                 <div class="pc-config-card">
                     <div class="pc-section-title">Reproducción automática</div>
-                    <div class="pc-toggle-wrap">
-                        <label class="pc-toggle">
-                            <input type="checkbox" id="pc-autoplay" ${data.autoplay ? "checked" : ""}>
-                            <span class="pc-toggle-slider"></span>
-                        </label>
-                        <span style="font-size:0.875rem;color:#475569;">Avanzar el carrusel automáticamente</span>
-                    </div>
+                    <p style="font-size:0.875rem;color:#475569;margin:0;">El carrusel se desplaza con el ratón o con el dedo en pantallas táctiles.</p>
                 </div>
             </div>
             <div class="pc-tab-panel" id="pc-panel-cards">
@@ -427,7 +394,6 @@ function showProductCardsModal(editor, component) {
         data.subheading =
             modal.querySelector("#pc-subheading").value.trim() ||
             DEFAULT_DATA.subheading;
-        data.autoplay = modal.querySelector("#pc-autoplay").checked;
         data.more_label =
             modal.querySelector("#pc-more-label").value.trim() ||
             DEFAULT_DATA.more_label;
@@ -517,58 +483,37 @@ export function initializeProductCardsBlock(editor) {
                             var track=section.querySelector('.pc-track');
                             var wrap=section.querySelector('.pc-carousel-wrap');
                             if(!track||!wrap)return;
-                            var autoplay=section.dataset.autoplay==='true';
                             var isDragging=false;
                             var startX=0;
                             var scrollLeft=0;
-                            var autoTimer=null;
-                            Array.from(track.children).forEach(function(item){
-                                var clone=item.cloneNode(true);
-                                clone.setAttribute('aria-hidden','true');
-                                clone.classList.add('pc-clone');
-                                track.appendChild(clone);
+                            wrap.querySelectorAll('img').forEach(function(img){
+                                img.addEventListener('dragstart',function(e){e.preventDefault();});
                             });
-                            function halfWidth(){return track.scrollWidth/2;}
-                            function checkInfinite(){
-                                if(wrap.scrollLeft>=halfWidth()){wrap.scrollLeft-=halfWidth();}
-                                else if(wrap.scrollLeft<=0){wrap.scrollLeft=halfWidth()-wrap.offsetWidth;}
-                            }
-                            if(autoplay){
-                                autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);
-                            }
-                            wrap.addEventListener('scroll',checkInfinite,{passive:true});
                             wrap.addEventListener('mousedown',function(e){
                                 isDragging=true;
                                 track.classList.add('is-dragging');
                                 startX=e.pageX-wrap.offsetLeft;
                                 scrollLeft=wrap.scrollLeft;
-                                if(autoTimer)clearInterval(autoTimer);
+                                e.preventDefault();
                             });
                             document.addEventListener('mouseup',function(){
                                 if(!isDragging)return;
                                 isDragging=false;
                                 track.classList.remove('is-dragging');
-                                if(autoplay){autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);}
                             });
                             document.addEventListener('mousemove',function(e){
                                 if(!isDragging)return;
                                 e.preventDefault();
                                 var x=e.pageX-wrap.offsetLeft;
                                 wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
-                                checkInfinite();
                             });
                             wrap.addEventListener('touchstart',function(e){
                                 startX=e.touches[0].pageX-wrap.offsetLeft;
                                 scrollLeft=wrap.scrollLeft;
-                                if(autoTimer)clearInterval(autoTimer);
-                            },{passive:true});
-                            wrap.addEventListener('touchend',function(){
-                                if(autoplay){autoTimer=setInterval(function(){wrap.scrollLeft+=1;checkInfinite();},16);}
                             },{passive:true});
                             wrap.addEventListener('touchmove',function(e){
                                 var x=e.touches[0].pageX-wrap.offsetLeft;
                                 wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
-                                checkInfinite();
                             },{passive:true});
                         }
                         var el=this;
