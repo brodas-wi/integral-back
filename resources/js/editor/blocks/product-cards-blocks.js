@@ -8,20 +8,44 @@ const PC_CAROUSEL_SCRIPT = function () {
             section.__pcInit = true;
             var wrap = section.querySelector(".pc-carousel-wrap");
             if (!wrap) return;
+
             var isDragging = false;
             var startX = 0;
             var startScrollLeft = 0;
             var moved = false;
+            var velX = 0;
+            var lastX = 0;
+            var lastT = 0;
+            var rafId = null;
 
             wrap.querySelectorAll("img").forEach(function (img) {
                 img.setAttribute("draggable", "false");
             });
 
+            function maxScroll() {
+                return wrap.scrollWidth - wrap.clientWidth;
+            }
+
+            function clamp(val) {
+                return Math.max(0, Math.min(val, maxScroll()));
+            }
+
+            function applyMomentum() {
+                if (Math.abs(velX) < 0.5) return;
+                velX *= 0.92;
+                wrap.scrollLeft = clamp(wrap.scrollLeft + velX);
+                rafId = requestAnimationFrame(applyMomentum);
+            }
+
             wrap.addEventListener("mousedown", function (e) {
                 if (e.button !== 0) return;
+                if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
                 isDragging = true;
                 moved = false;
+                velX = 0;
                 startX = e.clientX;
+                lastX = e.clientX;
+                lastT = Date.now();
                 startScrollLeft = wrap.scrollLeft;
                 wrap.style.cursor = "grabbing";
                 e.preventDefault();
@@ -31,16 +55,22 @@ const PC_CAROUSEL_SCRIPT = function () {
                 if (!isDragging) return;
                 var delta = startX - e.clientX;
                 if (Math.abs(delta) > 3) moved = true;
-                var next = startScrollLeft + delta;
-                var max = wrap.scrollWidth - wrap.clientWidth;
-                wrap.scrollLeft = Math.max(0, Math.min(next, max));
+                var now = Date.now();
+                var dt = now - lastT || 1;
+                velX = (e.clientX - lastX) / dt * 16 * -1;
+                lastX = e.clientX;
+                lastT = now;
+                wrap.scrollLeft = clamp(startScrollLeft + delta);
             });
 
             document.addEventListener("mouseup", function (e) {
                 if (!isDragging) return;
                 isDragging = false;
                 wrap.style.cursor = "grab";
-                if (moved) e.stopPropagation();
+                if (moved) {
+                    e.stopPropagation();
+                    rafId = requestAnimationFrame(applyMomentum);
+                }
             });
 
             wrap.addEventListener("click", function (e) {
@@ -53,17 +83,37 @@ const PC_CAROUSEL_SCRIPT = function () {
 
             var touchStartX = 0;
             var touchStartScroll = 0;
+            var touchLastX = 0;
+            var touchLastT = 0;
+            var touchVelX = 0;
 
             wrap.addEventListener("touchstart", function (e) {
+                if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
                 touchStartX = e.touches[0].clientX;
+                touchLastX = e.touches[0].clientX;
+                touchLastT = Date.now();
                 touchStartScroll = wrap.scrollLeft;
+                touchVelX = 0;
             }, { passive: true });
 
             wrap.addEventListener("touchmove", function (e) {
-                var delta = touchStartX - e.touches[0].clientX;
-                var next = touchStartScroll + delta;
-                var max = wrap.scrollWidth - wrap.clientWidth;
-                wrap.scrollLeft = Math.max(0, Math.min(next, max));
+                var now = Date.now();
+                var dt = now - touchLastT || 1;
+                var cx = e.touches[0].clientX;
+                touchVelX = (cx - touchLastX) / dt * 16 * -1;
+                touchLastX = cx;
+                touchLastT = now;
+                var delta = touchStartX - cx;
+                wrap.scrollLeft = clamp(touchStartScroll + delta);
+            }, { passive: true });
+
+            wrap.addEventListener("touchend", function () {
+                rafId = requestAnimationFrame(function momentum() {
+                    if (Math.abs(touchVelX) < 0.5) return;
+                    touchVelX *= 0.92;
+                    wrap.scrollLeft = clamp(wrap.scrollLeft + touchVelX);
+                    rafId = requestAnimationFrame(momentum);
+                });
             }, { passive: true });
         }
 
@@ -85,10 +135,9 @@ const PRODUCT_CARDS_RUNTIME_SCRIPT = `(${PC_CAROUSEL_SCRIPT.toString()})();`;
 
 const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
-.pc-carousel-wrap{overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+.pc-carousel-wrap{overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}
 .pc-carousel-wrap::-webkit-scrollbar{display:none;}
 .pc-track{display:flex;gap:1.5rem;user-select:none;}
-.pc-card{scroll-snap-align:start;}
 .pc-card{flex:0 0 260px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
 .pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
 .pc-card-img{width:100%;height:100%;object-fit:cover;display:block;}
