@@ -14,6 +14,8 @@ function initCarousel(section){
     wrap.querySelectorAll('img').forEach(function(img){
         img.addEventListener('dragstart',function(e){e.preventDefault();});
     });
+    function maxScroll(){return track.scrollWidth-wrap.offsetWidth;}
+    function clamp(val){return Math.max(0,Math.min(val,maxScroll()));}
     wrap.addEventListener('mousedown',function(e){
         isDragging=true;
         track.classList.add('is-dragging');
@@ -30,7 +32,7 @@ function initCarousel(section){
         if(!isDragging)return;
         e.preventDefault();
         var x=e.pageX-wrap.offsetLeft;
-        wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
+        wrap.scrollLeft=clamp(scrollLeft-(x-startX)*1.5);
     });
     wrap.addEventListener('touchstart',function(e){
         startX=e.touches[0].pageX-wrap.offsetLeft;
@@ -38,7 +40,7 @@ function initCarousel(section){
     },{passive:true});
     wrap.addEventListener('touchmove',function(e){
         var x=e.touches[0].pageX-wrap.offsetLeft;
-        wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
+        wrap.scrollLeft=clamp(scrollLeft-(x-startX)*1.5);
     },{passive:true});
 }
 function init(){
@@ -489,6 +491,8 @@ export function initializeProductCardsBlock(editor) {
                             wrap.querySelectorAll('img').forEach(function(img){
                                 img.addEventListener('dragstart',function(e){e.preventDefault();});
                             });
+                            function maxScroll(){return track.scrollWidth-wrap.offsetWidth;}
+                            function clamp(val){return Math.max(0,Math.min(val,maxScroll()));}
                             wrap.addEventListener('mousedown',function(e){
                                 isDragging=true;
                                 track.classList.add('is-dragging');
@@ -505,7 +509,7 @@ export function initializeProductCardsBlock(editor) {
                                 if(!isDragging)return;
                                 e.preventDefault();
                                 var x=e.pageX-wrap.offsetLeft;
-                                wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
+                                wrap.scrollLeft=clamp(scrollLeft-(x-startX)*1.5);
                             });
                             wrap.addEventListener('touchstart',function(e){
                                 startX=e.touches[0].pageX-wrap.offsetLeft;
@@ -513,7 +517,7 @@ export function initializeProductCardsBlock(editor) {
                             },{passive:true});
                             wrap.addEventListener('touchmove',function(e){
                                 var x=e.touches[0].pageX-wrap.offsetLeft;
-                                wrap.scrollLeft=scrollLeft-(x-startX)*1.5;
+                                wrap.scrollLeft=clamp(scrollLeft-(x-startX)*1.5);
                             },{passive:true});
                         }
                         var el=this;
