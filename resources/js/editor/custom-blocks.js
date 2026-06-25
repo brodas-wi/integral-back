@@ -31,7 +31,6 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(statsStripBlocks);
     blockRegistry.registerBlocks(tabsBlocks);
     blockRegistry.registerBlocks(aboutBlocks);
-    initializeSavingsSectionBlock(editor);
     blockRegistry.registerBlocks(productLinkCardsBlocks);
     blockRegistry.registerBlocks(iconLinksBlocks);
     blockRegistry.registerBlocks(dualCardBlocks)
@@ -52,6 +51,7 @@ export function addCustomBlocks(editor) {
     initializeMapBlocks(editor);
     initializeBannerBlocks(editor);
     initializeBannerSingleBlocks(editor);
+    initializeSavingsSectionBlock(editor);
     initializeProductCardsBlock(editor);
     initializeButtonBlocks(editor);
     initializeTabsBlocks(editor);
