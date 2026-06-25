@@ -458,10 +458,6 @@ ${ve}`}],Ne=function(){(function(){function i(t){if(!t||t.__pcInit)return;t.__pc
                         </div>
                     </div>
                 </div>
-                <div class="pc-config-card">
-                    <div class="pc-section-title">Reproducción automática</div>
-                    <p style="font-size:0.875rem;color:#475569;margin:0;">El carrusel se desplaza con el ratón o con el dedo en pantallas táctiles.</p>
-                </div>
             </div>
             <div class="pc-tab-panel" id="pc-panel-cards">
                 <div id="pc-cards-list" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
