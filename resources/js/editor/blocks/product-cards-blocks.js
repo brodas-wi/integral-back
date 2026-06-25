@@ -1,62 +1,76 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
-const PRODUCT_CARDS_RUNTIME_SCRIPT = `(function(){
-function initCarousel(section){
-    if(!section||section.__pcInit)return;
-    section.__pcInit=true;
-    var track=section.querySelector('.pc-track');
-    var wrap=section.querySelector('.pc-carousel-wrap');
-    if(!track||!wrap)return;
-    var isDragging=false;
-    var startX=0;
-    var scrollLeft=0;
-    wrap.querySelectorAll('img').forEach(function(img){
-        img.addEventListener('dragstart',function(e){e.preventDefault();});
-    });
-    function maxScroll(){return track.scrollWidth-wrap.offsetWidth;}
-    function clamp(val){return Math.max(0,Math.min(val,maxScroll()));}
-    wrap.addEventListener('mousedown',function(e){
-        isDragging=true;
-        track.classList.add('is-dragging');
-        startX=e.pageX-wrap.offsetLeft;
-        scrollLeft=wrap.scrollLeft;
-        e.preventDefault();
-    });
-    document.addEventListener('mouseup',function(){
-        if(!isDragging)return;
-        isDragging=false;
-        track.classList.remove('is-dragging');
-    });
-    document.addEventListener('mousemove',function(e){
-        if(!isDragging)return;
-        e.preventDefault();
-        var x=e.pageX-wrap.offsetLeft;
-        wrap.scrollLeft=clamp(scrollLeft-(x-startX)*1.5);
-    });
-    wrap.addEventListener('touchstart',function(e){
-        startX=e.touches[0].pageX-wrap.offsetLeft;
-        scrollLeft=wrap.scrollLeft;
-    },{passive:true});
-    wrap.addEventListener('touchmove',function(e){
-        var x=e.touches[0].pageX-wrap.offsetLeft;
-        wrap.scrollLeft=clamp(scrollLeft-(x-startX)*1.5);
-    },{passive:true});
-}
-function init(){
-    document.querySelectorAll('.pc-section').forEach(function(s){
-        delete s.__pcInit;
-        initCarousel(s);
-    });
-}
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}
-else{init();}
-})();`;
+const PC_CAROUSEL_SCRIPT = function () {
+    (function () {
+        function initCarousel(section) {
+            if (!section || section.__pcInit) return;
+            section.__pcInit = true;
+            var track = section.querySelector(".pc-track");
+            var wrap = section.querySelector(".pc-carousel-wrap");
+            if (!track || !wrap) return;
+            var isDragging = false;
+            var startX = 0;
+            var startScrollLeft = 0;
+            wrap.querySelectorAll("img").forEach(function (img) {
+                img.setAttribute("draggable", "false");
+            });
+            wrap.addEventListener("mousedown", function (e) {
+                if (e.button !== 0) return;
+                isDragging = true;
+                startX = e.clientX;
+                startScrollLeft = wrap.scrollLeft;
+                wrap.style.cursor = "grabbing";
+                e.preventDefault();
+            });
+            document.addEventListener("mousemove", function (e) {
+                if (!isDragging) return;
+                var delta = startX - e.clientX;
+                wrap.scrollLeft = startScrollLeft + delta;
+            });
+            document.addEventListener("mouseup", function () {
+                if (!isDragging) return;
+                isDragging = false;
+                wrap.style.cursor = "grab";
+            });
+            var touchStartX = 0;
+            var touchStartScroll = 0;
+            wrap.addEventListener(
+                "touchstart",
+                function (e) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartScroll = wrap.scrollLeft;
+                },
+                { passive: true },
+            );
+            wrap.addEventListener(
+                "touchmove",
+                function (e) {
+                    var delta = touchStartX - e.touches[0].clientX;
+                    wrap.scrollLeft = touchStartScroll + delta;
+                },
+                { passive: true },
+            );
+        }
+        function init() {
+            document.querySelectorAll(".pc-section").forEach(function (s) {
+                delete s.__pcInit;
+                initCarousel(s);
+            });
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init);
+        } else {
+            init();
+        }
+    })();
+};
+const PRODUCT_CARDS_RUNTIME_SCRIPT = `(${PC_CAROUSEL_SCRIPT.toString()})();`;
 
 const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
-.pc-carousel-wrap{overflow:hidden;width:100%;cursor:grab;}
-.pc-carousel-wrap:active{cursor:grabbing;}
+.pc-carousel-wrap{overflow-x:auto;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;}
+.pc-carousel-wrap::-webkit-scrollbar{display:none;}
 .pc-track{display:flex;gap:1.5rem;width:max-content;user-select:none;}
 .pc-track.is-dragging{cursor:grabbing;}
 .pc-card{flex:0 0 260px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
@@ -87,7 +101,9 @@ function buildCardHTML(card) {
 
 function buildProductCardsHTML(data) {
     const heading = data.heading || "Créditos";
-    const subheading = data.subheading || "Opciones de financiamiento diseñadas para hacer realidad tus proyectos.";
+    const subheading =
+        data.subheading ||
+        "Opciones de financiamiento diseñadas para hacer realidad tus proyectos.";
     const moreHref = data.more_href || "#";
     const moreLabel = data.more_label || "Ver más";
     const cards = data.cards || [];
@@ -96,7 +112,8 @@ function buildProductCardsHTML(data) {
 }
 const DEFAULT_DATA = {
     heading: "Créditos",
-    subheading: "Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",
+    subheading:
+        "Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",
     more_href: "#",
     more_label: "Ver más",
     cards: [
@@ -374,12 +391,10 @@ function showProductCardsModal(editor, component) {
             btn_label: "Solicitar",
         });
         renderCards();
-        modal
-            .querySelector("#pc-cards-list")
-            .lastElementChild?.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-            });
+        modal.querySelector("#pc-cards-list").lastElementChild?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
     });
 
     const close = () => overlay.remove();
@@ -477,55 +492,7 @@ export function initializeProductCardsBlock(editor) {
                     "data-product-cards-config": JSON.stringify(DEFAULT_DATA),
                 },
                 components: buildProductCardsHTML(DEFAULT_DATA),
-                script: function() {
-                    (function(){
-                        function initCarousel(section){
-                            if(!section||section.__pcInit)return;
-                            section.__pcInit=true;
-                            var track=section.querySelector('.pc-track');
-                            var wrap=section.querySelector('.pc-carousel-wrap');
-                            if(!track||!wrap)return;
-                            var isDragging=false;
-                            var startX=0;
-                            var scrollLeft=0;
-                            wrap.querySelectorAll('img').forEach(function(img){
-                                img.addEventListener('dragstart',function(e){e.preventDefault();});
-                            });
-                            function maxScroll(){return track.scrollWidth-wrap.offsetWidth;}
-                            function clamp(val){return Math.max(0,Math.min(val,maxScroll()));}
-                            wrap.addEventListener('mousedown',function(e){
-                                isDragging=true;
-                                track.classList.add('is-dragging');
-                                startX=e.pageX-wrap.offsetLeft;
-                                scrollLeft=wrap.scrollLeft;
-                                e.preventDefault();
-                            });
-                            document.addEventListener('mouseup',function(){
-                                if(!isDragging)return;
-                                isDragging=false;
-                                track.classList.remove('is-dragging');
-                            });
-                            document.addEventListener('mousemove',function(e){
-                                if(!isDragging)return;
-                                e.preventDefault();
-                                var x=e.pageX-wrap.offsetLeft;
-                                wrap.scrollLeft=clamp(scrollLeft-(x-startX)*1.5);
-                            });
-                            wrap.addEventListener('touchstart',function(e){
-                                startX=e.touches[0].pageX-wrap.offsetLeft;
-                                scrollLeft=wrap.scrollLeft;
-                            },{passive:true});
-                            wrap.addEventListener('touchmove',function(e){
-                                var x=e.touches[0].pageX-wrap.offsetLeft;
-                                wrap.scrollLeft=clamp(scrollLeft-(x-startX)*1.5);
-                            },{passive:true});
-                        }
-                        var el=this;
-                        var section=el.querySelector('.pc-section')||el;
-                        delete section.__pcInit;
-                        initCarousel(section);
-                    }).call(this);
-                },
+                script: PC_CAROUSEL_SCRIPT,
                 "script-props": ["data-product-cards-config"],
                 traits: [
                     {
