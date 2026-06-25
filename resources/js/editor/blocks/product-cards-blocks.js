@@ -29,7 +29,7 @@ const PC_CAROUSEL_SCRIPT = function () {
                 var start = null;
                 function animateHint(ts) {
                     if (!start) start = ts;
-                    var p = (ts - start) / 900;
+                    var p = (ts - start) / 400;
                     if (p < 0.5) {
                         wrap.scrollLeft = peak * (p * 2);
                     } else if (p < 1) {
