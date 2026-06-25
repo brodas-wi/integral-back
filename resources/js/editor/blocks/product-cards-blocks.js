@@ -22,6 +22,29 @@ const PC_CAROUSEL_SCRIPT = function () {
                 img.setAttribute("draggable", "false");
             });
 
+            setTimeout(function () {
+                var hint = maxScroll();
+                if (hint <= 0) return;
+                var peak = Math.min(80, hint);
+                var start = null;
+                function animateHint(ts) {
+                    if (!start) start = ts;
+                    var p = (ts - start) / 900;
+                    if (p < 0.5) {
+                        wrap.scrollLeft = peak * (p * 2);
+                    } else if (p < 1) {
+                        wrap.scrollLeft = peak * (1 - (p - 0.5) * 2);
+                    } else {
+                        wrap.scrollLeft = 0;
+                        return;
+                    }
+                    requestAnimationFrame(animateHint);
+                }
+                requestAnimationFrame(animateHint);
+            }, 600);
+
+            wrap.scrollLeft = 0;
+
             function maxScroll() {
                 return wrap.scrollWidth - wrap.clientWidth;
             }
