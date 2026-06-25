@@ -23,9 +23,9 @@ const PC_CAROUSEL_SCRIPT = function () {
             });
 
             setTimeout(function () {
-                var hint = maxScroll();
+                var hint = wrap.scrollWidth - wrap.clientWidth;
                 if (hint <= 0) return;
-                var peak = Math.min(80, hint);
+                var peak = Math.min(60, hint);
                 var start = null;
                 function animateHint(ts) {
                     if (!start) start = ts;
@@ -41,7 +41,7 @@ const PC_CAROUSEL_SCRIPT = function () {
                     requestAnimationFrame(animateHint);
                 }
                 requestAnimationFrame(animateHint);
-            }, 600);
+            }, 400);
 
             wrap.scrollLeft = 0;
 
@@ -62,7 +62,10 @@ const PC_CAROUSEL_SCRIPT = function () {
 
             wrap.addEventListener("mousedown", function (e) {
                 if (e.button !== 0) return;
-                if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
                 isDragging = true;
                 moved = false;
                 velX = 0;
@@ -80,7 +83,7 @@ const PC_CAROUSEL_SCRIPT = function () {
                 if (Math.abs(delta) > 3) moved = true;
                 var now = Date.now();
                 var dt = now - lastT || 1;
-                velX = (e.clientX - lastX) / dt * 16 * -1;
+                velX = ((e.clientX - lastX) / dt) * 16 * -1;
                 lastX = e.clientX;
                 lastT = now;
                 wrap.scrollLeft = clamp(startScrollLeft + delta);
@@ -96,13 +99,17 @@ const PC_CAROUSEL_SCRIPT = function () {
                 }
             });
 
-            wrap.addEventListener("click", function (e) {
-                if (moved) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    moved = false;
-                }
-            }, true);
+            wrap.addEventListener(
+                "click",
+                function (e) {
+                    if (moved) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        moved = false;
+                    }
+                },
+                true,
+            );
 
             var touchStartX = 0;
             var touchStartScroll = 0;
@@ -110,34 +117,49 @@ const PC_CAROUSEL_SCRIPT = function () {
             var touchLastT = 0;
             var touchVelX = 0;
 
-            wrap.addEventListener("touchstart", function (e) {
-                if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-                touchStartX = e.touches[0].clientX;
-                touchLastX = e.touches[0].clientX;
-                touchLastT = Date.now();
-                touchStartScroll = wrap.scrollLeft;
-                touchVelX = 0;
-            }, { passive: true });
+            wrap.addEventListener(
+                "touchstart",
+                function (e) {
+                    if (rafId) {
+                        cancelAnimationFrame(rafId);
+                        rafId = null;
+                    }
+                    touchStartX = e.touches[0].clientX;
+                    touchLastX = e.touches[0].clientX;
+                    touchLastT = Date.now();
+                    touchStartScroll = wrap.scrollLeft;
+                    touchVelX = 0;
+                },
+                { passive: true },
+            );
 
-            wrap.addEventListener("touchmove", function (e) {
-                var now = Date.now();
-                var dt = now - touchLastT || 1;
-                var cx = e.touches[0].clientX;
-                touchVelX = (cx - touchLastX) / dt * 16 * -1;
-                touchLastX = cx;
-                touchLastT = now;
-                var delta = touchStartX - cx;
-                wrap.scrollLeft = clamp(touchStartScroll + delta);
-            }, { passive: true });
+            wrap.addEventListener(
+                "touchmove",
+                function (e) {
+                    var now = Date.now();
+                    var dt = now - touchLastT || 1;
+                    var cx = e.touches[0].clientX;
+                    touchVelX = ((cx - touchLastX) / dt) * 16 * -1;
+                    touchLastX = cx;
+                    touchLastT = now;
+                    var delta = touchStartX - cx;
+                    wrap.scrollLeft = clamp(touchStartScroll + delta);
+                },
+                { passive: true },
+            );
 
-            wrap.addEventListener("touchend", function () {
-                rafId = requestAnimationFrame(function momentum() {
-                    if (Math.abs(touchVelX) < 0.5) return;
-                    touchVelX *= 0.92;
-                    wrap.scrollLeft = clamp(wrap.scrollLeft + touchVelX);
-                    rafId = requestAnimationFrame(momentum);
-                });
-            }, { passive: true });
+            wrap.addEventListener(
+                "touchend",
+                function () {
+                    rafId = requestAnimationFrame(function momentum() {
+                        if (Math.abs(touchVelX) < 0.5) return;
+                        touchVelX *= 0.92;
+                        wrap.scrollLeft = clamp(wrap.scrollLeft + touchVelX);
+                        rafId = requestAnimationFrame(momentum);
+                    });
+                },
+                { passive: true },
+            );
         }
 
         function init() {
@@ -194,9 +216,13 @@ function buildProductCardsHTML(data) {
         "Opciones de financiamiento diseñadas para hacer realidad tus proyectos.";
     const moreHref = data.more_href || "#";
     const moreLabel = data.more_label || "Ver más";
+    const showMore = data.show_more !== false;
     const cards = data.cards || [];
     const cardsHTML = cards.map(buildCardHTML).join("");
-    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${cardsHTML}</div></div><div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div></section>`;
+    const moreBtnHTML = showMore
+        ? `<div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div>`
+        : "";
+    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${cardsHTML}</div></div>${moreBtnHTML}</section>`;
 }
 const DEFAULT_DATA = {
     heading: "Créditos",
@@ -291,6 +317,13 @@ function showProductCardsModal(editor, component) {
             .pc-section-title{font-size:0.75rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.05em;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;margin-bottom:0.75rem;}
             .pc-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
             .pc-config-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;}
+            .pc-toggle-wrap{display:flex;align-items:center;gap:0.75rem;}
+            .pc-toggle{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;}
+            .pc-toggle input{opacity:0;width:0;height:0;}
+            .pc-toggle-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:9999px;transition:background 0.2s;cursor:pointer;}
+            .pc-toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform 0.2s;}
+            .pc-toggle input:checked+.pc-toggle-slider{background:#003B71;}
+            .pc-toggle input:checked+.pc-toggle-slider:before{transform:translateX(18px);}
         `;
         document.head.appendChild(style);
     }
@@ -308,9 +341,9 @@ function showProductCardsModal(editor, component) {
     const data = {
         heading: currentData.heading ?? DEFAULT_DATA.heading,
         subheading: currentData.subheading ?? DEFAULT_DATA.subheading,
-        autoplay: currentData.autoplay ?? DEFAULT_DATA.autoplay,
         more_href: currentData.more_href ?? DEFAULT_DATA.more_href,
         more_label: currentData.more_label ?? DEFAULT_DATA.more_label,
+        show_more: currentData.show_more ?? true,
         cards: JSON.parse(
             JSON.stringify(currentData.cards ?? DEFAULT_DATA.cards),
         ),
@@ -346,13 +379,22 @@ function showProductCardsModal(editor, component) {
                 </div>
                 <div class="pc-config-card">
                     <div class="pc-section-title">Botón Ver más</div>
-                    <div>
-                        <label class="pc-label">Texto del botón</label>
-                        <input id="pc-more-label" type="text" class="pc-input" value="${data.more_label}">
+                    <div class="pc-toggle-wrap">
+                        <label class="pc-toggle">
+                            <input type="checkbox" id="pc-show-more" ${data.show_more ? "checked" : ""}>
+                            <span class="pc-toggle-slider"></span>
+                        </label>
+                        <span style="font-size:0.875rem;color:#475569;">Mostrar botón Ver más</span>
                     </div>
-                    <div>
-                        <label class="pc-label">URL</label>
-                        <input id="pc-more-href" type="text" class="pc-input" value="${data.more_href}">
+                    <div id="pc-more-fields" style="${data.show_more ? "" : "display:none;"}display:flex;flex-direction:column;gap:0.75rem;">
+                        <div>
+                            <label class="pc-label">Texto del botón</label>
+                            <input id="pc-more-label" type="text" class="pc-input" value="${data.more_label}">
+                        </div>
+                        <div>
+                            <label class="pc-label">URL</label>
+                            <input id="pc-more-href" type="text" class="pc-input" value="${data.more_href}">
+                        </div>
                     </div>
                 </div>
                 <div class="pc-config-card">
@@ -389,6 +431,15 @@ function showProductCardsModal(editor, component) {
                 .classList.add("active");
         });
     });
+
+    modal
+        .querySelector("#pc-show-more")
+        .addEventListener("change", function () {
+            data.show_more = this.checked;
+            modal.querySelector("#pc-more-fields").style.display = this.checked
+                ? "flex"
+                : "none";
+        });
 
     function renderCards() {
         const list = modal.querySelector("#pc-cards-list");
@@ -499,6 +550,7 @@ function showProductCardsModal(editor, component) {
         data.subheading =
             modal.querySelector("#pc-subheading").value.trim() ||
             DEFAULT_DATA.subheading;
+        data.show_more = modal.querySelector("#pc-show-more").checked;
         data.more_label =
             modal.querySelector("#pc-more-label").value.trim() ||
             DEFAULT_DATA.more_label;
