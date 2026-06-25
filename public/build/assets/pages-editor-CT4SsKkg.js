@@ -605,8 +605,8 @@ ${be}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
 </svg>`,Mt=`
 <style>
 .cta-section{width:100%;background:#ffffff;padding:3rem 4rem;display:flex;flex-direction:column;align-items:center;gap:2rem;}
-.cta-img-wrap{width:100%;max-width:600px;border-radius:1rem;overflow:hidden;}
-.cta-img-wrap img{width:100%;height:auto;display:block;object-fit:cover;}
+.cta-img-wrap{width:100%;max-width:600px;border-radius:1rem;overflow:hidden;aspect-ratio:16/9;}
+.cta-img-wrap img{width:100%;height:100%;display:block;object-fit:cover;}
 .cta-content{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.25rem;width:100%;max-width:640px;}
 .cta-btn-primary{display:inline-block;padding:0.75rem 2.5rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
 .cta-btn-primary:hover{background:#c96200;}
