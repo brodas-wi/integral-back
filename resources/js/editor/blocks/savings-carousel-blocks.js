@@ -27,11 +27,11 @@ const SAVINGS_CAROUSEL_SCRIPT = function () {
             setTimeout(function () {
                 var hint = wrap.scrollWidth - wrap.clientWidth;
                 if (hint <= 0) return;
-                var peak = Math.min(80, hint);
+                var peak = Math.min(60, hint);
                 var start = null;
                 function animateHint(ts) {
                     if (!start) start = ts;
-                    var p = (ts - start) / 900;
+                    var p = (ts - start) / 400;
                     if (p < 0.5) {
                         wrap.scrollLeft = peak * (p * 2);
                     } else if (p < 1) {
@@ -43,7 +43,7 @@ const SAVINGS_CAROUSEL_SCRIPT = function () {
                     requestAnimationFrame(animateHint);
                 }
                 requestAnimationFrame(animateHint);
-            }, 600);
+            }, 400);
 
             function maxScroll() {
                 return wrap.scrollWidth - wrap.clientWidth;
@@ -218,10 +218,14 @@ function buildSavingsSectionHTML(data) {
         "Productos diseñados para hacer crecer tu dinero de forma segura.";
     const moreHref = data.more_href || "#";
     const moreLabel = data.more_label || "Ver más";
+    const showMore = data.show_more !== false;
     const cards = data.cards || [];
     const cardsHTML = cards.map(buildSavingsCardHTML).join("");
     const watermark = assetUrl("images/brand-watermark.png");
-    return `<section class="sav-section"><style>${SAVINGS_CSS}</style><div class="sav-blue-box"><div class="sav-watermark"><img src="${watermark}" alt=""></div><div style="display:flex;flex-direction:column;gap:0.5rem;text-align:center;position:relative;z-index:1;"><h2 class="sav-heading">${heading}</h2><p class="sav-subheading">${subheading}</p></div><div class="sav-carousel-wrap"><div class="sav-track">${cardsHTML}</div></div><div class="sav-more-wrap"><a href="${moreHref}" class="sav-more-btn">${moreLabel}</a></div></div></section>`;
+    const moreBtnHTML = showMore
+        ? `<div class="sav-more-wrap"><a href="${moreHref}" class="sav-more-btn">${moreLabel}</a></div>`
+        : "";
+    return `<section class="sav-section"><style>${SAVINGS_CSS}</style><div class="sav-blue-box"><div class="sav-watermark"><img src="${watermark}" alt=""></div><div style="display:flex;flex-direction:column;gap:0.5rem;text-align:center;position:relative;z-index:1;"><h2 class="sav-heading">${heading}</h2><p class="sav-subheading">${subheading}</p></div><div class="sav-carousel-wrap"><div class="sav-track">${cardsHTML}</div></div>${moreBtnHTML}</div></section>`;
 }
 
 const DEFAULT_DATA = {
@@ -306,6 +310,13 @@ function showSavingsModal(editor, component) {
             .sav-config-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;}
             .sav-card-config{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;}
             .sav-card-config-header{display:flex;align-items:center;gap:0.5rem;}
+            .sav-toggle-wrap{display:flex;align-items:center;gap:0.75rem;}
+            .sav-toggle{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;}
+            .sav-toggle input{opacity:0;width:0;height:0;}
+            .sav-toggle-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:9999px;transition:background 0.2s;cursor:pointer;}
+            .sav-toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform 0.2s;}
+            .sav-toggle input:checked+.sav-toggle-slider{background:#003B71;}
+            .sav-toggle input:checked+.sav-toggle-slider:before{transform:translateX(18px);}
         `;
         document.head.appendChild(style);
     }
@@ -325,6 +336,7 @@ function showSavingsModal(editor, component) {
         subheading: currentData.subheading ?? DEFAULT_DATA.subheading,
         more_href: currentData.more_href ?? DEFAULT_DATA.more_href,
         more_label: currentData.more_label ?? DEFAULT_DATA.more_label,
+        show_more: currentData.show_more ?? true,
         cards: JSON.parse(
             JSON.stringify(currentData.cards ?? DEFAULT_DATA.cards),
         ),
@@ -360,13 +372,22 @@ function showSavingsModal(editor, component) {
                 </div>
                 <div class="sav-config-card">
                     <div class="sav-section-title">Botón Ver más</div>
-                    <div>
-                        <label class="sav-label">Texto del botón</label>
-                        <input id="sav-more-label" type="text" class="sav-input" value="${data.more_label}">
+                    <div class="sav-toggle-wrap">
+                        <label class="sav-toggle">
+                            <input type="checkbox" id="sav-show-more" ${data.show_more ? "checked" : ""}>
+                            <span class="sav-toggle-slider"></span>
+                        </label>
+                        <span style="font-size:0.875rem;color:#475569;">Mostrar botón Ver más</span>
                     </div>
-                    <div>
-                        <label class="sav-label">URL</label>
-                        <input id="sav-more-href" type="text" class="sav-input" value="${data.more_href}">
+                    <div id="sav-more-fields" style="${data.show_more ? "" : "display:none;"}display:flex;flex-direction:column;gap:0.75rem;">
+                        <div>
+                            <label class="sav-label">Texto del botón</label>
+                            <input id="sav-more-label" type="text" class="sav-input" value="${data.more_label}">
+                        </div>
+                        <div>
+                            <label class="sav-label">URL</label>
+                            <input id="sav-more-href" type="text" class="sav-input" value="${data.more_href}">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -385,6 +406,10 @@ function showSavingsModal(editor, component) {
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
 
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) close();
+    });
+
     modal.querySelectorAll(".sav-tab-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
             modal
@@ -399,6 +424,15 @@ function showSavingsModal(editor, component) {
                 .classList.add("active");
         });
     });
+
+    modal
+        .querySelector("#sav-show-more")
+        .addEventListener("change", function () {
+            data.show_more = this.checked;
+            modal.querySelector("#sav-more-fields").style.display = this.checked
+                ? "flex"
+                : "none";
+        });
 
     function renderCards() {
         const list = modal.querySelector("#sav-cards-list");
@@ -500,9 +534,6 @@ function showSavingsModal(editor, component) {
     const close = () => overlay.remove();
     modal.querySelector("#sav-modal-close").addEventListener("click", close);
     modal.querySelector("#sav-modal-cancel").addEventListener("click", close);
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) close();
-    });
 
     modal.querySelector("#sav-modal-save").addEventListener("click", () => {
         data.heading =
@@ -511,6 +542,7 @@ function showSavingsModal(editor, component) {
         data.subheading =
             modal.querySelector("#sav-subheading").value.trim() ||
             DEFAULT_DATA.subheading;
+        data.show_more = modal.querySelector("#sav-show-more").checked;
         data.more_label =
             modal.querySelector("#sav-more-label").value.trim() ||
             DEFAULT_DATA.more_label;
