@@ -43,11 +43,12 @@ const CONTACT_INFO_STYLES = `
 .ci-section{width:100%;padding:2rem 4rem;background:#ffffff;box-sizing:border-box;}
 .ci-pill-row{display:inline-flex;flex-direction:row;align-items:center;background:#ffffff;border-radius:9999px;padding:1rem 2rem;box-shadow:0 2px 20px rgba(0,59,113,0.12);border:1px solid #f1f5f9;gap:2rem;}
 .ci-pill-col{display:inline-flex;flex-direction:column;background:#ffffff;border-radius:2rem;padding:1.5rem 2rem;box-shadow:0 2px 20px rgba(0,59,113,0.12);border:1px solid #f1f5f9;gap:1.5rem;}
+.ci-divider-h{width:100%;height:3px;background:#E97300;border-radius:9999px;flex-shrink:0;}
 .ci-item{display:flex;flex-direction:row;align-items:center;gap:1rem;}
 .ci-icon{font-size:2.1rem;color:#E97300;flex-shrink:0;}
 .ci-divider{width:3px;align-self:stretch;background:#E97300;flex-shrink:0;}
 .ci-row-wrap{display:flex;justify-content:center;}
-.ci-col-wrap{display:flex;justify-content:flex-start;}
+.ci-col-wrap{display:flex;justify-content:center;}
 @media(max-width:1280px){.ci-section{padding:2rem 2.5rem;}}
 @media(max-width:992px){
     .ci-section{padding:2rem 1.5rem;}
@@ -87,7 +88,7 @@ ${CONTACT_INFO_STYLES}`,
     <div class="ci-col-wrap">
         <div class="ci-pill-col">
             ${CONTACT_ITEM("ri-phone-fill", "Contáctenos", "(503)-2250-6090", "tel:+50322506090")}
-            <div class="ci-divider"></div>
+            <div class="ci-divider-h"></div>
             ${CONTACT_ITEM("ri-mail-fill", "Correo", "servicio.cliente@bancointegral.com", "mailto:servicio.cliente@bancointegral.com")}
         </div>
     </div>
