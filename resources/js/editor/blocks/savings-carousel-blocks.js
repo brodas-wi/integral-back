@@ -179,10 +179,10 @@ const SAVINGS_CAROUSEL_SCRIPT = function () {
 const SAVINGS_RUNTIME_SCRIPT = `(${SAVINGS_CAROUSEL_SCRIPT.toString()})();`;
 
 const SAVINGS_CSS = `
-.sav-section{width:100%;background:#ffffff;padding:3rem 4rem;display:flex;flex-direction:column;gap:2rem;}
-.sav-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0;text-align:center;}
-.sav-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
-.sav-blue-box{background:#003B71;border-radius:1.5rem;padding:2rem;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:1.5rem;}
+.sav-section{width:100%;background:#ffffff;padding:3rem 4rem;}
+.sav-heading{font-size:2.25rem;font-weight:800;color:#ffffff;margin:0;text-align:center;}
+.sav-subheading{font-size:1rem;color:rgba(255,255,255,0.85);margin:0;text-align:center;}
+.sav-blue-box{background:#003B71;border-radius:0.75rem;padding:2.5rem;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:2rem;}
 .sav-watermark{position:absolute;bottom:-32px;right:-32px;width:280px;height:280px;opacity:0.07;pointer-events:none;user-select:none;}
 .sav-watermark img{width:100%;height:100%;object-fit:contain;}
 .sav-carousel-wrap{overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;position:relative;z-index:1;}
@@ -221,7 +221,7 @@ function buildSavingsSectionHTML(data) {
     const cards = data.cards || [];
     const cardsHTML = cards.map(buildSavingsCardHTML).join("");
     const watermark = assetUrl("images/brand-watermark.png");
-    return `<section class="sav-section"><style>${SAVINGS_CSS}</style><div style="display:flex;flex-direction:column;gap:0.5rem;text-align:center;"><h2 class="sav-heading">${heading}</h2><p class="sav-subheading">${subheading}</p></div><div class="sav-blue-box"><div class="sav-watermark"><img src="${watermark}" alt=""></div><div class="sav-carousel-wrap"><div class="sav-track">${cardsHTML}</div></div><div class="sav-more-wrap"><a href="${moreHref}" class="sav-more-btn">${moreLabel}</a></div></div></section>`;
+    return `<section class="sav-section"><style>${SAVINGS_CSS}</style><div class="sav-blue-box"><div class="sav-watermark"><img src="${watermark}" alt=""></div><div style="display:flex;flex-direction:column;gap:0.5rem;text-align:center;position:relative;z-index:1;"><h2 class="sav-heading">${heading}</h2><p class="sav-subheading">${subheading}</p></div><div class="sav-carousel-wrap"><div class="sav-track">${cardsHTML}</div></div><div class="sav-more-wrap"><a href="${moreHref}" class="sav-more-btn">${moreLabel}</a></div></div></section>`;
 }
 
 const DEFAULT_DATA = {
