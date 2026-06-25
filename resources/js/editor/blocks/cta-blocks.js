@@ -12,18 +12,18 @@ const iconCta = `<svg viewBox="0 0 32 32" width="32" height="32">
 
 const CTA_STYLES = `
 <style>
-.cta-watermark-left{position:absolute;bottom:-16px;left:-16px;width:220px;height:220px;opacity:0.2;pointer-events:none;user-select:none;transform:scaleX(-1);}
-.cta-watermark-right{position:absolute;bottom:-16px;right:-16px;width:220px;height:220px;opacity:0.2;pointer-events:none;user-select:none;}
-.cta-watermark-left img,.cta-watermark-right img{width:100%;height:100%;object-fit:contain;}
-.cta-btn-primary{display:inline-block;padding:0.625rem 2rem;border-radius:0.5rem;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
+.cta-section{width:100%;background:#ffffff;padding:3rem 4rem;display:flex;flex-direction:column;align-items:center;gap:2rem;}
+.cta-img-wrap{width:100%;max-width:600px;border-radius:1rem;overflow:hidden;}
+.cta-img-wrap img{width:100%;height:auto;display:block;object-fit:cover;}
+.cta-content{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.25rem;width:100%;max-width:640px;}
+.cta-btn-primary{display:inline-block;padding:0.75rem 2.5rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
 .cta-btn-primary:hover{background:#c96200;}
-.cta-btn-secondary{display:inline-block;padding:0.625rem 2rem;border-radius:0.5rem;background:#ffffff;color:#E97300;font-size:1rem;font-weight:600;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,0.12);transition:background .2s,color .2s;}
-.cta-btn-secondary:hover{background:#E97300;color:#ffffff;}
-@media(max-width:992px){
-    .cta-watermark-left,.cta-watermark-right{width:140px;height:140px;}
-}
+.cta-btn-secondary{display:inline-block;padding:0.75rem 2.5rem;border-radius:9999px;background:#ffffff;color:#E97300;font-size:1rem;font-weight:600;text-decoration:none;border:2px solid #e5e7eb;transition:background .2s,color .2s,border-color .2s;}
+.cta-btn-secondary:hover{background:#E97300;color:#ffffff;border-color:#E97300;}
+@media(max-width:1280px){.cta-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.cta-section{padding:2.5rem 1.5rem;}}
 @media(max-width:580px){
-    .cta-watermark-left,.cta-watermark-right{width:90px;height:90px;}
+    .cta-section{padding:2rem 1rem;}
     .cta-btn-primary,.cta-btn-secondary{width:100%;text-align:center;box-sizing:border-box;}
 }
 </style>`;
@@ -35,19 +35,16 @@ export const ctaBlocks = [
         category: "Llamadas a la acción",
         media: iconCta,
         content: `
-<section class="relative overflow-hidden w-full bg-white py-16 px-6 md:px-16">
-    <div class="cta-watermark-left">
-        <img src="${assetUrl("images/brand-logo.png")}" alt="">
+<section class="cta-section">
+    <div class="cta-img-wrap">
+        <img src="${assetUrl("images/placeholder.svg")}" alt="Imagen CTA">
     </div>
-    <div class="cta-watermark-right">
-        <img src="${assetUrl("images/brand-logo.png")}" alt="">
-    </div>
-    <div class="relative z-10 max-w-2xl mx-auto flex flex-col items-center text-center gap-6">
-        <h2 class="text-4xl font-bold text-[#E97300] leading-tight">Lorem ipsum dolor sit amet consectetur</h2>
-        <p class="text-base text-[#E97300]">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Descubre cómo podemos ayudarte a alcanzar tus metas.</p>
-        <div class="flex flex-wrap gap-4 justify-center">
-            <a href="#" class="cta-btn-primary">Lorem ipsum</a>
-            <a href="#" class="cta-btn-secondary">Lorem ipsum</a>
+    <div class="cta-content">
+        <h2 class="text-4xl font-bold text-[#E97300] leading-tight">Únete a la Familia Banco Integral</h2>
+        <p class="text-base text-[#003B71] leading-relaxed">Miles de clientes confían en nosotros. Descubre cómo podemos ayudarte a alcanzar tus metas financieras.</p>
+        <div class="flex flex-wrap gap-4 justify-center w-full">
+            <a href="#" class="cta-btn-primary">Abrir Cuenta Hoy</a>
+            <a href="#" class="cta-btn-secondary">Solicitar Información</a>
         </div>
     </div>
 </section>
