@@ -35,14 +35,15 @@ const NEWS_GRID_STYLES = `
 .ng-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .ng-section-heading{font-size:2.25rem;font-weight:800;color:#003B71;text-align:center;margin:0 0 2rem;}
 .ng-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:1.5rem;}
-.ng-card{background:#ffffff;border-radius:1rem;padding:1.75rem;display:flex;flex-direction:column;gap:1rem;box-shadow:0 2px 12px rgba(0,59,113,0.08);transition:background 0.25s,box-shadow 0.25s;}
+.ng-card{background:#ffffff;border-radius:1rem;padding:1.75rem;display:flex;flex-direction:column;gap:1rem;box-shadow:0 2px 12px rgba(0,59,113,0.08);transition:background 0.25s,box-shadow 0.25s;align-items:center;}
 .ng-card:hover{background:#003B71;box-shadow:0 4px 24px rgba(0,59,113,0.22);}
 .ng-card-logo{display:flex;justify-content:center;align-items:center;min-height:80px;}
 .ng-logo-img{max-height:80px;width:auto;max-width:100%;object-fit:contain;display:block;}
 .ng-card-body{display:flex;flex-direction:column;gap:0.5rem;flex:1;}
+.ng-card{background:#ffffff;border-radius:1rem;padding:1.75rem;display:flex;flex-direction:column;gap:1rem;box-shadow:0 2px 12px rgba(0,59,113,0.08);transition:background 0.25s,box-shadow 0.25s;align-items:stretch;}
 .ng-card-title{font-size:1rem;font-weight:700;color:#003B71;line-height:1.4;margin:0;transition:color 0.25s;}
 .ng-card-desc{font-size:0.875rem;color:#003B71;line-height:1.6;margin:0;transition:color 0.25s;}
-.ng-btn{display:block;width:100%;padding:0.6rem 1rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:0.875rem;font-weight:700;text-align:center;text-decoration:none;letter-spacing:0.04em;transition:background 0.25s,color 0.25s,border-color 0.25s;}
+.ng-btn{display:inline-block;padding:0.6rem 1.75rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:0.875rem;font-weight:700;text-align:center;text-decoration:none;letter-spacing:0.04em;max-width:100%;transition:background 0.25s,color 0.25s;}
 .ng-card:hover .ng-card-title{color:#ffffff;}
 .ng-card:hover .ng-card-desc{color:rgba(255,255,255,0.85);}
 .ng-card:hover .ng-btn{background:#ffffff;color:#003B71;}
@@ -63,7 +64,7 @@ const NEWS_CARD = `
         <h3 class="ng-card-title">Título de la noticia o publicación</h3>
         <p class="ng-card-desc">Descripción breve del contenido de la noticia o publicación disponible para los usuarios.</p>
     </div>
-    <a href="#" class="ng-btn">LEER NOTICIA</a>
+    <a href="#" class="ng-btn" style="align-self:center;">LEER NOTICIA</a>
 </div>`;
 
 export const newsGridBlocks = [
