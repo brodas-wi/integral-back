@@ -179,34 +179,36 @@ const SAVINGS_CAROUSEL_SCRIPT = function () {
 const SAVINGS_RUNTIME_SCRIPT = `(${SAVINGS_CAROUSEL_SCRIPT.toString()})();`;
 
 const SAVINGS_CSS = `
-.sav-section{width:100%;background:#003B71;padding:3rem 4rem;position:relative;overflow:hidden;}
-.sav-watermark{position:absolute;bottom:-32px;right:-32px;width:320px;height:320px;opacity:0.07;pointer-events:none;user-select:none;}
+.sav-section{width:100%;background:#ffffff;padding:3rem 4rem;display:flex;flex-direction:column;gap:2rem;}
+.sav-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0;text-align:center;}
+.sav-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
+.sav-blue-box{background:#003B71;border-radius:1.5rem;padding:2rem;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:1.5rem;}
+.sav-watermark{position:absolute;bottom:-32px;right:-32px;width:280px;height:280px;opacity:0.07;pointer-events:none;user-select:none;}
 .sav-watermark img{width:100%;height:100%;object-fit:contain;}
-.sav-inner{position:relative;z-index:1;display:flex;flex-direction:column;gap:2rem;}
-.sav-heading{font-size:2.25rem;font-weight:800;color:#ffffff;margin:0;text-align:center;}
-.sav-subheading{font-size:1rem;color:rgba(255,255,255,0.85);margin:0;text-align:center;}
-.sav-carousel-wrap{overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}
+.sav-carousel-wrap{overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;position:relative;z-index:1;}
 .sav-carousel-wrap::-webkit-scrollbar{display:none;}
 .sav-track{display:flex;gap:1.5rem;user-select:none;}
-.sav-card{flex:0 0 240px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:transparent;border:2px solid rgba(255,255,255,0.5);border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
+.sav-card{flex:0 0 240px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:transparent;border:2px solid #ffffff;border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
 .sav-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:rgba(255,255,255,0.15);}
 .sav-card-img{width:100%;height:100%;object-fit:cover;display:block;}
 .sav-card-title{font-size:0.95rem;font-weight:700;color:#ffffff;text-transform:uppercase;text-align:center;}
-.sav-btn{display:block;width:100%;padding:0.5rem 1rem;border-radius:9999px;background:#ffffff;color:#003B71;font-size:0.95rem;font-weight:600;text-align:center;text-decoration:none;transition:background .2s;}
+.sav-card-desc{font-size:0.85rem;color:rgba(255,255,255,0.85);text-align:center;line-height:1.5;margin:0;}
+.sav-btn{display:block;width:100%;padding:0.5rem 1rem;border-radius:9999px;background:#ffffff;color:#003B71;font-size:0.95rem;font-weight:600;text-align:center;text-decoration:none;transition:background .2s;margin-top:auto;}
 .sav-btn:hover{background:#dce8f5;}
-.sav-more-wrap{display:flex;justify-content:center;}
+.sav-more-wrap{display:flex;justify-content:center;position:relative;z-index:1;}
 .sav-more-btn{display:inline-block;padding:0.6rem 2.5rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
 .sav-more-btn:hover{background:#c96200;}
 @media(max-width:1280px){.sav-section{padding:3rem 2.5rem;}}
-@media(max-width:992px){.sav-section{padding:2.5rem 1.5rem;}.sav-card{flex:0 0 200px;}}
+@media(max-width:992px){.sav-section{padding:2.5rem 1.5rem;}.sav-card{flex:0 0 200px;}.sav-blue-box{padding:1.5rem;}}
 @media(max-width:480px){.sav-card{flex:0 0 75vw;}}`;
 
 function buildSavingsCardHTML(card) {
     const img = card.img || assetUrl("images/placeholder.svg");
     const title = card.title || "TÍTULO DEL PRODUCTO";
+    const desc = card.desc ? `<p class="sav-card-desc">${card.desc}</p>` : "";
     const href = card.href || "#";
     const btnLabel = card.btn_label || "Solicitar";
-    return `<div class="sav-card"><div class="sav-card-img-wrap"><img src="${img}" alt="${title}" class="sav-card-img"></div><h3 class="sav-card-title">${title}</h3><a href="${href}" class="sav-btn">${btnLabel}</a></div>`;
+    return `<div class="sav-card"><div class="sav-card-img-wrap"><img src="${img}" alt="${title}" class="sav-card-img"></div><h3 class="sav-card-title">${title}</h3>${desc}<a href="${href}" class="sav-btn">${btnLabel}</a></div>`;
 }
 
 function buildSavingsSectionHTML(data) {
@@ -219,7 +221,7 @@ function buildSavingsSectionHTML(data) {
     const cards = data.cards || [];
     const cardsHTML = cards.map(buildSavingsCardHTML).join("");
     const watermark = assetUrl("images/brand-watermark.png");
-    return `<section class="sav-section"><style>${SAVINGS_CSS}</style><div class="sav-watermark"><img src="${watermark}" alt=""></div><div class="sav-inner"><div style="display:flex;flex-direction:column;gap:0.5rem;"><h2 class="sav-heading">${heading}</h2><p class="sav-subheading">${subheading}</p></div><div class="sav-carousel-wrap"><div class="sav-track">${cardsHTML}</div></div><div class="sav-more-wrap"><a href="${moreHref}" class="sav-more-btn">${moreLabel}</a></div></div></section>`;
+    return `<section class="sav-section"><style>${SAVINGS_CSS}</style><div style="display:flex;flex-direction:column;gap:0.5rem;text-align:center;"><h2 class="sav-heading">${heading}</h2><p class="sav-subheading">${subheading}</p></div><div class="sav-blue-box"><div class="sav-watermark"><img src="${watermark}" alt=""></div><div class="sav-carousel-wrap"><div class="sav-track">${cardsHTML}</div></div><div class="sav-more-wrap"><a href="${moreHref}" class="sav-more-btn">${moreLabel}</a></div></div></section>`;
 }
 
 const DEFAULT_DATA = {
@@ -424,6 +426,10 @@ function showSavingsModal(editor, component) {
                     <label class="sav-label">Título</label>
                     <input class="sav-input" placeholder="TÍTULO DEL PRODUCTO" value="${card.title || ""}" data-field="title">
                 </div>
+                <div>
+                    <label class="sav-label">Descripción <span style="font-weight:400;text-transform:none;color:#94a3b8;">(opcional)</span></label>
+                    <input class="sav-input" placeholder="Descripción breve del producto" value="${card.desc || ""}" data-field="desc">
+                </div>
                 <div class="sav-row">
                     <div style="flex:1;">
                         <label class="sav-label">URL del botón</label>
@@ -478,6 +484,7 @@ function showSavingsModal(editor, component) {
         data.cards.push({
             img: "",
             title: "NUEVO PRODUCTO",
+            desc: "",
             href: "#",
             btn_label: "Solicitar",
         });
