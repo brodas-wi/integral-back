@@ -82,7 +82,7 @@ const CONTENT_COL = (variant) => {
     return `
 <div class="flex flex-col gap-4">
     <h2 class="text-4xl font-bold leading-tight flex flex-wrap items-center gap-2">
-        <span class="${badgeBg} ${badgeText} text-base font-bold px-3 py-1 rounded-lg">Mi</span>
+        <span class="${badgeBg} ${badgeText} text-3xl font-bold px-3 py-1 rounded-lg leading-tight">Mi</span>
         <span class="${titleBlue}">Banca</span>
         <span class="${titleOrange}">Integral</span>
     </h2>

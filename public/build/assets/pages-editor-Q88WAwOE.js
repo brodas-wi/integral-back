@@ -1085,7 +1085,7 @@ ${Yt}`}],Jt=`<svg viewBox="0 0 32 32" width="32" height="32">
 </div>`,si=i=>{const e=i==="light";return`
 <div class="flex flex-col gap-4">
     <h2 class="text-4xl font-bold leading-tight flex flex-wrap items-center gap-2">
-        <span class="${e?"bg-[#003B71]":"bg-white"} ${e?"text-white":"text-[#003B71]"} text-base font-bold px-3 py-1 rounded-lg">Mi</span>
+        <span class="${e?"bg-[#003B71]":"bg-white"} ${e?"text-white":"text-[#003B71]"} text-3xl font-bold px-3 py-1 rounded-lg leading-tight">Mi</span>
         <span class="${e?"text-[#003B71]":"text-white"}">Banca</span>
         <span class="text-[#E97300]">Integral</span>
     </h2>
