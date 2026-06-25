@@ -6,58 +6,74 @@ const PC_CAROUSEL_SCRIPT = function () {
         function initCarousel(section) {
             if (!section || section.__pcInit) return;
             section.__pcInit = true;
-            var track = section.querySelector(".pc-track");
             var wrap = section.querySelector(".pc-carousel-wrap");
-            if (!track || !wrap) return;
+            if (!wrap) return;
             var isDragging = false;
             var startX = 0;
             var startScrollLeft = 0;
+            var moved = false;
+
             wrap.querySelectorAll("img").forEach(function (img) {
                 img.setAttribute("draggable", "false");
             });
+
             wrap.addEventListener("mousedown", function (e) {
                 if (e.button !== 0) return;
                 isDragging = true;
+                moved = false;
                 startX = e.clientX;
                 startScrollLeft = wrap.scrollLeft;
                 wrap.style.cursor = "grabbing";
                 e.preventDefault();
             });
+
             document.addEventListener("mousemove", function (e) {
                 if (!isDragging) return;
                 var delta = startX - e.clientX;
-                wrap.scrollLeft = startScrollLeft + delta;
+                if (Math.abs(delta) > 3) moved = true;
+                var next = startScrollLeft + delta;
+                var max = wrap.scrollWidth - wrap.clientWidth;
+                wrap.scrollLeft = Math.max(0, Math.min(next, max));
             });
-            document.addEventListener("mouseup", function () {
+
+            document.addEventListener("mouseup", function (e) {
                 if (!isDragging) return;
                 isDragging = false;
                 wrap.style.cursor = "grab";
+                if (moved) e.stopPropagation();
             });
+
+            wrap.addEventListener("click", function (e) {
+                if (moved) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    moved = false;
+                }
+            }, true);
+
             var touchStartX = 0;
             var touchStartScroll = 0;
-            wrap.addEventListener(
-                "touchstart",
-                function (e) {
-                    touchStartX = e.touches[0].clientX;
-                    touchStartScroll = wrap.scrollLeft;
-                },
-                { passive: true },
-            );
-            wrap.addEventListener(
-                "touchmove",
-                function (e) {
-                    var delta = touchStartX - e.touches[0].clientX;
-                    wrap.scrollLeft = touchStartScroll + delta;
-                },
-                { passive: true },
-            );
+
+            wrap.addEventListener("touchstart", function (e) {
+                touchStartX = e.touches[0].clientX;
+                touchStartScroll = wrap.scrollLeft;
+            }, { passive: true });
+
+            wrap.addEventListener("touchmove", function (e) {
+                var delta = touchStartX - e.touches[0].clientX;
+                var next = touchStartScroll + delta;
+                var max = wrap.scrollWidth - wrap.clientWidth;
+                wrap.scrollLeft = Math.max(0, Math.min(next, max));
+            }, { passive: true });
         }
+
         function init() {
             document.querySelectorAll(".pc-section").forEach(function (s) {
                 delete s.__pcInit;
                 initCarousel(s);
             });
         }
+
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", init);
         } else {
@@ -69,10 +85,10 @@ const PRODUCT_CARDS_RUNTIME_SCRIPT = `(${PC_CAROUSEL_SCRIPT.toString()})();`;
 
 const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
-.pc-carousel-wrap{overflow-x:auto;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;}
+.pc-carousel-wrap{overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
 .pc-carousel-wrap::-webkit-scrollbar{display:none;}
-.pc-track{display:flex;gap:1.5rem;width:max-content;user-select:none;}
-.pc-track.is-dragging{cursor:grabbing;}
+.pc-track{display:flex;gap:1.5rem;user-select:none;}
+.pc-card{scroll-snap-align:start;}
 .pc-card{flex:0 0 260px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
 .pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
 .pc-card-img{width:100%;height:100%;object-fit:cover;display:block;}
