@@ -45,7 +45,7 @@ const CONTACT_INFO_STYLES = `
 .ci-pill-col{display:inline-flex;flex-direction:column;background:#ffffff;border-radius:2rem;padding:1.5rem 2rem;box-shadow:0 2px 20px rgba(0,59,113,0.12);border:1px solid #f1f5f9;gap:1.5rem;}
 .ci-item{display:flex;flex-direction:row;align-items:center;gap:1rem;}
 .ci-icon{font-size:2rem;color:#E97300;flex-shrink:0;}
-.ci-divider{width:1px;align-self:stretch;background:#e5e7eb;flex-shrink:0;}
+.ci-divider{width:3px;align-self:stretch;background:#e5e7eb;flex-shrink:0;}
 .ci-row-wrap{display:flex;justify-content:center;}
 .ci-col-wrap{display:flex;justify-content:flex-start;}
 @media(max-width:1280px){.ci-section{padding:2rem 2.5rem;}}
