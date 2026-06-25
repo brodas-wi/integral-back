@@ -1076,17 +1076,21 @@ ${Yt}`}],Jt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="14" y="8.5" width="14" height="2" rx="1" fill="#003B71" fill-opacity="0.7"/>
     <circle cx="7" cy="22" r="4" fill="#E97300" fill-opacity="0.85"/>
     <rect x="14" y="20.5" width="14" height="2" rx="1" fill="#003B71" fill-opacity="0.7"/>
-</svg>`,W=i=>{const e=i==="light";return`
-<div class="split-list-item flex items-center gap-4">
-    <div class="bg-[#E97300] w-11 h-11 rounded-full flex items-center justify-center shrink-0">
-        <i class="ri-shield-check-line text-xl ${e?"text-[#003B71]":"text-white"}"></i>
+</svg>`,W=i=>`
+<div class="split-list-item flex items-center gap-3">
+    <div class="bg-[#E97300] w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+        <i class="ri-shield-check-line text-lg text-white"></i>
     </div>
-    <p class="${e?"text-[#003B71]":"text-white"} text-base font-bold leading-snug">Lorem ipsum dolor sit amet consectetur</p>
-</div>`},si=i=>{const e=i==="light";return`
+    <p class="${i==="light"?"text-[#003B71]":"text-white"} text-base font-bold leading-snug">Lorem ipsum dolor sit amet consectetur</p>
+</div>`,si=i=>{const e=i==="light";return`
 <div class="flex flex-col gap-4">
-    <h2 class="${e?"text-[#003B71]":"text-white"} text-4xl font-bold leading-tight">Lorem ipsum dolor sit amet</h2>
+    <h2 class="text-4xl font-bold leading-tight flex flex-wrap items-center gap-2">
+        <span class="${e?"bg-[#003B71]":"bg-white"} ${e?"text-white":"text-[#003B71]"} text-base font-bold px-3 py-1 rounded-lg">Mi</span>
+        <span class="${e?"text-[#003B71]":"text-white"}">Banca</span>
+        <span class="text-[#E97300]">Integral</span>
+    </h2>
     <p class="${e?"text-[#003B71]":"text-white"} text-base leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-3">
         ${W(i)}
         ${W(i)}
         ${W(i)}

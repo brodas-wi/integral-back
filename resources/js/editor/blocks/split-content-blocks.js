@@ -62,12 +62,11 @@ const iconListItem = `<svg viewBox="0 0 32 32" width="32" height="32">
 
 const LIST_ITEM = (variant) => {
     const isLight = variant === "light";
-    const iconColor = isLight ? "text-[#003B71]" : "text-white";
     const textColor = isLight ? "text-[#003B71]" : "text-white";
     return `
-<div class="split-list-item flex items-center gap-4">
-    <div class="bg-[#E97300] w-11 h-11 rounded-full flex items-center justify-center shrink-0">
-        <i class="ri-shield-check-line text-xl ${iconColor}"></i>
+<div class="split-list-item flex items-center gap-3">
+    <div class="bg-[#E97300] w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+        <i class="ri-shield-check-line text-lg text-white"></i>
     </div>
     <p class="${textColor} text-base font-bold leading-snug">Lorem ipsum dolor sit amet consectetur</p>
 </div>`;
@@ -75,13 +74,20 @@ const LIST_ITEM = (variant) => {
 
 const CONTENT_COL = (variant) => {
     const isLight = variant === "light";
-    const titleColor = isLight ? "text-[#003B71]" : "text-white";
     const textColor = isLight ? "text-[#003B71]" : "text-white";
+    const badgeBg = isLight ? "bg-[#003B71]" : "bg-white";
+    const badgeText = isLight ? "text-white" : "text-[#003B71]";
+    const titleBlue = isLight ? "text-[#003B71]" : "text-white";
+    const titleOrange = "text-[#E97300]";
     return `
 <div class="flex flex-col gap-4">
-    <h2 class="${titleColor} text-4xl font-bold leading-tight">Lorem ipsum dolor sit amet</h2>
+    <h2 class="text-4xl font-bold leading-tight flex flex-wrap items-center gap-2">
+        <span class="${badgeBg} ${badgeText} text-base font-bold px-3 py-1 rounded-lg">Mi</span>
+        <span class="${titleBlue}">Banca</span>
+        <span class="${titleOrange}">Integral</span>
+    </h2>
     <p class="${textColor} text-base leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-3">
         ${LIST_ITEM(variant)}
         ${LIST_ITEM(variant)}
         ${LIST_ITEM(variant)}
