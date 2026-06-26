@@ -52,6 +52,7 @@ if(document.readyState==="loading"){
 .nb-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border-radius:9999px;background:#ffffff;color:#E97300;border:none;cursor:pointer;text-decoration:none;flex-shrink:0;transition:box-shadow 0.2s;align-self:center;}
 .nb-icon-btn:hover{box-shadow:0 4px 14px rgba(0,0,0,0.15);}
 .nb-icon-btn i{font-size:1.25rem;color:#E97300;line-height:1;}
+.nb-icon-btn-gap{width:0.75rem;flex-shrink:0;}
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
 .nb-top{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 4rem;border-bottom:1px solid #f1f5f9;gap:1.5rem;}
 .nb-logo-link{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
@@ -150,6 +151,7 @@ if(document.readyState==="loading"){
         <div class="nb-bottom">
             <ul class="nb-nav-list">${b}</ul>
             ${n}
+            <div class="nb-icon-btn-gap"></div>
             ${R}
         </div>
         <div class="nb-mobile-bar">
