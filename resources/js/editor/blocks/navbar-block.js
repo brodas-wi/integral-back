@@ -1,5 +1,6 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { IconPickerModal } from "@/editor/components/icon-picker-modal";
+
 export const NAVBAR_RUNTIME_SCRIPT = `(function(){
 function initNavbar(root){
     if(!root||root.__nbInit)return;
@@ -52,9 +53,9 @@ if(document.readyState==="loading"){
 })();`;
 const NAVBAR_STYLES = `
 <style>
-.nb-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border-radius:0.5rem;background:#ffffff;color:#E97300;border:none;cursor:pointer;text-decoration:none;flex-shrink:0;transition:box-shadow 0.2s;}
+.nb-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border-radius:9999px;background:#ffffff;color:#E97300;border:none;cursor:pointer;text-decoration:none;flex-shrink:0;transition:box-shadow 0.2s;align-self:center;}
 .nb-icon-btn:hover{box-shadow:0 4px 14px rgba(0,0,0,0.15);}
-.nb-icon-btn i{font-size:1.25rem;color:#E97300;}
+.nb-icon-btn i{font-size:1.25rem;color:#E97300;line-height:1;}
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
 .nb-top{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 4rem;border-bottom:1px solid #f1f5f9;gap:1.5rem;}
 .nb-logo-link{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
@@ -304,7 +305,12 @@ function buildNavbarHTML(data, uid) {
     </div>`;
 }
 const DEFAULT_DATA = {
-    icon_btn: { enabled: false, icon: "ri-search-line", href: "#", label: "Buscar" },
+    icon_btn: {
+        enabled: false,
+        icon: "ri-search-line",
+        href: "#",
+        label: "Buscar",
+    },
     logo_url: "",
     logo_alt: "Logo",
     logo_text: "Logo",
@@ -1289,37 +1295,57 @@ function showNavbarModal(editor, component) {
     renderTopActions();
     renderNavLinks();
 
-    const iconBtnData = JSON.parse(JSON.stringify(currentData.icon_btn || DEFAULT_DATA.icon_btn));
+    const iconBtnData = JSON.parse(
+        JSON.stringify(currentData.icon_btn || DEFAULT_DATA.icon_btn),
+    );
 
     const iconBtnToggleWrap = modal.querySelector("#nb-iconbtn-toggle-wrap");
-    function renderIconBtnToggle() {
-        iconBtnToggleWrap.innerHTML = `
-            <button class="nb-color-opt nb-color-opt-blue ${iconBtnData.enabled !== false ? "" : "nb-color-inactive"}" id="nb-iconbtn-on">Activado</button>
-            <button class="nb-color-opt" style="background:#94a3b8;color:#fff;${iconBtnData.enabled === false ? "" : "opacity:0.35;"}" id="nb-iconbtn-off">Desactivado</button>`;
-        modal.querySelector("#nb-iconbtn-on").addEventListener("click", () => {
-            iconBtnData.enabled = true;
-            renderIconBtnToggle();
-        });
-        modal.querySelector("#nb-iconbtn-off").addEventListener("click", () => {
-            iconBtnData.enabled = false;
-            renderIconBtnToggle();
-        });
-    }
-    renderIconBtnToggle();
+    const iconBtnSwitchId =
+        "nb-iconbtn-switch-" + Math.random().toString(36).slice(2, 6);
+    iconBtnToggleWrap.innerHTML = `
+        <label style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;">
+            <input type="checkbox" id="${iconBtnSwitchId}" ${iconBtnData.enabled !== false ? "checked" : ""} style="opacity:0;width:0;height:0;">
+            <span style="position:absolute;inset:0;background:${iconBtnData.enabled !== false ? "#003B71" : "#cbd5e1"};border-radius:9999px;transition:background 0.2s;cursor:pointer;"></span>
+            <span style="position:absolute;width:16px;height:16px;left:${iconBtnData.enabled !== false ? "21px" : "3px"};top:3px;background:#fff;border-radius:50%;transition:left 0.2s;pointer-events:none;"></span>
+        </label>
+        <span style="font-size:0.875rem;color:#475569;">${iconBtnData.enabled !== false ? "Botón activo" : "Botón desactivado"}</span>`;
 
-    modal.querySelector("#nb-iconbtn-icon").value = iconBtnData.icon || "ri-search-line";
-    modal.querySelector("#nb-iconbtn-preview").className = iconBtnData.icon || "ri-search-line";
-    modal.querySelector("#nb-iconbtn-label").value = iconBtnData.label || "Buscar";
+    const iconBtnSwitch = iconBtnToggleWrap.querySelector(
+        `#${iconBtnSwitchId}`,
+    );
+    iconBtnSwitch.addEventListener("change", function () {
+        iconBtnData.enabled = this.checked;
+        const slider = iconBtnToggleWrap.querySelector("span:nth-child(2)");
+        const knob = iconBtnToggleWrap.querySelector("span:nth-child(3)");
+        const label = iconBtnToggleWrap.querySelector("span:last-child");
+        if (slider)
+            slider.style.background = this.checked ? "#003B71" : "#cbd5e1";
+        if (knob) knob.style.left = this.checked ? "21px" : "3px";
+        if (label)
+            label.textContent = this.checked
+                ? "Botón activo"
+                : "Botón desactivado";
+    });
+
+    modal.querySelector("#nb-iconbtn-icon").value =
+        iconBtnData.icon || "ri-search-line";
+    modal.querySelector("#nb-iconbtn-preview").className =
+        iconBtnData.icon || "ri-search-line";
+    modal.querySelector("#nb-iconbtn-label").value =
+        iconBtnData.label || "Buscar";
     modal.querySelector("#nb-iconbtn-href").value = iconBtnData.href || "#";
 
     modal.querySelector("#nb-iconbtn-icon").addEventListener("input", (e) => {
         iconBtnData.icon = e.target.value;
         modal.querySelector("#nb-iconbtn-preview").className = e.target.value;
     });
-    modal.querySelector("#nb-iconbtn-label").addEventListener("input", (e) => { iconBtnData.label = e.target.value; });
+    modal.querySelector("#nb-iconbtn-label").addEventListener("input", (e) => {
+        iconBtnData.label = e.target.value;
+    });
 
     modal.querySelector("#nb-iconbtn-pick").addEventListener("click", () => {
-        iconPicker.open((selected) => {
+        const picker = new IconPickerModal();
+        picker.open((selected) => {
             iconBtnData.icon = selected;
             modal.querySelector("#nb-iconbtn-icon").value = selected;
             modal.querySelector("#nb-iconbtn-preview").className = selected;
@@ -1338,11 +1364,16 @@ function showNavbarModal(editor, component) {
         const snapshot = {
             icon_btn: {
                 enabled: iconBtnData.enabled !== false,
-                icon: modal.querySelector("#nb-iconbtn-icon").value.trim() || "ri-search-line",
-                label: modal.querySelector("#nb-iconbtn-label").value.trim() || "Buscar",
-                href: modal.querySelector("#nb-iconbtn-href").value.trim() || "#",
+                icon:
+                    modal.querySelector("#nb-iconbtn-icon").value.trim() ||
+                    "ri-search-line",
+                label:
+                    modal.querySelector("#nb-iconbtn-label").value.trim() ||
+                    "Buscar",
+                href:
+                    modal.querySelector("#nb-iconbtn-href").value.trim() || "#",
             },
-            logo_url:    modal.querySelector("#nb-logo-url").value.trim(),
+            logo_url: modal.querySelector("#nb-logo-url").value.trim(),
             logo_alt: modal.querySelector("#nb-logo-alt").value.trim(),
             logo_text: modal.querySelector("#nb-logo-text").value.trim(),
             logo_href: modal.querySelector("#nb-logo-href").value.trim() || "/",
@@ -1450,11 +1481,16 @@ function showNavbarModal(editor, component) {
         const data = {
             icon_btn: {
                 enabled: iconBtnData.enabled !== false,
-                icon: modal.querySelector("#nb-iconbtn-icon").value.trim() || "ri-search-line",
-                label: modal.querySelector("#nb-iconbtn-label").value.trim() || "Buscar",
-                href: modal.querySelector("#nb-iconbtn-href").value.trim() || "#",
+                icon:
+                    modal.querySelector("#nb-iconbtn-icon").value.trim() ||
+                    "ri-search-line",
+                label:
+                    modal.querySelector("#nb-iconbtn-label").value.trim() ||
+                    "Buscar",
+                href:
+                    modal.querySelector("#nb-iconbtn-href").value.trim() || "#",
             },
-            logo_url:   modal.querySelector("#nb-logo-url").value.trim(),
+            logo_url: modal.querySelector("#nb-logo-url").value.trim(),
             logo_alt: modal.querySelector("#nb-logo-alt").value.trim(),
             logo_text: modal.querySelector("#nb-logo-text").value.trim(),
             logo_href: modal.querySelector("#nb-logo-href").value.trim() || "/",
