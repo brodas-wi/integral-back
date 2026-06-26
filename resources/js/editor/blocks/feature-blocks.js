@@ -35,8 +35,8 @@ const iconFeatureOrangeLeft = `<svg viewBox="0 0 32 32" width="32" height="32">
 
 const LIST_ITEM = `
 <div class="flex items-center gap-3">
-    <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-[#E97300] border-2 border-white">
-        <i class="ri-shield-check-line text-lg text-white"></i>
+    <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-white">
+        <i class="ri-shield-check-line text-lg text-[#E97300]"></i>
     </div>
     <p class="text-white text-base font-bold leading-snug">Lorem ipsum dolor sit amet consectetur</p>
 </div>`;
@@ -45,7 +45,7 @@ const CONTENT_COL = `
 <div class="flex flex-col gap-4">
     <h2 class="text-4xl font-bold leading-tight flex flex-wrap items-center gap-2">
         <span class="bg-[#003B71] text-white text-3xl font-bold px-3 py-1 rounded-lg leading-tight">Mi</span>
-        <span class="text-white">Banca</span>
+        <span class="text-[#003B71]">Banca</span>
         <span class="text-white font-bold">Integral</span>
     </h2>
     <p class="text-white text-base leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
@@ -64,23 +64,19 @@ const IMAGE_COL = `
 
 const FEATURE_STYLES = `
 <style>
-.fb-section-right{width:100%;background:#E97300;padding:3rem 4rem 3rem 4rem;border-radius:120px 0 0 0;}
-.fb-section-left{width:100%;background:#E97300;padding:3rem 4rem 3rem 4rem;border-radius:0 120px 0 0;}
+.fb-section-right{width:100%;background:#E97300;padding:3rem 4rem 3rem 4rem;border-radius:200px 0 0 0;}
+.fb-section-left{width:100%;background:#E97300;padding:3rem 4rem 3rem 4rem;border-radius:0 200px 0 0;}
 .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
 .fb-img-wrap{width:100%;border-radius:0.75rem;overflow:hidden;}
 .fb-img{width:100%;height:100%;object-fit:cover;display:block;min-height:320px;max-height:480px;}
-@media(max-width:1280px){
-    .fb-section-right{padding:3rem 2.5rem;border-radius:80px 0 0 0;}
-    .fb-section-left{padding:3rem 2.5rem;border-radius:0 80px 0 0;}
-}
 @media(max-width:992px){
-    .fb-section-right{padding:2.5rem 1.5rem;border-radius:60px 0 0 0;}
-    .fb-section-left{padding:2.5rem 1.5rem;border-radius:0 60px 0 0;}
+    .fb-section-right{padding:2.5rem 1.5rem;border-radius:110px 0 0 0;}
+    .fb-section-left{padding:2.5rem 1.5rem;border-radius:0 110px 0 0;}
     .fb-grid{grid-template-columns:1fr;gap:2rem;}
 }
 @media(max-width:580px){
-    .fb-section-right{padding:2rem 1rem;border-radius:40px 0 0 0;}
-    .fb-section-left{padding:2rem 1rem;border-radius:0 40px 0 0;}
+    .fb-section-right{padding:2rem 1rem;border-radius:60px 0 0 0;}
+    .fb-section-left{padding:2rem 1rem;border-radius:0 60px 0 0;}
 }
 </style>`;
 
