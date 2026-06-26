@@ -1,3 +1,9 @@
+const PRODUCT_DETAIL_GRID_STYLES = `
+<style>
+.pd-asymmetric-grid{display:grid;grid-template-columns:3fr 2fr;gap:2rem;align-items:start;}
+@media(max-width:992px){.pd-asymmetric-grid{grid-template-columns:1fr;gap:1.5rem;}}
+</style>`;
+
 const iconProductDetail = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="3" width="14" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
@@ -59,7 +65,7 @@ export const productDetailBlocks = [
         media: iconProductDetail,
         content: `
 <section class="w-full bg-white px-16 py-12">
-    <div class="grid grid-cols-2 gap-16 items-start">
+    <div class="pd-asymmetric-grid">
         <div class="flex flex-col gap-5">
             <p class="text-lg font-bold text-[#003B71] leading-snug">Diseñado para empresarios que desean maximizar la rentabilidad de sus ahorros. Tasa de interés preferencial, con intereses capitalizados mensualmente.</p>
             <div class="flex flex-col gap-3">
@@ -85,7 +91,8 @@ export const productDetailBlocks = [
             </div>
         </div>
     </div>
-</section>`,
+</section>
+${PRODUCT_DETAIL_GRID_STYLES}`,
     },
     {
         id: "product-detail-bullet",
