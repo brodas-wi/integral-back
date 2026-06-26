@@ -52,6 +52,9 @@ if(document.readyState==="loading"){
 })();`;
 const NAVBAR_STYLES = `
 <style>
+.nb-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border-radius:0.5rem;background:#ffffff;color:#E97300;border:none;cursor:pointer;text-decoration:none;flex-shrink:0;transition:box-shadow 0.2s;}
+.nb-icon-btn:hover{box-shadow:0 4px 14px rgba(0,0,0,0.15);}
+.nb-icon-btn i{font-size:1.25rem;color:#E97300;}
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
 .nb-top{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 4rem;border-bottom:1px solid #f1f5f9;gap:1.5rem;}
 .nb-logo-link{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
@@ -158,16 +161,23 @@ function buildNavbarHTML(data, uid) {
         })
         .join("");
     const bankingBtn = data.banking_btn || {};
-    const bankingColorClass = bankingBtn.color === "orange" ? "nb-banking-orange" : "nb-banking-blue";
+    const bankingColorClass =
+        bankingBtn.color === "orange" ? "nb-banking-orange" : "nb-banking-blue";
     const bankingHtml = `<a href="${bankingBtn.href || "#"}" class="nb-banking-btn ${bankingColorClass}">${bankingBtn.label || "Banca en Línea"}</a>`;
     const navLinksHtml = (data.nav_links || [])
         .map((item) => {
             if (item.type === "submenu" && item.columns?.length) {
-                const hasCta = !!(item.cta_column && (item.cta_column.text || item.cta_column.btn_label));
+                const hasCta = !!(
+                    item.cta_column &&
+                    (item.cta_column.text || item.cta_column.btn_label)
+                );
                 const contentCols = item.columns.slice(0, 3);
                 const colsHtml = contentCols
                     .map((col) => {
-                        const badgeColor = col.badge_color === "orange" ? "nb-badge-orange" : "nb-badge-blue";
+                        const badgeColor =
+                            col.badge_color === "orange"
+                                ? "nb-badge-orange"
+                                : "nb-badge-blue";
                         const badgeHtml = col.badge
                             ? `<span class="nb-mega-badge ${badgeColor}">${col.badge}</span>`
                             : "";
@@ -185,7 +195,10 @@ function buildNavbarHTML(data, uid) {
                 let ctaColHtml = "";
                 if (hasCta) {
                     const cta = item.cta_column;
-                    const ctaBtnColor = cta.btn_color === "blue" ? "nb-badge-blue" : "nb-badge-orange";
+                    const ctaBtnColor =
+                        cta.btn_color === "blue"
+                            ? "nb-badge-blue"
+                            : "nb-badge-orange";
                     const altText = buildAlternatingText(cta.text || "");
                     ctaColHtml = `<div class="nb-mega-cta-col">
                         <p class="nb-mega-cta-text">${altText}</p>
@@ -205,12 +218,18 @@ function buildNavbarHTML(data, uid) {
         })
         .join("");
     const bottomCta = data.bottom_cta || {};
-    const bottomCtaColorClass = bottomCta.color === "blue" ? "nb-cta-blue" : "nb-cta-orange";
+    const bottomCtaColorClass =
+        bottomCta.color === "blue" ? "nb-cta-blue" : "nb-cta-orange";
     const bottomCtaLine2 = bottomCta.sublabel
         ? `<span class="nb-bottom-cta-line2">${bottomCta.sublabel}</span>`
         : "";
     const bottomCtaHtml = bottomCta.label
         ? `<a href="${bottomCta.href || "#"}" class="nb-bottom-cta ${bottomCtaColorClass}"><span class="nb-bottom-cta-line1">${bottomCta.label}</span>${bottomCtaLine2}</a>`
+        : "";
+
+    const iconBtn = data.icon_btn || {};
+    const iconBtnHtml = iconBtn.enabled
+        ? `<a href="${iconBtn.href || "#"}" class="nb-icon-btn" title="${iconBtn.label || ""}"><i class="${iconBtn.icon || "ri-search-line"}"></i></a>`
         : "";
     const mobileTopActionsHtml = (data.top_actions || [])
         .map((a) => {
@@ -221,17 +240,27 @@ function buildNavbarHTML(data, uid) {
     const mobileLinksHtml = (data.nav_links || [])
         .map((item) => {
             if (item.type === "submenu" && item.columns?.length) {
-                const colsHtml = item.columns.slice(0, 3).map((col) => {
-                    const badgeColor = col.badge_color === "orange" ? "nb-badge-orange" : "nb-badge-blue";
-                    const badgeHtml = col.badge
-                        ? `<span class="nb-mobile-sub-badge ${badgeColor}">${col.badge}</span>`
-                        : "";
-                    const itemsHtml = (col.items || []).map((it) => {
-                        const desc = it.desc ? `<span class="nb-mobile-sub-desc">${it.desc}</span>` : "";
-                        return `<a href="${it.href || "#"}" class="nb-mobile-sub-link"><span class="nb-mobile-sub-title">${it.label || ""}</span>${desc}</a>`;
-                    }).join("");
-                    return `<div class="nb-mobile-sub-col">${badgeHtml}${itemsHtml}</div>`;
-                }).join("");
+                const colsHtml = item.columns
+                    .slice(0, 3)
+                    .map((col) => {
+                        const badgeColor =
+                            col.badge_color === "orange"
+                                ? "nb-badge-orange"
+                                : "nb-badge-blue";
+                        const badgeHtml = col.badge
+                            ? `<span class="nb-mobile-sub-badge ${badgeColor}">${col.badge}</span>`
+                            : "";
+                        const itemsHtml = (col.items || [])
+                            .map((it) => {
+                                const desc = it.desc
+                                    ? `<span class="nb-mobile-sub-desc">${it.desc}</span>`
+                                    : "";
+                                return `<a href="${it.href || "#"}" class="nb-mobile-sub-link"><span class="nb-mobile-sub-title">${it.label || ""}</span>${desc}</a>`;
+                            })
+                            .join("");
+                        return `<div class="nb-mobile-sub-col">${badgeHtml}${itemsHtml}</div>`;
+                    })
+                    .join("");
                 return `<div class="nb-mobile-item">
                     <button class="nb-mobile-link" type="button">${item.label || "Menú"}<i class="ri-arrow-down-s-line"></i></button>
                     <div class="nb-mobile-submenu">${colsHtml}</div>
@@ -242,8 +271,12 @@ function buildNavbarHTML(data, uid) {
         .join("");
     const mobileBankingHtml = [
         bankingHtml,
-        bottomCta.label ? `<a href="${bottomCta.href || "#"}" class="nb-bottom-cta ${bottomCtaColorClass}"><span class="nb-bottom-cta-line1">${bottomCta.label}</span>${bottomCtaLine2}</a>` : "",
-    ].filter(Boolean).join("");
+        bottomCta.label
+            ? `<a href="${bottomCta.href || "#"}" class="nb-bottom-cta ${bottomCtaColorClass}"><span class="nb-bottom-cta-line1">${bottomCta.label}</span>${bottomCtaLine2}</a>`
+            : "",
+    ]
+        .filter(Boolean)
+        .join("");
 
     return `<div id="nb-root-${uid}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="nb-top">
@@ -254,10 +287,14 @@ function buildNavbarHTML(data, uid) {
         <div class="nb-bottom">
             <ul class="nb-nav-list">${navLinksHtml}</ul>
             ${bottomCtaHtml}
+            ${iconBtnHtml}
         </div>
         <div class="nb-mobile-bar">
             ${logoHtml}
-            <button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú"><span></span><span></span><span></span></button>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+                ${iconBtnHtml}
+                <button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú"><span></span><span></span><span></span></button>
+            </div>
         </div>
         <div class="nb-mobile-menu" id="nb-mobile-${uid}">
             <div class="nb-mobile-top-actions">${mobileTopActionsHtml}</div>
@@ -267,6 +304,7 @@ function buildNavbarHTML(data, uid) {
     </div>`;
 }
 const DEFAULT_DATA = {
+    icon_btn: { enabled: false, icon: "ri-search-line", href: "#", label: "Buscar" },
     logo_url: "",
     logo_alt: "Logo",
     logo_text: "Logo",
@@ -274,7 +312,11 @@ const DEFAULT_DATA = {
     top_actions: [
         { label: "Contáctanos", href: "#", icon: "ri-phone-line" },
         { label: "Sucursales", href: "#", icon: "ri-building-line" },
-        { label: "Preguntas Frecuentes", href: "#", icon: "ri-question-answer-line" },
+        {
+            label: "Preguntas Frecuentes",
+            href: "#",
+            icon: "ri-question-answer-line",
+        },
     ],
     banking_btn: { label: "Mi Banca Integral", href: "#", color: "blue" },
     nav_links: [
@@ -287,8 +329,16 @@ const DEFAULT_DATA = {
                     badge: "Tus créditos",
                     badge_color: "blue",
                     items: [
-                        { label: "Microcrédito", desc: "Financiamiento para tu negocio", href: "#" },
-                        { label: "Crédito Personal", desc: "Para tus necesidades personales", href: "#" },
+                        {
+                            label: "Microcrédito",
+                            desc: "Financiamiento para tu negocio",
+                            href: "#",
+                        },
+                        {
+                            label: "Crédito Personal",
+                            desc: "Para tus necesidades personales",
+                            href: "#",
+                        },
                     ],
                 },
             ],
@@ -302,7 +352,12 @@ const DEFAULT_DATA = {
         { type: "link", label: "Ahorros e Inversión", href: "#" },
         { type: "link", label: "Servicios y seguro", href: "#" },
     ],
-    bottom_cta: { label: "Programa Surge", sublabel: "Formación Empresarial", href: "#", color: "orange" },
+    bottom_cta: {
+        label: "Programa Surge",
+        sublabel: "Formación Empresarial",
+        href: "#",
+        color: "orange",
+    },
 };
 function showNavbarModal(editor, component) {
     const existing = document.getElementById("navbar-config-modal");
@@ -413,19 +468,31 @@ function showNavbarModal(editor, component) {
     }
     const currentData = (() => {
         try {
-            return JSON.parse(component.getAttributes()["data-navbar-config"] || "{}");
-        } catch { return {}; }
+            return JSON.parse(
+                component.getAttributes()["data-navbar-config"] || "{}",
+            );
+        } catch {
+            return {};
+        }
     })();
 
-    const logoUrl   = currentData.logo_url   || "";
-    const logoAlt   = currentData.logo_alt   || "";
-    const logoText  = currentData.logo_text  || "Logo";
-    const logoHref  = currentData.logo_href  || "/";
+    const logoUrl = currentData.logo_url || "";
+    const logoAlt = currentData.logo_alt || "";
+    const logoText = currentData.logo_text || "Logo";
+    const logoHref = currentData.logo_href || "/";
 
-    const topActions = JSON.parse(JSON.stringify(currentData.top_actions || DEFAULT_DATA.top_actions));
-    const bankingBtn = JSON.parse(JSON.stringify(currentData.banking_btn || DEFAULT_DATA.banking_btn));
-    const navLinks   = JSON.parse(JSON.stringify(currentData.nav_links   || DEFAULT_DATA.nav_links));
-    const bottomCta  = JSON.parse(JSON.stringify(currentData.bottom_cta  || DEFAULT_DATA.bottom_cta));
+    const topActions = JSON.parse(
+        JSON.stringify(currentData.top_actions || DEFAULT_DATA.top_actions),
+    );
+    const bankingBtn = JSON.parse(
+        JSON.stringify(currentData.banking_btn || DEFAULT_DATA.banking_btn),
+    );
+    const navLinks = JSON.parse(
+        JSON.stringify(currentData.nav_links || DEFAULT_DATA.nav_links),
+    );
+    const bottomCta = JSON.parse(
+        JSON.stringify(currentData.bottom_cta || DEFAULT_DATA.bottom_cta),
+    );
     const overlay = document.createElement("div");
     overlay.id = "navbar-config-modal";
     overlay.className = "nb-overlay";
@@ -443,6 +510,7 @@ function showNavbarModal(editor, component) {
             <button class="nb-tab-btn" data-tab="banking"><i class="ri-bank-card-line"></i> Banca en línea</button>
             <button class="nb-tab-btn" data-tab="nav"><i class="ri-menu-line"></i> Navegación</button>
             <button class="nb-tab-btn" data-tab="bottom-cta"><i class="ri-cursor-line"></i> CTA inferior</button>
+            <button class="nb-tab-btn" data-tab="icon-btn"><i class="ri-search-line"></i> Botón icono</button>
         </div>
         <div class="nb-modal-body">
             <div class="nb-tab-panel active" id="nb-panel-logo">
@@ -538,6 +606,34 @@ function showNavbarModal(editor, component) {
                 </div>
             </div>
         </div>
+            <div class="nb-tab-panel" id="nb-panel-icon-btn">
+                <div class="nb-card">
+                    <label class="nb-label">Botón de acción con icono</label>
+                    <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                        <div>
+                            <label class="nb-label" style="margin-bottom:0.375rem;">Activar botón</label>
+                            <div class="nb-color-toggle" id="nb-iconbtn-toggle-wrap"></div>
+                        </div>
+                        <div>
+                            <label class="nb-label" style="margin-bottom:0.375rem;">Clase del icono</label>
+                            <div class="nb-row">
+                                <div class="nb-icon-preview"><i id="nb-iconbtn-preview" class="${currentData.icon_btn?.icon || "ri-search-line"}"></i></div>
+                                <input id="nb-iconbtn-icon" type="text" placeholder="ri-search-line" value="${currentData.icon_btn?.icon || "ri-search-line"}" class="nb-input" readonly>
+                                <button class="nb-pick-btn" id="nb-iconbtn-pick"><i class="ri-emotion-happy-line"></i> Icono</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="nb-label" style="margin-bottom:0.375rem;">Etiqueta (tooltip)</label>
+                            <input id="nb-iconbtn-label" type="text" placeholder="Buscar" value="${currentData.icon_btn?.label || "Buscar"}" class="nb-input">
+                        </div>
+                        <div style="position:relative;">
+                            <label class="nb-label" style="margin-bottom:0.375rem;">URL</label>
+                            <input id="nb-iconbtn-href" type="text" placeholder="URL o buscar página..." value="${currentData.icon_btn?.href || "#"}" class="nb-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="nb-modal-footer">
             <button id="nb-modal-cancel" class="nb-btn-cancel">Cancelar</button>
             <div style="display:flex;gap:0.5rem;margin-right:auto;">
@@ -552,10 +648,16 @@ function showNavbarModal(editor, component) {
     const iconPicker = new IconPickerModal();
     modal.querySelectorAll(".nb-tab-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
-            modal.querySelectorAll(".nb-tab-btn").forEach((b) => b.classList.remove("active"));
-            modal.querySelectorAll(".nb-tab-panel").forEach((p) => p.classList.remove("active"));
+            modal
+                .querySelectorAll(".nb-tab-btn")
+                .forEach((b) => b.classList.remove("active"));
+            modal
+                .querySelectorAll(".nb-tab-panel")
+                .forEach((p) => p.classList.remove("active"));
             btn.classList.add("active");
-            modal.querySelector(`#nb-panel-${btn.dataset.tab}`).classList.add("active");
+            modal
+                .querySelector(`#nb-panel-${btn.dataset.tab}`)
+                .classList.add("active");
         });
     });
     modal.querySelector("#nb-logo-pick").addEventListener("click", () => {
@@ -568,8 +670,10 @@ function showNavbarModal(editor, component) {
                 if (!preview || preview.tagName === "DIV") {
                     const img = document.createElement("img");
                     img.id = "nb-logo-preview";
-                    img.style.cssText = "height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;";
-                    preview?.replaceWith(img) ?? modal.querySelector("#nb-logo-url").before(img);
+                    img.style.cssText =
+                        "height:48px;max-width:160px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;";
+                    preview?.replaceWith(img) ??
+                        modal.querySelector("#nb-logo-url").before(img);
                     preview = img;
                 }
                 preview.src = url;
@@ -577,71 +681,158 @@ function showNavbarModal(editor, component) {
             },
         });
     });
-    const appBase = document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
+    const appBase =
+        document
+            .querySelector('meta[name="app-url"]')
+            ?.content?.replace(/\/$/, "") ?? "";
     const searchUrl = `${appBase}/api/pages/search`;
 
     function attachUrlAutocomplete(input) {
         if (input.dataset.autocompleteAttached) return;
         input.dataset.autocompleteAttached = "true";
         const parent = input.parentNode;
-        if (!parent.style.position || parent.style.position === "static") parent.style.position = "relative";
+        if (!parent.style.position || parent.style.position === "static")
+            parent.style.position = "relative";
         const dropdown = document.createElement("ul");
         dropdown.style.cssText = `position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:999999;background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;box-shadow:0 8px 24px rgba(0,0,0,0.1);list-style:none;margin:0;padding:0.25rem;max-height:200px;overflow-y:auto;display:none;`;
         parent.appendChild(dropdown);
         let debounceTimer = null;
 
         async function search(q) {
-            if (q.length < 1) { dropdown.style.display = "none"; return; }
+            if (q.length < 1) {
+                dropdown.style.display = "none";
+                return;
+            }
             try {
-                const res = await fetch(`${searchUrl}?q=${encodeURIComponent(q)}`, { headers: { Accept: "application/json", "X-Requested-With": "XMLHttpRequest" } });
+                const res = await fetch(
+                    `${searchUrl}?q=${encodeURIComponent(q)}`,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                    },
+                );
                 const pages = await res.json();
                 renderDropdown(pages, q);
-            } catch { dropdown.style.display = "none"; }
+            } catch {
+                dropdown.style.display = "none";
+            }
         }
 
         function highlight(text, q) {
             if (!q) return text;
-            return text.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"), '<mark style="background:#fef3c7;color:#92400e;border-radius:2px;padding:0 1px;">$1</mark>');
+            return text.replace(
+                new RegExp(
+                    `(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+                    "gi",
+                ),
+                '<mark style="background:#fef3c7;color:#92400e;border-radius:2px;padding:0 1px;">$1</mark>',
+            );
         }
 
         function renderDropdown(pages, q) {
             dropdown.innerHTML = "";
-            if (!pages.length) { dropdown.style.display = "none"; return; }
+            if (!pages.length) {
+                dropdown.style.display = "none";
+                return;
+            }
             pages.forEach((page) => {
                 const li = document.createElement("li");
-                li.style.cssText = "padding:0.375rem 0.625rem;border-radius:0.375rem;cursor:pointer;display:flex;flex-direction:column;gap:0.125rem;";
+                li.style.cssText =
+                    "padding:0.375rem 0.625rem;border-radius:0.375rem;cursor:pointer;display:flex;flex-direction:column;gap:0.125rem;";
                 li.innerHTML = `<span style="font-size:0.8rem;font-weight:600;color:#1e293b;">${highlight(page.title, q)}</span><span style="font-size:0.7rem;color:#64748b;">/${page.slug}</span>`;
-                li.addEventListener("mouseenter", () => (li.style.background = "#f1f5f9"));
-                li.addEventListener("mouseleave", () => (li.style.background = ""));
-                li.addEventListener("mousedown", (e) => { e.preventDefault(); input.value = "/" + page.slug; input.dispatchEvent(new Event("input")); dropdown.style.display = "none"; });
+                li.addEventListener(
+                    "mouseenter",
+                    () => (li.style.background = "#f1f5f9"),
+                );
+                li.addEventListener(
+                    "mouseleave",
+                    () => (li.style.background = ""),
+                );
+                li.addEventListener("mousedown", (e) => {
+                    e.preventDefault();
+                    input.value = "/" + page.slug;
+                    input.dispatchEvent(new Event("input"));
+                    dropdown.style.display = "none";
+                });
                 dropdown.appendChild(li);
             });
             dropdown.style.display = "block";
         }
 
-        input.addEventListener("input", () => { clearTimeout(debounceTimer); debounceTimer = setTimeout(() => search(input.value.trim()), 220); });
-        input.addEventListener("focus", () => { input.select(); if (input.value.trim()) search(input.value.trim()); });
-        input.addEventListener("blur", () => { setTimeout(() => { dropdown.style.display = "none"; }, 150); });
+        input.addEventListener("input", () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => search(input.value.trim()), 220);
+        });
+        input.addEventListener("focus", () => {
+            input.select();
+            if (input.value.trim()) search(input.value.trim());
+        });
+        input.addEventListener("blur", () => {
+            setTimeout(() => {
+                dropdown.style.display = "none";
+            }, 150);
+        });
         input.addEventListener("keydown", (e) => {
             if (dropdown.style.display === "none") return;
             const items = dropdown.querySelectorAll("li");
             const active = dropdown.querySelector("li.nb-ac-active");
             let idx = Array.from(items).indexOf(active);
-            if (e.key === "ArrowDown") { e.preventDefault(); active?.classList.remove("nb-ac-active"); const next = items[idx + 1] || items[0]; next?.classList.add("nb-ac-active"); if (next) next.style.background = "#f1f5f9"; }
-            else if (e.key === "ArrowUp") { e.preventDefault(); active?.classList.remove("nb-ac-active"); const prev = items[idx - 1] || items[items.length - 1]; prev?.classList.add("nb-ac-active"); if (prev) prev.style.background = "#f1f5f9"; }
-            else if (e.key === "Enter" && active) { e.preventDefault(); active.dispatchEvent(new MouseEvent("mousedown")); }
-            else if (e.key === "Escape") { dropdown.style.display = "none"; }
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                active?.classList.remove("nb-ac-active");
+                const next = items[idx + 1] || items[0];
+                next?.classList.add("nb-ac-active");
+                if (next) next.style.background = "#f1f5f9";
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                active?.classList.remove("nb-ac-active");
+                const prev = items[idx - 1] || items[items.length - 1];
+                prev?.classList.add("nb-ac-active");
+                if (prev) prev.style.background = "#f1f5f9";
+            } else if (e.key === "Enter" && active) {
+                e.preventDefault();
+                active.dispatchEvent(new MouseEvent("mousedown"));
+            } else if (e.key === "Escape") {
+                dropdown.style.display = "none";
+            }
         });
     }
     function makeDraggable(container, arr, renderFn) {
         let dragIdx = null;
         container.querySelectorAll("[data-drag-idx]").forEach((card) => {
             card.setAttribute("draggable", "true");
-            card.addEventListener("dragstart", (e) => { dragIdx = parseInt(card.dataset.dragIdx); setTimeout(() => card.classList.add("nb-dragging"), 0); e.dataTransfer.effectAllowed = "move"; });
-            card.addEventListener("dragend", () => { card.classList.remove("nb-dragging"); container.querySelectorAll(".nb-drag-over").forEach((el) => el.classList.remove("nb-drag-over")); });
-            card.addEventListener("dragover", (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; if (parseInt(card.dataset.dragIdx) !== dragIdx) card.classList.add("nb-drag-over"); });
-            card.addEventListener("dragleave", () => card.classList.remove("nb-drag-over"));
-            card.addEventListener("drop", (e) => { e.preventDefault(); const overIdx = parseInt(card.dataset.dragIdx); if (dragIdx !== null && overIdx !== dragIdx) { const [moved] = arr.splice(dragIdx, 1); arr.splice(overIdx, 0, moved); renderFn(); } dragIdx = null; });
+            card.addEventListener("dragstart", (e) => {
+                dragIdx = parseInt(card.dataset.dragIdx);
+                setTimeout(() => card.classList.add("nb-dragging"), 0);
+                e.dataTransfer.effectAllowed = "move";
+            });
+            card.addEventListener("dragend", () => {
+                card.classList.remove("nb-dragging");
+                container
+                    .querySelectorAll(".nb-drag-over")
+                    .forEach((el) => el.classList.remove("nb-drag-over"));
+            });
+            card.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+                if (parseInt(card.dataset.dragIdx) !== dragIdx)
+                    card.classList.add("nb-drag-over");
+            });
+            card.addEventListener("dragleave", () =>
+                card.classList.remove("nb-drag-over"),
+            );
+            card.addEventListener("drop", (e) => {
+                e.preventDefault();
+                const overIdx = parseInt(card.dataset.dragIdx);
+                if (dragIdx !== null && overIdx !== dragIdx) {
+                    const [moved] = arr.splice(dragIdx, 1);
+                    arr.splice(overIdx, 0, moved);
+                    renderFn();
+                }
+                dragIdx = null;
+            });
         });
     }
     function renderTopActions() {
@@ -667,18 +858,28 @@ function showNavbarModal(editor, component) {
                 <div style="position:relative;">
                     <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL o buscar página..." value="${action.href || "#"}" data-field="href">
                 </div>`;
-            card.querySelector(".nb-pick-icon-btn").addEventListener("click", () => {
-                iconPicker.open((selected) => {
-                    action.icon = selected;
-                    card.querySelector("[data-field='icon']").value = selected;
-                    card.querySelector(".nb-icon-preview i").className = selected;
-                });
-            });
+            card.querySelector(".nb-pick-icon-btn").addEventListener(
+                "click",
+                () => {
+                    iconPicker.open((selected) => {
+                        action.icon = selected;
+                        card.querySelector("[data-field='icon']").value =
+                            selected;
+                        card.querySelector(".nb-icon-preview i").className =
+                            selected;
+                    });
+                },
+            );
 
-            card.querySelector(".nb-remove-action").onclick = () => { topActions.splice(idx, 1); renderTopActions(); };
+            card.querySelector(".nb-remove-action").onclick = () => {
+                topActions.splice(idx, 1);
+                renderTopActions();
+            };
 
             card.querySelectorAll("[data-field]").forEach((input) => {
-                input.addEventListener("input", () => { action[input.dataset.field] = input.value; });
+                input.addEventListener("input", () => {
+                    action[input.dataset.field] = input.value;
+                });
             });
 
             const urlInput = card.querySelector(".nb-url-input");
@@ -741,18 +942,31 @@ function showNavbarModal(editor, component) {
                         </div>
                     </div>`;
                 card.querySelector("[data-toggle-type]").onclick = () => {
-                    item.type = "link"; item.href = "#"; delete item.columns; delete item.cta_column;
+                    item.type = "link";
+                    item.href = "#";
+                    delete item.columns;
+                    delete item.cta_column;
                     renderNavLinks();
                 };
-                card.querySelector(".nb-remove-link").onclick = () => { navLinks.splice(idx, 1); renderNavLinks(); };
-                card.querySelector("[data-field='label']").addEventListener("input", (e) => { item.label = e.target.value; });
+                card.querySelector(".nb-remove-link").onclick = () => {
+                    navLinks.splice(idx, 1);
+                    renderNavLinks();
+                };
+                card.querySelector("[data-field='label']").addEventListener(
+                    "input",
+                    (e) => {
+                        item.label = e.target.value;
+                    },
+                );
                 card.querySelectorAll("[data-cta-field]").forEach((input) => {
                     input.addEventListener("input", () => {
                         if (!item.cta_column) item.cta_column = {};
                         item.cta_column[input.dataset.ctaField] = input.value;
                     });
                 });
-                const ctaUrlInput = card.querySelector("[data-cta-field='btn_href']");
+                const ctaUrlInput = card.querySelector(
+                    "[data-cta-field='btn_href']",
+                );
                 if (ctaUrlInput) {
                     const wrapper = document.createElement("div");
                     wrapper.style.position = "relative";
@@ -764,9 +978,14 @@ function showNavbarModal(editor, component) {
                     btn.addEventListener("click", () => {
                         if (!item.cta_column) item.cta_column = {};
                         item.cta_column.btn_color = btn.dataset.ctaColor;
-                        card.querySelectorAll("[data-cta-color]").forEach((b) => {
-                            b.classList.toggle("nb-color-inactive", b.dataset.ctaColor !== btn.dataset.ctaColor);
-                        });
+                        card.querySelectorAll("[data-cta-color]").forEach(
+                            (b) => {
+                                b.classList.toggle(
+                                    "nb-color-inactive",
+                                    b.dataset.ctaColor !== btn.dataset.ctaColor,
+                                );
+                            },
+                        );
                     });
                 });
                 const colsList = card.querySelector(".nb-columns-list");
@@ -775,7 +994,9 @@ function showNavbarModal(editor, component) {
                     (item.columns || []).forEach((col, ci) => {
                         const colCard = document.createElement("div");
                         colCard.className = "nb-col-card";
-                        const itemsHtml = (col.items || []).map((it, ii) => `
+                        const itemsHtml = (col.items || [])
+                            .map(
+                                (it, ii) => `
                             <div class="nb-col-item" data-item-idx="${ii}">
                                 <div class="nb-col-item-row">
                                     <input class="nb-input-sm" style="flex:1;" placeholder="Título del item" value="${it.label || ""}" data-item-field="label">
@@ -785,7 +1006,9 @@ function showNavbarModal(editor, component) {
                                 <div style="position:relative;">
                                     <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL" value="${it.href || "#"}" data-item-field="href">
                                 </div>
-                            </div>`).join("");
+                            </div>`,
+                            )
+                            .join("");
 
                         colCard.innerHTML = `
                             <div class="nb-col-card-header">
@@ -801,44 +1024,85 @@ function showNavbarModal(editor, component) {
                             <div class="nb-add-row" style="margin-top:0.375rem;">
                                 <button class="nb-btn-add nb-btn-add-item nb-add-item-btn" style="font-size:0.7rem;padding:0.25rem 0.5rem;"><i class="ri-add-line"></i> Agregar item</button>
                             </div>`;
-                        colCard.querySelector("[data-col-field='badge']").addEventListener("input", (e) => { col.badge = e.target.value; });
-                        colCard.querySelectorAll("[data-col-color]").forEach((btn) => {
-                            btn.addEventListener("click", () => {
-                                col.badge_color = btn.dataset.colColor;
-                                colCard.querySelectorAll("[data-col-color]").forEach((b) => {
-                                    b.classList.toggle("nb-color-inactive", b.dataset.colColor !== btn.dataset.colColor);
+                        colCard
+                            .querySelector("[data-col-field='badge']")
+                            .addEventListener("input", (e) => {
+                                col.badge = e.target.value;
+                            });
+                        colCard
+                            .querySelectorAll("[data-col-color]")
+                            .forEach((btn) => {
+                                btn.addEventListener("click", () => {
+                                    col.badge_color = btn.dataset.colColor;
+                                    colCard
+                                        .querySelectorAll("[data-col-color]")
+                                        .forEach((b) => {
+                                            b.classList.toggle(
+                                                "nb-color-inactive",
+                                                b.dataset.colColor !==
+                                                    btn.dataset.colColor,
+                                            );
+                                        });
                                 });
                             });
-                        });
-                        colCard.querySelector(".nb-remove-col").onclick = () => {
-                            item.columns.splice(ci, 1);
-                            renderColumns();
-                            const addColBtn = card.querySelector(".nb-add-col-btn");
-                            if (addColBtn) { addColBtn.disabled = false; addColBtn.style.opacity = ""; addColBtn.style.cursor = ""; }
-                        };
-                        colCard.querySelectorAll("[data-item-field]").forEach((input) => {
-                            const ii = parseInt(input.closest("[data-item-idx]").dataset.itemIdx);
-                            input.addEventListener("input", () => { col.items[ii][input.dataset.itemField] = input.value; });
-                        });
-                        colCard.querySelectorAll(".nb-url-input").forEach((urlInput) => {
-                            const wrapper = document.createElement("div");
-                            wrapper.style.position = "relative";
-                            urlInput.parentNode.insertBefore(wrapper, urlInput);
-                            wrapper.appendChild(urlInput);
-                            attachUrlAutocomplete(urlInput);
-                        });
-                        colCard.querySelectorAll(".nb-remove-item").forEach((btn) => {
-                            btn.onclick = () => {
-                                const ii = parseInt(btn.closest("[data-item-idx]").dataset.itemIdx);
-                                col.items.splice(ii, 1);
+                        colCard.querySelector(".nb-remove-col").onclick =
+                            () => {
+                                item.columns.splice(ci, 1);
+                                renderColumns();
+                                const addColBtn =
+                                    card.querySelector(".nb-add-col-btn");
+                                if (addColBtn) {
+                                    addColBtn.disabled = false;
+                                    addColBtn.style.opacity = "";
+                                    addColBtn.style.cursor = "";
+                                }
+                            };
+                        colCard
+                            .querySelectorAll("[data-item-field]")
+                            .forEach((input) => {
+                                const ii = parseInt(
+                                    input.closest("[data-item-idx]").dataset
+                                        .itemIdx,
+                                );
+                                input.addEventListener("input", () => {
+                                    col.items[ii][input.dataset.itemField] =
+                                        input.value;
+                                });
+                            });
+                        colCard
+                            .querySelectorAll(".nb-url-input")
+                            .forEach((urlInput) => {
+                                const wrapper = document.createElement("div");
+                                wrapper.style.position = "relative";
+                                urlInput.parentNode.insertBefore(
+                                    wrapper,
+                                    urlInput,
+                                );
+                                wrapper.appendChild(urlInput);
+                                attachUrlAutocomplete(urlInput);
+                            });
+                        colCard
+                            .querySelectorAll(".nb-remove-item")
+                            .forEach((btn) => {
+                                btn.onclick = () => {
+                                    const ii = parseInt(
+                                        btn.closest("[data-item-idx]").dataset
+                                            .itemIdx,
+                                    );
+                                    col.items.splice(ii, 1);
+                                    renderColumns();
+                                };
+                            });
+                        colCard.querySelector(".nb-add-item-btn").onclick =
+                            () => {
+                                col.items = col.items || [];
+                                col.items.push({
+                                    label: "Nuevo item",
+                                    desc: "",
+                                    href: "#",
+                                });
                                 renderColumns();
                             };
-                        });
-                        colCard.querySelector(".nb-add-item-btn").onclick = () => {
-                            col.items = col.items || [];
-                            col.items.push({ label: "Nuevo item", desc: "", href: "#" });
-                            renderColumns();
-                        };
 
                         colsList.appendChild(colCard);
                     });
@@ -847,14 +1111,19 @@ function showNavbarModal(editor, component) {
                 card.querySelector(".nb-add-col-btn").onclick = () => {
                     if ((item.columns || []).length >= 3) return;
                     item.columns = item.columns || [];
-                    item.columns.push({ badge: "Nueva columna", badge_color: "blue", items: [{ label: "Nuevo item", desc: "", href: "#" }] });
+                    item.columns.push({
+                        badge: "Nueva columna",
+                        badge_color: "blue",
+                        items: [{ label: "Nuevo item", desc: "", href: "#" }],
+                    });
                     renderColumns();
                     if (item.columns.length >= 3) {
                         const btn = card.querySelector(".nb-add-col-btn");
-                        btn.disabled = true; btn.style.opacity = "0.4"; btn.style.cursor = "not-allowed";
+                        btn.disabled = true;
+                        btn.style.opacity = "0.4";
+                        btn.style.cursor = "not-allowed";
                     }
                 };
-
             } else {
                 card.innerHTML = `
                     <div class="nb-link-card-header">
@@ -870,13 +1139,32 @@ function showNavbarModal(editor, component) {
                     </div>`;
 
                 card.querySelector("[data-toggle-type]").onclick = () => {
-                    item.type = "submenu"; item.columns = [{ badge: "Columna 1", badge_color: "blue", items: [{ label: "Enlace", desc: "", href: "#" }] }];
-                    item.cta_column = { text: "", btn_label: "Ver más", btn_href: "#", btn_color: "orange" };
+                    item.type = "submenu";
+                    item.columns = [
+                        {
+                            badge: "Columna 1",
+                            badge_color: "blue",
+                            items: [{ label: "Enlace", desc: "", href: "#" }],
+                        },
+                    ];
+                    item.cta_column = {
+                        text: "",
+                        btn_label: "Ver más",
+                        btn_href: "#",
+                        btn_color: "orange",
+                    };
                     delete item.href;
                     renderNavLinks();
                 };
-                card.querySelector(".nb-remove-link").onclick = () => { navLinks.splice(idx, 1); renderNavLinks(); };
-                card.querySelectorAll("[data-field]").forEach((input) => { input.addEventListener("input", () => { item[input.dataset.field] = input.value; }); });
+                card.querySelector(".nb-remove-link").onclick = () => {
+                    navLinks.splice(idx, 1);
+                    renderNavLinks();
+                };
+                card.querySelectorAll("[data-field]").forEach((input) => {
+                    input.addEventListener("input", () => {
+                        item[input.dataset.field] = input.value;
+                    });
+                });
 
                 const urlInput = card.querySelector(".nb-url-input");
                 if (urlInput) {
@@ -892,18 +1180,40 @@ function showNavbarModal(editor, component) {
         });
         makeDraggable(list, navLinks, renderNavLinks);
     }
-    modal.querySelectorAll("#nb-banking-blue, #nb-banking-orange").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            bankingBtn.color = btn.dataset.color;
-            modal.querySelector("#nb-banking-blue").classList.toggle("nb-color-inactive", bankingBtn.color !== "blue");
-            modal.querySelector("#nb-banking-orange").classList.toggle("nb-color-inactive", bankingBtn.color !== "orange");
+    modal
+        .querySelectorAll("#nb-banking-blue, #nb-banking-orange")
+        .forEach((btn) => {
+            btn.addEventListener("click", () => {
+                bankingBtn.color = btn.dataset.color;
+                modal
+                    .querySelector("#nb-banking-blue")
+                    .classList.toggle(
+                        "nb-color-inactive",
+                        bankingBtn.color !== "blue",
+                    );
+                modal
+                    .querySelector("#nb-banking-orange")
+                    .classList.toggle(
+                        "nb-color-inactive",
+                        bankingBtn.color !== "orange",
+                    );
+            });
         });
-    });
     modal.querySelectorAll("#nb-bcta-blue, #nb-bcta-orange").forEach((btn) => {
         btn.addEventListener("click", () => {
             bottomCta.color = btn.dataset.color;
-            modal.querySelector("#nb-bcta-blue").classList.toggle("nb-color-inactive", bottomCta.color !== "blue");
-            modal.querySelector("#nb-bcta-orange").classList.toggle("nb-color-inactive", bottomCta.color !== "orange");
+            modal
+                .querySelector("#nb-bcta-blue")
+                .classList.toggle(
+                    "nb-color-inactive",
+                    bottomCta.color !== "blue",
+                );
+            modal
+                .querySelector("#nb-bcta-orange")
+                .classList.toggle(
+                    "nb-color-inactive",
+                    bottomCta.color !== "orange",
+                );
         });
     });
     const bankingHrefInput = modal.querySelector("#nb-banking-href");
@@ -931,51 +1241,133 @@ function showNavbarModal(editor, component) {
         attachUrlAutocomplete(logoHrefInput);
     }
     modal.querySelector("#nb-add-top-action").onclick = () => {
-        topActions.push({ label: "Nueva acción", href: "#", icon: "ri-star-line" });
+        topActions.push({
+            label: "Nueva acción",
+            href: "#",
+            icon: "ri-star-line",
+        });
         renderTopActions();
-        modal.querySelector("#nb-top-actions-list").lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        modal
+            .querySelector("#nb-top-actions-list")
+            .lastElementChild?.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+            });
     };
     modal.querySelector("#nb-add-nav-link").onclick = () => {
         navLinks.push({ type: "link", label: "Nuevo enlace", href: "#" });
         renderNavLinks();
-        modal.querySelector("#nb-nav-list").lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        modal.querySelector("#nb-nav-list").lastElementChild?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
     };
     modal.querySelector("#nb-add-nav-submenu").onclick = () => {
         navLinks.push({
-            type: "submenu", label: "Nuevo menú",
-            columns: [{ badge: "Columna 1", badge_color: "blue", items: [{ label: "Enlace", desc: "", href: "#" }] }],
-            cta_column: { text: "", btn_label: "Ver más", btn_href: "#", btn_color: "orange" },
+            type: "submenu",
+            label: "Nuevo menú",
+            columns: [
+                {
+                    badge: "Columna 1",
+                    badge_color: "blue",
+                    items: [{ label: "Enlace", desc: "", href: "#" }],
+                },
+            ],
+            cta_column: {
+                text: "",
+                btn_label: "Ver más",
+                btn_href: "#",
+                btn_color: "orange",
+            },
         });
         renderNavLinks();
-        modal.querySelector("#nb-nav-list").lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        modal.querySelector("#nb-nav-list").lastElementChild?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
     };
     renderTopActions();
     renderNavLinks();
+
+    const iconBtnData = JSON.parse(JSON.stringify(currentData.icon_btn || DEFAULT_DATA.icon_btn));
+
+    const iconBtnToggleWrap = modal.querySelector("#nb-iconbtn-toggle-wrap");
+    function renderIconBtnToggle() {
+        iconBtnToggleWrap.innerHTML = `
+            <button class="nb-color-opt nb-color-opt-blue ${iconBtnData.enabled !== false ? "" : "nb-color-inactive"}" id="nb-iconbtn-on">Activado</button>
+            <button class="nb-color-opt" style="background:#94a3b8;color:#fff;${iconBtnData.enabled === false ? "" : "opacity:0.35;"}" id="nb-iconbtn-off">Desactivado</button>`;
+        modal.querySelector("#nb-iconbtn-on").addEventListener("click", () => {
+            iconBtnData.enabled = true;
+            renderIconBtnToggle();
+        });
+        modal.querySelector("#nb-iconbtn-off").addEventListener("click", () => {
+            iconBtnData.enabled = false;
+            renderIconBtnToggle();
+        });
+    }
+    renderIconBtnToggle();
+
+    modal.querySelector("#nb-iconbtn-icon").value = iconBtnData.icon || "ri-search-line";
+    modal.querySelector("#nb-iconbtn-preview").className = iconBtnData.icon || "ri-search-line";
+    modal.querySelector("#nb-iconbtn-label").value = iconBtnData.label || "Buscar";
+    modal.querySelector("#nb-iconbtn-href").value = iconBtnData.href || "#";
+
+    modal.querySelector("#nb-iconbtn-icon").addEventListener("input", (e) => {
+        iconBtnData.icon = e.target.value;
+        modal.querySelector("#nb-iconbtn-preview").className = e.target.value;
+    });
+    modal.querySelector("#nb-iconbtn-label").addEventListener("input", (e) => { iconBtnData.label = e.target.value; });
+
+    modal.querySelector("#nb-iconbtn-pick").addEventListener("click", () => {
+        iconPicker.open((selected) => {
+            iconBtnData.icon = selected;
+            modal.querySelector("#nb-iconbtn-icon").value = selected;
+            modal.querySelector("#nb-iconbtn-preview").className = selected;
+        });
+    });
+
+    const iconBtnHrefInput = modal.querySelector("#nb-iconbtn-href");
+    if (iconBtnHrefInput) {
+        const wrapper = document.createElement("div");
+        wrapper.style.position = "relative";
+        iconBtnHrefInput.parentNode.insertBefore(wrapper, iconBtnHrefInput);
+        wrapper.appendChild(iconBtnHrefInput);
+        attachUrlAutocomplete(iconBtnHrefInput);
+    }
     modal.querySelector("#nb-modal-backup").onclick = () => {
         const snapshot = {
+            icon_btn: {
+                enabled: iconBtnData.enabled !== false,
+                icon: modal.querySelector("#nb-iconbtn-icon").value.trim() || "ri-search-line",
+                label: modal.querySelector("#nb-iconbtn-label").value.trim() || "Buscar",
+                href: modal.querySelector("#nb-iconbtn-href").value.trim() || "#",
+            },
             logo_url:    modal.querySelector("#nb-logo-url").value.trim(),
-            logo_alt:    modal.querySelector("#nb-logo-alt").value.trim(),
-            logo_text:   modal.querySelector("#nb-logo-text").value.trim(),
-            logo_href:   modal.querySelector("#nb-logo-href").value.trim() || "/",
+            logo_alt: modal.querySelector("#nb-logo-alt").value.trim(),
+            logo_text: modal.querySelector("#nb-logo-text").value.trim(),
+            logo_href: modal.querySelector("#nb-logo-href").value.trim() || "/",
             top_actions: JSON.parse(JSON.stringify(topActions)),
             banking_btn: {
                 label: modal.querySelector("#nb-banking-label").value.trim(),
-                href:  modal.querySelector("#nb-banking-href").value.trim() || "#",
+                href:
+                    modal.querySelector("#nb-banking-href").value.trim() || "#",
                 color: bankingBtn.color || "blue",
             },
             nav_links: JSON.parse(JSON.stringify(navLinks)),
             bottom_cta: {
-                label:    modal.querySelector("#nb-bcta-label").value.trim(),
+                label: modal.querySelector("#nb-bcta-label").value.trim(),
                 sublabel: modal.querySelector("#nb-bcta-sublabel").value.trim(),
-                href:     modal.querySelector("#nb-bcta-href").value.trim() || "#",
-                color:    bottomCta.color || "orange",
+                href: modal.querySelector("#nb-bcta-href").value.trim() || "#",
+                color: bottomCta.color || "orange",
             },
         };
-        const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: "application/json" });
-        const url  = URL.createObjectURL(blob);
-        const ts   = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
-        const a    = document.createElement("a");
-        a.href     = url;
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const a = document.createElement("a");
+        a.href = url;
         a.download = `navbar-backup-${ts}.json`;
         document.body.appendChild(a);
         a.click();
@@ -988,12 +1380,15 @@ function showNavbarModal(editor, component) {
         const reader = new FileReader();
         reader.onload = (ev) => {
             let parsed;
-            try { parsed = JSON.parse(ev.target.result); } catch {
+            try {
+                parsed = JSON.parse(ev.target.result);
+            } catch {
                 const errOverlay = document.createElement("div");
                 errOverlay.className = "nb-confirm-overlay";
                 errOverlay.innerHTML = `<div class="nb-confirm-modal"><div class="nb-confirm-header"><i class="ri-error-warning-line" style="color:#ef4444;"></i><h3>Archivo inválido</h3></div><div class="nb-confirm-body"><p>El archivo seleccionado no es un JSON válido.</p></div><div class="nb-confirm-footer"><button class="nb-confirm-ok" style="background:#ef4444;">Cerrar</button></div></div>`;
                 document.body.appendChild(errOverlay);
-                errOverlay.querySelector(".nb-confirm-ok").onclick = () => errOverlay.remove();
+                errOverlay.querySelector(".nb-confirm-ok").onclick = () =>
+                    errOverlay.remove();
                 e.target.value = "";
                 return;
             }
@@ -1016,14 +1411,25 @@ function showNavbarModal(editor, component) {
                     </div>
                 </div>`;
             document.body.appendChild(confirmOverlay);
-            confirmOverlay.querySelector(".nb-confirm-cancel").onclick = () => { confirmOverlay.remove(); e.target.value = ""; };
+            confirmOverlay.querySelector(".nb-confirm-cancel").onclick = () => {
+                confirmOverlay.remove();
+                e.target.value = "";
+            };
             confirmOverlay.querySelector(".nb-confirm-ok").onclick = () => {
                 confirmOverlay.remove();
                 e.target.value = "";
-                const existingInner = component.getEl()?.querySelector("[id^='nb-root-']");
-                const uid = existingInner?.id?.replace("nb-root-", "") || "nb" + Math.random().toString(36).slice(2, 7);
-                component.addAttributes({ "data-navbar-config": JSON.stringify(parsed) });
-                component.components(buildNavbarHTML(parsed, uid) + NAVBAR_STYLES);
+                const existingInner = component
+                    .getEl()
+                    ?.querySelector("[id^='nb-root-']");
+                const uid =
+                    existingInner?.id?.replace("nb-root-", "") ||
+                    "nb" + Math.random().toString(36).slice(2, 7);
+                component.addAttributes({
+                    "data-navbar-config": JSON.stringify(parsed),
+                });
+                component.components(
+                    buildNavbarHTML(parsed, uid) + NAVBAR_STYLES,
+                );
                 close();
                 showNavbarModal(editor, component);
             };
@@ -1031,33 +1437,49 @@ function showNavbarModal(editor, component) {
         reader.readAsText(file);
     };
 
-    const close = () => { iconPicker.close(); overlay.remove(); };
+    const close = () => {
+        iconPicker.close();
+        overlay.remove();
+    };
     modal.querySelector("#nb-modal-close").onclick = close;
     modal.querySelector("#nb-modal-cancel").onclick = close;
-    overlay.onclick = (e) => { if (e.target === overlay) close(); };
+    overlay.onclick = (e) => {
+        if (e.target === overlay) close();
+    };
     modal.querySelector("#nb-modal-save").onclick = () => {
         const data = {
+            icon_btn: {
+                enabled: iconBtnData.enabled !== false,
+                icon: modal.querySelector("#nb-iconbtn-icon").value.trim() || "ri-search-line",
+                label: modal.querySelector("#nb-iconbtn-label").value.trim() || "Buscar",
+                href: modal.querySelector("#nb-iconbtn-href").value.trim() || "#",
+            },
             logo_url:   modal.querySelector("#nb-logo-url").value.trim(),
-            logo_alt:   modal.querySelector("#nb-logo-alt").value.trim(),
-            logo_text:  modal.querySelector("#nb-logo-text").value.trim(),
-            logo_href:  modal.querySelector("#nb-logo-href").value.trim() || "/",
+            logo_alt: modal.querySelector("#nb-logo-alt").value.trim(),
+            logo_text: modal.querySelector("#nb-logo-text").value.trim(),
+            logo_href: modal.querySelector("#nb-logo-href").value.trim() || "/",
             top_actions: topActions,
             banking_btn: {
                 label: modal.querySelector("#nb-banking-label").value.trim(),
-                href:  modal.querySelector("#nb-banking-href").value.trim() || "#",
+                href:
+                    modal.querySelector("#nb-banking-href").value.trim() || "#",
                 color: bankingBtn.color || "blue",
             },
             nav_links: navLinks,
             bottom_cta: {
-                label:    modal.querySelector("#nb-bcta-label").value.trim(),
+                label: modal.querySelector("#nb-bcta-label").value.trim(),
                 sublabel: modal.querySelector("#nb-bcta-sublabel").value.trim(),
-                href:     modal.querySelector("#nb-bcta-href").value.trim() || "#",
-                color:    bottomCta.color || "orange",
+                href: modal.querySelector("#nb-bcta-href").value.trim() || "#",
+                color: bottomCta.color || "orange",
             },
         };
 
-        const existingInner = component.getEl()?.querySelector("[id^='nb-root-']");
-        const uid = existingInner?.id?.replace("nb-root-", "") || "nb" + Math.random().toString(36).slice(2, 7);
+        const existingInner = component
+            .getEl()
+            ?.querySelector("[id^='nb-root-']");
+        const uid =
+            existingInner?.id?.replace("nb-root-", "") ||
+            "nb" + Math.random().toString(36).slice(2, 7);
         component.addAttributes({ "data-navbar-config": JSON.stringify(data) });
         component.components(buildNavbarHTML(data, uid) + NAVBAR_STYLES);
         close();
@@ -1092,43 +1514,82 @@ export function initializeNavbarBlock(editor) {
                 components: buildNavbarHTML(DEFAULT_DATA) + NAVBAR_STYLES,
                 script: function () {
                     (function (root) {
-                        if (!root || typeof root.querySelector !== "function") return;
+                        if (!root || typeof root.querySelector !== "function")
+                            return;
                         if (root.__nbInit) return;
                         root.__nbInit = true;
-                        var id = root.querySelector("[id^='nb-root-']")?.id?.replace("nb-root-", "");
+                        var id = root
+                            .querySelector("[id^='nb-root-']")
+                            ?.id?.replace("nb-root-", "");
                         if (!id) return;
-                        var inEditor = !!window.__gjseditor || document.documentElement.hasAttribute("data-gjs-canvas");
-                        function pad() { if (!inEditor) document.body.style.paddingTop = root.offsetHeight + "px"; }
+                        var inEditor =
+                            !!window.__gjseditor ||
+                            document.documentElement.hasAttribute(
+                                "data-gjs-canvas",
+                            );
+                        function pad() {
+                            if (!inEditor)
+                                document.body.style.paddingTop =
+                                    root.offsetHeight + "px";
+                        }
                         pad();
                         window.addEventListener("resize", function () {
                             pad();
                             if (window.innerWidth > 992) {
-                                var mob = document.getElementById("nb-mobile-" + id);
-                                if (mob && mob.classList.contains("nb-open")) mob.classList.remove("nb-open");
-                                root.querySelectorAll(".nb-mobile-item.nb-open").forEach(function (el) { el.classList.remove("nb-open"); });
+                                var mob = document.getElementById(
+                                    "nb-mobile-" + id,
+                                );
+                                if (mob && mob.classList.contains("nb-open"))
+                                    mob.classList.remove("nb-open");
+                                root.querySelectorAll(
+                                    ".nb-mobile-item.nb-open",
+                                ).forEach(function (el) {
+                                    el.classList.remove("nb-open");
+                                });
                             }
                         });
                         var toggle = document.getElementById("nb-toggle-" + id);
                         var mobile = document.getElementById("nb-mobile-" + id);
                         if (toggle && mobile) {
-                            toggle.addEventListener("click", function () { mobile.classList.toggle("nb-open"); pad(); });
+                            toggle.addEventListener("click", function () {
+                                mobile.classList.toggle("nb-open");
+                                pad();
+                            });
                         }
-                        root.querySelectorAll(".nb-nav-trigger").forEach(function (btn) {
-                            btn.addEventListener("click", function (e) {
-                                e.stopPropagation();
-                                var item = btn.closest(".nb-nav-item");
-                                var open = item.classList.contains("nb-open");
-                                root.querySelectorAll(".nb-nav-item.nb-open").forEach(function (el) { el.classList.remove("nb-open"); });
-                                if (!open) item.classList.add("nb-open");
+                        root.querySelectorAll(".nb-nav-trigger").forEach(
+                            function (btn) {
+                                btn.addEventListener("click", function (e) {
+                                    e.stopPropagation();
+                                    var item = btn.closest(".nb-nav-item");
+                                    var open =
+                                        item.classList.contains("nb-open");
+                                    root.querySelectorAll(
+                                        ".nb-nav-item.nb-open",
+                                    ).forEach(function (el) {
+                                        el.classList.remove("nb-open");
+                                    });
+                                    if (!open) item.classList.add("nb-open");
+                                    pad();
+                                });
+                            },
+                        );
+                        root.querySelectorAll(
+                            ".nb-mobile-item>.nb-mobile-link",
+                        ).forEach(function (btn) {
+                            btn.addEventListener("click", function () {
+                                btn.closest(".nb-mobile-item").classList.toggle(
+                                    "nb-open",
+                                );
                                 pad();
                             });
                         });
-                        root.querySelectorAll(".nb-mobile-item>.nb-mobile-link").forEach(function (btn) {
-                            btn.addEventListener("click", function () { btn.closest(".nb-mobile-item").classList.toggle("nb-open"); pad(); });
-                        });
                         document.addEventListener("click", function (e) {
                             if (!root.contains(e.target)) {
-                                root.querySelectorAll(".nb-nav-item.nb-open").forEach(function (el) { el.classList.remove("nb-open"); });
+                                root.querySelectorAll(
+                                    ".nb-nav-item.nb-open",
+                                ).forEach(function (el) {
+                                    el.classList.remove("nb-open");
+                                });
                             }
                         });
                     })(this);
@@ -1250,11 +1711,14 @@ function runNavbarScriptInCanvas(editor, el) {
 }
 
 function reinitNavbar(editor, componentType) {
-    editor.getWrapper().find(`[data-gjs-type="${componentType}"]`).forEach((comp) => {
-        comp.set("type", componentType);
-        const el = comp.getEl();
-        if (el?.isConnected) runNavbarScriptInCanvas(editor, el);
-    });
+    editor
+        .getWrapper()
+        .find(`[data-gjs-type="${componentType}"]`)
+        .forEach((comp) => {
+            comp.set("type", componentType);
+            const el = comp.getEl();
+            if (el?.isConnected) runNavbarScriptInCanvas(editor, el);
+        });
 }
 
 function injectNavbarCanvasStyles(editor) {
