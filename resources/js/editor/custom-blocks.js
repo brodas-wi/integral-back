@@ -9,6 +9,7 @@ import { initializeSavingsSectionBlock } from "./blocks/savings-carousel-blocks"
 import { productLinkCardsBlocks } from "./blocks/product-link-cards-blocks";
 import { iconLinksBlocks } from "./blocks/icon-links-blocks";
 import { promoCtaBlocks } from "./blocks/promo-cta-blocks";
+import { featureBlocks } from "./blocks/feature-blocks";
 import { tabsBlocks, initializeTabsBlocks } from "./blocks/tabs-blocks";
 import { splitContentBlocks } from "./blocks/split-content-blocks";
 import { statsStripBlocks } from "./blocks/stats-strip-blocks";
@@ -39,6 +40,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(splitContentBlocks);
     blockRegistry.registerBlocks(ctaBlocks);
     blockRegistry.registerBlocks(promoCtaBlocks);
+    blockRegistry.registerBlocks(featureBlocks);
     blockRegistry.registerBlocks(serviceCardsBlocks);
     blockRegistry.registerBlocks(contactInfoBlocks);
     blockRegistry.registerBlocks(richListBlocks);
