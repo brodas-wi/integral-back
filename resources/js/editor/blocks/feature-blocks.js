@@ -1,40 +1,41 @@
 import { assetUrl } from "@/utils/url.js";
 
 const iconFeatureOrangeRight = `<svg viewBox="0 0 32 32" width="32" height="32">
-    <rect width="32" height="32" fill="#E97300" rx="2"/>
-    <rect x="2" y="3" width="13" height="26" fill="rgba(255,255,255,0.12)" rx="1.5"/>
-    <rect x="3" y="4" width="11" height="24" fill="rgba(255,255,255,0.1)" rx="1"/>
-    <circle cx="9" cy="13" r="3" fill="rgba(255,255,255,0.25)"/>
-    <path d="M3 23 L7 17 L10 20 L12 18 L14 23 Z" fill="rgba(255,255,255,0.2)"/>
-    <rect x="17" y="3" width="13" height="26" fill="rgba(255,255,255,0.15)" rx="1.5"/>
-    <rect x="19" y="7" width="9" height="2" rx="1" fill="white" fill-opacity="0.9"/>
-    <rect x="19" y="11" width="9" height="1" rx="0.5" fill="white" fill-opacity="0.5"/>
-    <rect x="19" y="13" width="7" height="1" rx="0.5" fill="white" fill-opacity="0.5"/>
-    <circle cx="20" cy="18" r="1" fill="white" fill-opacity="0.8"/>
-    <rect x="22" y="17.3" width="6" height="1" rx="0.5" fill="white" fill-opacity="0.6"/>
-    <circle cx="20" cy="21" r="1" fill="white" fill-opacity="0.8"/>
-    <rect x="22" y="20.3" width="5" height="1" rx="0.5" fill="white" fill-opacity="0.6"/>
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="0" y="8" width="32" height="24" fill="#E97300" rx="0"/>
+    <rect x="0" y="8" width="32" height="24" fill="#E97300"/>
+    <path d="M0 8 Q0 2 8 2 L32 2 L32 8 Z" fill="#E97300"/>
+    <rect x="2" y="10" width="12" height="18" fill="rgba(255,255,255,0.15)" rx="1"/>
+    <circle cx="8" cy="17" r="3" fill="rgba(255,255,255,0.3)"/>
+    <path d="M2 26 L6 21 L9 24 L11 22 L14 26 Z" fill="rgba(255,255,255,0.2)"/>
+    <rect x="16" y="10" width="14" height="3" rx="1" fill="white" fill-opacity="0.9"/>
+    <rect x="16" y="15" width="14" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
+    <rect x="16" y="17.5" width="10" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
+    <circle cx="17.5" cy="22" r="1.2" fill="white" fill-opacity="0.9"/>
+    <rect x="20" y="21.3" width="8" height="1" rx="0.5" fill="white" fill-opacity="0.7"/>
+    <circle cx="17.5" cy="25" r="1.2" fill="white" fill-opacity="0.9"/>
+    <rect x="20" y="24.3" width="6" height="1" rx="0.5" fill="white" fill-opacity="0.7"/>
 </svg>`;
 
 const iconFeatureOrangeLeft = `<svg viewBox="0 0 32 32" width="32" height="32">
-    <rect width="32" height="32" fill="#E97300" rx="2"/>
-    <rect x="17" y="3" width="13" height="26" fill="rgba(255,255,255,0.12)" rx="1.5"/>
-    <rect x="18" y="4" width="11" height="24" fill="rgba(255,255,255,0.1)" rx="1"/>
-    <circle cx="23" cy="13" r="3" fill="rgba(255,255,255,0.25)"/>
-    <path d="M18 23 L22 17 L25 20 L27 18 L29 23 Z" fill="rgba(255,255,255,0.2)"/>
-    <rect x="2" y="3" width="13" height="26" fill="rgba(255,255,255,0.15)" rx="1.5"/>
-    <rect x="4" y="7" width="9" height="2" rx="1" fill="white" fill-opacity="0.9"/>
-    <rect x="4" y="11" width="9" height="1" rx="0.5" fill="white" fill-opacity="0.5"/>
-    <rect x="4" y="13" width="7" height="1" rx="0.5" fill="white" fill-opacity="0.5"/>
-    <circle cx="5" cy="18" r="1" fill="white" fill-opacity="0.8"/>
-    <rect x="7" y="17.3" width="6" height="1" rx="0.5" fill="white" fill-opacity="0.6"/>
-    <circle cx="5" cy="21" r="1" fill="white" fill-opacity="0.8"/>
-    <rect x="7" y="20.3" width="5" height="1" rx="0.5" fill="white" fill-opacity="0.6"/>
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="0" y="8" width="32" height="24" fill="#E97300"/>
+    <path d="M0 8 L24 8 Q32 8 32 2 L32 2 L0 2 Z" fill="#E97300"/>
+    <rect x="18" y="10" width="12" height="18" fill="rgba(255,255,255,0.15)" rx="1"/>
+    <circle cx="24" cy="17" r="3" fill="rgba(255,255,255,0.3)"/>
+    <path d="M18 26 L22 21 L25 24 L27 22 L30 26 Z" fill="rgba(255,255,255,0.2)"/>
+    <rect x="2" y="10" width="14" height="3" rx="1" fill="white" fill-opacity="0.9"/>
+    <rect x="2" y="15" width="14" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
+    <rect x="2" y="17.5" width="10" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
+    <circle cx="3.5" cy="22" r="1.2" fill="white" fill-opacity="0.9"/>
+    <rect x="6" y="21.3" width="8" height="1" rx="0.5" fill="white" fill-opacity="0.7"/>
+    <circle cx="3.5" cy="25" r="1.2" fill="white" fill-opacity="0.9"/>
+    <rect x="6" y="24.3" width="6" height="1" rx="0.5" fill="white" fill-opacity="0.7"/>
 </svg>`;
 
 const LIST_ITEM = `
 <div class="flex items-center gap-3">
-    <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-[#E97300]">
+    <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-[#E97300] border-2 border-white">
         <i class="ri-shield-check-line text-lg text-white"></i>
     </div>
     <p class="text-white text-base font-bold leading-snug">Lorem ipsum dolor sit amet consectetur</p>
@@ -42,7 +43,11 @@ const LIST_ITEM = `
 
 const CONTENT_COL = `
 <div class="flex flex-col gap-4">
-    <h2 class="text-4xl font-bold text-white leading-tight">Lorem ipsum dolor sit amet</h2>
+    <h2 class="text-4xl font-bold leading-tight flex flex-wrap items-center gap-2">
+        <span class="bg-[#003B71] text-white text-3xl font-bold px-3 py-1 rounded-lg leading-tight">Mi</span>
+        <span class="text-white">Banca</span>
+        <span class="text-white font-bold">Integral</span>
+    </h2>
     <p class="text-white text-base leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
     <div class="flex flex-col gap-3">
         ${LIST_ITEM}
@@ -59,30 +64,35 @@ const IMAGE_COL = `
 
 const FEATURE_STYLES = `
 <style>
-.fb-section{width:100%;background:#ffffff;padding:3rem 4rem;}
-.fb-box{background:#E97300;border-radius:1rem;padding:3rem;}
+.fb-section-right{width:100%;background:#E97300;padding:3rem 4rem 3rem 4rem;border-radius:120px 0 0 0;}
+.fb-section-left{width:100%;background:#E97300;padding:3rem 4rem 3rem 4rem;border-radius:0 120px 0 0;}
 .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
 .fb-img-wrap{width:100%;border-radius:0.75rem;overflow:hidden;}
 .fb-img{width:100%;height:100%;object-fit:cover;display:block;min-height:320px;max-height:480px;}
-@media(max-width:1280px){.fb-section{padding:3rem 2.5rem;}.fb-box{padding:2.5rem;}}
+@media(max-width:1280px){
+    .fb-section-right{padding:3rem 2.5rem;border-radius:80px 0 0 0;}
+    .fb-section-left{padding:3rem 2.5rem;border-radius:0 80px 0 0;}
+}
 @media(max-width:992px){
-    .fb-section{padding:2.5rem 1.5rem;}
-    .fb-box{padding:2rem;}
+    .fb-section-right{padding:2.5rem 1.5rem;border-radius:60px 0 0 0;}
+    .fb-section-left{padding:2.5rem 1.5rem;border-radius:0 60px 0 0;}
     .fb-grid{grid-template-columns:1fr;gap:2rem;}
 }
-@media(max-width:580px){.fb-section{padding:2rem 1rem;}}
+@media(max-width:580px){
+    .fb-section-right{padding:2rem 1rem;border-radius:40px 0 0 0;}
+    .fb-section-left{padding:2rem 1rem;border-radius:0 40px 0 0;}
+}
 </style>`;
 
 const buildFeature = (imgRight) => {
+    const sectionClass = imgRight ? "fb-section-right" : "fb-section-left";
     const cols = imgRight
         ? `<div>${CONTENT_COL}</div><div>${IMAGE_COL}</div>`
         : `<div>${IMAGE_COL}</div><div>${CONTENT_COL}</div>`;
     return `
-<section class="fb-section">
-    <div class="fb-box">
-        <div class="fb-grid">
-            ${cols}
-        </div>
+<section class="${sectionClass}">
+    <div class="fb-grid">
+        ${cols}
     </div>
 </section>
 ${FEATURE_STYLES}`;
@@ -91,14 +101,14 @@ ${FEATURE_STYLES}`;
 export const featureBlocks = [
     {
         id: "feature-orange-img-right",
-        label: "Sección naranja · imagen derecha",
+        label: "Sección naranja - imagen derecha",
         category: "Banners",
         media: iconFeatureOrangeRight,
         content: buildFeature(true),
     },
     {
         id: "feature-orange-img-left",
-        label: "Sección naranja · imagen izquierda",
+        label: "Sección naranja - imagen izquierda",
         category: "Banners",
         media: iconFeatureOrangeLeft,
         content: buildFeature(false),
