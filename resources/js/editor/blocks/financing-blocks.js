@@ -65,7 +65,7 @@ ${FINANCING_GRID_STYLES}`,
         media: iconFinancingCard,
         content: `
 <div class="fc-cards-grid">
-    ${FINANCING_CARD}
+    ${financingCard("bombillo.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
 </div>
 ${FINANCING_GRID_STYLES}`,
     },
