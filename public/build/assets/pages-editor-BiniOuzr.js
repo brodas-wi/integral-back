@@ -1525,10 +1525,7 @@ ${De}`}],Me=`
     <span class="mt-2 w-1.5 h-1.5 rounded-full bg-[#003B71] shrink-0"></span>
     <span>Lorem ipsum dolor sit amet consectetur adipiscing elit.</span>
 </li>`,H=`
-<li class="flex items-start gap-2">
-    <span class="mt-2 w-1 h-1 rounded-full pd-dot-muted shrink-0"></span>
-    <p class="text-sm pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-</li>`,Oe=`
+<p class="text-sm pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,Oe=`
 <div class="w-full rounded-xl border-2 pd-box-border px-6 py-4 flex flex-col items-start gap-1 text-center">
     <span class="text-2xl font-bold pd-text-primary uppercase tracking-wide">Invierte desde:</span>
     <span class="text-2xl font-black pd-text-orange">$150.00</span>
@@ -1552,11 +1549,9 @@ ${De}`}],Me=`
             <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             <div class="w-full flex flex-col gap-2 pt-3">
-                <ul class="list-none p-0 m-0 flex flex-col gap-2">
-                    ${H}
-                    ${H}
-                    ${H}
-                </ul>
+                ${H}
+                ${H}
+                ${H}
             </div>
         </div>
     </div>
@@ -1582,11 +1577,9 @@ ${oe}`},{id:"product-detail-box",label:"Detalle de producto con cuadro de precio
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             ${Oe}
             <div class="w-full flex flex-col gap-2 pt-3">
-                <ul class="list-none p-0 m-0 flex flex-col gap-2">
-                    ${H}
-                    ${H}
-                    ${H}
-                </ul>
+                ${H}
+                ${H}
+                ${H}
             </div>
         </div>
     </div>
@@ -1615,11 +1608,9 @@ ${oe}`},{id:"product-detail-three-col",label:"Detalle de producto (3 columnas)",
             <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             <div class="w-full flex flex-col gap-2 pt-3">
-                <ul class="list-none p-0 m-0 flex flex-col gap-2">
-                    ${H}
-                    ${H}
-                    ${H}
-                </ul>
+                ${H}
+                ${H}
+                ${H}
             </div>
         </div>
     </div>
@@ -1629,9 +1620,9 @@ ${oe}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos
 <ul class="list-none p-0 m-0 flex flex-col gap-3">
     ${D}
 </ul>`},{id:"product-detail-footnote",label:"Nota al pie",category:"Productos y Servicios",media:Gi,content:`
-<ul class="list-none p-0 m-0 flex flex-col gap-2">
+<div class="w-full flex flex-col gap-2">
     ${H}
-</ul>
+</div>
 ${oe}`},{id:"product-detail-price-box",label:"Cuadro de precio",category:"Productos y Servicios",media:Ne,content:`
 ${Oe}
 ${oe}`}],Pe=`

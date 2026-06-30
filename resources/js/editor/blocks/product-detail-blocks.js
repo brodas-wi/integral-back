@@ -106,10 +106,7 @@ const BULLET_ITEM = `
 </li>`;
 
 const FOOTNOTE = `
-<li class="flex items-start gap-2">
-    <span class="mt-2 w-1 h-1 rounded-full pd-dot-muted shrink-0"></span>
-    <p class="text-sm pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-</li>`;
+<p class="text-sm pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`;
 
 const PRICE_BOX = `
 <div class="w-full rounded-xl border-2 pd-box-border px-6 py-4 flex flex-col items-start gap-1 text-center">
@@ -143,11 +140,9 @@ export const productDetailBlocks = [
             <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             <div class="w-full flex flex-col gap-2 pt-3">
-                <ul class="list-none p-0 m-0 flex flex-col gap-2">
-                    ${FOOTNOTE}
-                    ${FOOTNOTE}
-                    ${FOOTNOTE}
-                </ul>
+                ${FOOTNOTE}
+                ${FOOTNOTE}
+                ${FOOTNOTE}
             </div>
         </div>
     </div>
@@ -180,11 +175,9 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             ${PRICE_BOX}
             <div class="w-full flex flex-col gap-2 pt-3">
-                <ul class="list-none p-0 m-0 flex flex-col gap-2">
-                    ${FOOTNOTE}
-                    ${FOOTNOTE}
-                    ${FOOTNOTE}
-                </ul>
+                ${FOOTNOTE}
+                ${FOOTNOTE}
+                ${FOOTNOTE}
             </div>
         </div>
     </div>
@@ -220,11 +213,9 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             <div class="w-full flex flex-col gap-2 pt-3">
-                <ul class="list-none p-0 m-0 flex flex-col gap-2">
-                    ${FOOTNOTE}
-                    ${FOOTNOTE}
-                    ${FOOTNOTE}
-                </ul>
+                ${FOOTNOTE}
+                ${FOOTNOTE}
+                ${FOOTNOTE}
             </div>
         </div>
     </div>
@@ -248,9 +239,9 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
         category: "Productos y Servicios",
         media: iconFootnote,
         content: `
-<ul class="list-none p-0 m-0 flex flex-col gap-2">
+<div class="w-full flex flex-col gap-2">
     ${FOOTNOTE}
-</ul>
+</div>
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
     {
