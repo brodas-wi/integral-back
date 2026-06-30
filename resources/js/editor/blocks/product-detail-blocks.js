@@ -112,8 +112,8 @@ const FOOTNOTE = `
 </li>`;
 
 const PRICE_BOX = `
-<div class="w-full rounded-xl border-2 pd-box-border px-6 py-4 flex flex-col items-center gap-1 text-center">
-    <span class="text-lg font-bold pd-text-primary uppercase tracking-wide">Invierte desde:</span>
+<div class="w-full rounded-xl border-2 pd-box-border px-6 py-4 flex flex-col items-start gap-1 text-center">
+    <span class="text-2xl font-bold pd-text-primary uppercase tracking-wide">Invierte desde:</span>
     <span class="text-2xl font-black pd-text-orange">$150.00</span>
 </div>`;
 
