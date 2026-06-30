@@ -1536,12 +1536,12 @@ ${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos
     <circle cx="7" cy="20" r="2" fill="#E97300" fill-opacity="0.7"/>
     <circle cx="16" cy="20" r="2" fill="#E97300" fill-opacity="0.7"/>
     <circle cx="25" cy="20" r="2" fill="#E97300" fill-opacity="0.7"/>
-</svg>`,le=(i,e)=>`
+</svg>`,le=i=>`
 <div class="fc-card flex flex-col items-center gap-4 bg-white rounded-xl shadow-lg p-6">
     <div class="w-16 h-16 rounded-full bg-[#E97300] flex items-center justify-center shrink-0 overflow-hidden">
-        <img src="${D(`images/blocks/financiamiento/${i}`)}" alt="icono" class="w-10 h-10 object-contain" />
+        <img src="${D("images/placeholder.svg")}" alt="icono" class="w-10 h-10 object-contain" />
     </div>
-    <p class="text-base text-[#003B71] text-center leading-relaxed m-0">${e}</p>
+    <p class="text-base text-[#003B71] text-center leading-relaxed m-0">${i}</p>
 </div>`,Yi=[{id:"financing-section",label:"Sección de financiamiento",category:"Productos y Servicios",media:Wi,content:`
 <section class="w-full bg-white px-16 py-12">
     <div class="flex flex-col gap-4">
@@ -1551,16 +1551,16 @@ ${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos
         </div>
         <p class="text-lg text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         <div class="fc-cards-grid">
-            ${le("bombillo.png","Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
-            ${le("electricidad.png","Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
-            ${le("engranajes.png","Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
-            ${le("intercambio.png","Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
         </div>
     </div>
 </section>
 ${De}`},{id:"financing-card",label:"Tarjeta de financiamiento",category:"Productos y Servicios",media:Xi,content:`
 <div class="fc-cards-grid">
-    ${le("bombillo.png","Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+    ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
 </div>
 ${De}`}],Gi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>

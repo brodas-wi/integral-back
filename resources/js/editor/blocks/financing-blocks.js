@@ -28,10 +28,10 @@ const iconFinancingSection = `<svg viewBox="0 0 32 32" width="32" height="32">
     <circle cx="25" cy="20" r="2" fill="#E97300" fill-opacity="0.7"/>
 </svg>`;
 
-const financingCard = (icon, text) => `
+const financingCard = (text) => `
 <div class="fc-card flex flex-col items-center gap-4 bg-white rounded-xl shadow-lg p-6">
     <div class="w-16 h-16 rounded-full bg-[#E97300] flex items-center justify-center shrink-0 overflow-hidden">
-        <img src="${assetUrl(`images/blocks/financiamiento/${icon}`)}" alt="icono" class="w-10 h-10 object-contain" />
+        <img src="${assetUrl("images/placeholder.svg")}" alt="icono" class="w-10 h-10 object-contain" />
     </div>
     <p class="text-base text-[#003B71] text-center leading-relaxed m-0">${text}</p>
 </div>`;
@@ -51,10 +51,10 @@ export const financingBlocks = [
         </div>
         <p class="text-lg text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         <div class="fc-cards-grid">
-            ${financingCard("bombillo.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
-            ${financingCard("electricidad.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
-            ${financingCard("engranajes.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
-            ${financingCard("intercambio.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${financingCard("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${financingCard("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${financingCard("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${financingCard("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
         </div>
     </div>
 </section>
@@ -67,7 +67,7 @@ ${FINANCING_GRID_STYLES}`,
         media: iconFinancingCard,
         content: `
 <div class="fc-cards-grid">
-    ${financingCard("bombillo.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+    ${financingCard("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
 </div>
 ${FINANCING_GRID_STYLES}`,
     },
