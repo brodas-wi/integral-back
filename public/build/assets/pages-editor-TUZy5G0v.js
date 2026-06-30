@@ -1522,7 +1522,7 @@ ${qe}`}],Hi=`
         <div class="flex flex-col items-center gap-4">
             <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full bg-[#E97300] text-white text-base font-bold text-center uppercase tracking-wide max-w-full hover:bg-[#c96200] transition-colors no-underline">Adquiere tu cuenta</a>
-            <div class="w-full flex flex-col gap-2 pt-3 border-t border-[#e5e7eb] mt-1">
+            <div class="w-full flex flex-col gap-2 pt-3 mt-1">
                 <ul class="list-none p-0 m-0 flex flex-col gap-2">
                     ${Z}
                     ${Z}
@@ -1569,8 +1569,10 @@ ${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos
     ${Z}
 </ul>`}],De=`
 <style>
-.fc-cards-grid{display:flex;flex-wrap:wrap;gap:1.5rem;}
-.fc-card{flex:0 1 220px;min-width:220px;max-width:260px;}
+.fc-cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;}
+.fc-cards-grid>.fc-card:last-child:nth-child(4n+1){grid-column:1/-1;max-width:25%;margin:0 auto;}
+@media(max-width:992px){.fc-cards-grid>.fc-card:last-child:nth-child(4n+1){max-width:50%;}}
+@media(max-width:640px){.fc-cards-grid{grid-template-columns:1fr;}.fc-cards-grid>.fc-card:last-child:nth-child(4n+1){max-width:none;}}
 </style>`,Yi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <circle cx="16" cy="12" r="6" fill="#E97300" fill-opacity="0.8"/>

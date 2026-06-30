@@ -2,8 +2,10 @@ import { assetUrl } from "@/utils/url.js";
 
 const FINANCING_GRID_STYLES = `
 <style>
-.fc-cards-grid{display:flex;flex-wrap:wrap;gap:1.5rem;}
-.fc-card{flex:0 1 220px;min-width:220px;max-width:260px;}
+.fc-cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;}
+.fc-cards-grid>.fc-card:last-child:nth-child(4n+1){grid-column:1/-1;max-width:25%;margin:0 auto;}
+@media(max-width:992px){.fc-cards-grid>.fc-card:last-child:nth-child(4n+1){max-width:50%;}}
+@media(max-width:640px){.fc-cards-grid{grid-template-columns:1fr;}.fc-cards-grid>.fc-card:last-child:nth-child(4n+1){max-width:none;}}
 </style>`;
 
 const iconFinancingCard = `<svg viewBox="0 0 32 32" width="32" height="32">

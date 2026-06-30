@@ -110,7 +110,7 @@ export const productDetailBlocks = [
         <div class="flex flex-col items-center gap-4">
             <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full bg-[#E97300] text-white text-base font-bold text-center uppercase tracking-wide max-w-full hover:bg-[#c96200] transition-colors no-underline">Adquiere tu cuenta</a>
-            <div class="w-full flex flex-col gap-2 pt-3 border-t border-[#e5e7eb] mt-1">
+            <div class="w-full flex flex-col gap-2 pt-3 mt-1">
                 <ul class="list-none p-0 m-0 flex flex-col gap-2">
                     ${FOOTNOTE}
                     ${FOOTNOTE}
