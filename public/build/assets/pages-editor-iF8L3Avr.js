@@ -151,7 +151,7 @@
     <rect x="2" y="4" width="7" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="11" y="4" width="7" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
     <rect x="20" y="4" width="10" height="24" fill="#003B71" rx="2" fill-opacity="0.5"/>
-</svg>`,I='<div class="col-cell"></div>',X=`
+</svg>`,I='<div class="col-cell"></div>',W=`
 <style>
 .col-section{width:100%;padding:3.5rem 4rem;box-sizing:border-box;}
 .col-grid{display:grid;gap:1.5rem;}
@@ -169,14 +169,14 @@
 <div class="col-section">
     <div class="col-cell"></div>
 </div>
-${X}`},{id:"columns-2",label:"2 Columnas",category:"Columnas",media:wt,content:`
+${W}`},{id:"columns-2",label:"2 Columnas",category:"Columnas",media:wt,content:`
 <div class="col-section">
     <div class="col-grid col-grid--2">
         ${I}
         ${I}
     </div>
 </div>
-${X}`},{id:"columns-3",label:"3 Columnas",category:"Columnas",media:kt,content:`
+${W}`},{id:"columns-3",label:"3 Columnas",category:"Columnas",media:kt,content:`
 <div class="col-section">
     <div class="col-grid col-grid--3">
         ${I}
@@ -184,7 +184,7 @@ ${X}`},{id:"columns-3",label:"3 Columnas",category:"Columnas",media:kt,content:`
         ${I}
     </div>
 </div>
-${X}`},{id:"columns-4",label:"4 Columnas",category:"Columnas",media:Bt,content:`
+${W}`},{id:"columns-4",label:"4 Columnas",category:"Columnas",media:Bt,content:`
 <div class="col-section">
     <div class="col-grid col-grid--4">
         ${I}
@@ -193,21 +193,21 @@ ${X}`},{id:"columns-4",label:"4 Columnas",category:"Columnas",media:Bt,content:`
         ${I}
     </div>
 </div>
-${X}`},{id:"columns-1-3",label:"1/3 — 2/3",category:"Columnas",media:Et,content:`
+${W}`},{id:"columns-1-3",label:"1/3 — 2/3",category:"Columnas",media:Et,content:`
 <div class="col-section">
     <div class="col-grid col-grid--1-2">
         ${I}
         ${I}
     </div>
 </div>
-${X}`},{id:"columns-3-1",label:"2/3 — 1/3",category:"Columnas",media:$t,content:`
+${W}`},{id:"columns-3-1",label:"2/3 — 1/3",category:"Columnas",media:$t,content:`
 <div class="col-section">
     <div class="col-grid col-grid--2-1">
         ${I}
         ${I}
     </div>
 </div>
-${X}`},{id:"columns-1-2",label:"1/4 — 1/4 — 1/2",category:"Columnas",media:St,content:`
+${W}`},{id:"columns-1-2",label:"1/4 — 1/4 — 1/2",category:"Columnas",media:St,content:`
 <div class="col-section">
     <div class="col-grid col-grid--1-1-2">
         ${I}
@@ -215,7 +215,7 @@ ${X}`},{id:"columns-1-2",label:"1/4 — 1/4 — 1/2",category:"Columnas",media:S
         ${I}
     </div>
 </div>
-${X}`},{id:"columns-2-1",label:"1/2 — 1/4 — 1/4",category:"Columnas",media:Ct,content:`
+${W}`},{id:"columns-2-1",label:"1/2 — 1/4 — 1/4",category:"Columnas",media:Ct,content:`
 <div class="col-section">
     <div class="col-grid col-grid--2-1-1">
         ${I}
@@ -223,7 +223,7 @@ ${X}`},{id:"columns-2-1",label:"1/2 — 1/4 — 1/4",category:"Columnas",media:C
         ${I}
     </div>
 </div>
-${X}`}],jt=`<svg viewBox="0 0 32 32" width="32" height="32">
+${W}`}],jt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="3" y="4" width="11" height="24" fill="none" stroke="#003B71" stroke-width="1" rx="1"/>
     <rect x="5" y="7" width="7" height="1.5" rx="0.75" fill="#003B71" fill-opacity="0.8"/>
@@ -361,7 +361,7 @@ ${Ee}`}],We=function(){(function(){function i(t){if(!t||t.__pcInit)return;t.__pc
 .pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
 @media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-card{flex:0 0 220px;}}
-@media(max-width:480px){.pc-card{flex:0 0 80vw;}}`;function Mt(i){const e=i.img||D("images/placeholder.svg"),t=i.title||"TÍTULO DEL PRODUCTO",a=i.desc||"Descripción breve del producto financiero.",r=i.href||"#",l=i.btn_label||"Solicitar";return`<div class="pc-card"><div class="pc-card-img-wrap"><img src="${e}" alt="${t}" class="pc-card-img"></div><div class="pc-card-body"><h3 class="pc-card-title">${t}</h3><p class="pc-card-desc">${a}</p></div><a href="${r}" class="pc-btn">${l}</a></div>`}function Ye(i){const e=i.heading||"Créditos",t=i.subheading||"Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",a=i.more_href||"#",r=i.more_label||"Ver más",l=i.show_more!==!1,c=(i.cards||[]).map(Mt).join(""),h=l?`<div class="pc-more-wrap"><a href="${a}" class="pc-more-btn">${r}</a></div>`:"";return`<section class="pc-section"><style>${Dt}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${e}</h2><p class="pc-section-subheading">${t}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${c}</div></div>${h}</section>`}const P={heading:"Créditos",subheading:"Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",more_href:"#",more_label:"Ver más",cards:[{img:"",title:"CREDINVIERTE",desc:"Adquiere activos fijos",href:"#",btn_label:"Solicitar"},{img:"",title:"SOLUCIONES INTEGRALES",desc:"Financiamiento PYME",href:"#",btn_label:"Solicitar"},{img:"",title:"CREDI-CONFIAMOS",desc:"Rápido y sin fiador",href:"#",btn_label:"Solicitar"},{img:"",title:"CREDILÍNEA",desc:"Línea rotativa",href:"#",btn_label:"Solicitar"}]};function Nt(i,e){const t=document.getElementById("pc-config-modal");if(t&&t.remove(),!document.getElementById("pc-modal-styles")){const d=document.createElement("style");d.id="pc-modal-styles",d.textContent=`
+@media(max-width:480px){.pc-card{flex:0 0 80vw;}}`;function Mt(i){const e=i.img||D("images/placeholder.svg"),t=i.title||"TÍTULO DEL PRODUCTO",a=i.desc||"Descripción breve del producto financiero.",r=i.href||"#",l=i.btn_label||"Solicitar";return`<div class="pc-card"><div class="pc-card-img-wrap"><img src="${e}" alt="${t}" class="pc-card-img"></div><div class="pc-card-body"><h3 class="pc-card-title">${t}</h3><p class="pc-card-desc">${a}</p></div><a href="${r}" class="pc-btn">${l}</a></div>`}function Ye(i){const e=i.heading||"Créditos",t=i.subheading||"Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",a=i.more_href||"#",r=i.more_label||"Ver más",l=i.show_more!==!1,c=(i.cards||[]).map(Mt).join(""),h=l?`<div class="pc-more-wrap"><a href="${a}" class="pc-more-btn">${r}</a></div>`:"";return`<section class="pc-section"><style>${Dt}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${e}</h2><p class="pc-section-subheading">${t}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${c}</div></div>${h}</section>`}const H={heading:"Créditos",subheading:"Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",more_href:"#",more_label:"Ver más",cards:[{img:"",title:"CREDINVIERTE",desc:"Adquiere activos fijos",href:"#",btn_label:"Solicitar"},{img:"",title:"SOLUCIONES INTEGRALES",desc:"Financiamiento PYME",href:"#",btn_label:"Solicitar"},{img:"",title:"CREDI-CONFIAMOS",desc:"Rápido y sin fiador",href:"#",btn_label:"Solicitar"},{img:"",title:"CREDILÍNEA",desc:"Línea rotativa",href:"#",btn_label:"Solicitar"}]};function Nt(i,e){const t=document.getElementById("pc-config-modal");if(t&&t.remove(),!document.getElementById("pc-modal-styles")){const d=document.createElement("style");d.id="pc-modal-styles",d.textContent=`
             .pc-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
             .pc-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:700px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
             .pc-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
@@ -416,7 +416,7 @@ ${Ee}`}],We=function(){(function(){function i(t){if(!t||t.__pcInit)return;t.__pc
             .pc-toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform 0.2s;}
             .pc-toggle input:checked+.pc-toggle-slider{background:#003B71;}
             .pc-toggle input:checked+.pc-toggle-slider:before{transform:translateX(18px);}
-        `,document.head.appendChild(d)}const a=(()=>{try{return JSON.parse(e.getAttributes()["data-product-cards-config"]||"{}")}catch{return{}}})(),r={heading:a.heading??P.heading,subheading:a.subheading??P.subheading,more_href:a.more_href??P.more_href,more_label:a.more_label??P.more_label,show_more:a.show_more??!0,cards:JSON.parse(JSON.stringify(a.cards??P.cards))},l=document.createElement("div");l.id="pc-config-modal",l.className="pc-overlay";const n=document.createElement("div");n.className="pc-modal",n.innerHTML=`
+        `,document.head.appendChild(d)}const a=(()=>{try{return JSON.parse(e.getAttributes()["data-product-cards-config"]||"{}")}catch{return{}}})(),r={heading:a.heading??H.heading,subheading:a.subheading??H.subheading,more_href:a.more_href??H.more_href,more_label:a.more_label??H.more_label,show_more:a.show_more??!0,cards:JSON.parse(JSON.stringify(a.cards??H.cards))},l=document.createElement("div");l.id="pc-config-modal",l.className="pc-overlay";const n=document.createElement("div");n.className="pc-modal",n.innerHTML=`
         <div class="pc-modal-header">
             <h2><i class="ri-layout-grid-line"></i> Configurar Sección de Productos</h2>
             <button id="pc-modal-close" class="pc-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
@@ -499,7 +499,7 @@ ${Ee}`}],We=function(){(function(){function i(t){if(!t||t.__pcInit)return;t.__pc
                         <label class="pc-label">Texto del botón</label>
                         <input class="pc-input" placeholder="Solicitar" value="${m.btn_label||"Solicitar"}" data-field="btn_label">
                     </div>
-                </div>`,b.querySelectorAll("[data-field]").forEach(g=>{g.addEventListener("input",()=>{if(m[g.dataset.field]=g.value,g.dataset.field==="img"){const k=b.querySelector(`#pc-img-wrap-${u}`);k.innerHTML=g.value?`<img class="pc-img-preview" src="${g.value}" alt="">`:'<div class="pc-img-placeholder"><i class="ri-image-line"></i></div>'}})}),b.querySelector(".pc-pick-img").addEventListener("click",()=>{Xe({type:"image",title:"Seleccionar imagen de tarjeta",onSelect:g=>{m.img=g,b.querySelector("[data-field='img']").value=g,b.querySelector(`#pc-img-wrap-${u}`).innerHTML=`<img class="pc-img-preview" src="${g}" alt="">`}})}),b.querySelector(".pc-remove-card").addEventListener("click",()=>{r.cards.splice(u,1),c()}),d.appendChild(b)})}c(),n.querySelector("#pc-add-card").addEventListener("click",()=>{r.cards.push({img:"",title:"NUEVO PRODUCTO",desc:"Descripción del producto.",href:"#",btn_label:"Solicitar"}),c(),n.querySelector("#pc-cards-list").lastElementChild?.scrollIntoView({behavior:"smooth",block:"nearest"})});const h=()=>l.remove();n.querySelector("#pc-modal-close").addEventListener("click",h),n.querySelector("#pc-modal-cancel").addEventListener("click",h),l.addEventListener("click",d=>{d.target===l&&h()}),n.querySelector("#pc-modal-save").addEventListener("click",()=>{r.heading=n.querySelector("#pc-heading").value.trim()||P.heading,r.subheading=n.querySelector("#pc-subheading").value.trim()||P.subheading,r.show_more=n.querySelector("#pc-show-more").checked,r.more_label=n.querySelector("#pc-more-label").value.trim()||P.more_label,r.more_href=n.querySelector("#pc-more-href").value.trim()||"#",e.addAttributes({"data-product-cards-config":JSON.stringify(r)}),e.components(Ye(r)),setTimeout(()=>pe(i),300),h()})}function pe(i){try{const e=i.Canvas.getFrameEl()?.contentDocument;if(!e)return;const t=e.getElementById("pc-runtime-script");t&&t.remove(),e.querySelectorAll(".pc-section").forEach(r=>{delete r.__pcInit});const a=e.createElement("script");a.id="pc-runtime-script",a.textContent=qt,e.head.appendChild(a)}catch(e){console.warn("[ProductCards] Error reiniciando carrusel:",e)}}const Ot=`<svg viewBox="0 0 32 32" width="32" height="32">
+                </div>`,b.querySelectorAll("[data-field]").forEach(g=>{g.addEventListener("input",()=>{if(m[g.dataset.field]=g.value,g.dataset.field==="img"){const k=b.querySelector(`#pc-img-wrap-${u}`);k.innerHTML=g.value?`<img class="pc-img-preview" src="${g.value}" alt="">`:'<div class="pc-img-placeholder"><i class="ri-image-line"></i></div>'}})}),b.querySelector(".pc-pick-img").addEventListener("click",()=>{Xe({type:"image",title:"Seleccionar imagen de tarjeta",onSelect:g=>{m.img=g,b.querySelector("[data-field='img']").value=g,b.querySelector(`#pc-img-wrap-${u}`).innerHTML=`<img class="pc-img-preview" src="${g}" alt="">`}})}),b.querySelector(".pc-remove-card").addEventListener("click",()=>{r.cards.splice(u,1),c()}),d.appendChild(b)})}c(),n.querySelector("#pc-add-card").addEventListener("click",()=>{r.cards.push({img:"",title:"NUEVO PRODUCTO",desc:"Descripción del producto.",href:"#",btn_label:"Solicitar"}),c(),n.querySelector("#pc-cards-list").lastElementChild?.scrollIntoView({behavior:"smooth",block:"nearest"})});const h=()=>l.remove();n.querySelector("#pc-modal-close").addEventListener("click",h),n.querySelector("#pc-modal-cancel").addEventListener("click",h),l.addEventListener("click",d=>{d.target===l&&h()}),n.querySelector("#pc-modal-save").addEventListener("click",()=>{r.heading=n.querySelector("#pc-heading").value.trim()||H.heading,r.subheading=n.querySelector("#pc-subheading").value.trim()||H.subheading,r.show_more=n.querySelector("#pc-show-more").checked,r.more_label=n.querySelector("#pc-more-label").value.trim()||H.more_label,r.more_href=n.querySelector("#pc-more-href").value.trim()||"#",e.addAttributes({"data-product-cards-config":JSON.stringify(r)}),e.components(Ye(r)),setTimeout(()=>pe(i),300),h()})}function pe(i){try{const e=i.Canvas.getFrameEl()?.contentDocument;if(!e)return;const t=e.getElementById("pc-runtime-script");t&&t.remove(),e.querySelectorAll(".pc-section").forEach(r=>{delete r.__pcInit});const a=e.createElement("script");a.id="pc-runtime-script",a.textContent=qt,e.head.appendChild(a)}catch(e){console.warn("[ProductCards] Error reiniciando carrusel:",e)}}const Ot=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="6" width="7" height="20" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.4" rx="1.5"/>
     <rect x="2.5" y="8" width="4" height="3" fill="#003B71" fill-opacity="0.15" rx="0.8"/>
@@ -519,7 +519,7 @@ ${Ee}`}],We=function(){(function(){function i(t){if(!t||t.__pcInit)return;t.__pc
     <rect x="26.5" y="6" width="4.5" height="20" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.4" rx="1.5"/>
     <rect x="27.5" y="8" width="2.5" height="3" fill="#003B71" fill-opacity="0.15" rx="0.8"/>
     <rect x="27.5" y="20" width="2.5" height="2.5" rx="1" fill="#003B71" fill-opacity="0.5"/>
-</svg>`;function Pt(i){const e="product-cards-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Sección de Productos",tagName:"div",draggable:!0,droppable:!1,removable:!0,copyable:!0,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":e,"data-product-cards-config":JSON.stringify(P)},components:Ye(P),script:We,"script-props":["data-product-cards-config"],traits:[{type:"button",label:"Productos",text:"Administrar Sección",full:!0,command:"open-product-cards-config"}],toolbar:[]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),i.Commands.add("open-product-cards-config",{run(t){const a=t.getSelected();a&&Nt(t,a)}}),i.BlockManager.add("product-cards-block",{label:"Sección de productos",category:"Productos y Servicios",media:Ot,activate:!0,content:{type:e,attributes:{"data-gjs-type":e}}}),i.on("component:mount",t=>{t.getEl()?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>pe(i),400))}),i.on("component:selected",t=>{const a=t.getEl();if(!a)return;const r=a.closest(`[data-gjs-type="${e}"]`);if(r&&!a.hasAttribute("data-gjs-type")){const n=i.getWrapper().find(`[data-gjs-type="${e}"]`).find(c=>c.getEl()===r);n&&setTimeout(()=>i.select(n),0)}}),i.on("canvas:render",()=>{setTimeout(()=>pe(i),600)}),i.on("storage:end:load",()=>{setTimeout(()=>pe(i),800)})}const Ht=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`;function Pt(i){const e="product-cards-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Sección de Productos",tagName:"div",draggable:!0,droppable:!1,removable:!0,copyable:!0,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":e,"data-product-cards-config":JSON.stringify(H)},components:Ye(H),script:We,"script-props":["data-product-cards-config"],traits:[{type:"button",label:"Productos",text:"Administrar Sección",full:!0,command:"open-product-cards-config"}],toolbar:[]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),i.Commands.add("open-product-cards-config",{run(t){const a=t.getSelected();a&&Nt(t,a)}}),i.BlockManager.add("product-cards-block",{label:"Sección de productos",category:"Productos y Servicios",media:Ot,activate:!0,content:{type:e,attributes:{"data-gjs-type":e}}}),i.on("component:mount",t=>{t.getEl()?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>pe(i),400))}),i.on("component:selected",t=>{const a=t.getEl();if(!a)return;const r=a.closest(`[data-gjs-type="${e}"]`);if(r&&!a.hasAttribute("data-gjs-type")){const n=i.getWrapper().find(`[data-gjs-type="${e}"]`).find(c=>c.getEl()===r);n&&setTimeout(()=>i.select(n),0)}}),i.on("canvas:render",()=>{setTimeout(()=>pe(i),600)}),i.on("storage:end:load",()=>{setTimeout(()=>pe(i),800)})}const Ht=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="5" width="14" height="22" fill="#003B71" rx="2"/>
     <rect x="3" y="7" width="5" height="5" fill="rgba(255,255,255,0.2)" rx="1.2"/>
@@ -654,7 +654,7 @@ ${Ut}`}],Ge=function(){(function(){function i(t){if(!t||t.__savInit)return;t.__s
 .sav-more-btn:hover{background:#c96200;}
 @media(max-width:1280px){.sav-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.sav-section{padding:2.5rem 1.5rem;}.sav-card{flex:0 0 200px;}.sav-blue-box{padding:1.5rem;}}
-@media(max-width:480px){.sav-card{flex:0 0 75vw;}}`;function Yt(i){const e=i.img||D("images/placeholder.svg"),t=i.title||"TÍTULO DEL PRODUCTO",a=i.desc?`<p class="sav-card-desc">${i.desc}</p>`:"",r=i.href||"#",l=i.btn_label||"Solicitar";return`<div class="sav-card"><div class="sav-card-img-wrap"><img src="${e}" alt="${t}" class="sav-card-img"></div><h3 class="sav-card-title">${t}</h3>${a}<a href="${r}" class="sav-btn">${l}</a></div>`}function Je(i){const e=i.heading||"Depósitos y Cuentas de Ahorro",t=i.subheading||"Productos diseñados para hacer crecer tu dinero de forma segura.",a=i.more_href||"#",r=i.more_label||"Ver más",l=i.show_more!==!1,c=(i.cards||[]).map(Yt).join(""),h=D("images/brand-watermark.png"),d=l?`<div class="sav-more-wrap"><a href="${a}" class="sav-more-btn">${r}</a></div>`:"";return`<section class="sav-section"><style>${Wt}</style><div class="sav-blue-box"><div class="sav-watermark"><img src="${h}" alt=""></div><div style="display:flex;flex-direction:column;gap:0.5rem;text-align:center;position:relative;z-index:1;"><h2 class="sav-heading">${e}</h2><p class="sav-subheading">${t}</p></div><div class="sav-carousel-wrap"><div class="sav-track">${c}</div></div>${d}</div></section>`}const H={heading:"Depósitos y Cuentas de Ahorro",subheading:"Productos diseñados para hacer crecer tu dinero de forma segura.",more_href:"#",more_label:"Ver más",cards:[{img:"",title:"CUENTA DE AHORRO ESTÁNDAR",href:"#",btn_label:"Solicitar"},{img:"",title:"AHORRO RENTABLE",href:"#",btn_label:"Solicitar"},{img:"",title:"CUENTA DE AHORRO MÁS",href:"#",btn_label:"Solicitar"},{img:"",title:"DEPÓSITO DE PLAZO FIJO",href:"#",btn_label:"Solicitar"}]};function Gt(i,e){const t=document.getElementById("sav-config-modal");if(t&&t.remove(),!document.getElementById("sav-modal-styles")){const d=document.createElement("style");d.id="sav-modal-styles",d.textContent=`
+@media(max-width:480px){.sav-card{flex:0 0 75vw;}}`;function Yt(i){const e=i.img||D("images/placeholder.svg"),t=i.title||"TÍTULO DEL PRODUCTO",a=i.desc?`<p class="sav-card-desc">${i.desc}</p>`:"",r=i.href||"#",l=i.btn_label||"Solicitar";return`<div class="sav-card"><div class="sav-card-img-wrap"><img src="${e}" alt="${t}" class="sav-card-img"></div><h3 class="sav-card-title">${t}</h3>${a}<a href="${r}" class="sav-btn">${l}</a></div>`}function Je(i){const e=i.heading||"Depósitos y Cuentas de Ahorro",t=i.subheading||"Productos diseñados para hacer crecer tu dinero de forma segura.",a=i.more_href||"#",r=i.more_label||"Ver más",l=i.show_more!==!1,c=(i.cards||[]).map(Yt).join(""),h=D("images/brand-watermark.png"),d=l?`<div class="sav-more-wrap"><a href="${a}" class="sav-more-btn">${r}</a></div>`:"";return`<section class="sav-section"><style>${Wt}</style><div class="sav-blue-box"><div class="sav-watermark"><img src="${h}" alt=""></div><div style="display:flex;flex-direction:column;gap:0.5rem;text-align:center;position:relative;z-index:1;"><h2 class="sav-heading">${e}</h2><p class="sav-subheading">${t}</p></div><div class="sav-carousel-wrap"><div class="sav-track">${c}</div></div>${d}</div></section>`}const R={heading:"Depósitos y Cuentas de Ahorro",subheading:"Productos diseñados para hacer crecer tu dinero de forma segura.",more_href:"#",more_label:"Ver más",cards:[{img:"",title:"CUENTA DE AHORRO ESTÁNDAR",href:"#",btn_label:"Solicitar"},{img:"",title:"AHORRO RENTABLE",href:"#",btn_label:"Solicitar"},{img:"",title:"CUENTA DE AHORRO MÁS",href:"#",btn_label:"Solicitar"},{img:"",title:"DEPÓSITO DE PLAZO FIJO",href:"#",btn_label:"Solicitar"}]};function Gt(i,e){const t=document.getElementById("sav-config-modal");if(t&&t.remove(),!document.getElementById("sav-modal-styles")){const d=document.createElement("style");d.id="sav-modal-styles",d.textContent=`
             .sav-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
             .sav-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:700px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
             .sav-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
@@ -702,7 +702,7 @@ ${Ut}`}],Ge=function(){(function(){function i(t){if(!t||t.__savInit)return;t.__s
             .sav-toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform 0.2s;}
             .sav-toggle input:checked+.sav-toggle-slider{background:#003B71;}
             .sav-toggle input:checked+.sav-toggle-slider:before{transform:translateX(18px);}
-        `,document.head.appendChild(d)}const a=(()=>{try{return JSON.parse(e.getAttributes()["data-savings-config"]||"{}")}catch{return{}}})(),r={heading:a.heading??H.heading,subheading:a.subheading??H.subheading,more_href:a.more_href??H.more_href,more_label:a.more_label??H.more_label,show_more:a.show_more??!0,cards:JSON.parse(JSON.stringify(a.cards??H.cards))},l=document.createElement("div");l.id="sav-config-modal",l.className="sav-overlay";const n=document.createElement("div");n.className="sav-modal",n.innerHTML=`
+        `,document.head.appendChild(d)}const a=(()=>{try{return JSON.parse(e.getAttributes()["data-savings-config"]||"{}")}catch{return{}}})(),r={heading:a.heading??R.heading,subheading:a.subheading??R.subheading,more_href:a.more_href??R.more_href,more_label:a.more_label??R.more_label,show_more:a.show_more??!0,cards:JSON.parse(JSON.stringify(a.cards??R.cards))},l=document.createElement("div");l.id="sav-config-modal",l.className="sav-overlay";const n=document.createElement("div");n.className="sav-modal",n.innerHTML=`
         <div class="sav-modal-header">
             <h2><i class="ri-bank-line"></i> Configurar Sección de Productos</h2>
             <button id="sav-modal-close" class="sav-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
@@ -785,7 +785,7 @@ ${Ut}`}],Ge=function(){(function(){function i(t){if(!t||t.__savInit)return;t.__s
                         <label class="sav-label">Texto del botón</label>
                         <input class="sav-input" placeholder="Solicitar" value="${m.btn_label||"Solicitar"}" data-field="btn_label">
                     </div>
-                </div>`,b.querySelectorAll("[data-field]").forEach(g=>{g.addEventListener("input",()=>{if(m[g.dataset.field]=g.value,g.dataset.field==="img"){const k=b.querySelector(`#sav-img-wrap-${u}`);k.innerHTML=g.value?`<img class="sav-img-preview" src="${g.value}" alt="">`:'<div class="sav-img-placeholder"><i class="ri-image-line"></i></div>'}})}),b.querySelector(".sav-pick-img").addEventListener("click",()=>{Xe({type:"image",title:"Seleccionar imagen de tarjeta",onSelect:g=>{m.img=g,b.querySelector("[data-field='img']").value=g,b.querySelector(`#sav-img-wrap-${u}`).innerHTML=`<img class="sav-img-preview" src="${g}" alt="">`}})}),b.querySelector(".sav-remove-card").addEventListener("click",()=>{r.cards.splice(u,1),c()}),d.appendChild(b)})}c(),n.querySelector("#sav-add-card").addEventListener("click",()=>{r.cards.push({img:"",title:"NUEVO PRODUCTO",desc:"",href:"#",btn_label:"Solicitar"}),c(),n.querySelector("#sav-cards-list").lastElementChild?.scrollIntoView({behavior:"smooth",block:"nearest"})});const h=()=>l.remove();n.querySelector("#sav-modal-close").addEventListener("click",h),n.querySelector("#sav-modal-cancel").addEventListener("click",h),n.querySelector("#sav-modal-save").addEventListener("click",()=>{r.heading=n.querySelector("#sav-heading").value.trim()||H.heading,r.subheading=n.querySelector("#sav-subheading").value.trim()||H.subheading,r.show_more=n.querySelector("#sav-show-more").checked,r.more_label=n.querySelector("#sav-more-label").value.trim()||H.more_label,r.more_href=n.querySelector("#sav-more-href").value.trim()||"#",e.addAttributes({"data-savings-config":JSON.stringify(r)}),e.components(Je(r)),setTimeout(()=>me(i),300),h()})}function me(i){try{const e=i.Canvas.getFrameEl()?.contentDocument;if(!e)return;const t=e.getElementById("sav-runtime-script");t&&t.remove(),e.querySelectorAll(".sav-section").forEach(r=>{delete r.__savInit});const a=e.createElement("script");a.id="sav-runtime-script",a.textContent=Xt,e.head.appendChild(a)}catch(e){console.warn("[Savings] Error reiniciando carrusel:",e)}}const Jt=`<svg viewBox="0 0 32 32" width="32" height="32">
+                </div>`,b.querySelectorAll("[data-field]").forEach(g=>{g.addEventListener("input",()=>{if(m[g.dataset.field]=g.value,g.dataset.field==="img"){const k=b.querySelector(`#sav-img-wrap-${u}`);k.innerHTML=g.value?`<img class="sav-img-preview" src="${g.value}" alt="">`:'<div class="sav-img-placeholder"><i class="ri-image-line"></i></div>'}})}),b.querySelector(".sav-pick-img").addEventListener("click",()=>{Xe({type:"image",title:"Seleccionar imagen de tarjeta",onSelect:g=>{m.img=g,b.querySelector("[data-field='img']").value=g,b.querySelector(`#sav-img-wrap-${u}`).innerHTML=`<img class="sav-img-preview" src="${g}" alt="">`}})}),b.querySelector(".sav-remove-card").addEventListener("click",()=>{r.cards.splice(u,1),c()}),d.appendChild(b)})}c(),n.querySelector("#sav-add-card").addEventListener("click",()=>{r.cards.push({img:"",title:"NUEVO PRODUCTO",desc:"",href:"#",btn_label:"Solicitar"}),c(),n.querySelector("#sav-cards-list").lastElementChild?.scrollIntoView({behavior:"smooth",block:"nearest"})});const h=()=>l.remove();n.querySelector("#sav-modal-close").addEventListener("click",h),n.querySelector("#sav-modal-cancel").addEventListener("click",h),n.querySelector("#sav-modal-save").addEventListener("click",()=>{r.heading=n.querySelector("#sav-heading").value.trim()||R.heading,r.subheading=n.querySelector("#sav-subheading").value.trim()||R.subheading,r.show_more=n.querySelector("#sav-show-more").checked,r.more_label=n.querySelector("#sav-more-label").value.trim()||R.more_label,r.more_href=n.querySelector("#sav-more-href").value.trim()||"#",e.addAttributes({"data-savings-config":JSON.stringify(r)}),e.components(Je(r)),setTimeout(()=>me(i),300),h()})}function me(i){try{const e=i.Canvas.getFrameEl()?.contentDocument;if(!e)return;const t=e.getElementById("sav-runtime-script");t&&t.remove(),e.querySelectorAll(".sav-section").forEach(r=>{delete r.__savInit});const a=e.createElement("script");a.id="sav-runtime-script",a.textContent=Xt,e.head.appendChild(a)}catch(e){console.warn("[Savings] Error reiniciando carrusel:",e)}}const Jt=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="2" y="5" width="28" height="22" fill="rgba(255,255,255,0.08)" rx="2"/>
     <rect x="4" y="8" width="6" height="6" fill="rgba(255,255,255,0.25)" rx="1"/>
@@ -797,7 +797,7 @@ ${Ut}`}],Ge=function(){(function(){function i(t){if(!t||t.__savInit)return;t.__s
     <rect x="4" y="19" width="6" height="4" fill="#E97300" rx="1"/>
     <rect x="12" y="19" width="6" height="4" fill="#E97300" rx="1"/>
     <rect x="20" y="19" width="6" height="4" fill="#E97300" rx="1"/>
-</svg>`;function Zt(i){const e="savings-section-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Sección Fondo Azul",tagName:"div",draggable:!0,droppable:!1,removable:!0,copyable:!0,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":e,"data-savings-config":JSON.stringify(H)},components:Je(H),script:Ge,"script-props":["data-savings-config"],traits:[{type:"button",label:"Sección",text:"Administrar Sección",full:!0,command:"open-savings-config"}],toolbar:[]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),i.Commands.add("open-savings-config",{run(t){const a=t.getSelected();a&&Gt(t,a)}}),i.BlockManager.add("savings-section-block",{label:"Sección Fondo Azul",category:"Productos y Servicios",media:Jt,activate:!0,content:{type:e,attributes:{"data-gjs-type":e}}}),i.on("component:mount",t=>{t.getEl()?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>me(i),400))}),i.on("component:selected",t=>{const a=t.getEl();if(!a)return;const r=a.closest(`[data-gjs-type="${e}"]`);if(r&&!a.hasAttribute("data-gjs-type")){const l=i.getWrapper().find(`[data-gjs-type="${e}"]`).find(n=>n.getEl()===r);l&&setTimeout(()=>i.select(l),0)}}),i.on("canvas:render",()=>setTimeout(()=>me(i),600)),i.on("storage:end:load",()=>setTimeout(()=>me(i),800))}const Ce=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`;function Zt(i){const e="savings-section-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Sección Fondo Azul",tagName:"div",draggable:!0,droppable:!1,removable:!0,copyable:!0,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":e,"data-savings-config":JSON.stringify(R)},components:Je(R),script:Ge,"script-props":["data-savings-config"],traits:[{type:"button",label:"Sección",text:"Administrar Sección",full:!0,command:"open-savings-config"}],toolbar:[]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),i.Commands.add("open-savings-config",{run(t){const a=t.getSelected();a&&Gt(t,a)}}),i.BlockManager.add("savings-section-block",{label:"Sección Fondo Azul",category:"Productos y Servicios",media:Jt,activate:!0,content:{type:e,attributes:{"data-gjs-type":e}}}),i.on("component:mount",t=>{t.getEl()?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>me(i),400))}),i.on("component:selected",t=>{const a=t.getEl();if(!a)return;const r=a.closest(`[data-gjs-type="${e}"]`);if(r&&!a.hasAttribute("data-gjs-type")){const l=i.getWrapper().find(`[data-gjs-type="${e}"]`).find(n=>n.getEl()===r);l&&setTimeout(()=>i.select(l),0)}}),i.on("canvas:render",()=>setTimeout(()=>me(i),600)),i.on("storage:end:load",()=>setTimeout(()=>me(i),800))}const Ce=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="2" y="2" width="13" height="8" fill="#F07C28" rx="1.5"/>
     <rect x="17" y="2" width="13" height="8" fill="rgba(255,255,255,0.2)" rx="1.5"/>
@@ -817,13 +817,13 @@ ${Ut}`}],Ge=function(){(function(){function i(t){if(!t||t.__savInit)return;t.__s
     <rect x="4" y="15" width="10" height="2" fill="rgba(255,255,255,0.6)" rx="1"/>
     <ellipse cx="24" cy="20" rx="7" ry="9" fill="rgba(255,255,255,0.18)"/>
     <circle cx="22" cy="10" r="3.5" fill="rgba(255,255,255,0.25)"/>
-</svg>`,K=`
+</svg>`,Q=`
 <a href="#" class="plc-card plc-card--orange">
     <span class="plc-card__title">NOMBRE DEL PRODUCTO</span>
     <div class="plc-card__watermark">
         <img src="${D("images/brand-watermark.png")}" alt="">
     </div>
-</a>`,Q=`
+</a>`,ee=`
 <a href="#" class="plc-card plc-card--blue">
     <span class="plc-card__title">NOMBRE DEL PRODUCTO</span>
     <div class="plc-card__watermark">
@@ -855,17 +855,17 @@ ${Ut}`}],Ge=function(){(function(){function i(t){if(!t||t.__savInit)return;t.__s
         <p class="plc-header__subtitle">Encuentra el producto financiero ideal para ti.</p>
     </div>
     <div class="plc-grid">
-        ${K}
         ${Q}
-        ${K}
+        ${ee}
         ${Q}
+        ${ee}
+        ${ee}
         ${Q}
-        ${K}
+        ${ee}
         ${Q}
-        ${K}
     </div>
 </section>
-${ve}`},{id:"product-link-card-orange",label:"Tarjeta producto naranja",category:"Productos y Servicios",media:Ce,media:Kt,content:`${K}${ve}`},{id:"product-link-card-blue",label:"Tarjeta producto azul",category:"Productos y Servicios",media:Qt,content:`${Q}${ve}`}],ti=`<svg viewBox="0 0 32 32" width="32" height="32">
+${ve}`},{id:"product-link-card-orange",label:"Tarjeta producto naranja",category:"Productos y Servicios",media:Ce,media:Kt,content:`${Q}${ve}`},{id:"product-link-card-blue",label:"Tarjeta producto azul",category:"Productos y Servicios",media:Qt,content:`${ee}${ve}`}],ti=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <circle cx="6" cy="11" r="4" fill="#E97300" fill-opacity="0.85"/>
     <circle cx="16" cy="11" r="4" fill="#E97300" fill-opacity="0.85"/>
@@ -885,7 +885,7 @@ ${ve}`},{id:"product-link-card-orange",label:"Tarjeta producto naranja",category
     <rect x="13" y="10" width="6" height="4" rx="1" fill="white" fill-opacity="0.8"/>
     <rect x="10" y="21" width="12" height="1.5" rx="0.75" fill="#003B71" fill-opacity="0.7"/>
     <rect x="11" y="24" width="10" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
-</svg>`,ee=`
+</svg>`,te=`
 <a href="#" class="flex flex-col items-center text-center gap-4 no-underline group">
     <div class="w-16 h-16 rounded-full flex items-center justify-center shrink-0 bg-[#E97300]">
         <img src="${D("images/placeholder.svg")}" alt="" class="w-8 h-8 object-contain">
@@ -901,13 +901,13 @@ ${ve}`},{id:"product-link-card-orange",label:"Tarjeta producto naranja",category
 </style>`,ai=[{id:"icon-links-strip",label:"Iconos con enlace",category:"Productos y Servicios",media:ti,content:`
 <section class="il-section">
     <div class="il-grid">
-        ${ee}
-        ${ee}
-        ${ee}
-        ${ee}
+        ${te}
+        ${te}
+        ${te}
+        ${te}
     </div>
 </section>
-${Le}`},{id:"icon-link-item",label:"Icono con enlace",category:"Productos y Servicios",media:ii,content:`${ee}${Le}`}],ri=`<svg viewBox="0 0 32 32" width="32" height="32">
+${Le}`},{id:"icon-link-item",label:"Icono con enlace",category:"Productos y Servicios",media:ii,content:`${te}${Le}`}],ri=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#003B71" rx="2"/>
     <rect x="2" y="6" width="14" height="2" fill="rgba(255,255,255,0.5)" rx="1"/>
     <rect x="2" y="10" width="14" height="1.5" fill="rgba(255,255,255,0.3)" rx="1"/>
@@ -972,7 +972,7 @@ ${li}`}],ni=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="6" y="21.3" width="8" height="1" rx="0.5" fill="white" fill-opacity="0.7"/>
     <circle cx="3.5" cy="25" r="1.2" fill="white" fill-opacity="0.9"/>
     <rect x="6" y="24.3" width="6" height="1" rx="0.5" fill="white" fill-opacity="0.7"/>
-</svg>`,de=`
+</svg>`,fe=`
 <div class="flex items-center gap-3">
     <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-white">
         <i class="ri-shield-check-line text-lg text-[#E97300]"></i>
@@ -987,10 +987,10 @@ ${li}`}],ni=`<svg viewBox="0 0 32 32" width="32" height="32">
     </h2>
     <p class="text-white text-base leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
     <div class="flex flex-col gap-3">
-        ${de}
-        ${de}
-        ${de}
-        ${de}
+        ${fe}
+        ${fe}
+        ${fe}
+        ${fe}
     </div>
 </div>`,_e=`
 <div class="fb-img-wrap">
@@ -1041,7 +1041,7 @@ ${ci}`},di=[{id:"feature-orange-img-right",label:"Sección naranja - imagen dere
     </div>
     <h3 class="tab-card-title text-lg font-bold text-[#003B71] transition-colors duration-200">Lorem ipsum</h3>
     <p class="tab-card-text text-base font-normal leading-relaxed text-[#003B71] transition-colors duration-200">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-</div>`,te=i=>`
+</div>`,ie=i=>`
 <div class="tabs-panel${i===0?" active":""} grid-cols-3 gap-5">
     ${M()}
     ${M()}
@@ -1063,11 +1063,11 @@ ${ci}`},di=[{id:"feature-orange-img-right",label:"Sección naranja - imagen dere
         <button class="tabs-btn inline-block px-6 py-2 rounded-full border-2 border-[#003B71] bg-transparent text-[#003B71] text-sm font-medium">Lorem Ipsum</button>
     </nav>
     <div class="tabs-body">
-        ${te(0)}
-        ${te(1)}
-        ${te(2)}
-        ${te(3)}
-        ${te(4)}
+        ${ie(0)}
+        ${ie(1)}
+        ${ie(2)}
+        ${ie(3)}
+        ${ie(4)}
     </div>
 </div>
 <style>${Be}</style>`,pi=`<svg viewBox="0 0 32 32" width="32" height="32">
@@ -1151,7 +1151,7 @@ ${ci}`},di=[{id:"feature-orange-img-right",label:"Sección naranja - imagen dere
     <rect x="14" y="8.5" width="14" height="2" rx="1" fill="#003B71" fill-opacity="0.7"/>
     <circle cx="7" cy="22" r="4" fill="#E97300" fill-opacity="0.85"/>
     <rect x="14" y="20.5" width="14" height="2" rx="1" fill="#003B71" fill-opacity="0.7"/>
-</svg>`,W=i=>`
+</svg>`,Y=i=>`
 <div class="split-list-item flex items-center gap-3">
     <div class="bg-[#E97300] w-10 h-10 rounded-full flex items-center justify-center shrink-0">
         <i class="ri-shield-check-line text-lg text-white"></i>
@@ -1166,10 +1166,10 @@ ${ci}`},di=[{id:"feature-orange-img-right",label:"Sección naranja - imagen dere
     </h2>
     <p class="${e?"text-[#003B71]":"text-white"} text-base leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
     <div class="flex flex-col gap-3">
-        ${W(i)}
-        ${W(i)}
-        ${W(i)}
-        ${W(i)}
+        ${Y(i)}
+        ${Y(i)}
+        ${Y(i)}
+        ${Y(i)}
     </div>
 </div>`},Ei=()=>`
 <div class="w-full rounded-2xl overflow-hidden">
@@ -1184,17 +1184,17 @@ ${ci}`},di=[{id:"feature-orange-img-right",label:"Sección naranja - imagen dere
 .split-list-item{min-height:44px;}
 @media(max-width:1280px){.split-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.split-section{padding:2.5rem 1.5rem;}.split-grid{grid-template-columns:1fr;gap:2rem;}}
-</style>`,fe=(i,e)=>{const t=Bi(e),a=Ei(),r=e==="dark"?"bg-[#003B71]":"bg-white",l=i?`<div>${t}</div><div>${a}</div>`:`<div class="split-img-mobile-first">${a}</div><div>${t}</div>`;return`
+</style>`,ge=(i,e)=>{const t=Bi(e),a=Ei(),r=e==="dark"?"bg-[#003B71]":"bg-white",l=i?`<div>${t}</div><div>${a}</div>`:`<div class="split-img-mobile-first">${a}</div><div>${t}</div>`;return`
 <section class="split-section ${r}">
     <div class="split-grid">
         ${l}
     </div>
 </section>
-${$i}`},Si=[{id:"split-content-light-img-right",label:"Contenido claro - imagen derecha",category:"Contenido",media:yi,content:fe(!0,"light")},{id:"split-content-light-img-left",label:"Contenido claro - imagen izquierda",category:"Contenido",media:vi,content:fe(!1,"light")},{id:"split-content-dark-img-right",label:"Contenido azul - imagen derecha",category:"Contenido",media:wi,content:fe(!0,"dark")},{id:"split-content-dark-img-left",label:"Contenido azul - imagen izquierda",category:"Contenido",media:ki,content:fe(!1,"dark")},{id:"split-list-item",label:"Item de lista con badge",category:"Contenido",media:ze,content:W("light")},{id:"split-list-group",label:"Lista con badges",category:"Contenido",media:ze,content:`
+${$i}`},Si=[{id:"split-content-light-img-right",label:"Contenido claro - imagen derecha",category:"Contenido",media:yi,content:ge(!0,"light")},{id:"split-content-light-img-left",label:"Contenido claro - imagen izquierda",category:"Contenido",media:vi,content:ge(!1,"light")},{id:"split-content-dark-img-right",label:"Contenido azul - imagen derecha",category:"Contenido",media:wi,content:ge(!0,"dark")},{id:"split-content-dark-img-left",label:"Contenido azul - imagen izquierda",category:"Contenido",media:ki,content:ge(!1,"dark")},{id:"split-list-item",label:"Item de lista con badge",category:"Contenido",media:ze,content:Y("light")},{id:"split-list-group",label:"Lista con badges",category:"Contenido",media:ze,content:`
 <div class="flex flex-col gap-4">
-    ${W("light")}
-    ${W("light")}
-    ${W("light")}
+    ${Y("light")}
+    ${Y("light")}
+    ${Y("light")}
 </div>`}],Ci=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="0" y="6" width="32" height="22" fill="#E97300"/>
@@ -1213,7 +1213,7 @@ ${$i}`},Si=[{id:"split-content-light-img-right",label:"Contenido claro - imagen 
     <circle cx="10" cy="14" r="1.5" fill="white"/>
     <rect x="6" y="20" width="8" height="1.5" rx="0.75" fill="white" fill-opacity="0.8"/>
     <rect x="7" y="22.5" width="6" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
-</svg>`,ge=`
+</svg>`,he=`
 <div class="flex flex-col items-center gap-3 text-center">
     <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white/20">
         <i class="ri-map-pin-line text-2xl text-white"></i>
@@ -1250,10 +1250,10 @@ ${$i}`},Si=[{id:"split-content-light-img-right",label:"Contenido claro - imagen 
             <p class="text-base text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </div>
         <div class="ss-grid">
-            ${ge}
-            ${ge}
-            ${ge}
-            ${ge}
+            ${he}
+            ${he}
+            ${he}
+            ${he}
         </div>
     </div>
 </div>
@@ -1273,7 +1273,7 @@ ${ji}`,_i=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
     <circle cx="16" cy="12" r="6" fill="#166EBE"/>
     <rect x="8" y="21" width="16" height="2" rx="1" fill="white" fill-opacity="0.8"/>
     <rect x="10" y="24.5" width="12" height="1.5" rx="0.75" fill="white" fill-opacity="0.5"/>
-</svg>`,ie=`
+</svg>`,ae=`
 <div class="flex flex-col items-center gap-4 text-center">
     <div class="w-20 h-20 rounded-full flex items-center justify-center shrink-0" style="background:#166EBE;">
         <img src="${D("images/placeholder.svg")}" alt="Icono" class="w-10 h-10 object-contain">
@@ -1296,16 +1296,16 @@ ${ji}`,_i=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
         <p class="text-base text-white leading-relaxed">por eso este beneficio está disponible exclusivamente para quienes<br>mantienen su crédito al día con Banco Integral.</p>
     </div>
     <div class="svc-grid">
-        ${ie}
-        ${ie}
-        ${ie}
-        ${ie}
+        ${ae}
+        ${ae}
+        ${ae}
+        ${ae}
     </div>
     <div class="svc-more-wrap">
         <a href="#" class="svc-more-btn">Ver más</a>
     </div>
 </section>
-${Ae}`},{id:"service-card-item",label:"Ítem de servicio con icono",category:"Productos y Servicios",media:zi,content:`${ie}${Ae}`}],Ai=`<svg viewBox="0 0 32 32" width="32" height="32">
+${Ae}`},{id:"service-card-item",label:"Ítem de servicio con icono",category:"Productos y Servicios",media:zi,content:`${ae}${Ae}`}],Ai=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="9" width="30" height="14" fill="white" rx="7" stroke="#e5e7eb" stroke-width="0.8"/>
     <rect x="4" y="13" width="4" height="6" rx="1" fill="#E97300" fill-opacity="0.9"/>
@@ -1330,7 +1330,7 @@ ${Ae}`},{id:"service-card-item",label:"Ítem de servicio con icono",category:"Pr
     <rect x="5" y="12" width="5" height="8" rx="1" fill="#E97300" fill-opacity="0.9"/>
     <rect x="13" y="12" width="12" height="2.5" rx="1" fill="#003B71" fill-opacity="0.7"/>
     <rect x="13" y="16" width="9" height="1.5" rx="0.75" fill="#E97300" fill-opacity="0.8"/>
-</svg>`,ae=(i,e,t,a)=>`
+</svg>`,re=(i,e,t,a)=>`
 <div class="ci-item">
     <i class="${i} ci-icon"></i>
     <div class="flex flex-col gap-0.5">
@@ -1361,9 +1361,9 @@ ${Ae}`},{id:"service-card-item",label:"Ítem de servicio con icono",category:"Pr
 <section class="ci-section">
     <div class="ci-row-wrap">
         <div class="ci-pill-row">
-            ${ae("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090")}
+            ${re("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090")}
             <div class="ci-divider"></div>
-            ${ae("ri-mail-fill","Correo","servicio.cliente@bancointegral.com","mailto:servicio.cliente@bancointegral.com")}
+            ${re("ri-mail-fill","Correo","servicio.cliente@bancointegral.com","mailto:servicio.cliente@bancointegral.com")}
         </div>
     </div>
 </section>
@@ -1371,9 +1371,9 @@ ${we}`},{id:"contact-info-col",label:"Contacto en columna",category:"Contacto",m
 <section class="ci-section">
     <div class="ci-col-wrap">
         <div class="ci-pill-col">
-            ${ae("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090")}
+            ${re("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090")}
             <div class="ci-divider-h"></div>
-            ${ae("ri-mail-fill","Correo","servicio.cliente@bancointegral.com","mailto:servicio.cliente@bancointegral.com")}
+            ${re("ri-mail-fill","Correo","servicio.cliente@bancointegral.com","mailto:servicio.cliente@bancointegral.com")}
         </div>
     </div>
 </section>
@@ -1381,7 +1381,7 @@ ${we}`},{id:"contact-info-item",label:"Ítem de contacto",category:"Contacto",me
 <section class="ci-section">
     <div class="ci-row-wrap">
         <div class="ci-pill-row">
-            ${ae("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090")}
+            ${re("ri-phone-fill","Contáctenos","(503)-2250-6090","tel:+50322506090")}
         </div>
     </div>
 </section>
@@ -1401,7 +1401,7 @@ ${we}`}],Ni=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="11" y="12" width="15" height="2.5" fill="rgba(255,255,255,0.9)" rx="1"/>
     <rect x="11" y="17" width="13" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
     <rect x="11" y="20" width="10" height="1.2" fill="rgba(255,255,255,0.4)" rx="1"/>
-</svg>`,re=`
+</svg>`,le=`
 <div class="rl-item">
     <div class="flex items-center gap-2 mb-1">
         <span class="rl-bullet">•</span>
@@ -1420,23 +1420,43 @@ ${we}`}],Ni=`<svg viewBox="0 0 32 32" width="32" height="32">
 </style>`,Pi=[{id:"rich-list",label:"Lista con título y descripción",category:"Contenido",media:Ni,content:`
 <section class="rl-section">
     <div class="rl-list">
-        ${re}
-        ${re}
-        ${re}
-        ${re}
+        ${le}
+        ${le}
+        ${le}
+        ${le}
     </div>
 </section>
 ${qe}`},{id:"rich-list-item",label:"Ítem de lista con descripción",category:"Contenido",media:Oi,content:`
 <section class="rl-section">
     <div class="rl-list">
-        ${re}
+        ${le}
     </div>
 </section>
 ${qe}`}],Hi=`
 <style>
 .pd-asymmetric-grid{display:grid;grid-template-columns:3fr 2fr;gap:2rem;align-items:start;}
 @media(max-width:992px){.pd-asymmetric-grid{grid-template-columns:1fr;gap:1.5rem;}}
-</style>`,Ri=`<svg viewBox="0 0 32 32" width="32" height="32">
+</style>`,Ri=`
+<style>
+.pd-three-col-grid{display:flex;flex-wrap:wrap;gap:2rem;align-items:start;}
+.pd-three-col-grid>div{flex:0 1 260px;min-width:260px;}
+@media(max-width:992px){.pd-three-col-grid{gap:1.5rem;}.pd-three-col-grid>div{flex-basis:100%;min-width:0;}}
+</style>`,Fi=`<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="2" y="3" width="8" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
+    <rect x="4" y="5" width="4" height="4" rx="2" fill="#E97300" fill-opacity="0.6"/>
+    <rect x="3" y="11" width="6" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="3" y="13" width="5" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="12" y="3" width="8" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
+    <rect x="14" y="5" width="4" height="4" rx="2" fill="#E97300" fill-opacity="0.6"/>
+    <rect x="13" y="11" width="6" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="13" y="13" width="5" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="22" y="3" width="8" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
+    <rect x="23" y="6" width="6" height="1" rx="0.5" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="23" y="11" width="6" height="2" rx="1" fill="#E97300" fill-opacity="0.7"/>
+    <rect x="23" y="16" width="6" height="0.8" rx="0.4" fill="#9ca3af" fill-opacity="0.5"/>
+    <rect x="23" y="18" width="5" height="0.8" rx="0.4" fill="#9ca3af" fill-opacity="0.5"/>
+</svg>`,Ui=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="3" width="14" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
     <rect x="4" y="5" width="10" height="2" rx="1" fill="#003B71" fill-opacity="0.7"/>
@@ -1454,7 +1474,7 @@ ${qe}`}],Hi=`
     <rect x="20" y="20" width="8" height="1" rx="0.5" fill="#003B71" fill-opacity="0.2"/>
     <rect x="20" y="22" width="6" height="1" rx="0.5" fill="#003B71" fill-opacity="0.2"/>
     <rect x="20" y="24" width="7" height="1" rx="0.5" fill="#003B71" fill-opacity="0.2"/>
-</svg>`,Fi=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,Vi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <circle cx="6" cy="10" r="2" fill="#003B71" fill-opacity="0.6"/>
     <rect x="10" y="9" width="18" height="2" rx="1" fill="#003B71" fill-opacity="0.5"/>
@@ -1462,7 +1482,7 @@ ${qe}`}],Hi=`
     <rect x="10" y="16" width="16" height="2" rx="1" fill="#003B71" fill-opacity="0.5"/>
     <circle cx="6" cy="24" r="2" fill="#003B71" fill-opacity="0.6"/>
     <rect x="10" y="23" width="14" height="2" rx="1" fill="#003B71" fill-opacity="0.5"/>
-</svg>`,Ui=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,Xi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="3" y="5" width="26" height="1.5" rx="0.75" fill="#9ca3af" fill-opacity="0.5"/>
     <rect x="3" y="9" width="26" height="1" rx="0.5" fill="#9ca3af" fill-opacity="0.4"/>
@@ -1471,15 +1491,47 @@ ${qe}`}],Hi=`
     <rect x="3" y="18.5" width="22" height="1" rx="0.5" fill="#9ca3af" fill-opacity="0.4"/>
     <rect x="3" y="23" width="26" height="1" rx="0.5" fill="#9ca3af" fill-opacity="0.4"/>
     <rect x="3" y="25.5" width="18" height="1" rx="0.5" fill="#9ca3af" fill-opacity="0.4"/>
-</svg>`,J=`
+</svg>`,O=`
 <li class="flex items-start gap-2 text-base text-[#003B71]">
     <span class="mt-2 w-1.5 h-1.5 rounded-full bg-[#003B71] shrink-0"></span>
     <span>Lorem ipsum dolor sit amet consectetur adipiscing elit.</span>
-</li>`,he=`
+</li>`,Z=`
 <li class="flex items-start gap-2">
     <span class="mt-2 w-1 h-1 rounded-full bg-[#6b7280] shrink-0"></span>
     <p class="text-sm text-[#6b7280] leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-</li>`,Vi=[{id:"product-detail-section",label:"Detalle de producto",category:"Productos y Servicios",media:Ri,content:`
+</li>`,Wi=[{id:"product-detail-three-col",label:"Detalle de producto (3 columnas)",category:"Productos y Servicios",media:Fi,content:`
+<section class="w-full bg-white px-16 py-12">
+    <div class="pd-three-col-grid">
+        <div class="flex flex-col gap-3">
+            <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Ventajas:</span>
+            <ul class="list-none p-0 m-0 flex flex-col gap-3">
+                ${O}
+                ${O}
+                ${O}
+            </ul>
+        </div>
+        <div class="flex flex-col gap-3">
+            <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Beneficios:</span>
+            <ul class="list-none p-0 m-0 flex flex-col gap-3">
+                ${O}
+                ${O}
+                ${O}
+            </ul>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
+            <a href="#" class="inline-block py-3 px-8 rounded-full bg-[#E97300] text-white text-base font-bold text-center uppercase tracking-wide max-w-full hover:bg-[#c96200] transition-colors no-underline">Adquiere tu cuenta</a>
+            <div class="w-full flex flex-col gap-2 pt-3 border-t border-[#e5e7eb] mt-1">
+                <ul class="list-none p-0 m-0 flex flex-col gap-2">
+                    ${Z}
+                    ${Z}
+                    ${Z}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+${Ri}`},{id:"product-detail-section",label:"Detalle de producto",category:"Productos y Servicios",media:Ui,content:`
 <section class="w-full bg-white px-16 py-12">
     <div class="pd-asymmetric-grid">
         <div class="flex flex-col gap-5">
@@ -1487,11 +1539,11 @@ ${qe}`}],Hi=`
             <div class="flex flex-col gap-3">
                 <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Ventajas:</span>
                 <ul class="list-none p-0 m-0 flex flex-col gap-3">
-                    ${J}
-                    ${J}
-                    ${J}
-                    ${J}
-                    ${J}
+                    ${O}
+                    ${O}
+                    ${O}
+                    ${O}
+                    ${O}
                 </ul>
             </div>
         </div>
@@ -1500,32 +1552,32 @@ ${qe}`}],Hi=`
             <a href="#" class="inline-block py-3 px-8 rounded-full bg-[#E97300] text-white text-base font-bold text-center uppercase tracking-wide max-w-full hover:bg-[#c96200] transition-colors no-underline">Adquiere tu cuenta</a>
             <div class="w-full flex flex-col gap-2 pt-3 border-t border-[#e5e7eb] mt-1">
                 <ul class="list-none p-0 m-0 flex flex-col gap-2">
-                    ${he}
-                    ${he}
-                    ${he}
+                    ${Z}
+                    ${Z}
+                    ${Z}
                 </ul>
             </div>
         </div>
     </div>
 </section>
-${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos y Servicios",media:Fi,content:`
+${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos y Servicios",media:Vi,content:`
 <ul class="list-none p-0 m-0 flex flex-col gap-3">
-    ${J}
-</ul>`},{id:"product-detail-footnote",label:"Nota al pie",category:"Productos y Servicios",media:Ui,content:`
+    ${O}
+</ul>`},{id:"product-detail-footnote",label:"Nota al pie",category:"Productos y Servicios",media:Xi,content:`
 <ul class="list-none p-0 m-0 flex flex-col gap-2">
-    ${he}
+    ${Z}
 </ul>`}],De=`
 <style>
 .fc-cards-grid{display:flex;flex-wrap:wrap;gap:1.5rem;}
 .fc-card{flex:0 1 220px;min-width:220px;max-width:260px;}
-</style>`,Xi=`<svg viewBox="0 0 32 32" width="32" height="32">
+</style>`,Yi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <circle cx="16" cy="12" r="6" fill="#E97300" fill-opacity="0.8"/>
     <path d="M13 12a3 3 0 1 1 4 2.8V16h-2v-1.2a3 3 0 0 1-2-2.8z" fill="#ffffff"/>
     <rect x="14.5" y="17" width="3" height="1" fill="#ffffff"/>
     <rect x="6" y="22" width="20" height="4" rx="1" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3"/>
     <rect x="8" y="23.5" width="8" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
-</svg>`,Wi=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,Gi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <circle cx="6" cy="6" r="1.5" fill="#E97300"/>
     <rect x="9" y="5" width="18" height="2" rx="1" fill="#E97300" fill-opacity="0.7"/>
@@ -1536,13 +1588,13 @@ ${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos
     <circle cx="7" cy="20" r="2" fill="#E97300" fill-opacity="0.7"/>
     <circle cx="16" cy="20" r="2" fill="#E97300" fill-opacity="0.7"/>
     <circle cx="25" cy="20" r="2" fill="#E97300" fill-opacity="0.7"/>
-</svg>`,le=i=>`
+</svg>`,oe=i=>`
 <div class="fc-card flex flex-col items-center gap-4 bg-white rounded-xl shadow-lg p-6">
     <div class="w-16 h-16 rounded-full bg-[#E97300] flex items-center justify-center shrink-0 overflow-hidden">
         <img src="${D("images/placeholder.svg")}" alt="icono" class="w-10 h-10 object-contain" />
     </div>
     <p class="text-base text-[#003B71] text-center leading-relaxed m-0">${i}</p>
-</div>`,Yi=[{id:"financing-section",label:"Sección de financiamiento",category:"Productos y Servicios",media:Wi,content:`
+</div>`,Ji=[{id:"financing-section",label:"Sección de financiamiento",category:"Productos y Servicios",media:Gi,content:`
 <section class="w-full bg-white px-16 py-12">
     <div class="flex flex-col gap-4">
         <div class="flex items-center gap-2">
@@ -1551,18 +1603,18 @@ ${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos
         </div>
         <p class="text-lg text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         <div class="fc-cards-grid">
-            ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
-            ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
-            ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
-            ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${oe("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${oe("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${oe("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${oe("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
         </div>
     </div>
 </section>
-${De}`},{id:"financing-card",label:"Tarjeta de financiamiento",category:"Productos y Servicios",media:Xi,content:`
+${De}`},{id:"financing-card",label:"Tarjeta de financiamiento",category:"Productos y Servicios",media:Yi,content:`
 <div class="fc-cards-grid">
-    ${le("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+    ${oe("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
 </div>
-${De}`}],Gi=`<svg viewBox="0 0 32 32" width="32" height="32">
+${De}`}],Zi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="2" width="13" height="13" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.4" rx="1.5"/>
     <rect x="17" y="2" width="13" height="13" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.4" rx="1.5"/>
@@ -1580,7 +1632,7 @@ ${De}`}],Gi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="19" y="20" width="9" height="2" rx="1" fill="#003B71" fill-opacity="0.5"/>
     <rect x="19" y="23" width="7" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
     <rect x="19" y="25" width="8" height="2.5" rx="1" fill="#E97300" fill-opacity="0.7"/>
-</svg>`,Ji=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,Ki=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="3" y="3" width="26" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.4" rx="2"/>
     <rect x="7" y="7" width="18" height="5" fill="#003B71" fill-opacity="0.1" rx="1"/>
@@ -1611,7 +1663,7 @@ ${De}`}],Gi=`<svg viewBox="0 0 32 32" width="32" height="32">
 @media(max-width:1280px){.ng-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.ng-section{padding:2.5rem 1.5rem;}.ng-grid{grid-template-columns:1fr;}}
 @media(max-width:480px){.ng-grid{grid-template-columns:1fr;}}
-</style>`,oe=`
+</style>`,ne=`
 <div class="ng-card">
     <div class="ng-card-logo">
         <img src="${D("images/placeholder.svg")}" alt="Logo" class="ng-logo-img">
@@ -1621,20 +1673,20 @@ ${De}`}],Gi=`<svg viewBox="0 0 32 32" width="32" height="32">
         <p class="ng-card-desc">Descripción breve del contenido de la noticia o publicación disponible para los usuarios.</p>
     </div>
     <a href="#" class="ng-btn" style="align-self:center;">LEER NOTICIA</a>
-</div>`,Zi=[{id:"news-grid-section",label:"Noticias y Publicaciones",category:"Contenido",media:Gi,content:`
+</div>`,Qi=[{id:"news-grid-section",label:"Noticias y Publicaciones",category:"Contenido",media:Zi,content:`
 <section class="ng-section">
     <h2 class="ng-section-heading">Noticias y Publicaciones</h2>
     <div class="ng-grid">
-        ${oe}
-        ${oe}
-        ${oe}
-        ${oe}
+        ${ne}
+        ${ne}
+        ${ne}
+        ${ne}
     </div>
     <div class="ng-more-wrap">
         <a href="#" class="ng-more-btn">Ver más</a>
     </div>
 </section>
-${Me}`},{id:"news-card",label:"Tarjeta de noticia",category:"Contenido",media:Ji,content:`${oe}${Me}`}],Ki=`<svg viewBox="0 0 32 32" width="32" height="32">
+${Me}`},{id:"news-card",label:"Tarjeta de noticia",category:"Contenido",media:Ki,content:`${ne}${Me}`}],ea=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#ffffff" rx="2" stroke="#e5e7eb" stroke-width="1"/>
     <rect x="3" y="4" width="26" height="3.5" fill="none" stroke="#F07C28" stroke-width="1" rx="1"/>
     <rect x="3" y="10" width="11" height="3.5" fill="none" stroke="#F07C28" stroke-width="1" rx="1"/>
@@ -1642,7 +1694,7 @@ ${Me}`},{id:"news-card",label:"Tarjeta de noticia",category:"Contenido",media:Ji
     <rect x="3" y="16" width="11" height="3.5" fill="none" stroke="#F07C28" stroke-width="1" rx="1"/>
     <rect x="17" y="16" width="12" height="3.5" fill="none" stroke="#F07C28" stroke-width="1" rx="1"/>
     <rect x="3" y="22" width="26" height="5" fill="#F07C28" rx="1"/>
-</svg>`,Qi=`
+</svg>`,ta=`
 <style>
 .fm-section{width:100%;padding:3.5rem 4rem;background:#ffffff;box-sizing:border-box;}
 .fm-form{display:flex;flex-direction:column;gap:1.25rem;max-width:680px;margin:0 auto;}
@@ -1663,7 +1715,7 @@ ${Me}`},{id:"news-card",label:"Tarjeta de noticia",category:"Contenido",media:Ji
 @media(max-width:1280px){.fm-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.fm-section{padding:2.5rem 1.5rem;}.fm-row{grid-template-columns:1fr;}}
 </style>
-`,ea=[{id:"contact-form",label:"Formulario de contacto",category:"Formularios",media:Ki,content:`
+`,ia=[{id:"contact-form",label:"Formulario de contacto",category:"Formularios",media:ea,content:`
 <section class="fm-section">
     <div class="fm-form">
         <div class="fm-field">
@@ -1734,7 +1786,7 @@ ${Me}`},{id:"news-card",label:"Tarjeta de noticia",category:"Contenido",media:Ji
         <button type="button" class="fm-btn">Enviar</button>
     </div>
 </section>
-${Qi}
+${ta}
 <script>
 (function(){
     function initFormSelects(root){
@@ -1751,7 +1803,7 @@ ${Qi}
         initFormSelects(document);
     }
 })();
-<\/script>`}],ta=`<svg viewBox="0 0 32 32" width="32" height="32">
+<\/script>`}],aa=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="2" width="28" height="6" rx="1" fill="#003B71"/>
     <rect x="2" y="10" width="28" height="5" rx="1" fill="#003B71" fill-opacity="0.3"/>
@@ -1766,7 +1818,7 @@ ${Qi}
         </tr>`,i.headers?.length&&(a+="<tr>",i.headers.forEach((n,c)=>{const h=c<i.headers.length-1?`border-r border-[${t.borderColor}]`:"";a+=`<th class="p-3 align-middle text-sm font-semibold ${t.subheaderBg} ${t.subheaderText} ${h} border-b border-[${t.borderColor}] text-${n.align||"center"}">${n.text||""}</th>`}),a+="</tr>"),a+="</thead>"):i.headers?.length&&(a+="<thead><tr>",i.headers.forEach((n,c)=>{const h=c<i.headers.length-1?`border-r border-[${t.borderColor}]`:"";a+=`<th class="p-3 align-middle text-sm font-semibold ${t.headerBg} ${t.headerText} ${h} border-b border-[${t.borderColor}] text-${n.align||"center"}">${n.text||""}</th>`}),a+="</tr></thead>"),a+="<tbody>";const r=i.rows.length,l={};return i.rows.forEach((n,c)=>{a+="<tr>";let h=0;n.forEach(d=>{for(;l[`${c}-${h}`];)h++;const m=d.colspan||1,u=d.rowspan||1;for(let y=c;y<c+u;y++)for(let C=h;C<h+m;C++)(y!==c||C!==h)&&(l[`${y}-${C}`]=!0);const b=m>1?`colspan="${m}"`:"",s=u>1?`rowspan="${u}"`:"",g=d.isHeader?t.labelBg:c%2===0?t.rowEvenBg:t.rowOddBg,k=d.isHeader?"font-semibold":"font-normal",T=d.isHeader?t.labelText:t.rowText,w=`text-${d.align||"center"}`,E=c+u>=r,p=h+m>=i.cols?"":`border-r border-[${t.borderColor}]`,v=E?"":`border-b border-[${t.borderColor}]`,$=`${p} ${v} p-3 align-middle text-sm ${g} ${k} ${T} ${w}`;d.image?a+=`<td ${b} ${s} class="${$}">
                     <img src="${d.image}" alt="${d.text||""}" class="max-w-full max-h-20 h-auto object-contain block mx-auto">
                     ${d.text?`<span class="block mt-1 text-xs ${T}">${d.text}</span>`:""}
-                </td>`:a+=`<td ${b} ${s} class="${$}">${d.text||""}</td>`,h+=m}),a+="</tr>"}),a+="</tbody></table>",a}function Z(i,e){return{title:"Título de la tabla",cols:i,headers:Array.from({length:i},(t,a)=>({text:`Columna ${a+1}`,align:"center"})),rows:Array.from({length:e},()=>Array.from({length:i},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})))}}function Ke(i,e){return`<div class="w-full overflow-x-auto rounded-2xl border-2 border-[${(ue[e]||ue.blue).borderColor}]">${i}</div>`}function Ne(i,e){const t={};return i.forEach((a,r)=>{let l=0;a.forEach(n=>{for(;t[`${r}-${l}`];)l++;const c=Math.min(n.colspan||1,e-l),h=n.rowspan||1;for(let d=r;d<r+h;d++)for(let m=l;m<l+c;m++)(d!==r||m!==l)&&(t[`${d}-${m}`]=`${r}-${l}`);l+=c})}),t}const ia=`
+                </td>`:a+=`<td ${b} ${s} class="${$}">${d.text||""}</td>`,h+=m}),a+="</tr>"}),a+="</tbody></table>",a}function K(i,e){return{title:"Título de la tabla",cols:i,headers:Array.from({length:i},(t,a)=>({text:`Columna ${a+1}`,align:"center"})),rows:Array.from({length:e},()=>Array.from({length:i},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})))}}function Ke(i,e){return`<div class="w-full overflow-x-auto rounded-2xl border-2 border-[${(ue[e]||ue.blue).borderColor}]">${i}</div>`}function Ne(i,e){const t={};return i.forEach((a,r)=>{let l=0;a.forEach(n=>{for(;t[`${r}-${l}`];)l++;const c=Math.min(n.colspan||1,e-l),h=n.rowspan||1;for(let d=r;d<r+h;d++)for(let m=l;m<l+c;m++)(d!==r||m!==l)&&(t[`${d}-${m}`]=`${r}-${l}`);l+=c})}),t}const ra=`
 #table-admin-modal{display:none;position:fixed;inset:0;z-index:999999;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,0.5);}
 #table-admin-modal.open{display:flex;}
 .tam-container{background:#fff;border-radius:0.75rem;box-shadow:0 20px 60px rgba(0,0,0,0.3);width:100%;max-width:960px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Poppins',sans-serif;}
@@ -1825,7 +1877,7 @@ ${Qi}
 .tam-img-spinner{width:2rem;height:2rem;border:3px solid #e5e7eb;border-top-color:#003B71;border-radius:50%;animation:tam-spin 0.8s linear infinite;}
 @keyframes tam-spin{to{transform:rotate(360deg);}}
 .tam-img-footer{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-top:1px solid #e5e7eb;background:#f9fafb;flex-shrink:0;}
-.tam-img-selected-info{font-size:0.8rem;color:#6b7280;}`;function aa(){if(document.getElementById("tam-img-modal"))return;const i=document.createElement("div");i.id="tam-img-modal",i.innerHTML=`
+.tam-img-selected-info{font-size:0.8rem;color:#6b7280;}`;function la(){if(document.getElementById("tam-img-modal"))return;const i=document.createElement("div");i.id="tam-img-modal",i.innerHTML=`
         <div class="tam-img-container">
             <div class="tam-img-header">
                 <h3><i class="ri-image-line" style="margin-right:6px;"></i>Seleccionar imagen</h3>
@@ -1842,7 +1894,7 @@ ${Qi}
                     <button class="tam-btn tam-btn-primary" id="tam-img-confirm" disabled><i class="ri-check-line"></i> Usar imagen</button>
                 </div>
             </div>
-        </div>`,document.body.appendChild(i);let e=null,t=null;async function a(c=""){const h=document.getElementById("tam-img-grid");h.innerHTML='<div class="tam-img-loading"><div class="tam-img-spinner"></div><span>Cargando...</span></div>';try{const d=new URLSearchParams({type:"image",per_page:50});c&&d.append("search",c);const m=document.querySelector('meta[name="media-api-url"]')?.content??"/media/api",s=(await(await fetch(`${m}?${d}`,{headers:{"X-Requested-With":"XMLHttpRequest",Accept:"application/json"}})).json()).items||[];if(!s.length){h.innerHTML='<div class="tam-img-loading"><i class="ri-image-line" style="font-size:2rem;"></i><span>No se encontraron imágenes</span></div>';return}h.innerHTML="",s.forEach(g=>{const k=document.createElement("div");k.className="tam-img-card",k.innerHTML=`<img src="${g.url}" alt="${g.filename}"><p title="${g.filename}">${g.filename}</p>`,k.addEventListener("click",()=>{h.querySelectorAll(".tam-img-card").forEach(T=>T.classList.remove("selected")),k.classList.add("selected"),e=g.url,document.getElementById("tam-img-selected-info").textContent=`Seleccionada: ${g.filename}`,document.getElementById("tam-img-confirm").disabled=!1}),h.appendChild(k)})}catch{h.innerHTML='<div class="tam-img-loading"><i class="ri-error-warning-line" style="font-size:2rem;color:#f87171;"></i><span style="color:#dc2626;">Error al cargar imágenes</span></div>'}}function r(c){t=c,e=null,document.getElementById("tam-img-selected-info").textContent="Ninguna imagen seleccionada",document.getElementById("tam-img-confirm").disabled=!0,document.getElementById("tam-img-search-input").value="",i.classList.add("open"),a()}function l(){i.classList.remove("open"),e=null,t=null}document.getElementById("tam-img-close").addEventListener("click",l),document.getElementById("tam-img-cancel").addEventListener("click",l),document.getElementById("tam-img-confirm").addEventListener("click",()=>{e&&t&&(t(e),l())});let n;document.getElementById("tam-img-search-input").addEventListener("input",c=>{clearTimeout(n),n=setTimeout(()=>a(c.target.value),300)}),i.addEventListener("click",c=>{c.target===i&&l()}),window.__openTableImagePicker=r}function ra(i,e){if(document.getElementById("table-admin-modal"))return;const t=document.createElement("style");t.id="table-admin-modal-styles",t.textContent=ia,document.head.appendChild(t),aa();const a=document.createElement("div");a.id="table-admin-modal",a.innerHTML=`
+        </div>`,document.body.appendChild(i);let e=null,t=null;async function a(c=""){const h=document.getElementById("tam-img-grid");h.innerHTML='<div class="tam-img-loading"><div class="tam-img-spinner"></div><span>Cargando...</span></div>';try{const d=new URLSearchParams({type:"image",per_page:50});c&&d.append("search",c);const m=document.querySelector('meta[name="media-api-url"]')?.content??"/media/api",s=(await(await fetch(`${m}?${d}`,{headers:{"X-Requested-With":"XMLHttpRequest",Accept:"application/json"}})).json()).items||[];if(!s.length){h.innerHTML='<div class="tam-img-loading"><i class="ri-image-line" style="font-size:2rem;"></i><span>No se encontraron imágenes</span></div>';return}h.innerHTML="",s.forEach(g=>{const k=document.createElement("div");k.className="tam-img-card",k.innerHTML=`<img src="${g.url}" alt="${g.filename}"><p title="${g.filename}">${g.filename}</p>`,k.addEventListener("click",()=>{h.querySelectorAll(".tam-img-card").forEach(T=>T.classList.remove("selected")),k.classList.add("selected"),e=g.url,document.getElementById("tam-img-selected-info").textContent=`Seleccionada: ${g.filename}`,document.getElementById("tam-img-confirm").disabled=!1}),h.appendChild(k)})}catch{h.innerHTML='<div class="tam-img-loading"><i class="ri-error-warning-line" style="font-size:2rem;color:#f87171;"></i><span style="color:#dc2626;">Error al cargar imágenes</span></div>'}}function r(c){t=c,e=null,document.getElementById("tam-img-selected-info").textContent="Ninguna imagen seleccionada",document.getElementById("tam-img-confirm").disabled=!0,document.getElementById("tam-img-search-input").value="",i.classList.add("open"),a()}function l(){i.classList.remove("open"),e=null,t=null}document.getElementById("tam-img-close").addEventListener("click",l),document.getElementById("tam-img-cancel").addEventListener("click",l),document.getElementById("tam-img-confirm").addEventListener("click",()=>{e&&t&&(t(e),l())});let n;document.getElementById("tam-img-search-input").addEventListener("input",c=>{clearTimeout(n),n=setTimeout(()=>a(c.target.value),300)}),i.addEventListener("click",c=>{c.target===i&&l()}),window.__openTableImagePicker=r}function oa(i,e){if(document.getElementById("table-admin-modal"))return;const t=document.createElement("style");t.id="table-admin-modal-styles",t.textContent=ra,document.head.appendChild(t),la();const a=document.createElement("div");a.id="table-admin-modal",a.innerHTML=`
         <div class="tam-container">
             <div class="tam-header">
                 <h2><i class="ri-table-line" style="margin-right:8px;"></i>Administrar tabla</h2>
@@ -1881,7 +1933,7 @@ ${Qi}
                 <button class="tam-btn tam-btn-ghost" id="tam-cancel">Cancelar</button>
                 <button class="tam-btn tam-btn-primary" id="tam-apply"><i class="ri-check-line"></i> Aplicar cambios</button>
             </div>
-        </div>`,document.body.appendChild(a);let r=null,l=null;function n(b){r=b;const s=b.get("tableData");l=s?JSON.parse(JSON.stringify(s)):Z(3,3);const g=l.cols||3;l.rows=l.rows.map((k,T)=>Array.from({length:g},(E,L)=>k[L]||{text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})),document.getElementById("tam-title").value=l.title||"",document.getElementById("tam-theme").value=b.get("tableTheme")||"blue",document.getElementById("tam-cols").value=l.cols||3,document.getElementById("tam-rows").value=l.rows.length||3,m(),u(),a.classList.add("open"),document.body.style.overflow="hidden"}function c(){a.classList.remove("open"),document.body.style.overflow="",r=null}function h(){l.title=document.getElementById("tam-title").value.trim(),l.cols=parseInt(document.getElementById("tam-cols").value)||3,l.headers=Array.from(document.querySelectorAll(".tam-header-input")).map(s=>({text:s.value,align:s.closest("th")?.querySelector(".tam-align-select")?.value||"center"})),document.querySelectorAll("#tam-tbody td.tam-cell:not(.is-spanned)").forEach(s=>{const g=parseInt(s.dataset.row),k=parseInt(s.dataset.col);l.rows[g]?.[k]&&(l.rows[g][k].text=s.querySelector(".tam-cell-input")?.value||"",l.rows[g][k].align=s.querySelector(".tam-align-select")?.value||"center",l.rows[g][k].isHeader=s.dataset.isheader==="1",l.rows[g][k].image=s.dataset.image||null)});const b=Ne(l.rows,l.cols);l.rows=l.rows.map((s,g)=>s.filter((k,T)=>!b[`${g}-${T}`]))}function d(){if(a.querySelector("#tam-rebuild-notice"))return;const s=document.createElement("div");s.id="tam-rebuild-notice",s.style.cssText="background:#fef9c3;border:1.5px solid #ca8a04;border-radius:0.5rem;padding:0.5rem 1rem;font-size:0.8rem;color:#92400e;display:flex;align-items:center;gap:0.5rem;margin:0 1.5rem 0;flex-shrink:0;",s.innerHTML='<i class="ri-error-warning-line"></i> Has modificado el colspan/rowspan. Haz clic en <strong style="margin:0 4px;">Reconstruir</strong> para aplicar los cambios de fusión.',a.querySelector(".tam-toolbar").after(s)}function m(){a.querySelector("#tam-rebuild-notice")?.remove()}function u(){const b=document.getElementById("tam-thead"),s=document.getElementById("tam-tbody"),g=l.cols,k=l.rows.length,T=Ne(l.rows,g);b.innerHTML=`<tr>${l.headers.map((w,E)=>`
+        </div>`,document.body.appendChild(a);let r=null,l=null;function n(b){r=b;const s=b.get("tableData");l=s?JSON.parse(JSON.stringify(s)):K(3,3);const g=l.cols||3;l.rows=l.rows.map((k,T)=>Array.from({length:g},(E,L)=>k[L]||{text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})),document.getElementById("tam-title").value=l.title||"",document.getElementById("tam-theme").value=b.get("tableTheme")||"blue",document.getElementById("tam-cols").value=l.cols||3,document.getElementById("tam-rows").value=l.rows.length||3,m(),u(),a.classList.add("open"),document.body.style.overflow="hidden"}function c(){a.classList.remove("open"),document.body.style.overflow="",r=null}function h(){l.title=document.getElementById("tam-title").value.trim(),l.cols=parseInt(document.getElementById("tam-cols").value)||3,l.headers=Array.from(document.querySelectorAll(".tam-header-input")).map(s=>({text:s.value,align:s.closest("th")?.querySelector(".tam-align-select")?.value||"center"})),document.querySelectorAll("#tam-tbody td.tam-cell:not(.is-spanned)").forEach(s=>{const g=parseInt(s.dataset.row),k=parseInt(s.dataset.col);l.rows[g]?.[k]&&(l.rows[g][k].text=s.querySelector(".tam-cell-input")?.value||"",l.rows[g][k].align=s.querySelector(".tam-align-select")?.value||"center",l.rows[g][k].isHeader=s.dataset.isheader==="1",l.rows[g][k].image=s.dataset.image||null)});const b=Ne(l.rows,l.cols);l.rows=l.rows.map((s,g)=>s.filter((k,T)=>!b[`${g}-${T}`]))}function d(){if(a.querySelector("#tam-rebuild-notice"))return;const s=document.createElement("div");s.id="tam-rebuild-notice",s.style.cssText="background:#fef9c3;border:1.5px solid #ca8a04;border-radius:0.5rem;padding:0.5rem 1rem;font-size:0.8rem;color:#92400e;display:flex;align-items:center;gap:0.5rem;margin:0 1.5rem 0;flex-shrink:0;",s.innerHTML='<i class="ri-error-warning-line"></i> Has modificado el colspan/rowspan. Haz clic en <strong style="margin:0 4px;">Reconstruir</strong> para aplicar los cambios de fusión.',a.querySelector(".tam-toolbar").after(s)}function m(){a.querySelector("#tam-rebuild-notice")?.remove()}function u(){const b=document.getElementById("tam-thead"),s=document.getElementById("tam-tbody"),g=l.cols,k=l.rows.length,T=Ne(l.rows,g);b.innerHTML=`<tr>${l.headers.map((w,E)=>`
             <th>
                 <input class="tam-cell-input tam-header-input" value="${w.text||""}" placeholder="Col ${E+1}" style="font-weight:600;">
                 <select class="tam-align-select" style="margin-top:4px;width:100%;font-size:0.7rem;padding:2px;">
@@ -1923,20 +1975,20 @@ ${Qi}
                                 value="${z}" data-action="rowspan" data-row="${E}" data-col="${v}">
                         </div>
                     </div>
-                </td>`}).join("")}</tr>`).join(""),s.querySelectorAll("input[data-action=colspan], input[data-action=rowspan]").forEach(w=>{w.addEventListener("change",()=>{const E=parseInt(w.dataset.row),L=parseInt(w.dataset.col),p=Math.max(1,parseInt(w.value)||1);l.rows[E]?.[L]&&(w.dataset.action==="colspan"?l.rows[E][L].colspan=Math.min(p,g-L):l.rows[E][L].rowspan=Math.min(p,k-E),d())})}),s.querySelectorAll("button[data-action]").forEach(w=>{w.addEventListener("click",E=>{E.preventDefault(),E.stopPropagation();const L=w.dataset.action,p=parseInt(w.dataset.row),v=parseInt(w.dataset.col);if(!(isNaN(p)||isNaN(v)||!l.rows[p]?.[v])){if(L==="header"){l.rows[p][v].isHeader=!l.rows[p][v].isHeader;const $=s.querySelector(`td[data-row="${p}"][data-col="${v}"]`);$&&($.dataset.isheader=l.rows[p][v].isHeader?"1":"0",$.classList.toggle("is-header-cell",l.rows[p][v].isHeader)),w.classList.toggle("active",l.rows[p][v].isHeader),w.textContent=l.rows[p][v].isHeader?"✓ Etiqueta":"Etiqueta";return}if(L==="image"){window.__openTableImagePicker&&window.__openTableImagePicker($=>{l.rows[p][v].image=$;const y=s.querySelector(`td[data-row="${p}"][data-col="${v}"]`);if(y){y.dataset.image=$,y.classList.add("has-image");let C=y.querySelector(".tam-cell-img-preview");C||(C=document.createElement("img"),C.className="tam-cell-img-preview",y.insertBefore(C,y.firstChild)),C.src=$;const z=y.querySelector("[data-action=image]");if(z&&(z.innerHTML='<i class="ri-image-line"></i> Cambiar'),!y.querySelector("[data-action=clear-image]")){const A=document.createElement("button");A.type="button",A.className="tam-cell-btn tam-cell-btn-clear",A.dataset.action="clear-image",A.dataset.row=p,A.dataset.col=v,A.textContent="✕ Quitar",A.addEventListener("click",Y=>{Y.preventDefault(),Y.stopPropagation(),l.rows[p][v].image=null,y.dataset.image="",y.classList.remove("has-image"),C.remove(),A.remove();const R=y.querySelector("[data-action=image]");R&&(R.innerHTML='<i class="ri-image-line"></i> Imagen')}),y.querySelector(".tam-cell-actions").appendChild(A)}}});return}L==="clear-image"&&(l.rows[p][v].image=null,u())}})})}document.getElementById("tam-close").addEventListener("click",c),document.getElementById("tam-cancel").addEventListener("click",c),a.addEventListener("click",b=>{b.target===a&&c()}),document.getElementById("tam-rebuild").addEventListener("click",()=>{const b=parseInt(document.getElementById("tam-cols").value)||3,s=parseInt(document.getElementById("tam-rows").value)||3;for(m(),h();l.headers.length<b;)l.headers.push({text:`Col ${l.headers.length+1}`,align:"center"});for(l.headers=l.headers.slice(0,b),l.cols=b;l.rows.length<s;)l.rows.push(Array.from({length:b},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})));l.rows=l.rows.slice(0,s).map(g=>{for(;g.length<b;)g.push({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null});return g.slice(0,b)}),u()}),document.getElementById("tam-apply").addEventListener("click",()=>{h();const b=document.getElementById("tam-theme").value;r&&(r.set("tableData",JSON.parse(JSON.stringify(l))),r.set("tableTheme",b),r.addAttributes({"data-table-theme":b}),ke(r)),c()}),window.__openTableAdminModal=n}function ke(i){const e=i.get("tableData"),t=i.get("tableTheme")||"blue";e&&i.components(Ke(Ze(e,t),t))}function la(){return function(){}}const oa=[{id:"table-blue",label:"Tabla azul",category:"Interactivos",media:ta,content:{type:"table-component",attributes:{"data-table-theme":"blue"}}},{id:"table-orange",label:"Tabla naranja",category:"Interactivos",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+                </td>`}).join("")}</tr>`).join(""),s.querySelectorAll("input[data-action=colspan], input[data-action=rowspan]").forEach(w=>{w.addEventListener("change",()=>{const E=parseInt(w.dataset.row),L=parseInt(w.dataset.col),p=Math.max(1,parseInt(w.value)||1);l.rows[E]?.[L]&&(w.dataset.action==="colspan"?l.rows[E][L].colspan=Math.min(p,g-L):l.rows[E][L].rowspan=Math.min(p,k-E),d())})}),s.querySelectorAll("button[data-action]").forEach(w=>{w.addEventListener("click",E=>{E.preventDefault(),E.stopPropagation();const L=w.dataset.action,p=parseInt(w.dataset.row),v=parseInt(w.dataset.col);if(!(isNaN(p)||isNaN(v)||!l.rows[p]?.[v])){if(L==="header"){l.rows[p][v].isHeader=!l.rows[p][v].isHeader;const $=s.querySelector(`td[data-row="${p}"][data-col="${v}"]`);$&&($.dataset.isheader=l.rows[p][v].isHeader?"1":"0",$.classList.toggle("is-header-cell",l.rows[p][v].isHeader)),w.classList.toggle("active",l.rows[p][v].isHeader),w.textContent=l.rows[p][v].isHeader?"✓ Etiqueta":"Etiqueta";return}if(L==="image"){window.__openTableImagePicker&&window.__openTableImagePicker($=>{l.rows[p][v].image=$;const y=s.querySelector(`td[data-row="${p}"][data-col="${v}"]`);if(y){y.dataset.image=$,y.classList.add("has-image");let C=y.querySelector(".tam-cell-img-preview");C||(C=document.createElement("img"),C.className="tam-cell-img-preview",y.insertBefore(C,y.firstChild)),C.src=$;const z=y.querySelector("[data-action=image]");if(z&&(z.innerHTML='<i class="ri-image-line"></i> Cambiar'),!y.querySelector("[data-action=clear-image]")){const A=document.createElement("button");A.type="button",A.className="tam-cell-btn tam-cell-btn-clear",A.dataset.action="clear-image",A.dataset.row=p,A.dataset.col=v,A.textContent="✕ Quitar",A.addEventListener("click",G=>{G.preventDefault(),G.stopPropagation(),l.rows[p][v].image=null,y.dataset.image="",y.classList.remove("has-image"),C.remove(),A.remove();const F=y.querySelector("[data-action=image]");F&&(F.innerHTML='<i class="ri-image-line"></i> Imagen')}),y.querySelector(".tam-cell-actions").appendChild(A)}}});return}L==="clear-image"&&(l.rows[p][v].image=null,u())}})})}document.getElementById("tam-close").addEventListener("click",c),document.getElementById("tam-cancel").addEventListener("click",c),a.addEventListener("click",b=>{b.target===a&&c()}),document.getElementById("tam-rebuild").addEventListener("click",()=>{const b=parseInt(document.getElementById("tam-cols").value)||3,s=parseInt(document.getElementById("tam-rows").value)||3;for(m(),h();l.headers.length<b;)l.headers.push({text:`Col ${l.headers.length+1}`,align:"center"});for(l.headers=l.headers.slice(0,b),l.cols=b;l.rows.length<s;)l.rows.push(Array.from({length:b},()=>({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null})));l.rows=l.rows.slice(0,s).map(g=>{for(;g.length<b;)g.push({text:"",align:"center",isHeader:!1,colspan:1,rowspan:1,image:null});return g.slice(0,b)}),u()}),document.getElementById("tam-apply").addEventListener("click",()=>{h();const b=document.getElementById("tam-theme").value;r&&(r.set("tableData",JSON.parse(JSON.stringify(l))),r.set("tableTheme",b),r.addAttributes({"data-table-theme":b}),ke(r)),c()}),window.__openTableAdminModal=n}function ke(i){const e=i.get("tableData"),t=i.get("tableTheme")||"blue";e&&i.components(Ke(Ze(e,t),t))}function na(){return function(){}}const sa=[{id:"table-blue",label:"Tabla azul",category:"Interactivos",media:aa,content:{type:"table-component",attributes:{"data-table-theme":"blue"}}},{id:"table-orange",label:"Tabla naranja",category:"Interactivos",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <rect x="2" y="2" width="28" height="6" rx="1" fill="#E97300"/>
             <rect x="2" y="10" width="28" height="5" rx="1" fill="#E97300" fill-opacity="0.3"/>
             <rect x="2" y="17" width="28" height="5" rx="1" fill="#E97300" fill-opacity="0.15"/>
             <rect x="2" y="24" width="28" height="5" rx="1" fill="#E97300" fill-opacity="0.15"/>
-        </svg>`,content:{type:"table-component",attributes:{"data-table-theme":"orange"}}}];function na(i){const e="table-component";ra(),i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Tabla",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,propagate:["editable","selectable","hoverable","droppable","highlightable"],tableData:null,tableTheme:"blue",attributes:{"data-gjs-type":e,"data-table-theme":"blue"},components:Ke(Ze(Z(3,3),"blue"),"blue"),script:la(),traits:[{type:"button",name:"edit-table",label:"Editar tabla",text:"Abrir editor de tabla",command(t){const a=t.getSelected();a&&window.__openTableAdminModal&&(a.get("tableData")||a.set("tableData",Z(3,3)),window.__openTableAdminModal(a))}},{type:"select",name:"data-table-theme",label:"Color del tema",options:[{id:"blue",name:"Azul"},{id:"orange",name:"Naranja"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e});const t=this.getAttributes()["data-table-theme"]||"blue";this.set("tableTheme",t),this.get("tableData")||(this.set("tableData",Z(3,3)),ke(this)),this.on("change:attributes",(a,r)=>{const l=r["data-table-theme"];l&&l!==this.get("tableTheme")&&(this.set("tableTheme",l),ke(this))})}}}),sa(i,e),ca(i,e)}function sa(i,e){i.on("component:mount",t=>{const a=t.getEl();if(a?.getAttribute?.("data-gjs-type")===e){t.set("type",e);const r=a.getAttribute("data-table-theme")||"blue";t.set("tableTheme",r),t.get("tableData")||t.set("tableData",Z(3,3))}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const a=t.getAttributes()["data-table-theme"]||"blue";t.set("tableTheme",a),t.get("tableData")||t.set("tableData",Z(3,3))})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function ca(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const a=t.contentDocument?.head;if(a&&!a.querySelector(`#${e}-editor-css`)){const r=document.createElement("style");r.id=`${e}-editor-css`,r.textContent=`
+        </svg>`,content:{type:"table-component",attributes:{"data-table-theme":"orange"}}}];function ca(i){const e="table-component";oa(),i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Tabla",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,propagate:["editable","selectable","hoverable","droppable","highlightable"],tableData:null,tableTheme:"blue",attributes:{"data-gjs-type":e,"data-table-theme":"blue"},components:Ke(Ze(K(3,3),"blue"),"blue"),script:na(),traits:[{type:"button",name:"edit-table",label:"Editar tabla",text:"Abrir editor de tabla",command(t){const a=t.getSelected();a&&window.__openTableAdminModal&&(a.get("tableData")||a.set("tableData",K(3,3)),window.__openTableAdminModal(a))}},{type:"select",name:"data-table-theme",label:"Color del tema",options:[{id:"blue",name:"Azul"},{id:"orange",name:"Naranja"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e});const t=this.getAttributes()["data-table-theme"]||"blue";this.set("tableTheme",t),this.get("tableData")||(this.set("tableData",K(3,3)),ke(this)),this.on("change:attributes",(a,r)=>{const l=r["data-table-theme"];l&&l!==this.get("tableTheme")&&(this.set("tableTheme",l),ke(this))})}}}),da(i,e),fa(i,e)}function da(i,e){i.on("component:mount",t=>{const a=t.getEl();if(a?.getAttribute?.("data-gjs-type")===e){t.set("type",e);const r=a.getAttribute("data-table-theme")||"blue";t.set("tableTheme",r),t.get("tableData")||t.set("tableData",K(3,3))}}),i.on("storage:end:load",()=>{setTimeout(()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const a=t.getAttributes()["data-table-theme"]||"blue";t.set("tableTheme",a),t.get("tableData")||t.set("tableData",K(3,3))})},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function fa(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const a=t.contentDocument?.head;if(a&&!a.querySelector(`#${e}-editor-css`)){const r=document.createElement("style");r.id=`${e}-editor-css`,r.textContent=`
                 [data-gjs-type="${e}"] * { pointer-events: none !important; }
                 [data-gjs-type="${e}"].gjs-selected,
                 [data-gjs-type="${e}"].gjs-hovered {
                     outline: 2px dashed rgba(0,59,113,0.5) !important;
                     outline-offset: 2px;
                 }
-            `,a.appendChild(r)}})}const da=`<svg viewBox="0 0 80 32" width="80" height="32">
+            `,a.appendChild(r)}})}const ga=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="76" height="24" rx="10" fill="none" stroke="#003B71" stroke-width="2"/>
     <rect x="6" y="8" width="16" height="16" rx="4" fill="#003B71"/>
@@ -1944,7 +1996,7 @@ ${Qi}
     <rect x="27" y="18" width="20" height="2.5" rx="1.2" fill="#003B71" fill-opacity="0.4"/>
     <rect x="62" y="10" width="12" height="12" rx="3" fill="#003B71" fill-opacity="0.15"/>
     <path d="M68 13v5m0 0l-2-2m2 2l2-2" stroke="#003B71" stroke-width="1.5" stroke-linecap="round"/>
-</svg>`,fa=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,ha=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="76" height="24" rx="10" fill="none" stroke="#E97300" stroke-width="2"/>
     <rect x="6" y="8" width="16" height="16" rx="4" fill="#E97300"/>
@@ -1952,39 +2004,39 @@ ${Qi}
     <rect x="27" y="18" width="20" height="2.5" rx="1.2" fill="#E97300" fill-opacity="0.4"/>
     <rect x="62" y="10" width="12" height="12" rx="3" fill="#E97300" fill-opacity="0.15"/>
     <path d="M68 13v5m0 0l-2-2m2 2l2-2" stroke="#E97300" stroke-width="1.5" stroke-linecap="round"/>
-</svg>`,ga=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,pa=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="76" height="24" rx="10" fill="none" stroke="#003B71" stroke-width="2"/>
     <rect x="10" y="12" width="44" height="4" rx="2" fill="#003B71"/>
     <rect x="62" y="10" width="12" height="12" rx="3" fill="#003B71" fill-opacity="0.15"/>
     <path d="M68 13v5m0 0l-2-2m2 2l2-2" stroke="#003B71" stroke-width="1.5" stroke-linecap="round"/>
-</svg>`,ha=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,ma=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="76" height="24" rx="10" fill="none" stroke="#E97300" stroke-width="2"/>
     <rect x="10" y="12" width="44" height="4" rx="2" fill="#E97300"/>
     <rect x="62" y="10" width="12" height="12" rx="3" fill="#E97300" fill-opacity="0.15"/>
     <path d="M68 13v5m0 0l-2-2m2 2l2-2" stroke="#E97300" stroke-width="1.5" stroke-linecap="round"/>
-</svg>`,pa=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,ua=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="#003B71"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="rgba(255,255,255,0.85)"/>
-</svg>`,ma=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,ba=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="#E97300"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="rgba(255,255,255,0.85)"/>
-</svg>`,ua=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,xa=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="none" stroke="#003B71" stroke-width="2"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="#003B71" fill-opacity="0.7"/>
-</svg>`,ba=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,ya=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="none" stroke="#E97300" stroke-width="2"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="#E97300" fill-opacity="0.7"/>
-</svg>`,xa=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,va=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#003B71" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="#ffffff"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="#003B71" fill-opacity="0.5"/>
-</svg>`,ya=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,wa=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#003B71" rx="2"/>
     <rect x="8" y="6" width="64" height="20" rx="10" fill="none" stroke="#ffffff" stroke-width="2"/>
     <rect x="18" y="13" width="44" height="6" rx="3" fill="rgba(255,255,255,0.7)"/>
@@ -2026,19 +2078,19 @@ ${Qi}
     <span class="dld-simple-${e}-filename" style="font-size:1rem;font-weight:700;color:${i};flex:1;transition:color 0.2s;">Nombre del archivo</span>
     <i class="dld-simple-${e}-arrow ri-download-2-line" style="font-size:1.25rem;color:${i};flex-shrink:0;transition:color 0.2s;"></i>
 </a>
-</div>`},He={"button-fill-blue":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#003B71] bg-[#003B71] text-white transition-all duration-200 hover:bg-[#002a52] hover:border-[#002a52]","button-fill-orange":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#E97300] bg-[#E97300] text-white transition-all duration-200 hover:bg-[#c96200] hover:border-[#c96200]","button-outline-blue":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#003B71] bg-transparent text-[#003B71] transition-all duration-200 hover:bg-[#003B71] hover:text-white","button-outline-orange":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#E97300] bg-transparent text-[#E97300] transition-all duration-200 hover:bg-[#E97300] hover:text-white","button-fill-white":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-white bg-white text-[#003B71] transition-all duration-200 hover:bg-[#dce8f5] hover:border-[#dce8f5]","button-outline-white":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-white bg-transparent text-white transition-all duration-200 hover:bg-white hover:text-[#003B71]"},va=[{id:"button-fill-blue",label:"Botón azul sólido",category:"Botones",media:pa,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-blue"}}},{id:"button-fill-orange",label:"Botón naranja sólido",category:"Botones",media:ma,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-orange"}}},{id:"button-outline-blue",label:"Botón azul outline",category:"Botones",media:ua,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-blue"}}},{id:"button-outline-orange",label:"Botón naranja outline",category:"Botones",media:ba,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-orange"}}},{id:"button-fill-white",label:"Botón blanco sólido",category:"Botones",media:xa,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-white"}}},{id:"button-outline-white",label:"Botón blanco outline",category:"Botones",media:ya,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-white"}}},{id:"button-download-full-blue",label:"Descarga completa azul",category:"Botones",media:da,content:Oe("#003B71")},{id:"button-download-full-orange",label:"Descarga completa naranja",category:"Botones",media:fa,content:Oe("#E97300")},{id:"button-download-simple-blue",label:"Descarga simple azul",category:"Botones",media:ga,content:Pe("#003B71")},{id:"button-download-simple-orange",label:"Descarga simple naranja",category:"Botones",media:ha,content:Pe("#E97300")}];function wa(i){const e=[{type:"button",label:"Documento",name:"select-document",text:"Seleccionar documento",full:!0,command:"open-document-picker"},{type:"text",name:"href",label:"URL / Enlace",placeholder:"https://..."},{type:"select",name:"target",label:"Abrir en",options:[{id:"_self",name:"Misma ventana"},{id:"_blank",name:"Nueva ventana"}]}];i.DomComponents.addType("link",{model:{defaults:{traits:e}}}),i.DomComponents.addType("integral-button",{isComponent:r=>r.tagName==="A"&&r.hasAttribute("data-btn-variant"),model:{defaults:{tagName:"a",draggable:!0,droppable:!1,editable:!0,attributes:{href:"#",target:"_self","data-btn-variant":"button-fill-blue"},components:"Texto del botón",traits:e},init(){const r=this.getAttributes()["data-btn-variant"]??"button-fill-blue",l=He[r]??He["button-fill-blue"];this.setClass(l.split(" "))}}});function t(r,l){if(r.getEl()?.matches?.(l))return r;let c=null;const h=r.components?.();return h?(h.each(d=>{c||(c=t(d,l))}),c):null}function a(r,l){const c={pdf:"ri-file-pdf-line",xlsx:"ri-file-excel-line",xls:"ri-file-excel-line",doc:"ri-file-word-line",docx:"ri-file-word-line"}[l]??"ri-file-line";function h(m){const u=m.getEl?.();if(u?.tagName==="I"){const g=u.parentElement;if(g&&[...g.classList].some(k=>k.includes("-icon")))return m}let b=null;const s=m.components?.();return s?(s.each(g=>{b||(b=h(g))}),b):null}const d=h(r);if(d){const m=d.getClasses().find(u=>u.startsWith("ri-"));m&&d.removeClass(m),d.addClass(c)}else{const u=r.getEl()?.querySelector("[class*='-icon'] i");if(u){const b=[...u.classList].filter(s=>!s.startsWith("ri-"));u.className=[...b,c].join(" ")}}}i.Commands.add("open-document-picker",{run(r){const l=r.getSelected();if(l){if(r._documentPicker)try{r._documentPicker.destroy()}catch{}r._documentPicker=new tt,r._documentPicker.open(n=>{const c=n.filename.split(".").pop().toLowerCase();l.addAttributes({href:n.url});const h=l.getTrait("href");h&&h.set("value",n.url);const d=t(l,"[class*='-filename']");d&&d.components(n.filename),a(l,c)},{filters:{type:"document"}})}}})}const ka=`<svg viewBox="0 0 80 32" width="80" height="32">
+</div>`},He={"button-fill-blue":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#003B71] bg-[#003B71] text-white transition-all duration-200 hover:bg-[#002a52] hover:border-[#002a52]","button-fill-orange":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#E97300] bg-[#E97300] text-white transition-all duration-200 hover:bg-[#c96200] hover:border-[#c96200]","button-outline-blue":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#003B71] bg-transparent text-[#003B71] transition-all duration-200 hover:bg-[#003B71] hover:text-white","button-outline-orange":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-[#E97300] bg-transparent text-[#E97300] transition-all duration-200 hover:bg-[#E97300] hover:text-white","button-fill-white":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-white bg-white text-[#003B71] transition-all duration-200 hover:bg-[#dce8f5] hover:border-[#dce8f5]","button-outline-white":"inline-block px-8 py-3 rounded-full text-base font-semibold leading-snug no-underline whitespace-nowrap border-2 border-white bg-transparent text-white transition-all duration-200 hover:bg-white hover:text-[#003B71]"},ka=[{id:"button-fill-blue",label:"Botón azul sólido",category:"Botones",media:ua,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-blue"}}},{id:"button-fill-orange",label:"Botón naranja sólido",category:"Botones",media:ba,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-orange"}}},{id:"button-outline-blue",label:"Botón azul outline",category:"Botones",media:xa,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-blue"}}},{id:"button-outline-orange",label:"Botón naranja outline",category:"Botones",media:ya,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-orange"}}},{id:"button-fill-white",label:"Botón blanco sólido",category:"Botones",media:va,content:{type:"integral-button",attributes:{"data-btn-variant":"button-fill-white"}}},{id:"button-outline-white",label:"Botón blanco outline",category:"Botones",media:wa,content:{type:"integral-button",attributes:{"data-btn-variant":"button-outline-white"}}},{id:"button-download-full-blue",label:"Descarga completa azul",category:"Botones",media:ga,content:Oe("#003B71")},{id:"button-download-full-orange",label:"Descarga completa naranja",category:"Botones",media:ha,content:Oe("#E97300")},{id:"button-download-simple-blue",label:"Descarga simple azul",category:"Botones",media:pa,content:Pe("#003B71")},{id:"button-download-simple-orange",label:"Descarga simple naranja",category:"Botones",media:ma,content:Pe("#E97300")}];function Ba(i){const e=[{type:"button",label:"Documento",name:"select-document",text:"Seleccionar documento",full:!0,command:"open-document-picker"},{type:"text",name:"href",label:"URL / Enlace",placeholder:"https://..."},{type:"select",name:"target",label:"Abrir en",options:[{id:"_self",name:"Misma ventana"},{id:"_blank",name:"Nueva ventana"}]}];i.DomComponents.addType("link",{model:{defaults:{traits:e}}}),i.DomComponents.addType("integral-button",{isComponent:r=>r.tagName==="A"&&r.hasAttribute("data-btn-variant"),model:{defaults:{tagName:"a",draggable:!0,droppable:!1,editable:!0,attributes:{href:"#",target:"_self","data-btn-variant":"button-fill-blue"},components:"Texto del botón",traits:e},init(){const r=this.getAttributes()["data-btn-variant"]??"button-fill-blue",l=He[r]??He["button-fill-blue"];this.setClass(l.split(" "))}}});function t(r,l){if(r.getEl()?.matches?.(l))return r;let c=null;const h=r.components?.();return h?(h.each(d=>{c||(c=t(d,l))}),c):null}function a(r,l){const c={pdf:"ri-file-pdf-line",xlsx:"ri-file-excel-line",xls:"ri-file-excel-line",doc:"ri-file-word-line",docx:"ri-file-word-line"}[l]??"ri-file-line";function h(m){const u=m.getEl?.();if(u?.tagName==="I"){const g=u.parentElement;if(g&&[...g.classList].some(k=>k.includes("-icon")))return m}let b=null;const s=m.components?.();return s?(s.each(g=>{b||(b=h(g))}),b):null}const d=h(r);if(d){const m=d.getClasses().find(u=>u.startsWith("ri-"));m&&d.removeClass(m),d.addClass(c)}else{const u=r.getEl()?.querySelector("[class*='-icon'] i");if(u){const b=[...u.classList].filter(s=>!s.startsWith("ri-"));u.className=[...b,c].join(" ")}}}i.Commands.add("open-document-picker",{run(r){const l=r.getSelected();if(l){if(r._documentPicker)try{r._documentPicker.destroy()}catch{}r._documentPicker=new tt,r._documentPicker.open(n=>{const c=n.filename.split(".").pop().toLowerCase();l.addAttributes({href:n.url});const h=l.getTrait("href");h&&h.set("value",n.url);const d=t(l,"[class*='-filename']");d&&d.components(n.filename),a(l,c)},{filters:{type:"document"}})}}})}const Ea=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="16" y="8" width="48" height="16" rx="8" fill="none" stroke="#003B71" stroke-width="2"/>
     <rect x="24" y="13" width="32" height="6" rx="3" fill="#003B71" fill-opacity="0.7"/>
-</svg>`,Ba=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,$a=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="16" y="8" width="48" height="16" rx="8" fill="none" stroke="#E97300" stroke-width="2"/>
     <rect x="24" y="13" width="32" height="6" rx="3" fill="#E97300" fill-opacity="0.7"/>
-</svg>`,Ea=`<svg viewBox="0 0 80 32" width="80" height="32">
+</svg>`,Sa=`<svg viewBox="0 0 80 32" width="80" height="32">
     <rect width="80" height="32" fill="#003B71" rx="2"/>
     <rect x="16" y="8" width="48" height="16" rx="8" fill="none" stroke="#ffffff" stroke-width="2"/>
     <rect x="24" y="13" width="32" height="6" rx="3" fill="rgba(255,255,255,0.7)"/>
-</svg>`,$a=[{id:"badge-outline-blue",label:"Badge azul outline",category:"Badges",media:ka,content:'<span class="inline-block border border-[#003B71] rounded-full px-4 py-1 text-base font-medium bg-transparent text-[#003B71]">Etiqueta</span>'},{id:"badge-outline-orange",label:"Badge naranja outline",category:"Badges",media:Ba,content:'<span class="inline-block border border-[#E97300] rounded-full px-4 py-1 text-base font-medium bg-transparent text-[#E97300]">Etiqueta</span>'},{id:"badge-outline-white",label:"Badge blanco outline",category:"Badges",media:Ea,content:'<span class="inline-block border border-white rounded-full px-4 py-1 text-base font-medium bg-transparent text-white">Etiqueta</span>'}],Sa=`<svg viewBox="0 0 32 32" width="32" height="32">
+</svg>`,Ca=[{id:"badge-outline-blue",label:"Badge azul outline",category:"Badges",media:Ea,content:'<span class="inline-block border border-[#003B71] rounded-full px-4 py-1 text-base font-medium bg-transparent text-[#003B71]">Etiqueta</span>'},{id:"badge-outline-orange",label:"Badge naranja outline",category:"Badges",media:$a,content:'<span class="inline-block border border-[#E97300] rounded-full px-4 py-1 text-base font-medium bg-transparent text-[#E97300]">Etiqueta</span>'},{id:"badge-outline-white",label:"Badge blanco outline",category:"Badges",media:Sa,content:'<span class="inline-block border border-white rounded-full px-4 py-1 text-base font-medium bg-transparent text-white">Etiqueta</span>'}],La=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="2" width="9" height="28" fill="#e9ecef" rx="1"/>
     <rect x="3" y="3" width="7" height="3" fill="#dee2e6" rx="0.5"/>
@@ -2055,7 +2107,7 @@ ${Qi}
     <line x1="3" y1="17" x2="10" y2="17" stroke="#0d3f6a" stroke-width="0.8"/>
     <line x1="3" y1="21" x2="10" y2="21" stroke="#0d3f6a" stroke-width="0.8"/>
     <rect x="3" y="25" width="7" height="2.5" fill="#dee2e6" rx="0.5"/>
-</svg>`;function Ca(){return function(){const i=this,e="agencies-map-component",t="/api/agencies/active",a="agencies";let r=[],l=[],n={},c=null,h=[];const d=async()=>{try{m(),await b(),await k(),T(),$(),A(),Y(),u()}catch(o){console.error("Error initializing map:",o),ne("Error al cargar las agencias"),u()}};function m(){const o=i.querySelector(`.${e}-list`);o&&(o.innerHTML=`
+</svg>`;function ja(){return function(){const i=this,e="agencies-map-component",t="/api/agencies/active",a="agencies";let r=[],l=[],n={},c=null,h=[];const d=async()=>{try{m(),await b(),await k(),T(),$(),A(),G(),u()}catch(o){console.error("Error initializing map:",o),se("Error al cargar las agencias"),u()}};function m(){const o=i.querySelector(`.${e}-list`);o&&(o.innerHTML=`
                     <div class="flex flex-col items-center justify-center p-12 space-y-4">
                         <div class="relative w-16 h-16">
                             <div class="absolute top-0 left-0 w-full h-full border-4 border-gray-200 rounded-full"></div>
@@ -2101,7 +2153,7 @@ ${Qi}
                     <p class="text-white font-medium text-lg">No hay agencias disponibles</p>
                     <p class="text-gray-300 text-sm mt-2">Intenta ajustar los filtros de búsqueda</p>
                 </div>
-            `}function z(){const o=i.querySelectorAll(`.${e}-item`);o.forEach(f=>{f.addEventListener("click",x=>{if(x.target.closest(".agency-maps-btn"))return;x.preventDefault();const B=parseInt(f.dataset.itemIndex),j=l[B];if(!j)return;o.forEach(S=>{S.classList.remove("bg-white","border-secondary","selected-agency"),S.classList.add("bg-white/10","border-white/20");const q=S.querySelector(".agency-title"),se=S.querySelectorAll("i"),ce=S.querySelectorAll(".agency-phone-link"),be=S.querySelectorAll("p:not(:has(.agency-phone-link))"),xe=S.querySelector(".agency-maps-btn");q&&(q.classList.remove("text-secondary"),q.classList.add("text-white")),se.forEach(V=>{V.classList.remove("text-secondary","text-gray-300","text-white"),V.classList.add("text-primary")}),ce.forEach(V=>{V.classList.remove("text-secondary"),V.classList.add("text-white")}),be.forEach(V=>{V.classList.remove("text-secondary"),V.classList.add("text-gray-200")}),xe&&(xe.classList.remove("bg-secondary"),xe.classList.add("bg-primary"))}),f.classList.remove("bg-white/10","border-white/20"),f.classList.add("bg-white","border-secondary","selected-agency");const N=f.querySelector(".agency-title"),F=f.querySelectorAll("i"),G=f.querySelectorAll(".agency-phone-link"),U=f.querySelectorAll("p:not(:has(.agency-phone-link))"),O=f.querySelector(".agency-maps-btn");if(N&&(N.classList.remove("text-white"),N.classList.add("text-secondary")),F.forEach(S=>{S.classList.remove("text-secondary","text-gray-300","text-white"),S.classList.add("text-primary")}),G.forEach(S=>{S.classList.remove("text-white"),S.classList.add("text-secondary")}),U.forEach(S=>{S.classList.remove("text-gray-200"),S.classList.add("text-secondary")}),O&&(O.classList.remove("bg-primary"),O.classList.add("bg-secondary")),c&&j&&c._loaded)try{c.flyTo([j.latitude,j.longitude],14,{animate:!0,duration:1});const S=h.find(q=>q.item.id===j.id);S&&S.marker&&S.marker.openPopup()}catch(S){console.warn("Error updating map view:",S)}})})}function A(){const o=i.querySelector(`.${e}-search-input`),f=i.querySelector(`.${e}-zone-filter`),x=i.querySelector(`.${e}-department-filter`),B=i.querySelector(`.${e}-no-results`),j={Occidental:["Ahuachapán","Santa Ana","Sonsonate"],Paracentral:["Chalatenango","Cuscatlán","La Paz","Cabañas","San Vicente"],Central:["La Libertad","San Salvador"],Oriental:["Usulután","San Miguel","Morazán","La Unión"]},N=()=>{if(!f||!x)return;const G=f.value,U=x.value;if(!G)x.innerHTML='<option value="">Todos los Departamentos</option>',[...new Set(r.map(S=>S.department).filter(Boolean))].sort().forEach(S=>{const q=document.createElement("option");q.value=S,q.textContent=S,x.appendChild(q)}),U&&(x.value=U);else{const O=j[G]||[];x.innerHTML='<option value="">Todos los Departamentos</option>',O.forEach(S=>{const q=document.createElement("option");q.value=S,q.textContent=S,x.appendChild(q)}),O.includes(U)&&(x.value=U)}},F=()=>{const G=o?o.value.toLowerCase().trim():"",U=f?f.value:"",O=x?x.value:"";l=r.filter(S=>{let q=!0,se=!0,ce=!0;return G&&(q=Object.values(S).some(be=>String(be).toLowerCase().includes(G))),U&&(se=S.zone===U),O&&(ce=S.department===O),q&&se&&ce}),$(),w(),B&&B.classList.toggle("hidden",l.length>0)};o&&o.addEventListener("input",F),f&&f.addEventListener("change",()=>{N(),F()}),x&&x.addEventListener("change",F)}function Y(){const o=i.querySelector("[data-title]");if(o){const B=R("map-title")||"Nuestras Agencias";o.textContent=B}const f=i.querySelector(`.${e}-search-input`);if(f){const B=R("search-placeholder")||"Buscar...";f.setAttribute("placeholder",B)}const x=i.querySelector(`.${e}-no-results`);if(x){const B=R("no-results-text")||"No se encontraron agencias";x.textContent=B}}function R(o){return i.closest(`[data-gjs-type="${e}"]`)?.getAttribute(o)}function ne(o){const f=i.querySelector(`.${e}-list`);f&&(f.innerHTML=`
+            `}function z(){const o=i.querySelectorAll(`.${e}-item`);o.forEach(f=>{f.addEventListener("click",x=>{if(x.target.closest(".agency-maps-btn"))return;x.preventDefault();const B=parseInt(f.dataset.itemIndex),j=l[B];if(!j)return;o.forEach(S=>{S.classList.remove("bg-white","border-secondary","selected-agency"),S.classList.add("bg-white/10","border-white/20");const q=S.querySelector(".agency-title"),ce=S.querySelectorAll("i"),de=S.querySelectorAll(".agency-phone-link"),be=S.querySelectorAll("p:not(:has(.agency-phone-link))"),xe=S.querySelector(".agency-maps-btn");q&&(q.classList.remove("text-secondary"),q.classList.add("text-white")),ce.forEach(X=>{X.classList.remove("text-secondary","text-gray-300","text-white"),X.classList.add("text-primary")}),de.forEach(X=>{X.classList.remove("text-secondary"),X.classList.add("text-white")}),be.forEach(X=>{X.classList.remove("text-secondary"),X.classList.add("text-gray-200")}),xe&&(xe.classList.remove("bg-secondary"),xe.classList.add("bg-primary"))}),f.classList.remove("bg-white/10","border-white/20"),f.classList.add("bg-white","border-secondary","selected-agency");const N=f.querySelector(".agency-title"),U=f.querySelectorAll("i"),J=f.querySelectorAll(".agency-phone-link"),V=f.querySelectorAll("p:not(:has(.agency-phone-link))"),P=f.querySelector(".agency-maps-btn");if(N&&(N.classList.remove("text-white"),N.classList.add("text-secondary")),U.forEach(S=>{S.classList.remove("text-secondary","text-gray-300","text-white"),S.classList.add("text-primary")}),J.forEach(S=>{S.classList.remove("text-white"),S.classList.add("text-secondary")}),V.forEach(S=>{S.classList.remove("text-gray-200"),S.classList.add("text-secondary")}),P&&(P.classList.remove("bg-primary"),P.classList.add("bg-secondary")),c&&j&&c._loaded)try{c.flyTo([j.latitude,j.longitude],14,{animate:!0,duration:1});const S=h.find(q=>q.item.id===j.id);S&&S.marker&&S.marker.openPopup()}catch(S){console.warn("Error updating map view:",S)}})})}function A(){const o=i.querySelector(`.${e}-search-input`),f=i.querySelector(`.${e}-zone-filter`),x=i.querySelector(`.${e}-department-filter`),B=i.querySelector(`.${e}-no-results`),j={Occidental:["Ahuachapán","Santa Ana","Sonsonate"],Paracentral:["Chalatenango","Cuscatlán","La Paz","Cabañas","San Vicente"],Central:["La Libertad","San Salvador"],Oriental:["Usulután","San Miguel","Morazán","La Unión"]},N=()=>{if(!f||!x)return;const J=f.value,V=x.value;if(!J)x.innerHTML='<option value="">Todos los Departamentos</option>',[...new Set(r.map(S=>S.department).filter(Boolean))].sort().forEach(S=>{const q=document.createElement("option");q.value=S,q.textContent=S,x.appendChild(q)}),V&&(x.value=V);else{const P=j[J]||[];x.innerHTML='<option value="">Todos los Departamentos</option>',P.forEach(S=>{const q=document.createElement("option");q.value=S,q.textContent=S,x.appendChild(q)}),P.includes(V)&&(x.value=V)}},U=()=>{const J=o?o.value.toLowerCase().trim():"",V=f?f.value:"",P=x?x.value:"";l=r.filter(S=>{let q=!0,ce=!0,de=!0;return J&&(q=Object.values(S).some(be=>String(be).toLowerCase().includes(J))),V&&(ce=S.zone===V),P&&(de=S.department===P),q&&ce&&de}),$(),w(),B&&B.classList.toggle("hidden",l.length>0)};o&&o.addEventListener("input",U),f&&f.addEventListener("change",()=>{N(),U()}),x&&x.addEventListener("change",U)}function G(){const o=i.querySelector("[data-title]");if(o){const B=F("map-title")||"Nuestras Agencias";o.textContent=B}const f=i.querySelector(`.${e}-search-input`);if(f){const B=F("search-placeholder")||"Buscar...";f.setAttribute("placeholder",B)}const x=i.querySelector(`.${e}-no-results`);if(x){const B=F("no-results-text")||"No se encontraron agencias";x.textContent=B}}function F(o){return i.closest(`[data-gjs-type="${e}"]`)?.getAttribute(o)}function se(o){const f=i.querySelector(`.${e}-list`);f&&(f.innerHTML=`
                     <div class="flex flex-col items-center justify-center p-12 text-center">
                         <div class="w-20 h-20 mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
                             <i class="ri-error-warning-line text-4xl text-red-300"></i>
@@ -2109,7 +2161,7 @@ ${Qi}
                         <p class="text-white font-medium text-lg">${o}</p>
                         <p class="text-gray-300 text-sm mt-2">Por favor, intenta nuevamente más tarde</p>
                     </div>
-                `)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",d):d()}}const La=[{id:"agencies-map",label:"Mapa de Agencias",category:"Interactivos",media:Sa,content:{type:"agencies-map-component"}}];function ja(i){const e="agencies-map-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute&&t.getAttribute("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Mapa de Agencias",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{class:"py-12 bg-secondary","data-gjs-type":e},components:`
+                `)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",d):d()}}const _a=[{id:"agencies-map",label:"Mapa de Agencias",category:"Interactivos",media:La,content:{type:"agencies-map-component"}}];function Ta(i){const e="agencies-map-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute&&t.getAttribute("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Mapa de Agencias",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{class:"py-12 bg-secondary","data-gjs-type":e},components:`
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-layerable="false" data-gjs-droppable="false">
                         <div class="mb-8">
                             <h2 class="text-4xl md:text-5xl font-bold text-white" contenteditable="true" data-gjs-editable="true" data-gjs-selectable="true" data-gjs-type="text">Nuestras Agencias</h2>
@@ -2142,7 +2194,7 @@ ${Qi}
                             </div>
                         </div>
                     </div>
-                `,script:Ca()},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),_a(i,e),Ta(i,e)}function _a(i,e){i.on("component:selected",t=>{if(t.get("type")===e){const a=t.getEl();if(a){const r=a.querySelector(`.${e}-map`);r&&r._map&&setTimeout(()=>{r._map.invalidateSize()},100)}}}),i.on("storage:end:load",()=>{setTimeout(()=>{Re(i,e)},1e3)}),i.on("component:mount",t=>{const a=t.getEl();a&&a.getAttribute&&a.getAttribute("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&a&&r.call(a)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const a=t.getEl();if(a){const r=a.querySelector(`.${e}-map`);r&&r._map&&(r._map.remove(),delete r._map),setTimeout(()=>{const l=t.get("script");l&&typeof l=="function"&&l.call(a)},500)}}}),i.on("canvas:render",()=>{setTimeout(()=>{Re(i,e)},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(r=>{r.set("type",e),r.addAttributes({"data-gjs-type":e})})})}function Re(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(r=>{r.set("type",e);const l=r.getEl();if(l&&l.isConnected){const n=r.get("script");n&&typeof n=="function"&&n.call(l)}})}function Ta(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const a=t.contentDocument.head;if(!a.querySelector("#leaflet-css")){const r=document.createElement("link");r.id="leaflet-css",r.rel="stylesheet",r.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",a.appendChild(r)}if(!a.querySelector(`#${e}-css`)){const r=document.createElement("style");r.id=`${e}-css`,r.innerHTML=`
+                `,script:ja()},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),za(i,e),Ia(i,e)}function za(i,e){i.on("component:selected",t=>{if(t.get("type")===e){const a=t.getEl();if(a){const r=a.querySelector(`.${e}-map`);r&&r._map&&setTimeout(()=>{r._map.invalidateSize()},100)}}}),i.on("storage:end:load",()=>{setTimeout(()=>{Re(i,e)},1e3)}),i.on("component:mount",t=>{const a=t.getEl();a&&a.getAttribute&&a.getAttribute("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&a&&r.call(a)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const a=t.getEl();if(a){const r=a.querySelector(`.${e}-map`);r&&r._map&&(r._map.remove(),delete r._map),setTimeout(()=>{const l=t.get("script");l&&typeof l=="function"&&l.call(a)},500)}}}),i.on("canvas:render",()=>{setTimeout(()=>{Re(i,e)},800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(r=>{r.set("type",e),r.addAttributes({"data-gjs-type":e})})})}function Re(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(r=>{r.set("type",e);const l=r.getEl();if(l&&l.isConnected){const n=r.get("script");n&&typeof n=="function"&&n.call(l)}})}function Ia(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const a=t.contentDocument.head;if(!a.querySelector("#leaflet-css")){const r=document.createElement("link");r.id="leaflet-css",r.rel="stylesheet",r.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",a.appendChild(r)}if(!a.querySelector(`#${e}-css`)){const r=document.createElement("style");r.id=`${e}-css`,r.innerHTML=`
                 .leaflet-container {
                     height: 100%;
                     width: 100%;
@@ -2228,7 +2280,7 @@ ${Qi}
                 .${e}-item.selected-agency .agency-maps-btn:hover {
                     background-color: rgba(240, 135, 42, 0.9);
                 }
-            `,a.appendChild(r)}})}const za=`<svg viewBox="0 0 32 32" width="32" height="32">
+            `,a.appendChild(r)}})}const Aa=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="6" width="30" height="20" fill="#003B71" rx="2"/>
     <rect x="1" y="22" width="30" height="4" fill="#E97300" rx="0"/>
@@ -2237,7 +2289,7 @@ ${Qi}
     <rect x="3" y="16" width="8" height="1.2" fill="rgba(255,255,255,0.6)" rx="0.6"/>
     <circle cx="23" cy="14" r="5" fill="#E97300"/>
     <circle cx="23" cy="14" r="4" fill="#f8e7d8"/>
-</svg>`,Ia=`
+</svg>`,qa=`
 .banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}
 .banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;}
 .banner-slide-container:active{cursor:grabbing;}
@@ -2262,7 +2314,7 @@ ${Qi}
 @media(max-width:768px){.banner-slide-inner{min-height:340px;}.banner-bg img{object-position:right center;}.banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}.banner-buttons{flex-wrap:wrap;gap:12px;}.banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.banner-btn{flex:1 1 100%;min-width:0;}}
 @media(max-width:480px){
     .banner-btn{flex:1 1 100%;min-width:0;}
-}`;function Aa(){return function(){const i=this,e=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",t={"fill-blue":{bg:"#003B71",color:"#ffffff",border:"#003B71",hoverBg:"#002a52",hoverColor:"#ffffff"},"outline-blue":{bg:"transparent",color:"#003B71",border:"#003B71",hoverBg:"#003B71",hoverColor:"#ffffff"},"fill-orange":{bg:"#E97300",color:"#ffffff",border:"#E97300",hoverBg:"#c96200",hoverColor:"#ffffff"},"outline-orange":{bg:"transparent",color:"#E97300",border:"#E97300",hoverBg:"#E97300",hoverColor:"#ffffff"},"fill-white":{bg:"#ffffff",color:"#003B71",border:"#ffffff",hoverBg:"#dce8f5",hoverColor:"#003B71"},"outline-white":{bg:"transparent",color:"#ffffff",border:"#ffffff",hoverBg:"#ffffff",hoverColor:"#003B71"}},a=".banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;}.banner-slide-container:active{cursor:grabbing;}.banner-slide-container{display:grid;}.banner-slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity 0.7s ease;visibility:hidden;display:flex;flex-direction:column;}.banner-slide.banner-slide--active{opacity:1;pointer-events:auto;visibility:visible;}.banner-slide-inner{position:relative;width:100%;flex:1;min-height:480px;display:flex;align-items:center;}.banner-bg{position:absolute;inset:0;z-index:0;}.banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.banner-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.banner-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.banner-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.banner-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.banner-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.banner-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.banner-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.banner-dots-wrapper{display:none;}.banner-stripe{position:relative;width:100%;height:48px;background:#E97300;z-index:20;display:flex;align-items:center;justify-content:center;}.banner-dots{display:flex;gap:8px;align-items:center;}.banner-dot{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;background:rgba(255,255,255,0.5);transition:all 0.3s ease;padding:0;flex-shrink:0;}.banner-dot--active{width:28px;background:#ffffff;}@media(max-width:768px){.banner-slide-inner{min-height:340px;}.banner-bg img{object-position:right center;}.banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}.banner-buttons{flex-wrap:wrap;gap:12px;}.banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.banner-btn{flex:1 1 100%;min-width:0;}}";(function(){const f=i.ownerDocument??document;if(!f.getElementById("banner-hero-styles")){const x=f.createElement("style");x.id="banner-hero-styles",x.textContent=a,f.head.appendChild(x)}})();let r=[],l=0,n=null,c=!1,h=0,d=0;const m=50,u=i.dataset.autoplay!=="false",b=i.dataset.category??"",s=i.querySelector(".banner-slide-container");i.querySelector(".banner-dots");async function g(){k();try{const f=await(await fetch(e)).json();if(r=Array.isArray(f)?b?f.filter(x=>x.category===b):f:[],r.length===0){ne();return}E(),z(),A(0,!1),u&&Y()}catch{ne()}}function k(){s.innerHTML=`
+}`;function Da(){return function(){const i=this,e=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",t={"fill-blue":{bg:"#003B71",color:"#ffffff",border:"#003B71",hoverBg:"#002a52",hoverColor:"#ffffff"},"outline-blue":{bg:"transparent",color:"#003B71",border:"#003B71",hoverBg:"#003B71",hoverColor:"#ffffff"},"fill-orange":{bg:"#E97300",color:"#ffffff",border:"#E97300",hoverBg:"#c96200",hoverColor:"#ffffff"},"outline-orange":{bg:"transparent",color:"#E97300",border:"#E97300",hoverBg:"#E97300",hoverColor:"#ffffff"},"fill-white":{bg:"#ffffff",color:"#003B71",border:"#ffffff",hoverBg:"#dce8f5",hoverColor:"#003B71"},"outline-white":{bg:"transparent",color:"#ffffff",border:"#ffffff",hoverBg:"#ffffff",hoverColor:"#003B71"}},a=".banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;}.banner-slide-container:active{cursor:grabbing;}.banner-slide-container{display:grid;}.banner-slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity 0.7s ease;visibility:hidden;display:flex;flex-direction:column;}.banner-slide.banner-slide--active{opacity:1;pointer-events:auto;visibility:visible;}.banner-slide-inner{position:relative;width:100%;flex:1;min-height:480px;display:flex;align-items:center;}.banner-bg{position:absolute;inset:0;z-index:0;}.banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.banner-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.banner-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.banner-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.banner-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.banner-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.banner-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.banner-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.banner-dots-wrapper{display:none;}.banner-stripe{position:relative;width:100%;height:48px;background:#E97300;z-index:20;display:flex;align-items:center;justify-content:center;}.banner-dots{display:flex;gap:8px;align-items:center;}.banner-dot{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;background:rgba(255,255,255,0.5);transition:all 0.3s ease;padding:0;flex-shrink:0;}.banner-dot--active{width:28px;background:#ffffff;}@media(max-width:768px){.banner-slide-inner{min-height:340px;}.banner-bg img{object-position:right center;}.banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}.banner-buttons{flex-wrap:wrap;gap:12px;}.banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.banner-btn{flex:1 1 100%;min-width:0;}}";(function(){const f=i.ownerDocument??document;if(!f.getElementById("banner-hero-styles")){const x=f.createElement("style");x.id="banner-hero-styles",x.textContent=a,f.head.appendChild(x)}})();let r=[],l=0,n=null,c=!1,h=0,d=0;const m=50,u=i.dataset.autoplay!=="false",b=i.dataset.category??"",s=i.querySelector(".banner-slide-container");i.querySelector(".banner-dots");async function g(){k();try{const f=await(await fetch(e)).json();if(r=Array.isArray(f)?b?f.filter(x=>x.category===b):f:[],r.length===0){se();return}E(),z(),A(0,!1),u&&G()}catch{se()}}function k(){s.innerHTML=`
                 <div class="banner-slide banner-slide--active">
                     <div class="banner-slide-inner">
                         <div class="banner-bg bsk-bg-img"></div>
@@ -2330,7 +2382,7 @@ ${Qi}
                     @media(max-width:768px){
                         .bsk-buttons{flex-direction:column;}
                     }
-                `,o.head.appendChild(f)}}function T(o){return t[o]?t[o]:o==="outline-blue"||o==="outline-orange"?t["outline-white"]:t["fill-white"]}function w(o,f,x,B){const j=T(x),N=f?"a":"span",F=f?`href="${f}"${B?' target="_blank" rel="noopener noreferrer"':""}`:"";return`<${N} ${F}
+                `,o.head.appendChild(f)}}function T(o){return t[o]?t[o]:o==="outline-blue"||o==="outline-orange"?t["outline-white"]:t["fill-white"]}function w(o,f,x,B){const j=T(x),N=f?"a":"span",U=f?`href="${f}"${B?' target="_blank" rel="noopener noreferrer"':""}`:"";return`<${N} ${U}
                 class="banner-btn"
                 data-bg="${j.bg}"
                 data-color="${j.color}"
@@ -2362,11 +2414,11 @@ ${Qi}
                         </div>
                     </div>
                 </div>
-            `).join(""),L(),p(),v()}function L(){i.querySelectorAll(".banner-btn").forEach(o=>{const f=o.style.borderColor;o.addEventListener("mouseenter",()=>{o.style.background=o.dataset.hoverBg,o.style.color=o.dataset.hoverColor,o.style.borderColor=o.dataset.hoverBg}),o.addEventListener("mouseleave",()=>{o.style.background=o.dataset.bg,o.style.color=o.dataset.color,o.style.borderColor=f})})}function p(){s.addEventListener("mousedown",$),s.addEventListener("touchstart",$,{passive:!0}),s.addEventListener("mousemove",y),s.addEventListener("touchmove",y,{passive:!0}),s.addEventListener("mouseup",C),s.addEventListener("touchend",C),s.addEventListener("mouseleave",C)}function v(){r.forEach(o=>{const f=new Image;f.src=o.image_url})}function $(o){c=!0,h=o.touches?o.touches[0].clientX:o.clientX,d=0}function y(o){c&&(d=(o.touches?o.touches[0].clientX:o.clientX)-h)}function C(){c&&(c=!1,Math.abs(d)>=m&&(A(d<0?(l+1)%r.length:(l-1+r.length)%r.length),R()),d=0)}function z(){const o=i.querySelector(".banner-stripe");if(!o||r.length<=1)return;const f=document.createElement("div");f.className="banner-dots",r.forEach((x,B)=>{const j=document.createElement("button");j.className="banner-dot",j.dataset.index=String(B),j.setAttribute("aria-label",`Banner ${B+1}`),j.addEventListener("click",()=>{A(B),R()}),f.appendChild(j)}),o.innerHTML="",o.appendChild(f)}function A(o,f=!0){const x=s.querySelectorAll(".banner-slide"),B=i.querySelectorAll(".banner-dot");x.forEach((j,N)=>{const F=N===o;f||(j.style.transition="none"),j.classList.toggle("banner-slide--active",F),f||requestAnimationFrame(()=>{j.style.transition=""})}),B.forEach((j,N)=>{j.classList.toggle("banner-dot--active",N===o)}),l=o}function Y(){r.length<=1||!u||(n=setInterval(()=>{A((l+1)%r.length)},5e3))}function R(){u&&(clearInterval(n),Y())}function ne(){const o=i.querySelector(".banner-wrapper");o&&(o.innerHTML=`
+            `).join(""),L(),p(),v()}function L(){i.querySelectorAll(".banner-btn").forEach(o=>{const f=o.style.borderColor;o.addEventListener("mouseenter",()=>{o.style.background=o.dataset.hoverBg,o.style.color=o.dataset.hoverColor,o.style.borderColor=o.dataset.hoverBg}),o.addEventListener("mouseleave",()=>{o.style.background=o.dataset.bg,o.style.color=o.dataset.color,o.style.borderColor=f})})}function p(){s.addEventListener("mousedown",$),s.addEventListener("touchstart",$,{passive:!0}),s.addEventListener("mousemove",y),s.addEventListener("touchmove",y,{passive:!0}),s.addEventListener("mouseup",C),s.addEventListener("touchend",C),s.addEventListener("mouseleave",C)}function v(){r.forEach(o=>{const f=new Image;f.src=o.image_url})}function $(o){c=!0,h=o.touches?o.touches[0].clientX:o.clientX,d=0}function y(o){c&&(d=(o.touches?o.touches[0].clientX:o.clientX)-h)}function C(){c&&(c=!1,Math.abs(d)>=m&&(A(d<0?(l+1)%r.length:(l-1+r.length)%r.length),F()),d=0)}function z(){const o=i.querySelector(".banner-stripe");if(!o||r.length<=1)return;const f=document.createElement("div");f.className="banner-dots",r.forEach((x,B)=>{const j=document.createElement("button");j.className="banner-dot",j.dataset.index=String(B),j.setAttribute("aria-label",`Banner ${B+1}`),j.addEventListener("click",()=>{A(B),F()}),f.appendChild(j)}),o.innerHTML="",o.appendChild(f)}function A(o,f=!0){const x=s.querySelectorAll(".banner-slide"),B=i.querySelectorAll(".banner-dot");x.forEach((j,N)=>{const U=N===o;f||(j.style.transition="none"),j.classList.toggle("banner-slide--active",U),f||requestAnimationFrame(()=>{j.style.transition=""})}),B.forEach((j,N)=>{j.classList.toggle("banner-dot--active",N===o)}),l=o}function G(){r.length<=1||!u||(n=setInterval(()=>{A((l+1)%r.length)},5e3))}function F(){u&&(clearInterval(n),G())}function se(){const o=i.querySelector(".banner-wrapper");o&&(o.innerHTML=`
                     <div style="display:flex;align-items:center;justify-content:center;
                                 min-height:480px;color:rgba(255,255,255,0.5);font-size:14px;padding:40px;">
                         Sin contenido.
-                    </div>`)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",g):g()}}const qa=[{id:"banner-hero",label:"Banner Slider",category:"Banners",media:za,content:{type:"banner-hero-component"}}];function Da(i){const e="banner-hero-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner Slider",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-autoplay":"true","data-category":""},components:`
+                    </div>`)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",g):g()}}const Ma=[{id:"banner-hero",label:"Banner Slider",category:"Banners",media:Aa,content:{type:"banner-hero-component"}}];function Na(i){const e="banner-hero-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner Slider",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-autoplay":"true","data-category":""},components:`
                     <div class="banner-wrapper"
                          data-gjs-editable="false" data-gjs-selectable="false"
                          data-gjs-hoverable="false" data-gjs-droppable="false"
@@ -2388,14 +2440,14 @@ ${Qi}
                              data-gjs-highlightable="false">
                         </div>
                     </div>
-                `,script:Aa(),traits:[{type:"select",name:"data-autoplay",label:"Avance automático",options:[{id:"true",name:"Activado"},{id:"false",name:"Desactivado"}],changeProp:!1},{type:"select",name:"data-category",label:"Filtrar por categoría",options:[{id:"",name:"Todas las categorías"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const t=this.getEl();if(!t)return;const a=this.get("script");a&&typeof a=="function"&&setTimeout(()=>a.call(t),100)})}}}),Na(i,e),Oa(i,e),Ma(i,e)}async function Ma(i,e){try{const t=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",r=await(await fetch(t)).json();if(!Array.isArray(r))return;const l=[...new Set(r.map(d=>d.category).filter(Boolean))].sort();if(l.length===0)return;const n=i.DomComponents.getType(e);if(!n)return;const h=n.model.prototype.defaults.traits.find(d=>d.name==="data-category");if(!h)return;h.options=[{id:"",name:"Todas las categorías"},...l.map(d=>({id:d,name:d}))]}catch{}}function Na(i,e){i.on("storage:end:load",()=>{setTimeout(()=>Fe(i,e),1e3)}),i.on("component:mount",t=>{const a=t.getEl();a?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&r.call(a)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const a=t.getEl();a&&setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&r.call(a)},500)}}),i.on("canvas:render",()=>{setTimeout(()=>Fe(i,e),800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Fe(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const a=t.getEl();if(a?.isConnected){const r=t.get("script");r&&typeof r=="function"&&r.call(a)}})}function Oa(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const a=t.contentDocument?.head;if(a){if(!a.querySelector("#banner-hero-styles")){const r=document.createElement("style");r.id="banner-hero-styles",r.textContent=Ia,a.appendChild(r)}if(!a.querySelector(`#${e}-editor-css`)){const r=document.createElement("style");r.id=`${e}-editor-css`,r.textContent=`
+                `,script:Da(),traits:[{type:"select",name:"data-autoplay",label:"Avance automático",options:[{id:"true",name:"Activado"},{id:"false",name:"Desactivado"}],changeProp:!1},{type:"select",name:"data-category",label:"Filtrar por categoría",options:[{id:"",name:"Todas las categorías"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const t=this.getEl();if(!t)return;const a=this.get("script");a&&typeof a=="function"&&setTimeout(()=>a.call(t),100)})}}}),Pa(i,e),Ha(i,e),Oa(i,e)}async function Oa(i,e){try{const t=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",r=await(await fetch(t)).json();if(!Array.isArray(r))return;const l=[...new Set(r.map(d=>d.category).filter(Boolean))].sort();if(l.length===0)return;const n=i.DomComponents.getType(e);if(!n)return;const h=n.model.prototype.defaults.traits.find(d=>d.name==="data-category");if(!h)return;h.options=[{id:"",name:"Todas las categorías"},...l.map(d=>({id:d,name:d}))]}catch{}}function Pa(i,e){i.on("storage:end:load",()=>{setTimeout(()=>Fe(i,e),1e3)}),i.on("component:mount",t=>{const a=t.getEl();a?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&r.call(a)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const a=t.getEl();a&&setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&r.call(a)},500)}}),i.on("canvas:render",()=>{setTimeout(()=>Fe(i,e),800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Fe(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const a=t.getEl();if(a?.isConnected){const r=t.get("script");r&&typeof r=="function"&&r.call(a)}})}function Ha(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const a=t.contentDocument?.head;if(a){if(!a.querySelector("#banner-hero-styles")){const r=document.createElement("style");r.id="banner-hero-styles",r.textContent=qa,a.appendChild(r)}if(!a.querySelector(`#${e}-editor-css`)){const r=document.createElement("style");r.id=`${e}-editor-css`,r.textContent=`
                 [data-gjs-type="${e}"] * { pointer-events: none !important; }
                 [data-gjs-type="${e}"].gjs-selected,
                 [data-gjs-type="${e}"].gjs-hovered {
                     outline: 2px dashed rgba(240,135,42,0.6) !important;
                     outline-offset: 2px;
                 }
-            `,a.appendChild(r)}}})}const Pa=`<svg viewBox="0 0 32 32" width="32" height="32">
+            `,a.appendChild(r)}}})}const Ra=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="6" width="30" height="20" fill="#003B71" rx="2"/>
     <rect x="1" y="22" width="30" height="4" fill="#E97300" rx="0"/>
@@ -2404,7 +2456,7 @@ ${Qi}
     <rect x="3" y="16" width="8" height="1.2" fill="rgba(255,255,255,0.6)" rx="0.6"/>
     <rect x="17" y="8" width="12" height="14" fill="#E97300" rx="2"/>
     <rect x="19" y="10" width="8" height="10" fill="#f8e7d8" rx="1"/>
-</svg>`,Ha=`
+</svg>`,Fa=`
 .bsingle-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}
 .bsingle-inner{position:relative;width:100%;min-height:480px;display:flex;align-items:center;}
 .bsingle-bg{position:absolute;inset:0;z-index:0;}
@@ -2426,7 +2478,7 @@ ${Qi}
 }
 @media(max-width:480px){
     .bsingle-btn{flex:1 1 100%;min-width:0;}
-}`;function Ra(){return function(){const i=this,e=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",t={"fill-blue":{bg:"#003B71",color:"#ffffff",border:"#003B71",hoverBg:"#002a52",hoverColor:"#ffffff"},"outline-blue":{bg:"transparent",color:"#003B71",border:"#003B71",hoverBg:"#003B71",hoverColor:"#ffffff"},"fill-orange":{bg:"#E97300",color:"#ffffff",border:"#E97300",hoverBg:"#c96200",hoverColor:"#ffffff"},"outline-orange":{bg:"transparent",color:"#E97300",border:"#E97300",hoverBg:"#E97300",hoverColor:"#ffffff"},"fill-white":{bg:"#ffffff",color:"#003B71",border:"#ffffff",hoverBg:"#dce8f5",hoverColor:"#003B71"},"outline-white":{bg:"transparent",color:"#ffffff",border:"#ffffff",hoverBg:"#ffffff",hoverColor:"#003B71"}},a=".bsingle-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.bsingle-inner{position:relative;width:100%;min-height:480px;display:flex;align-items:center;}.bsingle-bg{position:absolute;inset:0;z-index:0;}.bsingle-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.bsingle-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.bsingle-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.bsingle-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.bsingle-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.bsingle-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.bsingle-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.bsingle-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.bsingle-stripe{position:relative;width:100%;height:40px;background:#E97300;z-index:20;}@media(max-width:768px){.bsingle-inner{min-height:340px;}.bsingle-bg img{object-position:right center;}.bsingle-content{max-width:100%;width:100%;padding:32px 24px 80px;}.bsingle-buttons{flex-wrap:wrap;gap:12px;}.bsingle-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.bsingle-btn{flex:1 1 100%;min-width:0;}}";(function(){const g=i.ownerDocument??document;if(!g.getElementById("banner-single-styles")){const k=g.createElement("style");k.id="banner-single-styles",k.textContent=a,g.head.appendChild(k)}})();const r=i.dataset.bannerId??"",l=i.querySelector(".bsingle-content-wrapper");async function n(){c();try{const g=await(await fetch(e)).json();if(!Array.isArray(g)||g.length===0){b();return}const k=r?g.find(T=>String(T.id)===String(r)):g[0];if(!k){b();return}m(k)}catch{b()}}function c(){l.innerHTML=`
+}`;function Ua(){return function(){const i=this,e=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",t={"fill-blue":{bg:"#003B71",color:"#ffffff",border:"#003B71",hoverBg:"#002a52",hoverColor:"#ffffff"},"outline-blue":{bg:"transparent",color:"#003B71",border:"#003B71",hoverBg:"#003B71",hoverColor:"#ffffff"},"fill-orange":{bg:"#E97300",color:"#ffffff",border:"#E97300",hoverBg:"#c96200",hoverColor:"#ffffff"},"outline-orange":{bg:"transparent",color:"#E97300",border:"#E97300",hoverBg:"#E97300",hoverColor:"#ffffff"},"fill-white":{bg:"#ffffff",color:"#003B71",border:"#ffffff",hoverBg:"#dce8f5",hoverColor:"#003B71"},"outline-white":{bg:"transparent",color:"#ffffff",border:"#ffffff",hoverBg:"#ffffff",hoverColor:"#003B71"}},a=".bsingle-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.bsingle-inner{position:relative;width:100%;min-height:480px;display:flex;align-items:center;}.bsingle-bg{position:absolute;inset:0;z-index:0;}.bsingle-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.bsingle-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.bsingle-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.bsingle-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.bsingle-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.bsingle-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.bsingle-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.bsingle-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.bsingle-stripe{position:relative;width:100%;height:40px;background:#E97300;z-index:20;}@media(max-width:768px){.bsingle-inner{min-height:340px;}.bsingle-bg img{object-position:right center;}.bsingle-content{max-width:100%;width:100%;padding:32px 24px 80px;}.bsingle-buttons{flex-wrap:wrap;gap:12px;}.bsingle-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.bsingle-btn{flex:1 1 100%;min-width:0;}}";(function(){const g=i.ownerDocument??document;if(!g.getElementById("banner-single-styles")){const k=g.createElement("style");k.id="banner-single-styles",k.textContent=a,g.head.appendChild(k)}})();const r=i.dataset.bannerId??"",l=i.querySelector(".bsingle-content-wrapper");async function n(){c();try{const g=await(await fetch(e)).json();if(!Array.isArray(g)||g.length===0){b();return}const k=r?g.find(T=>String(T.id)===String(r)):g[0];if(!k){b();return}m(k)}catch{b()}}function c(){l.innerHTML=`
                 <div class="bsingle-inner">
                     <div class="bsingle-bg bsk-bg-img"></div>
                     <div class="bsingle-overlay"></div>
@@ -2476,7 +2528,7 @@ ${Qi}
                 <div style="display:flex;align-items:center;justify-content:center;
                             min-height:480px;color:rgba(255,255,255,0.5);font-size:14px;padding:40px;">
                     No hay banner seleccionado o no está activo.
-                </div>`}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",n):n()}}const Fa=[{id:"banner-single",label:"Banner Individual",category:"Banners",media:Pa,content:{type:"banner-single-component"}}];function Ua(i){const e="banner-single-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner Individual",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-banner-id":""},components:`
+                </div>`}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",n):n()}}const Va=[{id:"banner-single",label:"Banner Individual",category:"Banners",media:Ra,content:{type:"banner-single-component"}}];function Xa(i){const e="banner-single-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner Individual",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-banner-id":""},components:`
                     <div class="bsingle-wrapper"
                          data-gjs-editable="false" data-gjs-selectable="false"
                          data-gjs-hoverable="false" data-gjs-droppable="false"
@@ -2492,11 +2544,11 @@ ${Qi}
                              data-gjs-highlightable="false">
                         </div>
                     </div>
-                `,script:Ra(),traits:[{type:"select",name:"data-banner-id",label:"Banner a mostrar",options:[{id:"",name:"Cargando banners..."}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const t=this.getEl();if(!t)return;const a=this.get("script");a&&typeof a=="function"&&setTimeout(()=>a.call(t),100)})}}}),Xa(i,e),Wa(i,e),Va(i,e)}async function Va(i,e){try{const t=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",r=await(await fetch(t)).json();if(!Array.isArray(r)||r.length===0)return;const l=i.DomComponents.getType(e);if(!l)return;const c=l.model.prototype.defaults.traits.find(h=>h.name==="data-banner-id");if(!c)return;c.options=[{id:"",name:"— Seleccionar banner —"},...r.map(h=>({id:String(h.id),name:h.category?`[${h.category}] ${h.title}`:h.title}))]}catch{}}function Xa(i,e){i.on("storage:end:load",()=>{setTimeout(()=>Ue(i,e),1e3)}),i.on("component:mount",t=>{const a=t.getEl();a?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&r.call(a)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const a=t.getEl();a&&setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&r.call(a)},500)}}),i.on("canvas:render",()=>{setTimeout(()=>Ue(i,e),800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Ue(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const a=t.getEl();if(a?.isConnected){const r=t.get("script");r&&typeof r=="function"&&r.call(a)}})}function Wa(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const a=t.contentDocument?.head;if(a){if(!a.querySelector("#banner-single-styles")){const r=document.createElement("style");r.id="banner-single-styles",r.textContent=Ha,a.appendChild(r)}if(!a.querySelector(`#${e}-editor-css`)){const r=document.createElement("style");r.id=`${e}-editor-css`,r.textContent=`
+                `,script:Ua(),traits:[{type:"select",name:"data-banner-id",label:"Banner a mostrar",options:[{id:"",name:"Cargando banners..."}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const t=this.getEl();if(!t)return;const a=this.get("script");a&&typeof a=="function"&&setTimeout(()=>a.call(t),100)})}}}),Ya(i,e),Ga(i,e),Wa(i,e)}async function Wa(i,e){try{const t=document.querySelector('meta[name="api-banners-url"]')?.content??"/api/banners/active",r=await(await fetch(t)).json();if(!Array.isArray(r)||r.length===0)return;const l=i.DomComponents.getType(e);if(!l)return;const c=l.model.prototype.defaults.traits.find(h=>h.name==="data-banner-id");if(!c)return;c.options=[{id:"",name:"— Seleccionar banner —"},...r.map(h=>({id:String(h.id),name:h.category?`[${h.category}] ${h.title}`:h.title}))]}catch{}}function Ya(i,e){i.on("storage:end:load",()=>{setTimeout(()=>Ue(i,e),1e3)}),i.on("component:mount",t=>{const a=t.getEl();a?.getAttribute?.("data-gjs-type")===e&&(t.set("type",e),setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&r.call(a)},500))}),i.on("component:clone",t=>{if(t.get("type")===e){const a=t.getEl();a&&setTimeout(()=>{const r=t.get("script");r&&typeof r=="function"&&r.call(a)},500)}}),i.on("canvas:render",()=>{setTimeout(()=>Ue(i,e),800)}),i.on("storage:start:store",()=>{i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e),t.addAttributes({"data-gjs-type":e})})})}function Ue(i,e){i.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(t=>{t.set("type",e);const a=t.getEl();if(a?.isConnected){const r=t.get("script");r&&typeof r=="function"&&r.call(a)}})}function Ga(i,e){i.on("load",()=>{const t=i.Canvas.getFrameEl();if(!t)return;const a=t.contentDocument?.head;if(a){if(!a.querySelector("#banner-single-styles")){const r=document.createElement("style");r.id="banner-single-styles",r.textContent=Fa,a.appendChild(r)}if(!a.querySelector(`#${e}-editor-css`)){const r=document.createElement("style");r.id=`${e}-editor-css`,r.textContent=`
                 [data-gjs-type="${e}"] * { pointer-events: none !important; }
                 [data-gjs-type="${e}"].gjs-selected,
                 [data-gjs-type="${e}"].gjs-hovered {
                     outline: 2px dashed rgba(240,135,42,0.6) !important;
                     outline-offset: 2px;
                 }
-            `,a.appendChild(r)}}})}function Ya(i){_.registerBlocks(yt),_.registerBlocks(Lt),_.registerBlocks(qa),_.registerBlocks(Fa),_.registerBlocks(_i),_.registerBlocks(mi),_.registerBlocks(At),_.registerBlocks(ei),_.registerBlocks(ai),_.registerBlocks(Rt),_.registerBlocks(Si),_.registerBlocks(Vt),_.registerBlocks(oi),_.registerBlocks(di),_.registerBlocks(Ii),_.registerBlocks(Mi),_.registerBlocks(Pi),_.registerBlocks(Zi),_.registerBlocks(ea),_.registerBlocks(oa),_.registerBlocks(va),_.registerBlocks($a),_.registerBlocks(Vi),_.registerBlocks(Yi),_.registerBlocks(La),_.applyToEditor(i),ja(i),Da(i),Ua(i),Zt(i),Pt(i),wa(i),ui(i),na(i)}function Ga(i,e,t){i.on("component:add",()=>e.markAsDirty()),i.on("component:remove",()=>e.markAsDirty()),i.on("component:update",()=>e.markAsDirty()),i.on("style:update",()=>e.markAsDirty());const a=document.getElementById("save-button");a&&a.addEventListener("click",async()=>{await Ja(i,e,t,a)}),document.addEventListener("keydown",r=>{(r.ctrlKey||r.metaKey)&&r.key==="s"&&(r.preventDefault(),a&&!a.disabled&&a.click())})}async function Ja(i,e,t,a){a.disabled=!0,a.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{t.needsTitle()?await Za(i,e,t):await Qe(i,e,t)}catch(r){et(r.message,"error")}finally{a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}}async function Za(i,e,t){return new Promise((a,r)=>{it({title:"Título de la Página",description:"Ingresa un título descriptivo para identificar esta página",placeholder:"Ej: Acerca de Nosotros",icon:"ri-file-text-line",iconBg:"#dbeafe",iconColor:"#2563eb",confirmLabel:"Guardar",onConfirm:async l=>{if(!l?.trim()){r(new Error("El título es obligatorio"));return}try{await Qe(i,e,t,l),a()}catch(n){r(n)}},onCancel:()=>{r(new Error("Guardado cancelado"))}})})}async function Qe(i,e,t,a=null){const l={...e.getEditorContent(i),is_published:t.isPublished};a&&(l.title=a);const n=await e.savePage(i,l,t.storeUrl,t.getHttpMethod());n.success&&(e.markAsClean(),et(n.message,"success"),!t.isEditMode&&n.page?(t.updatePageInfo(n),t.updateTitle(n.page.title)):a&&t.updateTitle(a))}function et(i,e){typeof window.showNotification=="function"&&window.showNotification(i,e)}document.addEventListener("DOMContentLoaded",async()=>{const i=new at,e=new mt;new ut(i);const t=rt();if(t.on("load",()=>{Ya(t),lt(t),ot(),nt(),st(t),ct(t),dt(t),ft(t),gt(t),ht(t),Ka(t),Qa(t),er(t),setTimeout(()=>{t.runCommand("sw-visibility"),t.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),e.isEditMode)try{await i.loadPageContent(t,e.loadUrl),Ve("Contenido cargado correctamente","success")}catch(a){Ve("Error al cargar el contenido","error"),console.error(a)}Ga(t,i,e)});function Ka(i){const e=[{cmd:"set-device-desktop",device:"Desktop"},{cmd:"set-device-tablet",device:"Tablet"},{cmd:"set-device-mobile",device:"Mobile"}];e.forEach(({cmd:t,device:a})=>{i.Commands.add(t,{run:r=>{r.setDevice(a),e.forEach(({cmd:l})=>{r.Panels.getButton("devices-c",l)?.set("active",l===t)})}})})}function Qa(i){i.Commands.add("canvas-clear",{run:e=>{pt({title:"Limpiar canvas",description:"¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",icon:"ri-delete-bin-line",iconBg:"#fef2f2",iconColor:"#dc2626",confirmLabel:"Limpiar todo",confirmColor:"#dc2626",onConfirm:()=>{e.DomComponents.clear(),e.CssComposer.clear()}})}})}function er(i){const e=i.Canvas.getFrameEl();if(!e?.contentDocument?.head)return;const t=e.contentDocument.createElement("style");t.id="gjs-dashed-fix",t.textContent="body,body.gjs-dashed{margin:0!important;padding:0 0 160px 0!important;}",e.contentDocument.head.appendChild(t)}function Ve(i,e="info"){typeof window.showNotification=="function"&&window.showNotification(i,e)}
+            `,a.appendChild(r)}}})}function Ja(i){_.registerBlocks(yt),_.registerBlocks(Lt),_.registerBlocks(Ma),_.registerBlocks(Va),_.registerBlocks(_i),_.registerBlocks(mi),_.registerBlocks(At),_.registerBlocks(ei),_.registerBlocks(ai),_.registerBlocks(Rt),_.registerBlocks(Si),_.registerBlocks(Vt),_.registerBlocks(oi),_.registerBlocks(di),_.registerBlocks(Ii),_.registerBlocks(Mi),_.registerBlocks(Pi),_.registerBlocks(Qi),_.registerBlocks(ia),_.registerBlocks(sa),_.registerBlocks(ka),_.registerBlocks(Ca),_.registerBlocks(Wi),_.registerBlocks(Ji),_.registerBlocks(_a),_.applyToEditor(i),Ta(i),Na(i),Xa(i),Zt(i),Pt(i),Ba(i),ui(i),ca(i)}function Za(i,e,t){i.on("component:add",()=>e.markAsDirty()),i.on("component:remove",()=>e.markAsDirty()),i.on("component:update",()=>e.markAsDirty()),i.on("style:update",()=>e.markAsDirty());const a=document.getElementById("save-button");a&&a.addEventListener("click",async()=>{await Ka(i,e,t,a)}),document.addEventListener("keydown",r=>{(r.ctrlKey||r.metaKey)&&r.key==="s"&&(r.preventDefault(),a&&!a.disabled&&a.click())})}async function Ka(i,e,t,a){a.disabled=!0,a.innerHTML='<i class="ri-loader-4-line animate-spin"></i><span>Guardando...</span>';try{t.needsTitle()?await Qa(i,e,t):await Qe(i,e,t)}catch(r){et(r.message,"error")}finally{a.disabled=!1,a.innerHTML='<i class="ri-save-line"></i><span>Guardar</span>'}}async function Qa(i,e,t){return new Promise((a,r)=>{it({title:"Título de la Página",description:"Ingresa un título descriptivo para identificar esta página",placeholder:"Ej: Acerca de Nosotros",icon:"ri-file-text-line",iconBg:"#dbeafe",iconColor:"#2563eb",confirmLabel:"Guardar",onConfirm:async l=>{if(!l?.trim()){r(new Error("El título es obligatorio"));return}try{await Qe(i,e,t,l),a()}catch(n){r(n)}},onCancel:()=>{r(new Error("Guardado cancelado"))}})})}async function Qe(i,e,t,a=null){const l={...e.getEditorContent(i),is_published:t.isPublished};a&&(l.title=a);const n=await e.savePage(i,l,t.storeUrl,t.getHttpMethod());n.success&&(e.markAsClean(),et(n.message,"success"),!t.isEditMode&&n.page?(t.updatePageInfo(n),t.updateTitle(n.page.title)):a&&t.updateTitle(a))}function et(i,e){typeof window.showNotification=="function"&&window.showNotification(i,e)}document.addEventListener("DOMContentLoaded",async()=>{const i=new at,e=new mt;new ut(i);const t=rt();if(t.on("load",()=>{Ja(t),lt(t),ot(),nt(),st(t),ct(t),dt(t),ft(t),gt(t),ht(t),er(t),tr(t),ir(t),setTimeout(()=>{t.runCommand("sw-visibility"),t.Panels.getButton("options","sw-visibility")?.set("active",!0)},100)}),e.isEditMode)try{await i.loadPageContent(t,e.loadUrl),Ve("Contenido cargado correctamente","success")}catch(a){Ve("Error al cargar el contenido","error"),console.error(a)}Za(t,i,e)});function er(i){const e=[{cmd:"set-device-desktop",device:"Desktop"},{cmd:"set-device-tablet",device:"Tablet"},{cmd:"set-device-mobile",device:"Mobile"}];e.forEach(({cmd:t,device:a})=>{i.Commands.add(t,{run:r=>{r.setDevice(a),e.forEach(({cmd:l})=>{r.Panels.getButton("devices-c",l)?.set("active",l===t)})}})})}function tr(i){i.Commands.add("canvas-clear",{run:e=>{pt({title:"Limpiar canvas",description:"¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",icon:"ri-delete-bin-line",iconBg:"#fef2f2",iconColor:"#dc2626",confirmLabel:"Limpiar todo",confirmColor:"#dc2626",onConfirm:()=>{e.DomComponents.clear(),e.CssComposer.clear()}})}})}function ir(i){const e=i.Canvas.getFrameEl();if(!e?.contentDocument?.head)return;const t=e.contentDocument.createElement("style");t.id="gjs-dashed-fix",t.textContent="body,body.gjs-dashed{margin:0!important;padding:0 0 160px 0!important;}",e.contentDocument.head.appendChild(t)}function Ve(i,e="info"){typeof window.showNotification=="function"&&window.showNotification(i,e)}
