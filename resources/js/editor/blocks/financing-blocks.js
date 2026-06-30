@@ -1,7 +1,9 @@
+import { assetUrl } from "@/utils/url.js";
+
 const FINANCING_GRID_STYLES = `
 <style>
 .fc-cards-grid{display:flex;flex-wrap:wrap;gap:1.5rem;}
-.fc-card{flex:1 1 220px;min-width:220px;}
+.fc-card{flex:0 1 220px;min-width:220px;max-width:260px;}
 </style>`;
 
 const iconFinancingCard = `<svg viewBox="0 0 32 32" width="32" height="32">
@@ -29,7 +31,7 @@ const iconFinancingSection = `<svg viewBox="0 0 32 32" width="32" height="32">
 const financingCard = (icon, text) => `
 <div class="fc-card flex flex-col items-center gap-4 bg-white rounded-xl shadow-lg p-6">
     <div class="w-16 h-16 rounded-full bg-[#E97300] flex items-center justify-center shrink-0 overflow-hidden">
-        <img src="/images/blocks/financiamiento/${icon}" alt="icono" class="w-10 h-10 object-contain" />
+        <img src="${assetUrl(`images/blocks/financiamiento/${icon}`)}" alt="icono" class="w-10 h-10 object-contain" />
     </div>
     <p class="text-base text-[#003B71] text-center leading-relaxed m-0">${text}</p>
 </div>`;

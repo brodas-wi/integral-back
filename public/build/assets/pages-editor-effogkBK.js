@@ -1,4 +1,4 @@
-/* empty css                   *//* empty css                    *//* empty css                          *//* empty css                           */import{o as Xe,M as tt,j as it,E as at,i as rt,t as lt,d as ot,f as nt,e as st,s as ct,g as dt,c as ft,b as gt,a as ht,h as pt}from"./editor-commands-Bq37dEX4.js";import{a as M}from"./url-DaqOO3yL.js";import"./_commonjsHelpers-CqkleIqs.js";class mt{constructor(){this.pageId=this.getElementValue("page-id"),this.pageSlug=this.getElementValue("page-slug"),this.pageTitle=this.getPageTitle(),this.loadUrl=this.getElementValue("page-load-url"),this.storeUrl=this.getElementValue("page-store-url"),this.isPublished=this.getElementValue("page-is-published")==="1",this.isEditMode=!!this.pageId,this.appUrl=(document.querySelector('meta[name="app-url"]')?.content??"").replace(/\/$/,"")}getElementValue(e,t=""){const a=document.getElementById(e);return a?a.value.trim():t}getPageTitle(){const e=document.getElementById("editor-title");if(!e)return"";const a=e.textContent.match(/(?:Editando:|Nueva Página)\s*(.+)?/);return a&&a[1]?a[1].trim():""}updatePageInfo(e){if(e.page)if(this.pageId=e.page.id,this.pageSlug=e.page.slug,this.pageTitle=e.page.title,this.isEditMode=!0,document.getElementById("page-id").value=this.pageId,document.getElementById("page-slug").value=this.pageSlug,e.page.update_url?this.storeUrl=e.page.update_url:this.storeUrl=`${this.appUrl}/pages/${this.pageSlug}`,document.getElementById("page-store-url").value=this.storeUrl,e.page.load_url?this.loadUrl=e.page.load_url:this.loadUrl=`${this.appUrl}/pages/${this.pageSlug}/load`,document.getElementById("page-load-url").value=this.loadUrl,e.page.edit_url)window.history.replaceState(null,"",e.page.edit_url);else try{const t=new URL(window.location.href);t.pathname=t.pathname.replace(/\/pages\/create\/?$/,`/pages/${this.pageSlug}/edit`),window.history.replaceState(null,"",t.toString())}catch(t){console.error("Error updating browser URL:",t)}}updateTitle(e){this.pageTitle=e;const t=document.getElementById("editor-title");t&&(t.textContent=`Editando: ${e}`),document.title=`Editar: ${e} - Editor`}getHttpMethod(){return this.isEditMode?"PUT":"POST"}needsTitle(){return!this.isEditMode}}class ut{constructor(e){this.editorService=e,this.setupBackButton(),this.setupBeforeUnload()}setupBackButton(){const e=document.querySelector("#editor-navbar a[href]");e&&e.addEventListener("click",t=>{this.editorService.shouldPreventUnload()&&(t.preventDefault(),this.showUnsavedChangesModal(()=>{this.editorService.startNavigation(),window.location.href=e.href}))})}setupBeforeUnload(){window.addEventListener("beforeunload",e=>{if(this.editorService.shouldPreventUnload())return e.preventDefault(),e.returnValue="Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?",e.returnValue})}showUnsavedChangesModal(e){const t=document.createElement("div");t.style.cssText=`
+/* empty css                   *//* empty css                    *//* empty css                          *//* empty css                           */import{o as Xe,M as tt,j as it,E as at,i as rt,t as lt,d as ot,f as nt,e as st,s as ct,g as dt,c as ft,b as gt,a as ht,h as pt}from"./editor-commands-Bq37dEX4.js";import{a as D}from"./url-DaqOO3yL.js";import"./_commonjsHelpers-CqkleIqs.js";class mt{constructor(){this.pageId=this.getElementValue("page-id"),this.pageSlug=this.getElementValue("page-slug"),this.pageTitle=this.getPageTitle(),this.loadUrl=this.getElementValue("page-load-url"),this.storeUrl=this.getElementValue("page-store-url"),this.isPublished=this.getElementValue("page-is-published")==="1",this.isEditMode=!!this.pageId,this.appUrl=(document.querySelector('meta[name="app-url"]')?.content??"").replace(/\/$/,"")}getElementValue(e,t=""){const a=document.getElementById(e);return a?a.value.trim():t}getPageTitle(){const e=document.getElementById("editor-title");if(!e)return"";const a=e.textContent.match(/(?:Editando:|Nueva Página)\s*(.+)?/);return a&&a[1]?a[1].trim():""}updatePageInfo(e){if(e.page)if(this.pageId=e.page.id,this.pageSlug=e.page.slug,this.pageTitle=e.page.title,this.isEditMode=!0,document.getElementById("page-id").value=this.pageId,document.getElementById("page-slug").value=this.pageSlug,e.page.update_url?this.storeUrl=e.page.update_url:this.storeUrl=`${this.appUrl}/pages/${this.pageSlug}`,document.getElementById("page-store-url").value=this.storeUrl,e.page.load_url?this.loadUrl=e.page.load_url:this.loadUrl=`${this.appUrl}/pages/${this.pageSlug}/load`,document.getElementById("page-load-url").value=this.loadUrl,e.page.edit_url)window.history.replaceState(null,"",e.page.edit_url);else try{const t=new URL(window.location.href);t.pathname=t.pathname.replace(/\/pages\/create\/?$/,`/pages/${this.pageSlug}/edit`),window.history.replaceState(null,"",t.toString())}catch(t){console.error("Error updating browser URL:",t)}}updateTitle(e){this.pageTitle=e;const t=document.getElementById("editor-title");t&&(t.textContent=`Editando: ${e}`),document.title=`Editar: ${e} - Editor`}getHttpMethod(){return this.isEditMode?"PUT":"POST"}needsTitle(){return!this.isEditMode}}class ut{constructor(e){this.editorService=e,this.setupBackButton(),this.setupBeforeUnload()}setupBackButton(){const e=document.querySelector("#editor-navbar a[href]");e&&e.addEventListener("click",t=>{this.editorService.shouldPreventUnload()&&(t.preventDefault(),this.showUnsavedChangesModal(()=>{this.editorService.startNavigation(),window.location.href=e.href}))})}setupBeforeUnload(){window.addEventListener("beforeunload",e=>{if(this.editorService.shouldPreventUnload())return e.preventDefault(),e.returnValue="Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?",e.returnValue})}showUnsavedChangesModal(e){const t=document.createElement("div");t.style.cssText=`
             position: fixed;
             inset: 0;
             z-index: 9999;
@@ -77,7 +77,7 @@
             <rect x="3" y="6" width="26" height="20" rx="2" fill="#003B71" fill-opacity="0.15" stroke="#003B71" stroke-width="1.5"/>
             <circle cx="10" cy="13" r="2.5" fill="#003B71" fill-opacity="0.5"/>
             <path d="M3 22l7-7 5 5 3-3 9 9" stroke="#003B71" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
-        </svg>`,content:{type:"image",attributes:{src:M("images/placeholder.svg"),alt:"Imagen"},classes:["max-w-full","h-auto","block"],activeOnRender:1}},{id:"unordered-list",label:"Lista no ordenada",category:"Básico",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+        </svg>`,content:{type:"image",attributes:{src:D("images/placeholder.svg"),alt:"Imagen"},classes:["max-w-full","h-auto","block"],activeOnRender:1}},{id:"unordered-list",label:"Lista no ordenada",category:"Básico",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
             <circle cx="7" cy="10" r="2" fill="#003B71"/>
             <rect x="12" y="9" width="14" height="2" rx="1" fill="#003B71" fill-opacity="0.6"/>
@@ -327,7 +327,7 @@ ${X}`}],jt=`<svg viewBox="0 0 32 32" width="32" height="32">
         </div>
         <div class="ab-image-col">
             <div class="ab-image-wrap">
-                <img src="${M("images/placeholder.svg")}" alt="Imagen de sección">
+                <img src="${D("images/placeholder.svg")}" alt="Imagen de sección">
             </div>
         </div>
     </div>
@@ -361,7 +361,7 @@ ${Ee}`}],We=function(){(function(){function i(t){if(!t||t.__pcInit)return;t.__pc
 .pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
 @media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-card{flex:0 0 220px;}}
-@media(max-width:480px){.pc-card{flex:0 0 80vw;}}`;function Mt(i){const e=i.img||M("images/placeholder.svg"),t=i.title||"TÍTULO DEL PRODUCTO",a=i.desc||"Descripción breve del producto financiero.",r=i.href||"#",l=i.btn_label||"Solicitar";return`<div class="pc-card"><div class="pc-card-img-wrap"><img src="${e}" alt="${t}" class="pc-card-img"></div><div class="pc-card-body"><h3 class="pc-card-title">${t}</h3><p class="pc-card-desc">${a}</p></div><a href="${r}" class="pc-btn">${l}</a></div>`}function Ye(i){const e=i.heading||"Créditos",t=i.subheading||"Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",a=i.more_href||"#",r=i.more_label||"Ver más",l=i.show_more!==!1,c=(i.cards||[]).map(Mt).join(""),h=l?`<div class="pc-more-wrap"><a href="${a}" class="pc-more-btn">${r}</a></div>`:"";return`<section class="pc-section"><style>${Dt}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${e}</h2><p class="pc-section-subheading">${t}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${c}</div></div>${h}</section>`}const P={heading:"Créditos",subheading:"Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",more_href:"#",more_label:"Ver más",cards:[{img:"",title:"CREDINVIERTE",desc:"Adquiere activos fijos",href:"#",btn_label:"Solicitar"},{img:"",title:"SOLUCIONES INTEGRALES",desc:"Financiamiento PYME",href:"#",btn_label:"Solicitar"},{img:"",title:"CREDI-CONFIAMOS",desc:"Rápido y sin fiador",href:"#",btn_label:"Solicitar"},{img:"",title:"CREDILÍNEA",desc:"Línea rotativa",href:"#",btn_label:"Solicitar"}]};function Nt(i,e){const t=document.getElementById("pc-config-modal");if(t&&t.remove(),!document.getElementById("pc-modal-styles")){const d=document.createElement("style");d.id="pc-modal-styles",d.textContent=`
+@media(max-width:480px){.pc-card{flex:0 0 80vw;}}`;function Mt(i){const e=i.img||D("images/placeholder.svg"),t=i.title||"TÍTULO DEL PRODUCTO",a=i.desc||"Descripción breve del producto financiero.",r=i.href||"#",l=i.btn_label||"Solicitar";return`<div class="pc-card"><div class="pc-card-img-wrap"><img src="${e}" alt="${t}" class="pc-card-img"></div><div class="pc-card-body"><h3 class="pc-card-title">${t}</h3><p class="pc-card-desc">${a}</p></div><a href="${r}" class="pc-btn">${l}</a></div>`}function Ye(i){const e=i.heading||"Créditos",t=i.subheading||"Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",a=i.more_href||"#",r=i.more_label||"Ver más",l=i.show_more!==!1,c=(i.cards||[]).map(Mt).join(""),h=l?`<div class="pc-more-wrap"><a href="${a}" class="pc-more-btn">${r}</a></div>`:"";return`<section class="pc-section"><style>${Dt}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${e}</h2><p class="pc-section-subheading">${t}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${c}</div></div>${h}</section>`}const P={heading:"Créditos",subheading:"Opciones de financiamiento diseñadas para hacer realidad tus proyectos.",more_href:"#",more_label:"Ver más",cards:[{img:"",title:"CREDINVIERTE",desc:"Adquiere activos fijos",href:"#",btn_label:"Solicitar"},{img:"",title:"SOLUCIONES INTEGRALES",desc:"Financiamiento PYME",href:"#",btn_label:"Solicitar"},{img:"",title:"CREDI-CONFIAMOS",desc:"Rápido y sin fiador",href:"#",btn_label:"Solicitar"},{img:"",title:"CREDILÍNEA",desc:"Línea rotativa",href:"#",btn_label:"Solicitar"}]};function Nt(i,e){const t=document.getElementById("pc-config-modal");if(t&&t.remove(),!document.getElementById("pc-modal-styles")){const d=document.createElement("style");d.id="pc-modal-styles",d.textContent=`
             .pc-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
             .pc-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:700px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
             .pc-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
@@ -621,7 +621,7 @@ ${ye}`},{id:"dual-card-dark",label:"Tarjeta azul oscuro",category:"Productos y S
 </style>`,Vt=[{id:"cta-section",label:"Llamada a la acción",category:"Llamadas a la acción",media:Ft,content:`
 <section class="cta-section">
     <div class="cta-img-wrap">
-        <img src="${M("images/placeholder.svg")}" alt="Imagen CTA">
+        <img src="${D("images/placeholder.svg")}" alt="Imagen CTA">
     </div>
     <div class="cta-content">
         <h2 class="text-4xl font-bold text-[#E97300] leading-tight">Únete a la Familia Banco Integral</h2>
@@ -654,7 +654,7 @@ ${Ut}`}],Ge=function(){(function(){function i(t){if(!t||t.__savInit)return;t.__s
 .sav-more-btn:hover{background:#c96200;}
 @media(max-width:1280px){.sav-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.sav-section{padding:2.5rem 1.5rem;}.sav-card{flex:0 0 200px;}.sav-blue-box{padding:1.5rem;}}
-@media(max-width:480px){.sav-card{flex:0 0 75vw;}}`;function Yt(i){const e=i.img||M("images/placeholder.svg"),t=i.title||"TÍTULO DEL PRODUCTO",a=i.desc?`<p class="sav-card-desc">${i.desc}</p>`:"",r=i.href||"#",l=i.btn_label||"Solicitar";return`<div class="sav-card"><div class="sav-card-img-wrap"><img src="${e}" alt="${t}" class="sav-card-img"></div><h3 class="sav-card-title">${t}</h3>${a}<a href="${r}" class="sav-btn">${l}</a></div>`}function Je(i){const e=i.heading||"Depósitos y Cuentas de Ahorro",t=i.subheading||"Productos diseñados para hacer crecer tu dinero de forma segura.",a=i.more_href||"#",r=i.more_label||"Ver más",l=i.show_more!==!1,c=(i.cards||[]).map(Yt).join(""),h=M("images/brand-watermark.png"),d=l?`<div class="sav-more-wrap"><a href="${a}" class="sav-more-btn">${r}</a></div>`:"";return`<section class="sav-section"><style>${Wt}</style><div class="sav-blue-box"><div class="sav-watermark"><img src="${h}" alt=""></div><div style="display:flex;flex-direction:column;gap:0.5rem;text-align:center;position:relative;z-index:1;"><h2 class="sav-heading">${e}</h2><p class="sav-subheading">${t}</p></div><div class="sav-carousel-wrap"><div class="sav-track">${c}</div></div>${d}</div></section>`}const H={heading:"Depósitos y Cuentas de Ahorro",subheading:"Productos diseñados para hacer crecer tu dinero de forma segura.",more_href:"#",more_label:"Ver más",cards:[{img:"",title:"CUENTA DE AHORRO ESTÁNDAR",href:"#",btn_label:"Solicitar"},{img:"",title:"AHORRO RENTABLE",href:"#",btn_label:"Solicitar"},{img:"",title:"CUENTA DE AHORRO MÁS",href:"#",btn_label:"Solicitar"},{img:"",title:"DEPÓSITO DE PLAZO FIJO",href:"#",btn_label:"Solicitar"}]};function Gt(i,e){const t=document.getElementById("sav-config-modal");if(t&&t.remove(),!document.getElementById("sav-modal-styles")){const d=document.createElement("style");d.id="sav-modal-styles",d.textContent=`
+@media(max-width:480px){.sav-card{flex:0 0 75vw;}}`;function Yt(i){const e=i.img||D("images/placeholder.svg"),t=i.title||"TÍTULO DEL PRODUCTO",a=i.desc?`<p class="sav-card-desc">${i.desc}</p>`:"",r=i.href||"#",l=i.btn_label||"Solicitar";return`<div class="sav-card"><div class="sav-card-img-wrap"><img src="${e}" alt="${t}" class="sav-card-img"></div><h3 class="sav-card-title">${t}</h3>${a}<a href="${r}" class="sav-btn">${l}</a></div>`}function Je(i){const e=i.heading||"Depósitos y Cuentas de Ahorro",t=i.subheading||"Productos diseñados para hacer crecer tu dinero de forma segura.",a=i.more_href||"#",r=i.more_label||"Ver más",l=i.show_more!==!1,c=(i.cards||[]).map(Yt).join(""),h=D("images/brand-watermark.png"),d=l?`<div class="sav-more-wrap"><a href="${a}" class="sav-more-btn">${r}</a></div>`:"";return`<section class="sav-section"><style>${Wt}</style><div class="sav-blue-box"><div class="sav-watermark"><img src="${h}" alt=""></div><div style="display:flex;flex-direction:column;gap:0.5rem;text-align:center;position:relative;z-index:1;"><h2 class="sav-heading">${e}</h2><p class="sav-subheading">${t}</p></div><div class="sav-carousel-wrap"><div class="sav-track">${c}</div></div>${d}</div></section>`}const H={heading:"Depósitos y Cuentas de Ahorro",subheading:"Productos diseñados para hacer crecer tu dinero de forma segura.",more_href:"#",more_label:"Ver más",cards:[{img:"",title:"CUENTA DE AHORRO ESTÁNDAR",href:"#",btn_label:"Solicitar"},{img:"",title:"AHORRO RENTABLE",href:"#",btn_label:"Solicitar"},{img:"",title:"CUENTA DE AHORRO MÁS",href:"#",btn_label:"Solicitar"},{img:"",title:"DEPÓSITO DE PLAZO FIJO",href:"#",btn_label:"Solicitar"}]};function Gt(i,e){const t=document.getElementById("sav-config-modal");if(t&&t.remove(),!document.getElementById("sav-modal-styles")){const d=document.createElement("style");d.id="sav-modal-styles",d.textContent=`
             .sav-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
             .sav-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:700px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
             .sav-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
@@ -821,13 +821,13 @@ ${Ut}`}],Ge=function(){(function(){function i(t){if(!t||t.__savInit)return;t.__s
 <a href="#" class="plc-card plc-card--orange">
     <span class="plc-card__title">NOMBRE DEL PRODUCTO</span>
     <div class="plc-card__watermark">
-        <img src="${M("images/brand-watermark.png")}" alt="">
+        <img src="${D("images/brand-watermark.png")}" alt="">
     </div>
 </a>`,Q=`
 <a href="#" class="plc-card plc-card--blue">
     <span class="plc-card__title">NOMBRE DEL PRODUCTO</span>
     <div class="plc-card__watermark">
-        <img src="${M("images/brand-watermark.png")}" alt="">
+        <img src="${D("images/brand-watermark.png")}" alt="">
     </div>
 </a>`,ve=`
 <style>
@@ -888,7 +888,7 @@ ${ve}`},{id:"product-link-card-orange",label:"Tarjeta producto naranja",category
 </svg>`,ee=`
 <a href="#" class="flex flex-col items-center text-center gap-4 no-underline group">
     <div class="w-16 h-16 rounded-full flex items-center justify-center shrink-0 bg-[#E97300]">
-        <img src="${M("images/placeholder.svg")}" alt="" class="w-8 h-8 object-contain">
+        <img src="${D("images/placeholder.svg")}" alt="" class="w-8 h-8 object-contain">
     </div>
     <span class="text-base font-semibold leading-snug text-[#003B71] group-hover:text-[#E97300] transition-colors duration-200">Nombre del servicio</span>
 </a>`,Le=`
@@ -994,7 +994,7 @@ ${li}`}],ni=`<svg viewBox="0 0 32 32" width="32" height="32">
     </div>
 </div>`,_e=`
 <div class="fb-img-wrap">
-    <img src="${M("images/placeholder.svg")}" alt="Imagen" class="fb-img">
+    <img src="${D("images/placeholder.svg")}" alt="Imagen" class="fb-img">
 </div>`,ci=`
 <style>
 .fb-section-right{width:100%;background:#E97300;padding:3rem 4rem 3rem 4rem;border-radius:200px 0 0 0;}
@@ -1034,7 +1034,7 @@ ${ci}`},di=[{id:"feature-orange-img-right",label:"Sección naranja - imagen dere
 .tab-card:hover{background:#003B71;}
 .tab-card:hover .tab-card-icon{color:#ffffff;border-color:rgba(255,255,255,0.6);}
 .tab-card:hover .tab-card-title{color:#ffffff;}
-.tab-card:hover .tab-card-text{color:#ffffff;}`;function gi(){return function(){const i=this,e=".tabs-btn{transition:background 0.2s,color 0.2s;}.tabs-btn.active,.tabs-btn:hover{background:#003B71 !important;color:#ffffff !important;}.tabs-panel{display:none;}.tabs-panel.active{display:grid;}.tab-card:hover{background:#003B71;}.tab-card:hover .tab-card-icon{color:#ffffff;border-color:rgba(255,255,255,0.6);}.tab-card:hover .tab-card-title{color:#ffffff;}.tab-card:hover .tab-card-text{color:#ffffff;}";(function(){const r=i.ownerDocument??document;if(!r.getElementById("tabs-section-styles")){const l=r.createElement("style");l.id="tabs-section-styles",l.textContent=e,r.head.appendChild(l)}})();function t(a){i.querySelectorAll(".tabs-btn").forEach((r,l)=>{r.classList.toggle("active",l===a)}),i.querySelectorAll(".tabs-panel").forEach((r,l)=>{r.classList.toggle("active",l===a)})}i.querySelectorAll(".tabs-btn").forEach((a,r)=>{a.addEventListener("click",()=>t(r))}),t(0)}}const D=()=>`
+.tab-card:hover .tab-card-text{color:#ffffff;}`;function gi(){return function(){const i=this,e=".tabs-btn{transition:background 0.2s,color 0.2s;}.tabs-btn.active,.tabs-btn:hover{background:#003B71 !important;color:#ffffff !important;}.tabs-panel{display:none;}.tabs-panel.active{display:grid;}.tab-card:hover{background:#003B71;}.tab-card:hover .tab-card-icon{color:#ffffff;border-color:rgba(255,255,255,0.6);}.tab-card:hover .tab-card-title{color:#ffffff;}.tab-card:hover .tab-card-text{color:#ffffff;}";(function(){const r=i.ownerDocument??document;if(!r.getElementById("tabs-section-styles")){const l=r.createElement("style");l.id="tabs-section-styles",l.textContent=e,r.head.appendChild(l)}})();function t(a){i.querySelectorAll(".tabs-btn").forEach((r,l)=>{r.classList.toggle("active",l===a)}),i.querySelectorAll(".tabs-panel").forEach((r,l)=>{r.classList.toggle("active",l===a)})}i.querySelectorAll(".tabs-btn").forEach((a,r)=>{a.addEventListener("click",()=>t(r))}),t(0)}}const M=()=>`
 <div class="tab-card flex flex-col items-center text-center p-8 border-2 border-[#003B71] rounded-2xl gap-4 cursor-pointer transition-all duration-200">
     <div class="tab-card-icon w-14 h-14 rounded-full border-2 border-[#003B71] flex items-center justify-center text-2xl text-[#003B71] shrink-0 transition-all duration-200">
         <i class="ri-lightbulb-line"></i>
@@ -1043,12 +1043,12 @@ ${ci}`},di=[{id:"feature-orange-img-right",label:"Sección naranja - imagen dere
     <p class="tab-card-text text-base font-normal leading-relaxed text-[#003B71] transition-colors duration-200">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 </div>`,te=i=>`
 <div class="tabs-panel${i===0?" active":""} grid-cols-3 gap-5">
-    ${D()}
-    ${D()}
-    ${D()}
-    ${D()}
-    ${D()}
-    ${D()}
+    ${M()}
+    ${M()}
+    ${M()}
+    ${M()}
+    ${M()}
+    ${M()}
 </div>`,hi=`
 <div class="max-w-6xl mx-auto px-6 flex flex-col gap-8 py-16">
     <div class="text-center flex flex-col gap-4 max-w-2xl mx-auto">
@@ -1076,14 +1076,14 @@ ${ci}`},di=[{id:"feature-orange-img-right",label:"Sección naranja - imagen dere
     <circle cx="16" cy="10" r="4" fill="none" stroke="#003B71" stroke-width="1.5"/>
     <rect x="8" y="17" width="16" height="2" rx="1" fill="#003B71"/>
     <rect x="6" y="22" width="20" height="2" rx="1" fill="#003B71" fill-opacity="0.5"/>
-</svg>`,mi=[{id:"tabs-cards",label:"Sección con tabs",category:"Contenido",media:fi,content:{type:"tabs-cards-component"}},{id:"tab-card-single",label:"Tarjeta de tab",category:"Contenido",media:pi,content:`${D()}`}];function ui(i){const e="tabs-cards-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Sección con tabs",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,attributes:{"data-gjs-type":e,"data-tab-count":"5"},components:hi,script:gi(),traits:[{type:"number",name:"data-tab-count",label:"Número de tabs (2-10)",min:2,max:10,changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",(t,a)=>{const r=parseInt(a["data-tab-count"]);isNaN(r)||this.updateTabCount(r)})},updateTabCount(t){const a=Math.min(10,Math.max(2,t)),r=l=>{const n=Array.from({length:l},()=>'<button class="tabs-btn inline-block px-6 py-2 rounded-full border-2 border-[#003B71] bg-transparent text-[#003B71] text-sm font-medium">Lorem Ipsum</button>').join(`
+</svg>`,mi=[{id:"tabs-cards",label:"Sección con tabs",category:"Contenido",media:fi,content:{type:"tabs-cards-component"}},{id:"tab-card-single",label:"Tarjeta de tab",category:"Contenido",media:pi,content:`${M()}`}];function ui(i){const e="tabs-cards-component";i.DomComponents.addType(e,{isComponent:t=>t.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Sección con tabs",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!0,removable:!0,attributes:{"data-gjs-type":e,"data-tab-count":"5"},components:hi,script:gi(),traits:[{type:"number",name:"data-tab-count",label:"Número de tabs (2-10)",min:2,max:10,changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",(t,a)=>{const r=parseInt(a["data-tab-count"]);isNaN(r)||this.updateTabCount(r)})},updateTabCount(t){const a=Math.min(10,Math.max(2,t)),r=l=>{const n=Array.from({length:l},()=>'<button class="tabs-btn inline-block px-6 py-2 rounded-full border-2 border-[#003B71] bg-transparent text-[#003B71] text-sm font-medium">Lorem Ipsum</button>').join(`
 `),c=Array.from({length:l},(h,d)=>`<div class="tabs-panel${d===0?" active":""} grid-cols-3 gap-5">
-                            ${D()}
-                            ${D()}
-                            ${D()}
-                            ${D()}
-                            ${D()}
-                            ${D()}
+                            ${M()}
+                            ${M()}
+                            ${M()}
+                            ${M()}
+                            ${M()}
+                            ${M()}
                         </div>`).join(`
 `);return`
                     <div class="max-w-6xl mx-auto px-6 flex flex-col gap-8 py-16">
@@ -1173,7 +1173,7 @@ ${ci}`},di=[{id:"feature-orange-img-right",label:"Sección naranja - imagen dere
     </div>
 </div>`},Ei=()=>`
 <div class="w-full rounded-2xl overflow-hidden">
-    <img src="${M("images/placeholder.svg")}"
+    <img src="${D("images/placeholder.svg")}"
          alt="Imagen de sección"
          class="w-full object-cover block rounded-2xl"
          style="min-height:320px;max-height:480px;">
@@ -1276,7 +1276,7 @@ ${ji}`,_i=[{id:"stats-strip-left",label:"Franja estadísticas - izquierda",categ
 </svg>`,ie=`
 <div class="flex flex-col items-center gap-4 text-center">
     <div class="w-20 h-20 rounded-full flex items-center justify-center shrink-0" style="background:#166EBE;">
-        <img src="${M("images/placeholder.svg")}" alt="Icono" class="w-10 h-10 object-contain">
+        <img src="${D("images/placeholder.svg")}" alt="Icono" class="w-10 h-10 object-contain">
     </div>
     <h3 class="text-sm font-bold text-white uppercase leading-snug tracking-wide">Lorem ipsum dolor sit amet</h3>
 </div>`,Ae=`
@@ -1517,7 +1517,7 @@ ${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos
 </ul>`}],De=`
 <style>
 .fc-cards-grid{display:flex;flex-wrap:wrap;gap:1.5rem;}
-.fc-card{flex:1 1 220px;min-width:220px;}
+.fc-card{flex:0 1 220px;min-width:220px;max-width:260px;}
 </style>`,Xi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <circle cx="16" cy="12" r="6" fill="#E97300" fill-opacity="0.8"/>
@@ -1539,7 +1539,7 @@ ${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos
 </svg>`,le=(i,e)=>`
 <div class="fc-card flex flex-col items-center gap-4 bg-white rounded-xl shadow-lg p-6">
     <div class="w-16 h-16 rounded-full bg-[#E97300] flex items-center justify-center shrink-0 overflow-hidden">
-        <img src="/images/blocks/financiamiento/${i}" alt="icono" class="w-10 h-10 object-contain" />
+        <img src="${D(`images/blocks/financiamiento/${i}`)}" alt="icono" class="w-10 h-10 object-contain" />
     </div>
     <p class="text-base text-[#003B71] text-center leading-relaxed m-0">${e}</p>
 </div>`,Yi=[{id:"financing-section",label:"Sección de financiamiento",category:"Productos y Servicios",media:Wi,content:`
@@ -1614,7 +1614,7 @@ ${De}`}],Gi=`<svg viewBox="0 0 32 32" width="32" height="32">
 </style>`,oe=`
 <div class="ng-card">
     <div class="ng-card-logo">
-        <img src="${M("images/placeholder.svg")}" alt="Logo" class="ng-logo-img">
+        <img src="${D("images/placeholder.svg")}" alt="Logo" class="ng-logo-img">
     </div>
     <div class="ng-card-body">
         <h3 class="ng-card-title">Título de la noticia o publicación</h3>
