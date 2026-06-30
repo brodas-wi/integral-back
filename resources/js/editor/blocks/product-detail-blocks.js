@@ -7,8 +7,8 @@ const PRODUCT_DETAIL_GRID_STYLES = `
 const PRODUCT_DETAIL_THREE_COL_STYLES = `
 <style>
 .pd-three-col-grid{display:flex;flex-wrap:wrap;gap:2rem;align-items:start;}
-.pd-three-col-grid>div{flex:0 1 260px;min-width:260px;}
-@media(max-width:992px){.pd-three-col-grid{gap:1.5rem;}.pd-three-col-grid>div{flex-basis:100%;min-width:0;}}
+.pd-three-col-grid>div{flex:1 1 260px;min-width:260px;max-width:340px;}
+@media(max-width:992px){.pd-three-col-grid{gap:1.5rem;}.pd-three-col-grid>div{flex:0 1 260px;max-width:none;}}
 </style>`;
 
 const iconProductDetailThreeCol = `<svg viewBox="0 0 32 32" width="32" height="32">
