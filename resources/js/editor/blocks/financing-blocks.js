@@ -26,12 +26,12 @@ const iconFinancingSection = `<svg viewBox="0 0 32 32" width="32" height="32">
     <circle cx="25" cy="20" r="2" fill="#E97300" fill-opacity="0.7"/>
 </svg>`;
 
-const FINANCING_CARD = `
+const financingCard = (icon, text) => `
 <div class="fc-card flex flex-col items-center gap-4 bg-white rounded-xl shadow-lg p-6">
     <div class="w-16 h-16 rounded-full bg-[#E97300] flex items-center justify-center shrink-0 overflow-hidden">
-        <img src="https://via.placeholder.com/40" alt="icono" class="w-10 h-10 object-contain" />
+        <img src="/images/blocks/financiamiento/${icon}" alt="icono" class="w-10 h-10 object-contain" />
     </div>
-    <p class="text-base text-[#003B71] text-center leading-relaxed m-0">Compra de quipos: luminarias, paneles solares, calentadores, refrigeradores, congeladores u otros</p>
+    <p class="text-base text-[#003B71] text-center leading-relaxed m-0">${text}</p>
 </div>`;
 
 export const financingBlocks = [
@@ -45,14 +45,14 @@ export const financingBlocks = [
     <div class="flex flex-col gap-4">
         <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-[#E97300] shrink-0"></span>
-            <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Financiamiento</span>
+            <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Subtitulo</span>
         </div>
-        <p class="text-lg font-bold text-[#003B71] leading-snug m-0">Disponible para las siguientes inversiones:</p>
+        <p class="text-lg text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         <div class="fc-cards-grid">
-            ${FINANCING_CARD}
-            ${FINANCING_CARD}
-            ${FINANCING_CARD}
-            ${FINANCING_CARD}
+            ${financingCard("bombillo.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${financingCard("electricidad.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${financingCard("engranajes.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
+            ${financingCard("intercambio.png", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
         </div>
     </div>
 </section>
