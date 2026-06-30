@@ -243,6 +243,101 @@ class PageController extends Controller
         }
     }
 
+    public function checkSlug(Request $request)
+    {
+        $this->authorize('pages.edit');
+
+        $request->validate([
+            'slug'    => ['required', 'string', 'max:255'],
+            'exclude' => ['nullable', 'integer'],
+        ]);
+
+        $normalized = Page::normalizeSlug($request->slug);
+
+        if ($normalized === '') {
+            return response()->json([
+                'available'  => false,
+                'normalized' => $normalized,
+                'message'    => 'El slug no puede estar vacío después de normalizarlo.',
+                'suggestions' => [],
+            ], 422);
+        }
+
+        $exists = Page::where('slug', $normalized)
+            ->when($request->exclude, fn($q) => $q->where('id', '!=', $request->exclude))
+            ->exists();
+
+        if (!$exists) {
+            return response()->json([
+                'available'   => true,
+                'normalized'  => $normalized,
+                'message'     => null,
+                'suggestions' => [],
+            ]);
+        }
+
+        $suggestions = Page::generateSlugSuggestions($normalized, $request->exclude);
+
+        return response()->json([
+            'available'   => false,
+            'normalized'  => $normalized,
+            'message'     => 'Este slug ya está en uso.',
+            'suggestions' => $suggestions,
+        ]);
+    }
+
+    public function updateTitleSlug(\App\Http\Requests\UpdatePageTitleSlugRequest $request, Page $page)
+    {
+        $this->authorize('pages.edit');
+
+        try {
+            $normalizedSlug = Page::normalizeSlug($request->slug);
+
+            $exists = Page::where('slug', $normalizedSlug)
+                ->where('id', '!=', $page->id)
+                ->exists();
+
+            if ($exists) {
+                $suggestions = Page::generateSlugSuggestions($normalizedSlug, $page->id);
+
+                return response()->json([
+                    'success'     => false,
+                    'message'     => 'El slug ya está en uso por otra página. Elige una de las sugerencias o modifica el slug.',
+                    'suggestions' => $suggestions,
+                ], 422);
+            }
+
+            $page->update([
+                'title'      => $request->title,
+                'slug'       => $normalizedSlug,
+                'updated_by' => Auth::id(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Título y slug actualizados exitosamente.',
+                'page'    => [
+                    'id'         => $page->id,
+                    'title'      => $page->title,
+                    'slug'       => $page->slug,
+                    'show_url'   => route('pages.show', $page->slug),
+                    'edit_url'   => route('pages.edit', $page->slug),
+                    'preview_url' => route('page.preview', $page->slug),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error updating page title/slug: ' . $e->getMessage(), [
+                'user_id' => Auth::id(),
+                'page_id' => $page->id,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el título y slug de la página.',
+            ], 500);
+        }
+    }
+
     public function updateFooter(Request $request, Page $page)
     {
         $this->authorize('pages.edit');

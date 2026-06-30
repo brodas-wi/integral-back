@@ -161,6 +161,16 @@ Route::middleware(['auth'])->group(function () {
             ->name('update-navbar')
             ->middleware('can:pages.edit,pages.manage');
 
+        // Check slug availability (live, while typing)
+        Route::get('/slug-check', [PageController::class, 'checkSlug'])
+            ->name('slug-check')
+            ->middleware('can:pages.edit,pages.manage');
+
+        // Update title and slug
+        Route::patch('/{page}/title-slug', [PageController::class, 'updateTitleSlug'])
+            ->name('update-title-slug')
+            ->middleware('can:pages.edit,pages.manage');
+
         // Load page data for editor
         Route::get('/{page}/load', [PageController::class, 'load'])
             ->name('load')

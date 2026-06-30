@@ -50,6 +50,70 @@ class Page extends Model
     }
 
     /**
+     * Normalize a string to slug format: lowercase, without accents/ñ
+     */
+    public static function normalizeSlug(string $value): string
+    {
+        $value = mb_strtolower(trim($value));
+
+        $replacements = [
+            'á' => 'a',
+            'à' => 'a',
+            'ä' => 'a',
+            'â' => 'a',
+            'é' => 'e',
+            'è' => 'e',
+            'ë' => 'e',
+            'ê' => 'e',
+            'í' => 'i',
+            'ì' => 'i',
+            'ï' => 'i',
+            'î' => 'i',
+            'ó' => 'o',
+            'ò' => 'o',
+            'ö' => 'o',
+            'ô' => 'o',
+            'ú' => 'u',
+            'ù' => 'u',
+            'ü' => 'u',
+            'û' => 'u',
+            'ñ' => 'n',
+            'ç' => 'c',
+        ];
+        $value = strtr($value, $replacements);
+
+        $value = preg_replace('/[^a-z0-9\s-]/', '', $value);
+        $value = preg_replace('/[\s-]+/', '-', $value);
+
+        return trim($value, '-');
+    }
+
+    /**
+     * Generate suggestions 
+     */
+    public static function generateSlugSuggestions(string $baseSlug, ?int $excludeId = null, int $count = 3): array
+    {
+        $suggestions = [];
+        $attempt     = 2;
+
+        while (count($suggestions) < $count && $attempt < 50) {
+            $candidate = $baseSlug . '-' . $attempt;
+
+            $exists = static::where('slug', $candidate)
+                ->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))
+                ->exists();
+
+            if (!$exists) {
+                $suggestions[] = $candidate;
+            }
+
+            $attempt++;
+        }
+
+        return $suggestions;
+    }
+
+    /**
      * Get the route key for the model
      */
     public function getRouteKeyName(): string

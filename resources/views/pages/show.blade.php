@@ -22,9 +22,9 @@
         <div class="lg:col-span-2 space-y-6">
             <div class="card">
                 <div class="flex items-start justify-between mb-6">
-                    <div class="flex-1">
+                    <div class="flex-1" id="page-title-display">
                         <h2 class="text-2xl font-bold text-secondary mb-2">{{ $page->title }}</h2>
-                        <p class="text-sm text-gray-600 font-mono">{{ $page->slug }}</p>
+                        <p class="text-sm text-gray-600 font-mono" id="page-slug-display">{{ $page->slug }}</p>
                     </div>
                     <span class="badge {{ $page->is_published ? 'badge-success' : 'badge-warning' }} text-base">
                         <i class="ri-{{ $page->is_published ? 'eye' : 'eye-off' }}-line mr-1"></i>
@@ -32,19 +32,47 @@
                     </span>
                 </div>
 
-                <div class="space-y-4">
+                <div class="space-y-4" id="page-title-slug-form" data-page-id="{{ $page->id }}"
+                    data-update-url="{{ route('pages.update-title-slug', $page->slug) }}"
+                    data-check-url="{{ route('pages.slug-check') }}">
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Título de la página</label>
+                        <input type="text" id="page-title-input" value="{{ $page->title }}" class="input-field w-full"
+                            maxlength="255">
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="block text-sm font-semibold text-gray-700">Slug (URL)</label>
+                            <button type="button" id="toggle-slug-link" data-linked="true"
+                                class="text-xs font-medium text-primary hover:underline">
+                                <i class="ri-link-unlink-m mr-1"></i>
+                                Editar manualmente
+                            </button>
+                        </div>
+                        <input type="text" id="page-slug-input" value="{{ $page->slug }}"
+                            class="input-field w-full font-mono" maxlength="255" readonly>
+                        <p class="text-xs mt-1 hidden" id="slug-status-message"></p>
+                        <div class="flex flex-wrap gap-2 mt-2 hidden" id="slug-suggestions"></div>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">URL Pública</label>
                         <div class="flex items-center gap-2">
-                            <input type="text" value="{{ route('page.preview', $page->slug) }}" readonly
-                                class="input-field flex-1 bg-gray-50">
-                            <a href="{{ route('page.preview', $page->slug) }}" target="_blank"
+                            <input type="text" id="page-preview-url" value="{{ route('page.preview', $page->slug) }}"
+                                readonly class="input-field flex-1 bg-gray-50">
+                            <a href="{{ route('page.preview', $page->slug) }}" target="_blank" id="page-preview-link"
                                 class="btn-secondary whitespace-nowrap">
                                 <i class="ri-external-link-line mr-1"></i>
                                 Abrir
                             </a>
                         </div>
                     </div>
+
+                    <button type="button" id="save-title-slug" class="btn-primary btn-sm w-full" disabled>
+                        <i class="ri-save-line mr-2"></i>Guardar título y slug
+                    </button>
                 </div>
             </div>
 
