@@ -1438,9 +1438,10 @@ ${qe}`}],Hi=`
 @media(max-width:992px){.pd-asymmetric-grid{grid-template-columns:1fr;gap:1.5rem;}}
 </style>`,Ri=`
 <style>
-.pd-three-col-grid{display:flex;flex-wrap:wrap;gap:2rem;align-items:start;}
-.pd-three-col-grid>div{flex:1 1 260px;min-width:260px;max-width:340px;}
-@media(max-width:992px){.pd-three-col-grid{gap:1.5rem;}.pd-three-col-grid>div{flex:0 1 260px;max-width:none;}}
+.pd-three-col-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem;align-items:start;}
+.pd-three-col-grid>div:last-child:nth-child(3n+1){grid-column:1/-1;max-width:33%;margin:0 auto;}
+@media(max-width:992px){.pd-three-col-grid{gap:1.5rem;}.pd-three-col-grid>div:last-child:nth-child(3n+1){max-width:50%;}}
+@media(max-width:640px){.pd-three-col-grid{grid-template-columns:1fr;}.pd-three-col-grid>div:last-child:nth-child(3n+1){max-width:none;}}
 </style>`,Fi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="3" width="8" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>

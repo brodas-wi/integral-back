@@ -6,9 +6,10 @@ const PRODUCT_DETAIL_GRID_STYLES = `
 
 const PRODUCT_DETAIL_THREE_COL_STYLES = `
 <style>
-.pd-three-col-grid{display:flex;flex-wrap:wrap;gap:2rem;align-items:start;}
-.pd-three-col-grid>div{flex:1 1 260px;min-width:260px;max-width:340px;}
-@media(max-width:992px){.pd-three-col-grid{gap:1.5rem;}.pd-three-col-grid>div{flex:0 1 260px;max-width:none;}}
+.pd-three-col-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem;align-items:start;}
+.pd-three-col-grid>div:last-child:nth-child(3n+1){grid-column:1/-1;max-width:33%;margin:0 auto;}
+@media(max-width:992px){.pd-three-col-grid{gap:1.5rem;}.pd-three-col-grid>div:last-child:nth-child(3n+1){max-width:50%;}}
+@media(max-width:640px){.pd-three-col-grid{grid-template-columns:1fr;}.pd-three-col-grid>div:last-child:nth-child(3n+1){max-width:none;}}
 </style>`;
 
 const iconProductDetailThreeCol = `<svg viewBox="0 0 32 32" width="32" height="32">
