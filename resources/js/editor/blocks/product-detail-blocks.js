@@ -12,6 +12,14 @@ const PRODUCT_DETAIL_THREE_COL_STYLES = `
 @media(max-width:640px){.pd-three-col-grid{grid-template-columns:1fr;}.pd-three-col-grid>div:last-child:nth-child(3n+1){max-width:none;}}
 </style>`;
 
+const PRODUCT_DETAIL_COLOR_STYLES = `
+<style>
+.pd-text-muted{color:#6b7280;}
+.pd-dot-muted{background-color:#6b7280;}
+.pd-btn-orange{background-color:#E97300;}
+.pd-btn-orange:hover{background-color:#c96200;}
+</style>`;
+
 const iconProductDetailThreeCol = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="3" width="8" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
@@ -78,8 +86,8 @@ const BULLET_ITEM = `
 
 const FOOTNOTE = `
 <li class="flex items-start gap-2">
-    <span class="mt-2 w-1 h-1 rounded-full bg-[#6b7280] shrink-0"></span>
-    <p class="text-sm text-[#6b7280] leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <span class="mt-2 w-1 h-1 rounded-full pd-dot-muted shrink-0"></span>
+    <p class="text-sm pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
 </li>`;
 
 export const productDetailBlocks = [
@@ -109,8 +117,8 @@ export const productDetailBlocks = [
         </div>
         <div class="flex flex-col items-center gap-4">
             <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
-            <a href="#" class="inline-block py-3 px-8 rounded-full bg-[#E97300] text-white text-base font-bold text-center uppercase tracking-wide max-w-full hover:bg-[#c96200] transition-colors no-underline">Adquiere tu cuenta</a>
-            <div class="w-full flex flex-col gap-2 pt-3 mt-1">
+            <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
+            <div class="w-full flex flex-col gap-2 pt-3">
                 <ul class="list-none p-0 m-0 flex flex-col gap-2">
                     ${FOOTNOTE}
                     ${FOOTNOTE}
@@ -120,7 +128,8 @@ export const productDetailBlocks = [
         </div>
     </div>
 </section>
-${PRODUCT_DETAIL_THREE_COL_STYLES}`,
+${PRODUCT_DETAIL_THREE_COL_STYLES}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
     {
         id: "product-detail-section",
@@ -145,8 +154,8 @@ ${PRODUCT_DETAIL_THREE_COL_STYLES}`,
         </div>
         <div class="flex flex-col items-center gap-4">
             <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
-            <a href="#" class="inline-block py-3 px-8 rounded-full bg-[#E97300] text-white text-base font-bold text-center uppercase tracking-wide max-w-full hover:bg-[#c96200] transition-colors no-underline">Adquiere tu cuenta</a>
-            <div class="w-full flex flex-col gap-2 pt-3 border-t border-[#e5e7eb] mt-1">
+            <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
+            <div class="w-full flex flex-col gap-2 pt-3">
                 <ul class="list-none p-0 m-0 flex flex-col gap-2">
                     ${FOOTNOTE}
                     ${FOOTNOTE}
@@ -156,7 +165,8 @@ ${PRODUCT_DETAIL_THREE_COL_STYLES}`,
         </div>
     </div>
 </section>
-${PRODUCT_DETAIL_GRID_STYLES}`,
+${PRODUCT_DETAIL_GRID_STYLES}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
     {
         id: "product-detail-bullet",
@@ -176,6 +186,7 @@ ${PRODUCT_DETAIL_GRID_STYLES}`,
         content: `
 <ul class="list-none p-0 m-0 flex flex-col gap-2">
     ${FOOTNOTE}
-</ul>`,
+</ul>
+${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
 ];
