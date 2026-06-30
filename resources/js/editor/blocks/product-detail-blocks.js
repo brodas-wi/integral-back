@@ -23,6 +23,55 @@ const PRODUCT_DETAIL_COLOR_STYLES = `
 .pd-text-orange{color:#E97300;}
 </style>`;
 
+const PRODUCT_DETAIL_HEADER_GRID_STYLES = `
+<style>
+.pd-header-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr minmax(220px,0.8fr);
+    grid-template-areas:"intro intro action" "col1 col2 action";
+    gap:2rem 3rem;
+    align-items:start;
+}
+.pd-header-grid>.pd-hg-intro{grid-area:intro;}
+.pd-header-grid>.pd-hg-col1{grid-area:col1;}
+.pd-header-grid>.pd-hg-col2{grid-area:col2;}
+.pd-header-grid>.pd-hg-action{grid-area:action;}
+@media(max-width:992px){
+    .pd-header-grid{
+        grid-template-columns:1fr 1fr;
+        grid-template-areas:"intro intro" "col1 col2" "action action";
+        gap:2rem;
+    }
+}
+@media(max-width:640px){
+    .pd-header-grid{
+        grid-template-columns:1fr;
+        grid-template-areas:"intro" "col1" "col2" "action";
+        gap:1.5rem;
+    }
+}
+</style>`;
+
+const iconProductDetailHeaderGrid = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="2" y="2" width="20" height="3" rx="1" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="2" y="6.5" width="14" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="2" y="11" width="9" height="2" rx="1" fill="#E97300" fill-opacity="0.7"/>
+    <circle cx="3.5" cy="16" r="1" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="5.5" y="15.3" width="6" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
+    <circle cx="3.5" cy="19" r="1" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="5.5" y="18.3" width="5" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="13" y="11" width="9" height="2" rx="1" fill="#E97300" fill-opacity="0.7"/>
+    <circle cx="14.5" cy="16" r="1" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="16.5" y="15.3" width="6" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
+    <circle cx="14.5" cy="19" r="1" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="16.5" y="18.3" width="5" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="24" y="2" width="6" height="6" rx="1" fill="none" stroke="#E97300" stroke-width="0.8" stroke-opacity="0.5"/>
+    <rect x="24" y="11" width="6" height="3" rx="1.5" fill="#E97300" fill-opacity="0.85"/>
+    <rect x="24" y="17" width="6" height="0.8" rx="0.4" fill="#9ca3af" fill-opacity="0.5"/>
+    <rect x="24" y="19" width="6" height="0.8" rx="0.4" fill="#9ca3af" fill-opacity="0.5"/>
+</svg>`;
+
 const iconProductDetailThreeCol = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="3" width="8" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
@@ -221,6 +270,47 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
     </div>
 </section>
 ${PRODUCT_DETAIL_THREE_COL_STYLES}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
+    },
+    {
+        id: "product-detail-header-grid",
+        label: "Detalle de producto (encabezado + 2 columnas)",
+        category: "Productos y Servicios",
+        media: iconProductDetailHeaderGrid,
+        content: `
+<section class="w-full bg-white px-16 py-12">
+    <div class="pd-header-grid">
+        <div class="pd-hg-intro">
+            <p class="text-lg font-bold text-[#003B71] leading-snug m-0">Invierte en el futuro de tu negocio con financiamiento flexible, atención personalizada y el respaldo necesario para seguir creciendo.</p>
+        </div>
+        <div class="pd-hg-col1 flex flex-col gap-3">
+            <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Ventajas</span>
+            <ul class="list-none p-0 m-0 flex flex-col gap-3">
+                ${BULLET_ITEM}
+                ${BULLET_ITEM}
+                ${BULLET_ITEM}
+                ${BULLET_ITEM}
+            </ul>
+        </div>
+        <div class="pd-hg-col2 flex flex-col gap-3">
+            <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Requisitos</span>
+            <ul class="list-none p-0 m-0 flex flex-col gap-3">
+                ${BULLET_ITEM}
+                ${BULLET_ITEM}
+            </ul>
+        </div>
+        <div class="pd-hg-action flex flex-col items-center gap-4">
+            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Credinvierte</h2>
+            <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
+            <div class="w-full flex flex-col gap-2 pt-3">
+                ${FOOTNOTE}
+                ${FOOTNOTE}
+                ${FOOTNOTE}
+            </div>
+        </div>
+    </div>
+</section>
+${PRODUCT_DETAIL_HEADER_GRID_STYLES}
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
     {
