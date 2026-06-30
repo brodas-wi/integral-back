@@ -17,6 +17,7 @@ import { serviceCardsBlocks } from "./blocks/service-cards-blocks";
 import { contactInfoBlocks } from "./blocks/contact-info-blocks";
 import { richListBlocks } from "./blocks/rich-list-blocks";
 import { productDetailBlocks } from "./blocks/product-detail-blocks";
+import { financingBlocks } from "./blocks/financing-blocks";
 import { newsGridBlocks } from "./blocks/news-grid-blocks";
 import { formBlocks } from "./blocks/form-blocks";
 import { tableBlocks, initializeTableBlocks } from "./blocks/table-blocks";
@@ -50,6 +51,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(buttonBlocks);
     blockRegistry.registerBlocks(badgeBlocks);
     blockRegistry.registerBlocks(productDetailBlocks);
+    blockRegistry.registerBlocks(financingBlocks);
     blockRegistry.registerBlocks(mapBlocks);
     blockRegistry.applyToEditor(editor);
 
