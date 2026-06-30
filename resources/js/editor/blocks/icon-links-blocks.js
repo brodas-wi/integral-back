@@ -25,17 +25,20 @@ const iconLinkItem = `<svg viewBox="0 0 32 32" width="32" height="32">
 </svg>`;
 
 const ICON_LINK_ITEM = `
-<a href="#" class="flex flex-col items-center text-center gap-4 no-underline group">
-    <div class="w-16 h-16 rounded-full flex items-center justify-center shrink-0 bg-[#E97300]">
+<a href="#" class="flex flex-col items-center text-center gap-4 no-underline il-link-item">
+    <div class="w-16 h-16 rounded-full flex items-center justify-center shrink-0 il-icon-badge">
         <img src="${assetUrl("images/placeholder.svg")}" alt="" class="w-8 h-8 object-contain">
     </div>
-    <span class="text-base font-semibold leading-snug text-[#003B71] group-hover:text-[#E97300] transition-colors duration-200">Nombre del servicio</span>
+    <span class="text-base font-semibold leading-snug il-link-label transition-colors duration-200">Nombre del servicio</span>
 </a>`;
 
 const ICON_LINKS_STYLES = `
 <style>
 .il-section{width:100%;background:#ffffff;padding:3.5rem 4rem;}
 .il-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
+.il-icon-badge{background-color:#E97300;}
+.il-link-label{color:#003B71;}
+.il-link-item:hover .il-link-label{color:#E97300;}
 @media(max-width:1280px){.il-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.il-section{padding:2.5rem 1.5rem;}.il-grid{grid-template-columns:repeat(2,1fr);gap:2rem;}}
 @media(max-width:480px){.il-grid{grid-template-columns:repeat(2,1fr);gap:1.5rem;}}
