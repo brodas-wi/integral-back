@@ -243,6 +243,69 @@ class PageController extends Controller
         }
     }
 
+    public function duplicate(Request $request, Page $page)
+    {
+        $this->authorize('pages.create');
+
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'slug'  => ['required', 'string', 'max:255'],
+        ]);
+
+        try {
+            $normalizedSlug = Page::normalizeSlug($request->slug);
+
+            $exists = Page::where('slug', $normalizedSlug)->exists();
+
+            if ($exists) {
+                $suggestions = Page::generateSlugSuggestions($normalizedSlug);
+
+                return response()->json([
+                    'success'     => false,
+                    'message'     => 'El slug ya está en uso por otra página. Elige una de las sugerencias o modifica el slug.',
+                    'suggestions' => $suggestions,
+                ], 422);
+            }
+
+            $duplicate = Page::create([
+                'title'           => $request->title,
+                'slug'            => $normalizedSlug,
+                'footer_id'       => $page->footer_id,
+                'navbar_id'       => $page->navbar_id,
+                'html_content'    => $page->html_content,
+                'css_content'     => $page->css_content,
+                'js_content'      => $page->js_content,
+                'components_json' => $page->components_json,
+                'styles_json'     => $page->styles_json,
+                'is_published'    => false,
+                'created_by'      => Auth::id(),
+                'updated_by'      => Auth::id(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Página duplicada exitosamente como '{$duplicate->title}'.",
+                'page'    => [
+                    'id'       => $duplicate->id,
+                    'title'    => $duplicate->title,
+                    'slug'     => $duplicate->slug,
+                    'show_url' => route('pages.show', $duplicate->slug),
+                    'edit_url' => route('pages.edit', $duplicate->slug),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error duplicating page: ' . $e->getMessage(), [
+                'user_id'        => Auth::id(),
+                'source_page_id' => $page->id,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al duplicar la página.',
+            ], 500);
+        }
+    }
+
     public function checkSlug(Request $request)
     {
         $this->authorize('pages.edit');

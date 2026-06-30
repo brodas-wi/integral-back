@@ -5,6 +5,7 @@
 
 @push('head')
     <meta name="pages-index-url" content="{{ route('pages.index') }}">
+    <meta name="pages-slug-check-url" content="{{ route('pages.slug-check') }}">
 @endpush
 
 @section('header-actions')
@@ -185,6 +186,16 @@
                             <i class="ri-edit-line mr-2"></i>
                             Editar
                         </a>
+                    @endcanany
+
+                    @canany(['pages.create', 'pages.manage'])
+                        <button type="button" id="duplicate-page-btn"
+                            data-slug="{{ $page->slug }}"
+                            data-title="{{ addslashes($page->title) }}"
+                            class="btn-secondary btn-sm w-full">
+                            <i class="ri-file-copy-line mr-2"></i>
+                            Duplicar
+                        </button>
                     @endcanany
 
                     @canany(['pages.publish', 'pages.manage'])

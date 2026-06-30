@@ -166,6 +166,11 @@ Route::middleware(['auth'])->group(function () {
             ->name('slug-check')
             ->middleware('can:pages.edit,pages.manage');
 
+        // Duplicate page
+        Route::post('/{page}/duplicate', [PageController::class, 'duplicate'])
+            ->name('duplicate')
+            ->middleware('can:pages.create,pages.manage');
+
         // Update title and slug
         Route::patch('/{page}/title-slug', [PageController::class, 'updateTitleSlug'])
             ->name('update-title-slug')

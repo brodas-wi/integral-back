@@ -1,5 +1,5 @@
 import { showNotification } from "@/utils/notifications.js";
-import { showConfirmModal } from "@/utils/modals.js";
+import { showConfirmModal, showPromptModal } from "@/utils/modals.js";
 import { buildUrl } from "@/utils/url.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]');
@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initFooterRelation();
     initNavbarRelation();
     initTitleSlugEditor();
+    initDuplicatePage();
 });
 
 function initTogglePublish() {
@@ -236,17 +237,36 @@ function initNavbarRelation() {
 
 function normalizeSlugClient(value) {
     const replacements = {
-        á: "a", à: "a", ä: "a", â: "a",
-        é: "e", è: "e", ë: "e", ê: "e",
-        í: "i", ì: "i", ï: "i", î: "i",
-        ó: "o", ò: "o", ö: "o", ô: "o",
-        ú: "u", ù: "u", ü: "u", û: "u",
-        ñ: "n", ç: "c",
+        á: "a",
+        à: "a",
+        ä: "a",
+        â: "a",
+        é: "e",
+        è: "e",
+        ë: "e",
+        ê: "e",
+        í: "i",
+        ì: "i",
+        ï: "i",
+        î: "i",
+        ó: "o",
+        ò: "o",
+        ö: "o",
+        ô: "o",
+        ú: "u",
+        ù: "u",
+        ü: "u",
+        û: "u",
+        ñ: "n",
+        ç: "c",
     };
 
     return value
         .toLowerCase()
-        .replace(/[áàäâéèëêíìïîóòöôúùüûñç]/g, (char) => replacements[char] || char)
+        .replace(
+            /[áàäâéèëêíìïîóòöôúùüûñç]/g,
+            (char) => replacements[char] || char,
+        )
         .replace(/[^a-z0-9\s-]/g, "")
         .trim()
         .replace(/[\s-]+/g, "-")
@@ -291,9 +311,18 @@ function initTitleSlugEditor() {
         }
 
         statusMessage.textContent = message;
-        statusMessage.classList.remove("hidden", "text-red-600", "text-green-600", "text-gray-500");
+        statusMessage.classList.remove(
+            "hidden",
+            "text-red-600",
+            "text-green-600",
+            "text-gray-500",
+        );
         statusMessage.classList.add(
-            type === "error" ? "text-red-600" : type === "success" ? "text-green-600" : "text-gray-500"
+            type === "error"
+                ? "text-red-600"
+                : type === "success"
+                  ? "text-green-600"
+                  : "text-gray-500",
         );
     }
 
@@ -308,7 +337,8 @@ function initTitleSlugEditor() {
         suggestions.forEach((suggestion) => {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "text-xs font-mono px-2 py-1 rounded border border-gray-300 hover:bg-gray-50";
+            btn.className =
+                "text-xs font-mono px-2 py-1 rounded border border-gray-300 hover:bg-gray-50";
             btn.textContent = suggestion;
             btn.addEventListener("click", () => {
                 slugInput.value = suggestion;
@@ -330,14 +360,20 @@ function initTitleSlugEditor() {
         if (!slugValue) return;
 
         try {
-            const params = new URLSearchParams({ slug: slugValue, exclude: pageId });
-            const response = await fetch(buildUrl(`pages/slug-check?${params.toString()}`), {
-                headers: {
-                    Accept: "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                },
-                credentials: "same-origin",
+            const params = new URLSearchParams({
+                slug: slugValue,
+                exclude: pageId,
             });
+            const response = await fetch(
+                buildUrl(`pages/slug-check?${params.toString()}`),
+                {
+                    headers: {
+                        Accept: "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                    credentials: "same-origin",
+                },
+            );
 
             const data = await response.json();
 
@@ -351,18 +387,27 @@ function initTitleSlugEditor() {
                 renderSuggestions([]);
             } else {
                 currentSlugValid = false;
-                setStatusMessage(data.message || "Este slug ya está en uso.", "error");
+                setStatusMessage(
+                    data.message || "Este slug ya está en uso.",
+                    "error",
+                );
                 renderSuggestions(data.suggestions);
             }
 
             updateSaveButtonState();
         } catch (error) {
             console.error("Error:", error);
-            setStatusMessage("No se pudo verificar el slug. Intenta de nuevo.", "error");
+            setStatusMessage(
+                "No se pudo verificar el slug. Intenta de nuevo.",
+                "error",
+            );
         }
     }
 
-    const debouncedCheck = debounce((value) => checkSlugAvailability(value), 400);
+    const debouncedCheck = debounce(
+        (value) => checkSlugAvailability(value),
+        400,
+    );
 
     titleInput.addEventListener("input", () => {
         if (slugLinkedToTitle) {
@@ -391,12 +436,14 @@ function initTitleSlugEditor() {
         slugInput.readOnly = slugLinkedToTitle;
 
         if (slugLinkedToTitle) {
-            toggleLinkBtn.innerHTML = '<i class="ri-link-unlink-m mr-1"></i>Editar manualmente';
+            toggleLinkBtn.innerHTML =
+                '<i class="ri-link-unlink-m mr-1"></i>Editar manualmente';
             const generated = normalizeSlugClient(titleInput.value);
             slugInput.value = generated;
             checkSlugAvailability(generated);
         } else {
-            toggleLinkBtn.innerHTML = '<i class="ri-link-m mr-1"></i>Generar desde título';
+            toggleLinkBtn.innerHTML =
+                '<i class="ri-link-m mr-1"></i>Generar desde título';
             slugInput.focus();
         }
 
@@ -407,7 +454,10 @@ function initTitleSlugEditor() {
 
     async function submitTitleSlug() {
         if (!CSRF) {
-            showNotification("Error de configuración. Recarga la página.", "error");
+            showNotification(
+                "Error de configuración. Recarga la página.",
+                "error",
+            );
             return;
         }
 
@@ -417,20 +467,23 @@ function initTitleSlugEditor() {
         }
 
         try {
-            const response = await fetch(buildUrl(`pages/${currentSlug}/title-slug`), {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": CSRF.getAttribute("content"),
-                    Accept: "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
+            const response = await fetch(
+                buildUrl(`pages/${currentSlug}/title-slug`),
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": CSRF.getAttribute("content"),
+                        Accept: "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        title: titleInput.value.trim(),
+                        slug: slugInput.value.trim(),
+                    }),
                 },
-                credentials: "same-origin",
-                body: JSON.stringify({
-                    title: titleInput.value.trim(),
-                    slug: slugInput.value.trim(),
-                }),
-            });
+            );
 
             const contentType = response.headers.get("content-type") || "";
             const isJson = contentType.includes("application/json");
@@ -438,7 +491,9 @@ function initTitleSlugEditor() {
 
             if (!response.ok) {
                 if (response.status === 401 || response.status === 419) {
-                    throw new Error("Tu sesión ha expirado. Recarga la página.");
+                    throw new Error(
+                        "Tu sesión ha expirado. Recarga la página.",
+                    );
                 }
                 if (response.status === 422 && data?.suggestions) {
                     setStatusMessage(data.message, "error");
@@ -447,21 +502,29 @@ function initTitleSlugEditor() {
                     updateSaveButtonState();
                     throw new Error(data.message);
                 }
-                throw new Error(data?.message || `Error del servidor: ${response.status}`);
+                throw new Error(
+                    data?.message || `Error del servidor: ${response.status}`,
+                );
             }
 
             if (!data || !data.success) {
                 throw new Error(data?.message || "Error al guardar");
             }
 
-            document.querySelector("#page-title-display h2").textContent = data.page.title;
-            document.getElementById("page-slug-display").textContent = data.page.slug;
-            document.getElementById("page-preview-url").value = data.page.preview_url;
-            document.getElementById("page-preview-link").href = data.page.preview_url;
+            document.querySelector("#page-title-display h2").textContent =
+                data.page.title;
+            document.getElementById("page-slug-display").textContent =
+                data.page.slug;
+            document.getElementById("page-preview-url").value =
+                data.page.preview_url;
+            document.getElementById("page-preview-link").href =
+                data.page.preview_url;
 
-            document.querySelectorAll("[data-toggle-publish]").forEach((btn) => {
-                btn.dataset.slug = data.page.slug;
-            });
+            document
+                .querySelectorAll("[data-toggle-publish]")
+                .forEach((btn) => {
+                    btn.dataset.slug = data.page.slug;
+                });
             document.querySelectorAll("[data-delete-page]").forEach((btn) => {
                 btn.dataset.slug = data.page.slug;
                 btn.dataset.pageTitle = data.page.title;
@@ -472,7 +535,203 @@ function initTitleSlugEditor() {
             window.history.replaceState({}, "", data.page.show_url);
         } catch (error) {
             console.error("Error:", error);
-            showNotification(error.message || "Error al guardar el título y slug", "error");
+            showNotification(
+                error.message || "Error al guardar el título y slug",
+                "error",
+            );
         }
+    }
+}
+
+function initDuplicatePage() {
+    const btn = document.getElementById("duplicate-page-btn");
+    if (!btn) return;
+
+    const slugCheckUrl = document.querySelector(
+        'meta[name="pages-slug-check-url"]',
+    )?.content;
+
+    btn.addEventListener("click", () => {
+        const sourceSlug = btn.dataset.slug;
+        const sourceTitle = btn.dataset.title;
+        const suggestedTitle = `${sourceTitle} (copia)`;
+        const suggestedSlug = normalizeSlugClient(suggestedTitle);
+
+        let currentSlugValue = suggestedSlug;
+        let slugIsValid = true;
+
+        showPromptModal({
+            title: "Duplicar página",
+            message: `Ingresa el nombre para la copia de "${sourceTitle}".`,
+            label: "Nombre de la nueva página",
+            placeholder: "Nombre de la página",
+            initialValue: suggestedTitle,
+            confirmText: "Duplicar",
+            cancelText: "Cancelar",
+            type: "info",
+            showSlugPreview: true,
+            onInput: debounce((value) => {
+                currentSlugValue = normalizeSlugClient(value || suggestedTitle);
+                updateDuplicateSlugPreview(
+                    currentSlugValue,
+                    slugCheckUrl,
+                    (valid) => {
+                        slugIsValid = valid;
+                    },
+                );
+            }, 400),
+            onConfirm: (title) => {
+                const finalTitle = (title || suggestedTitle).trim();
+                if (!finalTitle) {
+                    showNotification(
+                        "El nombre no puede estar vacío.",
+                        "error",
+                    );
+                    return;
+                }
+                if (!slugIsValid) {
+                    showNotification(
+                        "El slug generado ya está en uso. Ajusta el nombre.",
+                        "error",
+                    );
+                    return;
+                }
+                submitDuplicatePage(sourceSlug, finalTitle, currentSlugValue);
+            },
+        });
+
+        setTimeout(() => {
+            updateDuplicateSlugPreview(suggestedSlug, slugCheckUrl, (valid) => {
+                slugIsValid = valid;
+            });
+        }, 0);
+    });
+}
+
+async function updateDuplicateSlugPreview(slugValue, slugCheckUrl, onResult) {
+    const preview = document.getElementById("prompt-modal-slug-preview");
+    const statusMessage = document.getElementById("prompt-modal-slug-status");
+    const suggestionsContainer = document.getElementById(
+        "prompt-modal-slug-suggestions",
+    );
+
+    if (!preview || !slugCheckUrl) return;
+
+    preview.textContent = slugValue;
+
+    if (!slugValue) {
+        onResult(false);
+        return;
+    }
+
+    try {
+        const params = new URLSearchParams({ slug: slugValue });
+        const response = await fetch(
+            buildUrl(`pages/slug-check?${params.toString()}`),
+            {
+                headers: {
+                    Accept: "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                },
+                credentials: "same-origin",
+            },
+        );
+
+        const data = await response.json();
+
+        if (data.normalized) {
+            preview.textContent = data.normalized;
+        }
+
+        if (data.available) {
+            statusMessage.classList.add("hidden");
+            suggestionsContainer.classList.add("hidden");
+            suggestionsContainer.innerHTML = "";
+            onResult(true);
+        } else {
+            statusMessage.textContent =
+                data.message || "Este slug ya está en uso.";
+            statusMessage.classList.remove("hidden", "text-green-600");
+            statusMessage.classList.add("text-red-600");
+
+            suggestionsContainer.innerHTML = "";
+            (data.suggestions || []).forEach((suggestion) => {
+                const sBtn = document.createElement("button");
+                sBtn.type = "button";
+                sBtn.className =
+                    "text-xs font-mono px-2 py-1 rounded border border-gray-300 hover:bg-gray-50";
+                sBtn.textContent = suggestion;
+                sBtn.addEventListener("click", () => {
+                    preview.textContent = suggestion;
+                    updateDuplicateSlugPreview(
+                        suggestion,
+                        slugCheckUrl,
+                        onResult,
+                    );
+                });
+                suggestionsContainer.appendChild(sBtn);
+            });
+            suggestionsContainer.classList.toggle(
+                "hidden",
+                (data.suggestions || []).length === 0,
+            );
+
+            onResult(false);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        onResult(false);
+    }
+}
+
+async function submitDuplicatePage(sourceSlug, title, slug) {
+    if (!CSRF) {
+        showNotification("Error de configuración. Recarga la página.", "error");
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            buildUrl(`pages/${sourceSlug}/duplicate`),
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": CSRF.getAttribute("content"),
+                    Accept: "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                },
+                credentials: "same-origin",
+                body: JSON.stringify({ title, slug }),
+            },
+        );
+
+        const contentType = response.headers.get("content-type") || "";
+        const isJson = contentType.includes("application/json");
+        const data = isJson ? await response.json() : null;
+
+        if (!response.ok) {
+            if (response.status === 401 || response.status === 419) {
+                throw new Error("Tu sesión ha expirado. Recarga la página.");
+            }
+            throw new Error(
+                data?.message || `Error del servidor: ${response.status}`,
+            );
+        }
+
+        if (!data || !data.success) {
+            throw new Error(data?.message || "Error al duplicar la página");
+        }
+
+        showNotification(data.message, "success");
+        setTimeout(() => {
+            window.location.href = data.page.show_url;
+        }, 1000);
+    } catch (error) {
+        console.error("Error:", error);
+        showNotification(
+            error.message || "Error al duplicar la página",
+            "error",
+        );
     }
 }

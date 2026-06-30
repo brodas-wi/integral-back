@@ -1604,7 +1604,7 @@ ${Hi}`},{id:"product-detail-bullet",label:"Ítem de ventaja",category:"Productos
             <span class="w-2 h-2 rounded-full bg-[#E97300] shrink-0"></span>
             <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Subtitulo</span>
         </div>
-        <p class="text-lg text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p class="text-base text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         <div class="fc-cards-grid">
             ${oe("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
             ${oe("Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod")}
