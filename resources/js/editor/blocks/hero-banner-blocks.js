@@ -45,13 +45,16 @@ function buildHeroBannerHTML(data, uid) {
         ? `<a href="${btnSecondary.href || "#"}" class="hb-btn hb-btn-${secondaryColor}-outline">${btnSecondary.label || "Solicitar"}</a>`
         : "";
 
-    return `<section id="hb-root-${uid}" class="hb-section" style="background-image:url('${bgImage}');" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+    const bgClass = `hb-bg-${uid}`;
+    const bgStyleTag = `<style>.${bgClass}{background-image:url('${bgImage}');}</style>`;
+
+    return `<section id="hb-root-${uid}" class="hb-section ${bgClass}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hb-content">
             <h2 class="hb-title">${data.title || "Título del banner"}</h2>
             <p class="hb-subtitle">${data.subtitle || "Subtítulo del banner"}</p>
             <div class="hb-buttons">${btnPrimaryHtml}${btnSecondaryHtml}</div>
         </div>
-    </section>`;
+    </section>${bgStyleTag}`;
 }
 
 const DEFAULT_DATA = {
