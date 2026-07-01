@@ -1,4 +1,4 @@
-const BANNER_BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32">
+const bannerBlockIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="1" y="6" width="30" height="20" fill="#003B71" rx="2"/>
     <rect x="1" y="22" width="30" height="4" fill="#E97300" rx="0"/>
@@ -9,41 +9,98 @@ const BANNER_BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32">
     <circle cx="23" cy="14" r="4" fill="#f8e7d8"/>
 </svg>`;
 
-const BANNER_RUNTIME_STYLES = `.banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;display:grid;}.banner-slide-container:active{cursor:grabbing;}.banner-slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity 0.7s ease;visibility:hidden;display:flex;flex-direction:column;}.banner-slide.banner-slide--active{opacity:1;pointer-events:auto;visibility:visible;}.banner-slide-inner{position:relative;width:100%;flex:1;min-height:480px;display:flex;align-items:center;}.banner-bg{position:absolute;inset:0;z-index:0;}.banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.banner-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.banner-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.banner-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.banner-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.banner-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.banner-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.banner-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.banner-btn--fill-blue{background:#003B71;color:#ffffff;border:2px solid #003B71;}.banner-btn--fill-blue:hover{background:#002a52;border-color:#002a52;color:#ffffff;}.banner-btn--outline-blue{background:transparent;color:#003B71;border:2px solid #003B71;}.banner-btn--outline-blue:hover{background:#003B71;border-color:#003B71;color:#ffffff;}.banner-btn--fill-orange{background:#E97300;color:#ffffff;border:2px solid #E97300;}.banner-btn--fill-orange:hover{background:#c96200;border-color:#c96200;color:#ffffff;}.banner-btn--outline-orange{background:transparent;color:#E97300;border:2px solid #E97300;}.banner-btn--outline-orange:hover{background:#E97300;border-color:#E97300;color:#ffffff;}.banner-btn--fill-white{background:#ffffff;color:#003B71;border:2px solid #ffffff;}.banner-btn--fill-white:hover{background:#dce8f5;border-color:#dce8f5;color:#003B71;}.banner-btn--outline-white{background:transparent;color:#ffffff;border:2px solid #ffffff;}.banner-btn--outline-white:hover{background:#ffffff;border-color:#ffffff;color:#003B71;}.banner-dots-wrapper{display:none;}.banner-stripe{position:relative;width:100%;height:48px;background:#E97300;z-index:20;display:flex;align-items:center;justify-content:center;}.banner-dots{display:flex;gap:8px;align-items:center;}.banner-dot{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;background:rgba(255,255,255,0.5);transition:all 0.3s ease;padding:0;flex-shrink:0;}.banner-dot--active{width:28px;background:#ffffff;}.banner-empty{display:flex;align-items:center;justify-content:center;min-height:480px;color:rgba(255,255,255,0.5);font-size:14px;padding:40px;}@media(max-width:768px){.banner-slide-inner{min-height:340px;}.banner-bg img{object-position:right center;}.banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}.banner-buttons{flex-wrap:wrap;gap:12px;}.banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.banner-btn{flex:1 1 100%;min-width:0;}}`;
-
-const BANNER_SKELETON_STYLES = `@keyframes bsk-shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}.bsk-badge{width:120px;height:32px;margin-bottom:20px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title{height:40px;margin-bottom:12px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title--short{width:60%;}.bsk-line{height:16px;margin-bottom:10px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-line--short{width:55%;}.bsk-buttons{display:flex;gap:16px;margin-top:36px;}.bsk-btn{height:48px;flex:1;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-bg-img{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}@media(max-width:768px){.bsk-buttons{flex-direction:column;}}`;
-
-const VALID_BUTTON_STYLES = ["fill-blue", "outline-blue", "fill-orange", "outline-orange", "fill-white", "outline-white"];
-
-function ensureGlobalStyle(doc, id, css) {
-    if (doc.getElementById(id)) return;
-    const s = doc.createElement("style");
-    s.id = id;
-    s.textContent = css;
-    doc.head.appendChild(s);
+const BANNER_STYLES = `
+.banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}
+.banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;display:grid;}
+.banner-slide-container:active{cursor:grabbing;}
+.banner-slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity 0.7s ease;visibility:hidden;display:flex;flex-direction:column;}
+.banner-slide.banner-slide--active{opacity:1;pointer-events:auto;visibility:visible;}
+.banner-slide-inner{position:relative;width:100%;flex:1;min-height:480px;display:flex;align-items:center;}
+.banner-bg{position:absolute;inset:0;z-index:0;}
+.banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.banner-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}
+.banner-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}
+.banner-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}
+.banner-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}
+.banner-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}
+.banner-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
+.banner-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}
+.banner-btn--fill-blue{background:#003B71;color:#ffffff;border:2px solid #003B71;}
+.banner-btn--fill-blue:hover{background:#002a52;border-color:#002a52;color:#ffffff;}
+.banner-btn--outline-blue{background:transparent;color:#003B71;border:2px solid #003B71;}
+.banner-btn--outline-blue:hover{background:#003B71;border-color:#003B71;color:#ffffff;}
+.banner-btn--fill-orange{background:#E97300;color:#ffffff;border:2px solid #E97300;}
+.banner-btn--fill-orange:hover{background:#c96200;border-color:#c96200;color:#ffffff;}
+.banner-btn--outline-orange{background:transparent;color:#E97300;border:2px solid #E97300;}
+.banner-btn--outline-orange:hover{background:#E97300;border-color:#E97300;color:#ffffff;}
+.banner-btn--fill-white{background:#ffffff;color:#003B71;border:2px solid #ffffff;}
+.banner-btn--fill-white:hover{background:#dce8f5;border-color:#dce8f5;color:#003B71;}
+.banner-btn--outline-white{background:transparent;color:#ffffff;border:2px solid #ffffff;}
+.banner-btn--outline-white:hover{background:#ffffff;border-color:#ffffff;color:#003B71;}
+.banner-dots-wrapper{display:none;}
+.banner-stripe{position:relative;width:100%;height:48px;background:#E97300;z-index:20;display:flex;align-items:center;justify-content:center;}
+.banner-dots{display:flex;gap:8px;align-items:center;}
+.banner-dot{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;background:rgba(255,255,255,0.5);transition:all 0.3s ease;padding:0;flex-shrink:0;}
+.banner-dot--active{width:28px;background:#ffffff;}
+.banner-empty{display:flex;align-items:center;justify-content:center;min-height:480px;color:rgba(255,255,255,0.5);font-size:14px;padding:40px;}
+@media(max-width:768px){
+    .banner-slide-inner{min-height:340px;}
+    .banner-bg img{object-position:right center;}
+    .banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}
+    .banner-buttons{flex-wrap:wrap;gap:12px;}
+    .banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}
 }
+@media(max-width:480px){
+    .banner-btn{flex:1 1 100%;min-width:0;}
+}`;
 
-function resolveButtonStyleClass(style) {
-    if (VALID_BUTTON_STYLES.includes(style)) return style;
-    if (style === "outline-blue" || style === "outline-orange") return "outline-white";
-    return "fill-white";
-}
-
-function buildBannerButton(text, url, style, external) {
-    const styleClass = resolveButtonStyleClass(style);
-    const tag = url ? "a" : "span";
-    const attrs = url ? `href="${url}"${external ? ' target="_blank" rel="noopener noreferrer"' : ""}` : "";
-    return `<${tag} ${attrs} class="banner-btn banner-btn--${styleClass}">${text}</${tag}>`;
-}
+const BANNER_SKELETON_STYLES = `
+@keyframes bsk-shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+.bsk-badge{width:120px;height:32px;margin-bottom:20px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
+.bsk-title{height:40px;margin-bottom:12px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
+.bsk-title--short{width:60%;}
+.bsk-line{height:16px;margin-bottom:10px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
+.bsk-line--short{width:55%;}
+.bsk-buttons{display:flex;gap:16px;margin-top:36px;}
+.bsk-btn{height:48px;flex:1;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
+.bsk-bg-img{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
+@media(max-width:768px){.bsk-buttons{flex-direction:column;}}`;
 
 function createBannerScript() {
     return function () {
         const section = this;
         const doc = section.ownerDocument ?? document;
-        const apiEndpoint = doc.querySelector('meta[name="api-banners-url"]')?.content ?? "/api/banners/active";
+        const apiEndpoint =
+            doc.querySelector('meta[name="api-banners-url"]')?.content ??
+            "/api/banners/active";
 
-        ensureGlobalStyle(doc, "banner-hero-styles", BANNER_RUNTIME_STYLES);
-        ensureGlobalStyle(doc, "banner-skeleton-styles", BANNER_SKELETON_STYLES);
+        const BUTTON_STYLE_CLASSES = [
+            "fill-blue",
+            "outline-blue",
+            "fill-orange",
+            "outline-orange",
+            "fill-white",
+            "outline-white",
+        ];
+
+        const RUNTIME_STYLES = `.banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;display:grid;}.banner-slide-container:active{cursor:grabbing;}.banner-slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity 0.7s ease;visibility:hidden;display:flex;flex-direction:column;}.banner-slide.banner-slide--active{opacity:1;pointer-events:auto;visibility:visible;}.banner-slide-inner{position:relative;width:100%;flex:1;min-height:480px;display:flex;align-items:center;}.banner-bg{position:absolute;inset:0;z-index:0;}.banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.banner-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.banner-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.banner-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.banner-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.banner-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.banner-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.banner-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.banner-btn--fill-blue{background:#003B71;color:#ffffff;border:2px solid #003B71;}.banner-btn--fill-blue:hover{background:#002a52;border-color:#002a52;color:#ffffff;}.banner-btn--outline-blue{background:transparent;color:#003B71;border:2px solid #003B71;}.banner-btn--outline-blue:hover{background:#003B71;border-color:#003B71;color:#ffffff;}.banner-btn--fill-orange{background:#E97300;color:#ffffff;border:2px solid #E97300;}.banner-btn--fill-orange:hover{background:#c96200;border-color:#c96200;color:#ffffff;}.banner-btn--outline-orange{background:transparent;color:#E97300;border:2px solid #E97300;}.banner-btn--outline-orange:hover{background:#E97300;border-color:#E97300;color:#ffffff;}.banner-btn--fill-white{background:#ffffff;color:#003B71;border:2px solid #ffffff;}.banner-btn--fill-white:hover{background:#dce8f5;border-color:#dce8f5;color:#003B71;}.banner-btn--outline-white{background:transparent;color:#ffffff;border:2px solid #ffffff;}.banner-btn--outline-white:hover{background:#ffffff;border-color:#ffffff;color:#003B71;}.banner-dots-wrapper{display:none;}.banner-stripe{position:relative;width:100%;height:48px;background:#E97300;z-index:20;display:flex;align-items:center;justify-content:center;}.banner-dots{display:flex;gap:8px;align-items:center;}.banner-dot{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;background:rgba(255,255,255,0.5);transition:all 0.3s ease;padding:0;flex-shrink:0;}.banner-dot--active{width:28px;background:#ffffff;}.banner-empty{display:flex;align-items:center;justify-content:center;min-height:480px;color:rgba(255,255,255,0.5);font-size:14px;padding:40px;}@media(max-width:768px){.banner-slide-inner{min-height:340px;}.banner-bg img{object-position:right center;}.banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}.banner-buttons{flex-wrap:wrap;gap:12px;}.banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.banner-btn{flex:1 1 100%;min-width:0;}}`;
+
+        const SKELETON_STYLES = `@keyframes bsk-shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}.bsk-badge{width:120px;height:32px;margin-bottom:20px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title{height:40px;margin-bottom:12px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title--short{width:60%;}.bsk-line{height:16px;margin-bottom:10px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-line--short{width:55%;}.bsk-buttons{display:flex;gap:16px;margin-top:36px;}.bsk-btn{height:48px;flex:1;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-bg-img{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}@media(max-width:768px){.bsk-buttons{flex-direction:column;}}`;
+
+        (function ensureStyles() {
+            if (!doc.getElementById("banner-hero-styles")) {
+                const s = doc.createElement("style");
+                s.id = "banner-hero-styles";
+                s.textContent = RUNTIME_STYLES;
+                doc.head.appendChild(s);
+            }
+            if (!doc.getElementById("banner-skeleton-styles")) {
+                const s = doc.createElement("style");
+                s.id = "banner-skeleton-styles";
+                s.textContent = SKELETON_STYLES;
+                doc.head.appendChild(s);
+            }
+        })();
 
         let banners = [];
         let currentIndex = 0;
@@ -60,18 +117,40 @@ function createBannerScript() {
 
         if (!container || !stripe) return;
 
+        function resolveButtonStyleClass(style) {
+            if (BUTTON_STYLE_CLASSES.indexOf(style) !== -1) return style;
+            if (style === "outline-blue" || style === "outline-orange")
+                return "outline-white";
+            return "fill-white";
+        }
+
+        function buildButton(text, url, style, external) {
+            const styleClass = resolveButtonStyleClass(style);
+            const tag = url ? "a" : "span";
+            const attrs = url
+                ? `href="${url}"${external ? ' target="_blank" rel="noopener noreferrer"' : ""}`
+                : "";
+            return `<${tag} ${attrs} class="banner-btn banner-btn--${styleClass}">${text}</${tag}>`;
+        }
+
         async function loadBanners() {
             if (section.__bannerLoading) return;
             section.__bannerLoading = true;
             showSkeleton();
             try {
-                const res = await fetch(apiEndpoint, { headers: { Accept: "application/json" } });
+                const res = await fetch(apiEndpoint, {
+                    headers: { Accept: "application/json" },
+                });
                 if (!res.ok) {
                     showEmpty();
                     return;
                 }
                 const all = await res.json();
-                banners = Array.isArray(all) ? (category ? all.filter((b) => b.category === category) : all) : [];
+                banners = Array.isArray(all)
+                    ? category
+                        ? all.filter((b) => b.category === category)
+                        : all
+                    : [];
                 if (banners.length === 0) {
                     showEmpty();
                     return;
@@ -130,10 +209,11 @@ function createBannerScript() {
                             <h2 class="banner-title">${banner.title}</h2>
                             <p class="banner-description">${banner.description}</p>
                             ${
-                                banner.btn_primary_text || banner.btn_secondary_text
+                                banner.btn_primary_text ||
+                                banner.btn_secondary_text
                                     ? `<div class="banner-buttons">
-                                    ${banner.btn_primary_text ? buildBannerButton(banner.btn_primary_text, banner.btn_primary_url, banner.btn_primary_style, banner.btn_primary_external) : ""}
-                                    ${banner.btn_secondary_text ? buildBannerButton(banner.btn_secondary_text, banner.btn_secondary_url, banner.btn_secondary_style, banner.btn_secondary_external) : ""}
+                                    ${banner.btn_primary_text ? buildButton(banner.btn_primary_text, banner.btn_primary_url, banner.btn_primary_style, banner.btn_primary_external) : ""}
+                                    ${banner.btn_secondary_text ? buildButton(banner.btn_secondary_text, banner.btn_secondary_url, banner.btn_secondary_style, banner.btn_secondary_external) : ""}
                                 </div>`
                                     : ""
                             }
@@ -149,9 +229,13 @@ function createBannerScript() {
 
         function attachSwipe() {
             container.addEventListener("mousedown", onDragStart);
-            container.addEventListener("touchstart", onDragStart, { passive: true });
+            container.addEventListener("touchstart", onDragStart, {
+                passive: true,
+            });
             container.addEventListener("mousemove", onDragMove);
-            container.addEventListener("touchmove", onDragMove, { passive: true });
+            container.addEventListener("touchmove", onDragMove, {
+                passive: true,
+            });
             container.addEventListener("mouseup", onDragEnd);
             container.addEventListener("touchend", onDragEnd);
             container.addEventListener("mouseleave", onDragEnd);
@@ -172,14 +256,19 @@ function createBannerScript() {
 
         function onDragMove(e) {
             if (!isDragging) return;
-            dragDelta = (e.touches ? e.touches[0].clientX : e.clientX) - dragStartX;
+            dragDelta =
+                (e.touches ? e.touches[0].clientX : e.clientX) - dragStartX;
         }
 
         function onDragEnd() {
             if (!isDragging) return;
             isDragging = false;
             if (Math.abs(dragDelta) >= SWIPE_THRESHOLD) {
-                goTo(dragDelta < 0 ? (currentIndex + 1) % banners.length : (currentIndex - 1 + banners.length) % banners.length);
+                goTo(
+                    dragDelta < 0
+                        ? (currentIndex + 1) % banners.length
+                        : (currentIndex - 1 + banners.length) % banners.length,
+                );
                 resetAutoplay();
             }
             dragDelta = 0;
@@ -225,14 +314,19 @@ function createBannerScript() {
                     });
             });
 
-            dots.forEach((dot, i) => dot.classList.toggle("banner-dot--active", i === index));
+            dots.forEach((dot, i) =>
+                dot.classList.toggle("banner-dot--active", i === index),
+            );
 
             currentIndex = index;
         }
 
         function startAutoplay() {
             if (banners.length <= 1 || !autoplay) return;
-            autoplayTimer = setInterval(() => goTo((currentIndex + 1) % banners.length), 5000);
+            autoplayTimer = setInterval(
+                () => goTo((currentIndex + 1) % banners.length),
+                5000,
+            );
         }
 
         function resetAutoplay() {
@@ -340,7 +434,9 @@ function showBannerConfigModal(editor, component) {
     const autoplaySlider = modal.querySelector("#bnr-autoplay-slider");
     const autoplayKnob = modal.querySelector("#bnr-autoplay-knob");
     const paintSwitch = () => {
-        autoplaySlider.style.background = autoplayCheckbox.checked ? "#003B71" : "#cbd5e1";
+        autoplaySlider.style.background = autoplayCheckbox.checked
+            ? "#003B71"
+            : "#cbd5e1";
         autoplayKnob.style.left = autoplayCheckbox.checked ? "21px" : "3px";
     };
     paintSwitch();
@@ -349,12 +445,18 @@ function showBannerConfigModal(editor, component) {
     const categorySelect = modal.querySelector("#bnr-category");
     (async () => {
         try {
-            const apiUrl = document.querySelector('meta[name="api-banners-url"]')?.content ?? "/api/banners/active";
-            const res = await fetch(apiUrl, { headers: { Accept: "application/json" } });
+            const apiUrl =
+                document.querySelector('meta[name="api-banners-url"]')
+                    ?.content ?? "/api/banners/active";
+            const res = await fetch(apiUrl, {
+                headers: { Accept: "application/json" },
+            });
             if (!res.ok) return;
             const all = await res.json();
             if (!Array.isArray(all)) return;
-            const categories = [...new Set(all.map((b) => b.category).filter(Boolean))].sort();
+            const categories = [
+                ...new Set(all.map((b) => b.category).filter(Boolean)),
+            ].sort();
             categories.forEach((c) => {
                 const opt = document.createElement("option");
                 opt.value = c;
@@ -386,7 +488,7 @@ export const bannerBlocks = [
         id: "banner-hero",
         label: "Banner Slider",
         category: "Banners",
-        media: BANNER_BLOCK_ICON,
+        media: bannerBlockIcon,
         content: { type: "banner-hero-component" },
     },
 ];
@@ -395,7 +497,10 @@ export function initializeBannerBlocks(editor) {
     const componentType = "banner-hero-component";
 
     editor.DomComponents.addType(componentType, {
-        isComponent: (el) => (el.getAttribute?.("data-gjs-type") === componentType ? { type: componentType } : false),
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === componentType
+                ? { type: componentType }
+                : false,
 
         model: {
             defaults: {
@@ -481,7 +586,10 @@ export function initializeBannerBlocks(editor) {
 
 function setupBannerEditorEvents(editor, componentType) {
     editor.on("storage:end:load", () => {
-        setTimeout(() => reinitializeBannerComponents(editor, componentType), 1000);
+        setTimeout(
+            () => reinitializeBannerComponents(editor, componentType),
+            1000,
+        );
     });
 
     editor.on("component:mount", (component) => {
@@ -508,7 +616,10 @@ function setupBannerEditorEvents(editor, componentType) {
     });
 
     editor.on("canvas:render", () => {
-        setTimeout(() => reinitializeBannerComponents(editor, componentType), 800);
+        setTimeout(
+            () => reinitializeBannerComponents(editor, componentType),
+            800,
+        );
     });
 
     editor.on("storage:start:store", () => {
@@ -543,8 +654,19 @@ function injectBannerEditorStyles(editor, componentType) {
         const head = iframe.contentDocument?.head;
         if (!head) return;
 
-        ensureGlobalStyle(iframe.contentDocument, "banner-hero-styles", BANNER_RUNTIME_STYLES);
-        ensureGlobalStyle(iframe.contentDocument, "banner-skeleton-styles", BANNER_SKELETON_STYLES);
+        if (!head.querySelector("#banner-hero-styles")) {
+            const s = document.createElement("style");
+            s.id = "banner-hero-styles";
+            s.textContent = BANNER_STYLES;
+            head.appendChild(s);
+        }
+
+        if (!head.querySelector("#banner-skeleton-styles")) {
+            const s = document.createElement("style");
+            s.id = "banner-skeleton-styles";
+            s.textContent = BANNER_SKELETON_STYLES;
+            head.appendChild(s);
+        }
 
         if (!head.querySelector(`#${componentType}-editor-css`)) {
             const s = document.createElement("style");
