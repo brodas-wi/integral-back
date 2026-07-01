@@ -1,6 +1,8 @@
 import { assetUrl } from "@/utils/url.js";
 import { openMediaPicker } from "@/editor/media-picker";
 
+const TEMP_INTERNAL_URL_PREFIX = "/bancaintegral";
+
 const HERO_BANNER_STYLES = `
 <style>
 .hb-section{position:relative;width:100%;padding:5rem 4rem;display:flex;align-items:center;min-height:420px;box-sizing:border-box;font-family:'Poppins',sans-serif;overflow:hidden;background:#003B71;}
@@ -292,7 +294,7 @@ function showHeroBannerModal(editor, component) {
                 li.addEventListener("mouseleave", () => (li.style.background = ""));
                 li.addEventListener("mousedown", (e) => {
                     e.preventDefault();
-                    input.value = "/" + page.slug;
+                    input.value = `${TEMP_INTERNAL_URL_PREFIX}/${page.slug}`;
                     input.dispatchEvent(new Event("input"));
                     dropdown.style.display = "none";
                 });

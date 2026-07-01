@@ -1,6 +1,8 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { IconPickerModal } from "@/editor/components/icon-picker-modal";
 
+const TEMP_INTERNAL_URL_PREFIX = "/bancaintegral";
+
 export const NAVBAR_RUNTIME_SCRIPT = `(function(){
 function initNavbar(root){
     if(!root||root.__nbInit)return;
@@ -761,7 +763,7 @@ function showNavbarModal(editor, component) {
                 );
                 li.addEventListener("mousedown", (e) => {
                     e.preventDefault();
-                    input.value = "/" + page.slug;
+                    input.value = `${TEMP_INTERNAL_URL_PREFIX}/${page.slug}`;
                     input.dispatchEvent(new Event("input"));
                     dropdown.style.display = "none";
                 });
