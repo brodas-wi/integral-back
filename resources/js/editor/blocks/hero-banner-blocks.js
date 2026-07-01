@@ -8,11 +8,14 @@ const HERO_BANNER_STYLES = `
 .hb-title{font-size:2.75rem;font-weight:800;color:#fff;line-height:1.15;margin:0;}
 .hb-subtitle{font-size:1.125rem;font-weight:700;color:#fff;margin:0;}
 .hb-buttons{display:flex;gap:1rem;margin-top:1.25rem;flex-wrap:wrap;}
-.hb-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.75rem 1.75rem;border-radius:9999px;font-size:0.9375rem;font-weight:700;text-decoration:none;cursor:pointer;border:2px solid #fff;font-family:inherit;transition:opacity 0.15s,background 0.15s,color 0.15s;white-space:nowrap;}
-.hb-btn-primary{background:#fff;color:#003B71;}
-.hb-btn-primary:hover{opacity:0.88;}
-.hb-btn-secondary{background:transparent;color:#fff;}
-.hb-btn-secondary:hover{background:rgba(255,255,255,0.15);}
+.hb-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.75rem 1.75rem;border-radius:9999px;font-size:0.9375rem;font-weight:700;text-decoration:none;cursor:pointer;border:2px solid transparent;font-family:inherit;transition:opacity 0.15s,background 0.15s,color 0.15s;white-space:nowrap;}
+.hb-btn:hover{opacity:0.85;}
+.hb-btn-white-solid{background:#fff;color:#003B71;border-color:#fff;}
+.hb-btn-white-outline{background:transparent;color:#fff;border-color:#fff;}
+.hb-btn-blue-solid{background:#003B71;color:#fff;border-color:#003B71;}
+.hb-btn-blue-outline{background:transparent;color:#003B71;border-color:#003B71;}
+.hb-btn-orange-solid{background:#E97300;color:#fff;border-color:#E97300;}
+.hb-btn-orange-outline{background:transparent;color:#E97300;border-color:#E97300;}
 @media(max-width:992px){
 .hb-section{padding:3.5rem 2.5rem;}
 .hb-content{max-width:100%;}
@@ -32,15 +35,15 @@ function buildHeroBannerHTML(data, uid) {
     const bgImage = data.bg_image || assetUrl("images/placeholder.svg");
     const btnPrimary = data.btn_primary || {};
     const btnSecondary = data.btn_secondary || {};
+    const primaryColor = btnPrimary.color || "white";
+    const secondaryColor = btnSecondary.color || "white";
 
-    const btnPrimaryHtml =
-        btnPrimary.enabled !== false
-            ? `<a href="${btnPrimary.href || "#"}" class="hb-btn hb-btn-primary">${btnPrimary.label || "Conoce más"}</a>`
-            : "";
-    const btnSecondaryHtml =
-        btnSecondary.enabled !== false
-            ? `<a href="${btnSecondary.href || "#"}" class="hb-btn hb-btn-secondary">${btnSecondary.label || "Solicitar"}</a>`
-            : "";
+    const btnPrimaryHtml = btnPrimary.enabled
+        ? `<a href="${btnPrimary.href || "#"}" class="hb-btn hb-btn-${primaryColor}-solid">${btnPrimary.label || "Conoce más"}</a>`
+        : "";
+    const btnSecondaryHtml = btnSecondary.enabled
+        ? `<a href="${btnSecondary.href || "#"}" class="hb-btn hb-btn-${secondaryColor}-outline">${btnSecondary.label || "Solicitar"}</a>`
+        : "";
 
     return `<section id="hb-root-${uid}" class="hb-section" style="background-image:url('${bgImage}');" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hb-content">
@@ -55,8 +58,8 @@ const DEFAULT_DATA = {
     bg_image: assetUrl("images/placeholder.svg"),
     title: "Cuenta de Ahorro Electrónica",
     subtitle: "Dale un giro digital a tus ahorros",
-    btn_primary: { enabled: true, label: "Abre tu cuenta", href: "#" },
-    btn_secondary: { enabled: true, label: "Conoce más", href: "#" },
+    btn_primary: { enabled: true, label: "Abre tu cuenta", href: "#", color: "white" },
+    btn_secondary: { enabled: true, label: "Conoce más", href: "#", color: "white" },
 };
 
 function showHeroBannerModal(editor, component) {
@@ -95,6 +98,17 @@ function showHeroBannerModal(editor, component) {
             .hb-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .hb-btn-save:hover{background:#d97821;}
             .hb-section-title{font-size:0.75rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.05em;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;margin-bottom:0.25rem;}
+            .hb-color-toggle{display:flex;gap:0.375rem;}
+            .hb-color-opt{padding:0.375rem 0.875rem;border-radius:9999px;font-size:0.75rem;font-weight:700;cursor:pointer;border:2px solid #e2e8f0;transition:all 0.15s;font-family:inherit;}
+            .hb-color-opt-white{background:#fff;color:#003B71;}
+            .hb-color-opt-blue{background:#003B71;color:#fff;border-color:#003B71;}
+            .hb-color-opt-orange{background:#E97300;color:#fff;border-color:#E97300;}
+            .hb-color-opt.hb-color-inactive{opacity:0.35;}
+            .hb-color-opt.hb-color-inactive:hover{opacity:0.6;}
+            .hb-switch{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;}
+            .hb-switch input{opacity:0;width:0;height:0;}
+            .hb-switch-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:9999px;transition:background 0.2s;cursor:pointer;}
+            .hb-switch-knob{position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:left 0.2s;pointer-events:none;}
         `;
         document.head.appendChild(style);
     }
@@ -160,28 +174,58 @@ function showHeroBannerModal(editor, component) {
             </div>
             <div class="hb-tab-panel" id="hb-panel-buttons">
                 <div class="hb-card">
-                    <div class="hb-section-title">Botón primario</div>
+                    <div class="hb-row" style="justify-content:space-between;margin-bottom:0.5rem;">
+                        <div class="hb-section-title" style="border:none;margin:0;padding:0;">Botón primario</div>
+                        <label class="hb-switch">
+                            <input type="checkbox" id="hb-btn1-enabled" ${btnPrimary.enabled !== false ? "checked" : ""}>
+                            <span class="hb-switch-slider" id="hb-btn1-slider"></span>
+                            <span class="hb-switch-knob" id="hb-btn1-knob"></span>
+                        </label>
+                    </div>
                     <div style="display:flex;flex-direction:column;gap:0.75rem;">
                         <div>
                             <label class="hb-label" style="margin-bottom:0.375rem;">Texto</label>
                             <input id="hb-btn1-label" type="text" placeholder="Abre tu cuenta" value="${btnPrimary.label || ""}" class="hb-input">
                         </div>
-                        <div>
+                        <div style="position:relative;">
                             <label class="hb-label" style="margin-bottom:0.375rem;">URL</label>
-                            <input id="hb-btn1-href" type="text" placeholder="#" value="${btnPrimary.href || "#"}" class="hb-input">
+                            <input id="hb-btn1-href" type="text" placeholder="URL o buscar página..." value="${btnPrimary.href || "#"}" class="hb-input">
+                        </div>
+                        <div>
+                            <label class="hb-label" style="margin-bottom:0.375rem;">Color</label>
+                            <div class="hb-color-toggle" id="hb-btn1-colors">
+                                <button type="button" class="hb-color-opt hb-color-opt-white" data-color="white">Blanco</button>
+                                <button type="button" class="hb-color-opt hb-color-opt-blue" data-color="blue">Azul</button>
+                                <button type="button" class="hb-color-opt hb-color-opt-orange" data-color="orange">Naranja</button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="hb-card">
-                    <div class="hb-section-title">Botón secundario</div>
+                    <div class="hb-row" style="justify-content:space-between;margin-bottom:0.5rem;">
+                        <div class="hb-section-title" style="border:none;margin:0;padding:0;">Botón secundario</div>
+                        <label class="hb-switch">
+                            <input type="checkbox" id="hb-btn2-enabled" ${btnSecondary.enabled !== false ? "checked" : ""}>
+                            <span class="hb-switch-slider" id="hb-btn2-slider"></span>
+                            <span class="hb-switch-knob" id="hb-btn2-knob"></span>
+                        </label>
+                    </div>
                     <div style="display:flex;flex-direction:column;gap:0.75rem;">
                         <div>
                             <label class="hb-label" style="margin-bottom:0.375rem;">Texto</label>
                             <input id="hb-btn2-label" type="text" placeholder="Conoce más" value="${btnSecondary.label || ""}" class="hb-input">
                         </div>
-                        <div>
+                        <div style="position:relative;">
                             <label class="hb-label" style="margin-bottom:0.375rem;">URL</label>
-                            <input id="hb-btn2-href" type="text" placeholder="#" value="${btnSecondary.href || "#"}" class="hb-input">
+                            <input id="hb-btn2-href" type="text" placeholder="URL o buscar página..." value="${btnSecondary.href || "#"}" class="hb-input">
+                        </div>
+                        <div>
+                            <label class="hb-label" style="margin-bottom:0.375rem;">Color</label>
+                            <div class="hb-color-toggle" id="hb-btn2-colors">
+                                <button type="button" class="hb-color-opt hb-color-opt-white" data-color="white">Blanco</button>
+                                <button type="button" class="hb-color-opt hb-color-opt-blue" data-color="blue">Azul</button>
+                                <button type="button" class="hb-color-opt hb-color-opt-orange" data-color="orange">Naranja</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -194,6 +238,135 @@ function showHeroBannerModal(editor, component) {
 
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
+
+    const appBase = document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
+    const searchUrl = `${appBase}/api/pages/search`;
+
+    function attachUrlAutocomplete(input) {
+        if (input.dataset.autocompleteAttached) return;
+        input.dataset.autocompleteAttached = "true";
+        const parent = input.parentNode;
+        if (!parent.style.position || parent.style.position === "static") parent.style.position = "relative";
+        const dropdown = document.createElement("ul");
+        dropdown.style.cssText = `position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:999999;background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;box-shadow:0 8px 24px rgba(0,0,0,0.1);list-style:none;margin:0;padding:0.25rem;max-height:200px;overflow-y:auto;display:none;`;
+        parent.appendChild(dropdown);
+        let debounceTimer = null;
+
+        async function search(q) {
+            if (q.length < 1) {
+                dropdown.style.display = "none";
+                return;
+            }
+            try {
+                const res = await fetch(`${searchUrl}?q=${encodeURIComponent(q)}`, {
+                    headers: { Accept: "application/json", "X-Requested-With": "XMLHttpRequest" },
+                });
+                const pages = await res.json();
+                renderDropdown(pages, q);
+            } catch {
+                dropdown.style.display = "none";
+            }
+        }
+
+        function highlight(text, q) {
+            if (!q) return text;
+            return text.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"), '<mark style="background:#fef3c7;color:#92400e;border-radius:2px;padding:0 1px;">$1</mark>');
+        }
+
+        function renderDropdown(pages, q) {
+            dropdown.innerHTML = "";
+            if (!pages.length) {
+                dropdown.style.display = "none";
+                return;
+            }
+            pages.forEach((page) => {
+                const li = document.createElement("li");
+                li.style.cssText = "padding:0.375rem 0.625rem;border-radius:0.375rem;cursor:pointer;display:flex;flex-direction:column;gap:0.125rem;";
+                li.innerHTML = `<span style="font-size:0.8rem;font-weight:600;color:#1e293b;">${highlight(page.title, q)}</span><span style="font-size:0.7rem;color:#64748b;">/${page.slug}</span>`;
+                li.addEventListener("mouseenter", () => (li.style.background = "#f1f5f9"));
+                li.addEventListener("mouseleave", () => (li.style.background = ""));
+                li.addEventListener("mousedown", (e) => {
+                    e.preventDefault();
+                    input.value = "/" + page.slug;
+                    input.dispatchEvent(new Event("input"));
+                    dropdown.style.display = "none";
+                });
+                dropdown.appendChild(li);
+            });
+            dropdown.style.display = "block";
+        }
+
+        input.addEventListener("input", () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => search(input.value.trim()), 220);
+        });
+        input.addEventListener("focus", () => {
+            input.select();
+            if (input.value.trim()) search(input.value.trim());
+        });
+        input.addEventListener("blur", () => {
+            setTimeout(() => {
+                dropdown.style.display = "none";
+            }, 150);
+        });
+        input.addEventListener("keydown", (e) => {
+            if (dropdown.style.display === "none") return;
+            const items = dropdown.querySelectorAll("li");
+            const active = dropdown.querySelector("li.hb-ac-active");
+            let idx = Array.from(items).indexOf(active);
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                active?.classList.remove("hb-ac-active");
+                const next = items[idx + 1] || items[0];
+                next?.classList.add("hb-ac-active");
+                if (next) next.style.background = "#f1f5f9";
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                active?.classList.remove("hb-ac-active");
+                const prev = items[idx - 1] || items[items.length - 1];
+                prev?.classList.add("hb-ac-active");
+                if (prev) prev.style.background = "#f1f5f9";
+            } else if (e.key === "Enter" && active) {
+                e.preventDefault();
+                active.dispatchEvent(new MouseEvent("mousedown"));
+            } else if (e.key === "Escape") {
+                dropdown.style.display = "none";
+            }
+        });
+    }
+
+    attachUrlAutocomplete(modal.querySelector("#hb-btn1-href"));
+    attachUrlAutocomplete(modal.querySelector("#hb-btn2-href"));
+
+    let btn1Color = btnPrimary.color || "white";
+    let btn2Color = btnSecondary.color || "white";
+
+    function setupColorToggle(wrapId, initial, onChange) {
+        const wrap = modal.querySelector(`#${wrapId}`);
+        wrap.querySelectorAll("[data-color]").forEach((btn) => {
+            btn.classList.toggle("hb-color-inactive", btn.dataset.color !== initial);
+            btn.addEventListener("click", () => {
+                wrap.querySelectorAll("[data-color]").forEach((b) => b.classList.toggle("hb-color-inactive", b.dataset.color !== btn.dataset.color));
+                onChange(btn.dataset.color);
+            });
+        });
+    }
+    setupColorToggle("hb-btn1-colors", btn1Color, (c) => (btn1Color = c));
+    setupColorToggle("hb-btn2-colors", btn2Color, (c) => (btn2Color = c));
+
+    function setupSwitch(checkboxId, sliderId, knobId) {
+        const checkbox = modal.querySelector(`#${checkboxId}`);
+        const slider = modal.querySelector(`#${sliderId}`);
+        const knob = modal.querySelector(`#${knobId}`);
+        const paint = () => {
+            slider.style.background = checkbox.checked ? "#003B71" : "#cbd5e1";
+            knob.style.left = checkbox.checked ? "21px" : "3px";
+        };
+        paint();
+        checkbox.addEventListener("change", paint);
+    }
+    setupSwitch("hb-btn1-enabled", "hb-btn1-slider", "hb-btn1-knob");
+    setupSwitch("hb-btn2-enabled", "hb-btn2-slider", "hb-btn2-knob");
 
     modal.querySelectorAll(".hb-tab-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -240,14 +413,16 @@ function showHeroBannerModal(editor, component) {
             title: modal.querySelector("#hb-title").value.trim(),
             subtitle: modal.querySelector("#hb-subtitle").value.trim(),
             btn_primary: {
-                enabled: true,
+                enabled: modal.querySelector("#hb-btn1-enabled").checked,
                 label: modal.querySelector("#hb-btn1-label").value.trim(),
                 href: modal.querySelector("#hb-btn1-href").value.trim() || "#",
+                color: btn1Color,
             },
             btn_secondary: {
-                enabled: true,
+                enabled: modal.querySelector("#hb-btn2-enabled").checked,
                 label: modal.querySelector("#hb-btn2-label").value.trim(),
                 href: modal.querySelector("#hb-btn2-href").value.trim() || "#",
+                color: btn2Color,
             },
         };
 
