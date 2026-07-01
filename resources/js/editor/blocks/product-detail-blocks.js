@@ -199,15 +199,15 @@ const FOOTNOTE = `
 <p class="text-sm pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`;
 
 const PRICE_BOX = `
-<div class="w-full rounded-xl border-2 pd-box-border px-6 py-4 flex flex-col items-start gap-1 text-center">
+<div class="w-full rounded-xl border-2 pd-box-border px-6 py-4 flex flex-col items-center justify-center gap-1 text-center">
     <span class="text-2xl font-bold pd-text-primary uppercase tracking-wide">Invierte desde:</span>
-    <span class="text-2xl font-black pd-text-orange">$150.00</span>
+    <span class="text-2xl font-black pd-text-orange">$00.00</span>
 </div>`;
 
 const PRICE_BOX_ROW = `
-<div class="flex flex-col items-start gap-1 py-4 px-6">
-    <span class="text-lg font-bold pd-text-primary uppercase tracking-wide leading-snug">Lorem ipsum:</span>
-    <span class="text-lg font-bold pd-text-primary">Hasta: <span class="pd-text-orange">$0.00</span></span>
+<div class="flex flex-col items-center justify-center gap-1 py-4 px-6">
+    <span class="text-lg font-bold pd-text-primary uppercase tracking-wide leading-snug">Invierte desde:</span>
+    <span class="text-lg font-bold pd-text-primary">Hasta: <span class="pd-text-orange">$00.00</span></span>
 </div>`;
 
 const PRICE_BOX_DOUBLE = `
@@ -255,7 +255,7 @@ export const productDetailBlocks = [
             </div>
         </div>
         <div class="flex flex-col items-center gap-4">
-            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
+            <h2 class="text-4xl font-black text-[#E97300] break-words uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             <div class="w-full flex flex-col gap-2 pt-3">
                 ${FOOTNOTE}
@@ -286,7 +286,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             </div>
         </div>
         <div class="flex flex-col items-center gap-4">
-            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Microseguro de Salud</h2>
+            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full break-words">Microseguro de Salud</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu servicio</a>
             <div class="w-full flex flex-col gap-2 pt-1">
                 ${FOOTNOTE}
@@ -336,7 +336,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             </div>
         </div>
         <div class="flex flex-col items-center gap-4">
-            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
+            <h2 class="text-4xl font-black text-[#E97300] break-words uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             ${PRICE_BOX}
             <div class="w-full flex flex-col gap-2 pt-3">
@@ -375,7 +375,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             </ul>
         </div>
         <div class="flex flex-col items-center gap-4">
-            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
+            <h2 class="text-4xl font-black text-[#E97300] break-words uppercase leading-tight text-center w-full">Ahorro Rentable</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             <div class="w-full flex flex-col gap-2 pt-3">
                 ${FOOTNOTE}
@@ -416,7 +416,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             </ul>
         </div>
         <div class="pd-hg-action flex flex-col items-center gap-4">
-            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Credinvierte</h2>
+            <h2 class="text-4xl font-black text-[#E97300] break-words uppercase leading-tight text-center w-full">Credinvierte</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu cuenta</a>
             <div class="w-full flex flex-col gap-2 pt-3">
                 ${FOOTNOTE}
@@ -453,7 +453,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             </div>
         </div>
         <div class="flex flex-col items-center gap-4">
-            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Soluciones Integrales</h2>
+            <h2 class="text-4xl font-black text-[#E97300] break-words uppercase leading-tight text-center w-full">Soluciones Integrales</h2>
             <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Solicita tu crédito</a>
             ${PRICE_BOX_DOUBLE}
             <div class="w-full flex flex-col gap-2 pt-3">
