@@ -1621,12 +1621,12 @@ ${Oe}`}],me=`
     </div>
     ${Re}
 </div>`,be=t=>`
-<div class="pd-card">
+<div class="pd-card items-center">
     <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 pd-btn-orange">
         <img src="${N("images/placeholder.svg")}" alt="" class="w-6 h-6 object-contain">
     </div>
-    <span class="text-sm font-bold text-[#E97300] uppercase tracking-wide leading-snug">${t}</span>
-    <ul class="list-none p-0 m-0 flex flex-col gap-2">
+    <span class="text-sm font-bold text-[#E97300] uppercase tracking-wide leading-snug w-full">  ${t}</span>
+    <ul class="list-none p-0 m-0 flex flex-col gap-2 w-full">
         ${S}
         ${S}
         ${S}
