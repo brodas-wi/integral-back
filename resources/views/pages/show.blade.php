@@ -61,9 +61,9 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">URL Pública</label>
                         <div class="flex items-center gap-2">
-                            <input type="text" id="page-preview-url" value="{{ route('page.preview', $page->slug) }}"
+                            <input type="text" id="page-preview-url" value="{{ $publicPageUrl }}"
                                 readonly class="input-field flex-1 bg-gray-50">
-                            <a href="{{ route('page.preview', $page->slug) }}" target="_blank" id="page-preview-link"
+                            <a href="{{ $publicPageUrl }}" target="_blank" id="page-preview-link"
                                 class="btn-secondary whitespace-nowrap">
                                 <i class="ri-external-link-line mr-1"></i>
                                 Abrir

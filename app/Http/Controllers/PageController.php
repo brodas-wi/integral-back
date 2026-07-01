@@ -102,7 +102,8 @@ class PageController extends Controller
     public function show(Page $page)
     {
         $this->authorize('pages.edit');
-        return view('pages.show', compact('page'));
+        $publicPageUrl = rtrim(config('app.public_frontend_url'), '/') . '/' . $page->slug;
+        return view('pages.show', compact('page', 'publicPageUrl'));
     }
 
     public function preview(Page $page)
@@ -385,7 +386,7 @@ class PageController extends Controller
                     'slug'       => $page->slug,
                     'show_url'   => route('pages.show', $page->slug),
                     'edit_url'   => route('pages.edit', $page->slug),
-                    'preview_url' => route('page.preview', $page->slug),
+                    'preview_url' => rtrim(config('app.public_frontend_url'), '/') . '/' . $page->slug,
                 ],
             ]);
         } catch (\Exception $e) {

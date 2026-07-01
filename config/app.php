@@ -118,6 +118,8 @@ return [
     |
     */
 
+    'public_frontend_url' => env('PUBLIC_FRONTEND_URL', env('APP_URL', 'http://localhost')),
+
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
