@@ -21,6 +21,7 @@ const PRODUCT_DETAIL_COLOR_STYLES = `
 .pd-box-border{border-color:#003B71;}
 .pd-text-primary{color:#003B71;}
 .pd-text-orange{color:#E97300;}
+.pd-box-divider{background-color:#E97300;}
 </style>`;
 
 const PRODUCT_DETAIL_HEADER_GRID_STYLES = `
@@ -161,6 +162,21 @@ const PRICE_BOX = `
 <div class="w-full rounded-xl border-2 pd-box-border px-6 py-4 flex flex-col items-start gap-1 text-center">
     <span class="text-2xl font-bold pd-text-primary uppercase tracking-wide">Invierte desde:</span>
     <span class="text-2xl font-black pd-text-orange">$150.00</span>
+</div>`;
+
+const PRICE_BOX_ROW = `
+<div class="flex flex-col items-start gap-1 py-4 px-6">
+    <span class="text-lg font-bold pd-text-primary uppercase tracking-wide leading-snug">Lorem ipsum:</span>
+    <span class="text-lg font-bold pd-text-primary">Hasta: <span class="pd-text-orange">$0.00</span></span>
+</div>`;
+
+const PRICE_BOX_DOUBLE = `
+<div class="w-full rounded-xl border-2 pd-box-border flex flex-col">
+    ${PRICE_BOX_ROW}
+    <div class="px-6">
+        <div class="w-full h-0.5 pd-box-divider"></div>
+    </div>
+    ${PRICE_BOX_ROW}
 </div>`;
 
 export const productDetailBlocks = [
@@ -314,6 +330,43 @@ ${PRODUCT_DETAIL_HEADER_GRID_STYLES}
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
     {
+        id: "product-detail-box-double",
+        label: "Detalle de producto con cuadro de precio doble",
+        category: "Productos y Servicios",
+        media: iconProductDetailBox,
+        content: `
+<section class="w-full bg-white px-16 py-12">
+    <div class="pd-asymmetric-grid">
+        <div class="flex flex-col gap-5">
+            <p class="text-lg font-bold text-[#003B71] leading-snug">Impulsa tu negocio con financiamiento ágil y flexible, diseñado para ayudarte a crecer, invertir y aprovechar nuevas oportunidades.</p>
+            <p class="text-base font-bold text-[#E97300] uppercase leading-snug">Créditos para tu negocio, créditos sin garantía, crédito para cliente nuevo o recurrente; con experiencia crediticia.</p>
+            <div class="flex flex-col gap-3">
+                <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Ventajas</span>
+                <ul class="list-none p-0 m-0 flex flex-col gap-3">
+                    ${BULLET_ITEM}
+                    ${BULLET_ITEM}
+                    ${BULLET_ITEM}
+                    ${BULLET_ITEM}
+                    ${BULLET_ITEM}
+                    ${BULLET_ITEM}
+                </ul>
+            </div>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Soluciones Integrales</h2>
+            <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Solicita tu crédito</a>
+            ${PRICE_BOX_DOUBLE}
+            <div class="w-full flex flex-col gap-2 pt-3">
+                ${FOOTNOTE}
+                ${FOOTNOTE}
+            </div>
+        </div>
+    </div>
+</section>
+${PRODUCT_DETAIL_GRID_STYLES}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
+    },
+    {
         id: "product-detail-bullet",
         label: "Ítem de ventaja",
         category: "Productos y Servicios",
@@ -341,6 +394,15 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
         media: iconProductDetailBox,
         content: `
 ${PRICE_BOX}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
+    },
+    {
+        id: "product-detail-price-box-double",
+        label: "Cuadro de precio doble",
+        category: "Productos y Servicios",
+        media: iconProductDetailBox,
+        content: `
+${PRICE_BOX_DOUBLE}
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
 ];
