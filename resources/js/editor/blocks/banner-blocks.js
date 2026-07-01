@@ -70,13 +70,11 @@ function createBannerScript() {
     return function () {
         const section = this;
         const doc = section.ownerDocument ?? document;
-        const appBase =
-            doc
-                .querySelector('meta[name="app-url"]')
-                ?.content?.replace(/\/$/, "") ?? "";
+        const TEMP_API_BASE_PREFIX = "/adminintegral";
+        const origin = (doc.defaultView ?? window).location.origin;
         const apiEndpoint =
             doc.querySelector('meta[name="api-banners-url"]')?.content ||
-            `${appBase}/api/banners/active`;
+            `${origin}${TEMP_API_BASE_PREFIX}/api/banners/active`;
 
         const BUTTON_STYLE_CLASSES = [
             "fill-blue",
@@ -449,13 +447,11 @@ function showBannerConfigModal(editor, component) {
     const categorySelect = modal.querySelector("#bnr-category");
     (async () => {
         try {
-            const appBase =
-                document
-                    .querySelector('meta[name="app-url"]')
-                    ?.content?.replace(/\/$/, "") ?? "";
+            const TEMP_API_BASE_PREFIX = "/adminintegral";
             const apiUrl =
                 document.querySelector('meta[name="api-banners-url"]')
-                    ?.content || `${appBase}/api/banners/active`;
+                    ?.content ||
+                `${window.location.origin}${TEMP_API_BASE_PREFIX}/api/banners/active`;
             const res = await fetch(apiUrl, {
                 headers: { Accept: "application/json" },
             });
