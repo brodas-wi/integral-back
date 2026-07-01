@@ -3,8 +3,10 @@ import { openMediaPicker } from "@/editor/media-picker";
 
 const HERO_BANNER_STYLES = `
 <style>
-.hb-section{position:relative;width:100%;background-size:cover;background-position:center;background-repeat:no-repeat;padding:5rem 4rem;display:flex;align-items:center;min-height:420px;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-.hb-content{max-width:560px;display:flex;flex-direction:column;gap:0.75rem;}
+.hb-section{position:relative;width:100%;padding:5rem 4rem;display:flex;align-items:center;min-height:420px;box-sizing:border-box;font-family:'Poppins',sans-serif;overflow:hidden;background:#003B71;}
+.hb-bg{position:absolute;inset:0;z-index:0;}
+.hb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.hb-content{position:relative;z-index:10;max-width:560px;display:flex;flex-direction:column;gap:0.75rem;}
 .hb-title{font-size:2.75rem;font-weight:800;color:#fff;line-height:1.15;margin:0;}
 .hb-subtitle{font-size:1.125rem;font-weight:700;color:#fff;margin:0;}
 .hb-buttons{display:flex;gap:1rem;margin-top:1.25rem;flex-wrap:wrap;}
@@ -45,16 +47,16 @@ function buildHeroBannerHTML(data, uid) {
         ? `<a href="${btnSecondary.href || "#"}" class="hb-btn hb-btn-${secondaryColor}-outline">${btnSecondary.label || "Solicitar"}</a>`
         : "";
 
-    const bgClass = `hb-bg-${uid}`;
-    const bgStyleTag = `<style>.${bgClass}{background-image:url('${bgImage}');}</style>`;
-
-    return `<section id="hb-root-${uid}" class="hb-section ${bgClass}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+    return `<section id="hb-root-${uid}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+        <div class="hb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+            <img src="${bgImage}" alt="${data.title || "Banner"}" loading="eager" decoding="async" fetchpriority="high" draggable="false">
+        </div>
         <div class="hb-content">
             <h2 class="hb-title">${data.title || "Título del banner"}</h2>
             <p class="hb-subtitle">${data.subtitle || "Subtítulo del banner"}</p>
             <div class="hb-buttons">${btnPrimaryHtml}${btnSecondaryHtml}</div>
         </div>
-    </section>${bgStyleTag}`;
+    </section>`;
 }
 
 const DEFAULT_DATA = {

@@ -2822,8 +2822,10 @@ ${pa}
                 }
             `,a.appendChild(r)}}})}const nt=`
 <style>
-.hb-section{position:relative;width:100%;background-size:cover;background-position:center;background-repeat:no-repeat;padding:5rem 4rem;display:flex;align-items:center;min-height:420px;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-.hb-content{max-width:560px;display:flex;flex-direction:column;gap:0.75rem;}
+.hb-section{position:relative;width:100%;padding:5rem 4rem;display:flex;align-items:center;min-height:420px;box-sizing:border-box;font-family:'Poppins',sans-serif;overflow:hidden;background:#003B71;}
+.hb-bg{position:absolute;inset:0;z-index:0;}
+.hb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.hb-content{position:relative;z-index:10;max-width:560px;display:flex;flex-direction:column;gap:0.75rem;}
 .hb-title{font-size:2.75rem;font-weight:800;color:#fff;line-height:1.15;margin:0;}
 .hb-subtitle{font-size:1.125rem;font-weight:700;color:#fff;margin:0;}
 .hb-buttons{display:flex;gap:1rem;margin-top:1.25rem;flex-wrap:wrap;}
@@ -2847,13 +2849,16 @@ ${pa}
 .hb-buttons{flex-direction:column;align-items:flex-start;}
 .hb-btn{width:100%;text-align:center;}
 }
-</style>`;function st(t,e){e=e||"hb"+Math.random().toString(36).slice(2,7);const i=t.bg_image||O("images/placeholder.svg"),a=t.btn_primary||{},r=t.btn_secondary||{},l=a.color||"white",n=r.color||"white",c=a.enabled?`<a href="${a.href||"#"}" class="hb-btn hb-btn-${l}-solid">${a.label||"Conoce más"}</a>`:"",g=r.enabled?`<a href="${r.href||"#"}" class="hb-btn hb-btn-${n}-outline">${r.label||"Solicitar"}</a>`:"",d=`hb-bg-${e}`,f=`<style>.${d}{background-image:url('${i}');}</style>`;return`<section id="hb-root-${e}" class="hb-section ${d}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+</style>`;function st(t,e){e=e||"hb"+Math.random().toString(36).slice(2,7);const i=t.bg_image||O("images/placeholder.svg"),a=t.btn_primary||{},r=t.btn_secondary||{},l=a.color||"white",n=r.color||"white",c=a.enabled?`<a href="${a.href||"#"}" class="hb-btn hb-btn-${l}-solid">${a.label||"Conoce más"}</a>`:"",g=r.enabled?`<a href="${r.href||"#"}" class="hb-btn hb-btn-${n}-outline">${r.label||"Solicitar"}</a>`:"";return`<section id="hb-root-${e}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+        <div class="hb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+            <img src="${i}" alt="${t.title||"Banner"}" loading="eager" decoding="async" fetchpriority="high" draggable="false">
+        </div>
         <div class="hb-content">
             <h2 class="hb-title">${t.title||"Título del banner"}</h2>
             <p class="hb-subtitle">${t.subtitle||"Subtítulo del banner"}</p>
             <div class="hb-buttons">${c}${g}</div>
         </div>
-    </section>${f}`}const K={bg_image:O("images/placeholder.svg"),title:"Cuenta de Ahorro Electrónica",subtitle:"Dale un giro digital a tus ahorros",btn_primary:{enabled:!0,label:"Abre tu cuenta",href:"#",color:"white"},btn_secondary:{enabled:!0,label:"Conoce más",href:"#",color:"white"}};function cr(t,e){const i=document.getElementById("hero-banner-config-modal");if(i&&i.remove(),!document.getElementById("hb-modal-styles")){const b=document.createElement("style");b.id="hb-modal-styles",b.textContent=`
+    </section>`}const K={bg_image:O("images/placeholder.svg"),title:"Cuenta de Ahorro Electrónica",subtitle:"Dale un giro digital a tus ahorros",btn_primary:{enabled:!0,label:"Abre tu cuenta",href:"#",color:"white"},btn_secondary:{enabled:!0,label:"Conoce más",href:"#",color:"white"}};function cr(t,e){const i=document.getElementById("hero-banner-config-modal");if(i&&i.remove(),!document.getElementById("hb-modal-styles")){const b=document.createElement("style");b.id="hb-modal-styles",b.textContent=`
             .hb-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
             .hb-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:700px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
             .hb-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
