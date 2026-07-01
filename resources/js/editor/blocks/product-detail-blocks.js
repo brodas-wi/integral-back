@@ -1,3 +1,5 @@
+import { assetUrl } from "@/utils/url.js";
+
 const PRODUCT_DETAIL_GRID_STYLES = `
 <style>
 .pd-asymmetric-grid{display:grid;grid-template-columns:3fr 2fr;gap:2rem;align-items:start;}
@@ -22,6 +24,13 @@ const PRODUCT_DETAIL_COLOR_STYLES = `
 .pd-text-primary{color:#003B71;}
 .pd-text-orange{color:#E97300;}
 .pd-box-divider{background-color:#E97300;}
+</style>`;
+
+const PRODUCT_DETAIL_CARDS_GRID_STYLES = `
+<style>
+.pd-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.pd-card{background:#fff;border-radius:0.75rem;box-shadow:0 2px 12px 0 rgba(0,0,0,0.08);padding:1.5rem;display:flex;flex-direction:column;gap:0.75rem;}
+@media(max-width:640px){.pd-cards-grid{grid-template-columns:1fr;}}
 </style>`;
 
 const PRODUCT_DETAIL_HEADER_GRID_STYLES = `
@@ -52,6 +61,37 @@ const PRODUCT_DETAIL_HEADER_GRID_STYLES = `
     }
 }
 </style>`;
+
+const iconProductDetailCardsGrid = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="2" y="2" width="13" height="5" rx="1" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="2" y="9" width="6" height="9" rx="1" fill="none" stroke="#003B71" stroke-width="0.7" stroke-opacity="0.3"/>
+    <circle cx="5" cy="11.5" r="1.5" fill="#E97300" fill-opacity="0.7"/>
+    <rect x="3" y="14" width="4" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="3" y="15.5" width="3" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="9" y="9" width="6" height="9" rx="1" fill="none" stroke="#003B71" stroke-width="0.7" stroke-opacity="0.3"/>
+    <circle cx="12" cy="11.5" r="1.5" fill="#E97300" fill-opacity="0.7"/>
+    <rect x="10" y="14" width="4" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="10" y="15.5" width="3" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="2" y="20" width="6" height="9" rx="1" fill="none" stroke="#003B71" stroke-width="0.7" stroke-opacity="0.3"/>
+    <circle cx="5" cy="22.5" r="1.5" fill="#E97300" fill-opacity="0.7"/>
+    <rect x="3" y="25" width="4" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="3" y="26.5" width="3" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="9" y="20" width="6" height="9" rx="1" fill="none" stroke="#003B71" stroke-width="0.7" stroke-opacity="0.3"/>
+    <circle cx="12" cy="22.5" r="1.5" fill="#E97300" fill-opacity="0.7"/>
+    <rect x="10" y="25" width="4" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="10" y="26.5" width="3" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="18" y="2" width="12" height="3" rx="1" fill="#E97300" fill-opacity="0.7"/>
+    <rect x="18" y="7" width="12" height="2" rx="1" fill="#E97300" fill-opacity="0.4"/>
+    <rect x="18" y="12" width="12" height="2.5" rx="1.25" fill="#E97300" fill-opacity="0.85"/>
+    <rect x="18" y="17" width="12" height="0.8" rx="0.4" fill="#9ca3af" fill-opacity="0.5"/>
+    <rect x="18" y="19" width="10" height="0.8" rx="0.4" fill="#9ca3af" fill-opacity="0.5"/>
+    <rect x="18" y="22" width="12" height="1" rx="0.5" fill="#E97300" fill-opacity="0.6"/>
+    <circle cx="19.5" cy="25.5" r="0.8" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="21" y="25" width="8" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+    <circle cx="19.5" cy="27.5" r="0.8" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="21" y="27" width="6" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.3"/>
+</svg>`;
 
 const iconProductDetailHeaderGrid = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
@@ -179,6 +219,19 @@ const PRICE_BOX_DOUBLE = `
     ${PRICE_BOX_ROW}
 </div>`;
 
+const DETAIL_CARD = (title) => `
+<div class="pd-card">
+    <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 pd-btn-orange">
+        <img src="${assetUrl("images/placeholder.svg")}" alt="" class="w-6 h-6 object-contain">
+    </div>
+    <span class="text-sm font-bold text-[#E97300] uppercase tracking-wide leading-snug">${title}</span>
+    <ul class="list-none p-0 m-0 flex flex-col gap-2">
+        ${BULLET_ITEM}
+        ${BULLET_ITEM}
+        ${BULLET_ITEM}
+    </ul>
+</div>`;
+
 export const productDetailBlocks = [
     {
         id: "product-detail-section",
@@ -213,6 +266,53 @@ export const productDetailBlocks = [
     </div>
 </section>
 ${PRODUCT_DETAIL_GRID_STYLES}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
+    },
+    {
+        id: "product-detail-cards-grid",
+        label: "Detalle de producto con tarjetas",
+        category: "Productos y Servicios",
+        media: iconProductDetailCardsGrid,
+        content: `
+<section class="w-full bg-white px-16 py-12">
+    <div class="pd-asymmetric-grid">
+        <div class="flex flex-col gap-5">
+            <p class="text-lg text-[#003B71] leading-snug m-0">Nos interesa la salud y bienestar de nuestros clientes, por eso te ofrecemos este servicio, disponible y exclusivo al contratar y mantener al día tu crédito.</p>
+            <div class="pd-cards-grid">
+                ${DETAIL_CARD("Cobertura para accidente")}
+                ${DETAIL_CARD("Exámenes de laboratorio")}
+                ${DETAIL_CARD("Medicamentos")}
+                ${DETAIL_CARD("Consultas médicas")}
+            </div>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full">Microseguro de Salud</h2>
+            <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu servicio</a>
+            <div class="w-full flex flex-col gap-2 pt-1">
+                ${FOOTNOTE}
+                ${FOOTNOTE}
+            </div>
+            <div class="w-full flex flex-col gap-3 pt-2">
+                <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Ventajas:</span>
+                <ul class="list-none p-0 m-0 flex flex-col gap-2">
+                    ${BULLET_ITEM}
+                    ${BULLET_ITEM}
+                    ${BULLET_ITEM}
+                    ${BULLET_ITEM}
+                </ul>
+            </div>
+            <div class="w-full flex flex-col gap-3">
+                <span class="text-base font-bold text-[#E97300] uppercase tracking-wide">Condiciones:</span>
+                <ul class="list-none p-0 m-0 flex flex-col gap-2">
+                    ${BULLET_ITEM}
+                    ${BULLET_ITEM}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+${PRODUCT_DETAIL_GRID_STYLES}
+${PRODUCT_DETAIL_CARDS_GRID_STYLES}
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
     {
