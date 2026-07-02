@@ -2,6 +2,7 @@ import { blockRegistry } from "./block-registry";
 import { basicBlocks } from "./blocks/basic-blocks";
 import { columnBlocks } from "./blocks/column-blocks";
 import { aboutBlocks } from "./blocks/about-blocks";
+import { missionVisionBlocks } from "./blocks/mission-vision-blocks";
 import { initializeProductCardsBlock } from "./blocks/product-cards-blocks";
 import { dualCardBlocks } from "./blocks/dual-card-blocks";
 import { ctaBlocks } from "./blocks/cta-blocks";
@@ -35,6 +36,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(statsStripBlocks);
     blockRegistry.registerBlocks(tabsBlocks);
     blockRegistry.registerBlocks(aboutBlocks);
+    blockRegistry.registerBlocks(missionVisionBlocks);
     blockRegistry.registerBlocks(productLinkCardsBlocks);
     blockRegistry.registerBlocks(iconLinksBlocks);
     blockRegistry.registerBlocks(dualCardBlocks)
