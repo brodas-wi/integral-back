@@ -314,6 +314,12 @@
     grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
 }
 
+@media (max-width: 425px) {
+    .pages-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 @keyframes slideInRight {
     from {
         transform: translateX(100%);
