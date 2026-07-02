@@ -1,5 +1,7 @@
 import { openMediaPicker } from "@/editor/media-picker";
 
+const TEMP_INTERNAL_URL_PREFIX = "/bancaintegral";
+
 const FOOTER_STYLES = `
 <style>
 .ft-wrapper {
@@ -344,6 +346,49 @@ function showFooterModal(editor, component) {
                 width: 150px;
                 flex-shrink: 0;
             }
+            .ft-link-row {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding-bottom: 0.75rem;
+                margin-bottom: 0.75rem;
+                border-bottom: 1px solid #f1f5f9;
+            }
+            .ft-link-row:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            .ft-link-row-top {
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+            }
+            .ft-link-row-top .ft-link-label {
+                flex: 1;
+                min-width: 0;
+            }
+            .ft-link-row-bottom {
+                display: flex;
+                gap: 0.625rem;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+            .ft-link-href-wrap {
+                flex: 1;
+                min-width: 160px;
+                position: relative;
+            }
+            .ft-link-istext-label {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+                font-size: 0.75rem;
+                color: #64748b;
+                white-space: nowrap;
+                cursor: pointer;
+                flex-shrink: 0;
+            }
             .ft-btn-remove {
                 background: none;
                 border: none;
@@ -410,6 +455,69 @@ function showFooterModal(editor, component) {
                 transition: background 0.15s;
             }
             .ft-btn-save:hover { background: #d97821; }
+            .ft-btn-backup {
+                padding: 0.5rem 1rem;
+                background: #ffffff;
+                border: 2px solid #003B71;
+                border-radius: 0.5rem;
+                color: #003B71;
+                font-size: 0.8125rem;
+                font-weight: 600;
+                cursor: pointer;
+                font-family: inherit;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.375rem;
+                transition: background 0.15s, color 0.15s;
+            }
+            .ft-btn-backup:hover { background: #003B71; color: #fff; }
+            .ft-btn-restore {
+                padding: 0.5rem 1rem;
+                background: #ffffff;
+                border: 2px solid #0d9488;
+                border-radius: 0.5rem;
+                color: #0d9488;
+                font-size: 0.8125rem;
+                font-weight: 600;
+                font-family: inherit;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.375rem;
+                transition: background 0.15s, color 0.15s;
+                user-select: none;
+            }
+            .ft-btn-restore:hover { background: #0d9488; color: #fff; }
+            .ft-confirm-overlay {
+                position: fixed; inset: 0; z-index: 999999;
+                display: flex; align-items: center; justify-content: center;
+                background: rgba(15,23,42,0.55); backdrop-filter: blur(4px); padding: 1rem;
+            }
+            .ft-confirm-modal {
+                background: #fff; border-radius: 0.75rem; width: 100%; max-width: 420px;
+                box-shadow: 0 20px 60px rgba(15,23,42,0.18); font-family: 'Inter', sans-serif;
+                overflow: hidden; border: 1px solid #e2e8f0;
+            }
+            .ft-confirm-header { padding: 1rem 1.25rem 0.75rem; display: flex; align-items: center; gap: 0.625rem; border-bottom: 1px solid #f1f5f9; }
+            .ft-confirm-header i { font-size: 1.25rem; color: #E97300; }
+            .ft-confirm-header h3 { margin: 0; font-size: 0.9375rem; font-weight: 700; color: #0f172a; }
+            .ft-confirm-body { padding: 1rem 1.25rem; }
+            .ft-confirm-body p { margin: 0 0 0.5rem; font-size: 0.875rem; color: #475569; line-height: 1.5; }
+            .ft-confirm-filename {
+                display: inline-flex; align-items: center; gap: 0.375rem;
+                padding: 0.375rem 0.75rem; background: #f1f5f9; border-radius: 0.375rem;
+                font-size: 0.8rem; font-weight: 600; color: #003B71; margin-top: 0.25rem;
+            }
+            .ft-confirm-footer { padding: 0.75rem 1.25rem 1rem; display: flex; gap: 0.625rem; justify-content: flex-end; background: #f8fafc; border-top: 1px solid #f1f5f9; }
+            .ft-confirm-cancel {
+                padding: 0.5rem 1.125rem; background: #fff; border: 2px solid #e2e8f0; border-radius: 0.5rem;
+                color: #475569; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s;
+            }
+            .ft-confirm-cancel:hover { background: #f1f5f9; }
+            .ft-confirm-ok {
+                padding: 0.5rem 1.125rem; background: #E97300; border: none; border-radius: 0.5rem;
+                color: #fff; font-size: 0.875rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.15s;
+            }
+            .ft-confirm-ok:hover { background: #d97821; }
         `;
         document.head.appendChild(style);
     }
@@ -476,6 +584,10 @@ function showFooterModal(editor, component) {
 
         <div class="ft-modal-footer">
             <button id="ft-modal-cancel" class="ft-btn-cancel">Cancelar</button>
+            <div style="display:flex;gap:0.5rem;margin-right:auto;">
+                <button id="ft-modal-backup" class="ft-btn-backup" title="Descargar configuración como JSON"><i class="ri-download-2-line"></i> Respaldar</button>
+                <label id="ft-modal-restore-label" class="ft-btn-restore" title="Restaurar configuración desde JSON" style="cursor:pointer;"><i class="ri-upload-2-line"></i> Restaurar<input id="ft-modal-restore-input" type="file" accept=".json,application/json" style="display:none;"></label>
+            </div>
             <button id="ft-modal-save" class="ft-btn-save">Aplicar cambios</button>
         </div>
     `;
@@ -558,7 +670,7 @@ function showFooterModal(editor, component) {
                 );
                 li.addEventListener("mousedown", (e) => {
                     e.preventDefault();
-                    input.value = "/" + page.slug;
+                    input.value = `${TEMP_INTERNAL_URL_PREFIX}/${page.slug}`;
                     input.dispatchEvent(new Event("input"));
                     dropdown.style.display = "none";
                 });
@@ -633,18 +745,24 @@ function showFooterModal(editor, component) {
             });
             card.addEventListener("dragend", () => {
                 card.classList.remove("ft-dragging");
-                container.querySelectorAll(".ft-drag-over").forEach(el => el.classList.remove("ft-drag-over"));
+                container
+                    .querySelectorAll(".ft-drag-over")
+                    .forEach((el) => el.classList.remove("ft-drag-over"));
             });
             card.addEventListener("dragover", (e) => {
                 e.preventDefault();
                 e.dataTransfer.dropEffect = "move";
-                if (parseInt(card.dataset.dragIdx) !== dragIdx) card.classList.add("ft-drag-over");
+                if (parseInt(card.dataset.dragIdx) !== dragIdx)
+                    card.classList.add("ft-drag-over");
             });
-            card.addEventListener("dragleave", () => card.classList.remove("ft-drag-over"));
+            card.addEventListener("dragleave", () =>
+                card.classList.remove("ft-drag-over"),
+            );
             card.addEventListener("drop", (e) => {
                 e.preventDefault();
                 const overIdx = parseInt(card.dataset.dragIdx);
                 if (dragIdx !== null && overIdx !== dragIdx) {
+                    syncSectionsFromDOM();
                     const [moved] = arr.splice(dragIdx, 1);
                     arr.splice(overIdx, 0, moved);
                     renderFn();
@@ -652,6 +770,34 @@ function showFooterModal(editor, component) {
                 dragIdx = null;
             });
         });
+    }
+
+    function syncSectionsFromDOM() {
+        sectionsContainer
+            .querySelectorAll("[data-section-index]")
+            .forEach((secEl, i) => {
+                const sec = sections[i];
+                if (!sec) return;
+                const titleInput = secEl.querySelector(
+                    ".ft-section-title-input",
+                );
+                if (titleInput) sec.title = titleInput.value;
+
+                const links = [];
+                secEl.querySelectorAll(".ft-link-row").forEach((row) => {
+                    const isText =
+                        row.querySelector(".ft-link-istext")?.checked ?? false;
+                    links.push({
+                        icon: row.querySelector(".ft-link-icon")?.value ?? "",
+                        label: row.querySelector(".ft-link-label")?.value ?? "",
+                        href: isText
+                            ? ""
+                            : (row.querySelector(".ft-link-href")?.value ?? ""),
+                        isText,
+                    });
+                });
+                sec.links = links;
+            });
     }
 
     function renderSection(sec, index) {
@@ -663,26 +809,30 @@ function showFooterModal(editor, component) {
         const linksHtml = (sec.links || [])
             .map(
                 (link, li) => `
-            <div class="ft-link-row" data-link-index="${li}" style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;flex-wrap:wrap;">
+        <div class="ft-link-row" data-link-index="${li}">
+            <div class="ft-link-row-top">
                 <input class="ft-modal-input-sm ft-link-icon-input ft-link-icon" type="text"
                     placeholder="ri-phone-line (opcional)" value="${link.icon || ""}">
                 <input class="ft-modal-input-sm ft-link-label" type="text"
-                    placeholder="Texto" value="${link.label || ""}">
-                <div style="flex:1;position:relative;">
+                    placeholder="Texto del enlace" value="${link.label || ""}">
+                <button class="ft-btn-remove ft-remove-link" title="Eliminar enlace">
+                    <i class="ri-delete-bin-line"></i>
+                </button>
+            </div>
+            <div class="ft-link-row-bottom">
+                <div class="ft-link-href-wrap">
                     <input class="ft-modal-input-sm ft-link-href" type="text"
                         placeholder="URL o buscar página..." value="${link.href || ""}"
                         style="width:100%;box-sizing:border-box;${link.isText ? "opacity:0.4;pointer-events:none;" : ""}">
                 </div>
-                <label style="display:flex;align-items:center;gap:0.25rem;font-size:0.75rem;color:#64748b;white-space:nowrap;cursor:pointer;">
+                <label class="ft-link-istext-label">
                     <input type="checkbox" class="ft-link-istext" ${link.isText ? "checked" : ""}
                         style="accent-color:#003B71;cursor:pointer;">
                     Solo texto
                 </label>
-                <button class="ft-btn-remove ft-remove-link">
-                    <i class="ri-delete-bin-line"></i>
-                </button>
             </div>
-        `,
+        </div>
+    `,
             )
             .join("");
 
@@ -704,11 +854,13 @@ function showFooterModal(editor, component) {
         `;
 
         div.querySelector(".ft-remove-section").onclick = () => {
+            syncSectionsFromDOM();
             sections.splice(index, 1);
             renderAllSections();
         };
 
         div.querySelector(".ft-btn-add-link").onclick = () => {
+            syncSectionsFromDOM();
             sec.links = sec.links || [];
             sec.links.push({ label: "Nuevo enlace", href: "#", icon: "" });
             renderAllSections();
@@ -716,6 +868,7 @@ function showFooterModal(editor, component) {
 
         div.querySelectorAll(".ft-remove-link").forEach((btn) => {
             btn.onclick = () => {
+                syncSectionsFromDOM();
                 const li = parseInt(
                     btn.closest(".ft-link-row").dataset.linkIndex,
                 );
@@ -782,9 +935,13 @@ function showFooterModal(editor, component) {
     });
 
     modal.querySelector("#ft-add-section").onclick = () => {
+        syncSectionsFromDOM();
         sections.push({ title: "Nueva Sección", links: [] });
         renderAllSections();
-        sectionsContainer.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        sectionsContainer.lastElementChild?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+        });
     };
 
     function collectData() {
@@ -820,6 +977,78 @@ function showFooterModal(editor, component) {
             sections: updatedSections,
         };
     }
+
+    modal.querySelector("#ft-modal-backup").onclick = () => {
+        syncSectionsFromDOM();
+        const snapshot = collectData();
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `footer-backup-${ts}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    };
+
+    modal.querySelector("#ft-modal-restore-input").onchange = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            let parsed;
+            try {
+                parsed = JSON.parse(ev.target.result);
+            } catch {
+                const errOverlay = document.createElement("div");
+                errOverlay.className = "ft-confirm-overlay";
+                errOverlay.innerHTML = `<div class="ft-confirm-modal"><div class="ft-confirm-header"><i class="ri-error-warning-line" style="color:#ef4444;"></i><h3>Archivo inválido</h3></div><div class="ft-confirm-body"><p>El archivo seleccionado no es un JSON válido.</p></div><div class="ft-confirm-footer"><button class="ft-confirm-ok" style="background:#ef4444;">Cerrar</button></div></div>`;
+                document.body.appendChild(errOverlay);
+                errOverlay.querySelector(".ft-confirm-ok").onclick = () =>
+                    errOverlay.remove();
+                e.target.value = "";
+                return;
+            }
+            const confirmOverlay = document.createElement("div");
+            confirmOverlay.className = "ft-confirm-overlay";
+            confirmOverlay.innerHTML = `
+                <div class="ft-confirm-modal">
+                    <div class="ft-confirm-header">
+                        <i class="ri-refresh-line"></i>
+                        <h3>Restaurar configuración</h3>
+                    </div>
+                    <div class="ft-confirm-body">
+                        <p>¿Deseas restaurar la configuración del footer desde el archivo de respaldo?</p>
+                        <p>Esta acción reemplazará la configuración actual del formulario.</p>
+                        <span class="ft-confirm-filename"><i class="ri-file-code-line"></i>${file.name}</span>
+                    </div>
+                    <div class="ft-confirm-footer">
+                        <button class="ft-confirm-cancel">Cancelar</button>
+                        <button class="ft-confirm-ok"><i class="ri-check-line"></i> Sí, restaurar</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(confirmOverlay);
+            confirmOverlay.querySelector(".ft-confirm-cancel").onclick = () => {
+                confirmOverlay.remove();
+                e.target.value = "";
+            };
+            confirmOverlay.querySelector(".ft-confirm-ok").onclick = () => {
+                confirmOverlay.remove();
+                e.target.value = "";
+                component.addAttributes({
+                    "data-footer-config": JSON.stringify(parsed),
+                });
+                component.components(buildFooterHTML(parsed) + FOOTER_STYLES);
+                close();
+                showFooterModal(editor, component);
+            };
+        };
+        reader.readAsText(file);
+    };
 
     const close = () => overlay.remove();
     modal.querySelector("#ft-modal-close").onclick = close;
