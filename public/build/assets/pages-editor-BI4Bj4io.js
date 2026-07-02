@@ -343,7 +343,7 @@ ${ze}`},{id:"about-mvv-section",label:"Misión, Visión y Valores",category:"Con
 </section>
 ${ze}`}],Yt=`
 <style>
-.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;}
+.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
 @media(max-width:992px){.mv-grid{grid-template-columns:1fr;gap:1.5rem;}}
 </style>`,Jt=`
 <li class="flex items-start gap-2 text-base font-bold text-[#E97300] leading-relaxed">

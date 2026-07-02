@@ -2,7 +2,7 @@ import { assetUrl } from "@/utils/url.js";
 
 const MISSION_VISION_STYLES = `
 <style>
-.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;}
+.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
 @media(max-width:992px){.mv-grid{grid-template-columns:1fr;gap:1.5rem;}}
 </style>`;
 
