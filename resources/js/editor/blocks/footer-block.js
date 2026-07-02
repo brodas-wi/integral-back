@@ -47,7 +47,7 @@ const FOOTER_STYLES = `
     gap: 0.5rem;
 }
 .ft-links li a {
-    color: rgba(255,255,255,0.85);
+    color: #ffffff;
     text-decoration: none;
     font-size: 0.875rem;
     display: flex;
@@ -56,10 +56,10 @@ const FOOTER_STYLES = `
     transition: color 0.2s;
 }
 .ft-links li a:hover {
-    color: #ffffff;
+    color: #E97300;
 }
 .ft-links li span.ft-text {
-    color: rgba(255,255,255,0.85);
+    color: #ffffff;
     font-size: 0.875rem;
     display: flex;
     align-items: center;
@@ -69,6 +69,10 @@ const FOOTER_STYLES = `
 .ft-links li span.ft-text i {
     font-size: 1rem;
     flex-shrink: 0;
+    color: #ffffff;
+    transition: color 0.2s;
+}
+.ft-links li a:hover i {
     color: #E97300;
 }
 .ft-stripe {
