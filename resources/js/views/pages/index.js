@@ -7,7 +7,41 @@ const CSRF = document.querySelector('meta[name="csrf-token"]');
 document.addEventListener("DOMContentLoaded", () => {
     initTogglePublish();
     initDeletePage();
+    initCopySlug();
 });
+
+function initCopySlug() {
+    document.querySelectorAll("[data-copy-slug]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const slug = btn.dataset.slug;
+            copySlugToClipboard(slug);
+        });
+    });
+}
+
+async function copySlugToClipboard(slug) {
+    if (!slug) return;
+
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(slug);
+        } else {
+            const textarea = document.createElement("textarea");
+            textarea.value = slug;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            document.execCommand("copy");
+            textarea.remove();
+        }
+        showNotification("Slug copiado al portapapeles", "success");
+    } catch (error) {
+        console.error("Error al copiar:", error);
+        showNotification("No se pudo copiar el slug", "error");
+    }
+}
 
 function initTogglePublish() {
     document.querySelectorAll("[data-toggle-publish]").forEach((btn) => {

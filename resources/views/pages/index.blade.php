@@ -71,12 +71,18 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach($pages as $page)
                 <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4" id="page-item-{{ $page->id }}">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="flex-1">
+                    <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+                        <div class="flex-1 min-w-0">
                             <h3 class="text-base font-bold text-secondary mb-1 line-clamp-2">{{ $page->title }}</h3>
-                            <p class="text-[11px] text-gray-500 font-mono truncate">{{ $page->slug }}</p>
+                            <button type="button"
+                                data-copy-slug
+                                data-slug="{{ $page->slug }}"
+                                class="text-[11px] text-gray-500 font-mono truncate max-w-full inline-flex items-center gap-1 hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0">
+                                <i class="ri-file-copy-line text-[11px]"></i>
+                                <span class="truncate">{{ $page->slug }}</span>
+                            </button>
                         </div>
-                        <span class="badge {{ $page->is_published ? 'badge-success' : 'badge-warning' }} flex-shrink-0 ml-2">
+                        <span class="badge {{ $page->is_published ? 'badge-success' : 'badge-warning' }} flex-shrink-0 whitespace-nowrap">
                             <i class="ri-{{ $page->is_published ? 'eye' : 'eye-off' }}-line mr-1"></i>
                             {{ $page->is_published ? 'Publicada' : 'Borrador' }}
                         </span>
