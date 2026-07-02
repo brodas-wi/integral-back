@@ -19,7 +19,11 @@ class MediaController extends Controller
         $query = Media::with('uploader')->latest();
 
         if ($request->filled('type')) {
-            $query->where('type', $request->type);
+            if ($request->type === 'document') {
+                $query->whereIn('type', ['document', 'pdf']);
+            } else {
+                $query->where('type', $request->type);
+            }
         }
 
         if ($request->filled('search')) {
@@ -305,6 +309,8 @@ class MediaController extends Controller
 
         if (!empty($types) && is_array($types)) {
             $query->whereIn('type', $types);
+        } elseif ($type === 'document') {
+            $query->whereIn('type', ['document', 'pdf']);
         } elseif ($type) {
             $query->where('type', $type);
         }
