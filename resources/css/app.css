@@ -310,6 +310,10 @@
     }
 }
 
+.pages-grid {
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+}
+
 @keyframes slideInRight {
     from {
         transform: translateX(100%);
