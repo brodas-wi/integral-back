@@ -68,7 +68,7 @@
     </div>
 
     @if($pages->count() > 0)
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(330px,1fr))]">
             @foreach($pages as $page)
                 <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4" id="page-item-{{ $page->id }}">
                     <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
