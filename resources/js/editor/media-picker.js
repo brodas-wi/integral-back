@@ -131,6 +131,16 @@ function injectStyles() {
             object-fit: cover;
             display: block;
         }
+        .mp-card-icon-thumb {
+            width: 100%;
+            aspect-ratio: 16/10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mp-card-icon-thumb i {
+            font-size: 2.25rem;
+        }
         .mp-card p {
             font-size: 0.65rem;
             padding: 4px 6px;
@@ -202,6 +212,20 @@ function injectStyles() {
         }
     `;
     document.head.appendChild(style);
+}
+
+function getFileIconMeta(filename) {
+    const ext = (filename.split(".").pop() || "").toLowerCase();
+
+    const map = {
+        pdf: { icon: "ri-file-pdf-2-fill", color: "#dc2626", bg: "#fef2f2" },
+        xls: { icon: "ri-file-excel-2-fill", color: "#16a34a", bg: "#f0fdf4" },
+        xlsx: { icon: "ri-file-excel-2-fill", color: "#16a34a", bg: "#f0fdf4" },
+        doc: { icon: "ri-file-word-2-fill", color: "#2563eb", bg: "#eff6ff" },
+        docx: { icon: "ri-file-word-2-fill", color: "#2563eb", bg: "#eff6ff" },
+    };
+
+    return map[ext] || { icon: "ri-file-text-fill", color: "#6b7280", bg: "#f3f4f6" };
 }
 
 function createModal() {
@@ -290,8 +314,19 @@ function createModal() {
             items.forEach((item) => {
                 const card = document.createElement("div");
                 card.className = "mp-card";
+
+                const isImage = item.type === "image";
+                const thumbHtml = isImage
+                    ? `<img src="${item.url}" alt="${item.filename}" loading="lazy">`
+                    : (() => {
+                          const iconMeta = getFileIconMeta(item.filename);
+                          return `<div class="mp-card-icon-thumb" style="background:${iconMeta.bg};">
+                                <i class="${iconMeta.icon}" style="color:${iconMeta.color};"></i>
+                            </div>`;
+                      })();
+
                 card.innerHTML = `
-                    <img src="${item.url}" alt="${item.filename}" loading="lazy">
+                    ${thumbHtml}
                     <p title="${item.filename}">${item.filename}</p>
                 `;
                 card.addEventListener("click", () => {
@@ -349,6 +384,12 @@ function createModal() {
         document.getElementById("mp-title").textContent =
             title ||
             (type === "image" ? "Seleccionar imagen" : "Seleccionar archivo");
+
+        const headerIcon = document.querySelector("#gjs-media-picker-modal .mp-header-left i");
+        if (headerIcon) {
+            headerIcon.className = type === "image" ? "ri-image-line" : "ri-file-line";
+        }
+
         searchInput().value = "";
         footerInfo().textContent = "Ningún archivo seleccionado";
         confirmBtn().disabled = true;
