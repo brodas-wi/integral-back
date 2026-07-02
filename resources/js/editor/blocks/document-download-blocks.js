@@ -122,7 +122,7 @@ export const documentDownloadBlocks = [
         media: iconDocDownloadSection,
         content: `
 <section class="dd-section">
-    <h2 class="text-4xl font-extrabold text-[#003B71]" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Consulta listado de cuentas a prescribir</h2>
+    <h2 class="text-4xl font-extrabold text-[#003B71]" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Titulo principal</h2>
     <div class="dd-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
     <div class="dd-list" data-gjs-droppable="true">
         ${buildDocButtonHTML("Nombre_del_documento.pdf")}
@@ -145,7 +145,7 @@ ${DOC_DOWNLOAD_STYLES}`,
         media: iconDocAccordionSection,
         content: `
 <section class="dd-section">
-    <h2 class="text-4xl font-extrabold text-[#003B71]" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Consulta listado de cuentas a prescribir</h2>
+    <h2 class="text-4xl font-extrabold text-[#003B71]" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Titulo principal</h2>
     <div class="dd-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
     <div class="dd-acc-list" data-gjs-droppable="true">
         ${buildAccordionItemHTML("Nombre de la sección", true)}

@@ -768,7 +768,7 @@ ${fi}`}],ge=`
         </div>
     </div>`}function ui(){return function(){const t=this;if(t.__ddAccBound)return;t.__ddAccBound=!0;const e=t.querySelector(".dd-acc-header"),i=t.querySelector(".dd-acc-arrow");!e||!i||e.addEventListener("click",a=>{if(a.target.closest("a"))return;const r=t.classList.toggle("dd-acc-open");i.classList.toggle("ri-arrow-down-s-line",r),i.classList.toggle("ri-arrow-right-s-line",!r)})}}const xi=[{id:"document-download-section",label:"Sección de Documentos Descargables",category:"Documentos",media:hi,content:`
 <section class="dd-section">
-    <h2 class="text-4xl font-extrabold text-[#003B71]" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Consulta listado de cuentas a prescribir</h2>
+    <h2 class="text-4xl font-extrabold text-[#003B71]" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Titulo principal</h2>
     <div class="dd-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
     <div class="dd-list" data-gjs-droppable="true">
         ${ke("Nombre_del_documento.pdf")}
@@ -777,7 +777,7 @@ ${fi}`}],ge=`
 </section>
 ${ge}`},{id:"document-download-button",label:"Botón de Documento",category:"Documentos",media:gi,content:`${ke("Nombre_del_documento.pdf")}${ge}`},{id:"document-accordion-section",label:"Sección de Documentos con Acordeón",category:"Documentos",media:mi,content:`
 <section class="dd-section">
-    <h2 class="text-4xl font-extrabold text-[#003B71]" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Consulta listado de cuentas a prescribir</h2>
+    <h2 class="text-4xl font-extrabold text-[#003B71]" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Titulo principal</h2>
     <div class="dd-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
     <div class="dd-acc-list" data-gjs-droppable="true">
         ${je("Nombre de la sección",!0)}
