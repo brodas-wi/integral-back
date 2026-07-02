@@ -350,6 +350,20 @@ export class MediaModal {
         });
     }
 
+    getFileIconMeta(filename) {
+        const ext = (filename.split(".").pop() || "").toLowerCase();
+
+        const map = {
+            pdf: { icon: "ri-file-pdf-2-fill", color: "#dc2626", bg: "#fef2f2" },
+            xls: { icon: "ri-file-excel-2-fill", color: "#16a34a", bg: "#f0fdf4" },
+            xlsx: { icon: "ri-file-excel-2-fill", color: "#16a34a", bg: "#f0fdf4" },
+            doc: { icon: "ri-file-word-2-fill", color: "#2563eb", bg: "#eff6ff" },
+            docx: { icon: "ri-file-word-2-fill", color: "#2563eb", bg: "#eff6ff" },
+        };
+
+        return map[ext] || { icon: "ri-file-text-fill", color: "#6b7280", bg: "#f3f4f6" };
+    }
+
     /**
      * Create media card element
      */
@@ -359,16 +373,22 @@ export class MediaModal {
         card.dataset.mediaId = media.id;
 
         const isImage = media.type === "image";
-
         const extension = media.filename.split(".").pop().toUpperCase();
+
+        let thumbContent;
+        if (isImage) {
+            thumbContent = `<img src="${media.url}" alt="${media.alt || media.filename}">`;
+        } else {
+            const iconMeta = this.getFileIconMeta(media.filename);
+            thumbContent = `
+                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:${iconMeta.bg};">
+                    <i class="${iconMeta.icon}" style="font-size:2.25rem;color:${iconMeta.color};"></i>
+                </div>`;
+        }
 
         card.innerHTML = `
             <div class="media-modal-card-thumb">
-                ${
-                    isImage
-                        ? `<img src="${media.url}" alt="${media.alt || media.filename}">`
-                        : `<i class="${this.mediaService.getMediaIcon(media.type)}"></i>`
-                }
+                ${thumbContent}
             </div>
             <div class="media-modal-card-info">
                 <p title="${media.filename}">${media.filename}</p>

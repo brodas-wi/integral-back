@@ -21,8 +21,8 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
-  "_editor-commands-Bq37dEX4.js": {
-    "file": "assets/editor-commands-Bq37dEX4.js",
+  "_editor-commands-CjY-ZZO3.js": {
+    "file": "assets/editor-commands-CjY-ZZO3.js",
     "name": "editor-commands",
     "imports": [
       "__commonjsHelpers-CqkleIqs.js"
@@ -439,12 +439,12 @@
     "isDynamicEntry": true
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-H7P_zqvc.js",
+    "file": "assets/footer-editor-DW-ykLcZ.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-Bq37dEX4.js",
+      "_editor-commands-CjY-ZZO3.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
@@ -459,22 +459,22 @@
     ]
   },
   "resources/js/navbar-editor.js": {
-    "file": "assets/navbar-editor-jP21Fue3.js",
+    "file": "assets/navbar-editor-Bp58RdR1.js",
     "name": "navbar-editor",
     "src": "resources/js/navbar-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-Bq37dEX4.js",
+      "_editor-commands-CjY-ZZO3.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-B_zemnYY.js",
+    "file": "assets/pages-editor-DgOlszDm.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-Bq37dEX4.js",
+      "_editor-commands-CjY-ZZO3.js",
       "_url-DaqOO3yL.js",
       "__commonjsHelpers-CqkleIqs.js"
     ],

@@ -884,9 +884,12 @@ __p+='`),we}),ft+=`';
                     Total de ${n}: <strong>${i??0}</strong>
                 </span>
             </div>
-        `}updatePagination(r){const t=this.modal.querySelector("#media-pagination"),e=this.modal.querySelector("#prev-page"),n=this.modal.querySelector("#next-page");this.modal.querySelector("#current-page").textContent=r.current,this.modal.querySelector("#total-pages").textContent=r.total,e.disabled=r.current===1,n.disabled=!r.hasMore,r.total>1?t.classList.add("visible"):t.classList.remove("visible")}renderMediaItems(r){const t=this.modal.querySelector("#media-grid");t.innerHTML="",r.forEach(e=>{const n=this.createMediaCard(e);t.appendChild(n)})}createMediaCard(r){const t=document.createElement("div");t.className="media-modal-card",t.dataset.mediaId=r.id;const e=r.type==="image",n=r.filename.split(".").pop().toUpperCase();return t.innerHTML=`
+        `}updatePagination(r){const t=this.modal.querySelector("#media-pagination"),e=this.modal.querySelector("#prev-page"),n=this.modal.querySelector("#next-page");this.modal.querySelector("#current-page").textContent=r.current,this.modal.querySelector("#total-pages").textContent=r.total,e.disabled=r.current===1,n.disabled=!r.hasMore,r.total>1?t.classList.add("visible"):t.classList.remove("visible")}renderMediaItems(r){const t=this.modal.querySelector("#media-grid");t.innerHTML="",r.forEach(e=>{const n=this.createMediaCard(e);t.appendChild(n)})}getFileIconMeta(r){const t=(r.split(".").pop()||"").toLowerCase();return{pdf:{icon:"ri-file-pdf-2-fill",color:"#dc2626",bg:"#fef2f2"},xls:{icon:"ri-file-excel-2-fill",color:"#16a34a",bg:"#f0fdf4"},xlsx:{icon:"ri-file-excel-2-fill",color:"#16a34a",bg:"#f0fdf4"},doc:{icon:"ri-file-word-2-fill",color:"#2563eb",bg:"#eff6ff"},docx:{icon:"ri-file-word-2-fill",color:"#2563eb",bg:"#eff6ff"}}[t]||{icon:"ri-file-text-fill",color:"#6b7280",bg:"#f3f4f6"}}createMediaCard(r){const t=document.createElement("div");t.className="media-modal-card",t.dataset.mediaId=r.id;const e=r.type==="image",n=r.filename.split(".").pop().toUpperCase();let i;if(e)i=`<img src="${r.url}" alt="${r.alt||r.filename}">`;else{const s=this.getFileIconMeta(r.filename);i=`
+                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:${s.bg};">
+                    <i class="${s.icon}" style="font-size:2.25rem;color:${s.color};"></i>
+                </div>`}return t.innerHTML=`
             <div class="media-modal-card-thumb">
-                ${e?`<img src="${r.url}" alt="${r.alt||r.filename}">`:`<i class="${this.mediaService.getMediaIcon(r.type)}"></i>`}
+                ${i}
             </div>
             <div class="media-modal-card-info">
                 <p title="${r.filename}">${r.filename}</p>

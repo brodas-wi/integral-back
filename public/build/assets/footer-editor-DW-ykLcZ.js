@@ -1,4 +1,4 @@
-import{i as O,o as U,t as H,d as R,f as _,e as P,s as J,g as G,c as V,E as W,j as X,h as Q}from"./editor-commands-Bq37dEX4.js";import"./_commonjsHelpers-CqkleIqs.js";function Y(){return O()}const K="/bancaintegral",B=`
+import{i as O,o as U,t as H,d as R,f as _,e as P,s as J,g as G,c as V,E as W,j as X,h as Q}from"./editor-commands-CjY-ZZO3.js";import"./_commonjsHelpers-CqkleIqs.js";function Y(){return O()}const K="/bancaintegral",B=`
 <style>
 .ft-wrapper {
     background-color: #003B71;
