@@ -617,6 +617,9 @@ function showFooterModal(editor, component) {
 
     const sectionsContainer = modal.querySelector("#ft-sections-container");
 
+    bindSelectAllOnFocus(modal.querySelector("#ft-logo-url"));
+    bindSelectAllOnFocus(modal.querySelector("#ft-logo-alt"));
+
     const appBase =
         document
             .querySelector('meta[name="app-url"]')
@@ -758,6 +761,14 @@ function showFooterModal(editor, component) {
         let dragIdx = null;
         container.querySelectorAll("[data-drag-idx]").forEach((card) => {
             card.setAttribute("draggable", "true");
+            card.querySelectorAll("input, textarea").forEach((field) => {
+                field.addEventListener("focus", () => {
+                    card.setAttribute("draggable", "false");
+                });
+                field.addEventListener("blur", () => {
+                    card.setAttribute("draggable", "true");
+                });
+            });
             card.addEventListener("dragstart", (e) => {
                 dragIdx = parseInt(card.dataset.dragIdx);
                 setTimeout(() => card.classList.add("ft-dragging"), 0);
@@ -818,6 +829,14 @@ function showFooterModal(editor, component) {
                 });
                 sec.links = links;
             });
+    }
+
+    function bindSelectAllOnFocus(el) {
+        if (!el || el.dataset.selectOnFocusBound) return;
+        el.dataset.selectOnFocusBound = "true";
+        el.addEventListener("focus", () => {
+            requestAnimationFrame(() => el.select());
+        });
     }
 
     function renderSection(sec, index) {
@@ -917,6 +936,11 @@ function showFooterModal(editor, component) {
                     hrefInput.style.pointerEvents = "auto";
                 }
             });
+        });
+
+        bindSelectAllOnFocus(div.querySelector(".ft-section-title-input"));
+        div.querySelectorAll(".ft-link-icon, .ft-link-label, .ft-link-href").forEach((field) => {
+            bindSelectAllOnFocus(field);
         });
 
         return div;
