@@ -55,7 +55,7 @@ export const documentDownloadBlocks = [
     {
         id: "document-download-section",
         label: "Sección de Documentos Descargables",
-        category: "Productos y Servicios",
+        category: "Botones",
         media: iconDocDownloadSection,
         content: `
 <section class="dd-section">
@@ -71,7 +71,7 @@ ${DOC_DOWNLOAD_STYLES}`,
     {
         id: "document-download-button",
         label: "Botón de Documento",
-        category: "Productos y Servicios",
+        category: "Botones",
         media: iconDocDownloadButton,
         content: `${buildDocButtonHTML("Nombre_del_documento.pdf")}${DOC_DOWNLOAD_STYLES}`,
     },

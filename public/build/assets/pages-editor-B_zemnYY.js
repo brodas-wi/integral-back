@@ -731,7 +731,7 @@ ${ci}`}],Me=`
         <span class="dd-btn-download" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <i class="ri-download-fill"></i>
         </span>
-    </a>`}const hi=[{id:"document-download-section",label:"Sección de Documentos Descargables",category:"Productos y Servicios",media:fi,content:`
+    </a>`}const hi=[{id:"document-download-section",label:"Sección de Documentos Descargables",category:"Botones",media:fi,content:`
 <section class="dd-section">
     <h2 class="text-4xl font-extrabold text-[#003B71]" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Consulta listado de cuentas a prescribir</h2>
     <div class="dd-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
@@ -740,7 +740,7 @@ ${ci}`}],Me=`
         ${Le("Nombre_del_documento.pdf")}
     </div>
 </section>
-${Me}`},{id:"document-download-button",label:"Botón de Documento",category:"Productos y Servicios",media:pi,content:`${Le("Nombre_del_documento.pdf")}${Me}`}];function gi(t){const e="doc-download-button";t.DomComponents.addType(e,{isComponent:i=>i.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Botón de Documento",tagName:"a",draggable:!0,droppable:!1,removable:!0,copyable:!0,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":e,class:"dd-btn",href:"#"},components:`
+${Me}`},{id:"document-download-button",label:"Botón de Documento",category:"Botones",media:pi,content:`${Le("Nombre_del_documento.pdf")}${Me}`}];function gi(t){const e="doc-download-button";t.DomComponents.addType(e,{isComponent:i=>i.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Botón de Documento",tagName:"a",draggable:!0,droppable:!1,removable:!0,copyable:!0,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":e,class:"dd-btn",href:"#"},components:`
                     <span class="dd-btn-left" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
                         <i class="ri-article-line dd-btn-icon-file" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></i>
                         <span class="dd-btn-label" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Nombre_del_documento.pdf</span>
