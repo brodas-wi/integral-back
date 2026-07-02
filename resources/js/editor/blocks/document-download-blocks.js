@@ -42,7 +42,7 @@ const iconDocDownloadButton = `<svg viewBox="0 0 32 32" width="32" height="32">
 function buildDocButtonHTML(label) {
     return `<a href="#" class="dd-btn" data-gjs-type="doc-download-button">
         <span class="dd-btn-left" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <i class="ri-file-line dd-btn-icon-file" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></i>
+            <i class="ri-article-line dd-btn-icon-file" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></i>
             <span class="dd-btn-label" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">${label}</span>
         </span>
         <span class="dd-btn-download" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
@@ -105,7 +105,7 @@ export function initializeDocumentDownloadBlocks(editor) {
                 },
                 components: `
                     <span class="dd-btn-left" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-                        <i class="ri-file-line dd-btn-icon-file" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></i>
+                        <i class="ri-article-line dd-btn-icon-file" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></i>
                         <span class="dd-btn-label" contenteditable="true" data-gjs-type="text" data-gjs-editable="true">Nombre_del_documento.pdf</span>
                     </span>
                     <span class="dd-btn-download" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
