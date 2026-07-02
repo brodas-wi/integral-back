@@ -6,6 +6,7 @@ import { missionVisionBlocks } from "./blocks/mission-vision-blocks";
 import { initializeProductCardsBlock } from "./blocks/product-cards-blocks";
 import { dualCardBlocks } from "./blocks/dual-card-blocks";
 import { ctaBlocks } from "./blocks/cta-blocks";
+import { documentDownloadBlocks, initializeDocumentDownloadBlocks } from "./blocks/document-download-blocks";
 import { initializeSavingsSectionBlock } from "./blocks/savings-carousel-blocks";
 import { productLinkCardsBlocks } from "./blocks/product-link-cards-blocks";
 import { iconLinksBlocks } from "./blocks/icon-links-blocks";
@@ -42,6 +43,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(dualCardBlocks)
     blockRegistry.registerBlocks(splitContentBlocks);
     blockRegistry.registerBlocks(ctaBlocks);
+    blockRegistry.registerBlocks(documentDownloadBlocks);
     blockRegistry.registerBlocks(promoCtaBlocks);
     blockRegistry.registerBlocks(featureBlocks);
     blockRegistry.registerBlocks(serviceCardsBlocks);
@@ -67,4 +69,5 @@ export function addCustomBlocks(editor) {
     initializeButtonBlocks(editor);
     initializeTabsBlocks(editor);
     initializeTableBlocks(editor);
+    initializeDocumentDownloadBlocks(editor);
 }
