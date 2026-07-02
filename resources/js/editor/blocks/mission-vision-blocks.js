@@ -2,7 +2,7 @@ import { assetUrl } from "@/utils/url.js";
 
 const MISSION_VISION_STYLES = `
 <style>
-.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;}
+.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;}
 @media(max-width:992px){.mv-grid{grid-template-columns:1fr;gap:1.5rem;}}
 </style>`;
 
@@ -36,7 +36,7 @@ export const missionVisionBlocks = [
         content: `
 <section class="w-full bg-white px-6 py-8 sm:px-8 sm:py-10 lg:px-16 lg:py-12">
     <div class="mv-grid">
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
                 <h2 class="text-4xl font-extrabold text-[#003B71]">Misión</h2>
                 <p class="text-base text-[#003B71] leading-relaxed text-justify">"Proveemos la mejor experiencia a los empresarios de la micro y pequeña empresa, sus familiares y sus empleados, acompañándolos en su desarrollo con productos y servicios financieros especializados e innovadores adaptados a sus necesidades".</p>
