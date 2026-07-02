@@ -276,6 +276,9 @@ function showFooterModal(editor, component) {
                 outline: none;
                 font-family: inherit;
                 transition: border-color 0.15s;
+                box-sizing: border-box;
+                width: 100%;
+                min-width: 0;
             }
             .ft-modal-input-sm:focus {
                 border-color: #3b82f6;
@@ -346,6 +349,10 @@ function showFooterModal(editor, component) {
                 width: 150px;
                 flex-shrink: 0;
             }
+            .ft-links-container {
+                width: 100%;
+                box-sizing: border-box;
+            }
             .ft-link-row {
                 display: flex;
                 flex-direction: column;
@@ -353,6 +360,8 @@ function showFooterModal(editor, component) {
                 padding-bottom: 0.75rem;
                 margin-bottom: 0.75rem;
                 border-bottom: 1px solid #f1f5f9;
+                width: 100%;
+                box-sizing: border-box;
             }
             .ft-link-row:last-child {
                 border-bottom: none;
@@ -363,20 +372,31 @@ function showFooterModal(editor, component) {
                 display: flex;
                 gap: 0.5rem;
                 align-items: center;
+                width: 100%;
+                box-sizing: border-box;
+                flex-wrap: wrap;
+            }
+            .ft-link-row-top .ft-link-icon-input {
+                flex: 0 0 150px;
             }
             .ft-link-row-top .ft-link-label {
-                flex: 1;
+                flex: 1 1 200px;
                 min-width: 0;
+            }
+            .ft-link-row-top .ft-btn-remove {
+                flex-shrink: 0;
             }
             .ft-link-row-bottom {
                 display: flex;
                 gap: 0.625rem;
                 align-items: center;
                 flex-wrap: wrap;
+                width: 100%;
+                box-sizing: border-box;
             }
             .ft-link-href-wrap {
-                flex: 1;
-                min-width: 160px;
+                flex: 1 1 200px;
+                min-width: 0;
                 position: relative;
             }
             .ft-link-istext-label {
