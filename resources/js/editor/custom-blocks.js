@@ -28,6 +28,7 @@ import { badgeBlocks } from "./blocks/badge-blocks";
 import { mapBlocks, initializeMapBlocks } from "./blocks/map-blocks";
 import { mapFilterBlocks, initializeMapFilterBlocks } from "./blocks/map-filter-blocks";
 import { bannerBlocks, initializeBannerBlocks } from "./blocks/banner-blocks";
+import { assetsBlocks, initializeAssetsBlocks } from "@/editor/blocks/assets-blocks";
 import { initializeHeroBannerBlock } from "@/editor/blocks/hero-banner-blocks";
 
 export function addCustomBlocks(editor) {
@@ -58,6 +59,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(financingBlocks);
     blockRegistry.registerBlocks(mapBlocks);
     blockRegistry.registerBlocks(mapFilterBlocks);
+    blockRegistry.registerBlocks(assetsBlocks);
     blockRegistry.applyToEditor(editor);
 
     initializeMapBlocks(editor);
@@ -70,4 +72,5 @@ export function addCustomBlocks(editor) {
     initializeTabsBlocks(editor);
     initializeTableBlocks(editor);
     initializeDocumentDownloadBlocks(editor);
+    initializeAssetsBlocks(editor);
 }

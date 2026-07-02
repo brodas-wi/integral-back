@@ -13,6 +13,8 @@ use App\Http\Controllers\PaymentPointController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ScriptController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AssetCategoryController;
 use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
@@ -618,6 +620,72 @@ Route::middleware(['auth'])->group(function () {
             ->name('destroy')
             ->middleware('can:scripts.delete,scripts.manage');
     });
+
+    // ==========================================
+    // ASSETS MODULE ROUTES
+    // ==========================================
+    Route::prefix('assets')->name('assets.')->group(function () {
+        Route::get('/', [AssetController::class, 'index'])
+            ->name('index')
+            ->middleware('can:assets.view,assets.manage');
+
+        Route::get('/trashed', [AssetController::class, 'trashed'])
+            ->name('trashed')
+            ->middleware('can:assets.delete,assets.manage');
+
+        Route::get('/create', [AssetController::class, 'create'])
+            ->name('create')
+            ->middleware('can:assets.create,assets.manage');
+
+        Route::post('/', [AssetController::class, 'store'])
+            ->name('store')
+            ->middleware('can:assets.create,assets.manage');
+
+        Route::get('/{asset}/edit', [AssetController::class, 'edit'])
+            ->name('edit')
+            ->middleware('can:assets.edit,assets.manage');
+
+        Route::put('/{asset}', [AssetController::class, 'update'])
+            ->name('update')
+            ->middleware('can:assets.edit,assets.manage');
+
+        Route::patch('/{asset}/toggle-status', [AssetController::class, 'toggleStatus'])
+            ->name('toggle-status')
+            ->middleware('can:assets.toggle,assets.manage');
+
+        Route::patch('/{id}/restore', [AssetController::class, 'restore'])
+            ->name('restore')
+            ->middleware('can:assets.delete,assets.manage');
+
+        Route::delete('/{id}/force-delete', [AssetController::class, 'forceDelete'])
+            ->name('force-delete')
+            ->middleware('can:assets.delete,assets.manage');
+
+        Route::delete('/{asset}', [AssetController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware('can:assets.delete,assets.manage');
+    });
+
+    Route::prefix('asset-categories')->name('asset-categories.')->group(function () {
+        Route::get('/', [AssetCategoryController::class, 'index'])
+            ->name('index')
+            ->middleware('can:assets.manage');
+
+        Route::put('/{assetCategory}', [AssetCategoryController::class, 'update'])
+            ->name('update')
+            ->middleware('can:assets.manage');
+
+        Route::delete('/{assetCategory}', [AssetCategoryController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware('can:assets.manage');
+    });
+
+    Route::get('/api/assets/active', [AssetController::class, 'apiActive'])
+        ->name('api.assets.active');
+
+    Route::get('/api/asset-categories/search', [AssetController::class, 'apiCategorySuggestions'])
+        ->name('api.asset-categories.search')
+        ->middleware('can:assets.create,assets.edit,assets.manage');
 
     // API endpoint for scripts (shared DB - public frontend consumes this)
     Route::get('/api/scripts/active', [ScriptController::class, 'apiActive'])

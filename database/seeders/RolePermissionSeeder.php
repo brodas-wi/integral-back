@@ -90,6 +90,12 @@ class RolePermissionSeeder extends Seeder
             'scripts.approve',
             'scripts.auto_approve',
             'scripts.manage',
+            'assets.view',
+            'assets.create',
+            'assets.edit',
+            'assets.delete',
+            'assets.manage',
+            'assets.toggle',
         ];
 
         foreach ($permissions as $permission) {
@@ -115,6 +121,7 @@ class RolePermissionSeeder extends Seeder
             'announcements.manage',
             'banners.manage',
             'scripts.manage',
+            'assets.manage',
         ]);
 
         // Editor role - Individual permissions for content management

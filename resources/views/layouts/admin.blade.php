@@ -74,9 +74,11 @@
                             || request()->routeIs('media.*')
                             || request()->routeIs('banners.*')
                             || request()->routeIs('announcements.*')
-                            || request()->routeIs('scripts.*');
+                            || request()->routeIs('scripts.*')
+                            || request()->routeIs('assets.*')
+                            || request()->routeIs('asset-categories.*');
                     @endphp
-                    @canany(['pages.view', 'pages.manage', 'navbars.view', 'navbars.manage', 'footers.view', 'footers.manage', 'media.view', 'media.manage', 'banners.view', 'banners.manage', 'announcements.view', 'announcements.manage', 'scripts.view', 'scripts.manage'])
+                    @canany(['pages.view', 'pages.manage', 'navbars.view', 'navbars.manage', 'footers.view', 'footers.manage', 'media.view', 'media.manage', 'banners.view', 'banners.manage', 'announcements.view', 'announcements.manage', 'scripts.view', 'scripts.manage', 'assets.view', 'assets.manage'])
                         <div class="sidebar-group" data-group="contenido" data-open="{{ $contentGroupActive ? 'true' : 'false' }}">
                             <button type="button" class="sidebar-group-btn">
                                 <div class="flex items-center gap-3">
@@ -133,6 +135,13 @@
                                         class="sidebar-child-link {{ request()->routeIs('scripts.*') ? 'active' : '' }}">
                                         <i class="ri-code-s-slash-line text-lg"></i>
                                         <span>Scripts</span>
+                                    </a>
+                                @endcanany
+                                @canany(['assets.view', 'assets.manage'])
+                                    <a href="{{ route('assets.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('assets.*') || request()->routeIs('asset-categories.*') ? 'active' : '' }}">
+                                        <i class="ri-gallery-line text-lg"></i>
+                                        <span>Activos</span>
                                     </a>
                                 @endcanany
                             </div>
