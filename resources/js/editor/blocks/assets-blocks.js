@@ -349,13 +349,10 @@ function createAssetsScript() {
             allAssets.forEach((a) => {
                 if (!seen.has(a.category_slug)) {
                     seen.add(a.category_slug);
-                    categories.push({
-                        slug: a.category_slug,
-                        name: a.category,
-                    });
+                    categories.push({ slug: a.category_slug, name: a.category });
                 }
             });
-            return categories;
+            return categories.sort((a, b) => a.name.localeCompare(b, "es", { sensitivity: "base" }));
         }
 
         function buildGroupHtml(name, items) {
