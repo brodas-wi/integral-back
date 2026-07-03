@@ -1636,7 +1636,6 @@ export function initializeNavbarBlock(editor) {
                     })(this);
                 },
                 "script-props": [],
-                toolbar: [],
                 traits: [
                     {
                         type: "button",

@@ -588,7 +588,6 @@ export function initializeAssetsBlocks(editor) {
                     <div data-ast-content data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
                 `,
                 script: createAssetsScript(),
-                toolbar: [],
                 traits: [
                     {
                         type: "select",

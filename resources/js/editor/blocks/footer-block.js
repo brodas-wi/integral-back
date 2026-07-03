@@ -1229,7 +1229,6 @@ export function initializeFooterBlock(editor) {
                         ],
                     }) + FOOTER_STYLES,
                 script: createFooterScript(),
-                toolbar: [],
                 traits: [
                     {
                         type: "button",

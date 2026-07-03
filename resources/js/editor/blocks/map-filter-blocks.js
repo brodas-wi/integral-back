@@ -458,7 +458,6 @@ export function initializeMapFilterBlocks(editor) {
                     buildMapFilterHTML(DEFAULT_MAP_FILTER_DATA) +
                     `<style>${MAP_FILTER_STYLES}</style>`,
                 script: createMapFilterScript(),
-                toolbar: [],
                 traits: [
                     {
                         type: "button",

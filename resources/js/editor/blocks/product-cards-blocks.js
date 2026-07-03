@@ -639,7 +639,6 @@ export function initializeProductCardsBlock(editor) {
                         command: "open-product-cards-config",
                     },
                 ],
-                toolbar: [],
             },
             init() {
                 this.set("type", componentType);

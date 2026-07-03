@@ -315,7 +315,29 @@ export function initializeGrapesJS() {
         if (toolbar) toolbar.style.display = "none";
     });
 
+    guardComponentToolbars(editor);
+
     return editor;
+}
+
+function guardComponentToolbars(editor) {
+    const originalAddType = editor.DomComponents.addType.bind(
+        editor.DomComponents,
+    );
+
+    editor.DomComponents.addType = (type, definition = {}) => {
+        const defaults = definition?.model?.defaults;
+
+        if (
+            defaults &&
+            Array.isArray(defaults.toolbar) &&
+            defaults.toolbar.length === 0
+        ) {
+            delete defaults.toolbar;
+        }
+
+        return originalAddType(type, definition);
+    };
 }
 
 function setupToolbarObserver(editor) {
@@ -329,7 +351,7 @@ function setupToolbarObserver(editor) {
         if (isAdjusting) return;
 
         const styleChanged = mutations.some(
-            (m) => m.type === "attributes" && m.attributeName === "style"
+            (m) => m.type === "attributes" && m.attributeName === "style",
         );
 
         if (styleChanged) {
@@ -371,25 +393,25 @@ function repositionToolbar(editor, toolbarElement = null) {
     if (toolbarW === 0 || toolbarH === 0) return;
 
     // Use getBoundingClientRect to get the real rendered position
-    const canvasRect  = canvasEl.getBoundingClientRect();
+    const canvasRect = canvasEl.getBoundingClientRect();
     const toolbarRect = toolbar.getBoundingClientRect();
 
     // Current style values (what GrapesJS set, used as base for adjustment)
-    const styleTop  = parseFloat(toolbar.style.top)  || 0;
+    const styleTop = parseFloat(toolbar.style.top) || 0;
     const styleLeft = parseFloat(toolbar.style.left) || 0;
 
     // Physical position of toolbar relative to canvas
-    const physLeft   = toolbarRect.left - canvasRect.left;
-    const physTop    = toolbarRect.top  - canvasRect.top;
-    const physRight  = physLeft + toolbarW;
-    const physBottom = physTop  + toolbarH;
+    const physLeft = toolbarRect.left - canvasRect.left;
+    const physTop = toolbarRect.top - canvasRect.top;
+    const physRight = physLeft + toolbarW;
+    const physBottom = physTop + toolbarH;
 
     const canvasW = canvasRect.width;
     const canvasH = canvasRect.height;
-    const margin  = 6;
+    const margin = 6;
 
     let newLeft = styleLeft;
-    let newTop  = styleTop;
+    let newTop = styleTop;
 
     // Clamp right overflow
     if (physRight > canvasW - margin) {
@@ -409,6 +431,6 @@ function repositionToolbar(editor, toolbarElement = null) {
         newTop += margin - physTop;
     }
 
-    toolbar.style.top  = `${newTop}px`;
+    toolbar.style.top = `${newTop}px`;
     toolbar.style.left = `${newLeft}px`;
 }

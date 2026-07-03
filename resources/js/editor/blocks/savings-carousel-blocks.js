@@ -625,7 +625,6 @@ export function initializeSavingsSectionBlock(editor) {
                         command: "open-savings-config",
                     },
                 ],
-                toolbar: [],
             },
             init() {
                 this.set("type", componentType);

@@ -550,7 +550,6 @@ export function initializeBannerBlocks(editor) {
                     </div>
                 `,
                 script: createBannerScript(),
-                toolbar: [],
                 traits: [
                     {
                         type: "button",
