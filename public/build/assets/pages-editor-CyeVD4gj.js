@@ -1202,7 +1202,7 @@ ${qi}`}],Di=`<svg viewBox="0 0 32 32" width="32" height="32">
         ${i}
     </div>
 </section>
-${Oi}`},Pi=[{id:"feature-orange-img-right",label:"Sección naranja - imagen derecha",category:"Banners",media:Di,content:Fe(!0)},{id:"feature-orange-img-left",label:"Sección naranja - imagen izquierda",category:"Banners",media:Ni,content:Fe(!1)}],Hi=`<svg viewBox="0 0 32 32" width="32" height="32">
+${Oi}`},Pi=[{id:"feature-orange-img-right",label:"Sección naranja - imagen derecha",category:"Banners",media:Ni,content:Fe(!0)},{id:"feature-orange-img-left",label:"Sección naranja - imagen izquierda",category:"Banners",media:Di,content:Fe(!1)}],Hi=`<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="2" y="4" width="8" height="5" rx="1" fill="#003B71"/>
     <rect x="12" y="4" width="8" height="5" rx="1" fill="#003B71" fill-opacity="0.3"/>

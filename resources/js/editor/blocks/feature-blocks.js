@@ -1,6 +1,6 @@
 import { assetUrl } from "@/utils/url.js";
 
-const iconFeatureOrangeRight = `<svg viewBox="0 0 32 32" width="32" height="32">
+const iconFeatureOrangeLeft = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="0" y="8" width="32" height="24" fill="#E97300" rx="0"/>
     <rect x="0" y="8" width="32" height="24" fill="#E97300"/>
@@ -17,7 +17,7 @@ const iconFeatureOrangeRight = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="20" y="24.3" width="6" height="1" rx="0.5" fill="white" fill-opacity="0.7"/>
 </svg>`;
 
-const iconFeatureOrangeLeft = `<svg viewBox="0 0 32 32" width="32" height="32">
+const iconFeatureOrangeRight = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="0" y="8" width="32" height="24" fill="#E97300"/>
     <path d="M0 8 L24 8 Q32 8 32 2 L32 2 L0 2 Z" fill="#E97300"/>
