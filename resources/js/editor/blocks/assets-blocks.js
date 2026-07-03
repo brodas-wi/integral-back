@@ -168,11 +168,9 @@ function createAssetsScript() {
     return function () {
         const section = this;
         const doc = section.ownerDocument ?? document;
-        const TEMP_API_BASE_PREFIX = "/adminintegral";
         const origin = (doc.defaultView ?? window).location.origin;
         const apiEndpoint =
-            doc.querySelector('meta[name="api-assets-url"]')?.content ||
-            `${origin}${TEMP_API_BASE_PREFIX}/api/assets/active`;
+            doc.querySelector('meta[name="api-assets-url"]')?.content || `${origin}/api/assets/active`;
 
         const RUNTIME_STYLES = `
 .ast-section {
