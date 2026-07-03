@@ -135,6 +135,32 @@ const ASSETS_RUNTIME_STYLES = `
     font-size: 0.875rem;
 }
 
+.ast-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 4rem 1rem;
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+.ast-spinner {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 3px solid #e5e7eb;
+    border-top-color: #E97300;
+    border-radius: 50%;
+    animation: ast-spin 0.8s linear infinite;
+}
+
+@keyframes ast-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 1280px) {
     .ast-section {
         padding: 3rem 2.5rem;
@@ -296,6 +322,32 @@ function createAssetsScript() {
     font-size: 0.875rem;
 }
 
+.ast-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 4rem 1rem;
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+.ast-spinner {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 3px solid #e5e7eb;
+    border-top-color: #E97300;
+    border-radius: 50%;
+    animation: ast-spin 0.8s linear infinite;
+}
+
+@keyframes ast-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 1280px) {
     .ast-section {
         padding: 3rem 2.5rem;
@@ -455,7 +507,12 @@ function createAssetsScript() {
                 return;
             }
 
-            contentEl.innerHTML = `<div class="ast-empty">Cargando activos extraordinarios...</div>`;
+            contentEl.innerHTML = `
+                <div class="ast-loading">
+                    <div class="ast-spinner"></div>
+                    <span>Cargando activos extraordinarios...</span>
+                </div>`;
+
             try {
                 const res = await fetch(apiEndpoint, {
                     headers: { Accept: "application/json" },

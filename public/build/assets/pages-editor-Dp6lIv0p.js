@@ -3155,6 +3155,32 @@ ${Ia}
     font-size: 0.875rem;
 }
 
+.ast-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 4rem 1rem;
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+.ast-spinner {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 3px solid #e5e7eb;
+    border-top-color: #E97300;
+    border-radius: 50%;
+    animation: ast-spin 0.8s linear infinite;
+}
+
+@keyframes ast-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 1280px) {
     .ast-section {
         padding: 3rem 2.5rem;
@@ -3304,6 +3330,32 @@ ${Ia}
     font-size: 0.875rem;
 }
 
+.ast-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 4rem 1rem;
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+.ast-spinner {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 3px solid #e5e7eb;
+    border-top-color: #E97300;
+    border-radius: 50%;
+    animation: ast-spin 0.8s linear infinite;
+}
+
+@keyframes ast-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 1280px) {
     .ast-section {
         padding: 3rem 2.5rem;
@@ -3341,7 +3393,11 @@ ${Ia}
                 <p class="ast-subtitle">${b}</p>
                 <div class="ast-subtitle-stripe"></div>
                 <div class="ast-grid">${g}</div>
-            </div>`}function m(){if(s){const w=c.filter(f=>f.category_slug===s),g=w[0]?.category||h().find(f=>f.slug===s)?.name||"";o.innerHTML=x(g,w);return}const b=h();o.innerHTML=b.map(w=>x(w.name,c.filter(g=>g.category_slug===w.slug))).join("")}function $(){const w=['<button type="button" class="ast-tab ast-tab--active" data-tab-slug="">Todos</button>',...h().map(g=>`<button type="button" class="ast-tab" data-tab-slug="${g.slug}">${g.name}</button>`)].join("");if(l.innerHTML=w,l.querySelectorAll("[data-tab-slug]").forEach(g=>{g.addEventListener("click",()=>{l.querySelectorAll(".ast-tab").forEach(f=>f.classList.remove("ast-tab--active")),g.classList.add("ast-tab--active"),s=g.dataset.tabSlug,m()})}),n){const g=l.querySelector(`[data-tab-slug="${n}"]`);g&&g.click()}}async function z(){if(!a){l.innerHTML='<button type="button" class="ast-tab ast-tab--active">Todos</button>',o.innerHTML='<div class="ast-empty">Vista previa del catálogo (los datos reales se cargan en el sitio publicado).</div>';return}o.innerHTML='<div class="ast-empty">Cargando activos extraordinarios...</div>';try{const b=await fetch(a,{headers:{Accept:"application/json"}});if(!b.ok){o.innerHTML='<div class="ast-empty">No se pudieron cargar los activos extraordinarios.</div>';return}if(c=await b.json(),!Array.isArray(c)||c.length===0){l.innerHTML='<button type="button" class="ast-tab ast-tab--active">Todos</button>',o.innerHTML='<div class="ast-empty">No hay activos extraordinarios disponibles.</div>';return}$(),m()}catch{o.innerHTML='<div class="ast-empty">No se pudieron cargar los activos extraordinarios.</div>'}}e.readyState==="loading"?e.addEventListener("DOMContentLoaded",z):z()}}const Ar=[{id:"assets-catalog",label:"Catálogo de Activos Extraordinarios",category:"Interactivos",media:_r,content:{type:"assets-catalog-component"}}];function Ir(t){const e="assets-catalog-component";t.DomComponents.addType(e,{isComponent:i=>i.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Catálogo de Activos Extraordinarios",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-default-category":"",class:"ast-section"},components:`
+            </div>`}function m(){if(s){const w=c.filter(f=>f.category_slug===s),g=w[0]?.category||h().find(f=>f.slug===s)?.name||"";o.innerHTML=x(g,w);return}const b=h();o.innerHTML=b.map(w=>x(w.name,c.filter(g=>g.category_slug===w.slug))).join("")}function $(){const w=['<button type="button" class="ast-tab ast-tab--active" data-tab-slug="">Todos</button>',...h().map(g=>`<button type="button" class="ast-tab" data-tab-slug="${g.slug}">${g.name}</button>`)].join("");if(l.innerHTML=w,l.querySelectorAll("[data-tab-slug]").forEach(g=>{g.addEventListener("click",()=>{l.querySelectorAll(".ast-tab").forEach(f=>f.classList.remove("ast-tab--active")),g.classList.add("ast-tab--active"),s=g.dataset.tabSlug,m()})}),n){const g=l.querySelector(`[data-tab-slug="${n}"]`);g&&g.click()}}async function z(){if(!a){l.innerHTML='<button type="button" class="ast-tab ast-tab--active">Todos</button>',o.innerHTML='<div class="ast-empty">Vista previa del catálogo (los datos reales se cargan en el sitio publicado).</div>';return}o.innerHTML=`
+                <div class="ast-loading">
+                    <div class="ast-spinner"></div>
+                    <span>Cargando activos extraordinarios...</span>
+                </div>`;try{const b=await fetch(a,{headers:{Accept:"application/json"}});if(!b.ok){o.innerHTML='<div class="ast-empty">No se pudieron cargar los activos extraordinarios.</div>';return}if(c=await b.json(),!Array.isArray(c)||c.length===0){l.innerHTML='<button type="button" class="ast-tab ast-tab--active">Todos</button>',o.innerHTML='<div class="ast-empty">No hay activos extraordinarios disponibles.</div>';return}$(),m()}catch{o.innerHTML='<div class="ast-empty">No se pudieron cargar los activos extraordinarios.</div>'}}e.readyState==="loading"?e.addEventListener("DOMContentLoaded",z):z()}}const Ar=[{id:"assets-catalog",label:"Catálogo de Activos Extraordinarios",category:"Interactivos",media:_r,content:{type:"assets-catalog-component"}}];function Ir(t){const e="assets-catalog-component";t.DomComponents.addType(e,{isComponent:i=>i.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Catálogo de Activos Extraordinarios",tagName:"section",draggable:!0,droppable:!1,editable:!1,stylable:!1,resizable:!1,selectable:!0,hoverable:!0,layerable:!0,highlightable:!1,copyable:!1,removable:!0,attributes:{"data-gjs-type":e,"data-default-category":"",class:"ast-section"},components:`
                     <p class="ast-header" contenteditable="true" data-gjs-type="text" data-gjs-editable="true" data-gjs-selectable="false" data-gjs-hoverable="false">Mayor información a: 0000-0000</p>
                     <div class="ast-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
                     <div class="ast-tabs" data-ast-tabs data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
