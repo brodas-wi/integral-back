@@ -13,7 +13,144 @@ const ASSETS_BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32">
     <circle cx="26" cy="27.8" r="1.3" fill="#003B71"/>
 </svg>`;
 
-const ASSETS_RUNTIME_STYLES = `.ast-section{width:100%;background:#ffffff;padding:3rem 4rem;font-family:'Poppins',sans-serif;}.ast-header{font-size:1.125rem;font-weight:700;color:#003B71;margin:0 0 1.25rem;}.ast-stripe{width:100%;height:3px;background:#E97300;margin-bottom:1.5rem;}.ast-tabs{display:flex;flex-wrap:wrap;border-bottom:2px solid #E97300;margin-bottom:1.25rem;}.ast-tab{padding:1rem 1.5rem;background:#ffffff;border:none;font-size:1.0625rem;font-weight:700;color:#003B71;cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s;}.ast-tab--active{background:#E97300;color:#ffffff;}.ast-subtitle{font-size:1.0625rem;font-weight:700;color:#003B71;margin:0 0 0.5rem;}.ast-subtitle-stripe{width:120px;height:2px;background:#E97300;margin-bottom:1.5rem;}.ast-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;}.ast-card{display:block;background:#ffffff;border-radius:0.5rem;box-shadow:0 4px 16px rgba(0,0,0,0.1);overflow:hidden;text-decoration:none;transition:box-shadow 0.2s ease;}.ast-card:hover{box-shadow:0 8px 26px rgba(0,0,0,0.16);}.ast-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}.ast-card-body{padding:0.75rem 0.875rem;}.ast-card-name{font-size:0.8125rem;font-weight:700;color:#003B71;line-height:1.4;margin:0 0 0.25rem;}.ast-card-desc{font-size:0.75rem;color:#003B71;line-height:1.4;margin:0;}.ast-empty{padding:3rem 1rem;text-align:center;color:#94a3b8;font-size:0.875rem;}@media(max-width:1280px){.ast-section{padding:3rem 2.5rem;}}@media(max-width:992px){.ast-section{padding:2.5rem 1.5rem;}.ast-tab{padding:0.75rem 1.125rem;font-size:0.9375rem;}}`;
+const ASSETS_RUNTIME_STYLES = `
+.ast-section {
+    width: 100%;
+    background: #ffffff;
+    padding: 3rem 4rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.ast-header {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #003B71;
+    margin: 0 0 1.25rem;
+}
+
+.ast-stripe {
+    width: 100%;
+    height: 3px;
+    background: #E97300;
+    margin-bottom: 1.5rem;
+}
+
+.ast-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-bottom: 2px solid #E97300;
+    margin-bottom: 1.25rem;
+}
+
+.ast-tab {
+    padding: 1rem 1.5rem;
+    background: #ffffff;
+    border: none;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #003B71;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+}
+
+.ast-tab--active {
+    background: #E97300;
+    color: #ffffff;
+}
+
+.ast-group {
+    margin-bottom: 2.5rem;
+}
+
+.ast-group:last-child {
+    margin-bottom: 0;
+}
+
+.ast-subtitle {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #003B71;
+    margin: 0 0 0.5rem;
+}
+
+.ast-subtitle-stripe {
+    width: 120px;
+    height: 2px;
+    background: #E97300;
+    margin-bottom: 1.5rem;
+}
+
+.ast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.ast-card {
+    display: block;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-decoration: none;
+    transition: box-shadow 0.2s ease;
+}
+
+.ast-card:hover {
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.16);
+}
+
+.ast-card-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+}
+
+.ast-card-body {
+    padding: 0.75rem 0.875rem;
+}
+
+.ast-card-name {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #003B71;
+    line-height: 1.4;
+    margin: 0 0 0.25rem;
+}
+
+.ast-card-desc {
+    font-size: 0.75rem;
+    color: #003B71;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.ast-empty {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 1280px) {
+    .ast-section {
+        padding: 3rem 2.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .ast-section {
+        padding: 2.5rem 1.5rem;
+    }
+    .ast-tab {
+        padding: 0.75rem 1.125rem;
+        font-size: 0.9375rem;
+    }
+}
+`;
 
 function createAssetsScript() {
     return function () {
@@ -25,17 +162,155 @@ function createAssetsScript() {
             doc.querySelector('meta[name="api-assets-url"]')?.content ||
             `${origin}${TEMP_API_BASE_PREFIX}/api/assets/active`;
 
+        const RUNTIME_STYLES = `
+.ast-section {
+    width: 100%;
+    background: #ffffff;
+    padding: 3rem 4rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.ast-header {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #003B71;
+    margin: 0 0 1.25rem;
+}
+
+.ast-stripe {
+    width: 100%;
+    height: 3px;
+    background: #E97300;
+    margin-bottom: 1.5rem;
+}
+
+.ast-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-bottom: 2px solid #E97300;
+    margin-bottom: 1.25rem;
+}
+
+.ast-tab {
+    padding: 1rem 1.5rem;
+    background: #ffffff;
+    border: none;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #003B71;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+}
+
+.ast-tab--active {
+    background: #E97300;
+    color: #ffffff;
+}
+
+.ast-group {
+    margin-bottom: 2.5rem;
+}
+
+.ast-group:last-child {
+    margin-bottom: 0;
+}
+
+.ast-subtitle {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #003B71;
+    margin: 0 0 0.5rem;
+}
+
+.ast-subtitle-stripe {
+    width: 120px;
+    height: 2px;
+    background: #E97300;
+    margin-bottom: 1.5rem;
+}
+
+.ast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.ast-card {
+    display: block;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-decoration: none;
+    transition: box-shadow 0.2s ease;
+}
+
+.ast-card:hover {
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.16);
+}
+
+.ast-card-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+}
+
+.ast-card-body {
+    padding: 0.75rem 0.875rem;
+}
+
+.ast-card-name {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #003B71;
+    line-height: 1.4;
+    margin: 0 0 0.25rem;
+}
+
+.ast-card-desc {
+    font-size: 0.75rem;
+    color: #003B71;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.ast-empty {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 1280px) {
+    .ast-section {
+        padding: 3rem 2.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .ast-section {
+        padding: 2.5rem 1.5rem;
+    }
+    .ast-tab {
+        padding: 0.75rem 1.125rem;
+        font-size: 0.9375rem;
+    }
+}
+`;
+
         if (!doc.getElementById("assets-block-styles")) {
             const s = doc.createElement("style");
             s.id = "assets-block-styles";
-            s.textContent = `.ast-section{width:100%;background:#ffffff;padding:3rem 4rem;font-family:'Poppins',sans-serif;}.ast-header{font-size:1.125rem;font-weight:700;color:#003B71;margin:0 0 1.25rem;}.ast-stripe{width:100%;height:3px;background:#E97300;margin-bottom:1.5rem;}.ast-tabs{display:flex;flex-wrap:wrap;border-bottom:2px solid #E97300;margin-bottom:1.25rem;}.ast-tab{padding:1rem 1.5rem;background:#ffffff;border:none;font-size:1.0625rem;font-weight:700;color:#003B71;cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s;}.ast-tab--active{background:#E97300;color:#ffffff;}.ast-subtitle{font-size:1.0625rem;font-weight:700;color:#003B71;margin:0 0 0.5rem;}.ast-subtitle-stripe{width:120px;height:2px;background:#E97300;margin-bottom:1.5rem;}.ast-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;}.ast-card{display:block;background:#ffffff;border-radius:0.5rem;box-shadow:0 4px 16px rgba(0,0,0,0.1);overflow:hidden;text-decoration:none;transition:box-shadow 0.2s ease;}.ast-card:hover{box-shadow:0 8px 26px rgba(0,0,0,0.16);}.ast-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}.ast-card-body{padding:0.75rem 0.875rem;}.ast-card-name{font-size:0.8125rem;font-weight:700;color:#003B71;line-height:1.4;margin:0 0 0.25rem;}.ast-card-desc{font-size:0.75rem;color:#003B71;line-height:1.4;margin:0;}.ast-empty{padding:3rem 1rem;text-align:center;color:#94a3b8;font-size:0.875rem;}@media(max-width:1280px){.ast-section{padding:3rem 2.5rem;}}@media(max-width:992px){.ast-section{padding:2.5rem 1.5rem;}.ast-tab{padding:0.75rem 1.125rem;font-size:0.9375rem;}}`;
+            s.textContent = RUNTIME_STYLES;
             doc.head.appendChild(s);
         }
 
         const tabsWrap = section.querySelector("[data-ast-tabs]");
-        const subtitleEl = section.querySelector("[data-ast-subtitle]");
-        const gridEl = section.querySelector("[data-ast-grid]");
-        if (!tabsWrap || !gridEl) return;
+        const contentEl = section.querySelector("[data-ast-content]");
+        if (!tabsWrap || !contentEl) return;
 
         const defaultCategory = section.dataset.defaultCategory || "";
         let allAssets = [];
@@ -43,13 +318,21 @@ function createAssetsScript() {
 
         function truncateText(text, maxLength) {
             if (!text) return "";
-            return text.length > maxLength ? `${text.slice(0, maxLength).trim()}...` : text;
+            return text.length > maxLength
+                ? `${text.slice(0, maxLength).trim()}...`
+                : text;
         }
 
         function buildCard(asset) {
-            const target = asset.link_is_external ? ' target="_blank" rel="noopener noreferrer"' : "";
-            const displayName = asset.name || truncateText(asset.short_description, 60);
-            const altText = asset.name || asset.short_description || "Activo extraordinario";
+            const target = asset.link_is_external
+                ? ' target="_blank" rel="noopener noreferrer"'
+                : "";
+            const displayName =
+                asset.name || truncateText(asset.short_description, 60);
+            const altText =
+                asset.name ||
+                asset.short_description ||
+                "Activo extraordinario";
 
             return `<a href="${asset.link_url}"${target} class="ast-card">
                 <img src="${asset.image_url}" alt="${altText}" class="ast-card-img" loading="lazy">
@@ -60,27 +343,7 @@ function createAssetsScript() {
             </a>`;
         }
 
-        function renderGrid() {
-            const filtered = activeSlug
-                ? allAssets.filter((a) => a.category_slug === activeSlug)
-                : allAssets;
-
-            if (subtitleEl) {
-                const label = activeSlug
-                    ? filtered[0]?.category || ""
-                    : "Todos";
-                subtitleEl.innerHTML = `<p class="ast-subtitle">${label}</p><div class="ast-subtitle-stripe"></div>`;
-            }
-
-            if (filtered.length === 0) {
-                gridEl.innerHTML = `<div class="ast-empty">No hay activos disponibles en esta categoría.</div>`;
-                return;
-            }
-
-            gridEl.innerHTML = filtered.map(buildCard).join("");
-        }
-
-        function renderTabs() {
+        function getOrderedCategories() {
             const categories = [];
             const seen = new Set();
             allAssets.forEach((a) => {
@@ -92,6 +355,48 @@ function createAssetsScript() {
                     });
                 }
             });
+            return categories;
+        }
+
+        function buildGroupHtml(name, items) {
+            const cardsHtml = items.length
+                ? items.map(buildCard).join("")
+                : `<div class="ast-empty">No hay activos extraordinarios disponibles en esta categoría.</div>`;
+
+            return `<div class="ast-group">
+                <p class="ast-subtitle">${name}</p>
+                <div class="ast-subtitle-stripe"></div>
+                <div class="ast-grid">${cardsHtml}</div>
+            </div>`;
+        }
+
+        function renderContent() {
+            if (activeSlug) {
+                const filtered = allAssets.filter(
+                    (a) => a.category_slug === activeSlug,
+                );
+                const label =
+                    filtered[0]?.category ||
+                    getOrderedCategories().find((c) => c.slug === activeSlug)
+                        ?.name ||
+                    "";
+                contentEl.innerHTML = buildGroupHtml(label, filtered);
+                return;
+            }
+
+            const categories = getOrderedCategories();
+            contentEl.innerHTML = categories
+                .map((cat) =>
+                    buildGroupHtml(
+                        cat.name,
+                        allAssets.filter((a) => a.category_slug === cat.slug),
+                    ),
+                )
+                .join("");
+        }
+
+        function renderTabs() {
+            const categories = getOrderedCategories();
 
             const tabsHtml = [
                 `<button type="button" class="ast-tab ast-tab--active" data-tab-slug="">Todos</button>`,
@@ -110,7 +415,7 @@ function createAssetsScript() {
                         .forEach((t) => t.classList.remove("ast-tab--active"));
                     btn.classList.add("ast-tab--active");
                     activeSlug = btn.dataset.tabSlug;
-                    renderGrid();
+                    renderContent();
                 });
             });
 
@@ -123,25 +428,25 @@ function createAssetsScript() {
         }
 
         async function loadAssets() {
-            gridEl.innerHTML = `<div class="ast-empty">Cargando activos...</div>`;
+            contentEl.innerHTML = `<div class="ast-empty">Cargando activos extraordinarios...</div>`;
             try {
                 const res = await fetch(apiEndpoint, {
                     headers: { Accept: "application/json" },
                 });
                 if (!res.ok) {
-                    gridEl.innerHTML = `<div class="ast-empty">No se pudieron cargar los activos.</div>`;
+                    contentEl.innerHTML = `<div class="ast-empty">No se pudieron cargar los activos extraordinarios.</div>`;
                     return;
                 }
                 allAssets = await res.json();
                 if (!Array.isArray(allAssets) || allAssets.length === 0) {
                     tabsWrap.innerHTML = `<button type="button" class="ast-tab ast-tab--active">Todos</button>`;
-                    gridEl.innerHTML = `<div class="ast-empty">No hay activos disponibles.</div>`;
+                    contentEl.innerHTML = `<div class="ast-empty">No hay activos extraordinarios disponibles.</div>`;
                     return;
                 }
                 renderTabs();
-                renderGrid();
+                renderContent();
             } catch {
-                gridEl.innerHTML = `<div class="ast-empty">No se pudieron cargar los activos.</div>`;
+                contentEl.innerHTML = `<div class="ast-empty">No se pudieron cargar los activos extraordinarios.</div>`;
             }
         }
 
@@ -156,7 +461,7 @@ function createAssetsScript() {
 export const assetsBlocks = [
     {
         id: "assets-catalog",
-        label: "Catálogo de Activos",
+        label: "Catálogo de Activos Extraordinarios",
         category: "Interactivos",
         media: ASSETS_BLOCK_ICON,
         content: { type: "assets-catalog-component" },
@@ -174,7 +479,7 @@ export function initializeAssetsBlocks(editor) {
 
         model: {
             defaults: {
-                name: "Catálogo de Activos",
+                name: "Catálogo de Activos Extraordinarios",
                 tagName: "section",
                 draggable: true,
                 droppable: false,
@@ -196,8 +501,7 @@ export function initializeAssetsBlocks(editor) {
                     <p class="ast-header" contenteditable="true" data-gjs-type="text" data-gjs-editable="true" data-gjs-selectable="false" data-gjs-hoverable="false">Mayor información a: 0000-0000</p>
                     <div class="ast-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
                     <div class="ast-tabs" data-ast-tabs data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
-                    <div data-ast-subtitle data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
-                    <div class="ast-grid" data-ast-grid data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
+                    <div data-ast-content data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
                 `,
                 script: createAssetsScript(),
                 toolbar: [],
@@ -227,6 +531,7 @@ export function initializeAssetsBlocks(editor) {
     });
 
     setupAssetsEditorEvents(editor, componentType);
+    injectAssetsEditorStyles(editor, componentType);
 }
 
 function setupAssetsEditorEvents(editor, componentType) {
@@ -278,4 +583,27 @@ function reinitializeAssetsComponents(editor, componentType) {
                 if (script && typeof script === "function") script.call(el);
             }
         });
+}
+
+function injectAssetsEditorStyles(editor, componentType) {
+    editor.on("load", () => {
+        const iframe = editor.Canvas.getFrameEl();
+        if (!iframe) return;
+        const head = iframe.contentDocument?.head;
+        if (!head) return;
+
+        if (!head.querySelector("#assets-block-styles")) {
+            const s = document.createElement("style");
+            s.id = "assets-block-styles";
+            s.textContent = ASSETS_RUNTIME_STYLES;
+            head.appendChild(s);
+        }
+
+        if (!head.querySelector(`#${componentType}-editor-css`)) {
+            const s = document.createElement("style");
+            s.id = `${componentType}-editor-css`;
+            s.textContent = `[data-gjs-type="${componentType}"] * { pointer-events: none !important; } [data-gjs-type="${componentType}"].gjs-selected, [data-gjs-type="${componentType}"].gjs-hovered { outline: 2px dashed rgba(240,135,42,0.6) !important; outline-offset: 2px; }`;
+            head.appendChild(s);
+        }
+    });
 }
