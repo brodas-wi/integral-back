@@ -5,9 +5,9 @@ const iconFeatureOrangeRight = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="0" y="8" width="32" height="24" fill="#E97300" rx="0"/>
     <rect x="0" y="8" width="32" height="24" fill="#E97300"/>
     <path d="M0 8 Q0 2 8 2 L32 2 L32 8 Z" fill="#E97300"/>
-    <rect x="2" y="10" width="12" height="18" fill="rgba(255,255,255,0.15)" rx="1"/>
-    <circle cx="8" cy="17" r="3" fill="rgba(255,255,255,0.3)"/>
-    <path d="M2 26 L6 21 L9 24 L11 22 L14 26 Z" fill="rgba(255,255,255,0.2)"/>
+    <rect x="2" y="10" width="12" height="18" fill="#003B71" fill-opacity="0.55" rx="1"/>
+    <circle cx="8" cy="17" r="3" fill="#003B71" fill-opacity="0.8"/>
+    <path d="M2 26 L6 21 L9 24 L11 22 L14 26 Z" fill="#003B71" fill-opacity="0.65"/>
     <rect x="16" y="10" width="14" height="3" rx="1" fill="white" fill-opacity="0.9"/>
     <rect x="16" y="15" width="14" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
     <rect x="16" y="17.5" width="10" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
@@ -21,9 +21,9 @@ const iconFeatureOrangeLeft = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="0" y="8" width="32" height="24" fill="#E97300"/>
     <path d="M0 8 L24 8 Q32 8 32 2 L32 2 L0 2 Z" fill="#E97300"/>
-    <rect x="18" y="10" width="12" height="18" fill="rgba(255,255,255,0.15)" rx="1"/>
-    <circle cx="24" cy="17" r="3" fill="rgba(255,255,255,0.3)"/>
-    <path d="M18 26 L22 21 L25 24 L27 22 L30 26 Z" fill="rgba(255,255,255,0.2)"/>
+    <rect x="18" y="10" width="12" height="18" fill="#003B71" fill-opacity="0.55" rx="1"/>
+    <circle cx="24" cy="17" r="3" fill="#003B71" fill-opacity="0.8"/>
+    <path d="M18 26 L22 21 L25 24 L27 22 L30 26 Z" fill="#003B71" fill-opacity="0.65"/>
     <rect x="2" y="10" width="14" height="3" rx="1" fill="white" fill-opacity="0.9"/>
     <rect x="2" y="15" width="14" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
     <rect x="2" y="17.5" width="10" height="1.2" rx="0.6" fill="white" fill-opacity="0.5"/>
@@ -73,10 +73,12 @@ const FEATURE_STYLES = `
     .fb-section-right{padding:2.5rem 1.5rem;border-radius:110px 0 0 0;}
     .fb-section-left{padding:2.5rem 1.5rem;border-radius:0 110px 0 0;}
     .fb-grid{grid-template-columns:1fr;gap:2rem;}
+    .fb-img{height:auto;min-height:0;max-height:none;aspect-ratio:16/9;}
 }
 @media(max-width:580px){
     .fb-section-right{padding:2rem 1rem;border-radius:60px 0 0 0;}
     .fb-section-left{padding:2rem 1rem;border-radius:0 60px 0 0;}
+    .fb-img{aspect-ratio:4/3;}
 }
 </style>`;
 
