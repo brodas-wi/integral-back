@@ -49,7 +49,7 @@ const CONTENT_COL = `
         <span class="text-white font-bold">Integral</span>
     </h2>
     <p class="text-white text-base leading-relaxed text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
-    <div class="flex flex-col gap-3">
+    <div class="fb-list-wrap flex flex-col gap-3">
         ${LIST_ITEM}
         ${LIST_ITEM}
         ${LIST_ITEM}
@@ -71,13 +71,16 @@ const FEATURE_STYLES = `
 .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
 .fb-col-image,.fb-col-content{min-width:0;}
 .fb-img-wrap{width:100%;height:400px;border-radius:0.75rem;overflow:hidden;}
-.fb-img{width:100%;height:100%;object-fit:cover;display:block;}
+.fb-img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;}
 @media(max-width:992px){
     .fb-section-right{padding:2.5rem 1.5rem;border-radius:110px 0 0 0;}
     .fb-section-left{padding:2.5rem 1.5rem;border-radius:0 110px 0 0;}
     .fb-grid{grid-template-columns:1fr;gap:2rem;}
     .fb-col-image{order:-1;}
     .fb-img-wrap{max-width:600px;height:280px;margin:0 auto;}
+    .fb-col-content{align-items:center;text-align:center;}
+    .fb-col-content h2{justify-content:center;}
+    .fb-list-wrap{align-items:center;}
 }
 @media(max-width:580px){
     .fb-section-right{padding:2rem 1rem;border-radius:60px 0 0 0;}
