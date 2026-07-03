@@ -104,7 +104,7 @@ const ASSETS_RUNTIME_STYLES = `
 
 .ast-card-img {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: 200px;
     object-fit: cover;
     display: block;
 }
@@ -168,9 +168,9 @@ function createAssetsScript() {
     return function () {
         const section = this;
         const doc = section.ownerDocument ?? document;
-        const origin = (doc.defaultView ?? window).location.origin;
+        const appBase = doc.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
         const apiEndpoint =
-            doc.querySelector('meta[name="api-assets-url"]')?.content || `${origin}/api/assets/active`;
+            doc.querySelector('meta[name="api-assets-url"]')?.content || `${appBase}/api/assets/active`;
 
         const RUNTIME_STYLES = `
 .ast-section {
@@ -243,7 +243,7 @@ function createAssetsScript() {
 
 .ast-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
 }
 
@@ -263,7 +263,7 @@ function createAssetsScript() {
 
 .ast-card-img {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: 200px;
     object-fit: cover;
     display: block;
 }
@@ -298,6 +298,9 @@ function createAssetsScript() {
     .ast-section {
         padding: 3rem 2.5rem;
     }
+    .ast-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 @media (max-width: 992px) {
@@ -307,6 +310,15 @@ function createAssetsScript() {
     .ast-tab {
         padding: 0.75rem 1.125rem;
         font-size: 0.9375rem;
+    }
+    .ast-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .ast-grid {
+        grid-template-columns: 1fr;
     }
 }
 `;

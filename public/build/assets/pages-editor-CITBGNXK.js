@@ -3124,7 +3124,7 @@ ${Ia}
 
 .ast-card-img {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: 200px;
     object-fit: cover;
     display: block;
 }
@@ -3182,7 +3182,7 @@ ${Ia}
         grid-template-columns: 1fr;
     }
 }
-`;function zr(){return function(){const t=this,e=t.ownerDocument??document,i=(e.defaultView??window).location.origin,a=e.querySelector('meta[name="api-assets-url"]')?.content||`${i}/api/assets/active`,r=`
+`;function zr(){return function(){const t=this,e=t.ownerDocument??document,i=e.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/,"")??"",a=e.querySelector('meta[name="api-assets-url"]')?.content||`${i}/api/assets/active`,r=`
 .ast-section {
     width: 100%;
     background: #ffffff;
@@ -3253,7 +3253,7 @@ ${Ia}
 
 .ast-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
 }
 
@@ -3273,7 +3273,7 @@ ${Ia}
 
 .ast-card-img {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: 200px;
     object-fit: cover;
     display: block;
 }
@@ -3308,6 +3308,9 @@ ${Ia}
     .ast-section {
         padding: 3rem 2.5rem;
     }
+    .ast-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 @media (max-width: 992px) {
@@ -3317,6 +3320,15 @@ ${Ia}
     .ast-tab {
         padding: 0.75rem 1.125rem;
         font-size: 0.9375rem;
+    }
+    .ast-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .ast-grid {
+        grid-template-columns: 1fr;
     }
 }
 `;if(!e.getElementById("assets-block-styles")){const b=e.createElement("style");b.id="assets-block-styles",b.textContent=r,e.head.appendChild(b)}const l=t.querySelector("[data-ast-tabs]"),o=t.querySelector("[data-ast-content]");if(!l||!o)return;const n=t.dataset.defaultCategory||"";let c=[],s="";function d(b,w){return b?b.length>w?`${b.slice(0,w).trim()}...`:b:""}function u(b){const w=b.link_is_external?' target="_blank" rel="noopener noreferrer"':"",g=b.name||d(b.short_description,60),f=b.name||b.short_description||"Activo extraordinario";return`<a href="${b.link_url}"${w} class="ast-card">
