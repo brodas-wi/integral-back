@@ -168,9 +168,9 @@ function createAssetsScript() {
     return function () {
         const section = this;
         const doc = section.ownerDocument ?? document;
-        const appBase = doc.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
-        const apiEndpoint =
-            doc.querySelector('meta[name="api-assets-url"]')?.content || `${appBase}/api/assets/active`;
+        const apiEndpoint = doc.querySelector('meta[name="api-assets-url"]')?.content;
+
+        if (!apiEndpoint) return;
 
         const RUNTIME_STYLES = `
 .ast-section {

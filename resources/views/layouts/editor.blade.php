@@ -16,6 +16,7 @@
     <meta name="api-banners-url" content="{{ route('api.banners.active') }}">
     <meta name="api-announcements-url" content="{{ route('api.announcements.for-page') }}">
     <meta name="media-api-url" content="{{ route('media.api') }}">
+    <meta name="api-assets-url" content="{{ route('api.assets.active') }}">
 
     <title>{{ isset($page) ? 'Editar: ' . $page->title : 'Nueva Página' }} - Editor</title>
 

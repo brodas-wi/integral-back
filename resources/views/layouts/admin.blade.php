@@ -8,6 +8,7 @@
     <meta name="app-url" content="{{ rtrim(config('app.url'), '/') }}">
     <meta name="asset-url" content="{{ rtrim(config('app.asset_url', config('app.url')), '/') }}">
     <meta name="media-api-url" content="{{ route('media.api') }}">
+    <meta name="api-assets-url" content="{{ route('api.assets.active') }}">
     <title>@yield('title', 'Dashboard') - CMS Integral</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link href="{{ Vite::asset('node_modules/remixicon/fonts/remixicon.css') }}" rel="stylesheet">
