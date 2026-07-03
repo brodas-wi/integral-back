@@ -14,7 +14,7 @@ return new class extends Migration
                 ->constrained('extraordinary_asset_categories')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('short_description', 500)->nullable();
             $table->string('image_url');
             $table->string('link_url');
