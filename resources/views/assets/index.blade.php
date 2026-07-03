@@ -63,8 +63,8 @@
         <div class="grid gap-4 assets-grid">
             @foreach ($assets as $asset)
                 <div class="card group flex flex-col h-full p-4" id="asset-item-{{ $asset->id }}">
-                    <div class="w-full aspect-video rounded-lg overflow-hidden bg-gray-100 mb-3">
-                        <img src="{{ $asset->image_url }}" alt="{{ $asset->name }}" class="w-full h-full object-cover">
+                    <div class="w-full h-40 rounded-lg overflow-hidden bg-gray-100 mb-3">
+                        <img src="{{ $asset->image_url }}" alt="{{ $asset->name ?: Str::limit($asset->short_description, 60) }}" class="w-full h-full object-cover">
                     </div>
 
                     <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
