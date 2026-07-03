@@ -69,6 +69,7 @@ const FEATURE_STYLES = `
 .fb-section-right{width:100%;background:#E97300;padding:3rem 4rem 3rem 4rem;border-radius:200px 0 0 0;}
 .fb-section-left{width:100%;background:#E97300;padding:3rem 4rem 3rem 4rem;border-radius:0 200px 0 0;}
 .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+.fb-col-image,.fb-col-content{min-width:0;}
 .fb-img-wrap{width:100%;height:400px;border-radius:0.75rem;overflow:hidden;}
 .fb-img{width:100%;height:100%;object-fit:cover;display:block;}
 @media(max-width:992px){
