@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Activos')
+@section('title', 'Activos Extraordinarios')
 
 @section('page-title')
     <div class="flex items-center gap-3">
-        <span>Activos</span>
+        <span>Activos Extraordinarios</span>
         <span class="badge badge-info">{{ $stats['total'] }} {{ $stats['total'] === 1 ? 'activo' : 'activos' }}</span>
     </div>
 @endsection
@@ -117,7 +117,7 @@
         @endif
     @else
         <div class="card text-center py-12">
-            <i class="ri-image-line text-6xl text-gray-400 mb-4"></i>
+            <i class="ri-building-4-line text-6xl text-gray-400 mb-4"></i>
             <h3 class="text-xl font-semibold text-secondary mb-2">No hay activos</h3>
             <p class="text-gray-600 mb-6">
                 @if (request('search') || request('category') || request('status'))

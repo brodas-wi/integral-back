@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('assets', function (Blueprint $table) {
+        Schema::create('extraordinary_assets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_category_id')
-                ->constrained('asset_categories')
+            $table->foreignId('extraordinary_asset_category_id')
+                ->constrained('extraordinary_asset_categories')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
             $table->string('name');
@@ -32,6 +32,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('assets');
+        Schema::dropIfExists('extraordinary_assets');
     }
 };

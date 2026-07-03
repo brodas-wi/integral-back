@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Asset extends Model
+class ExtraordinaryAsset extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'asset_category_id',
+        'extraordinary_asset_category_id',
         'name',
         'short_description',
         'image_url',
@@ -31,7 +31,7 @@ class Asset extends Model
 
     public function category()
     {
-        return $this->belongsTo(AssetCategory::class, 'asset_category_id');
+        return $this->belongsTo(ExtraordinaryAssetCategory::class, 'extraordinary_asset_category_id');
     }
 
     public function creator()

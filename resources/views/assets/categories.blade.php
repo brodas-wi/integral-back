@@ -32,10 +32,10 @@
                                 </button>
                             </form>
 
-                            <span class="badge badge-info whitespace-nowrap">{{ $category->assets_count }} activo(s)</span>
+                            <span class="badge badge-info whitespace-nowrap">{{ $category->extraordinary_assets_count }} activo(s)</span>
 
                             <form method="POST" action="{{ route('asset-categories.destroy', $category) }}"
-                                data-category-delete-form data-count="{{ $category->assets_count }}">
+                                data-category-delete-form data-count="{{ $category->extraordinary_assets_count }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-secondary btn-sm text-red-600" title="Eliminar categoría">

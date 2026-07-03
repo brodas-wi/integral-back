@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAssetRequest extends FormRequest
+class UpdateExtraordinaryAssetRequest extends FormRequest
 {
     public function authorize(): bool
     {

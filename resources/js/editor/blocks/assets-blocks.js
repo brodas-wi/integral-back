@@ -1,12 +1,16 @@
 const ASSETS_BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <rect x="2" y="4" width="20" height="3" rx="1" fill="#003B71" fill-opacity="0.7"/>
-    <rect x="2" y="9" width="28" height="1.5" rx="0.75" fill="#E97300"/>
-    <rect x="2" y="13" width="8" height="7" rx="1" fill="#003B71" fill-opacity="0.25"/>
-    <rect x="12" y="13" width="8" height="7" rx="1" fill="#E97300" fill-opacity="0.7"/>
-    <rect x="22" y="13" width="8" height="7" rx="1" fill="#003B71" fill-opacity="0.25"/>
-    <rect x="2" y="22" width="8" height="7" rx="1" fill="#003B71" fill-opacity="0.25"/>
-    <rect x="12" y="22" width="8" height="7" rx="1" fill="#003B71" fill-opacity="0.25"/>
+    <rect x="3" y="10" width="12" height="19" fill="none" stroke="#003B71" stroke-width="1" rx="1"/>
+    <rect x="5.5" y="13" width="2.5" height="2.5" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="10" y="13" width="2.5" height="2.5" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="5.5" y="17.5" width="2.5" height="2.5" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="10" y="17.5" width="2.5" height="2.5" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="7" y="23" width="4" height="6" fill="#003B71" fill-opacity="0.7"/>
+    <rect x="2" y="26" width="28" height="1.5" rx="0.75" fill="#E97300"/>
+    <path d="M17 24c0-1.5 1-2.5 2.5-2.5h6c1.5 0 2.5 1 2.5 2.5v1.5h-11V24z" fill="#E97300" fill-opacity="0.85"/>
+    <rect x="16.5" y="25" width="12" height="2.5" rx="1" fill="#E97300"/>
+    <circle cx="19" cy="27.8" r="1.3" fill="#003B71"/>
+    <circle cx="26" cy="27.8" r="1.3" fill="#003B71"/>
 </svg>`;
 
 const ASSETS_RUNTIME_STYLES = `.ast-section{width:100%;background:#ffffff;padding:3rem 4rem;font-family:'Poppins',sans-serif;}.ast-header{font-size:1.125rem;font-weight:700;color:#003B71;margin:0 0 1.25rem;}.ast-stripe{width:100%;height:3px;background:#E97300;margin-bottom:1.5rem;}.ast-tabs{display:flex;flex-wrap:wrap;border-bottom:2px solid #E97300;margin-bottom:1.25rem;}.ast-tab{padding:1rem 1.5rem;background:#ffffff;border:none;font-size:1.0625rem;font-weight:700;color:#003B71;cursor:pointer;font-family:inherit;transition:background 0.15s,color 0.15s;}.ast-tab--active{background:#E97300;color:#ffffff;}.ast-subtitle{font-size:1.0625rem;font-weight:700;color:#003B71;margin:0 0 0.5rem;}.ast-subtitle-stripe{width:120px;height:2px;background:#E97300;margin-bottom:1.5rem;}.ast-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;}.ast-card{display:block;background:#ffffff;border-radius:0.5rem;box-shadow:0 4px 16px rgba(0,0,0,0.1);overflow:hidden;text-decoration:none;transition:box-shadow 0.2s ease;}.ast-card:hover{box-shadow:0 8px 26px rgba(0,0,0,0.16);}.ast-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}.ast-card-body{padding:0.75rem 0.875rem;}.ast-card-name{font-size:0.8125rem;font-weight:700;color:#003B71;line-height:1.4;margin:0 0 0.25rem;}.ast-card-desc{font-size:0.75rem;color:#003B71;line-height:1.4;margin:0;}.ast-empty{padding:3rem 1rem;text-align:center;color:#94a3b8;font-size:0.875rem;}@media(max-width:1280px){.ast-section{padding:3rem 2.5rem;}}@media(max-width:992px){.ast-section{padding:2.5rem 1.5rem;}.ast-tab{padding:0.75rem 1.125rem;font-size:0.9375rem;}}`;

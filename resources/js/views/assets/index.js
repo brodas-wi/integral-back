@@ -19,7 +19,7 @@ function initDeleteAsset() {
     document.querySelectorAll("[data-delete-asset]").forEach((btn) => {
         btn.addEventListener("click", () => {
             showConfirmModal({
-                title: "¿Eliminar activo?",
+                title: "¿Eliminar activo extraordinario?",
                 message: `¿Estás seguro de que deseas eliminar "${btn.dataset.name}"? Esta acción no se puede deshacer.`,
                 confirmText: "Eliminar",
                 cancelText: "Cancelar",

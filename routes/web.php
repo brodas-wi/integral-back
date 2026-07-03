@@ -13,8 +13,8 @@ use App\Http\Controllers\PaymentPointController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ScriptController;
-use App\Http\Controllers\AssetController;
-use App\Http\Controllers\AssetCategoryController;
+use App\Http\Controllers\ExtraordinaryAssetController;
+use App\Http\Controllers\ExtraordinaryAssetCategoryController;
 use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
@@ -625,65 +625,65 @@ Route::middleware(['auth'])->group(function () {
     // ASSETS MODULE ROUTES
     // ==========================================
     Route::prefix('assets')->name('assets.')->group(function () {
-        Route::get('/', [AssetController::class, 'index'])
+        Route::get('/', [ExtraordinaryAssetController::class, 'index'])
             ->name('index')
             ->middleware('can:assets.view,assets.manage');
 
-        Route::get('/trashed', [AssetController::class, 'trashed'])
+        Route::get('/trashed', [ExtraordinaryAssetController::class, 'trashed'])
             ->name('trashed')
             ->middleware('can:assets.delete,assets.manage');
 
-        Route::get('/create', [AssetController::class, 'create'])
+        Route::get('/create', [ExtraordinaryAssetController::class, 'create'])
             ->name('create')
             ->middleware('can:assets.create,assets.manage');
 
-        Route::post('/', [AssetController::class, 'store'])
+        Route::post('/', [ExtraordinaryAssetController::class, 'store'])
             ->name('store')
             ->middleware('can:assets.create,assets.manage');
 
-        Route::get('/{asset}/edit', [AssetController::class, 'edit'])
+        Route::get('/{asset}/edit', [ExtraordinaryAssetController::class, 'edit'])
             ->name('edit')
             ->middleware('can:assets.edit,assets.manage');
 
-        Route::put('/{asset}', [AssetController::class, 'update'])
+        Route::put('/{asset}', [ExtraordinaryAssetController::class, 'update'])
             ->name('update')
             ->middleware('can:assets.edit,assets.manage');
 
-        Route::patch('/{asset}/toggle-status', [AssetController::class, 'toggleStatus'])
+        Route::patch('/{asset}/toggle-status', [ExtraordinaryAssetController::class, 'toggleStatus'])
             ->name('toggle-status')
             ->middleware('can:assets.toggle,assets.manage');
 
-        Route::patch('/{id}/restore', [AssetController::class, 'restore'])
+        Route::patch('/{id}/restore', [ExtraordinaryAssetController::class, 'restore'])
             ->name('restore')
             ->middleware('can:assets.delete,assets.manage');
 
-        Route::delete('/{id}/force-delete', [AssetController::class, 'forceDelete'])
+        Route::delete('/{id}/force-delete', [ExtraordinaryAssetController::class, 'forceDelete'])
             ->name('force-delete')
             ->middleware('can:assets.delete,assets.manage');
 
-        Route::delete('/{asset}', [AssetController::class, 'destroy'])
+        Route::delete('/{asset}', [ExtraordinaryAssetController::class, 'destroy'])
             ->name('destroy')
             ->middleware('can:assets.delete,assets.manage');
     });
 
     Route::prefix('asset-categories')->name('asset-categories.')->group(function () {
-        Route::get('/', [AssetCategoryController::class, 'index'])
+        Route::get('/', [ExtraordinaryAssetCategoryController::class, 'index'])
             ->name('index')
             ->middleware('can:assets.manage');
 
-        Route::put('/{assetCategory}', [AssetCategoryController::class, 'update'])
+        Route::put('/{assetCategory}', [ExtraordinaryAssetCategoryController::class, 'update'])
             ->name('update')
             ->middleware('can:assets.manage');
 
-        Route::delete('/{assetCategory}', [AssetCategoryController::class, 'destroy'])
+        Route::delete('/{assetCategory}', [ExtraordinaryAssetCategoryController::class, 'destroy'])
             ->name('destroy')
             ->middleware('can:assets.manage');
     });
 
-    Route::get('/api/assets/active', [AssetController::class, 'apiActive'])
+    Route::get('/api/assets/active', [ExtraordinaryAssetController::class, 'apiActive'])
         ->name('api.assets.active');
 
-    Route::get('/api/asset-categories/search', [AssetController::class, 'apiCategorySuggestions'])
+    Route::get('/api/asset-categories/search', [ExtraordinaryAssetController::class, 'apiCategorySuggestions'])
         ->name('api.asset-categories.search')
         ->middleware('can:assets.create,assets.edit,assets.manage');
 

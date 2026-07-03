@@ -140,8 +140,8 @@
                                 @canany(['assets.view', 'assets.manage'])
                                     <a href="{{ route('assets.index') }}"
                                         class="sidebar-child-link {{ request()->routeIs('assets.*') || request()->routeIs('asset-categories.*') ? 'active' : '' }}">
-                                        <i class="ri-gallery-line text-lg"></i>
-                                        <span>Activos</span>
+                                        <i class="ri-building-4-line text-lg"></i>
+                                        <span>Activos Extraordinarios</span>
                                     </a>
                                 @endcanany
                             </div>

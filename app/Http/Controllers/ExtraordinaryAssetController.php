@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asset;
-use App\Models\AssetCategory;
-use App\Http\Requests\StoreAssetRequest;
-use App\Http\Requests\UpdateAssetRequest;
+use App\Models\ExtraordinaryAsset;
+use App\Models\ExtraordinaryAssetCategory;
+use App\Http\Requests\StoreExtraordinaryAssetRequest;
+use App\Http\Requests\UpdateExtraordinaryAssetRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class AssetController extends Controller
+class ExtraordinaryAssetController extends Controller
 {
     use AuthorizesRequests;
 
@@ -22,14 +22,14 @@ class AssetController extends Controller
         $perPage = (int) $request->input('per_page', 10);
         $perPage = in_array($perPage, [10, 20, 30]) ? $perPage : 10;
 
-        $query = Asset::with(['category', 'creator']);
+        $query = ExtraordinaryAsset::with(['category', 'creator']);
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
         if ($request->filled('category')) {
-            $query->where('asset_category_id', $request->category);
+            $query->where('extraordinary_asset_category_id', $request->category);
         }
 
         if ($request->filled('status')) {
@@ -39,12 +39,12 @@ class AssetController extends Controller
         $assets = $query->latest()->paginate($perPage)->withQueryString();
 
         $stats = [
-            'total'    => Asset::count(),
-            'active'   => Asset::where('is_active', true)->count(),
-            'inactive' => Asset::where('is_active', false)->count(),
+            'total'    => ExtraordinaryAsset::count(),
+            'active'   => ExtraordinaryAsset::where('is_active', true)->count(),
+            'inactive' => ExtraordinaryAsset::where('is_active', false)->count(),
         ];
 
-        $categories = AssetCategory::orderBy('name')->get();
+        $categories = ExtraordinaryAssetCategory::orderBy('name')->get();
 
         return view('assets.index', compact('assets', 'stats', 'categories'));
     }
@@ -53,7 +53,7 @@ class AssetController extends Controller
     {
         $this->authorize('assets.delete');
 
-        $assets = Asset::onlyTrashed()->with('category')->latest()->paginate(10);
+        $assets = ExtraordinaryAsset::onlyTrashed()->with('category')->latest()->paginate(10);
 
         return view('assets.trashed', compact('assets'));
     }
@@ -62,20 +62,20 @@ class AssetController extends Controller
     {
         $this->authorize('assets.create');
 
-        $categories = AssetCategory::orderBy('name')->pluck('name');
+        $categories = ExtraordinaryAssetCategory::orderBy('name')->pluck('name');
 
         return view('assets.create', compact('categories'));
     }
 
-    public function store(StoreAssetRequest $request)
+    public function store(StoreExtraordinaryAssetRequest $request)
     {
         $this->authorize('assets.create');
 
         try {
-            $category = AssetCategory::findOrCreateByName($request->category_name);
+            $category = ExtraordinaryAssetCategory::findOrCreateByName($request->category_name);
 
-            Asset::create([
-                'asset_category_id' => $category->id,
+            ExtraordinaryAsset::create([
+                'extraordinary_asset_category_id' => $category->id,
                 'name'              => $request->name,
                 'short_description' => $request->short_description,
                 'image_url'         => $request->image_url,
@@ -86,32 +86,32 @@ class AssetController extends Controller
                 'updated_by'        => Auth::id(),
             ]);
 
-            return redirect()->route('assets.index')->with('success', 'Activo creado exitosamente.');
+            return redirect()->route('assets.index')->with('success', 'Activo extraordinario creado exitosamente.');
         } catch (\Exception $e) {
-            Log::error('Error creating asset: ' . $e->getMessage());
+            Log::error('Error creating extraordinary asset: ' . $e->getMessage());
 
-            return back()->withInput()->with('error', 'Error al crear el activo: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Error al crear el activo extraordinario: ' . $e->getMessage());
         }
     }
 
-    public function edit(Asset $asset)
+    public function edit(ExtraordinaryAsset $asset)
     {
         $this->authorize('assets.edit');
 
-        $categories = AssetCategory::orderBy('name')->pluck('name');
+        $categories = ExtraordinaryAssetCategory::orderBy('name')->pluck('name');
 
         return view('assets.edit', compact('asset', 'categories'));
     }
 
-    public function update(UpdateAssetRequest $request, Asset $asset)
+    public function update(UpdateExtraordinaryAssetRequest $request, ExtraordinaryAsset $asset)
     {
         $this->authorize('assets.edit');
 
         try {
-            $category = AssetCategory::findOrCreateByName($request->category_name);
+            $category = ExtraordinaryAssetCategory::findOrCreateByName($request->category_name);
 
             $asset->update([
-                'asset_category_id' => $category->id,
+                'extraordinary_asset_category_id' => $category->id,
                 'name'              => $request->name,
                 'short_description' => $request->short_description,
                 'image_url'         => $request->image_url,
@@ -121,15 +121,15 @@ class AssetController extends Controller
                 'updated_by'        => Auth::id(),
             ]);
 
-            return redirect()->route('assets.index')->with('success', 'Activo actualizado exitosamente.');
+            return redirect()->route('assets.index')->with('success', 'Activo extraordinario actualizado exitosamente.');
         } catch (\Exception $e) {
-            Log::error('Error updating asset: ' . $e->getMessage(), ['asset_id' => $asset->id]);
+            Log::error('Error updating extraordinary asset: ' . $e->getMessage(), ['asset_id' => $asset->id]);
 
-            return back()->withInput()->with('error', 'Error al actualizar el activo: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Error al actualizar el activo extraordinario: ' . $e->getMessage());
         }
     }
 
-    public function toggleStatus(Asset $asset)
+    public function toggleStatus(ExtraordinaryAsset $asset)
     {
         $this->authorize('assets.toggle');
 
@@ -138,7 +138,7 @@ class AssetController extends Controller
             'updated_by' => Auth::id(),
         ]);
 
-        $message = $asset->is_active ? 'Activo activado exitosamente.' : 'Activo desactivado exitosamente.';
+        $message = $asset->is_active ? 'Activo extraordinario activado exitosamente.' : 'Activo extraordinario desactivado exitosamente.';
 
         return response()->json([
             'success'   => true,
@@ -147,7 +147,7 @@ class AssetController extends Controller
         ]);
     }
 
-    public function destroy(Asset $asset)
+    public function destroy(ExtraordinaryAsset $asset)
     {
         $this->authorize('assets.delete');
 
@@ -161,13 +161,13 @@ class AssetController extends Controller
 
             return redirect()->route('assets.index')->with('success', "'{$name}' eliminado exitosamente.");
         } catch (\Exception $e) {
-            Log::error('Error deleting asset: ' . $e->getMessage(), ['asset_id' => $asset->id]);
+            Log::error('Error deleting extraordinary asset: ' . $e->getMessage(), ['asset_id' => $asset->id]);
 
             if (request()->expectsJson()) {
-                return response()->json(['success' => false, 'message' => 'Error al eliminar el activo.'], 500);
+                return response()->json(['success' => false, 'message' => 'Error al eliminar el activo extraordinario.'], 500);
             }
 
-            return back()->with('error', 'Error al eliminar el activo.');
+            return back()->with('error', 'Error al eliminar el activo extraordinario.');
         }
     }
 
@@ -175,7 +175,7 @@ class AssetController extends Controller
     {
         $this->authorize('assets.delete');
 
-        $asset = Asset::onlyTrashed()->findOrFail($id);
+        $asset = ExtraordinaryAsset::onlyTrashed()->findOrFail($id);
         $asset->restore();
 
         return back()->with('success', "'{$asset->name}' restaurado exitosamente.");
@@ -185,7 +185,7 @@ class AssetController extends Controller
     {
         $this->authorize('assets.delete');
 
-        $asset = Asset::onlyTrashed()->findOrFail($id);
+        $asset = ExtraordinaryAsset::onlyTrashed()->findOrFail($id);
         $name = $asset->name;
         $asset->forceDelete();
 
@@ -194,7 +194,7 @@ class AssetController extends Controller
 
     public function apiActive(Request $request)
     {
-        $query = Asset::active()->with('category')->latest();
+        $query = ExtraordinaryAsset::active()->with('category')->latest();
 
         if ($request->filled('category')) {
             $query->category($request->category);
@@ -220,7 +220,7 @@ class AssetController extends Controller
     {
         $q = $request->query('q', '');
 
-        $categories = AssetCategory::where('name', 'like', "%{$q}%")
+        $categories = ExtraordinaryAssetCategory::where('name', 'like', "%{$q}%")
             ->orderBy('name')
             ->limit(8)
             ->get(['id', 'name']);
