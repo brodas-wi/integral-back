@@ -14,8 +14,8 @@ class UpdateExtraordinaryAssetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'              => ['required', 'string', 'max:255'],
-            'short_description' => ['nullable', 'string', 'max:500'],
+            'name'              => ['nullable', 'required_without:short_description', 'string', 'max:255'],
+            'short_description' => ['nullable', 'required_without:name', 'string', 'max:500'],
             'image_url'         => ['required', 'string', 'max:2048'],
             'link_url'          => ['required', 'string', 'max:2048'],
             'link_is_external'  => ['sometimes', 'boolean'],
@@ -27,7 +27,8 @@ class UpdateExtraordinaryAssetRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required'          => 'El nombre del activo es obligatorio.',
+            'name.required_without'              => 'Debes indicar al menos el nombre o la descripción.',
+            'short_description.required_without'  => 'Debes indicar al menos el nombre o la descripción.',
             'image_url.required'     => 'Debes seleccionar una imagen.',
             'link_url.required'      => 'El enlace es obligatorio.',
             'category_name.required' => 'La categoría es obligatoria.',

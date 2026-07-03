@@ -21,10 +21,8 @@
 
             <div class="card space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-secondary mb-2">
-                        Nombre <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" name="name" value="{{ old('name') }}" required
+                    <label class="block text-sm font-medium text-secondary mb-2">Nombre</label>
+                    <input type="text" name="name" value="{{ old('name') }}"
                         class="input-field @error('name') border-red-500 @enderror"
                         placeholder="Ej: Terreno rural en San Antonio">
                     @error('name')
@@ -37,6 +35,7 @@
                     <textarea name="short_description" rows="2" maxlength="500"
                         class="input-field @error('short_description') border-red-500 @enderror"
                         placeholder="Descripción breve del activo...">{{ old('short_description') }}</textarea>
+                    <p class="text-xs text-gray-500 mt-1">Debes completar al menos el nombre o la descripción.</p>
                     @error('short_description')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror

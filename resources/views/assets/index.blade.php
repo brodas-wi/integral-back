@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
-                        <h3 class="text-base font-bold text-secondary flex-1 min-w-0 line-clamp-2">{{ $asset->name }}</h3>
+                        <h3 class="text-base font-bold text-secondary flex-1 min-w-0 line-clamp-2">{{ $asset->name ?: Str::limit($asset->short_description, 60) }}</h3>
                         <span class="badge {{ $asset->is_active ? 'badge-success' : 'badge-warning' }} flex-shrink-0 whitespace-nowrap">
                             <i class="ri-{{ $asset->is_active ? 'eye' : 'eye-off' }}-line mr-1"></i>
                             {{ $asset->is_active ? 'Activo' : 'Inactivo' }}

@@ -41,15 +41,21 @@ function createAssetsScript() {
         let allAssets = [];
         let activeSlug = "";
 
+        function truncateText(text, maxLength) {
+            if (!text) return "";
+            return text.length > maxLength ? `${text.slice(0, maxLength).trim()}...` : text;
+        }
+
         function buildCard(asset) {
-            const target = asset.link_is_external
-                ? ' target="_blank" rel="noopener noreferrer"'
-                : "";
+            const target = asset.link_is_external ? ' target="_blank" rel="noopener noreferrer"' : "";
+            const displayName = asset.name || truncateText(asset.short_description, 60);
+            const altText = asset.name || asset.short_description || "Activo extraordinario";
+
             return `<a href="${asset.link_url}"${target} class="ast-card">
-                <img src="${asset.image_url}" alt="${asset.name}" class="ast-card-img" loading="lazy">
+                <img src="${asset.image_url}" alt="${altText}" class="ast-card-img" loading="lazy">
                 <div class="ast-card-body">
-                    <p class="ast-card-name">${asset.name}</p>
-                    ${asset.short_description ? `<p class="ast-card-desc">${asset.short_description}</p>` : ""}
+                    <p class="ast-card-name">${displayName}</p>
+                    ${asset.name && asset.short_description ? `<p class="ast-card-desc">${asset.short_description}</p>` : ""}
                 </div>
             </a>`;
         }
