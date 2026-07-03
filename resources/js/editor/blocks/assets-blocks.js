@@ -516,10 +516,11 @@ export function initializeAssetsBlocks(editor) {
                 toolbar: [],
                 traits: [
                     {
-                        type: "text",
+                        type: "select",
                         name: "data-default-category",
-                        label: "Categoría inicial (slug)",
-                        placeholder: "Déjalo vacío para mostrar 'Todos'",
+                        label: "Categoría inicial",
+                        options: [{ id: "", name: "Todas (mostrar 'Todos')" }],
+                        changeProp: false,
                     },
                 ],
             },
@@ -541,6 +542,32 @@ export function initializeAssetsBlocks(editor) {
 
     setupAssetsEditorEvents(editor, componentType);
     injectAssetsEditorStyles(editor, componentType);
+    loadAssetCategoryOptions(editor, componentType);
+}
+
+async function loadAssetCategoryOptions(editor, componentType) {
+    try {
+        const appBase = document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
+        const res = await fetch(`${appBase}/api/asset-categories/all`, {
+            headers: { Accept: "application/json" },
+        });
+        if (!res.ok) return;
+
+        const categories = await res.json();
+        if (!Array.isArray(categories) || categories.length === 0) return;
+
+        const type = editor.DomComponents.getType(componentType);
+        if (!type) return;
+
+        const traits = type.model.prototype.defaults.traits;
+        const trait = traits.find((t) => t.name === "data-default-category");
+        if (!trait) return;
+
+        trait.options = [
+            { id: "", name: "Todas (mostrar 'Todos')" },
+            ...categories.map((c) => ({ id: c.slug, name: c.name })),
+        ];
+    } catch {}
 }
 
 function setupAssetsEditorEvents(editor, componentType) {

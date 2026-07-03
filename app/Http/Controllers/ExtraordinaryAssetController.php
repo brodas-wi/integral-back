@@ -216,6 +216,13 @@ class ExtraordinaryAssetController extends Controller
         }));
     }
 
+    public function apiCategoryList()
+    {
+        $categories = ExtraordinaryAssetCategory::orderBy('name')->get(['id', 'name', 'slug']);
+
+        return response()->json($categories);
+    }
+
     public function apiCategorySuggestions(Request $request)
     {
         $q = $request->query('q', '');

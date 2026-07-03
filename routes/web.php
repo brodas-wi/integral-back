@@ -687,6 +687,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('api.asset-categories.search')
         ->middleware('can:assets.create,assets.edit,assets.manage');
 
+    Route::get('/api/asset-categories/all', [ExtraordinaryAssetController::class, 'apiCategoryList'])
+        ->name('api.asset-categories.all')
+        ->middleware('can:assets.create,assets.edit,assets.manage');
+
     // API endpoint for scripts (shared DB - public frontend consumes this)
     Route::get('/api/scripts/active', [ScriptController::class, 'apiActive'])
         ->name('api.scripts.active');
