@@ -168,9 +168,11 @@ function createAssetsScript() {
     return function () {
         const section = this;
         const doc = section.ownerDocument ?? document;
-        const apiEndpoint = doc.querySelector('meta[name="api-assets-url"]')?.content;
-
-        if (!apiEndpoint) return;
+        const win = doc.defaultView ?? window;
+        const appBase = doc.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
+        const apiEndpoint =
+            doc.querySelector('meta[name="api-assets-url"]')?.content ||
+            (appBase ? `${appBase}/api/assets/active` : "");
 
         const RUNTIME_STYLES = `
 .ast-section {
@@ -447,6 +449,12 @@ function createAssetsScript() {
         }
 
         async function loadAssets() {
+            if (!apiEndpoint) {
+                tabsWrap.innerHTML = `<button type="button" class="ast-tab ast-tab--active">Todos</button>`;
+                contentEl.innerHTML = `<div class="ast-empty">Vista previa del catálogo (los datos reales se cargan en el sitio publicado).</div>`;
+                return;
+            }
+
             contentEl.innerHTML = `<div class="ast-empty">Cargando activos extraordinarios...</div>`;
             try {
                 const res = await fetch(apiEndpoint, {
