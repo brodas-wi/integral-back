@@ -61,15 +61,21 @@
                     <label class="block text-sm font-medium text-secondary mb-2">
                         Imagen <span class="text-red-500">*</span>
                     </label>
-                    <div id="asset-image-dropzone" class="flex items-start gap-3 flex-wrap cursor-pointer">
+
+                    <div id="asset-image-dropzone" data-media-picker
+                        class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer hover:border-primary transition-colors overflow-hidden">
+                        <div id="asset-image-placeholder"
+                            class="{{ old('image_url') ? 'hidden' : '' }} flex flex-col items-center justify-center py-2">
+                            <i class="ri-image-add-line text-4xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-500">Haz clic para seleccionar una imagen</p>
+                        </div>
                         <div id="asset-image-selected" class="{{ old('image_url') ? '' : 'hidden' }}">
                             <img id="asset-image-preview" src="{{ old('image_url') }}" alt="Vista previa"
-                                class="w-40 h-24 object-cover rounded-lg border border-gray-200">
-                        </div>
-                        <div id="asset-image-placeholder" class="btn-secondary {{ old('image_url') ? 'hidden' : '' }}">
-                            <i class="ri-image-line mr-2"></i>Seleccionar imagen
+                                class="w-full h-48 object-cover rounded-lg">
+                            <p class="text-xs text-gray-500 mt-2">Haz clic para cambiar la imagen</p>
                         </div>
                     </div>
+
                     <input type="hidden" id="asset-image-media-id" name="asset_image_media_id">
                     <input type="hidden" id="image_url" name="image_url" value="{{ old('image_url') }}">
                     @error('image_url')
@@ -113,6 +119,8 @@
                     <i class="ri-save-line mr-2"></i>Guardar Activo
                 </button>
             </div>
+
+            <x-media-picker-modal />
         </form>
     </div>
 @endsection
