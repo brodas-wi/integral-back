@@ -21,8 +21,8 @@
     "file": "assets/dropdowns-CtvQ6cwq.js",
     "name": "dropdowns"
   },
-  "_editor-commands-D6GyM6G7.js": {
-    "file": "assets/editor-commands-D6GyM6G7.js",
+  "_editor-commands-uNmsq38c.js": {
+    "file": "assets/editor-commands-uNmsq38c.js",
     "name": "editor-commands",
     "imports": [
       "__commonjsHelpers-CqkleIqs.js"
@@ -51,8 +51,8 @@
       "assets/marker-icon-hN30_KVU.png"
     ]
   },
-  "_media-picker-C92Q4am1.js": {
-    "file": "assets/media-picker-C92Q4am1.js",
+  "_media-picker-Cb20KE6T.js": {
+    "file": "assets/media-picker-Cb20KE6T.js",
     "name": "media-picker"
   },
   "_modals-bMr9eiZu.js": {
@@ -452,13 +452,12 @@
     "isDynamicEntry": true
   },
   "resources/js/footer-editor.js": {
-    "file": "assets/footer-editor-uPMm_IZt.js",
+    "file": "assets/footer-editor-Lv4jE2e-.js",
     "name": "footer-editor",
     "src": "resources/js/footer-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-D6GyM6G7.js",
-      "_media-picker-C92Q4am1.js",
+      "_editor-commands-uNmsq38c.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
@@ -473,25 +472,23 @@
     ]
   },
   "resources/js/navbar-editor.js": {
-    "file": "assets/navbar-editor-PU4AZRN4.js",
+    "file": "assets/navbar-editor-T5vYalvR.js",
     "name": "navbar-editor",
     "src": "resources/js/navbar-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-D6GyM6G7.js",
-      "_media-picker-C92Q4am1.js",
+      "_editor-commands-uNmsq38c.js",
       "__commonjsHelpers-CqkleIqs.js"
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-CgPdeVon.js",
+    "file": "assets/pages-editor-CfEsKxK6.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
     "imports": [
-      "_editor-commands-D6GyM6G7.js",
+      "_editor-commands-uNmsq38c.js",
       "_url-DaqOO3yL.js",
-      "_media-picker-C92Q4am1.js",
       "__commonjsHelpers-CqkleIqs.js"
     ],
     "css": [
@@ -580,12 +577,12 @@
     ]
   },
   "resources/js/views/assets/form.js": {
-    "file": "assets/form-CqZ4U07E.js",
+    "file": "assets/form-jMFVgpTG.js",
     "name": "form",
     "src": "resources/js/views/assets/form.js",
     "isEntry": true,
     "imports": [
-      "_media-picker-C92Q4am1.js"
+      "_media-picker-Cb20KE6T.js"
     ]
   },
   "resources/js/views/assets/index.js": {
@@ -600,12 +597,13 @@
     ]
   },
   "resources/js/views/banners/form.js": {
-    "file": "assets/form-DB4-jKqs.js",
+    "file": "assets/form-GCchjhSi.js",
     "name": "form",
     "src": "resources/js/views/banners/form.js",
     "isEntry": true,
     "imports": [
-      "_notifications-Cgjr4krQ.js"
+      "_notifications-Cgjr4krQ.js",
+      "_media-picker-Cb20KE6T.js"
     ]
   },
   "resources/js/views/banners/index.js": {

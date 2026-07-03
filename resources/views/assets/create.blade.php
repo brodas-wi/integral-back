@@ -61,15 +61,16 @@
                     <label class="block text-sm font-medium text-secondary mb-2">
                         Imagen <span class="text-red-500">*</span>
                     </label>
-                    <div class="flex items-start gap-3 flex-wrap">
-                        <div id="asset-image-preview-wrap" class="{{ old('image_url') ? '' : 'hidden' }}">
+                    <div id="asset-image-dropzone" class="flex items-start gap-3 flex-wrap cursor-pointer">
+                        <div id="asset-image-selected" class="{{ old('image_url') ? '' : 'hidden' }}">
                             <img id="asset-image-preview" src="{{ old('image_url') }}" alt="Vista previa"
                                 class="w-40 h-24 object-cover rounded-lg border border-gray-200">
                         </div>
-                        <button type="button" id="asset-image-pick" class="btn-secondary">
+                        <div id="asset-image-placeholder" class="btn-secondary {{ old('image_url') ? 'hidden' : '' }}">
                             <i class="ri-image-line mr-2"></i>Seleccionar imagen
-                        </button>
+                        </div>
                     </div>
+                    <input type="hidden" id="asset-image-media-id" name="asset_image_media_id">
                     <input type="hidden" id="image_url" name="image_url" value="{{ old('image_url') }}">
                     @error('image_url')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

@@ -1,30 +1,26 @@
-import { openMediaPicker } from "@/editor/media-picker";
+import { initMediaPicker } from "@/utils/media-picker.js";
 
 const TEMP_INTERNAL_URL_PREFIX = "/bancaintegral";
 
 document.addEventListener("DOMContentLoaded", () => {
-    initImagePicker();
+    initAssetImagePicker();
     initCategoryAutocomplete();
     initLinkAutocomplete();
 });
 
-function initImagePicker() {
-    const pickBtn = document.getElementById("asset-image-pick");
-    const hiddenInput = document.getElementById("image_url");
-    const previewWrap = document.getElementById("asset-image-preview-wrap");
-    const preview = document.getElementById("asset-image-preview");
-    if (!pickBtn || !hiddenInput) return;
+function initAssetImagePicker() {
+    const hiddenUrlInput = document.getElementById("image_url");
+    if (!hiddenUrlInput) return;
 
-    pickBtn.addEventListener("click", () => {
-        openMediaPicker({
-            type: "image",
-            title: "Seleccionar imagen del activo",
-            onSelect: (url) => {
-                hiddenInput.value = url;
-                if (preview) preview.src = url;
-                if (previewWrap) previewWrap.classList.remove("hidden");
-            },
-        });
+    initMediaPicker({
+        dropzoneId: "asset-image-dropzone",
+        hiddenInputId: "asset-image-media-id",
+        previewId: "asset-image-preview",
+        placeholderId: "asset-image-placeholder",
+        selectedId: "asset-image-selected",
+        onSelect: ({ url }) => {
+            hiddenUrlInput.value = url;
+        },
     });
 }
 
