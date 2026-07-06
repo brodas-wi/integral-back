@@ -53,20 +53,16 @@ function mapFilterEscapeHtml(text) {
     );
 }
 
-function mapFilterHighlightStats(text) {
-    return mapFilterEscapeHtml(text).replace(
-        /\*\*(.+?)\*\*/g,
-        '<span class="mp-num">$1</span>',
-    );
-}
+const LOCK_ATTRS =
+    'data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"';
 
 function buildMapFilterHTML(data, uid) {
     uid = uid || "mp" + Math.random().toString(36).slice(2, 7);
 
     return `<section id="mp-root-${uid}" class="mp-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-        <p class="mp-stats">${mapFilterHighlightStats(data.stats_text)}</p>
-        <h2 class="mp-title">${mapFilterEscapeHtml(data.title || "Horarios y Agencias:")}</h2>
-        <div class="mp-filters" data-mp-filters>
+        <p class="mp-stats" data-mp-stats ${LOCK_ATTRS}>Cargando disponibilidad de agencias y puntos de pago...</p>
+        <h2 class="mp-title" ${LOCK_ATTRS}>${mapFilterEscapeHtml(data.title || "Horarios y Agencias:")}</h2>
+        <div class="mp-filters" data-mp-filters ${LOCK_ATTRS}>
             <div class="mp-filter" data-filter-index="0">
                 <button type="button" class="mp-filter-btn" data-filter-toggle="0">
                     <span class="mp-filter-label" data-filter-label="0">Agencias / Puntos de pago</span>
@@ -97,7 +93,7 @@ function buildMapFilterHTML(data, uid) {
                 </div>
             </div>
         </div>
-        <div class="mp-map-wrapper" data-mp-map-wrapper>
+        <div class="mp-map-wrapper" data-mp-map-wrapper ${LOCK_ATTRS}>
             <div class="mp-map" data-mp-map></div>
             <div class="mp-map-overlay" data-mp-overlay></div>
         </div>
@@ -106,8 +102,6 @@ function buildMapFilterHTML(data, uid) {
 
 const DEFAULT_MAP_FILTER_DATA = {
     title: "Horarios y Agencias:",
-    stats_text:
-        "**27** agencias y más de **1000** puntos de pago distribuidos en todo el país.",
 };
 
 function createMapFilterScript() {
@@ -127,6 +121,7 @@ function createMapFilterScript() {
         const filtersWrap = root.querySelector("[data-mp-filters]");
         const overlay = root.querySelector("[data-mp-overlay]");
         const mapEl = root.querySelector("[data-mp-map]");
+        const statsEl = root.querySelector("[data-mp-stats]");
         if (!filtersWrap || !mapEl) return;
 
         const DEFAULT_CENTER = [13.7942, -88.8965];
@@ -164,6 +159,26 @@ function createMapFilterScript() {
                         "'": "&#39;",
                     })[c],
             );
+        }
+
+        function highlightStats(text) {
+            return escapeHtml(text).replace(
+                /\*\*(.+?)\*\*/g,
+                '<span class="mp-num">$1</span>',
+            );
+        }
+
+        function renderStats(success) {
+            if (!statsEl) return;
+            if (!success) {
+                statsEl.textContent =
+                    "No fue posible cargar la disponibilidad de agencias y puntos de pago.";
+                return;
+            }
+            const agencyCount = state.agencies.length;
+            const pointCount = state.paymentPoints.length;
+            const text = `**${agencyCount}** agencias y **${pointCount}** puntos de pago activos distribuidos en todo el país.`;
+            statsEl.innerHTML = highlightStats(text);
         }
 
         function pinIconSvg(color) {
@@ -411,7 +426,10 @@ function createMapFilterScript() {
                     'meta[name="map-locations-url"]',
                 )?.content;
                 if (fromTopDoc) return fromTopDoc;
-            } catch {}
+            } catch {
+                // Cross-origin u otra restricción de acceso: se ignora y
+                // se cae al valor por defecto.
+            }
 
             return "/api/map-locations";
         }
@@ -430,8 +448,10 @@ function createMapFilterScript() {
                 state.departments = data.departments || [];
                 state.agencies = data.agencies || [];
                 state.paymentPoints = data.payment_points || [];
+                return true;
             } catch (err) {
                 console.warn("[MapFilter] Error al cargar datos:", err);
+                return false;
             }
         }
 
@@ -464,7 +484,8 @@ function createMapFilterScript() {
                     }, 300);
                 });
 
-                await fetchMapData();
+                const loaded = await fetchMapData();
+                renderStats(loaded);
                 bindTypeOptionEvents();
                 rebuildDepartmentOptions();
                 rebuildLocationFilterOptions();
@@ -487,7 +508,7 @@ function showMapFilterModal(editor, component) {
         style.id = "mp-modal-styles";
         style.textContent = `
             .mp-overlay-modal{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
-            .mp-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:600px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
+            .mp-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:520px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
             .mp-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
             .mp-modal-header-left{display:flex;align-items:center;gap:0.5rem;}
             .mp-modal-header-left i{font-size:1.125rem;color:#3b82f6;}
@@ -499,8 +520,6 @@ function showMapFilterModal(editor, component) {
             .mp-label{display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;}
             .mp-input{flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;width:100%;box-sizing:border-box;}
             .mp-input:focus{border-color:#3b82f6;}
-            .mp-textarea{width:100%;box-sizing:border-box;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.8125rem;outline:none;font-family:inherit;resize:vertical;min-height:80px;}
-            .mp-textarea:focus{border-color:#3b82f6;}
             .mp-hint{font-size:0.75rem;color:#94a3b8;margin:0.375rem 0 0;}
             .mp-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
             .mp-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
@@ -522,8 +541,6 @@ function showMapFilterModal(editor, component) {
     })();
 
     const title = currentData.title || DEFAULT_MAP_FILTER_DATA.title;
-    const statsText =
-        currentData.stats_text || DEFAULT_MAP_FILTER_DATA.stats_text;
 
     const overlay = document.createElement("div");
     overlay.id = "map-filter-config-modal";
@@ -541,12 +558,7 @@ function showMapFilterModal(editor, component) {
                 <label class="mp-label">Título</label>
                 <input id="mp-title" type="text" value="${title}" class="mp-input">
             </div>
-            <div class="mp-card">
-                <label class="mp-label">Texto de estadísticas</label>
-                <textarea id="mp-stats" class="mp-textarea">${statsText}</textarea>
-                <p class="mp-hint">Envuelve los números o palabras que quieras en naranja con doble asterisco, ej: **27** agencias.</p>
-            </div>
-            <p class="mp-hint">Los filtros y ubicaciones del mapa se generan automáticamente a partir de las agencias y puntos de pago activos con coordenadas registrados en el sistema.</p>
+            <p class="mp-hint">El texto de estadísticas, los filtros y las ubicaciones del mapa se generan automáticamente a partir de las agencias y puntos de pago activos con coordenadas registrados en el sistema. Este bloque no admite edición de contenido interno.</p>
         </div>
         <div class="mp-modal-footer">
             <button id="mp-modal-cancel" class="mp-btn-cancel">Cancelar</button>
@@ -566,7 +578,6 @@ function showMapFilterModal(editor, component) {
     modal.querySelector("#mp-modal-save").onclick = () => {
         const data = {
             title: modal.querySelector("#mp-title").value.trim(),
-            stats_text: modal.querySelector("#mp-stats").value.trim(),
         };
 
         const existingInner = component
@@ -614,6 +625,9 @@ export function initializeMapFilterBlocks(editor) {
                 selectable: true,
                 hoverable: true,
                 editable: false,
+                stylable: false,
+                resizable: false,
+                layerable: true,
                 highlightable: false,
                 attributes: {
                     "data-gjs-type": componentType,
