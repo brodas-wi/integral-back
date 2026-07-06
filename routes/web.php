@@ -10,6 +10,7 @@ use App\Http\Controllers\FooterController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\PaymentPointController;
+use App\Http\Controllers\MapLocationController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ScriptController;
@@ -482,6 +483,12 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('api/payment-points')->name('api.payment-points.')->group(function () {
         Route::get('/active', [PaymentPointController::class, 'apiIndex'])->name('active');
     });
+
+    // ==========================================
+    // MAP BLOCK DATA (GrapesJS - Mapa con Filtros)
+    // ==========================================
+    Route::get('/api/map-locations', [MapLocationController::class, 'index'])
+        ->name('api.map-locations');
 
     // ==========================================
     // ANNOUNCEMENTS ROUTES
