@@ -399,11 +399,26 @@ function createMapFilterScript() {
             return win.L;
         }
 
+        function resolveMapLocationsUrl() {
+            const fromOwnDoc = doc.querySelector(
+                'meta[name="map-locations-url"]',
+            )?.content;
+            if (fromOwnDoc) return fromOwnDoc;
+
+            try {
+                const topDoc = window.top?.document;
+                const fromTopDoc = topDoc?.querySelector(
+                    'meta[name="map-locations-url"]',
+                )?.content;
+                if (fromTopDoc) return fromTopDoc;
+            } catch {}
+
+            return "/api/map-locations";
+        }
+
         async function fetchMapData() {
             try {
-                const mapLocationsUrl =
-                    doc.querySelector('meta[name="map-locations-url"]')
-                        ?.content || "/api/map-locations";
+                const mapLocationsUrl = resolveMapLocationsUrl();
                 const res = await fetch(mapLocationsUrl, {
                     headers: { Accept: "application/json" },
                 });
