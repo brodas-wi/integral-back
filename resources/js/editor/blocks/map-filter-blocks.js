@@ -401,7 +401,10 @@ function createMapFilterScript() {
 
         async function fetchMapData() {
             try {
-                const res = await fetch("/api/map-locations", {
+                const mapLocationsUrl =
+                    doc.querySelector('meta[name="map-locations-url"]')
+                        ?.content || "/api/map-locations";
+                const res = await fetch(mapLocationsUrl, {
                     headers: { Accept: "application/json" },
                 });
                 if (!res.ok)
