@@ -25,7 +25,6 @@ import { formBlocks } from "./blocks/form-blocks";
 import { tableBlocks, initializeTableBlocks } from "./blocks/table-blocks";
 import { buttonBlocks, initializeButtonBlocks } from "./blocks/button-blocks";
 import { badgeBlocks } from "./blocks/badge-blocks";
-import { mapBlocks, initializeMapBlocks } from "./blocks/map-blocks";
 import { mapFilterBlocks, initializeMapFilterBlocks } from "./blocks/map-filter-blocks";
 import { bannerBlocks, initializeBannerBlocks } from "./blocks/banner-blocks";
 import { assetsBlocks, initializeAssetsBlocks } from "@/editor/blocks/assets-blocks";
@@ -57,12 +56,10 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(badgeBlocks);
     blockRegistry.registerBlocks(productDetailBlocks);
     blockRegistry.registerBlocks(financingBlocks);
-    blockRegistry.registerBlocks(mapBlocks);
     blockRegistry.registerBlocks(mapFilterBlocks);
     blockRegistry.registerBlocks(assetsBlocks);
     blockRegistry.applyToEditor(editor);
 
-    initializeMapBlocks(editor);
     initializeMapFilterBlocks(editor);
     initializeBannerBlocks(editor);
     initializeHeroBannerBlock(editor);
