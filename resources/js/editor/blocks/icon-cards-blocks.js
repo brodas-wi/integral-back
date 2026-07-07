@@ -18,38 +18,21 @@ const iconIconCards = `<svg viewBox="0 0 32 32" width="32" height="32">
 
 const ICON_CARDS_STYLES = `
 <style>
-.ic-section{width:100%;display:flex;flex-direction:column;gap:1.5rem;padding:3rem 4rem;background:#ffffff;}
-.ic-card{display:flex;align-items:center;gap:1.75rem;background:#ffffff;border-radius:1rem;box-shadow:0 4px 20px rgba(15,23,42,0.08);padding:2rem;}
-.ic-badge{width:90px;height:90px;min-width:90px;min-height:90px;border-radius:50%;background:#E97300;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
-.ic-badge-icon{width:50%;height:50%;object-fit:contain;display:block;}
-.ic-content{display:flex;flex-direction:column;gap:0.5rem;}
-.ic-title{font-size:1.5rem;font-weight:600;color:#003B71;margin:0;line-height:1.3;}
-.ic-text{font-size:1rem;color:#003B71;line-height:1.6;margin:0;}
-@media(max-width:768px){
-.ic-section{padding:2.5rem 1.5rem;}
-.ic-card{gap:1.25rem;padding:1.5rem;}
-.ic-badge{width:70px;height:70px;min-width:70px;min-height:70px;}
-.ic-title{font-size:1.25rem;}
-}
-@media(max-width:480px){
-.ic-card{flex-direction:column;align-items:flex-start;}
-.ic-badge{width:64px;height:64px;min-width:64px;min-height:64px;}
-}
+.ic-title{color:#003B71;}
+.ic-text{color:#003B71;}
 </style>`;
 
 const buildCard = (title, text) => `
-<div class="ic-card">
-    <div class="ic-badge">
-        <img src="${assetUrl("images/placeholder.svg")}" alt="Icono" class="ic-badge-icon">
-    </div>
-    <div class="ic-content">
-        <h3 class="ic-title">${title}</h3>
-        <p class="ic-text">${text}</p>
+<div class="ic-card flex items-center gap-4 sm:gap-5 md:gap-7 bg-white rounded-2xl shadow-md p-5 sm:p-6 md:p-8">
+    <img src="${assetUrl("images/placeholder.svg")}" alt="Icono" class="ic-icon w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex-shrink-0 object-contain">
+    <div class="flex flex-col gap-1.5 md:gap-2">
+        <h3 class="ic-title text-2xl font-bold leading-snug">${title}</h3>
+        <p class="ic-text text-base leading-relaxed">${text}</p>
     </div>
 </div>`;
 
 const buildIconCards = () => `
-<section class="ic-section">
+<section class="ic-section w-full bg-white flex flex-col gap-4 md:gap-6 p-6 sm:p-8 md:p-12 lg:px-16">
     ${buildCard(
         "Título de la sección",
         "Descripción breve del contenido asociado a este ícono, edítala directamente desde el lienzo.",
