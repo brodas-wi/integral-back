@@ -14,6 +14,12 @@ const PRODUCT_DETAIL_THREE_COL_STYLES = `
 @media(max-width:640px){.pd-three-col-grid{grid-template-columns:1fr;}.pd-three-col-grid>div:last-child:nth-child(3n+1){max-width:none;}}
 </style>`;
 
+const PRODUCT_DETAIL_ICONS_CTA_STYLES = `
+<style>
+.pd-icons-cta-grid{display:grid;grid-template-columns:3fr 2fr;gap:2rem;align-items:center;}
+@media(max-width:992px){.pd-icons-cta-grid{grid-template-columns:1fr;gap:1.5rem;}}
+</style>`;
+
 const PRODUCT_DETAIL_COLOR_STYLES = `
 <style>
 .pd-text-muted{color:#6b7280;}
@@ -61,6 +67,20 @@ const PRODUCT_DETAIL_HEADER_GRID_STYLES = `
     }
 }
 </style>`;
+
+const iconProductDetailIconsCta = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="2" y="2" width="28" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="2" y="4.5" width="20" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
+    <circle cx="5" cy="14" r="3.2" fill="#E97300" fill-opacity="0.8"/>
+    <circle cx="13" cy="14" r="3.2" fill="#E97300" fill-opacity="0.8"/>
+    <circle cx="21" cy="14" r="3.2" fill="#E97300" fill-opacity="0.8"/>
+    <rect x="24" y="10" width="6" height="3" rx="1" fill="#E97300" fill-opacity="0.3"/>
+    <rect x="24" y="15" width="6" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="24" y="17" width="6" height="3" rx="1.5" fill="#E97300" fill-opacity="0.85"/>
+    <rect x="2" y="26" width="28" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="2" y="28.5" width="18" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
+</svg>`;
 
 const iconProductDetailCardsGrid = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
@@ -503,6 +523,28 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
         media: iconProductDetailBox,
         content: `
 ${PRICE_BOX_DOUBLE}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
+    },
+    {
+        id: "product-detail-icons-cta",
+        label: "Detalle de producto con íconos y CTA",
+        category: "Productos y Servicios",
+        media: iconProductDetailIconsCta,
+        content: `
+<section class="w-full bg-white px-16 py-12 flex flex-col gap-8">
+    <p class="text-base text-[#003B71] leading-relaxed m-0">Puedes pagar tus facturas, recibos y recargas de celular, en nuestras 27 agencias y más de 1000 puntos de pago distribuidos en todo el país, gracias a nuestro eficiente servicio de colecturía.</p>
+    <div class="pd-icons-cta-grid">
+        <div class="w-full">
+            <img src="${assetUrl("images/placeholder.svg")}" alt="Servicios disponibles" class="w-full h-auto object-contain">
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <h2 class="text-4xl font-black text-[#E97300] uppercase leading-tight text-center w-full break-words">Colecturía y Pagos</h2>
+            <a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">Adquiere tu servicio</a>
+        </div>
+    </div>
+    <p class="text-base text-[#003B71] leading-relaxed m-0">Para tu comodidad, también puedes realizar los pagos de tus créditos en la red Puntoxpress y Akí Pago, abierto en horarios extendidos, los 7 días de la semana.</p>
+</section>
+${PRODUCT_DETAIL_ICONS_CTA_STYLES}
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
 ];
