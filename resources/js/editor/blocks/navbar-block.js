@@ -76,7 +76,7 @@ const NAVBAR_STYLES = `
 .nb-bottom{display:flex;align-items:stretch;padding:0 4rem;gap:0;position:relative;border-bottom:3px solid #E97300;}
 .nb-nav-list{display:flex;align-items:center;justify-content:space-between;gap:0;list-style:none;margin:0;padding:0;flex:1;}
 .nb-nav-item{position:static;}
-.nb-nav-link{display:inline-flex;align-items:center;gap:0;padding:0.875rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;}
+.nb-nav-link{display:inline-flex;align-items:center;gap:0.375rem;padding:0.875rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;}
 .nb-nav-link:hover,.nb-nav-item.nb-open>.nb-nav-link{color:#003B71;}
 .nb-mega{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-top:2px solid #E97300;border-bottom:2px solid #E97300;box-shadow:0 8px 32px rgba(0,0,0,0.1);z-index:200;padding:1rem 4rem;}
 .nb-nav-item.nb-open>.nb-mega{display:block;}
@@ -123,6 +123,8 @@ const NAVBAR_STYLES = `
 .nb-mobile-link:hover,.nb-mobile-item.nb-open>.nb-mobile-link{color:#003B71;}
 .nb-mobile-link i{color:#94a3b8;font-size:0.875rem;transition:transform 0.2s;}
 .nb-mobile-item.nb-open>.nb-mobile-link i{transform:rotate(180deg);}
+.nb-mobile-link-content{display:flex;align-items:center;gap:0.5rem;}
+.nb-mobile-link-content i{color:#E97300;font-size:1rem;transition:none;}
 .nb-mobile-submenu{display:none;flex-direction:row;flex-wrap:wrap;padding:0.5rem 0 0.75rem 0;gap:0.75rem;border-bottom:1px solid #f1f5f9;}
 .nb-mobile-item.nb-open>.nb-mobile-submenu{display:flex;}
 .nb-mobile-sub-col{display:flex;flex-direction:column;gap:0.25rem;flex:1 1 140px;min-width:200px;}
@@ -272,7 +274,10 @@ function buildNavbarHTML(data, uid) {
                     <div class="nb-mega"><div class="nb-mega-grid" style="${gridStyle}">${colsHtml}${ctaColHtml}</div></div>
                 </li>`;
             }
-            return `<li class="nb-nav-item"><a href="${item.href || "#"}" class="nb-nav-link">${item.label || ""}</a></li>`;
+            const linkIconHtml = item.icon
+                ? `<i class="${item.icon}"></i>`
+                : "";
+            return `<li class="nb-nav-item"><a href="${item.href || "#"}" class="nb-nav-link">${linkIconHtml}${item.label || ""}</a></li>`;
         })
         .join("");
     const bottomCta = data.bottom_cta || {};
@@ -324,7 +329,10 @@ function buildNavbarHTML(data, uid) {
                     <div class="nb-mobile-submenu">${colsHtml}</div>
                 </div>`;
             }
-            return `<a href="${item.href || "#"}" class="nb-mobile-link">${item.label || ""}</a>`;
+            const mobileLinkIconHtml = item.icon
+                ? `<i class="${item.icon}"></i>`
+                : "";
+            return `<a href="${item.href || "#"}" class="nb-mobile-link"><span class="nb-mobile-link-content">${mobileLinkIconHtml}${item.label || ""}</span></a>`;
         })
         .join("");
     const mobileBankingHtml = [
@@ -716,7 +724,21 @@ function showNavbarModal(editor, component) {
 
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
+
+    modal.addEventListener("focusin", (e) => {
+        const el = e.target;
+        if (
+            el.tagName === "INPUT" &&
+            el.type === "text" &&
+            !el.readOnly &&
+            !el.classList.contains("nb-url-input")
+        ) {
+            el.select();
+        }
+    });
+
     const iconPicker = new IconPickerModal();
+
     modal.querySelectorAll(".nb-tab-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
             modal
@@ -873,7 +895,21 @@ function showNavbarModal(editor, component) {
     function makeDraggable(container, arr, renderFn) {
         let dragIdx = null;
         container.querySelectorAll("[data-drag-idx]").forEach((card) => {
-            card.setAttribute("draggable", "true");
+            card.draggable = false;
+
+            const handle = card.querySelector(".nb-drag-handle");
+            const enableDrag = () => {
+                card.draggable = true;
+            };
+            const disableDrag = () => {
+                card.draggable = false;
+            };
+
+            if (handle) {
+                handle.addEventListener("mousedown", enableDrag);
+            }
+            document.addEventListener("mouseup", disableDrag);
+
             card.addEventListener("dragstart", (e) => {
                 dragIdx = parseInt(card.dataset.dragIdx);
                 setTimeout(() => card.classList.add("nb-dragging"), 0);
@@ -884,6 +920,7 @@ function showNavbarModal(editor, component) {
                 container
                     .querySelectorAll(".nb-drag-over")
                     .forEach((el) => el.classList.remove("nb-drag-over"));
+                disableDrag();
             });
             card.addEventListener("dragover", (e) => {
                 e.preventDefault();
@@ -1273,6 +1310,11 @@ function showNavbarModal(editor, component) {
                         <div style="position:relative;">
                             <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL o buscar página..." value="${item.href || ""}" data-field="href">
                         </div>
+                        <div class="nb-row">
+                            <div class="nb-icon-preview"><i class="${item.icon || "ri-star-line"}"></i></div>
+                            <input class="nb-input-sm" style="flex:1;" placeholder="Sin icono (opcional)" value="${item.icon || ""}" data-field="icon">
+                            <button type="button" class="nb-pick-btn nb-pick-link-icon"><i class="ri-emotion-happy-line"></i> Icono</button>
+                        </div>
                     </div>`;
 
                 card.querySelector("[data-toggle-type]").onclick = () => {
@@ -1297,6 +1339,30 @@ function showNavbarModal(editor, component) {
                         item[input.dataset.field] = input.value;
                     });
                 });
+
+                const linkIconInput = card.querySelector("[data-field='icon']");
+                if (linkIconInput) {
+                    linkIconInput.addEventListener("input", () => {
+                        const preview =
+                            card.querySelector(".nb-icon-preview i");
+                        if (preview)
+                            preview.className =
+                                linkIconInput.value.trim() || "ri-star-line";
+                    });
+                }
+
+                card.querySelector(".nb-pick-link-icon").addEventListener(
+                    "click",
+                    () => {
+                        iconPicker.open((selected) => {
+                            item.icon = selected;
+                            if (linkIconInput) linkIconInput.value = selected;
+                            const preview =
+                                card.querySelector(".nb-icon-preview i");
+                            if (preview) preview.className = selected;
+                        });
+                    },
+                );
 
                 const urlInput = card.querySelector(".nb-url-input");
                 if (urlInput) {
