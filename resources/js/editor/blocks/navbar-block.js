@@ -540,6 +540,7 @@ function showNavbarModal(editor, component) {
             .nb-confirm-cancel:hover{background:#f1f5f9;}
             .nb-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .nb-confirm-ok:hover{background:#d97821;}
+            .icon-picker-overlay{z-index:1000000 !important;}
         `;
         document.head.appendChild(style);
     }
@@ -894,21 +895,24 @@ function showNavbarModal(editor, component) {
     }
     function makeDraggable(container, arr, renderFn) {
         let dragIdx = null;
-        container.querySelectorAll("[data-drag-idx]").forEach((card) => {
+        const cards = Array.from(container.querySelectorAll("[data-drag-idx]"));
+
+        const disableAllDrag = () => {
+            cards.forEach((c) => {
+                c.draggable = false;
+            });
+        };
+        document.addEventListener("mouseup", disableAllDrag, { once: true });
+
+        cards.forEach((card) => {
             card.draggable = false;
 
             const handle = card.querySelector(".nb-drag-handle");
-            const enableDrag = () => {
-                card.draggable = true;
-            };
-            const disableDrag = () => {
-                card.draggable = false;
-            };
-
             if (handle) {
-                handle.addEventListener("mousedown", enableDrag);
+                handle.addEventListener("mousedown", () => {
+                    card.draggable = true;
+                });
             }
-            document.addEventListener("mouseup", disableDrag);
 
             card.addEventListener("dragstart", (e) => {
                 dragIdx = parseInt(card.dataset.dragIdx);
@@ -920,7 +924,7 @@ function showNavbarModal(editor, component) {
                 container
                     .querySelectorAll(".nb-drag-over")
                     .forEach((el) => el.classList.remove("nb-drag-over"));
-                disableDrag();
+                card.draggable = false;
             });
             card.addEventListener("dragover", (e) => {
                 e.preventDefault();
@@ -1084,7 +1088,7 @@ function showNavbarModal(editor, component) {
                             </div>
                             <div class="nb-row">
                                 <div class="nb-icon-preview"><i class="${btn.icon || "ri-star-line"}"></i></div>
-                                <input class="nb-input-sm" style="flex:1;" placeholder="Sin icono (opcional)" value="${btn.icon || ""}" data-btn-field="icon" readonly>
+                                <input class="nb-input-sm" style="flex:1;" placeholder="Sin icono (opcional)" value="${btn.icon || ""}" data-btn-field="icon">
                                 <button type="button" class="nb-pick-btn nb-pick-cta-icon"><i class="ri-emotion-happy-line"></i> Icono</button>
                             </div>
                             <div class="nb-row">
@@ -1098,9 +1102,18 @@ function showNavbarModal(editor, component) {
                         btnCard
                             .querySelectorAll("[data-btn-field]")
                             .forEach((input) => {
-                                if (input.readOnly) return;
                                 input.addEventListener("input", () => {
                                     btn[input.dataset.btnField] = input.value;
+                                    if (input.dataset.btnField === "icon") {
+                                        const preview =
+                                            btnCard.querySelector(
+                                                ".nb-icon-preview i",
+                                            );
+                                        if (preview)
+                                            preview.className =
+                                                input.value.trim() ||
+                                                "ri-star-line";
+                                    }
                                 });
                             });
 
