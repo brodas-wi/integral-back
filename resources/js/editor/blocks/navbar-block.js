@@ -92,8 +92,10 @@ const NAVBAR_STYLES = `
 .nb-mega-item-desc{font-size:0.8125rem;font-weight:400;color:#E97300;line-height:1.4;}
 .nb-mega-cta-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;padding:1rem;}
 .nb-mega-cta-text{font-size:1.125rem;font-weight:800;text-align:center;line-height:1.3;text-transform:uppercase;}
-.nb-mega-cta-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;}
+.nb-mega-cta-buttons{display:flex;flex-direction:column;gap:0.625rem;width:100%;align-items:center;}
+.nb-mega-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.375rem;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;}
 .nb-mega-cta-btn:hover{opacity:0.88;}
+.nb-mega-cta-btn i{font-size:1rem;line-height:1;}
 .nb-bottom-cta{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;text-align:center;word-break:break-word;white-space:normal;min-width:120px;max-width:180px;line-height:1.25;margin-left:1.25rem;flex-shrink:0;align-self:center;margin-top:0.375rem;margin-bottom:0.375rem;}
 .nb-bottom-cta:hover{opacity:0.88;}
 .nb-bottom-cta-line1{letter-spacing:0.04em;}
@@ -152,6 +154,44 @@ function buildAlternatingText(text) {
         })
         .join(" ");
 }
+function normalizeCtaColumn(ctaColumn) {
+    if (!ctaColumn) return { text: "", buttons: [] };
+    if (Array.isArray(ctaColumn.buttons)) {
+        return {
+            text: ctaColumn.text || "",
+            buttons: ctaColumn.buttons.slice(0, 2).map((btn) => ({
+                label: btn.label || "",
+                href: btn.href || "#",
+                color: btn.color === "blue" ? "blue" : "orange",
+                icon: btn.icon || "",
+            })),
+        };
+    }
+    if (ctaColumn.btn_label || ctaColumn.btn_href || ctaColumn.btn_color) {
+        return {
+            text: ctaColumn.text || "",
+            buttons: [
+                {
+                    label: ctaColumn.btn_label || "",
+                    href: ctaColumn.btn_href || "#",
+                    color: ctaColumn.btn_color === "blue" ? "blue" : "orange",
+                    icon: "",
+                },
+            ],
+        };
+    }
+    return { text: ctaColumn.text || "", buttons: [] };
+}
+
+function normalizeNavLinks(navLinks) {
+    return (navLinks || []).map((item) => {
+        if (item.type === "submenu" && item.cta_column) {
+            return { ...item, cta_column: normalizeCtaColumn(item.cta_column) };
+        }
+        return item;
+    });
+}
+
 function buildNavbarHTML(data, uid) {
     uid = uid || "nb" + Math.random().toString(36).slice(2, 7);
     const logoHref = data.logo_href || "/";
@@ -172,9 +212,12 @@ function buildNavbarHTML(data, uid) {
     const navLinksHtml = (data.nav_links || [])
         .map((item) => {
             if (item.type === "submenu" && item.columns?.length) {
+                const normalizedCta = item.cta_column
+                    ? normalizeCtaColumn(item.cta_column)
+                    : null;
                 const hasCta = !!(
-                    item.cta_column &&
-                    (item.cta_column.text || item.cta_column.btn_label)
+                    normalizedCta &&
+                    (normalizedCta.text || normalizedCta.buttons.length)
                 );
                 const contentCols = item.columns.slice(0, 3);
                 const colsHtml = contentCols
@@ -199,15 +242,25 @@ function buildNavbarHTML(data, uid) {
                     .join("");
                 let ctaColHtml = "";
                 if (hasCta) {
-                    const cta = item.cta_column;
-                    const ctaBtnColor =
-                        cta.btn_color === "blue"
-                            ? "nb-badge-blue"
-                            : "nb-badge-orange";
-                    const altText = buildAlternatingText(cta.text || "");
+                    const altText = buildAlternatingText(
+                        normalizedCta.text || "",
+                    );
+                    const buttonsHtml = normalizedCta.buttons
+                        .slice(0, 2)
+                        .map((btn) => {
+                            const btnColorClass =
+                                btn.color === "blue"
+                                    ? "nb-badge-blue"
+                                    : "nb-badge-orange";
+                            const iconHtml = btn.icon
+                                ? `<i class="${btn.icon}"></i>`
+                                : "";
+                            return `<a href="${btn.href || "#"}" class="nb-mega-cta-btn ${btnColorClass}">${iconHtml}${btn.label || "Ver más"}</a>`;
+                        })
+                        .join("");
                     ctaColHtml = `<div class="nb-mega-cta-col">
                         <p class="nb-mega-cta-text">${altText}</p>
-                        <a href="${cta.btn_href || "#"}" class="nb-mega-cta-btn ${ctaBtnColor}">${cta.btn_label || "Ver más"}</a>
+                        <div class="nb-mega-cta-buttons">${buttonsHtml}</div>
                     </div>`;
                 }
                 const gridStyle = hasCta
@@ -355,9 +408,14 @@ const DEFAULT_DATA = {
             ],
             cta_column: {
                 text: "Solicita tu Crédito Online",
-                btn_label: "Solicitar",
-                btn_href: "#",
-                btn_color: "orange",
+                buttons: [
+                    {
+                        label: "Solicitar",
+                        href: "#",
+                        color: "orange",
+                        icon: "",
+                    },
+                ],
             },
         },
         { type: "link", label: "Ahorros e Inversión", href: "#" },
@@ -498,8 +556,10 @@ function showNavbarModal(editor, component) {
     const bankingBtn = JSON.parse(
         JSON.stringify(currentData.banking_btn || DEFAULT_DATA.banking_btn),
     );
-    const navLinks = JSON.parse(
-        JSON.stringify(currentData.nav_links || DEFAULT_DATA.nav_links),
+    const navLinks = normalizeNavLinks(
+        JSON.parse(
+            JSON.stringify(currentData.nav_links || DEFAULT_DATA.nav_links),
+        ),
     );
     const bottomCta = JSON.parse(
         JSON.stringify(currentData.bottom_cta || DEFAULT_DATA.bottom_cta),
@@ -917,6 +977,7 @@ function showNavbarModal(editor, component) {
             const typeBadge = `<span class="nb-type-badge ${item.type === "submenu" ? "nb-type-submenu" : "nb-type-link"}" data-toggle-type title="Clic para cambiar tipo">${item.type === "submenu" ? "Submenú" : "Link"} ↕</span>`;
 
             if (item.type === "submenu") {
+                item.cta_column = normalizeCtaColumn(item.cta_column);
                 card.innerHTML = `
                     <div class="nb-link-card-header">
                         <span class="nb-drag-handle"><i class="ri-draggable"></i></span>
@@ -934,24 +995,13 @@ function showNavbarModal(editor, component) {
                         <div class="nb-cta-section">
                             <div class="nb-row">
                                 <label style="font-size:0.75rem;color:#92400e;font-weight:600;flex-shrink:0;width:80px;">Texto CTA</label>
-                                <input class="nb-input-sm" style="flex:1;" placeholder="Texto alternado naranja/azul" value="${item.cta_column?.text || ""}" data-cta-field="text">
+                                <input class="nb-input-sm" style="flex:1;" placeholder="Texto alternado naranja/azul" value="${item.cta_column.text || ""}" data-cta-field="text">
                             </div>
-                            <div class="nb-row">
-                                <label style="font-size:0.75rem;color:#92400e;font-weight:600;flex-shrink:0;width:80px;">Btn texto</label>
-                                <input class="nb-input-sm" style="flex:1;" placeholder="Solicitar" value="${item.cta_column?.btn_label || ""}" data-cta-field="btn_label">
+                            <div class="nb-cta-buttons-list" style="display:flex;flex-direction:column;gap:0.625rem;"></div>
+                            <div class="nb-add-row">
+                                <button type="button" class="nb-btn-add nb-btn-add-action nb-add-cta-btn"><i class="ri-add-line"></i> Agregar botón</button>
                             </div>
-                            <div style="position:relative;">
-                                <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL del botón CTA" value="${item.cta_column?.btn_href || "#"}" data-cta-field="btn_href">
-                            </div>
-                            <div class="nb-row">
-                                <label style="font-size:0.75rem;color:#92400e;font-weight:600;flex-shrink:0;width:80px;">Color btn</label>
-                                <div class="nb-color-toggle">
-                                    <button class="nb-color-opt nb-color-opt-blue ${(item.cta_column?.btn_color || "orange") === "blue" ? "" : "nb-color-inactive"}" data-cta-color="blue">Azul</button>
-                                    <button class="nb-color-opt nb-color-opt-orange ${(item.cta_column?.btn_color || "orange") === "orange" ? "" : "nb-color-inactive"}" data-cta-color="orange">Naranja</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
+                        </div>`;
                 card.querySelector("[data-toggle-type]").onclick = () => {
                     item.type = "link";
                     item.href = "#";
@@ -969,36 +1019,112 @@ function showNavbarModal(editor, component) {
                         item.label = e.target.value;
                     },
                 );
-                card.querySelectorAll("[data-cta-field]").forEach((input) => {
-                    input.addEventListener("input", () => {
-                        if (!item.cta_column) item.cta_column = {};
-                        item.cta_column[input.dataset.ctaField] = input.value;
-                    });
-                });
-                const ctaUrlInput = card.querySelector(
-                    "[data-cta-field='btn_href']",
+                card.querySelector("[data-cta-field='text']").addEventListener(
+                    "input",
+                    (e) => {
+                        item.cta_column.text = e.target.value;
+                    },
                 );
-                if (ctaUrlInput) {
-                    const wrapper = document.createElement("div");
-                    wrapper.style.position = "relative";
-                    ctaUrlInput.parentNode.insertBefore(wrapper, ctaUrlInput);
-                    wrapper.appendChild(ctaUrlInput);
-                    attachUrlAutocomplete(ctaUrlInput);
-                }
-                card.querySelectorAll("[data-cta-color]").forEach((btn) => {
-                    btn.addEventListener("click", () => {
-                        if (!item.cta_column) item.cta_column = {};
-                        item.cta_column.btn_color = btn.dataset.ctaColor;
-                        card.querySelectorAll("[data-cta-color]").forEach(
-                            (b) => {
-                                b.classList.toggle(
-                                    "nb-color-inactive",
-                                    b.dataset.ctaColor !== btn.dataset.ctaColor,
-                                );
-                            },
-                        );
+
+                const ctaButtonsList = card.querySelector(
+                    ".nb-cta-buttons-list",
+                );
+                const addCtaBtn = card.querySelector(".nb-add-cta-btn");
+
+                function renderCtaButtons() {
+                    ctaButtonsList.innerHTML = "";
+                    item.cta_column.buttons.forEach((btn, bi) => {
+                        const btnCard = document.createElement("div");
+                        btnCard.className = "nb-action-card";
+                        btnCard.innerHTML = `
+                            <div class="nb-row">
+                                <span style="font-size:0.7rem;font-weight:700;color:#92400e;flex-shrink:0;">Botón ${bi + 1}</span>
+                                <input class="nb-input-sm" style="flex:1;" placeholder="Texto del botón" value="${btn.label || ""}" data-btn-field="label">
+                                <button type="button" class="nb-btn-remove nb-remove-cta-btn"><i class="ri-delete-bin-line"></i></button>
+                            </div>
+                            <div style="position:relative;">
+                                <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL del botón" value="${btn.href || "#"}" data-btn-field="href">
+                            </div>
+                            <div class="nb-row">
+                                <div class="nb-icon-preview"><i class="${btn.icon || "ri-star-line"}"></i></div>
+                                <input class="nb-input-sm" style="flex:1;" placeholder="Sin icono (opcional)" value="${btn.icon || ""}" data-btn-field="icon" readonly>
+                                <button type="button" class="nb-pick-btn nb-pick-cta-icon"><i class="ri-emotion-happy-line"></i> Icono</button>
+                            </div>
+                            <div class="nb-row">
+                                <label style="font-size:0.75rem;color:#92400e;font-weight:600;flex-shrink:0;">Color</label>
+                                <div class="nb-color-toggle">
+                                    <button type="button" class="nb-color-opt nb-color-opt-blue ${btn.color === "blue" ? "" : "nb-color-inactive"}" data-btn-color="blue">Azul</button>
+                                    <button type="button" class="nb-color-opt nb-color-opt-orange ${btn.color !== "blue" ? "" : "nb-color-inactive"}" data-btn-color="orange">Naranja</button>
+                                </div>
+                            </div>`;
+
+                        btnCard
+                            .querySelectorAll("[data-btn-field]")
+                            .forEach((input) => {
+                                if (input.readOnly) return;
+                                input.addEventListener("input", () => {
+                                    btn[input.dataset.btnField] = input.value;
+                                });
+                            });
+
+                        const btnUrlInput =
+                            btnCard.querySelector(".nb-url-input");
+                        if (btnUrlInput) attachUrlAutocomplete(btnUrlInput);
+
+                        btnCard
+                            .querySelectorAll("[data-btn-color]")
+                            .forEach((colorBtn) => {
+                                colorBtn.addEventListener("click", () => {
+                                    btn.color = colorBtn.dataset.btnColor;
+                                    btnCard
+                                        .querySelectorAll("[data-btn-color]")
+                                        .forEach((b) => {
+                                            b.classList.toggle(
+                                                "nb-color-inactive",
+                                                b.dataset.btnColor !==
+                                                    colorBtn.dataset.btnColor,
+                                            );
+                                        });
+                                });
+                            });
+
+                        btnCard
+                            .querySelector(".nb-pick-cta-icon")
+                            .addEventListener("click", () => {
+                                iconPicker.open((selected) => {
+                                    btn.icon = selected;
+                                    renderCtaButtons();
+                                });
+                            });
+
+                        btnCard
+                            .querySelector(".nb-remove-cta-btn")
+                            .addEventListener("click", () => {
+                                item.cta_column.buttons.splice(bi, 1);
+                                renderCtaButtons();
+                            });
+
+                        ctaButtonsList.appendChild(btnCard);
                     });
+
+                    const atLimit = item.cta_column.buttons.length >= 2;
+                    addCtaBtn.disabled = atLimit;
+                    addCtaBtn.style.opacity = atLimit ? "0.4" : "";
+                    addCtaBtn.style.cursor = atLimit ? "not-allowed" : "";
+                }
+                renderCtaButtons();
+
+                addCtaBtn.addEventListener("click", () => {
+                    if (item.cta_column.buttons.length >= 2) return;
+                    item.cta_column.buttons.push({
+                        label: "Nuevo botón",
+                        href: "#",
+                        color: "orange",
+                        icon: "",
+                    });
+                    renderCtaButtons();
                 });
+
                 const colsList = card.querySelector(".nb-columns-list");
                 function renderColumns() {
                     colsList.innerHTML = "";
@@ -1158,12 +1284,7 @@ function showNavbarModal(editor, component) {
                             items: [{ label: "Enlace", desc: "", href: "#" }],
                         },
                     ];
-                    item.cta_column = {
-                        text: "",
-                        btn_label: "Ver más",
-                        btn_href: "#",
-                        btn_color: "orange",
-                    };
+                    item.cta_column = { text: "", buttons: [] };
                     delete item.href;
                     renderNavLinks();
                 };
@@ -1284,12 +1405,7 @@ function showNavbarModal(editor, component) {
                     items: [{ label: "Enlace", desc: "", href: "#" }],
                 },
             ],
-            cta_column: {
-                text: "",
-                btn_label: "Ver más",
-                btn_href: "#",
-                btn_color: "orange",
-            },
+            cta_column: { text: "", buttons: [] },
         });
         renderNavLinks();
         modal.querySelector("#nb-nav-list").lastElementChild?.scrollIntoView({
