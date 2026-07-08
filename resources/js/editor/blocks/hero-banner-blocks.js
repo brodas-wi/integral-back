@@ -8,6 +8,15 @@ const HERO_BANNER_STYLES = `
 .hb-section{position:relative;width:100%;padding:5rem 4rem;display:flex;align-items:center;min-height:420px;box-sizing:border-box;font-family:'Poppins',sans-serif;overflow:hidden;background:#003B71;}
 .hb-bg{position:absolute;inset:0;z-index:0;}
 .hb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.hb-bg img.hb-pos-left-top{object-position:left top;}
+.hb-bg img.hb-pos-left-center{object-position:left center;}
+.hb-bg img.hb-pos-left-bottom{object-position:left bottom;}
+.hb-bg img.hb-pos-center-top{object-position:center top;}
+.hb-bg img.hb-pos-center-center{object-position:center center;}
+.hb-bg img.hb-pos-center-bottom{object-position:center bottom;}
+.hb-bg img.hb-pos-right-top{object-position:right top;}
+.hb-bg img.hb-pos-right-center{object-position:right center;}
+.hb-bg img.hb-pos-right-bottom{object-position:right bottom;}
 .hb-content{position:relative;z-index:10;max-width:560px;display:flex;flex-direction:column;gap:0.75rem;}
 .hb-title{font-size:2.75rem;font-weight:800;color:#fff;line-height:1.15;margin:0;}
 .hb-subtitle{font-size:1.125rem;font-weight:700;color:#fff;margin:0;}
@@ -41,6 +50,9 @@ function buildHeroBannerHTML(data, uid) {
     const btnSecondary = data.btn_secondary || {};
     const primaryColor = btnPrimary.color || "white";
     const secondaryColor = btnSecondary.color || "white";
+    const posX = data.bg_position_x || "center";
+    const posY = data.bg_position_y || "center";
+    const posClass = `hb-pos-${posX}-${posY}`;
 
     const btnPrimaryHtml = btnPrimary.enabled
         ? `<a href="${btnPrimary.href || "#"}" class="hb-btn hb-btn-${primaryColor}-solid">${btnPrimary.label || "Conoce más"}</a>`
@@ -55,7 +67,7 @@ function buildHeroBannerHTML(data, uid) {
 
     return `<section id="hb-root-${uid}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <img src="${bgImage}" alt="${data.title || "Banner"}" loading="eager" decoding="async" fetchpriority="high" draggable="false">
+            <img src="${bgImage}" alt="${data.title || "Banner"}" class="${posClass}" loading="eager" decoding="async" fetchpriority="high" draggable="false">
         </div>
         <div class="hb-content">
             <h2 class="hb-title">${data.title || "Título del banner"}</h2>
@@ -67,10 +79,22 @@ function buildHeroBannerHTML(data, uid) {
 
 const DEFAULT_DATA = {
     bg_image: assetUrl("images/placeholder.svg"),
+    bg_position_x: "center",
+    bg_position_y: "center",
     title: "Cuenta de Ahorro Electrónica",
     subtitle: "Dale un giro digital a tus ahorros",
-    btn_primary: { enabled: true, label: "Abre tu cuenta", href: "#", color: "white" },
-    btn_secondary: { enabled: true, label: "Conoce más", href: "#", color: "white" },
+    btn_primary: {
+        enabled: true,
+        label: "Abre tu cuenta",
+        href: "#",
+        color: "white",
+    },
+    btn_secondary: {
+        enabled: true,
+        label: "Conoce más",
+        href: "#",
+        color: "white",
+    },
 };
 
 function showHeroBannerModal(editor, component) {
@@ -135,6 +159,8 @@ function showHeroBannerModal(editor, component) {
     })();
 
     const bgImage = currentData.bg_image || DEFAULT_DATA.bg_image;
+    const bgPositionX = currentData.bg_position_x || DEFAULT_DATA.bg_position_x;
+    const bgPositionY = currentData.bg_position_y || DEFAULT_DATA.bg_position_y;
     const title = currentData.title || DEFAULT_DATA.title;
     const subtitle = currentData.subtitle || DEFAULT_DATA.subtitle;
     const btnPrimary = JSON.parse(
@@ -170,6 +196,28 @@ function showHeroBannerModal(editor, component) {
                             <input id="hb-bg-url" type="text" placeholder="URL de la imagen" value="${bgImage}" class="hb-input">
                         </div>
                         <button id="hb-bg-pick" class="hb-pick-btn"><i class="ri-image-line"></i> Seleccionar</button>
+                    </div>
+                </div>
+                <div class="hb-card">
+                    <label class="hb-label">Posición de la imagen</label>
+                    <p style="font-size:0.75rem;color:#94a3b8;margin:0 0 0.75rem;">Controla qué parte de la imagen se prioriza al recortarse para adaptarse al banner.</p>
+                    <div class="hb-row" style="gap:1rem;">
+                        <div style="flex:1;">
+                            <label class="hb-label" style="margin-bottom:0.375rem;">Horizontal</label>
+                            <select id="hb-bg-pos-x" class="hb-input">
+                                <option value="left" ${bgPositionX === "left" ? "selected" : ""}>Izquierda</option>
+                                <option value="center" ${bgPositionX === "center" ? "selected" : ""}>Centro</option>
+                                <option value="right" ${bgPositionX === "right" ? "selected" : ""}>Derecha</option>
+                            </select>
+                        </div>
+                        <div style="flex:1;">
+                            <label class="hb-label" style="margin-bottom:0.375rem;">Vertical</label>
+                            <select id="hb-bg-pos-y" class="hb-input">
+                                <option value="top" ${bgPositionY === "top" ? "selected" : ""}>Arriba</option>
+                                <option value="center" ${bgPositionY === "center" ? "selected" : ""}>Centro</option>
+                                <option value="bottom" ${bgPositionY === "bottom" ? "selected" : ""}>Abajo</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -250,14 +298,18 @@ function showHeroBannerModal(editor, component) {
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
 
-    const appBase = document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
+    const appBase =
+        document
+            .querySelector('meta[name="app-url"]')
+            ?.content?.replace(/\/$/, "") ?? "";
     const searchUrl = `${appBase}/api/pages/search`;
 
     function attachUrlAutocomplete(input) {
         if (input.dataset.autocompleteAttached) return;
         input.dataset.autocompleteAttached = "true";
         const parent = input.parentNode;
-        if (!parent.style.position || parent.style.position === "static") parent.style.position = "relative";
+        if (!parent.style.position || parent.style.position === "static")
+            parent.style.position = "relative";
         const dropdown = document.createElement("ul");
         dropdown.style.cssText = `position:absolute;top:calc(100% + 2px);left:0;right:0;z-index:999999;background:#fff;border:1px solid #e2e8f0;border-radius:0.5rem;box-shadow:0 8px 24px rgba(0,0,0,0.1);list-style:none;margin:0;padding:0.25rem;max-height:200px;overflow-y:auto;display:none;`;
         parent.appendChild(dropdown);
@@ -269,9 +321,15 @@ function showHeroBannerModal(editor, component) {
                 return;
             }
             try {
-                const res = await fetch(`${searchUrl}?q=${encodeURIComponent(q)}`, {
-                    headers: { Accept: "application/json", "X-Requested-With": "XMLHttpRequest" },
-                });
+                const res = await fetch(
+                    `${searchUrl}?q=${encodeURIComponent(q)}`,
+                    {
+                        headers: {
+                            Accept: "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                        },
+                    },
+                );
                 const pages = await res.json();
                 renderDropdown(pages, q);
             } catch {
@@ -281,7 +339,13 @@ function showHeroBannerModal(editor, component) {
 
         function highlight(text, q) {
             if (!q) return text;
-            return text.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"), '<mark style="background:#fef3c7;color:#92400e;border-radius:2px;padding:0 1px;">$1</mark>');
+            return text.replace(
+                new RegExp(
+                    `(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+                    "gi",
+                ),
+                '<mark style="background:#fef3c7;color:#92400e;border-radius:2px;padding:0 1px;">$1</mark>',
+            );
         }
 
         function renderDropdown(pages, q) {
@@ -292,10 +356,17 @@ function showHeroBannerModal(editor, component) {
             }
             pages.forEach((page) => {
                 const li = document.createElement("li");
-                li.style.cssText = "padding:0.375rem 0.625rem;border-radius:0.375rem;cursor:pointer;display:flex;flex-direction:column;gap:0.125rem;";
+                li.style.cssText =
+                    "padding:0.375rem 0.625rem;border-radius:0.375rem;cursor:pointer;display:flex;flex-direction:column;gap:0.125rem;";
                 li.innerHTML = `<span style="font-size:0.8rem;font-weight:600;color:#1e293b;">${highlight(page.title, q)}</span><span style="font-size:0.7rem;color:#64748b;">/${page.slug}</span>`;
-                li.addEventListener("mouseenter", () => (li.style.background = "#f1f5f9"));
-                li.addEventListener("mouseleave", () => (li.style.background = ""));
+                li.addEventListener(
+                    "mouseenter",
+                    () => (li.style.background = "#f1f5f9"),
+                );
+                li.addEventListener(
+                    "mouseleave",
+                    () => (li.style.background = ""),
+                );
                 li.addEventListener("mousedown", (e) => {
                     e.preventDefault();
                     input.value = `${TEMP_INTERNAL_URL_PREFIX}/${page.slug}`;
@@ -355,9 +426,17 @@ function showHeroBannerModal(editor, component) {
     function setupColorToggle(wrapId, initial, onChange) {
         const wrap = modal.querySelector(`#${wrapId}`);
         wrap.querySelectorAll("[data-color]").forEach((btn) => {
-            btn.classList.toggle("hb-color-inactive", btn.dataset.color !== initial);
+            btn.classList.toggle(
+                "hb-color-inactive",
+                btn.dataset.color !== initial,
+            );
             btn.addEventListener("click", () => {
-                wrap.querySelectorAll("[data-color]").forEach((b) => b.classList.toggle("hb-color-inactive", b.dataset.color !== btn.dataset.color));
+                wrap.querySelectorAll("[data-color]").forEach((b) =>
+                    b.classList.toggle(
+                        "hb-color-inactive",
+                        b.dataset.color !== btn.dataset.color,
+                    ),
+                );
                 onChange(btn.dataset.color);
             });
         });
@@ -409,6 +488,20 @@ function showHeroBannerModal(editor, component) {
         modal.querySelector("#hb-bg-preview").src = e.target.value;
     });
 
+    function updateBgPreviewPosition() {
+        const x = modal.querySelector("#hb-bg-pos-x").value;
+        const y = modal.querySelector("#hb-bg-pos-y").value;
+        modal.querySelector("#hb-bg-preview").style.objectPosition =
+            `${x} ${y}`;
+    }
+    modal
+        .querySelector("#hb-bg-pos-x")
+        .addEventListener("change", updateBgPreviewPosition);
+    modal
+        .querySelector("#hb-bg-pos-y")
+        .addEventListener("change", updateBgPreviewPosition);
+    updateBgPreviewPosition();
+
     const close = () => overlay.remove();
     modal.querySelector("#hb-modal-close").onclick = close;
     modal.querySelector("#hb-modal-cancel").onclick = close;
@@ -421,6 +514,8 @@ function showHeroBannerModal(editor, component) {
             bg_image:
                 modal.querySelector("#hb-bg-url").value.trim() ||
                 DEFAULT_DATA.bg_image,
+            bg_position_x: modal.querySelector("#hb-bg-pos-x").value,
+            bg_position_y: modal.querySelector("#hb-bg-pos-y").value,
             title: modal.querySelector("#hb-title").value.trim(),
             subtitle: modal.querySelector("#hb-subtitle").value.trim(),
             btn_primary: {
