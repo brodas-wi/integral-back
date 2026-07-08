@@ -3361,7 +3361,7 @@ ${Oa}
 }
 </style>`;function pt(i,e){e=e||"hb"+Math.random().toString(36).slice(2,7);const t=i.bg_image||I("images/placeholder.svg"),a=i.btn_primary||{},r=i.btn_secondary||{},l=a.color||"white",o=r.color||"white",f=i.bg_position_x||"center",d=i.bg_position_y||"center",s=`hb-pos-${f}-${d}`,h=a.enabled?`<a href="${a.href||"#"}" class="hb-btn hb-btn-${l}-solid">${a.label||"Conoce más"}</a>`:"",b=r.enabled?`<a href="${r.href||"#"}" class="hb-btn hb-btn-${o}-outline">${r.label||"Solicitar"}</a>`:"",c=i.subtitle?`<p class="hb-subtitle">${i.subtitle}</p>`:"";return`<section id="hb-root-${e}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <img src="${t}" alt="${i.title||"Banner"}" class="${s}" loading="eager" decoding="async" fetchpriority="high" draggable="false">
+            <img src="${t}" alt="${i.title||"Banner"}" class="${s}" loading="eager" decoding="async" fetchpriority="high" draggable="false" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false">
         </div>
         <div class="hb-content">
             <h2 class="hb-title">${i.title||"Título del banner"}</h2>

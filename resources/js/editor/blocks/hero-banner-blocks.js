@@ -67,7 +67,7 @@ function buildHeroBannerHTML(data, uid) {
 
     return `<section id="hb-root-${uid}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <img src="${bgImage}" alt="${data.title || "Banner"}" class="${posClass}" loading="eager" decoding="async" fetchpriority="high" draggable="false">
+            <img src="${bgImage}" alt="${data.title || "Banner"}" class="${posClass}" loading="eager" decoding="async" fetchpriority="high" draggable="false" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false">
         </div>
         <div class="hb-content">
             <h2 class="hb-title">${data.title || "Título del banner"}</h2>
