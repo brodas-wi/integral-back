@@ -3350,13 +3350,13 @@ ${Pa}
 .hb-buttons{flex-direction:column;align-items:flex-start;}
 .hb-btn{width:100%;text-align:center;}
 }
-</style>`;function pt(i,e){e=e||"hb"+Math.random().toString(36).slice(2,7);const t=i.bg_image||I("images/placeholder.svg"),a=i.btn_primary||{},r=i.btn_secondary||{},l=a.color||"white",o=r.color||"white",p=a.enabled?`<a href="${a.href||"#"}" class="hb-btn hb-btn-${l}-solid">${a.label||"Conoce más"}</a>`:"",d=r.enabled?`<a href="${r.href||"#"}" class="hb-btn hb-btn-${o}-outline">${r.label||"Solicitar"}</a>`:"";return`<section id="hb-root-${e}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+</style>`;function pt(i,e){e=e||"hb"+Math.random().toString(36).slice(2,7);const t=i.bg_image||I("images/placeholder.svg"),a=i.btn_primary||{},r=i.btn_secondary||{},l=a.color||"white",o=r.color||"white",p=a.enabled?`<a href="${a.href||"#"}" class="hb-btn hb-btn-${l}-solid">${a.label||"Conoce más"}</a>`:"",d=r.enabled?`<a href="${r.href||"#"}" class="hb-btn hb-btn-${o}-outline">${r.label||"Solicitar"}</a>`:"",s=i.subtitle?`<p class="hb-subtitle">${i.subtitle}</p>`:"";return`<section id="hb-root-${e}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <img src="${t}" alt="${i.title||"Banner"}" loading="eager" decoding="async" fetchpriority="high" draggable="false">
         </div>
         <div class="hb-content">
             <h2 class="hb-title">${i.title||"Título del banner"}</h2>
-            <p class="hb-subtitle">${i.subtitle||"Subtítulo del banner"}</p>
+            ${s}
             <div class="hb-buttons">${p}${d}</div>
         </div>
     </section>`}const Y={bg_image:I("images/placeholder.svg"),title:"Cuenta de Ahorro Electrónica",subtitle:"Dale un giro digital a tus ahorros",btn_primary:{enabled:!0,label:"Abre tu cuenta",href:"#",color:"white"},btn_secondary:{enabled:!0,label:"Conoce más",href:"#",color:"white"}};function Or(i,e){const t=document.getElementById("hero-banner-config-modal");if(t&&t.remove(),!document.getElementById("hb-modal-styles")){const h=document.createElement("style");h.id="hb-modal-styles",h.textContent=`
@@ -3428,8 +3428,8 @@ ${Pa}
                     <input id="hb-title" type="text" placeholder="Título del banner" value="${l}" class="hb-input">
                 </div>
                 <div class="hb-card">
-                    <label class="hb-label">Subtítulo</label>
-                    <input id="hb-subtitle" type="text" placeholder="Subtítulo del banner" value="${o}" class="hb-input">
+                    <label class="hb-label">Subtítulo (opcional)</label>
+                    <input id="hb-subtitle" type="text" placeholder="Déjalo vacío si no quieres subtítulo" value="${o}" class="hb-input">
                 </div>
             </div>
             <div class="hb-tab-panel" id="hb-panel-buttons">

@@ -49,13 +49,17 @@ function buildHeroBannerHTML(data, uid) {
         ? `<a href="${btnSecondary.href || "#"}" class="hb-btn hb-btn-${secondaryColor}-outline">${btnSecondary.label || "Solicitar"}</a>`
         : "";
 
+    const subtitleHtml = data.subtitle
+        ? `<p class="hb-subtitle">${data.subtitle}</p>`
+        : "";
+
     return `<section id="hb-root-${uid}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <img src="${bgImage}" alt="${data.title || "Banner"}" loading="eager" decoding="async" fetchpriority="high" draggable="false">
         </div>
         <div class="hb-content">
             <h2 class="hb-title">${data.title || "Título del banner"}</h2>
-            <p class="hb-subtitle">${data.subtitle || "Subtítulo del banner"}</p>
+            ${subtitleHtml}
             <div class="hb-buttons">${btnPrimaryHtml}${btnSecondaryHtml}</div>
         </div>
     </section>`;
@@ -175,8 +179,8 @@ function showHeroBannerModal(editor, component) {
                     <input id="hb-title" type="text" placeholder="Título del banner" value="${title}" class="hb-input">
                 </div>
                 <div class="hb-card">
-                    <label class="hb-label">Subtítulo</label>
-                    <input id="hb-subtitle" type="text" placeholder="Subtítulo del banner" value="${subtitle}" class="hb-input">
+                    <label class="hb-label">Subtítulo (opcional)</label>
+                    <input id="hb-subtitle" type="text" placeholder="Déjalo vacío si no quieres subtítulo" value="${subtitle}" class="hb-input">
                 </div>
             </div>
             <div class="hb-tab-panel" id="hb-panel-buttons">
