@@ -162,7 +162,7 @@ function showHeroBannerModal(editor, component) {
     const bgPositionX = currentData.bg_position_x || DEFAULT_DATA.bg_position_x;
     const bgPositionY = currentData.bg_position_y || DEFAULT_DATA.bg_position_y;
     const title = currentData.title || DEFAULT_DATA.title;
-    const subtitle = currentData.subtitle || DEFAULT_DATA.subtitle;
+    const subtitle = currentData.subtitle ?? DEFAULT_DATA.subtitle;
     const btnPrimary = JSON.parse(
         JSON.stringify(currentData.btn_primary || DEFAULT_DATA.btn_primary),
     );
