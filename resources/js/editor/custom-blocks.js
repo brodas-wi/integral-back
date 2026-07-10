@@ -46,6 +46,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(assistanceCardsBlocks);
     blockRegistry.registerBlocks(dualCardBlocks)
     blockRegistry.registerBlocks(splitContentBlocks);
+    blockRegistry.registerBlocks(productDetailBlocks);
     blockRegistry.registerBlocks(ctaBlocks);
     blockRegistry.registerBlocks(documentDownloadBlocks);
     blockRegistry.registerBlocks(promoCtaBlocks);
@@ -58,7 +59,6 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(tableBlocks);
     blockRegistry.registerBlocks(buttonBlocks);
     blockRegistry.registerBlocks(badgeBlocks);
-    blockRegistry.registerBlocks(productDetailBlocks);
     blockRegistry.registerBlocks(financingBlocks);
     blockRegistry.registerBlocks(mapFilterBlocks);
     blockRegistry.registerBlocks(assetsBlocks);
