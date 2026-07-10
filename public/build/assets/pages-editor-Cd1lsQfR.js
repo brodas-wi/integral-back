@@ -1777,7 +1777,7 @@ ${Ge}`}],te=`
         ${Array.from({length:t},qe).join("")}
     </ul>
 </div>`,Na=()=>`
-<p class="text-base pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,K=(t=1)=>`
+<p class="text-sm pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,K=(t=1)=>`
 <div class="w-full flex flex-col gap-2">
     ${Array.from({length:t},Na).join("")}
 </div>`,xe=()=>`
@@ -2055,15 +2055,15 @@ ${I}`},{id:"product-detail-repeat-blocks",label:"Sección: bloques título+párr
     <div class="pd-asymmetric-grid">
         <div class="flex flex-col gap-6">
             <div class="flex flex-col gap-1">
-                <p class="text-base font-bold text-[#003B71] m-0">Lorem ipsum dolor sit amet</p>
+                <p class="text-lg font-bold text-[#003B71] m-0">Lorem ipsum dolor sit amet</p>
                 <p class="text-base font-normal text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet, estamos listos para ayudarte con <span class="text-[#E97300] font-semibold">soluciones rápidas y efectivas</span>.</p>
             </div>
             <div class="flex flex-col gap-1">
-                <p class="text-base font-bold text-[#003B71] m-0">Lorem ipsum dolor sit amet</p>
+                <p class="text-lg font-bold text-[#003B71] m-0">Lorem ipsum dolor sit amet</p>
                 <p class="text-base font-normal text-[#003B71] leading-relaxed m-0">Porque lo importante es <span class="text-[#E97300] font-semibold">nuestra prioridad</span>, recuerda que cuentas con <span class="text-[#E97300] font-semibold">servicios listos</span> para ayudarte en cualquier momento.</p>
             </div>
             <div class="flex flex-col gap-1">
-                <p class="text-base font-bold text-[#003B71] m-0">Lorem ipsum dolor sit amet</p>
+                <p class="text-lg font-bold text-[#003B71] m-0">Lorem ipsum dolor sit amet</p>
                 <p class="text-base font-normal text-[#003B71] leading-relaxed m-0">No importa si es de día o de noche, tienes <span class="text-[#E97300] font-semibold">apoyo para seguir tu camino</span> sin preocupaciones.</p>
             </div>
         </div>
