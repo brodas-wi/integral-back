@@ -278,7 +278,7 @@
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-B0jat1sP.css",
+    "file": "assets/app-C_gqza1K.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -482,7 +482,7 @@
     ]
   },
   "resources/js/pages-editor.js": {
-    "file": "assets/pages-editor-D57QttEf.js",
+    "file": "assets/pages-editor-y7vV1fgH.js",
     "name": "pages-editor",
     "src": "resources/js/pages-editor.js",
     "isEntry": true,
