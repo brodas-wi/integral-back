@@ -66,7 +66,7 @@ const PRODUCT_DETAIL_HEADER_GRID_STYLES = `
 const PRODUCT_DETAIL_TABLE_STYLES = `
 <style>
 .pd-coverage-table{width:100%;border-collapse:collapse;border-radius:0.5rem;overflow:hidden;box-shadow:0 2px 12px 0 rgba(0,0,0,0.08);}
-.pd-coverage-table thead th{background-color:#E97300;color:#fff;text-align:left;padding:0.75rem 1rem;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.02em;}
+.pd-coverage-table thead th{background-color:#E97300;color:#fff;text-align:left;padding:0.75rem 1rem;font-size:0.95rem;letter-spacing:0.02em;}
 .pd-coverage-table thead th:not(:first-child){text-align:center;}
 .pd-coverage-table tbody td{padding:0.65rem 1rem;font-size:0.9rem;color:#003B71;border-bottom:1px solid #e5e7eb;}
 .pd-coverage-table tbody td:not(:first-child){text-align:center;font-weight:700;}
@@ -95,7 +95,7 @@ const bulletItem = () => `
 
 const bulletList = (n = 3, label = null) => `
 <div class="flex flex-col gap-3">
-    ${label ? `<span class="text-base font-bold text-[#E97300] uppercase tracking-wide">${label}</span>` : ""}
+    ${label ? `<span class="text-base font-bold text-[#E97300] tracking-wide">${label}</span>` : ""}
     <ul class="list-none p-0 m-0 flex flex-col gap-3">
         ${Array.from({ length: n }, bulletItem).join("")}
     </ul>
@@ -111,13 +111,13 @@ const footnoteGroup = (n = 1) => `
 
 const priceBox = () => `
 <div class="w-full rounded-xl border-2 pd-box-border px-6 py-4 flex flex-col items-center justify-center gap-1 text-center">
-    <span class="text-2xl font-bold pd-text-primary uppercase tracking-wide">Invierte desde:</span>
+    <span class="text-2xl font-bold pd-text-primary tracking-wide">Invierte desde:</span>
     <span class="text-2xl font-black pd-text-orange">$00.00</span>
 </div>`;
 
 const priceBoxRow = () => `
 <div class="flex flex-col items-center justify-center gap-1 py-4 px-6">
-    <span class="text-lg font-bold pd-text-primary uppercase tracking-wide leading-snug">Invierte desde:</span>
+    <span class="text-lg font-bold pd-text-primary tracking-wide leading-snug">Invierte desde:</span>
     <span class="text-lg font-bold pd-text-primary">Hasta: <span class="pd-text-orange">$00.00</span></span>
 </div>`;
 
@@ -135,7 +135,7 @@ const iconCard = (title = "Lorem ipsum", n = 3) => `
     <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 pd-btn-orange">
         <img src="${assetUrl("images/placeholder.svg")}" alt="" class="w-6 h-6 object-contain">
     </div>
-    <span class="text-sm font-bold text-[#E97300] uppercase tracking-wide leading-snug w-full">${title}</span>
+    <span class="text-sm font-bold text-[#E97300] tracking-wide leading-snug w-full">${title}</span>
     <ul class="list-none p-0 m-0 flex flex-col gap-2 w-full">
         ${Array.from({ length: n }, bulletItem).join("")}
     </ul>
@@ -146,7 +146,7 @@ const iconCardSimple = (title = "Lorem ipsum") => `
     <div class="w-14 h-14 rounded-full flex items-center justify-center shrink-0 pd-btn-orange">
         <img src="${assetUrl("images/placeholder.svg")}" alt="" class="w-7 h-7 object-contain">
     </div>
-    <span class="text-sm font-bold text-[#003B71] uppercase tracking-wide">${title}</span>
+    <span class="text-sm font-bold text-[#003B71] tracking-wide">${title}</span>
     <p class="text-sm pd-text-muted leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
 </div>`;
 
@@ -156,10 +156,10 @@ const iconCardRow = (n = 4) => `
 </div>`;
 
 const ctaButton = (label = "Adquiere tu servicio") => `
-<a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center uppercase tracking-wide max-w-full transition-colors no-underline">${label}</a>`;
+<a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center tracking-wide max-w-full transition-colors no-underline">${label}</a>`;
 
 const productTitle = (title = "Nombre del Producto") => `
-<h2 class="text-4xl font-black text-[#E97300] break-words uppercase leading-tight text-center w-full">${title}</h2>`;
+<h2 class="text-4xl font-black text-[#E97300] break-words leading-tight text-center w-full">${title}</h2>`;
 
 const coverageRow = () => `
 <tr>
@@ -371,7 +371,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
     <div class="pd-asymmetric-grid">
         <div class="flex flex-col gap-5">
             <p class="text-lg font-bold text-[#003B71] leading-snug">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            <p class="text-base font-bold text-[#E97300] uppercase leading-snug">Lorem ipsum dolor sit amet, subtítulo destacado de la sección.</p>
+            <p class="text-base font-bold text-[#E97300] leading-snug">Lorem ipsum dolor sit amet, subtítulo destacado de la sección.</p>
             ${bulletList(6, "Ventajas")}
         </div>
         <div class="flex flex-col items-center gap-4">
@@ -473,16 +473,46 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
         category: CATEGORY,
         media: iconProductDetailCardsRow,
         content: `
-<section class="w-full bg-white px-16 py-12 flex flex-col gap-8">
-    <p class="text-base text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<section class="w-full bg-white px-16 py-12 flex flex-col gap-5">
+    <p class="text-base font-bold text-[#E97300] m-0">Subtítulo destacado</p>
+    <p class="text-base font-semibold text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     ${iconCardRow(4)}
-    <div class="flex flex-col gap-2">
-        <p class="text-base font-bold text-[#003B71] leading-relaxed m-0">Subtítulo destacado:</p>
-        <p class="text-base pd-text-muted leading-relaxed m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
-    </div>
-    <p class="text-base text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet, texto adicional de cierre de la sección.</p>
 </section>
 ${PRODUCT_DETAIL_CARDS_ROW_STYLES}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
+    },
+
+    {
+        id: "product-detail-repeat-blocks",
+        label: "Sección: bloques título+párrafo repetidos + acción",
+        category: CATEGORY,
+        media: iconProductDetail,
+        content: `
+<section class="w-full bg-white px-16 py-12">
+    <div class="pd-asymmetric-grid">
+        <div class="flex flex-col gap-6">
+            <div class="flex flex-col gap-1">
+                <p class="text-base font-bold text-[#003B71] m-0">Lorem ipsum dolor sit amet</p>
+                <p class="text-base font-normal text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet, estamos listos para ayudarte con <span class="text-[#E97300] font-semibold">soluciones rápidas y efectivas</span>.</p>
+            </div>
+            <div class="flex flex-col gap-1">
+                <p class="text-base font-bold text-[#003B71] m-0">Lorem ipsum dolor sit amet</p>
+                <p class="text-base font-normal text-[#003B71] leading-relaxed m-0">Porque lo importante es <span class="text-[#E97300] font-semibold">nuestra prioridad</span>, recuerda que cuentas con <span class="text-[#E97300] font-semibold">servicios listos</span> para ayudarte en cualquier momento.</p>
+            </div>
+            <div class="flex flex-col gap-1">
+                <p class="text-base font-bold text-[#003B71] m-0">Lorem ipsum dolor sit amet</p>
+                <p class="text-base font-normal text-[#003B71] leading-relaxed m-0">No importa si es de día o de noche, tienes <span class="text-[#E97300] font-semibold">apoyo para seguir tu camino</span> sin preocupaciones.</p>
+            </div>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            ${productTitle("Nombre del Producto")}
+            ${ctaButton("Adquiere tu servicio")}
+            ${priceBox()}
+            ${footnoteGroup(2)}
+        </div>
+    </div>
+</section>
+${PRODUCT_DETAIL_GRID_STYLES}
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
 
@@ -523,7 +553,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             <div class="flex flex-col gap-2">
                 <p class="text-base font-bold text-[#003B71] m-0">Subtítulo de la sección</p>
                 <p class="text-base text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
-                <p class="text-sm font-bold text-[#E97300] uppercase m-0">Qué puede incluir:</p>
+                <p class="text-sm font-bold text-[#E97300] m-0">Qué puede incluir:</p>
                 ${bulletList(4)}
             </div>
             <div class="flex flex-col gap-2">
