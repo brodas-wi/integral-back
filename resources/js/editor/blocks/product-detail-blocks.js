@@ -102,7 +102,7 @@ const bulletList = (n = 3, label = null) => `
 </div>`;
 
 const footnote = () => `
-<p class="text-sm pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`;
+<p class="text-base pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`;
 
 const footnoteGroup = (n = 1) => `
 <div class="w-full flex flex-col gap-2">
@@ -135,7 +135,7 @@ const iconCard = (title = "Lorem ipsum", n = 3) => `
     <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 pd-btn-orange">
         <img src="${assetUrl("images/placeholder.svg")}" alt="" class="w-6 h-6 object-contain">
     </div>
-    <span class="text-sm font-bold text-[#E97300] tracking-wide leading-snug w-full">${title}</span>
+    <span class="text-base font-bold text-[#E97300] tracking-wide leading-snug w-full">${title}</span>
     <ul class="list-none p-0 m-0 flex flex-col gap-2 w-full">
         ${Array.from({ length: n }, bulletItem).join("")}
     </ul>
@@ -146,8 +146,8 @@ const iconCardSimple = (title = "Lorem ipsum") => `
     <div class="w-14 h-14 rounded-full flex items-center justify-center shrink-0 pd-btn-orange">
         <img src="${assetUrl("images/placeholder.svg")}" alt="" class="w-7 h-7 object-contain">
     </div>
-    <span class="text-sm font-bold text-[#003B71] tracking-wide">${title}</span>
-    <p class="text-sm pd-text-muted leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
+    <span class="text-base font-bold text-[#003B71] tracking-wide">${title}</span>
+    <p class="text-base text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
 </div>`;
 
 const iconCardRow = (n = 4) => `
@@ -553,7 +553,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             <div class="flex flex-col gap-2">
                 <p class="text-base font-bold text-[#003B71] m-0">Subtítulo de la sección</p>
                 <p class="text-base text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
-                <p class="text-sm font-bold text-[#E97300] m-0">Qué puede incluir:</p>
+                <p class="text-base font-bold text-[#E97300] m-0">Qué puede incluir:</p>
                 ${bulletList(4)}
             </div>
             <div class="flex flex-col gap-2">

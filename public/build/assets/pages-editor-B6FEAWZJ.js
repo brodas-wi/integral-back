@@ -1777,7 +1777,7 @@ ${Ge}`}],te=`
         ${Array.from({length:t},qe).join("")}
     </ul>
 </div>`,Na=()=>`
-<p class="text-sm pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,K=(t=1)=>`
+<p class="text-base pd-text-muted leading-relaxed text-justify m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,K=(t=1)=>`
 <div class="w-full flex flex-col gap-2">
     ${Array.from({length:t},Na).join("")}
 </div>`,xe=()=>`
@@ -1800,7 +1800,7 @@ ${Ge}`}],te=`
     <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 pd-btn-orange">
         <img src="${A("images/placeholder.svg")}" alt="" class="w-6 h-6 object-contain">
     </div>
-    <span class="text-sm font-bold text-[#E97300] tracking-wide leading-snug w-full">${t}</span>
+    <span class="text-base font-bold text-[#E97300] tracking-wide leading-snug w-full">${t}</span>
     <ul class="list-none p-0 m-0 flex flex-col gap-2 w-full">
         ${Array.from({length:e},qe).join("")}
     </ul>
@@ -1809,8 +1809,8 @@ ${Ge}`}],te=`
     <div class="w-14 h-14 rounded-full flex items-center justify-center shrink-0 pd-btn-orange">
         <img src="${A("images/placeholder.svg")}" alt="" class="w-7 h-7 object-contain">
     </div>
-    <span class="text-sm font-bold text-[#003B71] tracking-wide">${t}</span>
-    <p class="text-sm pd-text-muted leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
+    <span class="text-base font-bold text-[#003B71] tracking-wide">${t}</span>
+    <p class="text-base text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
 </div>`,Pa=(t=4)=>`
 <div class="pd-cards-row">
     ${Array.from({length:t},()=>wt()).join("")}
@@ -2100,7 +2100,7 @@ ${I}`},{id:"product-detail-table",label:"Sección: tabla de coberturas + acción
             <div class="flex flex-col gap-2">
                 <p class="text-base font-bold text-[#003B71] m-0">Subtítulo de la sección</p>
                 <p class="text-base text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
-                <p class="text-sm font-bold text-[#E97300] m-0">Qué puede incluir:</p>
+                <p class="text-base font-bold text-[#E97300] m-0">Qué puede incluir:</p>
                 ${V(4)}
             </div>
             <div class="flex flex-col gap-2">
