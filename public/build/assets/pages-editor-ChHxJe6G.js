@@ -1987,7 +1987,8 @@ ${D}`},{id:"product-detail-box-double",label:"Sección: 2 columnas + cuadro de p
 </section>
 ${de}
 ${D}`},{id:"product-detail-three-col",label:"Sección: 3 columnas (2 listas + acción)",category:M,media:Ra,content:`
-<section class="w-full bg-white px-16 py-12">
+<section class="w-full bg-white px-16 py-12 flex flex-col gap-6">
+    <p class="text-lg font-bold text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     <div class="pd-three-col-grid">
         ${V(3,"Ventajas:")}
         ${V(3,"Beneficios:")}

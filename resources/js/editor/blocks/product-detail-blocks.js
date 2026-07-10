@@ -1,6 +1,5 @@
 import { assetUrl } from "@/utils/url.js";
 
-
 const PRODUCT_DETAIL_GRID_STYLES = `
 <style>
 .pd-asymmetric-grid{display:grid;grid-template-columns:3fr 2fr;gap:2rem;align-items:start;}
@@ -87,7 +86,6 @@ const PRODUCT_DETAIL_COLOR_STYLES = `
 .pd-text-orange{color:#E97300;}
 .pd-box-divider{background-color:#E97300;}
 </style>`;
-
 
 const bulletItem = () => `
 <li class="flex items-start gap-2 text-base text-[#003B71]">
@@ -183,7 +181,6 @@ const coverageTable = (n = 5) => `
         ${Array.from({ length: n }, coverageRow).join("")}
     </tbody>
 </table>`;
-
 
 const iconProductDetail = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
@@ -314,11 +311,9 @@ const iconProductTitle = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="8" y="19" width="16" height="2" rx="1" fill="#E97300" fill-opacity="0.4"/>
 </svg>`;
 
-
 const CATEGORY = "Detalle de Producto";
 
 export const productDetailBlocks = [
-    
     {
         id: "product-detail-section",
         label: "Sección: 2 columnas (texto + acción)",
@@ -397,7 +392,8 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
         category: CATEGORY,
         media: iconProductDetailThreeCol,
         content: `
-<section class="w-full bg-white px-16 py-12">
+<section class="w-full bg-white px-16 py-12 flex flex-col gap-6">
+    <p class="text-lg font-bold text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     <div class="pd-three-col-grid">
         ${bulletList(3, "Ventajas:")}
         ${bulletList(3, "Beneficios:")}
@@ -548,7 +544,6 @@ ${PRODUCT_DETAIL_TABLE_STYLES}
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
 
-    
     {
         id: "product-detail-bullet-item",
         label: "Ítem: bullet individual",
