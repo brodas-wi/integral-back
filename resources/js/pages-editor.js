@@ -31,29 +31,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const editor = initializeGrapesJS();
 
-    editor.on("load", () => {
-        addCustomBlocks(editor);
-        translateDynamicUI(editor);
-        applyCustomStyles(editor);
-        fixButtonTooltips(editor);
-        injectCanvasStyles(editor);
-        setupEditorCommands(editor);
-        setupImageDoubleClick(editor);
-        addImageToolbarButton(editor);
-        addIconToolbarButton(editor);
-        addColorToolbarButton(editor);
-        registerDeviceCommands(editor);
-        registerCanvasClearCommand(editor);
-        injectCanvasFix(editor);
+    const editorLoaded = new Promise((resolve) => {
+        editor.on("load", () => {
+            addCustomBlocks(editor);
+            translateDynamicUI(editor);
+            applyCustomStyles(editor);
+            fixButtonTooltips(editor);
+            injectCanvasStyles(editor);
+            setupEditorCommands(editor);
+            setupImageDoubleClick(editor);
+            addImageToolbarButton(editor);
+            addIconToolbarButton(editor);
+            addColorToolbarButton(editor);
+            registerDeviceCommands(editor);
+            registerCanvasClearCommand(editor);
+            injectCanvasFix(editor);
 
-        setTimeout(() => {
-            editor.runCommand("sw-visibility");
-            editor.Panels.getButton("options", "sw-visibility")?.set(
-                "active",
-                true,
-            );
-        }, 100);
+            setTimeout(() => {
+                editor.runCommand("sw-visibility");
+                editor.Panels.getButton("options", "sw-visibility")?.set(
+                    "active",
+                    true,
+                );
+            }, 100);
+
+            resolve();
+        });
     });
+
+    await Promise.all([editorLoaded, waitForCanvasFrame(editor)]);
 
     if (editorState.isEditMode) {
         try {
@@ -95,7 +101,8 @@ function registerCanvasClearCommand(editor) {
         run: (ed) => {
             showConfirmModal({
                 title: "Limpiar canvas",
-                description: "¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",
+                description:
+                    "¿Estás seguro de que quieres eliminar todo el contenido del canvas? Esta acción no se puede deshacer.",
                 icon: "ri-delete-bin-line",
                 iconBg: "#fef2f2",
                 iconColor: "#dc2626",
@@ -107,6 +114,32 @@ function registerCanvasClearCommand(editor) {
                 },
             });
         },
+    });
+}
+
+function waitForCanvasFrame(editor) {
+    return new Promise((resolve) => {
+        const frameEl = editor.Canvas.getFrameEl();
+        const isFrameReady =
+            frameEl?.contentDocument?.readyState === "complete" &&
+            frameEl.contentDocument.head?.childElementCount > 0;
+
+        if (isFrameReady) {
+            resolve();
+            return;
+        }
+
+        const onFrameLoad = () => {
+            editor.off("canvas:frame:load", onFrameLoad);
+            resolve();
+        };
+
+        editor.on("canvas:frame:load", onFrameLoad);
+
+        setTimeout(() => {
+            editor.off("canvas:frame:load", onFrameLoad);
+            resolve();
+        }, 3000);
     });
 }
 
