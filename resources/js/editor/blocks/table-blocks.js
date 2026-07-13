@@ -37,37 +37,37 @@ const THEMES = {
 
 function buildTableHTML(data, theme) {
     const t = THEMES[theme] || THEMES.blue;
+    const showTitleRow = data.showTitleRow !== false && !!data.title;
+    const showHeaderRow = data.showHeaderRow !== false;
 
     let html = `<table class="w-full border-collapse font-[Poppins,sans-serif] table-fixed">`;
 
-    if (data.title) {
-        html += `<thead><tr>
-            <th colspan="${data.cols}" class="p-3 align-middle text-center text-base font-bold ${t.headerBg} ${t.headerText}">
-                ${data.title}
-            </th>
-        </tr>`;
-        if (data.headers?.length) {
+    if (showTitleRow || showHeaderRow) {
+        html += `<thead>`;
+
+        if (showTitleRow) {
+            html += `<tr>
+                <th colspan="${data.cols}" class="p-3 align-middle text-center text-base font-bold ${t.headerBg} ${t.headerText}">
+                    ${data.title}
+                </th>
+            </tr>`;
+        }
+
+        if (showHeaderRow && data.headers?.length) {
+            const rowBg = showTitleRow ? t.subheaderBg : t.headerBg;
+            const rowText = showTitleRow ? t.subheaderText : t.headerText;
             html += `<tr>`;
             data.headers.forEach((h, hi) => {
                 const borderR =
                     hi < data.headers.length - 1
                         ? `border-r border-[${t.borderColor}]`
                         : "";
-                html += `<th class="p-3 align-middle text-sm font-semibold ${t.subheaderBg} ${t.subheaderText} ${borderR} border-b border-[${t.borderColor}] text-${h.align || "center"}">${h.text || ""}</th>`;
+                html += `<th class="p-3 align-middle text-sm font-semibold ${rowBg} ${rowText} ${borderR} border-b border-[${t.borderColor}] text-${h.align || "center"}">${h.text || ""}</th>`;
             });
             html += `</tr>`;
         }
+
         html += `</thead>`;
-    } else if (data.headers?.length) {
-        html += `<thead><tr>`;
-        data.headers.forEach((h, hi) => {
-            const borderR =
-                hi < data.headers.length - 1
-                    ? `border-r border-[${t.borderColor}]`
-                    : "";
-            html += `<th class="p-3 align-middle text-sm font-semibold ${t.headerBg} ${t.headerText} ${borderR} border-b border-[${t.borderColor}] text-${h.align || "center"}">${h.text || ""}</th>`;
-        });
-        html += `</tr></thead>`;
     }
 
     html += `<tbody>`;
@@ -125,6 +125,8 @@ function buildTableHTML(data, theme) {
 function defaultTableData(cols, rows) {
     return {
         title: "Título de la tabla",
+        showTitleRow: true,
+        showHeaderRow: true,
         cols,
         headers: Array.from({ length: cols }, (_, i) => ({
             text: `Columna ${i + 1}`,
@@ -168,75 +170,88 @@ function computeSkipMap(rows, cols) {
 }
 
 const TABLE_MODAL_STYLES = `
-#table-admin-modal{display:none;position:fixed;inset:0;z-index:999999;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,0.5);}
-#table-admin-modal.open{display:flex;}
-.tam-container{background:#fff;border-radius:0.75rem;box-shadow:0 20px 60px rgba(0,0,0,0.3);width:100%;max-width:960px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Poppins',sans-serif;}
-.tam-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #e5e7eb;flex-shrink:0;}
-.tam-header h2{font-size:1.125rem;font-weight:700;color:#111827;margin:0;}
-.tam-close{background:none;border:none;cursor:pointer;padding:0.5rem;border-radius:0.5rem;color:#9ca3af;font-size:1.5rem;line-height:1;transition:background 0.15s;}
-.tam-close:hover{background:#f3f4f6;color:#374151;}
-.tam-toolbar{display:flex;flex-wrap:wrap;gap:0.75rem;padding:1rem 1.5rem;border-bottom:1px solid #e5e7eb;background:#f9fafb;flex-shrink:0;align-items:center;}
-.tam-toolbar label{font-size:0.8rem;font-weight:600;color:#374151;}
-.tam-toolbar input[type=text],.tam-toolbar select,.tam-toolbar input[type=number]{padding:0.375rem 0.625rem;border:1.5px solid #d1d5db;border-radius:0.5rem;font-size:0.8rem;color:#111827;outline:none;transition:border-color 0.15s;background:#fff;}
-.tam-toolbar input[type=text]:focus,.tam-toolbar select:focus,.tam-toolbar input[type=number]:focus{border-color:#003B71;}
-.tam-toolbar-group{display:flex;flex-direction:column;gap:0.25rem;}
-.tam-body{flex:1;overflow-y:auto;padding:1.5rem;}
-.tam-table-wrap{overflow-x:auto;}
+.tam-overlay{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
+.tam-overlay.open{display:flex;}
+.tam-modal{background:#ffffff;border-radius:0.75rem;width:100%;max-width:1040px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
+.tam-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#ffffff;flex-shrink:0;}
+.tam-modal-header-left{display:flex;align-items:center;gap:0.5rem;}
+.tam-modal-header-left i{font-size:1.125rem;color:#003B71;}
+.tam-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
+.tam-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s,color 0.15s;}
+.tam-modal-close:hover{background:#f1f5f9;color:#475569;}
+.tam-modal-close i{font-size:1.125rem;}
+.tam-toolbar{display:flex;flex-wrap:wrap;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;background:#f8fafc;flex-shrink:0;align-items:flex-end;}
+.tam-toolbar-group{display:flex;flex-direction:column;gap:0.375rem;}
+.tam-toolbar-label{font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;}
+.tam-modal-input,.tam-modal-select{padding:0.5rem 0.75rem;background:#ffffff;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;}
+.tam-modal-input:focus,.tam-modal-select:focus{border-color:#003B71;}
+.tam-toolbar-checkbox{display:flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:500;color:#334155;cursor:pointer;user-select:none;padding:0.5rem 0.75rem;background:#ffffff;border:1px solid #e2e8f0;border-radius:0.5rem;}
+.tam-toolbar-checkbox input{accent-color:#003B71;cursor:pointer;width:1rem;height:1rem;}
+.tam-btn-rebuild{padding:0.5rem 1rem;background:#ffffff;border:2px solid #003B71;border-radius:0.5rem;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:0.375rem;font-family:inherit;transition:background 0.15s,color 0.15s;}
+.tam-btn-rebuild:hover{background:#003B71;color:#fff;}
+.tam-rebuild-notice{background:#fef9c3;border:1.5px solid #ca8a04;border-radius:0.5rem;padding:0.625rem 1rem;font-size:0.8125rem;color:#92400e;display:flex;align-items:center;gap:0.5rem;margin:0 1.25rem;flex-shrink:0;}
+.tam-body{flex:1;overflow-y:auto;padding:1.25rem;background:#f8fafc;}
+.tam-body::-webkit-scrollbar{width:5px;}
+.tam-body::-webkit-scrollbar-track{background:transparent;}
+.tam-body::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:3px;}
+.tam-table-wrap{overflow-x:auto;background:#ffffff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;}
 .tam-table{width:100%;border-collapse:collapse;font-size:0.8rem;table-layout:fixed;}
-.tam-table th,.tam-table td{border:1.5px solid #d1d5db;padding:0.5rem;vertical-align:top;min-width:80px;}
-.tam-table th{background:#f3f4f6;font-weight:600;color:#374151;text-align:center;}
-.tam-cell-input{width:100%;border:none;outline:none;font-size:0.8rem;background:transparent;resize:vertical;min-height:36px;font-family:inherit;color:#111827;box-sizing:border-box;}
+.tam-table th,.tam-table td{border:1.5px solid #e2e8f0;padding:0.5rem;vertical-align:top;min-width:80px;}
+.tam-table th{background:#f8fafc;font-weight:600;color:#334155;text-align:center;}
+.tam-cell-input{width:100%;border:none;outline:none;font-size:0.8rem;background:transparent;resize:vertical;min-height:36px;font-family:inherit;color:#1e293b;box-sizing:border-box;}
 .tam-cell-actions{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;align-items:center;}
-.tam-cell-btn{padding:3px 8px;border-radius:4px;font-size:0.65rem;font-weight:600;cursor:pointer;border:1.5px solid;transition:all 0.15s;line-height:1.4;}
+.tam-cell-btn{padding:3px 8px;border-radius:0.375rem;font-size:0.65rem;font-weight:600;cursor:pointer;border:1.5px solid;transition:all 0.15s;line-height:1.4;font-family:inherit;}
 .tam-cell-btn:hover{opacity:0.8;}
 .tam-cell-btn-header{background:transparent;color:#003B71;border-color:#003B71;}
 .tam-cell-btn-header.active{background:#003B71;color:#fff;border-color:#003B71;}
 .tam-cell-btn-img{background:#E97300;color:#fff;border-color:#E97300;}
-.tam-cell-btn-clear{background:#fff;color:#dc2626;border-color:#dc2626;}
+.tam-cell-btn-clear{background:#fff;color:#ef4444;border-color:#ef4444;}
 .tam-cell{position:relative;}
-.tam-cell.is-header-cell{background:#dbeafe !important;}
+.tam-cell.is-header-cell{background:#e2e8f0 !important;}
 .tam-cell.has-image{background:#fef9ee !important;}
-.tam-cell.is-spanned{background:#f3f4f6 !important;pointer-events:none;opacity:0.5;}
+.tam-cell.is-spanned{background:#f1f5f9 !important;pointer-events:none;opacity:0.5;}
 .tam-cell.has-span{background:#f0fdf4 !important;outline:1.5px dashed #16a34a;}
-.tam-cell-img-preview{width:70px;height:44px;object-fit:contain;border-radius:4px;margin-bottom:4px;border:1px solid #e5e7eb;}
+.tam-cell-img-preview{width:70px;height:44px;object-fit:contain;border-radius:0.375rem;margin-bottom:4px;border:1px solid #e2e8f0;}
 .tam-cell-span-group{display:flex;gap:4px;align-items:center;}
-.tam-cell-span-group label{font-size:0.6rem;color:#6b7280;font-weight:600;}
-.tam-cell-span-input{width:40px;font-size:0.7rem;padding:2px 4px;border:1.5px solid #d1d5db;border-radius:4px;text-align:center;}
-.tam-spanned-label{font-size:0.6rem;color:#9ca3af;text-align:center;padding-top:4px;font-style:italic;}
-.tam-footer{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-top:1px solid #e5e7eb;background:#f9fafb;flex-shrink:0;gap:0.75rem;}
-.tam-btn{padding:0.5rem 1.25rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;cursor:pointer;border:2px solid transparent;transition:opacity 0.15s;display:inline-flex;align-items:center;gap:0.375rem;font-family:inherit;}
-.tam-btn:hover{opacity:0.85;}
-.tam-btn-ghost{background:#fff;color:#374151;border-color:#d1d5db;}
+.tam-cell-span-group label{font-size:0.6rem;color:#64748b;font-weight:600;}
+.tam-cell-span-input{width:40px;font-size:0.7rem;padding:2px 4px;border:1.5px solid #e2e8f0;border-radius:0.375rem;text-align:center;}
+.tam-spanned-label{font-size:0.6rem;color:#94a3b8;text-align:center;padding-top:4px;font-style:italic;}
+.tam-modal-footer{display:flex;align-items:center;justify-content:flex-end;padding:1rem 1.25rem;border-top:1px solid #f1f5f9;background:#ffffff;flex-shrink:0;gap:0.75rem;}
+.tam-btn{padding:0.5rem 1.25rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;cursor:pointer;border:2px solid transparent;transition:opacity 0.15s,background 0.15s,border-color 0.15s;display:inline-flex;align-items:center;gap:0.375rem;font-family:inherit;}
+.tam-btn-cancel{background:#ffffff;border-color:#e2e8f0;color:#475569;}
+.tam-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
 .tam-btn-primary{background:#003B71;color:#fff;border-color:#003B71;}
-#tam-img-modal{display:none;position:fixed;inset:0;z-index:9999999;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,0.6);}
-#tam-img-modal.open{display:flex;}
-.tam-img-container{background:#fff;border-radius:0.75rem;width:100%;max-width:700px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Poppins',sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.4);}
-.tam-img-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid #e5e7eb;flex-shrink:0;}
-.tam-img-header h3{font-size:1rem;font-weight:700;color:#111827;margin:0;}
-.tam-img-search{padding:0.75rem 1.5rem;border-bottom:1px solid #e5e7eb;flex-shrink:0;}
-.tam-img-search input{width:100%;padding:0.5rem 0.75rem;border:1.5px solid #d1d5db;border-radius:0.5rem;font-size:0.875rem;outline:none;box-sizing:border-box;}
+.tam-btn-primary:hover{background:#002a52;}
+.tam-img-overlay{position:fixed;inset:0;z-index:9999999;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);}
+.tam-img-overlay.open{display:flex;}
+.tam-img-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:700px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Inter',sans-serif;box-shadow:0 20px 60px rgba(15,23,42,0.18);border:1px solid #e2e8f0;}
+.tam-img-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;flex-shrink:0;}
+.tam-img-header h3{font-size:0.9375rem;font-weight:700;color:#0f172a;margin:0;display:flex;align-items:center;gap:0.5rem;}
+.tam-img-search{padding:0.75rem 1.25rem;border-bottom:1px solid #f1f5f9;flex-shrink:0;}
+.tam-img-search input{width:100%;padding:0.5rem 0.75rem;border:1px solid #e2e8f0;border-radius:0.5rem;font-size:0.875rem;outline:none;box-sizing:border-box;font-family:inherit;}
 .tam-img-search input:focus{border-color:#003B71;}
 .tam-img-grid{flex:1;overflow-y:auto;padding:1rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0.75rem;}
-.tam-img-card{cursor:pointer;border-radius:0.5rem;border:2px solid #e5e7eb;overflow:hidden;background:#fff;transition:border-color 0.15s;}
-.tam-img-card:hover{border-color:#9ca3af;}
-.tam-img-card.selected{border-color:#003B71;box-shadow:0 0 0 3px rgba(0,59,113,0.2);}
+.tam-img-card{cursor:pointer;border-radius:0.5rem;border:2px solid #e2e8f0;overflow:hidden;background:#fff;transition:border-color 0.15s;}
+.tam-img-card:hover{border-color:#94a3b8;}
+.tam-img-card.selected{border-color:#003B71;box-shadow:0 0 0 3px rgba(0,59,113,0.15);}
 .tam-img-card img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;}
-.tam-img-card p{font-size:0.65rem;padding:4px 6px;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0;}
-.tam-img-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;gap:1rem;color:#6b7280;font-size:0.875rem;}
-.tam-img-spinner{width:2rem;height:2rem;border:3px solid #e5e7eb;border-top-color:#003B71;border-radius:50%;animation:tam-spin 0.8s linear infinite;}
+.tam-img-card p{font-size:0.65rem;padding:4px 6px;color:#334155;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0;}
+.tam-img-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;gap:1rem;color:#64748b;font-size:0.875rem;}
+.tam-img-spinner{width:2rem;height:2rem;border:3px solid #e2e8f0;border-top-color:#003B71;border-radius:50%;animation:tam-spin 0.8s linear infinite;}
 @keyframes tam-spin{to{transform:rotate(360deg);}}
-.tam-img-footer{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-top:1px solid #e5e7eb;background:#f9fafb;flex-shrink:0;}
-.tam-img-selected-info{font-size:0.8rem;color:#6b7280;}`;
+.tam-img-footer{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-top:1px solid #f1f5f9;background:#f8fafc;flex-shrink:0;}
+.tam-img-selected-info{font-size:0.8125rem;color:#64748b;}`;
 
 function createImagePickerModal() {
     if (document.getElementById("tam-img-modal")) return;
     const el = document.createElement("div");
     el.id = "tam-img-modal";
+    el.className = "tam-img-overlay";
     el.innerHTML = `
-        <div class="tam-img-container">
+        <div class="tam-img-modal">
             <div class="tam-img-header">
-                <h3><i class="ri-image-line" style="margin-right:6px;"></i>Seleccionar imagen</h3>
-                <button class="tam-close" id="tam-img-close"><i class="ri-close-line"></i></button>
+                <h3><i class="ri-image-line"></i>Seleccionar imagen</h3>
+                <button class="tam-modal-close" id="tam-img-close"><i class="ri-close-line"></i></button>
             </div>
             <div class="tam-img-search">
                 <input type="text" id="tam-img-search-input" placeholder="Buscar imagen por nombre...">
@@ -245,7 +260,7 @@ function createImagePickerModal() {
             <div class="tam-img-footer">
                 <span class="tam-img-selected-info" id="tam-img-selected-info">Ninguna imagen seleccionada</span>
                 <div style="display:flex;gap:0.5rem;">
-                    <button class="tam-btn tam-btn-ghost" id="tam-img-cancel">Cancelar</button>
+                    <button class="tam-btn tam-btn-cancel" id="tam-img-cancel">Cancelar</button>
                     <button class="tam-btn tam-btn-primary" id="tam-img-confirm" disabled><i class="ri-check-line"></i> Usar imagen</button>
                 </div>
             </div>
@@ -261,7 +276,9 @@ function createImagePickerModal() {
         try {
             const params = new URLSearchParams({ type: "image", per_page: 50 });
             if (search) params.append("search", search);
-            const mediaApiUrl = document.querySelector('meta[name="media-api-url"]')?.content ?? "/media/api";
+            const mediaApiUrl =
+                document.querySelector('meta[name="media-api-url"]')?.content ??
+                "/media/api";
             const res = await fetch(`${mediaApiUrl}?${params}`, {
                 headers: {
                     "X-Requested-With": "XMLHttpRequest",
@@ -353,33 +370,45 @@ function createTableAdminModal(editor, componentType) {
 
     const el = document.createElement("div");
     el.id = "table-admin-modal";
+    el.className = "tam-overlay";
     el.innerHTML = `
-        <div class="tam-container">
-            <div class="tam-header">
-                <h2><i class="ri-table-line" style="margin-right:8px;"></i>Administrar tabla</h2>
-                <button class="tam-close" id="tam-close"><i class="ri-close-line"></i></button>
+        <div class="tam-modal">
+            <div class="tam-modal-header">
+                <div class="tam-modal-header-left">
+                    <i class="ri-table-line"></i>
+                    <h2>Administrar tabla</h2>
+                </div>
+                <button class="tam-modal-close" id="tam-close"><i class="ri-close-line"></i></button>
             </div>
             <div class="tam-toolbar">
                 <div class="tam-toolbar-group">
-                    <label>Título de tabla</label>
-                    <input type="text" id="tam-title" placeholder="Dejar vacío para ocultar" style="width:220px;">
+                    <label class="tam-toolbar-label">Título de tabla</label>
+                    <input type="text" id="tam-title" placeholder="Texto del título" class="tam-modal-input" style="width:220px;">
                 </div>
                 <div class="tam-toolbar-group">
-                    <label>Color</label>
-                    <select id="tam-theme">
+                    <label class="tam-toolbar-label">Color</label>
+                    <select id="tam-theme" class="tam-modal-select">
                         <option value="blue">Azul</option>
                         <option value="orange">Naranja</option>
                     </select>
                 </div>
                 <div class="tam-toolbar-group">
-                    <label>Columnas</label>
-                    <input type="number" id="tam-cols" min="1" max="10" value="3" style="width:60px;">
+                    <label class="tam-toolbar-label">Columnas</label>
+                    <input type="number" id="tam-cols" min="1" max="10" value="3" class="tam-modal-input" style="width:70px;">
                 </div>
                 <div class="tam-toolbar-group">
-                    <label>Filas</label>
-                    <input type="number" id="tam-rows" min="1" max="30" value="3" style="width:60px;">
+                    <label class="tam-toolbar-label">Filas</label>
+                    <input type="number" id="tam-rows" min="1" max="30" value="3" class="tam-modal-input" style="width:70px;">
                 </div>
-                <button class="tam-btn tam-btn-ghost" id="tam-rebuild" style="align-self:flex-end;">
+                <label class="tam-toolbar-checkbox">
+                    <input type="checkbox" id="tam-show-title-row" checked>
+                    Mostrar fila de título
+                </label>
+                <label class="tam-toolbar-checkbox">
+                    <input type="checkbox" id="tam-show-header-row" checked>
+                    Mostrar fila de encabezados
+                </label>
+                <button class="tam-btn-rebuild" id="tam-rebuild">
                     <i class="ri-refresh-line"></i> Reconstruir
                 </button>
             </div>
@@ -388,8 +417,8 @@ function createTableAdminModal(editor, componentType) {
                     <table class="tam-table"><thead id="tam-thead"></thead><tbody id="tam-tbody"></tbody></table>
                 </div>
             </div>
-            <div class="tam-footer">
-                <button class="tam-btn tam-btn-ghost" id="tam-cancel">Cancelar</button>
+            <div class="tam-modal-footer">
+                <button class="tam-btn tam-btn-cancel" id="tam-cancel">Cancelar</button>
                 <button class="tam-btn tam-btn-primary" id="tam-apply"><i class="ri-check-line"></i> Aplicar cambios</button>
             </div>
         </div>`;
@@ -398,6 +427,14 @@ function createTableAdminModal(editor, componentType) {
     let currentComponent = null;
     let tableData = null;
 
+    function syncTitleRowState() {
+        const showTitleRow =
+            document.getElementById("tam-show-title-row").checked;
+        const titleInput = document.getElementById("tam-title");
+        titleInput.disabled = !showTitleRow;
+        titleInput.style.opacity = showTitleRow ? "1" : "0.5";
+    }
+
     function openModal(component) {
         currentComponent = component;
         const raw = component.get("tableData");
@@ -405,8 +442,8 @@ function createTableAdminModal(editor, componentType) {
             ? JSON.parse(JSON.stringify(raw))
             : defaultTableData(3, 3);
         const cols = tableData.cols || 3;
-        tableData.rows = tableData.rows.map((row, ri) => {
-            const expanded = Array.from({ length: cols }, (_, ci) => {
+        tableData.rows = tableData.rows.map((row) => {
+            return Array.from({ length: cols }, (_, ci) => {
                 return (
                     row[ci] || {
                         text: "",
@@ -418,13 +455,17 @@ function createTableAdminModal(editor, componentType) {
                     }
                 );
             });
-            return expanded;
         });
         document.getElementById("tam-title").value = tableData.title || "";
         document.getElementById("tam-theme").value =
             component.get("tableTheme") || "blue";
         document.getElementById("tam-cols").value = tableData.cols || 3;
         document.getElementById("tam-rows").value = tableData.rows.length || 3;
+        document.getElementById("tam-show-title-row").checked =
+            tableData.showTitleRow !== false;
+        document.getElementById("tam-show-header-row").checked =
+            tableData.showHeaderRow !== false;
+        syncTitleRowState();
         hideRebuildNotice();
         renderEditorTable();
         el.classList.add("open");
@@ -439,6 +480,11 @@ function createTableAdminModal(editor, componentType) {
 
     function collectEditorData() {
         tableData.title = document.getElementById("tam-title").value.trim();
+        tableData.showTitleRow =
+            document.getElementById("tam-show-title-row").checked;
+        tableData.showHeaderRow = document.getElementById(
+            "tam-show-header-row",
+        ).checked;
         tableData.cols =
             parseInt(document.getElementById("tam-cols").value) || 3;
         tableData.headers = Array.from(
@@ -478,8 +524,8 @@ function createTableAdminModal(editor, componentType) {
         if (existing) return;
         const notice = document.createElement("div");
         notice.id = "tam-rebuild-notice";
-        notice.style.cssText =
-            "background:#fef9c3;border:1.5px solid #ca8a04;border-radius:0.5rem;padding:0.5rem 1rem;font-size:0.8rem;color:#92400e;display:flex;align-items:center;gap:0.5rem;margin:0 1.5rem 0;flex-shrink:0;";
+        notice.className = "tam-rebuild-notice";
+        notice.style.margin = "1rem 1.25rem 0";
         notice.innerHTML = `<i class="ri-error-warning-line"></i> Has modificado el colspan/rowspan. Haz clic en <strong style="margin:0 4px;">Reconstruir</strong> para aplicar los cambios de fusión.`;
         const toolbar = el.querySelector(".tam-toolbar");
         toolbar.after(notice);
@@ -550,7 +596,7 @@ function createTableAdminModal(editor, componentType) {
                     <div class="tam-cell-actions">
                         <button type="button" class="tam-cell-btn tam-cell-btn-header ${cell.isHeader ? "active" : ""}"
                             data-action="header" data-row="${ri}" data-col="${ci}">
-                            ${cell.isHeader ? "✓ Etiqueta" : "Etiqueta"}
+                            ${cell.isHeader ? "✓ Resaltar" : "Resaltar"}
                         </button>
                         <button type="button" class="tam-cell-btn tam-cell-btn-img"
                             data-action="image" data-row="${ri}" data-col="${ci}">
@@ -626,8 +672,8 @@ function createTableAdminModal(editor, componentType) {
                         tableData.rows[ri][ci].isHeader,
                     );
                     btn.textContent = tableData.rows[ri][ci].isHeader
-                        ? "✓ Etiqueta"
-                        : "Etiqueta";
+                        ? "✓ Resaltar"
+                        : "Resaltar";
                     return;
                 }
 
@@ -706,6 +752,10 @@ function createTableAdminModal(editor, componentType) {
     el.addEventListener("click", (e) => {
         if (e.target === el) closeModal();
     });
+
+    document
+        .getElementById("tam-show-title-row")
+        .addEventListener("change", syncTitleRowState);
 
     document.getElementById("tam-rebuild").addEventListener("click", () => {
         const cols = parseInt(document.getElementById("tam-cols").value) || 3;
@@ -906,7 +956,6 @@ export function initializeTableBlocks(editor) {
     injectTableEditorStyles(editor, componentType);
 }
 
-// REEMPLAZAR POR:
 function setupTableEditorEvents(editor, componentType) {
     editor.on("component:mount", (component) => {
         const el = component.getEl();
@@ -915,15 +964,7 @@ function setupTableEditorEvents(editor, componentType) {
             const theme = el.getAttribute("data-table-theme") || "blue";
             component.set("tableTheme", theme);
             if (!component.get("tableData")) {
-                const isCoverageInit = el.hasAttribute("data-coverage-table-init");
-                component.set(
-                    "tableData",
-                    isCoverageInit
-                        ? JSON.parse(JSON.stringify(window.__coverageTableInitialData))
-                        : defaultTableData(3, 3),
-                );
-                rebuildComponentHTML(component);
-                if (isCoverageInit) component.removeAttributes(["data-coverage-table-init"]);
+                component.set("tableData", defaultTableData(3, 3));
             }
         }
     });
