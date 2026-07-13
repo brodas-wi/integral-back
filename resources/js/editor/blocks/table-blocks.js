@@ -906,6 +906,7 @@ export function initializeTableBlocks(editor) {
     injectTableEditorStyles(editor, componentType);
 }
 
+// REEMPLAZAR POR:
 function setupTableEditorEvents(editor, componentType) {
     editor.on("component:mount", (component) => {
         const el = component.getEl();
@@ -914,7 +915,15 @@ function setupTableEditorEvents(editor, componentType) {
             const theme = el.getAttribute("data-table-theme") || "blue";
             component.set("tableTheme", theme);
             if (!component.get("tableData")) {
-                component.set("tableData", defaultTableData(3, 3));
+                const isCoverageInit = el.hasAttribute("data-coverage-table-init");
+                component.set(
+                    "tableData",
+                    isCoverageInit
+                        ? JSON.parse(JSON.stringify(window.__coverageTableInitialData))
+                        : defaultTableData(3, 3),
+                );
+                rebuildComponentHTML(component);
+                if (isCoverageInit) component.removeAttributes(["data-coverage-table-init"]);
             }
         }
     });

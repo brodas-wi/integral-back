@@ -161,6 +161,21 @@ const ctaButton = (label = "Adquiere tu servicio") => `
 const productTitle = (title = "Nombre del Producto") => `
 <h2 class="text-4xl font-black text-[#E97300] break-words leading-tight text-center w-full">${title}</h2>`;
 
+const COVERAGE_TABLE_DATA = {
+    title: "Coberturas",
+    cols: 3,
+    headers: [
+        { text: "Coberturas", align: "left" },
+        { text: "Cantidad", align: "center" },
+        { text: "Límite (US$)", align: "center" },
+    ],
+    rows: Array.from({ length: 5 }, () => ([
+        { text: "", align: "left", isHeader: false, colspan: 1, rowspan: 1, image: null },
+        { text: "", align: "center", isHeader: false, colspan: 1, rowspan: 1, image: null },
+        { text: "", align: "center", isHeader: false, colspan: 1, rowspan: 1, image: null },
+    ])),
+};
+
 const coverageRow = () => `
 <tr>
     <td>Lorem ipsum dolor sit amet</td>
@@ -549,7 +564,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
     <div class="pd-asymmetric-grid">
         <div class="flex flex-col gap-5">
             <p class="text-base text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            ${coverageTable(5)}
+            <div data-gjs-type="table-component" data-table-theme="blue" data-coverage-table-init="1"></div>
             <div class="flex flex-col gap-2">
                 <p class="text-base font-bold text-[#003B71] m-0">Subtítulo de la sección</p>
                 <p class="text-base text-[#003B71] leading-relaxed m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
@@ -677,9 +692,10 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
         label: "Ítem: tabla de coberturas",
         category: CATEGORY,
         media: iconProductDetailTable,
-        content: `
-${coverageTable(4)}
-${PRODUCT_DETAIL_TABLE_STYLES}
-${PRODUCT_DETAIL_COLOR_STYLES}`,
+        content: `<div data-gjs-type="table-component" data-table-theme="blue" data-coverage-table-init="1"></div>`,
     },
 ];
+
+if (typeof window !== "undefined") {
+    window.__coverageTableInitialData = COVERAGE_TABLE_DATA;
+}
