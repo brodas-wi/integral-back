@@ -3356,40 +3356,44 @@ ${tr}
 .pb-bg{position:absolute;inset:0;z-index:0;}
 .pb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .pb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
-.pb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:620px;}
-.pb-box{position:relative;border:2px solid #E97300;border-radius:0.5rem;padding:1.75rem 2rem;background:linear-gradient(90deg,rgba(233,115,0,0.18) 0%,rgba(233,115,0,0) 75%);display:flex;flex-direction:column;gap:0.75rem;}
-.pb-badge{display:inline-block;align-self:flex-start;padding:0.6rem 1.25rem;border-radius:0.375rem;font-size:1.5rem;font-weight:800;line-height:1.2;background:var(--pb-theme-bg,#003B71);color:var(--pb-theme-text,#fff);}
-.pb-subtitle{margin:0;font-size:1.0625rem;font-weight:700;color:#fff;}
+.pb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:640px;}
+.pb-wrap{position:relative;padding-top:1.75rem;}
+.pb-box{position:relative;border-radius:0.5rem;padding:1rem 1.5rem 1.25rem;background:transparent;border:2px solid transparent;background-image:linear-gradient(#0000,#0000),linear-gradient(90deg,#E97300 0%,#E97300 35%,rgba(233,115,0,0) 100%);background-origin:border-box;background-clip:padding-box,border-box;}
+.pb-badge{position:absolute;top:0;left:1.5rem;transform:translateY(-55%);display:inline-block;padding:0.65rem 1.5rem;border-radius:0.375rem;font-size:2.25rem;line-height:1.15;font-weight:800;background:var(--pb-theme-bg,#003B71);color:var(--pb-theme-text,#fff);box-shadow:0 4px 14px rgba(0,0,0,0.25);}
+.pb-subtitle{margin:0.5rem 0 0;font-size:1.0625rem;font-weight:700;color:#fff;}
 .pb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
-.pb-curve svg{display:block;width:100%;height:90px;}
+.pb-curve svg{display:block;width:100%;height:110px;}
 .pb-curve path{fill:var(--pb-theme-bg,#003B71);}
 @media(max-width:992px){
 .pb-content{padding:3rem 2.5rem;max-width:100%;}
-.pb-badge{font-size:1.25rem;}
+.pb-badge{font-size:1.75rem;padding:0.55rem 1.15rem;}
 }
 @media(max-width:640px){
-.pb-content{padding:2.25rem 1.5rem;}
-.pb-box{padding:1.25rem 1.25rem;}
-.pb-badge{font-size:1.0625rem;padding:0.5rem 1rem;}
+.pb-content{padding:4rem 1.5rem 2.25rem;}
+.pb-wrap{padding-top:1.5rem;}
+.pb-box{padding:0.875rem 1.25rem 1rem;}
+.pb-badge{font-size:1.375rem;padding:0.5rem 1rem;left:1rem;}
 .pb-subtitle{font-size:0.9375rem;}
-.pb-curve svg{height:50px;}
+.pb-curve svg{height:60px;}
 }
 </style>`;function $t(t,e){e=e||"pb"+Math.random().toString(36).slice(2,7);const i=t.bg_image||_("images/placeholder.svg"),a=Ie[t.theme]?t.theme:"blue",r=Ie[a],l=t.subtitle?`<p class="pb-subtitle">${t.subtitle}</p>`:"";return`<section id="pb-root-${e}" class="pb-section" style="--pb-theme-bg:${r.bg};--pb-theme-text:${r.text};" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="pb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <img src="${i}" alt="${t.title||"Banner"}" loading="eager" decoding="async" fetchpriority="high" draggable="false" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false">
         </div>
         <div class="pb-content">
-            <div class="pb-box">
-                <span class="pb-badge">${t.title||"Título del banner"}</span>
+            <div class="pb-wrap">
+                <div class="pb-box">
+                    <span class="pb-badge">${t.title||"Título del banner"}</span>
+                </div>
                 ${l}
             </div>
         </div>
         <div class="pb-curve" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <svg viewBox="0 0 1200 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,90 L1200,90 L1200,40 C900,90 300,0 0,40 Z"></path>
+            <svg viewBox="0 0 1200 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,110 L0,100 C400,100 800,20 1200,10 L1200,110 Z"></path>
             </svg>
         </div>
-    </section>`}const G={bg_image:_("images/placeholder.svg"),theme:"blue",title:"Capital de Trabajo",subtitle:"Impulsar tu negocio siempre disponible"};function el(t,e){const i=document.getElementById("promo-banner-config-modal");if(i&&i.remove(),!document.getElementById("pb-modal-styles")){const g=document.createElement("style");g.id="pb-modal-styles",g.textContent=`
+    </section>`}const G={bg_image:_("images/placeholder.svg"),theme:"blue",title:"Capital de Trabajo",subtitle:"Impulsar tu negocio siempre disponible"};function el(t,e){const i=document.getElementById("banner-config-modal");if(i&&i.remove(),!document.getElementById("pb-modal-styles")){const g=document.createElement("style");g.id="pb-modal-styles",g.textContent=`
             .pb-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
             .pb-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:700px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
             .pb-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
@@ -3424,9 +3428,9 @@ ${tr}
             .pb-theme-opt-white{background:#ffffff;color:#003B71;border-color:#cbd5e1;}
             .pb-theme-opt.pb-theme-inactive{opacity:0.35;}
             .pb-theme-opt.pb-theme-inactive:hover{opacity:0.65;}
-        `,document.head.appendChild(g)}const a=(()=>{try{return JSON.parse(e.getAttributes()["data-promo-banner-config"]||"{}")}catch{return{}}})(),r=a.bg_image||G.bg_image,l=a.theme||G.theme,o=a.title||G.title,p=a.subtitle??G.subtitle,c=document.createElement("div");c.id="promo-banner-config-modal",c.className="pb-overlay";const n=document.createElement("div");n.className="pb-modal",n.innerHTML=`
+        `,document.head.appendChild(g)}const a=(()=>{try{return JSON.parse(e.getAttributes()["data-banner-config"]||"{}")}catch{return{}}})(),r=a.bg_image||G.bg_image,l=a.theme||G.theme,o=a.title||G.title,p=a.subtitle??G.subtitle,c=document.createElement("div");c.id="banner-config-modal",c.className="pb-overlay";const n=document.createElement("div");n.className="pb-modal",n.innerHTML=`
         <div class="pb-modal-header">
-            <div class="pb-modal-header-left"><i class="ri-image-2-line"></i><h2>Configurar Banner Promo</h2></div>
+            <div class="pb-modal-header-left"><i class="ri-image-2-line"></i><h2>Configurar Banner</h2></div>
             <button id="pb-modal-close" class="pb-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
         </div>
         <div class="pb-modal-tabs">
@@ -3472,7 +3476,7 @@ ${tr}
         <div class="pb-modal-footer">
             <button id="pb-modal-cancel" class="pb-btn-cancel">Cancelar</button>
             <button id="pb-modal-save" class="pb-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
-        </div>`,c.appendChild(n),document.body.appendChild(c);let f=Ie[l]?l:"blue";function h(){const g=n.querySelector("#pb-theme-colors");g.querySelectorAll("[data-theme]").forEach(d=>{d.classList.toggle("pb-theme-inactive",d.dataset.theme!==f),d.addEventListener("click",()=>{f=d.dataset.theme,g.querySelectorAll("[data-theme]").forEach(w=>w.classList.toggle("pb-theme-inactive",w.dataset.theme!==f))})})}h(),n.querySelectorAll(".pb-tab-btn").forEach(g=>{g.addEventListener("click",()=>{n.querySelectorAll(".pb-tab-btn").forEach(d=>d.classList.remove("active")),n.querySelectorAll(".pb-tab-panel").forEach(d=>d.classList.remove("active")),g.classList.add("active"),n.querySelector(`#pb-panel-${g.dataset.tab}`).classList.add("active")})}),n.querySelector("#pb-bg-pick").addEventListener("click",()=>{$e({type:"image",title:"Seleccionar imagen de fondo",onSelect:g=>{n.querySelector("#pb-bg-url").value=g,n.querySelector("#pb-bg-preview").src=g}})}),n.querySelector("#pb-bg-url").addEventListener("input",g=>{n.querySelector("#pb-bg-preview").src=g.target.value});const b=()=>c.remove();n.querySelector("#pb-modal-close").onclick=b,n.querySelector("#pb-modal-cancel").onclick=b,c.onclick=g=>{g.target===c&&b()},n.querySelector("#pb-modal-save").onclick=()=>{const g={bg_image:n.querySelector("#pb-bg-url").value.trim()||G.bg_image,theme:f,title:n.querySelector("#pb-title").value.trim(),subtitle:n.querySelector("#pb-subtitle").value.trim()},w=e.getEl()?.querySelector("[id^='pb-root-']")?.id?.replace("pb-root-","")||"pb"+Math.random().toString(36).slice(2,7);e.addAttributes({"data-promo-banner-config":JSON.stringify(g)}),e.components($t(g,w)+Et),b()}}function tl(t){const e="hero-banner-component";t.DomComponents.addType(e,{isComponent:i=>i.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner Promo",tagName:"div",draggable:!0,droppable:!1,removable:!0,copyable:!1,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":e,"data-hero-banner-config":JSON.stringify(G)},components:$t(G)+Et,traits:[{type:"button",label:"Banner",text:"Administrar Banner",full:!0,command:"open-promo-banner-config"}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),t.Commands.add("open-promo-banner-config",{run(i){const a=i.getSelected();a&&el(i,a)}}),t.BlockManager.add("promo-banner-block",{label:"Banner Promo",category:"Banners",media:`<svg viewBox="0 0 32 32" width="32" height="32">
+        </div>`,c.appendChild(n),document.body.appendChild(c);let f=Ie[l]?l:"blue";function h(){const g=n.querySelector("#pb-theme-colors");g.querySelectorAll("[data-theme]").forEach(d=>{d.classList.toggle("pb-theme-inactive",d.dataset.theme!==f),d.addEventListener("click",()=>{f=d.dataset.theme,g.querySelectorAll("[data-theme]").forEach(w=>w.classList.toggle("pb-theme-inactive",w.dataset.theme!==f))})})}h(),n.querySelectorAll(".pb-tab-btn").forEach(g=>{g.addEventListener("click",()=>{n.querySelectorAll(".pb-tab-btn").forEach(d=>d.classList.remove("active")),n.querySelectorAll(".pb-tab-panel").forEach(d=>d.classList.remove("active")),g.classList.add("active"),n.querySelector(`#pb-panel-${g.dataset.tab}`).classList.add("active")})}),n.querySelector("#pb-bg-pick").addEventListener("click",()=>{$e({type:"image",title:"Seleccionar imagen de fondo",onSelect:g=>{n.querySelector("#pb-bg-url").value=g,n.querySelector("#pb-bg-preview").src=g}})}),n.querySelector("#pb-bg-url").addEventListener("input",g=>{n.querySelector("#pb-bg-preview").src=g.target.value});const b=()=>c.remove();n.querySelector("#pb-modal-close").onclick=b,n.querySelector("#pb-modal-cancel").onclick=b,c.onclick=g=>{g.target===c&&b()},n.querySelector("#pb-modal-save").onclick=()=>{const g={bg_image:n.querySelector("#pb-bg-url").value.trim()||G.bg_image,theme:f,title:n.querySelector("#pb-title").value.trim(),subtitle:n.querySelector("#pb-subtitle").value.trim()},w=e.getEl()?.querySelector("[id^='pb-root-']")?.id?.replace("pb-root-","")||"pb"+Math.random().toString(36).slice(2,7);e.addAttributes({"data-banner-config":JSON.stringify(g)}),e.components($t(g,w)+Et),b()}}function tl(t){const e="banner-component";t.DomComponents.addType(e,{isComponent:i=>i.getAttribute?.("data-gjs-type")===e?{type:e}:!1,model:{defaults:{name:"Banner",tagName:"div",draggable:!0,droppable:!1,removable:!0,copyable:!1,selectable:!0,hoverable:!0,editable:!1,highlightable:!1,attributes:{"data-gjs-type":e,"data-banner-config":JSON.stringify(G)},components:$t(G)+Et,traits:[{type:"button",label:"Banner",text:"Administrar Banner",full:!0,command:"open-banner-config"}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e})}}}),t.Commands.add("open-banner-config",{run(i){const a=i.getSelected();a&&el(i,a)}}),t.BlockManager.add("banner-block",{label:"Banner",category:"Banners",media:`<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#003B71" rx="2"/>
             <rect x="4" y="6" width="18" height="8" rx="1" fill="none" stroke="#E97300" stroke-width="1"/>
             <rect x="6" y="8" width="10" height="4" rx="1" fill="#E97300"/>

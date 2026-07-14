@@ -7,33 +7,35 @@ const THEME_COLORS = {
     white: { bg: "#ffffff", text: "#003B71" },
 };
 
-const PROMO_BANNER_STYLES = `
+const BANNER_STYLES = `
 <style>
 .pb-section{position:relative;width:100%;min-height:420px;display:flex;align-items:center;overflow:hidden;font-family:'Poppins',sans-serif;background:#0a0a0a;}
 .pb-bg{position:absolute;inset:0;z-index:0;}
 .pb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .pb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
-.pb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:620px;}
-.pb-box{position:relative;border:2px solid #E97300;border-radius:0.5rem;padding:1.75rem 2rem;background:linear-gradient(90deg,rgba(233,115,0,0.18) 0%,rgba(233,115,0,0) 75%);display:flex;flex-direction:column;gap:0.75rem;}
-.pb-badge{display:inline-block;align-self:flex-start;padding:0.6rem 1.25rem;border-radius:0.375rem;font-size:1.5rem;font-weight:800;line-height:1.2;background:var(--pb-theme-bg,#003B71);color:var(--pb-theme-text,#fff);}
-.pb-subtitle{margin:0;font-size:1.0625rem;font-weight:700;color:#fff;}
+.pb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:640px;}
+.pb-wrap{position:relative;padding-top:1.75rem;}
+.pb-box{position:relative;border-radius:0.5rem;padding:1rem 1.5rem 1.25rem;background:transparent;border:2px solid transparent;background-image:linear-gradient(#0000,#0000),linear-gradient(90deg,#E97300 0%,#E97300 35%,rgba(233,115,0,0) 100%);background-origin:border-box;background-clip:padding-box,border-box;}
+.pb-badge{position:absolute;top:0;left:1.5rem;transform:translateY(-55%);display:inline-block;padding:0.65rem 1.5rem;border-radius:0.375rem;font-size:2.25rem;line-height:1.15;font-weight:800;background:var(--pb-theme-bg,#003B71);color:var(--pb-theme-text,#fff);box-shadow:0 4px 14px rgba(0,0,0,0.25);}
+.pb-subtitle{margin:0.5rem 0 0;font-size:1.0625rem;font-weight:700;color:#fff;}
 .pb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
-.pb-curve svg{display:block;width:100%;height:90px;}
+.pb-curve svg{display:block;width:100%;height:110px;}
 .pb-curve path{fill:var(--pb-theme-bg,#003B71);}
 @media(max-width:992px){
 .pb-content{padding:3rem 2.5rem;max-width:100%;}
-.pb-badge{font-size:1.25rem;}
+.pb-badge{font-size:1.75rem;padding:0.55rem 1.15rem;}
 }
 @media(max-width:640px){
-.pb-content{padding:2.25rem 1.5rem;}
-.pb-box{padding:1.25rem 1.25rem;}
-.pb-badge{font-size:1.0625rem;padding:0.5rem 1rem;}
+.pb-content{padding:4rem 1.5rem 2.25rem;}
+.pb-wrap{padding-top:1.5rem;}
+.pb-box{padding:0.875rem 1.25rem 1rem;}
+.pb-badge{font-size:1.375rem;padding:0.5rem 1rem;left:1rem;}
 .pb-subtitle{font-size:0.9375rem;}
-.pb-curve svg{height:50px;}
+.pb-curve svg{height:60px;}
 }
 </style>`;
 
-function buildPromoBannerHTML(data, uid) {
+function buildBannerHTML(data, uid) {
     uid = uid || "pb" + Math.random().toString(36).slice(2, 7);
     const bgImage = data.bg_image || assetUrl("images/placeholder.svg");
     const theme = THEME_COLORS[data.theme] ? data.theme : "blue";
@@ -48,14 +50,16 @@ function buildPromoBannerHTML(data, uid) {
             <img src="${bgImage}" alt="${data.title || "Banner"}" loading="eager" decoding="async" fetchpriority="high" draggable="false" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false">
         </div>
         <div class="pb-content">
-            <div class="pb-box">
-                <span class="pb-badge">${data.title || "Título del banner"}</span>
+            <div class="pb-wrap">
+                <div class="pb-box">
+                    <span class="pb-badge">${data.title || "Título del banner"}</span>
+                </div>
                 ${subtitleHtml}
             </div>
         </div>
         <div class="pb-curve" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <svg viewBox="0 0 1200 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,90 L1200,90 L1200,40 C900,90 300,0 0,40 Z"></path>
+            <svg viewBox="0 0 1200 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,110 L0,100 C400,100 800,20 1200,10 L1200,110 Z"></path>
             </svg>
         </div>
     </section>`;
@@ -68,8 +72,8 @@ const DEFAULT_DATA = {
     subtitle: "Impulsar tu negocio siempre disponible",
 };
 
-function showPromoBannerModal(editor, component) {
-    const existing = document.getElementById("promo-banner-config-modal");
+function showBannerModal(editor, component) {
+    const existing = document.getElementById("banner-config-modal");
     if (existing) existing.remove();
 
     if (!document.getElementById("pb-modal-styles")) {
@@ -117,7 +121,7 @@ function showPromoBannerModal(editor, component) {
     const currentData = (() => {
         try {
             return JSON.parse(
-                component.getAttributes()["data-promo-banner-config"] || "{}",
+                component.getAttributes()["data-banner-config"] || "{}",
             );
         } catch {
             return {};
@@ -130,14 +134,14 @@ function showPromoBannerModal(editor, component) {
     const subtitle = currentData.subtitle ?? DEFAULT_DATA.subtitle;
 
     const overlay = document.createElement("div");
-    overlay.id = "promo-banner-config-modal";
+    overlay.id = "banner-config-modal";
     overlay.className = "pb-overlay";
 
     const modal = document.createElement("div");
     modal.className = "pb-modal";
     modal.innerHTML = `
         <div class="pb-modal-header">
-            <div class="pb-modal-header-left"><i class="ri-image-2-line"></i><h2>Configurar Banner Promo</h2></div>
+            <div class="pb-modal-header-left"><i class="ri-image-2-line"></i><h2>Configurar Banner</h2></div>
             <button id="pb-modal-close" class="pb-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
         </div>
         <div class="pb-modal-tabs">
@@ -264,17 +268,15 @@ function showPromoBannerModal(editor, component) {
             existingInner?.id?.replace("pb-root-", "") ||
             "pb" + Math.random().toString(36).slice(2, 7);
         component.addAttributes({
-            "data-promo-banner-config": JSON.stringify(data),
+            "data-banner-config": JSON.stringify(data),
         });
-        component.components(
-            buildPromoBannerHTML(data, uid) + PROMO_BANNER_STYLES,
-        );
+        component.components(buildBannerHTML(data, uid) + BANNER_STYLES);
         close();
     };
 }
 
 export function initializeHeroBannerBlock(editor) {
-    const componentType = "hero-banner-component";
+    const componentType = "banner-component";
 
     editor.DomComponents.addType(componentType, {
         isComponent: (el) =>
@@ -284,7 +286,7 @@ export function initializeHeroBannerBlock(editor) {
 
         model: {
             defaults: {
-                name: "Banner Promo",
+                name: "Banner",
                 tagName: "div",
                 draggable: true,
                 droppable: false,
@@ -296,17 +298,16 @@ export function initializeHeroBannerBlock(editor) {
                 highlightable: false,
                 attributes: {
                     "data-gjs-type": componentType,
-                    "data-hero-banner-config": JSON.stringify(DEFAULT_DATA),
+                    "data-banner-config": JSON.stringify(DEFAULT_DATA),
                 },
-                components:
-                    buildPromoBannerHTML(DEFAULT_DATA) + PROMO_BANNER_STYLES,
+                components: buildBannerHTML(DEFAULT_DATA) + BANNER_STYLES,
                 traits: [
                     {
                         type: "button",
                         label: "Banner",
                         text: "Administrar Banner",
                         full: true,
-                        command: "open-promo-banner-config",
+                        command: "open-banner-config",
                     },
                 ],
             },
@@ -318,15 +319,15 @@ export function initializeHeroBannerBlock(editor) {
         },
     });
 
-    editor.Commands.add("open-promo-banner-config", {
+    editor.Commands.add("open-banner-config", {
         run(ed) {
             const selected = ed.getSelected();
-            if (selected) showPromoBannerModal(ed, selected);
+            if (selected) showBannerModal(ed, selected);
         },
     });
 
-    editor.BlockManager.add("promo-banner-block", {
-        label: "Banner Promo",
+    editor.BlockManager.add("banner-block", {
+        label: "Banner",
         category: "Banners",
         media: `<svg viewBox="0 0 32 32" width="32" height="32">
             <rect width="32" height="32" fill="#003B71" rx="2"/>
