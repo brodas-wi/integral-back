@@ -20,10 +20,6 @@
     @endcanany
 @endsection
 
-@push('styles')
-    @vite('resources/css/views/news/index.css')
-@endpush
-
 @section('content')
     <div class="card mb-6">
         <form method="GET" action="{{ route('news.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">

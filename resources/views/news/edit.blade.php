@@ -23,10 +23,6 @@
     </div>
 @endsection
 
-@push('styles')
-    @vite('resources/css/views/news/form.css')
-@endpush
-
 @section('content')
     <div class="max-w-4xl">
         <form method="POST" action="{{ route('news.update', $news) }}" class="card space-y-6">
