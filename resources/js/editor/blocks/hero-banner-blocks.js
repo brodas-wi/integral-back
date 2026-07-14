@@ -14,13 +14,13 @@ const HERO_BANNER_STYLES = `
 .hb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .hb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
 .hb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:600px;}
-.hb-box{position:relative;border-radius:1.5rem;padding:1.5rem 2rem;}
-.hb-box::before{content:"";position:absolute;inset:0;border-radius:1.5rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
+.hb-box{position:relative;border-radius:2rem;padding:1.5rem 2rem;}
+.hb-box::before{content:"";position:absolute;inset:0;border-radius:2rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
 .hb-box-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:0.25rem;}
-.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.5rem;border-radius:0.5rem;font-size:1.75rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-1.5rem;background:#E97300;color:#ffffff;box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:2rem;font-size:1.75rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-2.5rem;background:#E97300;color:#ffffff;}
 .hb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
 .hb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
-.hb-curve svg{display:block;width:100%;height:130px;}
+.hb-curve svg{display:block;width:100%;height:150px;}
 @media(max-width:992px){
 .hb-content{padding:3rem 2.5rem;max-width:100%;}
 .hb-badge{font-size:1.5rem;}
@@ -28,9 +28,9 @@ const HERO_BANNER_STYLES = `
 @media(max-width:640px){
 .hb-content{padding:3rem 1.5rem;}
 .hb-box{padding:1.125rem 1.25rem;}
-.hb-badge{font-size:1.25rem;padding:0.6rem 1.1rem;margin-left:-1.25rem;}
+.hb-badge{font-size:1.25rem;padding:0.6rem 1.35rem;margin-left:-1.75rem;border-radius:1.5rem;}
 .hb-subtitle{font-size:0.9375rem;}
-.hb-curve svg{height:70px;}
+.hb-curve svg{height:85px;}
 }
 </style>`;
 
@@ -57,8 +57,8 @@ function buildHeroBannerHTML(data, uid) {
             </div>
         </div>
         <div class="hb-curve" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill="${themeColors.bg}" d="M0,140L120,133.3C240,127,480,113,720,113.3C960,113,1200,127,1320,133.3L1440,140L1440,200L1320,200C1200,200,960,200,720,200C480,200,240,200,120,200L0,200Z"></path>
+            <svg viewBox="0 0 1366 230" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill="${themeColors.bg}" d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891V230H1366V0Z"></path>
             </svg>
         </div>
     </section>`;
