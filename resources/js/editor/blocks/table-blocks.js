@@ -15,10 +15,7 @@ const THEMES = {
         subheaderBg: "bg-[#003B71]",
         subheaderText: "text-white",
         borderColor: "#003B71",
-        rowEvenBg: "bg-white",
-        rowOddBg: "bg-white",
         rowText: "text-[#003B71]",
-        labelBg: "bg-[#e2e8f0]",
         labelText: "text-[#003B71]",
     },
     orange: {
@@ -27,10 +24,7 @@ const THEMES = {
         subheaderBg: "bg-[#E97300]",
         subheaderText: "text-white",
         borderColor: "#E97300",
-        rowEvenBg: "bg-white",
-        rowOddBg: "bg-white",
         rowText: "text-[#003B71]",
-        labelBg: "bg-[#e2e8f0]",
         labelText: "text-[#003B71]",
     },
 };
@@ -89,11 +83,9 @@ function buildTableHTML(data, theme) {
             const csAttr = cs > 1 ? `colspan="${cs}"` : "";
             const rsAttr = rs > 1 ? `rowspan="${rs}"` : "";
             const bg = cell.isHeader
-                ? t.labelBg
-                : ri % 2 === 0
-                  ? t.rowEvenBg
-                  : t.rowOddBg;
-            const fw = cell.isHeader ? "font-semibold" : "font-normal";
+                ? `tbl-cell-highlight-${theme}`
+                : `tbl-cell-normal-${theme}`;
+            const fw = "font-semibold";
             const color = cell.isHeader ? t.labelText : t.rowText;
             const align = `text-${cell.align || "center"}`;
             const isLastRow = ri + rs >= totalRows;
@@ -145,9 +137,16 @@ function defaultTableData(cols, rows) {
     };
 }
 
+function buildTableCellStyles(theme) {
+    return `<style>
+.tbl-cell-normal-${theme}{background-color:#ffffff;}
+.tbl-cell-highlight-${theme}{background-color:#e2e8f0;}
+</style>`;
+}
+
 function buildWrapper(html, theme) {
     const t = THEMES[theme] || THEMES.blue;
-    return `<div class="w-full overflow-x-auto rounded-2xl border-2 border-[${t.borderColor}]">${html}</div>`;
+    return `<div class="w-full overflow-x-auto rounded-2xl border-2 border-[${t.borderColor}]">${buildTableCellStyles(theme)}${html}</div>`;
 }
 
 function computeSkipMap(rows, cols) {

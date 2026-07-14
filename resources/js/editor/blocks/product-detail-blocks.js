@@ -692,7 +692,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
         label: "Ítem: tabla de coberturas",
         category: CATEGORY,
         media: iconProductDetailTable,
-        content: `<div data-gjs-type="table-component" data-table-theme="blue" data-coverage-table-init="1"></div>`,
+        content: `<div data-gjs-type="table-component" data-table-theme="orange" data-coverage-table-init="1"></div>`,
     },
 ];
 
