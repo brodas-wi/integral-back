@@ -20,10 +20,14 @@
     @endcanany
 @endsection
 
+@push('styles')
+    @vite('resources/css/views/news/index.css')
+@endpush
+
 @section('content')
     <div class="card mb-6">
-        <form method="GET" action="{{ route('news.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
+        <form method="GET" action="{{ route('news.index') }}" class="news-filters-grid">
+            <div class="news-filter-field">
                 <label for="search" class="block text-sm font-medium text-secondary mb-2">Buscar</label>
                 <div class="relative">
                     <input type="text" id="search" name="search" value="{{ request('search') }}"
@@ -31,7 +35,7 @@
                     <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
             </div>
-            <div>
+            <div class="news-filter-field">
                 <label for="category" class="block text-sm font-medium text-secondary mb-2">Categoría</label>
                 <select id="category" name="category" class="input-field">
                     <option value="">Todas</option>
@@ -42,7 +46,7 @@
                     @endforeach
                 </select>
             </div>
-            <div>
+            <div class="news-filter-field">
                 <label for="status" class="block text-sm font-medium text-secondary mb-2">Estado</label>
                 <select id="status" name="status" class="input-field">
                     <option value="">Todos</option>
@@ -51,7 +55,7 @@
                     <option value="scheduled" {{ request('status') == 'scheduled' ? 'selected' : '' }}>Programado</option>
                 </select>
             </div>
-            <div class="flex items-end gap-3">
+            <div class="news-filter-actions">
                 <a href="{{ route('news.index') }}" class="btn-outline">
                     <i class="ri-close-line mr-2"></i> Limpiar
                 </a>
@@ -60,53 +64,6 @@
                 </button>
             </div>
         </form>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div class="card">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 mb-1">Total</p>
-                    <p class="text-2xl font-bold text-secondary">{{ $stats['total'] }}</p>
-                </div>
-                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <i class="ri-newspaper-line text-2xl text-blue-600"></i>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 mb-1">Publicadas</p>
-                    <p class="text-2xl font-bold text-green-600">{{ $stats['published'] }}</p>
-                </div>
-                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <i class="ri-checkbox-circle-line text-2xl text-green-600"></i>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 mb-1">Borradores</p>
-                    <p class="text-2xl font-bold text-gray-600">{{ $stats['draft'] }}</p>
-                </div>
-                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <i class="ri-draft-line text-2xl text-gray-600"></i>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 mb-1">Programadas</p>
-                    <p class="text-2xl font-bold text-primary">{{ $stats['scheduled'] }}</p>
-                </div>
-                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <i class="ri-time-line text-2xl text-primary"></i>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

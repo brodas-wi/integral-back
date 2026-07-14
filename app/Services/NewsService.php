@@ -29,16 +29,6 @@ class NewsService
         return $query->latest();
     }
 
-    public function getStatistics(): array
-    {
-        return [
-            'total' => News::count(),
-            'published' => News::where('status', News::STATUS_PUBLISHED)->count(),
-            'draft' => News::where('status', News::STATUS_DRAFT)->count(),
-            'scheduled' => News::where('status', News::STATUS_SCHEDULED)->count(),
-        ];
-    }
-
     public function create(array $data): News
     {
         $data['slug'] = $this->generateUniqueSlug($data['title']);

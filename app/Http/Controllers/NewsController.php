@@ -32,9 +32,8 @@ class NewsController extends Controller
             ->withQueryString();
 
         $categories = NewsCategory::active()->orderBy('name')->get();
-        $stats = $this->newsService->getStatistics();
 
-        return view('news.index', compact('news', 'categories', 'stats'));
+        return view('news.index', compact('news', 'categories'));
     }
 
     public function create(): View

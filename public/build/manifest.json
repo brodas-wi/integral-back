@@ -300,7 +300,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-BLY_A6IU.css",
+    "file": "assets/app-CSK0vlrj.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -432,6 +432,10 @@
     "names": [
       "preview.css"
     ]
+  },
+  "resources/css/views/news/index.css": {
+    "file": "assets/index-siLvRs76.css",
+    "src": "resources/css/views/news/index.css"
   },
   "resources/css/views/news/show.css": {
     "file": "assets/show-BkzyXGVD.css",
