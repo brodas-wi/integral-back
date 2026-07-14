@@ -9,27 +9,30 @@ const THEME_COLORS = {
 
 const BANNER_STYLES = `
 <style>
-.pb-section{position:relative;width:100%;min-height:420px;display:flex;align-items:center;overflow:hidden;font-family:'Poppins',sans-serif;background:#0a0a0a;}
+.pb-section{position:relative;width:100%;min-height:460px;display:flex;align-items:center;overflow:hidden;font-family:'Poppins',sans-serif;background:#0a0a0a;}
 .pb-bg{position:absolute;inset:0;z-index:0;}
 .pb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .pb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
-.pb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:640px;}
-.pb-wrap{position:relative;padding-top:1.75rem;}
-.pb-box{position:relative;border-radius:0.5rem;padding:1rem 1.5rem 1.25rem;background:transparent;border:2px solid transparent;background-image:linear-gradient(#0000,#0000),linear-gradient(90deg,#E97300 0%,#E97300 35%,rgba(233,115,0,0) 100%);background-origin:border-box;background-clip:padding-box,border-box;}
-.pb-badge{position:absolute;top:0;left:1.5rem;transform:translateY(-55%);display:inline-block;padding:0.65rem 1.5rem;border-radius:0.375rem;font-size:2.25rem;line-height:1.15;font-weight:800;background:var(--pb-theme-bg,#003B71);color:var(--pb-theme-text,#fff);box-shadow:0 4px 14px rgba(0,0,0,0.25);}
-.pb-subtitle{margin:0.5rem 0 0;font-size:1.0625rem;font-weight:700;color:#fff;}
+.pb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:600px;}
+.pb-box{position:relative;border-radius:0.75rem;padding:1.5rem 2rem;}
+.pb-box::before,.pb-box::after{content:"";position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,#E97300 0%,#E97300 30%,rgba(233,115,0,0) 85%);}
+.pb-box::before{top:0;border-top-left-radius:0.75rem;}
+.pb-box::after{bottom:0;border-bottom-left-radius:0.75rem;}
+.pb-box-left{position:absolute;top:0;left:0;bottom:0;width:2px;background:#E97300;border-top-left-radius:0.75rem;border-bottom-left-radius:0.75rem;}
+.pb-box-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:0.75rem;}
+.pb-badge{display:inline-block;align-self:flex-start;padding:0.6rem 1.25rem;border-radius:0.5rem;font-size:1.375rem;line-height:1.25;font-weight:800;background:var(--pb-theme-bg,#003B71);color:var(--pb-theme-text,#fff);}
+.pb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;}
 .pb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
 .pb-curve svg{display:block;width:100%;height:110px;}
 .pb-curve path{fill:var(--pb-theme-bg,#003B71);}
 @media(max-width:992px){
 .pb-content{padding:3rem 2.5rem;max-width:100%;}
-.pb-badge{font-size:1.75rem;padding:0.55rem 1.15rem;}
+.pb-badge{font-size:1.1875rem;}
 }
 @media(max-width:640px){
-.pb-content{padding:4rem 1.5rem 2.25rem;}
-.pb-wrap{padding-top:1.5rem;}
-.pb-box{padding:0.875rem 1.25rem 1rem;}
-.pb-badge{font-size:1.375rem;padding:0.5rem 1rem;left:1rem;}
+.pb-content{padding:3rem 1.5rem;}
+.pb-box{padding:1.125rem 1.25rem;}
+.pb-badge{font-size:1.0625rem;padding:0.5rem 1rem;}
 .pb-subtitle{font-size:0.9375rem;}
 .pb-curve svg{height:60px;}
 }
@@ -50,11 +53,12 @@ function buildBannerHTML(data, uid) {
             <img src="${bgImage}" alt="${data.title || "Banner"}" loading="eager" decoding="async" fetchpriority="high" draggable="false" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false">
         </div>
         <div class="pb-content">
-            <div class="pb-wrap">
-                <div class="pb-box">
+            <div class="pb-box">
+                <div class="pb-box-left"></div>
+                <div class="pb-box-inner">
                     <span class="pb-badge">${data.title || "Título del banner"}</span>
+                    ${subtitleHtml}
                 </div>
-                ${subtitleHtml}
             </div>
         </div>
         <div class="pb-curve" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
@@ -68,8 +72,8 @@ function buildBannerHTML(data, uid) {
 const DEFAULT_DATA = {
     bg_image: assetUrl("images/placeholder.svg"),
     theme: "blue",
-    title: "Capital de Trabajo",
-    subtitle: "Impulsar tu negocio siempre disponible",
+    title: "Cuenta de Ahorro Electrónico",
+    subtitle: "Recupera el control de tus finanzas. Fácil de usar, práctica para tu día a día y disponible cuando la necesites.",
 };
 
 function showBannerModal(editor, component) {
@@ -100,6 +104,7 @@ function showBannerModal(editor, component) {
             .pb-row{display:flex;gap:0.75rem;align-items:center;}
             .pb-input{flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;width:100%;box-sizing:border-box;}
             .pb-input:focus{border-color:#3b82f6;}
+            textarea.pb-input{resize:vertical;min-height:80px;font-family:inherit;}
             .pb-pick-btn{flex-shrink:0;padding:0.4rem 0.75rem;background:#003B71;border:none;border-radius:0.5rem;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.25rem;font-family:inherit;white-space:nowrap;transition:background 0.15s;}
             .pb-pick-btn:hover{background:#002a52;}
             .pb-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
@@ -164,12 +169,12 @@ function showBannerModal(editor, component) {
             </div>
             <div class="pb-tab-panel" id="pb-panel-content">
                 <div class="pb-card">
-                    <label class="pb-label">Título</label>
+                    <label class="pb-label">Título (requerido)</label>
                     <input id="pb-title" type="text" placeholder="Título del banner" value="${title}" class="pb-input">
                 </div>
                 <div class="pb-card">
                     <label class="pb-label">Subtítulo (opcional)</label>
-                    <input id="pb-subtitle" type="text" placeholder="Déjalo vacío si no quieres subtítulo" value="${subtitle}" class="pb-input">
+                    <textarea id="pb-subtitle" placeholder="Déjalo vacío si no quieres subtítulo" class="pb-input">${subtitle}</textarea>
                 </div>
             </div>
             <div class="pb-tab-panel" id="pb-panel-theme">
@@ -180,7 +185,7 @@ function showBannerModal(editor, component) {
                         <button type="button" class="pb-theme-opt pb-theme-opt-orange" data-theme="orange">Naranja</button>
                         <button type="button" class="pb-theme-opt pb-theme-opt-white" data-theme="white">Blanco</button>
                     </div>
-                    <p style="font-size:0.75rem;color:#94a3b8;margin:0.75rem 0 0;">El contenedor con borde siempre es naranja, independientemente del tema elegido.</p>
+                    <p style="font-size:0.75rem;color:#94a3b8;margin:0.75rem 0 0;">El marco lateral izquierdo y las líneas superior/inferior siempre son naranja, independientemente del tema elegido.</p>
                 </div>
             </div>
         </div>
@@ -270,7 +275,9 @@ function showBannerModal(editor, component) {
         component.addAttributes({
             "data-banner-config": JSON.stringify(data),
         });
-        component.components(buildBannerHTML(data, uid) + BANNER_STYLES);
+        component.components(
+            buildBannerHTML(data, uid) + BANNER_STYLES,
+        );
         close();
     };
 }
@@ -300,7 +307,8 @@ export function initializeHeroBannerBlock(editor) {
                     "data-gjs-type": componentType,
                     "data-banner-config": JSON.stringify(DEFAULT_DATA),
                 },
-                components: buildBannerHTML(DEFAULT_DATA) + BANNER_STYLES,
+                components:
+                    buildBannerHTML(DEFAULT_DATA) + BANNER_STYLES,
                 traits: [
                     {
                         type: "button",
