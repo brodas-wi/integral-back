@@ -31,6 +31,7 @@
         "grapesjs": "^0.22.14",
         "grapesjs-preset-webpage": "^1.0.3",
         "leaflet": "^1.9.4",
-        "remixicon": "^4.8.0"
+        "remixicon": "^4.8.0",
+        "tinymce": "^8.7.0"
     }
 }

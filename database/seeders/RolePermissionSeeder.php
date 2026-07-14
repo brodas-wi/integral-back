@@ -96,6 +96,16 @@ class RolePermissionSeeder extends Seeder
             'assets.delete',
             'assets.manage',
             'assets.toggle',
+            'news.view',
+            'news.create',
+            'news.edit',
+            'news.delete',
+            'news.manage',
+            'news_categories.view',
+            'news_categories.create',
+            'news_categories.edit',
+            'news_categories.delete',
+            'news_categories.manage',
         ];
 
         foreach ($permissions as $permission) {
@@ -122,6 +132,8 @@ class RolePermissionSeeder extends Seeder
             'banners.manage',
             'scripts.manage',
             'assets.manage',
+            'news.manage',
+            'news_categories.manage',
         ]);
 
         // Editor role - Individual permissions for content management
@@ -142,6 +154,10 @@ class RolePermissionSeeder extends Seeder
             'navbars.edit',
             'footers.view',
             'footers.edit',
+            'news.view',
+            'news.create',
+            'news.edit',
+            'news_categories.view',
         ]);
 
         // Viewer role - Only view permissions
@@ -153,6 +169,8 @@ class RolePermissionSeeder extends Seeder
             'content.view',
             'pages.view',
             'media.view',
+            'news.view',
+            'news_categories.view',
         ]);
     }
 }

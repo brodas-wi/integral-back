@@ -16,6 +16,8 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ScriptController;
 use App\Http\Controllers\ExtraordinaryAssetController;
 use App\Http\Controllers\ExtraordinaryAssetCategoryController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NewsCategoryController;
 use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
@@ -582,6 +584,76 @@ Route::middleware(['auth'])->group(function () {
     // API pública para el bloque GrapesJS
     Route::get('/api/banners/active', [BannerController::class, 'apiIndex'])
         ->name('api.banners.active');
+
+    // ==========================================
+    // NEWS CATEGORY MANAGEMENT ROUTES
+    // ==========================================
+    Route::prefix('news-categories')->name('news-categories.')->group(function () {
+        Route::get('/', [NewsCategoryController::class, 'index'])
+            ->name('index')
+            ->middleware('can:news_categories.view,news_categories.manage');
+
+        Route::get('/create', [NewsCategoryController::class, 'create'])
+            ->name('create')
+            ->middleware('can:news_categories.manage');
+
+        Route::post('/', [NewsCategoryController::class, 'store'])
+            ->name('store')
+            ->middleware('can:news_categories.manage');
+
+        Route::get('/{newsCategory}/edit', [NewsCategoryController::class, 'edit'])
+            ->name('edit')
+            ->middleware('can:news_categories.manage');
+
+        Route::put('/{newsCategory}', [NewsCategoryController::class, 'update'])
+            ->name('update')
+            ->middleware('can:news_categories.manage');
+
+        Route::patch('/{newsCategory}/toggle-status', [NewsCategoryController::class, 'toggleStatus'])
+            ->name('toggle-status')
+            ->middleware('can:news_categories.manage');
+
+        Route::delete('/{newsCategory}', [NewsCategoryController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware('can:news_categories.manage');
+    });
+
+    // ==========================================
+    // NEWS MANAGEMENT ROUTES
+    // ==========================================
+    Route::prefix('news')->name('news.')->group(function () {
+        Route::get('/', [NewsController::class, 'index'])
+            ->name('index')
+            ->middleware('can:news.view,news.manage');
+
+        Route::get('/create', [NewsController::class, 'create'])
+            ->name('create')
+            ->middleware('can:news.create,news.manage');
+
+        Route::post('/', [NewsController::class, 'store'])
+            ->name('store')
+            ->middleware('can:news.create,news.manage');
+
+        Route::get('/{news}/edit', [NewsController::class, 'edit'])
+            ->name('edit')
+            ->middleware('can:news.edit,news.manage');
+
+        Route::put('/{news}', [NewsController::class, 'update'])
+            ->name('update')
+            ->middleware('can:news.edit,news.manage');
+
+        Route::patch('/{news}/toggle-status', [NewsController::class, 'toggleStatus'])
+            ->name('toggle-status')
+            ->middleware('can:news.edit,news.manage');
+
+        Route::get('/{news}', [NewsController::class, 'show'])
+            ->name('show')
+            ->middleware('can:news.view,news.manage');
+
+        Route::delete('/{news}', [NewsController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware('can:news.delete,news.manage');
+    });
 
     // ==========================================
     // SCRIPTS MODULE ROUTES

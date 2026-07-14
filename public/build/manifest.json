@@ -277,8 +277,30 @@
     "file": "assets/remixicon-CZw4FkzQ.woff2",
     "src": "node_modules/remixicon/fonts/remixicon.woff2"
   },
+  "node_modules/tinymce/skins/content/default/content.min.css": {
+    "file": "assets/content-BlEWOZC9.css",
+    "src": "node_modules/tinymce/skins/content/default/content.min.css",
+    "isEntry": true,
+    "name": "content.min",
+    "names": [
+      "content.css"
+    ]
+  },
+  "node_modules/tinymce/skins/ui/oxide/content.min.css": {
+    "file": "assets/content-DD6m3CP9.css",
+    "src": "node_modules/tinymce/skins/ui/oxide/content.min.css"
+  },
+  "node_modules/tinymce/skins/ui/oxide/skin.min.css": {
+    "file": "assets/skin-D2GIRDan.css",
+    "src": "node_modules/tinymce/skins/ui/oxide/skin.min.css",
+    "isEntry": true,
+    "name": "skin.min",
+    "names": [
+      "skin.css"
+    ]
+  },
   "resources/css/app.css": {
-    "file": "assets/app-Csc2TWQ4.css",
+    "file": "assets/app-BLY_A6IU.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -410,6 +432,10 @@
     "names": [
       "preview.css"
     ]
+  },
+  "resources/css/views/news/show.css": {
+    "file": "assets/show-BkzyXGVD.css",
+    "src": "resources/css/views/news/show.css"
   },
   "resources/css/views/payment-points/payment-points.css": {
     "file": "assets/payment-points-C_aQmSuU.css",
@@ -675,6 +701,28 @@
       "_notifications-Cgjr4krQ.js",
       "_url-DaqOO3yL.js"
     ]
+  },
+  "resources/js/views/news-categories/index.js": {
+    "file": "assets/index-Cow8TDGc.js",
+    "name": "index",
+    "src": "resources/js/views/news-categories/index.js",
+    "isEntry": true
+  },
+  "resources/js/views/news/form.js": {
+    "file": "assets/form-DL2G8p-1.js",
+    "name": "form",
+    "src": "resources/js/views/news/form.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers-CqkleIqs.js",
+      "_media-picker-Cb20KE6T.js"
+    ]
+  },
+  "resources/js/views/news/index.js": {
+    "file": "assets/index-BbdFNmLU.js",
+    "name": "index",
+    "src": "resources/js/views/news/index.js",
+    "isEntry": true
   },
   "resources/js/views/pages/index.js": {
     "file": "assets/index-BXh_Aks5.js",

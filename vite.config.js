@@ -1,18 +1,18 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
-import { glob } from 'glob';
+import { glob } from "glob";
 
-const viewJs  = glob.sync('resources/js/views/**/*.js');
-const viewCss = glob.sync('resources/css/views/**/*.css');
+const viewJs = glob.sync("resources/js/views/**/*.js");
+const viewCss = glob.sync("resources/css/views/**/*.css");
 
 export default defineConfig({
-    base: '/adminintegral/public/build/',
+    base: "/adminintegral/public/build/",
     build: {
-        manifest: 'manifest.json',
-        outDir: 'public/build',
+        manifest: "manifest.json",
+        outDir: "public/build",
     },
     server: {
-        host: '127.0.0.1',
+        host: "127.0.0.1",
         port: 5173,
     },
     plugins: [
@@ -31,6 +31,9 @@ export default defineConfig({
                 "resources/js/footer-editor.js",
                 "node_modules/remixicon/fonts/remixicon.css",
                 "node_modules/grapesjs/dist/css/grapes.min.css",
+                "node_modules/tinymce/skins/ui/oxide/skin.min.css",
+                "node_modules/tinymce/skins/ui/oxide/content.min.css",
+                "node_modules/tinymce/skins/content/default/content.min.css",
                 ...viewJs,
                 ...viewCss,
             ],
