@@ -3357,14 +3357,14 @@ ${tr}
 .pb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .pb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
 .pb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:600px;}
-.pb-box{position:relative;border-radius:0.75rem;padding:1.5rem 2rem;}
+.pb-box{position:relative;border-radius:1rem;padding:1.5rem 2rem;}
 .pb-box::before,.pb-box::after{content:"";position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,#E97300 0%,#E97300 30%,rgba(233,115,0,0) 85%);}
-.pb-box::before{top:0;border-top-left-radius:0.75rem;}
-.pb-box::after{bottom:0;border-bottom-left-radius:0.75rem;}
-.pb-box-left{position:absolute;top:0;left:0;bottom:0;width:2px;background:#E97300;border-top-left-radius:0.75rem;border-bottom-left-radius:0.75rem;}
+.pb-box::before{top:0;border-top-left-radius:1rem;}
+.pb-box::after{bottom:0;border-bottom-left-radius:1rem;}
+.pb-box-left{position:absolute;top:0;left:0;bottom:0;width:2px;background:#E97300;border-top-left-radius:1rem;border-bottom-left-radius:1rem;}
 .pb-box-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:0.75rem;}
-.pb-badge{display:inline-block;align-self:flex-start;padding:0.6rem 1.25rem;border-radius:0.5rem;font-size:1.375rem;line-height:1.25;font-weight:800;background:var(--pb-theme-bg,#003B71);color:var(--pb-theme-text,#fff);}
-.pb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;}
+.pb-badge{display:inline-block;align-self:flex-start;padding:0.6rem 1.25rem;border-radius:0.5rem;font-size:1.375rem;line-height:1.25;font-weight:800;background:var(--pb-theme-bg,#003B71);color:var(--pb-theme-text,#fff);margin-bottom:0.5rem;}
+.pb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
 .pb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
 .pb-curve svg{display:block;width:100%;height:110px;}
 .pb-curve path{fill:var(--pb-theme-bg,#003B71);}
@@ -3394,7 +3394,7 @@ ${tr}
         </div>
         <div class="pb-curve" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <svg viewBox="0 0 1200 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,110 L0,100 C400,100 800,20 1200,10 L1200,110 Z"></path>
+                <path d="M0,110 L0,75 C250,15 550,95 850,55 C1000,35 1100,20 1200,0 L1200,110 Z"></path>
             </svg>
         </div>
     </section>`}const G={bg_image:_("images/placeholder.svg"),theme:"blue",title:"Cuenta de Ahorro Electrónico",subtitle:"Recupera el control de tus finanzas. Fácil de usar, práctica para tu día a día y disponible cuando la necesites."};function el(t,e){const i=document.getElementById("banner-config-modal");if(i&&i.remove(),!document.getElementById("pb-modal-styles")){const g=document.createElement("style");g.id="pb-modal-styles",g.textContent=`
