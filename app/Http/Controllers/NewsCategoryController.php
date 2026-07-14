@@ -2,104 +2,110 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreNewsCategoryRequest;
+use App\Http\Requests\UpdateNewsCategoryRequest;
 use App\Models\NewsCategory;
+use App\Services\NewsCategoryService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class NewsCategoryController extends Controller
 {
-    public function index(Request $request)
+    use AuthorizesRequests;
+
+    public function __construct(
+        protected NewsCategoryService $categoryService
+    ) {}
+
+    public function index(Request $request): View
     {
-        $this->authorize('news_categories.view');
+        $filters = $request->only(['search', 'status']);
 
-        $query = NewsCategory::withCount('news');
-
-        if ($search = $request->get('search')) {
-            $query->where('name', 'like', "%{$search}%");
-        }
-
-        if ($request->filled('status')) {
-            $query->where('is_active', $request->get('status') === 'active');
-        }
-
-        $categories = $query->orderBy('name')->paginate(12)->withQueryString();
+        $categories = $this->categoryService
+            ->buildFilteredQuery($filters)
+            ->paginate(12)
+            ->withQueryString();
 
         return view('news-categories.index', compact('categories'));
     }
 
-    public function create()
+    public function create(): View
     {
-        $this->authorize('news_categories.manage');
-
         return view('news-categories.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreNewsCategoryRequest $request): RedirectResponse
     {
-        $this->authorize('news_categories.manage');
+        try {
+            $this->categoryService->create($request->validated());
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:150',
-            'is_active' => 'boolean',
-        ]);
+            return redirect()
+                ->route('news-categories.index')
+                ->with('success', 'Categoría creada exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error creating news category', [
+                'error' => $e->getMessage(),
+                'data' => $request->validated(),
+            ]);
 
-        $validated['created_by'] = Auth::id();
-        $validated['updated_by'] = Auth::id();
-
-        $category = NewsCategory::create($validated);
-
-        if ($request->wantsJson()) {
-            return response()->json(['success' => true, 'category' => $category]);
+            return back()
+                ->withInput()
+                ->with('error', 'Error al crear la categoría: ' . $e->getMessage());
         }
-
-        return redirect()->route('news-categories.index')
-            ->with('success', 'Categoría creada correctamente.');
     }
 
-    public function edit(NewsCategory $newsCategory)
+    public function edit(NewsCategory $newsCategory): View
     {
-        $this->authorize('news_categories.manage');
-
         return view('news-categories.edit', ['category' => $newsCategory]);
     }
 
-    public function update(Request $request, NewsCategory $newsCategory)
+    public function update(UpdateNewsCategoryRequest $request, NewsCategory $newsCategory): RedirectResponse
     {
-        $this->authorize('news_categories.manage');
+        try {
+            $this->categoryService->update($newsCategory, $request->validated());
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:150',
-            'is_active' => 'boolean',
-        ]);
+            return redirect()
+                ->route('news-categories.index')
+                ->with('success', 'Categoría actualizada exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error updating news category', [
+                'error' => $e->getMessage(),
+                'category_id' => $newsCategory->id,
+            ]);
 
-        $validated['updated_by'] = Auth::id();
-
-        $newsCategory->update($validated);
-
-        if ($request->wantsJson()) {
-            return response()->json(['success' => true, 'category' => $newsCategory]);
+            return back()
+                ->withInput()
+                ->with('error', 'Error al actualizar la categoría: ' . $e->getMessage());
         }
-
-        return redirect()->route('news-categories.index')
-            ->with('success', 'Categoría actualizada correctamente.');
     }
 
-    public function toggleStatus(NewsCategory $newsCategory)
+    public function toggleStatus(NewsCategory $newsCategory): JsonResponse
     {
-        $this->authorize('news_categories.manage');
+        try {
+            $this->categoryService->toggleStatus($newsCategory);
 
-        $newsCategory->update([
-            'is_active' => !$newsCategory->is_active,
-            'updated_by' => Auth::id(),
-        ]);
+            return response()->json([
+                'success' => true,
+                'is_active' => $newsCategory->is_active,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error toggling news category status', [
+                'error' => $e->getMessage(),
+                'category_id' => $newsCategory->id,
+            ]);
 
-        return response()->json([
-            'success' => true,
-            'is_active' => $newsCategory->is_active,
-        ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el estado',
+            ], 500);
+        }
     }
 
-    public function destroy(NewsCategory $newsCategory)
+    public function destroy(NewsCategory $newsCategory): JsonResponse
     {
         $this->authorize('news_categories.manage');
 
@@ -110,9 +116,20 @@ class NewsCategoryController extends Controller
             ], 422);
         }
 
-        $newsCategory->update(['is_active' => false, 'updated_by' => Auth::id()]);
-        $newsCategory->delete();
+        try {
+            $this->categoryService->delete($newsCategory);
 
-        return response()->json(['success' => true]);
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Error deleting news category', [
+                'error' => $e->getMessage(),
+                'category_id' => $newsCategory->id,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar la categoría',
+            ], 500);
+        }
     }
 }

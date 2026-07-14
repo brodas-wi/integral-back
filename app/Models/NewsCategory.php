@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 
 class NewsCategory extends Model
 {
-    use SoftDeletes, HasSlug;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -23,14 +22,6 @@ class NewsCategory extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug')
-            ->doNotGenerateSlugsOnUpdate();
-    }
 
     public function news(): HasMany
     {

@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 use Carbon\Carbon;
 
 class News extends Model
 {
-    use SoftDeletes, HasSlug;
+    use HasFactory, SoftDeletes;
 
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
@@ -39,14 +38,6 @@ class News extends Model
         'published_at' => 'datetime',
         'is_active' => 'boolean',
     ];
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('title')
-            ->saveSlugsTo('slug')
-            ->doNotGenerateSlugsOnUpdate();
-    }
 
     public function category(): BelongsTo
     {

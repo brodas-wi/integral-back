@@ -2,153 +2,142 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreNewsRequest;
+use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
 use App\Models\NewsCategory;
+use App\Services\NewsService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class NewsController extends Controller
 {
-    public function index(Request $request)
+    use AuthorizesRequests;
+
+    public function __construct(
+        protected NewsService $newsService
+    ) {}
+
+    public function index(Request $request): View
     {
-        $this->authorize('news.view');
+        $filters = $request->only(['search', 'category', 'status']);
 
-        $query = News::with(['category', 'creator']);
+        $news = $this->newsService
+            ->buildFilteredQuery($filters)
+            ->paginate(12)
+            ->withQueryString();
 
-        if ($search = $request->get('search')) {
-            $query->where('title', 'like', "%{$search}%");
-        }
-
-        if ($request->filled('category')) {
-            $query->where('news_category_id', $request->get('category'));
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->get('status'));
-        }
-
-        $news = $query->latest()->paginate(12)->withQueryString();
         $categories = NewsCategory::active()->orderBy('name')->get();
-
-        $stats = [
-            'total' => News::count(),
-            'published' => News::where('status', News::STATUS_PUBLISHED)->count(),
-            'draft' => News::where('status', News::STATUS_DRAFT)->count(),
-            'scheduled' => News::where('status', News::STATUS_SCHEDULED)->count(),
-        ];
+        $stats = $this->newsService->getStatistics();
 
         return view('news.index', compact('news', 'categories', 'stats'));
     }
 
-    public function create()
+    public function create(): View
     {
-        $this->authorize('news.create');
-
         $categories = NewsCategory::active()->orderBy('name')->get();
 
         return view('news.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(StoreNewsRequest $request): RedirectResponse
     {
-        $this->authorize('news.create');
+        try {
+            $this->newsService->create($request->validated());
 
-        $validated = $this->validateNews($request);
-        $validated = $this->resolvePublicationState($validated);
+            return redirect()
+                ->route('news.index')
+                ->with('success', 'Noticia creada exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error creating news', [
+                'error' => $e->getMessage(),
+                'data' => $request->validated(),
+            ]);
 
-        $validated['created_by'] = Auth::id();
-        $validated['updated_by'] = Auth::id();
-
-        News::create($validated);
-
-        return redirect()->route('news.index')
-            ->with('success', 'Noticia creada correctamente.');
+            return back()
+                ->withInput()
+                ->with('error', 'Error al crear la noticia: ' . $e->getMessage());
+        }
     }
 
-    public function edit(News $news)
+    public function edit(News $news): View
     {
-        $this->authorize('news.edit');
-
         $categories = NewsCategory::active()->orderBy('name')->get();
 
         return view('news.edit', compact('news', 'categories'));
     }
 
-    public function update(Request $request, News $news)
+    public function update(UpdateNewsRequest $request, News $news): RedirectResponse
     {
-        $this->authorize('news.edit');
+        try {
+            $this->newsService->update($news, $request->validated());
 
-        $validated = $this->validateNews($request);
-        $validated = $this->resolvePublicationState($validated, $news);
+            return redirect()
+                ->route('news.index')
+                ->with('success', 'Noticia actualizada exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error updating news', [
+                'error' => $e->getMessage(),
+                'news_id' => $news->id,
+            ]);
 
-        $validated['updated_by'] = Auth::id();
-
-        $news->update($validated);
-
-        return redirect()->route('news.index')
-            ->with('success', 'Noticia actualizada correctamente.');
+            return back()
+                ->withInput()
+                ->with('error', 'Error al actualizar la noticia: ' . $e->getMessage());
+        }
     }
 
-    public function show(News $news)
+    public function show(News $news): View
     {
-        $this->authorize('news.view');
-
         $news->load(['category', 'creator']);
 
         return view('news.show', compact('news'));
     }
 
-    public function toggleStatus(News $news)
+    public function toggleStatus(News $news): JsonResponse
     {
-        $this->authorize('news.edit');
+        try {
+            $this->newsService->toggleStatus($news);
 
-        $news->update([
-            'is_active' => !$news->is_active,
-            'updated_by' => Auth::id(),
-        ]);
+            return response()->json([
+                'success' => true,
+                'is_active' => $news->is_active,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error toggling news status', [
+                'error' => $e->getMessage(),
+                'news_id' => $news->id,
+            ]);
 
-        return response()->json([
-            'success' => true,
-            'is_active' => $news->is_active,
-        ]);
-    }
-
-    public function destroy(News $news)
-    {
-        $this->authorize('news.delete');
-
-        $news->update(['is_active' => false, 'updated_by' => Auth::id()]);
-        $news->delete();
-
-        return response()->json(['success' => true]);
-    }
-
-    private function validateNews(Request $request): array
-    {
-        return $request->validate([
-            'title' => 'required|string|max:200',
-            'description' => 'nullable|string|max:500',
-            'featured_image' => 'nullable|string|max:2048',
-            'content' => 'nullable|string',
-            'news_category_id' => 'required|exists:news_categories,id',
-            'status' => 'required|in:draft,published,scheduled',
-            'scheduled_at' => 'required_if:status,scheduled|nullable|date|after:now',
-        ]);
-    }
-
-    private function resolvePublicationState(array $data, ?News $existing = null): array
-    {
-        if ($data['status'] === News::STATUS_PUBLISHED) {
-            $data['published_at'] = $existing?->published_at ?? Carbon::now();
-            $data['scheduled_at'] = null;
-        } elseif ($data['status'] === News::STATUS_SCHEDULED) {
-            $data['published_at'] = null;
-        } else {
-            $data['published_at'] = null;
-            $data['scheduled_at'] = null;
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el estado',
+            ], 500);
         }
+    }
 
-        return $data;
+    public function destroy(News $news): JsonResponse
+    {
+        $this->authorize('news.delete', 'news.manage');
+
+        try {
+            $this->newsService->delete($news);
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Error deleting news', [
+                'error' => $e->getMessage(),
+                'news_id' => $news->id,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar la noticia',
+            ], 500);
+        }
     }
 }
