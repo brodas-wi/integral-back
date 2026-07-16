@@ -12,6 +12,15 @@ const HERO_BANNER_STYLES = `
 .hb-section{position:relative;width:100%;min-height:460px;display:flex;align-items:center;overflow:hidden;font-family:'Poppins',sans-serif;background:#0a0a0a;}
 .hb-bg{position:absolute;inset:0;z-index:0;}
 .hb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.hb-bg img.hb-pos-left-top{object-position:left top;}
+.hb-bg img.hb-pos-left-center{object-position:left center;}
+.hb-bg img.hb-pos-left-bottom{object-position:left bottom;}
+.hb-bg img.hb-pos-center-top{object-position:center top;}
+.hb-bg img.hb-pos-center-center{object-position:center center;}
+.hb-bg img.hb-pos-center-bottom{object-position:center bottom;}
+.hb-bg img.hb-pos-right-top{object-position:right top;}
+.hb-bg img.hb-pos-right-center{object-position:right center;}
+.hb-bg img.hb-pos-right-bottom{object-position:right bottom;}
 .hb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
 .hb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:600px;}
 .hb-box{position:relative;border-radius:1.125rem;padding:1.5rem 2rem;}
@@ -39,6 +48,9 @@ function buildHeroBannerHTML(data, uid) {
     const bgImage = data.bg_image || assetUrl("images/placeholder.svg");
     const theme = THEME_COLORS[data.theme] ? data.theme : "blue";
     const themeColors = THEME_COLORS[theme];
+    const posX = data.bg_position_x || "center";
+    const posY = data.bg_position_y || "center";
+    const posClass = `hb-pos-${posX}-${posY}`;
 
     const subtitleHtml = data.subtitle
         ? `<p class="hb-subtitle">${data.subtitle}</p>`
@@ -46,7 +58,7 @@ function buildHeroBannerHTML(data, uid) {
 
     return `<section id="hb-root-${uid}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <img src="${bgImage}" alt="${data.title || "Banner"}" loading="eager" decoding="async" fetchpriority="high" draggable="false" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false">
+            <img src="${bgImage}" alt="${data.title || "Banner"}" class="${posClass}" loading="eager" decoding="async" fetchpriority="high" draggable="false" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false">
         </div>
         <div class="hb-content">
             <div class="hb-box">
@@ -67,6 +79,8 @@ function buildHeroBannerHTML(data, uid) {
 
 const DEFAULT_DATA = {
     bg_image: assetUrl("images/placeholder.svg"),
+    bg_position_x: "center",
+    bg_position_y: "center",
     theme: "blue",
     title: "Cuenta de Ahorro Electrónico",
     subtitle:
@@ -131,6 +145,8 @@ function showHeroBannerModal(editor, component) {
     })();
 
     const bgImage = currentData.bg_image || DEFAULT_DATA.bg_image;
+    const bgPositionX = currentData.bg_position_x || DEFAULT_DATA.bg_position_x;
+    const bgPositionY = currentData.bg_position_y || DEFAULT_DATA.bg_position_y;
     const theme = currentData.theme || DEFAULT_DATA.theme;
     const title = currentData.title || DEFAULT_DATA.title;
     const subtitle = currentData.subtitle ?? DEFAULT_DATA.subtitle;
@@ -161,6 +177,28 @@ function showHeroBannerModal(editor, component) {
                             <input id="hb-bg-url" type="text" placeholder="URL de la imagen" value="${bgImage}" class="hb-input">
                         </div>
                         <button id="hb-bg-pick" class="hb-pick-btn"><i class="ri-image-line"></i> Seleccionar</button>
+                    </div>
+                </div>
+                <div class="hb-card">
+                    <label class="hb-label">Posición de la imagen</label>
+                    <p style="font-size:0.75rem;color:#94a3b8;margin:0 0 0.75rem;">Controla qué parte de la imagen se prioriza al recortarse para adaptarse al banner.</p>
+                    <div class="hb-row" style="gap:1rem;">
+                        <div style="flex:1;">
+                            <label class="hb-label" style="margin-bottom:0.375rem;">Horizontal</label>
+                            <select id="hb-bg-pos-x" class="hb-input">
+                                <option value="left" ${bgPositionX === "left" ? "selected" : ""}>Izquierda</option>
+                                <option value="center" ${bgPositionX === "center" ? "selected" : ""}>Centro</option>
+                                <option value="right" ${bgPositionX === "right" ? "selected" : ""}>Derecha</option>
+                            </select>
+                        </div>
+                        <div style="flex:1;">
+                            <label class="hb-label" style="margin-bottom:0.375rem;">Vertical</label>
+                            <select id="hb-bg-pos-y" class="hb-input">
+                                <option value="top" ${bgPositionY === "top" ? "selected" : ""}>Arriba</option>
+                                <option value="center" ${bgPositionY === "center" ? "selected" : ""}>Centro</option>
+                                <option value="bottom" ${bgPositionY === "bottom" ? "selected" : ""}>Abajo</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -246,6 +284,15 @@ function showHeroBannerModal(editor, component) {
         modal.querySelector("#hb-bg-preview").src = e.target.value;
     });
 
+    function updateBgPreviewPosition() {
+        const x = modal.querySelector("#hb-bg-pos-x").value;
+        const y = modal.querySelector("#hb-bg-pos-y").value;
+        modal.querySelector("#hb-bg-preview").style.objectPosition = `${x} ${y}`;
+    }
+    modal.querySelector("#hb-bg-pos-x").addEventListener("change", updateBgPreviewPosition);
+    modal.querySelector("#hb-bg-pos-y").addEventListener("change", updateBgPreviewPosition);
+    updateBgPreviewPosition();
+
     const close = () => overlay.remove();
     modal.querySelector("#hb-modal-close").onclick = close;
     modal.querySelector("#hb-modal-cancel").onclick = close;
@@ -258,6 +305,8 @@ function showHeroBannerModal(editor, component) {
             bg_image:
                 modal.querySelector("#hb-bg-url").value.trim() ||
                 DEFAULT_DATA.bg_image,
+            bg_position_x: modal.querySelector("#hb-bg-pos-x").value,
+            bg_position_y: modal.querySelector("#hb-bg-pos-y").value,
             theme: selectedTheme,
             title: modal.querySelector("#hb-title").value.trim(),
             subtitle: modal.querySelector("#hb-subtitle").value.trim(),
