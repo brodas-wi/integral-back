@@ -3350,7 +3350,7 @@ ${tr}
                     <div class="ast-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
                     <div class="ast-tabs" data-ast-tabs data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
                     <div data-ast-content data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
-                `,script:Wr(),traits:[{type:"select",name:"data-default-category",label:"Categoría inicial",options:[{id:"",name:"Todas (mostrar 'Todos')"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const i=this.getEl();if(!i)return;const a=this.get("script");a&&typeof a=="function"&&setTimeout(()=>a.call(i),100)})}}}),Zr(t,e),Qr(t,e),Kr(t,e)}async function Kr(t,e){try{const i=document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/,"")??"",a=await fetch(`${i}/api/asset-categories/all`,{headers:{Accept:"application/json"}});if(!a.ok)return;const r=await a.json();if(!Array.isArray(r)||r.length===0)return;const l=t.DomComponents.getType(e);if(!l)return;const p=l.model.prototype.defaults.traits.find(c=>c.name==="data-default-category");if(!p)return;p.options=[{id:"",name:"Todas (mostrar 'Todos')"},...r.map(c=>({id:c.slug,name:c.name}))]}catch{}}function Zr(t,e){t.on("storage:end:load",()=>{setTimeout(()=>ht(t,e),1e3)}),t.on("component:mount",i=>{const a=i.getEl();a?.getAttribute?.("data-gjs-type")===e&&(i.set("type",e),setTimeout(()=>{const r=i.get("script");r&&typeof r=="function"&&r.call(a)},500))}),t.on("canvas:render",()=>{setTimeout(()=>ht(t,e),800)}),t.on("storage:start:store",()=>{t.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(i=>{i.set("type",e),i.addAttributes({"data-gjs-type":e})})})}function ht(t,e){t.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(i=>{i.set("type",e);const a=i.getEl();if(a?.isConnected){const r=i.get("script");r&&typeof r=="function"&&r.call(a)}})}function Qr(t,e){t.on("load",()=>{const i=t.Canvas.getFrameEl();if(!i)return;const a=i.contentDocument?.head;if(a){if(!a.querySelector("#assets-block-styles")){const r=document.createElement("style");r.id="assets-block-styles",r.textContent=Xr,a.appendChild(r)}if(!a.querySelector(`#${e}-editor-css`)){const r=document.createElement("style");r.id=`${e}-editor-css`,r.textContent=`[data-gjs-type="${e}"] * { pointer-events: none !important; } [data-gjs-type="${e}"].gjs-selected, [data-gjs-type="${e}"].gjs-hovered { outline: 2px dashed rgba(240,135,42,0.6) !important; outline-offset: 2px; }`,a.appendChild(r)}}})}const Ie={blue:{bg:"#003B71",text:"#ffffff"},orange:{bg:"#E97300",text:"#ffffff"},white:{bg:"#ffffff",text:"#003B71"}},Et=`
+                `,script:Wr(),traits:[{type:"select",name:"data-default-category",label:"Categoría inicial",options:[{id:"",name:"Todas (mostrar 'Todos')"}],changeProp:!1}]},init(){this.set("type",e),this.addAttributes({"data-gjs-type":e}),this.on("change:attributes",()=>{const i=this.getEl();if(!i)return;const a=this.get("script");a&&typeof a=="function"&&setTimeout(()=>a.call(i),100)})}}}),Zr(t,e),Qr(t,e),Kr(t,e)}async function Kr(t,e){try{const i=document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/,"")??"",a=await fetch(`${i}/api/asset-categories/all`,{headers:{Accept:"application/json"}});if(!a.ok)return;const r=await a.json();if(!Array.isArray(r)||r.length===0)return;const l=t.DomComponents.getType(e);if(!l)return;const p=l.model.prototype.defaults.traits.find(c=>c.name==="data-default-category");if(!p)return;p.options=[{id:"",name:"Todas (mostrar 'Todos')"},...r.map(c=>({id:c.slug,name:c.name}))]}catch{}}function Zr(t,e){t.on("storage:end:load",()=>{setTimeout(()=>ht(t,e),1e3)}),t.on("component:mount",i=>{const a=i.getEl();a?.getAttribute?.("data-gjs-type")===e&&(i.set("type",e),setTimeout(()=>{const r=i.get("script");r&&typeof r=="function"&&r.call(a)},500))}),t.on("canvas:render",()=>{setTimeout(()=>ht(t,e),800)}),t.on("storage:start:store",()=>{t.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(i=>{i.set("type",e),i.addAttributes({"data-gjs-type":e})})})}function ht(t,e){t.getWrapper().find(`[data-gjs-type="${e}"]`).forEach(i=>{i.set("type",e);const a=i.getEl();if(a?.isConnected){const r=i.get("script");r&&typeof r=="function"&&r.call(a)}})}function Qr(t,e){t.on("load",()=>{const i=t.Canvas.getFrameEl();if(!i)return;const a=i.contentDocument?.head;if(a){if(!a.querySelector("#assets-block-styles")){const r=document.createElement("style");r.id="assets-block-styles",r.textContent=Xr,a.appendChild(r)}if(!a.querySelector(`#${e}-editor-css`)){const r=document.createElement("style");r.id=`${e}-editor-css`,r.textContent=`[data-gjs-type="${e}"] * { pointer-events: none !important; } [data-gjs-type="${e}"].gjs-selected, [data-gjs-type="${e}"].gjs-hovered { outline: 2px dashed rgba(240,135,42,0.6) !important; outline-offset: 2px; }`,a.appendChild(r)}}})}const Ie={blue:{curve:"#003B71",curveLine:"#E97300",badge:"#E97300",badgeText:"#ffffff"},orange:{curve:"#E97300",curveLine:"#003B71",badge:"#003B71",badgeText:"#ffffff"},white:{curve:"#ffffff",curveLine:"#E97300",badge:"#E97300",badgeText:"#ffffff"}},Et=`
 <style>
 .hb-section{position:relative;width:100%;min-height:460px;display:flex;align-items:center;overflow:hidden;font-family:'Poppins',sans-serif;background:#0a0a0a;}
 .hb-bg{position:absolute;inset:0;z-index:0;}
@@ -3360,7 +3360,7 @@ ${tr}
 .hb-box{position:relative;border-radius:1.5rem;padding:1.5rem 2rem;}
 .hb-box::before{content:"";position:absolute;inset:0;border-radius:1.5rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
 .hb-box-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:0.25rem;}
-.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1.5rem;font-size:1.75rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;background:#E97300;color:#ffffff;}
+.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1.5rem;font-size:1.75rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;}
 .hb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
 .hb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
 .hb-curve svg{display:block;width:100%;height:150px;}
@@ -3382,14 +3382,15 @@ ${tr}
         <div class="hb-content">
             <div class="hb-box">
                 <div class="hb-box-inner">
-                    <span class="hb-badge">${t.title||"Título del banner"}</span>
+                    <span class="hb-badge" style="background:${r.badge};color:${r.badgeText};">${t.title||"Título del banner"}</span>
                     ${l}
                 </div>
             </div>
         </div>
         <div class="hb-curve" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <svg viewBox="0 0 1366 230" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill="${r.bg}" d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891V230H1366V0Z"></path>
+                <path d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891V230H1366V0Z" fill="${r.curve}"></path>
+                <path d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891" fill="none" stroke="${r.curveLine}" stroke-width="4" vector-effect="non-scaling-stroke"></path>
             </svg>
         </div>
     </section>`}const G={bg_image:_("images/placeholder.svg"),theme:"blue",title:"Cuenta de Ahorro Electrónico",subtitle:"Recupera el control de tus finanzas. Fácil de usar, práctica para tu día a día y disponible cuando la necesites."};function el(t,e){const i=document.getElementById("hero-banner-config-modal");if(i&&i.remove(),!document.getElementById("hb-modal-styles")){const g=document.createElement("style");g.id="hb-modal-styles",g.textContent=`
@@ -3463,13 +3464,13 @@ ${tr}
             </div>
             <div class="hb-tab-panel" id="hb-panel-theme">
                 <div class="hb-card">
-                    <label class="hb-label">Color de tema (aplica únicamente a la curva inferior)</label>
+                    <label class="hb-label">Color de tema</label>
                     <div class="hb-theme-toggle" id="hb-theme-colors">
                         <button type="button" class="hb-theme-opt hb-theme-opt-blue" data-theme="blue">Azul</button>
                         <button type="button" class="hb-theme-opt hb-theme-opt-orange" data-theme="orange">Naranja</button>
                         <button type="button" class="hb-theme-opt hb-theme-opt-white" data-theme="white">Blanco</button>
                     </div>
-                    <p style="font-size:0.75rem;color:#94a3b8;margin:0.75rem 0 0;">El badge del título y el marco de borde siempre son naranja, independientemente del tema elegido.</p>
+                    <p style="font-size:0.75rem;color:#94a3b8;margin:0.75rem 0 0;">El marco con borde siempre es naranja. El tema controla el color de la curva inferior, la línea superior de la curva y el badge del título.</p>
                 </div>
             </div>
         </div>

@@ -2,9 +2,9 @@ import { assetUrl } from "@/utils/url.js";
 import { openMediaPicker } from "@/editor/media-picker";
 
 const THEME_COLORS = {
-    blue: { bg: "#003B71", text: "#ffffff" },
-    orange: { bg: "#E97300", text: "#ffffff" },
-    white: { bg: "#ffffff", text: "#003B71" },
+    blue: { curve: "#003B71", curveLine: "#E97300", badge: "#E97300", badgeText: "#ffffff" },
+    orange: { curve: "#E97300", curveLine: "#003B71", badge: "#003B71", badgeText: "#ffffff" },
+    white: { curve: "#ffffff", curveLine: "#E97300", badge: "#E97300", badgeText: "#ffffff" },
 };
 
 const HERO_BANNER_STYLES = `
@@ -17,7 +17,7 @@ const HERO_BANNER_STYLES = `
 .hb-box{position:relative;border-radius:1.5rem;padding:1.5rem 2rem;}
 .hb-box::before{content:"";position:absolute;inset:0;border-radius:1.5rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
 .hb-box-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:0.25rem;}
-.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1.5rem;font-size:1.75rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;background:#E97300;color:#ffffff;}
+.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1.5rem;font-size:1.75rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;}
 .hb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
 .hb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
 .hb-curve svg{display:block;width:100%;height:150px;}
@@ -51,14 +51,15 @@ function buildHeroBannerHTML(data, uid) {
         <div class="hb-content">
             <div class="hb-box">
                 <div class="hb-box-inner">
-                    <span class="hb-badge">${data.title || "Título del banner"}</span>
+                    <span class="hb-badge" style="background:${themeColors.badge};color:${themeColors.badgeText};">${data.title || "Título del banner"}</span>
                     ${subtitleHtml}
                 </div>
             </div>
         </div>
         <div class="hb-curve" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <svg viewBox="0 0 1366 230" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill="${themeColors.bg}" d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891V230H1366V0Z"></path>
+                <path d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891V230H1366V0Z" fill="${themeColors.curve}"></path>
+                <path d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891" fill="none" stroke="${themeColors.curveLine}" stroke-width="4" vector-effect="non-scaling-stroke"></path>
             </svg>
         </div>
     </section>`;
@@ -175,13 +176,13 @@ function showHeroBannerModal(editor, component) {
             </div>
             <div class="hb-tab-panel" id="hb-panel-theme">
                 <div class="hb-card">
-                    <label class="hb-label">Color de tema (aplica únicamente a la curva inferior)</label>
+                    <label class="hb-label">Color de tema</label>
                     <div class="hb-theme-toggle" id="hb-theme-colors">
                         <button type="button" class="hb-theme-opt hb-theme-opt-blue" data-theme="blue">Azul</button>
                         <button type="button" class="hb-theme-opt hb-theme-opt-orange" data-theme="orange">Naranja</button>
                         <button type="button" class="hb-theme-opt hb-theme-opt-white" data-theme="white">Blanco</button>
                     </div>
-                    <p style="font-size:0.75rem;color:#94a3b8;margin:0.75rem 0 0;">El badge del título y el marco de borde siempre son naranja, independientemente del tema elegido.</p>
+                    <p style="font-size:0.75rem;color:#94a3b8;margin:0.75rem 0 0;">El marco con borde siempre es naranja. El tema controla el color de la curva inferior, la línea superior de la curva y el badge del título.</p>
                 </div>
             </div>
         </div>
