@@ -3357,10 +3357,10 @@ ${tr}
 .hb-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .hb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
 .hb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:600px;}
-.hb-box{position:relative;border-radius:1.5rem;padding:1.5rem 2rem;}
-.hb-box::before{content:"";position:absolute;inset:0;border-radius:1.5rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
+.hb-box{position:relative;border-radius:1.125rem;padding:1.5rem 2rem;}
+.hb-box::before{content:"";position:absolute;inset:0;border-radius:1.125rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
 .hb-box-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:0.25rem;}
-.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1.5rem;font-size:1.75rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;}
+.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1rem;font-size:1.75rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;}
 .hb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
 .hb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
 .hb-curve svg{display:block;width:100%;height:150px;}
@@ -3371,7 +3371,7 @@ ${tr}
 @media(max-width:640px){
 .hb-content{padding:3rem 1.5rem;}
 .hb-box{padding:1.125rem 1.25rem;}
-.hb-badge{font-size:1.25rem;padding:0.6rem 1.35rem;margin-left:-2.25rem;border-radius:1.125rem;}
+.hb-badge{font-size:1.25rem;padding:0.6rem 1.35rem;margin-left:-2.25rem;border-radius:0.875rem;}
 .hb-subtitle{font-size:0.9375rem;}
 .hb-curve svg{height:85px;}
 }
@@ -3390,7 +3390,7 @@ ${tr}
         <div class="hb-curve" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <svg viewBox="0 0 1366 230" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891V230H1366V0Z" fill="${r.curve}"></path>
-                <path d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891" fill="none" stroke="${r.curveLine}" stroke-width="4" vector-effect="non-scaling-stroke"></path>
+                <path d="M1366 0C1073.5 102.496 725.5 165.891 -20 165.891" fill="none" stroke="${r.curveLine}" stroke-width="4" vector-effect="non-scaling-stroke"></path>
             </svg>
         </div>
     </section>`}const G={bg_image:_("images/placeholder.svg"),theme:"blue",title:"Cuenta de Ahorro Electrónico",subtitle:"Recupera el control de tus finanzas. Fácil de usar, práctica para tu día a día y disponible cuando la necesites."};function el(t,e){const i=document.getElementById("hero-banner-config-modal");if(i&&i.remove(),!document.getElementById("hb-modal-styles")){const g=document.createElement("style");g.id="hb-modal-styles",g.textContent=`
