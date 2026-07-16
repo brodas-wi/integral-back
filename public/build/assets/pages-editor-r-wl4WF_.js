@@ -3360,18 +3360,18 @@ ${tr}
 .hb-box{position:relative;border-radius:1.125rem;padding:1.5rem 2rem;}
 .hb-box::before{content:"";position:absolute;inset:0;border-radius:1.125rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
 .hb-box-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:0.25rem;}
-.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1rem;font-size:1.75rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;}
+.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1rem;font-size:2.25rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;}
 .hb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
 .hb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
 .hb-curve svg{display:block;width:100%;height:150px;}
 @media(max-width:992px){
 .hb-content{padding:3rem 2.5rem;max-width:100%;}
-.hb-badge{font-size:1.5rem;}
+.hb-badge{font-size:1.875rem;}
 }
 @media(max-width:640px){
 .hb-content{padding:3rem 1.5rem;}
 .hb-box{padding:1.125rem 1.25rem;}
-.hb-badge{font-size:1.25rem;padding:0.6rem 1.35rem;margin-left:-2.25rem;border-radius:0.875rem;}
+.hb-badge{font-size:1.5rem;padding:0.6rem 1.35rem;margin-left:-2.25rem;border-radius:0.875rem;}
 .hb-subtitle{font-size:0.9375rem;}
 .hb-curve svg{height:85px;}
 }
