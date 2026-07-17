@@ -3499,7 +3499,7 @@ ${tr}
                     <div class="hb-theme-toggle" id="hb-theme-colors">
                         <button type="button" class="hb-theme-opt hb-theme-opt-blue" data-theme="blue">Azul</button>
                         <button type="button" class="hb-theme-opt hb-theme-opt-orange" data-theme="orange">Naranja</button>
-                        <<button type="button" class="hb-theme-opt hb-theme-opt-transparent" data-theme="transparent">Azul Transparente</button>
+                        <button type="button" class="hb-theme-opt hb-theme-opt-transparent" data-theme="transparent">Azul Transparente</button>
                     </div>
                     <p style="font-size:0.75rem;color:#94a3b8;margin:0.75rem 0 0;">El marco con borde siempre es naranja. El tema controla el color de la curva inferior, la línea superior de la curva y el badge del título.</p>
                 </div>
