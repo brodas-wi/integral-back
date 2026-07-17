@@ -4,7 +4,7 @@ import { openMediaPicker } from "@/editor/media-picker";
 const THEME_COLORS = {
     blue: { curve: "#003B71", curveLine: "#E97300", badge: "#E97300", badgeText: "#ffffff" },
     orange: { curve: "#E97300", curveLine: "#003B71", badge: "#003B71", badgeText: "#ffffff" },
-    white: { curve: "#ffffff", curveLine: "#E97300", badge: "#E97300", badgeText: "#ffffff" },
+    transparent: { curve: "rgba(0,59,113,0.55)", curveLine: "#E97300", badge: "#E97300", badgeText: "#ffffff" },
 };
 
 const HERO_BANNER_STYLES = `
@@ -127,7 +127,7 @@ function showHeroBannerModal(editor, component) {
             .hb-theme-opt{flex:1;padding:0.625rem 0.5rem;border-radius:0.5rem;font-size:0.8125rem;font-weight:700;cursor:pointer;border:2px solid #e2e8f0;transition:all 0.15s;font-family:inherit;text-align:center;}
             .hb-theme-opt-blue{background:#003B71;color:#fff;}
             .hb-theme-opt-orange{background:#E97300;color:#fff;}
-            .hb-theme-opt-white{background:#ffffff;color:#003B71;border-color:#cbd5e1;}
+            .hb-theme-opt-transparent{background:rgba(0,59,113,0.55);color:#ffffff;border-color:#cbd5e1;}
             .hb-theme-opt.hb-theme-inactive{opacity:0.35;}
             .hb-theme-opt.hb-theme-inactive:hover{opacity:0.65;}
         `;
@@ -218,7 +218,7 @@ function showHeroBannerModal(editor, component) {
                     <div class="hb-theme-toggle" id="hb-theme-colors">
                         <button type="button" class="hb-theme-opt hb-theme-opt-blue" data-theme="blue">Azul</button>
                         <button type="button" class="hb-theme-opt hb-theme-opt-orange" data-theme="orange">Naranja</button>
-                        <button type="button" class="hb-theme-opt hb-theme-opt-white" data-theme="white">Blanco</button>
+                        <<button type="button" class="hb-theme-opt hb-theme-opt-transparent" data-theme="transparent">Azul Transparente</button>
                     </div>
                     <p style="font-size:0.75rem;color:#94a3b8;margin:0.75rem 0 0;">El marco con borde siempre es naranja. El tema controla el color de la curva inferior, la línea superior de la curva y el badge del título.</p>
                 </div>
