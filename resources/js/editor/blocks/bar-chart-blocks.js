@@ -1,69 +1,28 @@
 import { assetUrl } from "@/utils/url.js";
 
-const BAR_CHART_COMPONENT_TYPE = "bar-chart";
 const BAR_CHART_MAX_BARS = 5;
 
-const BAR_CHART_DEFAULT_COLORS = [
-    "#003B71",
-    "#5C88B3",
-    "#E97300",
-    "#8FA9C4",
-    "#F2A566",
+const BAR_CHART_COLOR_PRESETS = [
+    { label: "Azul", value: "#003B71" },
+    { label: "Azul claro", value: "#5C88B3" },
+    { label: "Naranja", value: "#E97300" },
+    { label: "Naranja claro", value: "#F2A566" },
+    { label: "Azul transparente", value: "rgba(0,59,113,0.55)" },
 ];
-
-const BAR_CHART_DEFAULT_DATA = {
-    title: "Título del gráfico",
-    showLegend: true,
-    bars: [
-        { label: "Lorem ipsum", value: 0, color: BAR_CHART_DEFAULT_COLORS[0] },
-        { label: "Lorem ipsum", value: 0, color: BAR_CHART_DEFAULT_COLORS[1] },
-        { label: "Lorem ipsum", value: 0, color: BAR_CHART_DEFAULT_COLORS[2] },
-    ],
-};
 
 const BAR_CHART_STYLES = `
 <style>
-.bc-wrapper{width:100%;display:flex;flex-direction:column;gap:1.5rem;font-family:inherit;}
-.bc-title{font-size:1.25rem;font-weight:700;color:#003B71;margin:0;}
-.bc-plot{position:relative;width:100%;height:280px;display:flex;align-items:flex-end;justify-content:space-around;gap:1.5rem;padding:0 0.5rem;box-sizing:border-box;}
+.bc-section{width:100%;font-family:'Poppins',sans-serif;}
+.bc-title{font-size:1.25rem;font-weight:700;color:#003B71;margin:0 0 1.5rem;}
+.bc-plot{position:relative;width:100%;height:280px;display:flex;align-items:flex-end;justify-content:space-around;gap:1.5rem;padding:0 0.5rem;box-sizing:border-box;border-bottom:2px solid rgba(0,59,113,0.25);}
 .bc-bar-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;flex:1;max-width:120px;}
 .bc-bar-value{font-size:0.85rem;font-weight:600;color:#003B71;margin-bottom:0.4rem;white-space:nowrap;}
 .bc-bar{width:100%;max-width:56px;border-radius:6px 6px 0 0;transition:height 0.3s ease;}
-.bc-baseline{width:100%;height:2px;background-color:#003B71;opacity:0.25;}
-.bc-legend{display:flex;flex-wrap:wrap;gap:1rem 1.5rem;justify-content:center;padding-top:0.5rem;border-top:1px solid #e5e7eb;}
+.bc-legend{display:flex;flex-wrap:wrap;gap:1rem 1.5rem;justify-content:center;padding-top:1.25rem;}
 .bc-legend-item{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#003B71;}
 .bc-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
-.bc-manage-btn{display:inline-flex;align-items:center;gap:0.4rem;align-self:flex-start;padding:0.5rem 1rem;border-radius:9999px;border:1px solid #003B71;background:#fff;color:#003B71;font-size:0.85rem;font-weight:600;cursor:pointer;transition:background 0.15s ease;}
-.bc-manage-btn:hover{background:#f0f4f8;}
-
-.bc-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;}
-.bc-modal{background:#fff;border-radius:0.75rem;width:min(560px,92vw);max-height:88vh;overflow-y:auto;padding:1.5rem;box-sizing:border-box;display:flex;flex-direction:column;gap:1.25rem;}
-.bc-modal-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
-.bc-modal-title{font-size:1.1rem;font-weight:700;color:#003B71;margin:0;}
-.bc-modal-close{background:none;border:none;cursor:pointer;font-size:1.25rem;line-height:1;color:#6b7280;}
-.bc-field-group{display:flex;flex-direction:column;gap:0.35rem;}
-.bc-field-label{font-size:0.8rem;font-weight:600;color:#374151;}
-.bc-field-input{border:1px solid #d1d5db;border-radius:0.4rem;padding:0.5rem 0.65rem;font-size:0.9rem;color:#111827;width:100%;box-sizing:border-box;}
-.bc-field-input:focus{outline:none;border-color:#003B71;}
-.bc-field-error{font-size:0.75rem;color:#dc2626;min-height:1em;}
-.bc-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.5rem 0;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;}
-.bc-bar-row{border:1px solid #e5e7eb;border-radius:0.5rem;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;position:relative;}
-.bc-bar-row-header{display:flex;align-items:center;justify-content:space-between;}
-.bc-bar-row-title{font-size:0.85rem;font-weight:700;color:#003B71;}
-.bc-remove-bar{background:none;border:none;color:#dc2626;font-size:0.8rem;font-weight:600;cursor:pointer;padding:0.2rem 0.5rem;}
-.bc-bar-fields{display:grid;grid-template-columns:2fr 1fr 1fr;gap:0.75rem;}
-.bc-color-input{border:1px solid #d1d5db;border-radius:0.4rem;padding:0.15rem;width:100%;height:2.3rem;box-sizing:border-box;cursor:pointer;}
-.bc-add-bar-btn{align-self:flex-start;padding:0.5rem 1rem;border-radius:0.4rem;border:1px dashed #003B71;background:#fff;color:#003B71;font-size:0.85rem;font-weight:600;cursor:pointer;}
-.bc-add-bar-btn:disabled{opacity:0.4;cursor:not-allowed;}
-.bc-modal-footer{display:flex;justify-content:flex-end;gap:0.75rem;}
-.bc-btn{padding:0.55rem 1.25rem;border-radius:0.4rem;font-size:0.9rem;font-weight:600;cursor:pointer;border:none;}
-.bc-btn-cancel{background:#f3f4f6;color:#374151;}
-.bc-btn-save{background:#E97300;color:#fff;}
-.bc-btn-save:hover{background:#c96200;}
-
 @media(max-width:640px){
-    .bc-plot{height:220px;gap:0.75rem;}
-    .bc-bar-fields{grid-template-columns:1fr;}
+.bc-plot{height:220px;gap:0.75rem;}
 }
 </style>`;
 
@@ -75,27 +34,43 @@ function clampPercentValue(rawValue) {
 }
 
 function formatPercentLabel(value) {
-    return `${clampPercentValue(value).toFixed(2).replace(/\.00$/, ",00")}%`;
+    return `${clampPercentValue(value).toFixed(2)}%`;
 }
 
 function sanitizeChartData(data) {
     const source = data && typeof data === "object" ? data : {};
-    const bars = Array.isArray(source.bars) ? source.bars : BAR_CHART_DEFAULT_DATA.bars;
+    const bars = Array.isArray(source.bars) && source.bars.length
+        ? source.bars
+        : BAR_CHART_DEFAULT_DATA.bars;
 
     return {
-        title: typeof source.title === "string" && source.title.trim() ? source.title : BAR_CHART_DEFAULT_DATA.title,
+        title: typeof source.title === "string" && source.title.trim()
+            ? source.title
+            : BAR_CHART_DEFAULT_DATA.title,
         showLegend: source.showLegend !== false,
         bars: bars.slice(0, BAR_CHART_MAX_BARS).map((bar, index) => ({
-            label: typeof bar?.label === "string" && bar.label.trim() ? bar.label : `Lorem ipsum ${index + 1}`,
+            label: typeof bar?.label === "string" && bar.label.trim()
+                ? bar.label
+                : `Lorem ipsum ${index + 1}`,
             value: clampPercentValue(bar?.value),
-            color: typeof bar?.color === "string" && /^#[0-9a-fA-F]{6}$/.test(bar.color)
+            color: typeof bar?.color === "string" && bar.color.trim()
                 ? bar.color
-                : BAR_CHART_DEFAULT_COLORS[index % BAR_CHART_DEFAULT_COLORS.length],
+                : BAR_CHART_COLOR_PRESETS[index % BAR_CHART_COLOR_PRESETS.length].value,
         })),
     };
 }
 
-function renderChartMarkup(rawData) {
+const BAR_CHART_DEFAULT_DATA = {
+    title: "Título del gráfico",
+    showLegend: true,
+    bars: [
+        { label: "Lorem ipsum", value: 0, color: "#003B71" },
+        { label: "Lorem ipsum", value: 0, color: "#5C88B3" },
+        { label: "Lorem ipsum", value: 0, color: "#E97300" },
+    ],
+};
+
+function buildBarChartHTML(rawData) {
     const data = sanitizeChartData(rawData);
 
     const barsHtml = data.bars.map((bar) => `
@@ -112,109 +87,161 @@ function renderChartMarkup(rawData) {
             </div>`).join("")}</div>`
         : "";
 
-    return `
-<div class="bc-wrapper" data-chart='${JSON.stringify(data).replace(/'/g, "&#39;")}'>
-    <h3 class="bc-title">${data.title}</h3>
-    <button type="button" class="bc-manage-btn" data-bc-manage>
-        <i class="ri-settings-3-line"></i>
-        <span>Administrar barras</span>
-    </button>
-    <div class="bc-plot">
-        ${barsHtml}
-    </div>
-    <div class="bc-baseline"></div>
-    ${legendHtml}
-</div>`;
+    return `<section class="bc-section">
+        <h3 class="bc-title">${data.title}</h3>
+        <div class="bc-plot">${barsHtml}</div>
+        ${legendHtml}
+    </section>`;
 }
 
-function buildBarRowMarkup(bar, index) {
-    return `
-<div class="bc-bar-row" data-bar-row="${index}">
-    <div class="bc-bar-row-header">
-        <span class="bc-bar-row-title">Barra ${index + 1}</span>
-        <button type="button" class="bc-remove-bar" data-bc-remove-bar="${index}">Eliminar</button>
-    </div>
-    <div class="bc-bar-fields">
-        <div class="bc-field-group">
-            <label class="bc-field-label">Nombre</label>
-            <input type="text" class="bc-field-input" data-bc-field="label" data-bar-index="${index}" value="${bar.label}" maxlength="60">
-        </div>
-        <div class="bc-field-group">
-            <label class="bc-field-label">Valor (0-100)</label>
-            <input type="number" class="bc-field-input" data-bc-field="value" data-bar-index="${index}" value="${bar.value}" min="0" max="100" step="0.01">
-            <span class="bc-field-error" data-bc-error="${index}"></span>
-        </div>
-        <div class="bc-field-group">
-            <label class="bc-field-label">Color</label>
-            <input type="color" class="bc-color-input" data-bc-field="color" data-bar-index="${index}" value="${bar.color}">
-        </div>
-    </div>
-</div>`;
-}
+function showBarChartModal(editor, component) {
+    const existing = document.getElementById("bar-chart-config-modal");
+    if (existing) existing.remove();
 
-function openBarChartModal(currentData, onSave) {
+    if (!document.getElementById("bc-modal-styles")) {
+        const style = document.createElement("style");
+        style.id = "bc-modal-styles";
+        style.textContent = `
+            .bc-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
+            .bc-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:640px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
+            .bc-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
+            .bc-modal-header-left{display:flex;align-items:center;gap:0.5rem;}
+            .bc-modal-header-left i{font-size:1.125rem;color:#3b82f6;}
+            .bc-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
+            .bc-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;}
+            .bc-modal-close:hover{background:#f1f5f9;color:#475569;}
+            .bc-modal-body{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;background:#f8fafc;}
+            .bc-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;}
+            .bc-label{display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;}
+            .bc-row{display:flex;gap:0.75rem;align-items:center;}
+            .bc-input{flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;width:100%;box-sizing:border-box;}
+            .bc-input:focus{border-color:#3b82f6;}
+            .bc-error-text{font-size:0.7rem;color:#dc2626;margin-top:0.375rem;min-height:1em;}
+            .bc-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+            .bc-bar-row{border:1px solid #e2e8f0;border-radius:0.625rem;padding:0.875rem;display:flex;flex-direction:column;gap:0.625rem;background:#f8fafc;}
+            .bc-bar-row-header{display:flex;align-items:center;justify-content:space-between;}
+            .bc-bar-row-title{font-size:0.8125rem;font-weight:700;color:#003B71;}
+            .bc-remove-bar{background:none;border:none;color:#dc2626;font-size:0.75rem;font-weight:600;cursor:pointer;padding:0.2rem 0.5rem;font-family:inherit;}
+            .bc-remove-bar:disabled{opacity:0.35;cursor:not-allowed;}
+            .bc-bar-fields{display:grid;grid-template-columns:2fr 1fr 1fr;gap:0.625rem;}
+            .bc-color-input{border:1px solid #e2e8f0;border-radius:0.5rem;padding:0.15rem;width:100%;height:2.25rem;box-sizing:border-box;cursor:pointer;background:#fff;}
+            .bc-add-bar-btn{align-self:flex-start;padding:0.5rem 0.9rem;border-radius:0.5rem;border:1px dashed #003B71;background:#fff;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .bc-add-bar-btn:hover{background:#f0f4f8;}
+            .bc-add-bar-btn:disabled{opacity:0.4;cursor:not-allowed;}
+            .bc-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
+            .bc-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .bc-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
+            .bc-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .bc-btn-save:hover{background:#d97821;}
+        `;
+        document.head.appendChild(style);
+    }
+
+    const currentData = (() => {
+        try {
+            return JSON.parse(component.getAttributes()["data-bar-chart-config"] || "{}");
+        } catch {
+            return {};
+        }
+    })();
+
     const data = sanitizeChartData(currentData);
     let workingBars = data.bars.map((bar) => ({ ...bar }));
 
     const overlay = document.createElement("div");
-    overlay.className = "bc-modal-overlay";
+    overlay.id = "bar-chart-config-modal";
+    overlay.className = "bc-overlay";
+
+    const renderBarRow = (bar, index) => `
+        <div class="bc-bar-row" data-bar-row="${index}">
+            <div class="bc-bar-row-header">
+                <span class="bc-bar-row-title">Barra ${index + 1}</span>
+                <button type="button" class="bc-remove-bar" data-remove-bar="${index}" ${workingBars.length <= 1 ? "disabled" : ""}>Eliminar</button>
+            </div>
+            <div class="bc-bar-fields">
+                <div>
+                    <label class="bc-label">Nombre</label>
+                    <input type="text" class="bc-input" data-bar-field="label" data-bar-index="${index}" value="${bar.label}" maxlength="60">
+                </div>
+                <div>
+                    <label class="bc-label">Valor (0-100)</label>
+                    <input type="number" class="bc-input" data-bar-field="value" data-bar-index="${index}" value="${bar.value}" min="0" max="100" step="0.01">
+                </div>
+                <div>
+                    <label class="bc-label">Color</label>
+                    <input type="color" class="bc-color-input" data-bar-field="color" data-bar-index="${index}" value="${/^#[0-9a-fA-F]{6}$/.test(bar.color) ? bar.color : "#003B71"}">
+                </div>
+            </div>
+            <div class="bc-error-text" data-bar-error="${index}"></div>
+        </div>`;
 
     const render = () => {
         overlay.innerHTML = `
-<div class="bc-modal">
-    <div class="bc-modal-header">
-        <h4 class="bc-modal-title">Administrar gráfico de barras</h4>
-        <button type="button" class="bc-modal-close" data-bc-close>&times;</button>
-    </div>
-    <div class="bc-field-group">
-        <label class="bc-field-label">Título del gráfico</label>
-        <input type="text" class="bc-field-input" data-bc-title value="${data.title}" maxlength="80">
-    </div>
-    <div class="bc-toggle-row">
-        <span class="bc-field-label">Mostrar leyenda</span>
-        <input type="checkbox" data-bc-legend ${data.showLegend ? "checked" : ""}>
-    </div>
-    <div class="bc-bars-list">
-        ${workingBars.map((bar, index) => buildBarRowMarkup(bar, index)).join("")}
-    </div>
-    <button type="button" class="bc-add-bar-btn" data-bc-add-bar ${workingBars.length >= BAR_CHART_MAX_BARS ? "disabled" : ""}>
-        + Agregar barra
-    </button>
-    <div class="bc-modal-footer">
-        <button type="button" class="bc-btn bc-btn-cancel" data-bc-cancel>Cancelar</button>
-        <button type="button" class="bc-btn bc-btn-save" data-bc-save>Guardar</button>
-    </div>
-</div>`;
+            <div class="bc-modal">
+                <div class="bc-modal-header">
+                    <div class="bc-modal-header-left"><i class="ri-bar-chart-2-line"></i><h2>Configurar Gráfico de Barras</h2></div>
+                    <button id="bc-modal-close" class="bc-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
+                </div>
+                <div class="bc-modal-body">
+                    <div class="bc-card">
+                        <label class="bc-label">Título del gráfico</label>
+                        <input id="bc-title" type="text" class="bc-input" value="${data.title}" maxlength="80">
+                    </div>
+                    <div class="bc-card">
+                        <div class="bc-toggle-row">
+                            <label class="bc-label" style="margin-bottom:0;">Mostrar leyenda</label>
+                            <input id="bc-show-legend" type="checkbox" ${data.showLegend ? "checked" : ""}>
+                        </div>
+                    </div>
+                    <div class="bc-card">
+                        <label class="bc-label">Barras (máx. ${BAR_CHART_MAX_BARS})</label>
+                        <div id="bc-bars-list" style="display:flex;flex-direction:column;gap:0.75rem;">
+                            ${workingBars.map(renderBarRow).join("")}
+                        </div>
+                        <button type="button" id="bc-add-bar" class="bc-add-bar-btn" style="margin-top:0.75rem;" ${workingBars.length >= BAR_CHART_MAX_BARS ? "disabled" : ""}>
+                            <i class="ri-add-line"></i> Agregar barra
+                        </button>
+                    </div>
+                </div>
+                <div class="bc-modal-footer">
+                    <button id="bc-modal-cancel" class="bc-btn-cancel">Cancelar</button>
+                    <button id="bc-modal-save" class="bc-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
+                </div>
+            </div>`;
 
-        overlay.querySelector("[data-bc-close]").addEventListener("click", closeModal);
-        overlay.querySelector("[data-bc-cancel]").addEventListener("click", closeModal);
+        overlay.querySelector("#bc-modal-close").onclick = close;
+        overlay.querySelector("#bc-modal-cancel").onclick = close;
 
-        overlay.querySelector("[data-bc-add-bar]").addEventListener("click", () => {
+        overlay.querySelector("#bc-add-bar").onclick = () => {
             if (workingBars.length >= BAR_CHART_MAX_BARS) return;
             workingBars.push({
                 label: `Lorem ipsum ${workingBars.length + 1}`,
                 value: 0,
-                color: BAR_CHART_DEFAULT_COLORS[workingBars.length % BAR_CHART_DEFAULT_COLORS.length],
+                color: BAR_CHART_COLOR_PRESETS[workingBars.length % BAR_CHART_COLOR_PRESETS.length].value,
             });
+            data.title = overlay.querySelector("#bc-title").value;
+            data.showLegend = overlay.querySelector("#bc-show-legend").checked;
             render();
-        });
+        };
 
-        overlay.querySelectorAll("[data-bc-remove-bar]").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                const index = parseInt(btn.dataset.bcRemoveBar, 10);
+        overlay.querySelectorAll("[data-remove-bar]").forEach((btn) => {
+            btn.onclick = () => {
                 if (workingBars.length <= 1) return;
+                const index = parseInt(btn.dataset.removeBar, 10);
                 workingBars.splice(index, 1);
+                data.title = overlay.querySelector("#bc-title").value;
+                data.showLegend = overlay.querySelector("#bc-show-legend").checked;
                 render();
-            });
+            };
         });
 
-        overlay.querySelectorAll("[data-bc-field]").forEach((input) => {
+        overlay.querySelectorAll("[data-bar-field]").forEach((input) => {
             input.addEventListener("input", () => {
                 const index = parseInt(input.dataset.barIndex, 10);
-                const field = input.dataset.bcField;
+                const field = input.dataset.barField;
 
                 if (field === "value") {
-                    const errorEl = overlay.querySelector(`[data-bc-error="${index}"]`);
+                    const errorEl = overlay.querySelector(`[data-bar-error="${index}"]`);
                     const raw = input.value;
                     const parsed = parseFloat(raw);
 
@@ -229,153 +256,110 @@ function openBarChartModal(currentData, onSave) {
                 }
             });
         });
+    };
 
-        overlay.querySelector("[data-bc-save]").addEventListener("click", () => {
-            const invalidField = overlay.querySelector(".bc-field-error:not(:empty)");
-            if (invalidField) return;
+    const close = () => overlay.remove();
+    overlay.onclick = (e) => {
+        if (e.target === overlay) close();
+    };
 
-            const title = overlay.querySelector("[data-bc-title]").value.trim();
-            const showLegend = overlay.querySelector("[data-bc-legend]").checked;
+    overlay.appendChild(document.createElement("div"));
+    render();
+
+    overlay.addEventListener("click", (e) => {
+        if (e.target.id === "bc-modal-save") {
+            const hasError = overlay.querySelector(".bc-error-text:not(:empty)");
+            if (hasError) return;
 
             const finalData = sanitizeChartData({
-                title,
-                showLegend,
+                title: overlay.querySelector("#bc-title").value.trim(),
+                showLegend: overlay.querySelector("#bc-show-legend").checked,
                 bars: workingBars,
             });
 
-            onSave(finalData);
-            closeModal();
-        });
-    };
-
-    const closeModal = () => {
-        document.removeEventListener("keydown", onKeydown);
-        overlay.remove();
-    };
-
-    const onKeydown = (event) => {
-        if (event.key === "Escape") closeModal();
-    };
-    document.addEventListener("keydown", onKeydown);
-
-    overlay.addEventListener("click", (event) => {
-        if (event.target === overlay) closeModal();
+            component.addAttributes({
+                "data-bar-chart-config": JSON.stringify(finalData),
+            });
+            component.components(buildBarChartHTML(finalData) + BAR_CHART_STYLES);
+            close();
+        }
     });
 
-    render();
     document.body.appendChild(overlay);
 }
 
-const BAR_CHART_SCRIPT = function () {
-    const wrapper = this;
+export function initializeBarChartBlock(editor) {
+    const componentType = "bar-chart-component";
 
-    function getChartData() {
-        try {
-            return JSON.parse(wrapper.getAttribute("data-chart") || "{}");
-        } catch (error) {
-            return {};
-        }
-    }
+    editor.DomComponents.addType(componentType, {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === componentType
+                ? { type: componentType }
+                : false,
 
-    function applyChartData(data) {
-        wrapper.setAttribute("data-chart", JSON.stringify(data));
-
-        const titleEl = wrapper.querySelector(".bc-title");
-        if (titleEl) titleEl.textContent = data.title;
-
-        const plotEl = wrapper.querySelector(".bc-plot");
-        if (plotEl) {
-            plotEl.innerHTML = data.bars.map((bar) => `
-                <div class="bc-bar-col">
-                    <span class="bc-bar-value">${bar.value.toFixed(2).replace(/\.00$/, ",00")}%</span>
-                    <div class="bc-bar" style="height:${bar.value}%;background-color:${bar.color};"></div>
-                </div>`).join("");
-        }
-
-        let legendEl = wrapper.querySelector(".bc-legend");
-        if (data.showLegend) {
-            const legendHtml = data.bars.map((bar) => `
-                <div class="bc-legend-item">
-                    <span class="bc-legend-dot" style="background-color:${bar.color};"></span>
-                    <span>${bar.label}</span>
-                </div>`).join("");
-
-            if (legendEl) {
-                legendEl.innerHTML = legendHtml;
-            } else {
-                legendEl = document.createElement("div");
-                legendEl.className = "bc-legend";
-                legendEl.innerHTML = legendHtml;
-                wrapper.appendChild(legendEl);
-            }
-        } else if (legendEl) {
-            legendEl.remove();
-        }
-    }
-
-    const manageBtn = wrapper.querySelector("[data-bc-manage]");
-    if (manageBtn && !manageBtn.dataset.bcBound) {
-        manageBtn.dataset.bcBound = "true";
-        manageBtn.addEventListener("click", () => {
-            window.__openBarChartModal(getChartData(), applyChartData);
-        });
-    }
-};
-
-export function initializeBarChartBlocks(editor) {
-    if (typeof window !== "undefined" && !window.__openBarChartModal) {
-        window.__openBarChartModal = openBarChartModal;
-    }
-
-    editor.DomComponents.addType(BAR_CHART_COMPONENT_TYPE, {
-        isComponent: (el) => el?.classList?.contains?.("bc-wrapper"),
         model: {
             defaults: {
+                name: "Gráfico de Barras",
                 tagName: "div",
-                classes: ["bc-wrapper"],
-                editable: false,
-                droppable: false,
-                highlightable: false,
                 draggable: true,
+                droppable: false,
                 removable: true,
                 copyable: true,
-                script: BAR_CHART_SCRIPT,
-                traits: [],
+                selectable: true,
+                hoverable: true,
+                editable: false,
+                highlightable: false,
                 attributes: {
-                    "data-chart": JSON.stringify(BAR_CHART_DEFAULT_DATA),
+                    "data-gjs-type": componentType,
+                    "data-bar-chart-config": JSON.stringify(BAR_CHART_DEFAULT_DATA),
                 },
+                components: buildBarChartHTML(BAR_CHART_DEFAULT_DATA) + BAR_CHART_STYLES,
+                traits: [
+                    {
+                        type: "button",
+                        label: "Gráfico",
+                        text: "Administrar Barras",
+                        full: true,
+                        command: "open-bar-chart-config",
+                    },
+                ],
+            },
+
+            init() {
+                this.set("type", componentType);
+                this.addAttributes({ "data-gjs-type": componentType });
             },
         },
     });
-}
 
-const iconBarChart = `<svg viewBox="0 0 32 32" width="32" height="32">
-    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <rect x="3" y="4" width="15" height="2" rx="1" fill="#003B71" fill-opacity="0.6"/>
-    <rect x="5" y="20" width="4" height="7" fill="#003B71"/>
-    <rect x="11" y="15" width="4" height="12" fill="#5C88B3"/>
-    <rect x="17" y="10" width="4" height="17" fill="#E97300"/>
-    <rect x="3" y="27" width="20" height="1.5" fill="#003B71" fill-opacity="0.4"/>
-    <circle cx="25" cy="6" r="1.5" fill="#003B71"/>
-    <rect x="27.5" y="5.3" width="3" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.4"/>
-    <circle cx="25" cy="10" r="1.5" fill="#5C88B3"/>
-    <rect x="27.5" y="9.3" width="3" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.4"/>
-    <circle cx="25" cy="14" r="1.5" fill="#E97300"/>
-    <rect x="27.5" y="13.3" width="3" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.4"/>
-</svg>`;
+    editor.Commands.add("open-bar-chart-config", {
+        run(ed) {
+            const selected = ed.getSelected();
+            if (selected) showBarChartModal(ed, selected);
+        },
+    });
 
-export const barChartBlocks = [
-    {
-        id: "bar-chart-section",
-        label: "Gráfico de barras",
+    editor.BlockManager.add("bar-chart-block", {
+        label: "Gráfico de Barras",
         category: "Gráficos",
-        media: iconBarChart,
-        content: `
-${renderChartMarkup(BAR_CHART_DEFAULT_DATA)}
-${BAR_CHART_STYLES}`,
-    },
-];
-
-export function initBarChartBlocks(editor) {
-    registerBarChartComponent(editor);
+        media: `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+            <rect x="3" y="4" width="15" height="2" rx="1" fill="#003B71" fill-opacity="0.6"/>
+            <rect x="5" y="20" width="4" height="7" fill="#003B71"/>
+            <rect x="11" y="15" width="4" height="12" fill="#5C88B3"/>
+            <rect x="17" y="10" width="4" height="17" fill="#E97300"/>
+            <rect x="3" y="27" width="20" height="1.5" fill="#003B71" fill-opacity="0.4"/>
+            <circle cx="25" cy="6" r="1.5" fill="#003B71"/>
+            <rect x="27.5" y="5.3" width="3" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.4"/>
+            <circle cx="25" cy="10" r="1.5" fill="#5C88B3"/>
+            <rect x="27.5" y="9.3" width="3" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.4"/>
+            <circle cx="25" cy="14" r="1.5" fill="#E97300"/>
+            <rect x="27.5" y="13.3" width="3" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.4"/>
+        </svg>`,
+        activate: true,
+        content: {
+            type: componentType,
+            attributes: { "data-gjs-type": componentType },
+        },
+    });
 }
