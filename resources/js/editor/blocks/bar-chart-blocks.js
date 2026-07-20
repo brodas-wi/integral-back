@@ -87,11 +87,9 @@ function buildBarChartHTML(rawData) {
             </div>`).join("")}</div>`
         : "";
 
-    return `<section class="bc-section">
-        <h3 class="bc-title">${data.title}</h3>
+    return `<h3 class="bc-title">${data.title}</h3>
         <div class="bc-plot">${barsHtml}</div>
-        ${legendHtml}
-    </section>`;
+        ${legendHtml}`;
 }
 
 function showBarChartModal(editor, component) {
@@ -304,10 +302,11 @@ export function initializeBarChartSectionBlock(editor) {
             <rect x="5" y="25" width="17" height="1.2" fill="#003B71" fill-opacity="0.4"/>
         </svg>`,
         activate: true,
-        content: `
-<section class="w-full bg-white px-16 py-12">
-    <div data-gjs-type="${componentType}" data-gjs-editable="false"></div>
-</section>`,
+        content: {
+            type: componentType,
+            attributes: { "data-gjs-type": componentType },
+            classes: ["bc-section", "w-full", "bg-white", "px-16", "py-12"],
+        },
     });
 }
 
@@ -324,6 +323,7 @@ export function initializeBarChartBlock(editor) {
             defaults: {
                 name: "Gráfico de Barras",
                 tagName: "div",
+                classes: ["bc-section"],
                 draggable: true,
                 droppable: false,
                 removable: true,
