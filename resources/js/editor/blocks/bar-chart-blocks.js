@@ -17,7 +17,7 @@ const BAR_CHART_STYLES = `
 .bc-plot{position:relative;width:100%;height:280px;display:flex;align-items:flex-end;justify-content:space-around;gap:1.5rem;padding:0 0.5rem;box-sizing:border-box;border-bottom:2px solid rgba(0,59,113,0.25);}
 .bc-bar-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;flex:1;max-width:120px;}
 .bc-bar-value{font-size:0.85rem;font-weight:600;color:#003B71;margin-bottom:0.4rem;white-space:nowrap;}
-.bc-bar{width:100%;max-width:56px;border-radius:6px 6px 0 0;transition:height 0.3s ease;}
+.bc-bar{width:100%;max-width:56px;transition:height 0.3s ease;}
 .bc-legend{display:flex;flex-wrap:wrap;gap:1rem 1.5rem;justify-content:center;padding-top:1.25rem;}
 .bc-legend-item{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:#003B71;}
 .bc-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
@@ -361,5 +361,28 @@ export function initializeBarChartBlock(editor) {
             type: componentType,
             attributes: { "data-gjs-type": componentType },
         },
+    });
+}
+
+export function initializeBarChartSectionBlock(editor) {
+    const componentType = "bar-chart-component";
+
+    editor.BlockManager.add("bar-chart-section-block", {
+        label: "Sección: Gráfico de Barras",
+        category: "Gráficos",
+        media: `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+            <rect x="2" y="2" width="28" height="28" fill="none" stroke="#003B71" stroke-width="0.6" stroke-opacity="0.3" rx="1"/>
+            <rect x="5" y="6" width="15" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.6"/>
+            <rect x="7" y="19" width="3.5" height="6" fill="#003B71"/>
+            <rect x="13" y="15" width="3.5" height="10" fill="#5C88B3"/>
+            <rect x="19" y="11" width="3.5" height="14" fill="#E97300"/>
+            <rect x="5" y="25" width="17" height="1.2" fill="#003B71" fill-opacity="0.4"/>
+        </svg>`,
+        activate: true,
+        content: `
+<section class="w-full bg-white px-16 py-12">
+    <div data-gjs-type="${componentType}" data-gjs-editable="false"></div>
+</section>`,
     });
 }
