@@ -68,10 +68,10 @@ export function addCustomBlocks(editor) {
     initializeMapFilterBlocks(editor);
     initializeBannerBlocks(editor);
     initializeHeroBannerBlock(editor);
+    initializeBarChartSectionBlock(editor);
+    initializeBarChartBlock(editor);
     initializeSavingsSectionBlock(editor);
     initializeProductCardsBlock(editor);
-    initializeBarChartBlock(editor);
-    initializeBarChartSectionBlock(editor);
     initializeButtonBlocks(editor);
     initializeTabsBlocks(editor);
     initializeTableBlocks(editor);

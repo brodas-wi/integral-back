@@ -288,6 +288,29 @@ function showBarChartModal(editor, component) {
     document.body.appendChild(overlay);
 }
 
+export function initializeBarChartSectionBlock(editor) {
+    const componentType = "bar-chart-component";
+
+    editor.BlockManager.add("bar-chart-section-block", {
+        label: "Sección: Gráfico de Barras",
+        category: "Gráficos",
+        media: `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+            <rect x="2" y="2" width="28" height="28" fill="none" stroke="#003B71" stroke-width="0.6" stroke-opacity="0.3" rx="1"/>
+            <rect x="5" y="6" width="15" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.6"/>
+            <rect x="7" y="19" width="3.5" height="6" fill="#003B71"/>
+            <rect x="13" y="15" width="3.5" height="10" fill="#5C88B3"/>
+            <rect x="19" y="11" width="3.5" height="14" fill="#E97300"/>
+            <rect x="5" y="25" width="17" height="1.2" fill="#003B71" fill-opacity="0.4"/>
+        </svg>`,
+        activate: true,
+        content: `
+<section class="w-full bg-white px-16 py-12">
+    <div data-gjs-type="${componentType}" data-gjs-editable="false"></div>
+</section>`,
+    });
+}
+
 export function initializeBarChartBlock(editor) {
     const componentType = "bar-chart-component";
 
@@ -361,28 +384,5 @@ export function initializeBarChartBlock(editor) {
             type: componentType,
             attributes: { "data-gjs-type": componentType },
         },
-    });
-}
-
-export function initializeBarChartSectionBlock(editor) {
-    const componentType = "bar-chart-component";
-
-    editor.BlockManager.add("bar-chart-section-block", {
-        label: "Sección: Gráfico de Barras",
-        category: "Gráficos",
-        media: `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-            <rect x="2" y="2" width="28" height="28" fill="none" stroke="#003B71" stroke-width="0.6" stroke-opacity="0.3" rx="1"/>
-            <rect x="5" y="6" width="15" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.6"/>
-            <rect x="7" y="19" width="3.5" height="6" fill="#003B71"/>
-            <rect x="13" y="15" width="3.5" height="10" fill="#5C88B3"/>
-            <rect x="19" y="11" width="3.5" height="14" fill="#E97300"/>
-            <rect x="5" y="25" width="17" height="1.2" fill="#003B71" fill-opacity="0.4"/>
-        </svg>`,
-        activate: true,
-        content: `
-<section class="w-full bg-white px-16 py-12">
-    <div data-gjs-type="${componentType}" data-gjs-editable="false"></div>
-</section>`,
     });
 }
