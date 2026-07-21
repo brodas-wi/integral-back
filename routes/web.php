@@ -655,6 +655,12 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('can:news.delete,news.manage');
     });
 
+    Route::get('/api/news/active', [NewsController::class, 'apiActive'])
+        ->name('api.news.active');
+
+    Route::get('/api/news-categories/active', [NewsController::class, 'apiCategoryList'])
+        ->name('api.news-categories.active');
+
     // ==========================================
     // SCRIPTS MODULE ROUTES
     // ==========================================

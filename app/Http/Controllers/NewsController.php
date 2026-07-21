@@ -139,4 +139,43 @@ class NewsController extends Controller
             ], 500);
         }
     }
+
+    public function apiActive(Request $request): JsonResponse
+    {
+        $perPage = (int) $request->input('per_page', 6);
+        $perPage = $perPage > 0 && $perPage <= 50 ? $perPage : 6;
+
+        $query = News::published()->with('category')->latest('published_at');
+
+        if ($request->filled('category')) {
+            $query->where('news_category_id', $request->category);
+        }
+
+        $news = $query->paginate($perPage)->withQueryString();
+
+        return response()->json([
+            'data' => $news->getCollection()->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                    'description' => $item->description,
+                    'featured_image' => $item->featured_image,
+                    'category' => $item->category?->name,
+                    'category_slug' => $item->category?->slug,
+                    'published_at' => optional($item->published_at)->toIso8601String(),
+                ];
+            }),
+            'current_page' => $news->currentPage(),
+            'last_page' => $news->lastPage(),
+            'total' => $news->total(),
+            'per_page' => $news->perPage(),
+        ]);
+    }
+
+    public function apiCategoryList(): JsonResponse
+    {
+        $categories = NewsCategory::active()->orderBy('name')->get(['id', 'name', 'slug']);
+
+        return response()->json($categories);
+    }
 }

@@ -42,4 +42,12 @@ class NewsCategory extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public static function findOrCreateByName(string $name): self
+    {
+        return static::firstOrCreate(
+            ['name' => trim($name)],
+            ['slug' => \Illuminate\Support\Str::slug($name), 'is_active' => true]
+        );
+    }
 }

@@ -22,7 +22,7 @@ import { contactInfoBlocks } from "./blocks/contact-info-blocks";
 import { richListBlocks } from "./blocks/rich-list-blocks";
 import { productDetailBlocks } from "./blocks/product-detail-blocks";
 import { financingBlocks } from "./blocks/financing-blocks";
-import { newsGridBlocks } from "./blocks/news-grid-blocks";
+import { initializeNewsGridBlocks } from "./blocks/news-grid-blocks";
 import { initializeBarChartBlock, initializeBarChartSectionBlock } from "@/editor/blocks/bar-chart-blocks";
 import { formBlocks } from "./blocks/form-blocks";
 import { tableBlocks, initializeTableBlocks } from "./blocks/table-blocks";
@@ -55,7 +55,6 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(serviceCardsBlocks);
     blockRegistry.registerBlocks(contactInfoBlocks);
     blockRegistry.registerBlocks(richListBlocks);
-    blockRegistry.registerBlocks(newsGridBlocks);
     blockRegistry.registerBlocks(formBlocks);
     blockRegistry.registerBlocks(tableBlocks);
     blockRegistry.registerBlocks(buttonBlocks);
@@ -67,6 +66,7 @@ export function addCustomBlocks(editor) {
 
     initializeMapFilterBlocks(editor);
     initializeBannerBlocks(editor);
+    initializeNewsGridBlocks(editor);
     initializeHeroBannerBlock(editor);
     initializeBarChartSectionBlock(editor);
     initializeBarChartBlock(editor);
