@@ -72,17 +72,29 @@ function initStatusToggle() {
     });
 }
 
+function injectTinyMceCss(container) {
+    const urls = [
+        container.dataset.tinymceSkinCss,
+        container.dataset.tinymceContentCss,
+    ].filter(Boolean);
+
+    urls.forEach((href) => {
+        if (document.querySelector(`link[href="${href}"]`)) return;
+
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = href;
+        document.head.appendChild(link);
+    });
+}
+
 async function initTinyMce(container) {
     const target = document.getElementById("news-content");
     if (!target) return;
 
-    const skinCss = container.dataset.tinymceSkinCss;
-    const contentCss = [
-        container.dataset.tinymceContentCss,
-        container.dataset.tinymceDefaultContentCss,
-    ]
-        .filter(Boolean)
-        .join(",");
+    injectTinyMceCss(container);
+
+    const contentCss = container.dataset.tinymceDefaultContentCss || false;
 
     const editors = await tinymce.init({
         target,
@@ -92,8 +104,7 @@ async function initTinyMce(container) {
         toolbar:
             "undo redo | blocks | bold italic | bullist numlist | link image table | code",
         skin: false,
-        skin_url: skinCss ? skinCss.replace(/\/skin\.min\.css$/, "") : undefined,
-        content_css: contentCss || false,
+        content_css: contentCss,
         license_key: "gpl",
     });
 

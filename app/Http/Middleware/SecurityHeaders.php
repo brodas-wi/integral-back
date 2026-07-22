@@ -44,6 +44,24 @@ class SecurityHeaders
         "upgrade-insecure-requests" => [],
     ];
 
+    private array $tinyMceCsp = [
+        "default-src"               => ["'self'"],
+        "script-src"                => ["'self'", "'unsafe-inline'"],
+        "style-src"                 => ["'self'", "'unsafe-inline'"],
+        "img-src"                   => ["'self'", "data:", "blob:", "https:"],
+        "font-src"                  => ["'self'", "data:"],
+        "connect-src"               => ["'self'"],
+        "media-src"                 => ["'self'"],
+        "object-src"                => ["'none'"],
+        "frame-src"                 => ["'self'"],
+        "frame-ancestors"           => ["'self'"],
+        "base-uri"                  => ["'self'"],
+        "form-action"               => ["'self'"],
+        "worker-src"                => ["'self'", "blob:"],
+        "manifest-src"              => ["'self'"],
+        "upgrade-insecure-requests" => [],
+    ];
+
     private array $scriptsCsp = [
         "default-src"               => ["'self'"],
         "script-src"                => ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
@@ -79,6 +97,11 @@ class SecurityHeaders
         'scripts.show',
     ];
 
+    private array $tinyMceRouteNames = [
+        'news.create',
+        'news.edit',
+    ];
+
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
@@ -87,6 +110,7 @@ class SecurityHeaders
         $this->defaultCsp['frame-src'][] = $assetUrl;
         $this->editorCsp['frame-src'][] = $assetUrl;
         $this->scriptsCsp['frame-src'][] = $assetUrl;
+        $this->tinyMceCsp['frame-src'][] = $assetUrl;
 
         $viteSources = $this->getViteDevSources();
 
@@ -104,6 +128,10 @@ class SecurityHeaders
                     $this->scriptsCsp[$directive] ?? [],
                     $viteSources
                 );
+                $this->tinyMceCsp[$directive] = array_merge(
+                    $this->tinyMceCsp[$directive] ?? [],
+                    $viteSources
+                );
             }
 
             $viteStyleSources = array_merge($viteSources, ["'unsafe-inline'"]);
@@ -119,12 +147,18 @@ class SecurityHeaders
                 $this->scriptsCsp['style-src'] ?? [],
                 $viteStyleSources
             );
+            $this->tinyMceCsp['style-src'] = array_merge(
+                $this->tinyMceCsp['style-src'] ?? [],
+                $viteStyleSources
+            );
         }
 
         if ($this->isScriptsEditorRoute($request)) {
             $csp = $this->buildCsp($this->scriptsCsp);
         } elseif ($this->isEditorRoute($request)) {
             $csp = $this->buildCsp($this->editorCsp);
+        } elseif ($this->isTinyMceRoute($request)) {
+            $csp = $this->buildCsp($this->tinyMceCsp);
         } else {
             $csp = $this->buildCsp($this->defaultCsp);
         }
@@ -155,6 +189,16 @@ class SecurityHeaders
     private function isScriptsEditorRoute(Request $request): bool
     {
         foreach ($this->scriptsRouteNames as $routeName) {
+            if ($request->routeIs($routeName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function isTinyMceRoute(Request $request): bool
+    {
+        foreach ($this->tinyMceRouteNames as $routeName) {
             if ($request->routeIs($routeName)) {
                 return true;
             }
