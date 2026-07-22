@@ -589,10 +589,6 @@ Route::middleware(['auth'])->group(function () {
     // NEWS CATEGORY MANAGEMENT ROUTES
     // ==========================================
     Route::prefix('news-categories')->name('news-categories.')->group(function () {
-        Route::get('/', [NewsCategoryController::class, 'index'])
-            ->name('index')
-            ->middleware('can:news_categories.view,news_categories.manage');
-
         Route::get('/create', [NewsCategoryController::class, 'create'])
             ->name('create')
             ->middleware('can:news_categories.manage');
@@ -617,6 +613,9 @@ Route::middleware(['auth'])->group(function () {
             ->name('destroy')
             ->middleware('can:news_categories.manage');
     });
+
+    Route::get('/api/news-categories/active', [NewsController::class, 'apiCategoryList'])
+        ->name('api.news-categories.active');
 
     // ==========================================
     // NEWS MANAGEMENT ROUTES
@@ -657,9 +656,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/api/news/active', [NewsController::class, 'apiActive'])
         ->name('api.news.active');
-
-    Route::get('/api/news-categories/active', [NewsController::class, 'apiCategoryList'])
-        ->name('api.news-categories.active');
 
     // ==========================================
     // SCRIPTS MODULE ROUTES

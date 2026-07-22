@@ -1,0 +1,15 @@
+#news-scheduled-at-wrapper.hidden {
+    display: none;
+}
+
+#news-featured-image-preview.hidden {
+    display: none;
+}
+
+#news-featured-image-placeholder.hidden {
+    display: none;
+}
+
+[data-error-for].hidden {
+    display: none;
+}

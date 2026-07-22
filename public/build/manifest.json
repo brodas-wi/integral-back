@@ -433,8 +433,17 @@
       "preview.css"
     ]
   },
+  "resources/css/views/news/form.css": {
+    "file": "assets/form-B207IIrs.css",
+    "src": "resources/css/views/news/form.css",
+    "isEntry": true,
+    "name": "form",
+    "names": [
+      "form.css"
+    ]
+  },
   "resources/css/views/news/index.css": {
-    "file": "assets/index-siLvRs76.css",
+    "file": "assets/index-LAqWrpBM.css",
     "src": "resources/css/views/news/index.css"
   },
   "resources/css/views/news/show.css": {
@@ -706,27 +715,47 @@
       "_url-DaqOO3yL.js"
     ]
   },
+  "resources/js/views/news-categories/form.js": {
+    "file": "assets/form-BgGzrXt_.js",
+    "name": "form",
+    "src": "resources/js/views/news-categories/form.js",
+    "isEntry": true,
+    "imports": [
+      "_url-DaqOO3yL.js",
+      "_notifications-Cgjr4krQ.js"
+    ]
+  },
   "resources/js/views/news-categories/index.js": {
-    "file": "assets/index-Cow8TDGc.js",
+    "file": "assets/index-D17pDPxf.js",
     "name": "index",
     "src": "resources/js/views/news-categories/index.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_url-DaqOO3yL.js",
+      "_notifications-Cgjr4krQ.js",
+      "_modals-bMr9eiZu.js"
+    ]
   },
   "resources/js/views/news/form.js": {
-    "file": "assets/form-DL2G8p-1.js",
+    "file": "assets/form-BXC5mH26.js",
     "name": "form",
     "src": "resources/js/views/news/form.js",
     "isEntry": true,
     "imports": [
-      "__commonjsHelpers-CqkleIqs.js",
-      "_media-picker-Cb20KE6T.js"
+      "_url-DaqOO3yL.js",
+      "_notifications-Cgjr4krQ.js"
     ]
   },
   "resources/js/views/news/index.js": {
-    "file": "assets/index-BbdFNmLU.js",
+    "file": "assets/index-CRLIWiXz.js",
     "name": "index",
     "src": "resources/js/views/news/index.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_url-DaqOO3yL.js",
+      "_notifications-Cgjr4krQ.js",
+      "_modals-bMr9eiZu.js"
+    ]
   },
   "resources/js/views/pages/index.js": {
     "file": "assets/index-BXh_Aks5.js",

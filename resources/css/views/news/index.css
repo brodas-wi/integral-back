@@ -22,6 +22,29 @@
     white-space: nowrap;
 }
 
+.news-tab-link {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition:
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.news-tab-active {
+    border-color: var(--color-primary, #23366a);
+    color: var(--color-primary, #23366a);
+}
+
+.news-tab-inactive {
+    color: #6b7280;
+}
+
+.news-tab-inactive:hover {
+    color: #23366a;
+}
+
 @media (max-width: 640px) {
     .news-filter-actions {
         width: 100%;

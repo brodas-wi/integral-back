@@ -7,8 +7,6 @@ use App\Http\Requests\UpdateNewsCategoryRequest;
 use App\Models\NewsCategory;
 use App\Services\NewsCategoryService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -21,40 +19,31 @@ class NewsCategoryController extends Controller
         protected NewsCategoryService $categoryService
     ) {}
 
-    public function index(Request $request): View
-    {
-        $filters = $request->only(['search', 'status']);
-
-        $categories = $this->categoryService
-            ->buildFilteredQuery($filters)
-            ->paginate(12)
-            ->withQueryString();
-
-        return view('news-categories.index', compact('categories'));
-    }
-
     public function create(): View
     {
         return view('news-categories.create');
     }
 
-    public function store(StoreNewsCategoryRequest $request): RedirectResponse
+    public function store(StoreNewsCategoryRequest $request): JsonResponse
     {
         try {
-            $this->categoryService->create($request->validated());
+            $category = $this->categoryService->create($request->validated());
 
-            return redirect()
-                ->route('news-categories.index')
-                ->with('success', 'Categoría creada exitosamente');
+            return response()->json([
+                'success' => true,
+                'message' => 'Categoría creada exitosamente',
+                'redirect' => route('news.index', ['tab' => 'categorias']),
+                'id' => $category->id,
+            ], 201);
         } catch (\Exception $e) {
             Log::error('Error creating news category', [
                 'error' => $e->getMessage(),
-                'data' => $request->validated(),
             ]);
 
-            return back()
-                ->withInput()
-                ->with('error', 'Error al crear la categoría: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear la categoría',
+            ], 500);
         }
     }
 
@@ -63,23 +52,26 @@ class NewsCategoryController extends Controller
         return view('news-categories.edit', ['category' => $newsCategory]);
     }
 
-    public function update(UpdateNewsCategoryRequest $request, NewsCategory $newsCategory): RedirectResponse
+    public function update(UpdateNewsCategoryRequest $request, NewsCategory $newsCategory): JsonResponse
     {
         try {
             $this->categoryService->update($newsCategory, $request->validated());
 
-            return redirect()
-                ->route('news-categories.index')
-                ->with('success', 'Categoría actualizada exitosamente');
+            return response()->json([
+                'success' => true,
+                'message' => 'Categoría actualizada exitosamente',
+                'redirect' => route('news.index', ['tab' => 'categorias']),
+            ]);
         } catch (\Exception $e) {
             Log::error('Error updating news category', [
                 'error' => $e->getMessage(),
                 'category_id' => $newsCategory->id,
             ]);
 
-            return back()
-                ->withInput()
-                ->with('error', 'Error al actualizar la categoría: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar la categoría',
+            ], 500);
         }
     }
 

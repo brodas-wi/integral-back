@@ -7,8 +7,8 @@ use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
 use App\Models\NewsCategory;
 use App\Services\NewsService;
+use App\Services\NewsCategoryService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
@@ -19,21 +19,33 @@ class NewsController extends Controller
     use AuthorizesRequests;
 
     public function __construct(
-        protected NewsService $newsService
+        protected NewsService $newsService,
+        protected NewsCategoryService $newsCategoryService
     ) {}
 
     public function index(Request $request): View
     {
-        $filters = $request->only(['search', 'category', 'status']);
+        $tab = $request->input('tab', 'noticias');
+        $tab = in_array($tab, ['noticias', 'categorias']) ? $tab : 'noticias';
 
-        $news = $this->newsService
-            ->buildFilteredQuery($filters)
-            ->paginate(12)
-            ->withQueryString();
+        $categoriesFilter = NewsCategory::active()->orderBy('name')->get();
 
-        $categories = NewsCategory::active()->orderBy('name')->get();
+        $news = null;
+        $categoriesList = null;
 
-        return view('news.index', compact('news', 'categories'));
+        if ($tab === 'noticias') {
+            $news = $this->newsService
+                ->buildFilteredQuery($request->only(['search', 'category', 'status']))
+                ->paginate(12)
+                ->withQueryString();
+        } else {
+            $categoriesList = $this->newsCategoryService
+                ->buildFilteredQuery($request->only(['search', 'status']))
+                ->paginate(12)
+                ->withQueryString();
+        }
+
+        return view('news.index', compact('tab', 'news', 'categoriesFilter', 'categoriesList'));
     }
 
     public function create(): View
@@ -43,23 +55,26 @@ class NewsController extends Controller
         return view('news.create', compact('categories'));
     }
 
-    public function store(StoreNewsRequest $request): RedirectResponse
+    public function store(StoreNewsRequest $request): JsonResponse
     {
         try {
-            $this->newsService->create($request->validated());
+            $news = $this->newsService->create($request->validated());
 
-            return redirect()
-                ->route('news.index')
-                ->with('success', 'Noticia creada exitosamente');
+            return response()->json([
+                'success' => true,
+                'message' => 'Noticia creada exitosamente',
+                'redirect' => route('news.index', ['tab' => 'noticias']),
+                'id' => $news->id,
+            ], 201);
         } catch (\Exception $e) {
             Log::error('Error creating news', [
                 'error' => $e->getMessage(),
-                'data' => $request->validated(),
             ]);
 
-            return back()
-                ->withInput()
-                ->with('error', 'Error al crear la noticia: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear la noticia',
+            ], 500);
         }
     }
 
@@ -70,23 +85,26 @@ class NewsController extends Controller
         return view('news.edit', compact('news', 'categories'));
     }
 
-    public function update(UpdateNewsRequest $request, News $news): RedirectResponse
+    public function update(UpdateNewsRequest $request, News $news): JsonResponse
     {
         try {
             $this->newsService->update($news, $request->validated());
 
-            return redirect()
-                ->route('news.index')
-                ->with('success', 'Noticia actualizada exitosamente');
+            return response()->json([
+                'success' => true,
+                'message' => 'Noticia actualizada exitosamente',
+                'redirect' => route('news.index', ['tab' => 'noticias']),
+            ]);
         } catch (\Exception $e) {
             Log::error('Error updating news', [
                 'error' => $e->getMessage(),
                 'news_id' => $news->id,
             ]);
 
-            return back()
-                ->withInput()
-                ->with('error', 'Error al actualizar la noticia: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar la noticia',
+            ], 500);
         }
     }
 
@@ -99,6 +117,8 @@ class NewsController extends Controller
 
     public function toggleStatus(News $news): JsonResponse
     {
+        $this->authorize('news.edit', 'news.manage');
+
         try {
             $this->newsService->toggleStatus($news);
 

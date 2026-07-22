@@ -6,16 +6,11 @@
 
 @section('content')
     <div class="max-w-2xl">
-        <form method="POST" action="{{ route('news-categories.store') }}" class="card space-y-5">
-            @csrf
-
+        <div class="card space-y-5" id="news-category-form-container" data-mode="create">
             <div>
                 <label for="name" class="block text-sm font-medium text-secondary mb-2">Nombre *</label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}" required
-                    class="input-field @error('name') border-red-500 @enderror">
-                @error('name')
-                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-                @enderror
+                <input type="text" id="name" name="name" class="input-field">
+                <p class="text-sm text-red-600 mt-1 hidden" data-error-for="name"></p>
             </div>
 
             <div class="flex items-center gap-3">
@@ -25,11 +20,15 @@
             </div>
 
             <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                <a href="{{ route('news-categories.index') }}" class="btn-outline">Cancelar</a>
-                <button type="submit" class="btn-primary">
+                <a href="{{ route('news.index', ['tab' => 'categorias']) }}" class="btn-outline">Cancelar</a>
+                <button type="button" id="news-category-form-submit" class="btn-primary">
                     <i class="ri-save-line mr-2"></i> Guardar Categoría
                 </button>
             </div>
-        </form>
+        </div>
     </div>
 @endsection
+
+@push('scripts')
+    @vite('resources/js/views/news-categories/form.js')
+@endpush

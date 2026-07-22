@@ -26,49 +26,19 @@ function renderErrors(container, errors) {
 }
 
 function buildPayload(container) {
-    const scheduledWrapper = document.getElementById(
-        "news-scheduled-at-wrapper",
-    );
-    const status = container.querySelector("#news-status").value;
-
     return {
-        title: container.querySelector("#title").value,
-        description: container.querySelector("#description").value,
-        featured_image: container.querySelector(
-            "#news-featured-image-input",
-        ).value,
-        news_category_id: container.querySelector("#news_category_id").value,
-        status,
-        scheduled_at:
-            status === "scheduled"
-                ? container.querySelector("#scheduled_at").value
-                : null,
-        content: container.querySelector("#news-content").value,
+        name: container.querySelector("#name").value,
+        is_active: container.querySelector("#is_active").checked,
     };
 }
 
-function initStatusToggle() {
-    const statusSelect = document.getElementById("news-status");
-    const scheduledWrapper = document.getElementById(
-        "news-scheduled-at-wrapper",
-    );
-    if (!statusSelect || !scheduledWrapper) return;
-
-    statusSelect.addEventListener("change", () => {
-        scheduledWrapper.classList.toggle(
-            "hidden",
-            statusSelect.value !== "scheduled",
-        );
-    });
-}
-
 function initSubmit() {
-    const container = document.getElementById("news-form-container");
-    const submitBtn = document.getElementById("news-form-submit");
+    const container = document.getElementById("news-category-form-container");
+    const submitBtn = document.getElementById("news-category-form-submit");
     if (!container || !submitBtn) return;
 
     const mode = container.dataset.mode;
-    const newsId = container.dataset.newsId;
+    const categoryId = container.dataset.categoryId;
 
     submitBtn.addEventListener("click", async () => {
         clearErrors(container);
@@ -76,7 +46,9 @@ function initSubmit() {
 
         const payload = buildPayload(container);
         const url =
-            mode === "edit" ? buildUrl(`news/${newsId}`) : buildUrl("news");
+            mode === "edit"
+                ? buildUrl(`news-categories/${categoryId}`)
+                : buildUrl("news-categories");
 
         try {
             const response =
@@ -96,7 +68,7 @@ function initSubmit() {
             } else {
                 showNotification(
                     error.response?.data?.message ||
-                    "Ocurrió un error al guardar la noticia",
+                    "Ocurrió un error al guardar la categoría",
                     "error",
                 );
             }
@@ -107,6 +79,5 @@ function initSubmit() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    initStatusToggle();
     initSubmit();
 });

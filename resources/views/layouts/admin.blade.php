@@ -154,18 +154,11 @@
                                         <span>Activos Extraordinarios</span>
                                     </a>
                                 @endcanany
-                                @canany(['news.view', 'news.manage'])
+                                @canany(['news.view', 'news.manage', 'news_categories.view', 'news_categories.manage'])
                                     <a href="{{ route('news.index') }}"
-                                        class="sidebar-child-link {{ request()->routeIs('news.*') ? 'active' : '' }}">
+                                        class="sidebar-child-link {{ request()->routeIs('news.*') || request()->routeIs('news-categories.*') ? 'active' : '' }}">
                                         <i class="ri-newspaper-line text-lg"></i>
                                         <span>Noticias</span>
-                                    </a>
-                                @endcanany
-                                @canany(['news_categories.view', 'news_categories.manage'])
-                                    <a href="{{ route('news-categories.index') }}"
-                                        class="sidebar-child-link {{ request()->routeIs('news-categories.*') ? 'active' : '' }}">
-                                        <i class="ri-folder-line text-lg"></i>
-                                        <span>Categorías de Noticias</span>
                                     </a>
                                 @endcanany
                             </div>
