@@ -26,21 +26,20 @@
 
             <div>
                 <label class="block text-sm font-medium text-secondary mb-2">Imagen destacada</label>
-                <div class="flex items-start gap-4">
-                    <div
-                        class="w-40 h-28 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0">
-                        <img id="news-featured-image-preview" src="" alt="Vista previa"
-                            class="w-full h-full object-cover hidden">
-                        <i id="news-featured-image-placeholder" class="ri-image-line text-4xl text-gray-400"></i>
+                <div id="news-featured-image-dropzone" data-media-picker
+                    class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer hover:border-primary transition-colors overflow-hidden">
+                    <div id="news-featured-image-placeholder" class="flex flex-col items-center justify-center py-2">
+                        <i class="ri-image-add-line text-4xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-500">Haz clic para seleccionar una imagen</p>
                     </div>
-                    <div class="flex-1">
-                        <input type="hidden" id="news-featured-image-input" name="featured_image" value="">
-                        <button type="button" id="news-featured-image-pick" class="btn-secondary btn-sm">
-                            <i class="ri-image-2-line mr-2"></i> Seleccionar imagen
-                        </button>
-                        <p class="text-sm text-red-600 mt-2 hidden" data-error-for="featured_image"></p>
+                    <div id="news-featured-image-selected" class="hidden">
+                        <img id="news-featured-image-preview" src="" alt="Vista previa"
+                            class="w-full h-48 object-cover rounded-lg">
+                        <p class="text-xs text-gray-500 mt-2">Haz clic para cambiar la imagen</p>
                     </div>
                 </div>
+                <input type="hidden" id="news-featured-image-input" name="featured_image" value="">
+                <p class="text-sm text-red-600 mt-1 hidden" data-error-for="featured_image"></p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -52,6 +51,7 @@
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                         @endforeach
+                        <option value="__create__">+ Crear nueva categoría...</option>
                     </select>
                     <p class="text-sm text-red-600 mt-1 hidden" data-error-for="news_category_id"></p>
                 </div>
@@ -87,6 +87,8 @@
                 </button>
             </div>
         </div>
+
+        <x-media-picker-modal />
     </div>
 @endsection
 

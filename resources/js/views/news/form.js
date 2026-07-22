@@ -1,5 +1,8 @@
 import { buildUrl } from "@/utils/url.js";
 import { showNotification } from "@/utils/notifications.js";
+import { initMediaPicker } from "@/utils/media-picker.js";
+
+let tinyEditor = null;
 
 function clearErrors(container) {
     container.querySelectorAll("[data-error-for]").forEach((el) => {
@@ -26,9 +29,6 @@ function renderErrors(container, errors) {
 }
 
 function buildPayload(container) {
-    const scheduledWrapper = document.getElementById(
-        "news-scheduled-at-wrapper",
-    );
     const status = container.querySelector("#news-status").value;
 
     return {
@@ -43,7 +43,7 @@ function buildPayload(container) {
             status === "scheduled"
                 ? container.querySelector("#scheduled_at").value
                 : null,
-        content: container.querySelector("#news-content").value,
+        content: tinyEditor ? tinyEditor.getContent() : "",
     };
 }
 
@@ -59,6 +59,89 @@ function initStatusToggle() {
             "hidden",
             statusSelect.value !== "scheduled",
         );
+    });
+}
+
+function initTinyMce() {
+    if (typeof tinymce === "undefined") return;
+
+    tinymce.init({
+        selector: "#news-content",
+        height: 400,
+        menubar: false,
+        plugins: "link lists image table code",
+        toolbar:
+            "undo redo | blocks | bold italic | bullist numlist | link image table | code",
+        setup(editor) {
+            editor.on("init", () => {
+                tinyEditor = editor;
+            });
+        },
+    });
+}
+
+function initFeaturedImagePicker() {
+    const dropzone = document.getElementById("news-featured-image-dropzone");
+    if (!dropzone) return;
+
+    initMediaPicker({
+        dropzoneId: "news-featured-image-dropzone",
+        hiddenInputId: "news-featured-image-input",
+        previewId: "news-featured-image-preview",
+        placeholderId: "news-featured-image-placeholder",
+        selectedId: "news-featured-image-selected",
+    });
+}
+
+function resetCategorySelection(select) {
+    select.value = "";
+}
+
+async function handleCreateCategory(select) {
+    const name = window.prompt("Nombre de la nueva categoría:");
+
+    if (!name || !name.trim()) {
+        resetCategorySelection(select);
+        return;
+    }
+
+    try {
+        const response = await axios.post(buildUrl("news-categories"), {
+            name: name.trim(),
+            is_active: true,
+        });
+
+        if (response.data.success) {
+            const createOption = select.querySelector(
+                'option[value="__create__"]',
+            );
+            const newOption = document.createElement("option");
+            newOption.value = response.data.id;
+            newOption.textContent = name.trim();
+            select.insertBefore(newOption, createOption);
+            select.value = response.data.id;
+            showNotification("Categoría creada exitosamente", "success");
+        }
+    } catch (error) {
+        if (error.response?.status === 422) {
+            const errors = error.response.data.errors;
+            const message = errors?.name?.[0] || "No se pudo crear la categoría";
+            showNotification(message, "error");
+        } else {
+            showNotification("No se pudo crear la categoría", "error");
+        }
+        resetCategorySelection(select);
+    }
+}
+
+function initCategoryCreation() {
+    const select = document.getElementById("news_category_id");
+    if (!select) return;
+
+    select.addEventListener("change", () => {
+        if (select.value === "__create__") {
+            handleCreateCategory(select);
+        }
     });
 }
 
@@ -108,5 +191,8 @@ function initSubmit() {
 
 document.addEventListener("DOMContentLoaded", () => {
     initStatusToggle();
+    initTinyMce();
+    initFeaturedImagePicker();
+    initCategoryCreation();
     initSubmit();
 });

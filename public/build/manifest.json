@@ -300,7 +300,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-CSK0vlrj.css",
+    "file": "assets/app-Kv9wI4_x.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -737,13 +737,14 @@
     ]
   },
   "resources/js/views/news/form.js": {
-    "file": "assets/form-BXC5mH26.js",
+    "file": "assets/form-BQRChYSb.js",
     "name": "form",
     "src": "resources/js/views/news/form.js",
     "isEntry": true,
     "imports": [
       "_url-DaqOO3yL.js",
-      "_notifications-Cgjr4krQ.js"
+      "_notifications-Cgjr4krQ.js",
+      "_media-picker-Cb20KE6T.js"
     ]
   },
   "resources/js/views/news/index.js": {
