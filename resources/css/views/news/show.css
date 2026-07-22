@@ -86,6 +86,22 @@
     padding-left: 1.5rem;
 }
 
+.news-article-content ul {
+    list-style-type: disc;
+}
+
+.news-article-content ol {
+    list-style-type: decimal;
+}
+
+.news-article-content li {
+    margin-bottom: 0.5rem;
+}
+
+.news-article-content li::marker {
+    color: #003b71;
+}
+
 .news-article-content a {
     color: #e97300;
     text-decoration: underline;

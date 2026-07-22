@@ -122,12 +122,17 @@ function initFeaturedImagePicker() {
     const dropzone = document.getElementById("news-featured-image-dropzone");
     if (!dropzone) return;
 
+    const hiddenInput = document.getElementById("news-featured-image-input");
+
     initMediaPicker({
         dropzoneId: "news-featured-image-dropzone",
         hiddenInputId: "news-featured-image-input",
         previewId: "news-featured-image-preview",
         placeholderId: "news-featured-image-placeholder",
         selectedId: "news-featured-image-selected",
+        onSelect: ({ url }) => {
+            if (hiddenInput) hiddenInput.value = url;
+        },
     });
 }
 

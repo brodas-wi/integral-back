@@ -447,7 +447,7 @@
     "src": "resources/css/views/news/index.css"
   },
   "resources/css/views/news/show.css": {
-    "file": "assets/show-BkzyXGVD.css",
+    "file": "assets/show-DvcMXCsZ.css",
     "src": "resources/css/views/news/show.css"
   },
   "resources/css/views/payment-points/payment-points.css": {
@@ -737,7 +737,7 @@
     ]
   },
   "resources/js/views/news/form.js": {
-    "file": "assets/form-C4IHWNtB.js",
+    "file": "assets/form-C7qyPScO.js",
     "name": "form",
     "src": "resources/js/views/news/form.js",
     "isEntry": true,

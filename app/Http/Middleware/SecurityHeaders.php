@@ -100,6 +100,7 @@ class SecurityHeaders
     private array $tinyMceRouteNames = [
         'news.create',
         'news.edit',
+        'news.show',
     ];
 
     public function handle(Request $request, Closure $next): Response
