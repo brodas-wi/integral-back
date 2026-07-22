@@ -300,7 +300,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-Kv9wI4_x.css",
+    "file": "assets/app-5skyYnn7.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -434,7 +434,7 @@
     ]
   },
   "resources/css/views/news/form.css": {
-    "file": "assets/form-CDz34O6E.css",
+    "file": "assets/form-D-AEDlG4.css",
     "src": "resources/css/views/news/form.css",
     "isEntry": true,
     "name": "form",
@@ -737,7 +737,7 @@
     ]
   },
   "resources/js/views/news/form.js": {
-    "file": "assets/form-DbZtypwJ.js",
+    "file": "assets/form-C4IHWNtB.js",
     "name": "form",
     "src": "resources/js/views/news/form.js",
     "isEntry": true,
