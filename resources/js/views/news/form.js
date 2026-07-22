@@ -8,9 +8,12 @@ import "tinymce/themes/silver";
 import "tinymce/icons/default";
 import "tinymce/plugins/link";
 import "tinymce/plugins/lists";
+import "tinymce/plugins/advlist";
 import "tinymce/plugins/image";
 import "tinymce/plugins/table";
 import "tinymce/plugins/code";
+import "tinymce/plugins/wordcount";
+import "@/vendor/tinymce-langs/es.js";
 
 let tinyEditor = null;
 
@@ -102,6 +105,7 @@ async function initTinyMce(container) {
         menubar: false,
         branding: false,
         elementpath: true,
+        language: "es",
         plugins: "advlist link lists image table code wordcount",
         toolbar:
             "undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | align | bullist numlist | link image table | code",
