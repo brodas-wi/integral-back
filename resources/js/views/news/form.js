@@ -1,6 +1,16 @@
 import { buildUrl } from "@/utils/url.js";
 import { showNotification } from "@/utils/notifications.js";
+import { showPromptModal } from "@/utils/modals.js";
 import { initMediaPicker } from "@/utils/media-picker.js";
+import tinymce from "tinymce/tinymce";
+import "tinymce/models/dom/model";
+import "tinymce/themes/silver";
+import "tinymce/icons/default";
+import "tinymce/plugins/link";
+import "tinymce/plugins/lists";
+import "tinymce/plugins/image";
+import "tinymce/plugins/table";
+import "tinymce/plugins/code";
 
 let tinyEditor = null;
 
@@ -62,22 +72,32 @@ function initStatusToggle() {
     });
 }
 
-function initTinyMce() {
-    if (typeof tinymce === "undefined") return;
+async function initTinyMce(container) {
+    const target = document.getElementById("news-content");
+    if (!target) return;
 
-    tinymce.init({
-        selector: "#news-content",
+    const skinCss = container.dataset.tinymceSkinCss;
+    const contentCss = [
+        container.dataset.tinymceContentCss,
+        container.dataset.tinymceDefaultContentCss,
+    ]
+        .filter(Boolean)
+        .join(",");
+
+    const editors = await tinymce.init({
+        target,
         height: 400,
         menubar: false,
         plugins: "link lists image table code",
         toolbar:
             "undo redo | blocks | bold italic | bullist numlist | link image table | code",
-        setup(editor) {
-            editor.on("init", () => {
-                tinyEditor = editor;
-            });
-        },
+        skin: false,
+        skin_url: skinCss ? skinCss.replace(/\/skin\.min\.css$/, "") : undefined,
+        content_css: contentCss || false,
+        license_key: "gpl",
     });
+
+    tinyEditor = editors[0];
 }
 
 function initFeaturedImagePicker() {
@@ -97,41 +117,57 @@ function resetCategorySelection(select) {
     select.value = "";
 }
 
-async function handleCreateCategory(select) {
-    const name = window.prompt("Nombre de la nueva categoría:");
+async function createCategoryRequest(name) {
+    const response = await axios.post(buildUrl("news-categories"), {
+        name: name.trim(),
+        is_active: true,
+    });
+    return response.data;
+}
 
-    if (!name || !name.trim()) {
-        resetCategorySelection(select);
-        return;
-    }
+function handleCreateCategory(select) {
+    showPromptModal({
+        title: "Nueva categoría",
+        message: "Ingresa el nombre de la nueva categoría de noticias.",
+        label: "Nombre",
+        placeholder: "Ej: Comunicados",
+        confirmText: "Crear",
+        cancelText: "Cancelar",
+        type: "info",
+        onCancel: () => resetCategorySelection(select),
+        onConfirm: async (value) => {
+            if (!value || !value.trim()) {
+                resetCategorySelection(select);
+                return;
+            }
 
-    try {
-        const response = await axios.post(buildUrl("news-categories"), {
-            name: name.trim(),
-            is_active: true,
-        });
+            try {
+                const data = await createCategoryRequest(value);
 
-        if (response.data.success) {
-            const createOption = select.querySelector(
-                'option[value="__create__"]',
-            );
-            const newOption = document.createElement("option");
-            newOption.value = response.data.id;
-            newOption.textContent = name.trim();
-            select.insertBefore(newOption, createOption);
-            select.value = response.data.id;
-            showNotification("Categoría creada exitosamente", "success");
-        }
-    } catch (error) {
-        if (error.response?.status === 422) {
-            const errors = error.response.data.errors;
-            const message = errors?.name?.[0] || "No se pudo crear la categoría";
-            showNotification(message, "error");
-        } else {
-            showNotification("No se pudo crear la categoría", "error");
-        }
-        resetCategorySelection(select);
-    }
+                if (data.success) {
+                    const createOption = select.querySelector(
+                        'option[value="__create__"]',
+                    );
+                    const newOption = document.createElement("option");
+                    newOption.value = data.id;
+                    newOption.textContent = value.trim();
+                    select.insertBefore(newOption, createOption);
+                    select.value = data.id;
+                    showNotification("Categoría creada exitosamente", "success");
+                }
+            } catch (error) {
+                if (error.response?.status === 422) {
+                    const errors = error.response.data.errors;
+                    const message =
+                        errors?.name?.[0] || "No se pudo crear la categoría";
+                    showNotification(message, "error");
+                } else {
+                    showNotification("No se pudo crear la categoría", "error");
+                }
+                resetCategorySelection(select);
+            }
+        },
+    });
 }
 
 function initCategoryCreation() {
@@ -190,8 +226,9 @@ function initSubmit() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("news-form-container");
     initStatusToggle();
-    initTinyMce();
+    if (container) initTinyMce(container);
     initFeaturedImagePicker();
     initCategoryCreation();
     initSubmit();

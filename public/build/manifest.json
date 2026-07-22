@@ -737,14 +737,16 @@
     ]
   },
   "resources/js/views/news/form.js": {
-    "file": "assets/form-BQRChYSb.js",
+    "file": "assets/form-CaflBi6R.js",
     "name": "form",
     "src": "resources/js/views/news/form.js",
     "isEntry": true,
     "imports": [
       "_url-DaqOO3yL.js",
       "_notifications-Cgjr4krQ.js",
-      "_media-picker-Cb20KE6T.js"
+      "_modals-bMr9eiZu.js",
+      "_media-picker-Cb20KE6T.js",
+      "__commonjsHelpers-CqkleIqs.js"
     ]
   },
   "resources/js/views/news/index.js": {

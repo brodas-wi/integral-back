@@ -10,7 +10,10 @@
 
 @section('content')
     <div class="max-w-4xl">
-        <div class="card space-y-6" id="news-form-container" data-mode="create">
+        <div class="card space-y-6" id="news-form-container" data-mode="create"
+            data-tinymce-skin-css="{{ Vite::asset('node_modules/tinymce/skins/ui/oxide/skin.min.css') }}"
+            data-tinymce-content-css="{{ Vite::asset('node_modules/tinymce/skins/ui/oxide/content.min.css') }}"
+            data-tinymce-default-content-css="{{ Vite::asset('node_modules/tinymce/skins/content/default/content.min.css') }}">
             <div>
                 <label for="title" class="block text-sm font-medium text-secondary mb-2">Título *</label>
                 <input type="text" id="title" name="title" class="input-field">

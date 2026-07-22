@@ -29,7 +29,10 @@
 @section('content')
     <div class="max-w-4xl" id="news-page-data" data-news-id="{{ $news->id }}"
         data-redirect-url="{{ route('news.index', ['tab' => 'noticias']) }}">
-        <div class="card space-y-6" id="news-form-container" data-mode="edit" data-news-id="{{ $news->id }}">
+        <div class="card space-y-6" id="news-form-container" data-mode="edit" data-news-id="{{ $news->id }}"
+            data-tinymce-skin-css="{{ Vite::asset('node_modules/tinymce/skins/ui/oxide/skin.min.css') }}"
+            data-tinymce-content-css="{{ Vite::asset('node_modules/tinymce/skins/ui/oxide/content.min.css') }}"
+            data-tinymce-default-content-css="{{ Vite::asset('node_modules/tinymce/skins/content/default/content.min.css') }}">
             <div>
                 <label for="title" class="block text-sm font-medium text-secondary mb-2">Título *</label>
                 <input type="text" id="title" name="title" value="{{ $news->title }}" class="input-field">
