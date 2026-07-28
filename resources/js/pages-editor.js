@@ -65,6 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             await editorService.loadPageContent(editor, editorState.loadUrl);
             showNotification("Contenido cargado correctamente", "success");
+            offerBackupRecovery(editor, editorService, editorState);
         } catch (error) {
             showNotification("Error al cargar el contenido", "error");
             console.error(error);
@@ -93,6 +94,33 @@ function registerDeviceCommands(editor) {
                 });
             },
         });
+    });
+}
+
+function offerBackupRecovery(editor, editorService, editorState) {
+    const backup = editorService.constructor.getBackup(editorState.storeUrl);
+    if (!backup) return;
+
+    const minutesAgo = Math.round((Date.now() - backup.timestamp) / 60000);
+
+    showConfirmModal({
+        title: "Se encontró un borrador sin guardar",
+        description: `Hay cambios de hace ${minutesAgo} min que no llegaron a guardarse (posiblemente por sesión expirada). ¿Quieres recuperarlos?`,
+        icon: "ri-history-line",
+        iconBg: "#dbeafe",
+        iconColor: "#2563eb",
+        confirmLabel: "Recuperar",
+        cancelLabel: "Descartar",
+        onConfirm: () => {
+            if (backup.payload.components_json) {
+                editor.loadProjectData(JSON.parse(backup.payload.components_json));
+            }
+            editorService.clearBackup(editorState.storeUrl);
+            showNotification("Borrador recuperado", "success");
+        },
+        onCancel: () => {
+            editorService.clearBackup(editorState.storeUrl);
+        },
     });
 }
 

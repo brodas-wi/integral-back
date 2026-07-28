@@ -1,4 +1,22 @@
-import { showInputModal } from "./utils/modals";
+import { showInputModal, showConfirmModal } from "./utils/modals";
+
+function showSessionExpiredModal() {
+    const reload = () => window.location.reload();
+
+    showConfirmModal({
+        title: "Tu sesión ha expirado",
+        description:
+            "No se pudo guardar porque tu sesión terminó. Tu contenido se respaldó en este navegador; al recargar e iniciar sesión de nuevo se te ofrecerá recuperarlo.",
+        icon: "ri-time-line",
+        iconBg: "#fef3c7",
+        iconColor: "#d97706",
+        confirmLabel: "Recargar página",
+        confirmColor: "#d97706",
+        cancelLabel: "Recargar página",
+        onConfirm: reload,
+        onCancel: reload,
+    });
+}
 
 export function setupEditorEvents(editor, editorService, editorState) {
     editor.on("component:add", () => editorService.markAsDirty());
@@ -33,7 +51,11 @@ async function handleSave(editor, editorService, editorState, saveButton) {
             await savePageContent(editor, editorService, editorState);
         }
     } catch (error) {
-        showNotification(error.message, "error");
+        if (error.isSessionExpired) {
+            showSessionExpiredModal();
+        } else {
+            showNotification(error.message, "error");
+        }
     } finally {
         saveButton.disabled = false;
         saveButton.innerHTML =

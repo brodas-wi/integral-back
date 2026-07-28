@@ -38,7 +38,7 @@ export class EditorService {
                     editor.loadProjectData(projectData);
                     return data;
                 }
-            } catch {}
+            } catch { }
         }
 
         const html = data.html || "";
@@ -57,6 +57,8 @@ export class EditorService {
     }
 
     async savePage(editor, payload, storeUrl, method = "POST") {
+        this.backupLocally(payload, storeUrl);
+
         const response = await fetch(storeUrl, {
             method,
             headers: {
@@ -78,7 +80,9 @@ export class EditorService {
                 throw new Error(error.message || "Error al guardar");
             }
             if (response.status === 401 || response.status === 419) {
-                throw new Error("Tu sesión ha expirado. Recarga la página.");
+                const sessionError = new Error("SESSION_EXPIRED");
+                sessionError.isSessionExpired = true;
+                throw sessionError;
             }
             throw new Error(`Error al guardar (${response.status})`);
         }
@@ -87,7 +91,34 @@ export class EditorService {
             throw new Error("Respuesta inesperada del servidor");
         }
 
+        this.clearBackup(storeUrl);
         return await response.json();
+    }
+
+    backupLocally(payload, storeUrl) {
+        try {
+            localStorage.setItem(
+                `editor_backup_${storeUrl}`,
+                JSON.stringify({ payload, timestamp: Date.now() }),
+            );
+        } catch (e) {
+            console.warn("No se pudo crear backup local:", e);
+        }
+    }
+
+    clearBackup(storeUrl) {
+        try {
+            localStorage.removeItem(`editor_backup_${storeUrl}`);
+        } catch { }
+    }
+
+    static getBackup(storeUrl) {
+        try {
+            const raw = localStorage.getItem(`editor_backup_${storeUrl}`);
+            return raw ? JSON.parse(raw) : null;
+        } catch {
+            return null;
+        }
     }
 
     getEditorContent(editor) {

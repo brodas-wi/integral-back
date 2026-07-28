@@ -1,4 +1,4 @@
-import{i as te,I as Q,o as oe,t as ae,d as ie,f as re,e as le,s as se,g as ce,c as de,E as be,j as me,h as ue}from"./editor-commands-DULPa6UC.js";import"./_commonjsHelpers-CqkleIqs.js";function pe(){return te()}const fe="/bancaintegral",ge=`(function(){
+import{i as te,I as Q,o as oe,t as ae,d as ie,f as re,e as le,s as se,g as ce,c as de,E as be,j as me,h as ue}from"./editor-commands-C-1JeoK7.js";import"./_commonjsHelpers-CqkleIqs.js";function pe(){return te()}const fe="/bancaintegral",ge=`(function(){
 function initNavbar(root){
     if(!root||root.__nbInit)return;
     root.__nbInit=true;
