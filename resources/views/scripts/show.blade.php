@@ -27,9 +27,6 @@
 
     <div class="card">
         <div class="flex items-start gap-4">
-            <div class="shrink-0 w-14 h-14 rounded-xl flex items-center justify-center bg-yellow-100 text-yellow-700">
-                <i class="ri-javascript-line text-3xl"></i>
-            </div>
             <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-center gap-2 mb-2">
                     @php
