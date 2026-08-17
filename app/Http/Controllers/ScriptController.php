@@ -207,7 +207,14 @@ class ScriptController extends Controller
 
     public function destroy(Script $script)
     {
-        $this->authorize('scripts.delete');
+        try {
+            $this->authorize('scripts.delete');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tienes permisos para eliminar scripts.',
+            ], 403);
+        }
 
         try {
             $name = $script->name;
@@ -252,7 +259,14 @@ class ScriptController extends Controller
 
     public function toggleActive(Script $script)
     {
-        $this->authorize('scripts.activate');
+        try {
+            $this->authorize('scripts.activate');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tienes permisos para activar o desactivar scripts.',
+            ], 403);
+        }
 
         try {
             if (!$script->isApproved()) {
@@ -291,7 +305,14 @@ class ScriptController extends Controller
 
     public function approve(Script $script)
     {
-        $this->authorize('scripts.approve');
+        try {
+            $this->authorize('scripts.approve');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tienes permisos para aprobar scripts.',
+            ], 403);
+        }
 
         try {
             if (!$script->isPendingReview()) {
@@ -341,7 +362,14 @@ class ScriptController extends Controller
 
     public function reject(Request $request, Script $script)
     {
-        $this->authorize('scripts.approve');
+        try {
+            $this->authorize('scripts.approve');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tienes permisos para rechazar scripts.',
+            ], 403);
+        }
 
         $request->validate([
             'rejection_reason' => ['required', 'string', 'max:1000'],

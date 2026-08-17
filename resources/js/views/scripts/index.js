@@ -1,27 +1,30 @@
-import axios from "axios";
 import { showNotification } from "@/utils/notifications.js";
-
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+import { http, extractErrorMessage } from "@/utils/http.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".script-toggle").forEach((checkbox) => {
         checkbox.addEventListener("change", function () {
             const scriptId = this.dataset.scriptId;
             const checked = this.checked;
-            const item = document.getElementById(`script-item-${scriptId}`);
-
-            toggleScriptActive(scriptId, checked, item, this);
+            const baseUrl = document.querySelector('meta[name="scripts-base-url"]')?.content || "/scripts";
+            toggleScriptActiveList(`${baseUrl}/${scriptId}/toggle-active`, checked, scriptId, this);
         });
     });
 
     const showToggle = document.getElementById("show-script-toggle");
     if (showToggle) {
         showToggle.addEventListener("change", function () {
-            const scriptId = this.dataset.scriptId;
             const checked = this.checked;
-            toggleScriptActive(scriptId, checked, null, this);
+            const url = document.querySelector('meta[name="toggle-active-url"]')?.content;
+            if (!url) {
+                showNotification("No se encontró la URL para cambiar el estado del script.", "error");
+                this.checked = !checked;
+                return;
+            }
+            toggleScriptActiveShow(url, checked, this);
         });
     }
+
     const copyJsBtn = document.getElementById("btn-copy-js");
     if (copyJsBtn) {
         copyJsBtn.addEventListener("click", function () {
@@ -41,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
     const copyCssBtn = document.getElementById("btn-copy-css");
     if (copyCssBtn) {
         copyCssBtn.addEventListener("click", function () {
@@ -62,27 +66,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     initSandboxPreview();
-    initRejectModalShow();
 });
 
-function toggleScriptActive(scriptId, checked, itemEl, checkbox) {
-    const baseUrl = document.querySelector('meta[name="scripts-base-url"]')?.content || "/scripts";
-    const url = `${baseUrl}/${scriptId}/toggle-active`;
+function toggleScriptActiveList(url, checked, scriptId, checkbox) {
+    checkbox.disabled = true;
 
-    axios
-        .patch(url, {}, { headers: { "X-CSRF-TOKEN": csrfToken } })
+    http
+        .patch(url)
         .then((res) => {
             if (res.data.success) {
                 showNotification(res.data.message, "success");
-
-                const toggleLabel = document.getElementById("toggle-label");
-                if (toggleLabel) {
-                    toggleLabel.textContent = res.data.is_active
-                        ? "Activo"
-                        : "Inactivo";
-                }
-
-                updateActiveBadge(res.data.is_active);
+                updateListItemBadge(scriptId, res.data.is_active);
             } else {
                 checkbox.checked = !checked;
                 showNotification(res.data.message, "error");
@@ -90,25 +84,72 @@ function toggleScriptActive(scriptId, checked, itemEl, checkbox) {
         })
         .catch((err) => {
             checkbox.checked = !checked;
-            const msg =
-                err.response?.data?.message ||
-                "Error al cambiar el estado del script.";
-            showNotification(msg, "error");
+            showNotification(extractErrorMessage(err, "Error al cambiar el estado del script."), "error");
+        })
+        .finally(() => {
+            checkbox.disabled = false;
         });
 }
 
-function updateActiveBadge(isActive) {
-    const badgeContainer = document.querySelector(".flex.flex-wrap.items-center.gap-2.mb-2");
+function toggleScriptActiveShow(url, checked, checkbox) {
+    checkbox.disabled = true;
+
+    http
+        .patch(url)
+        .then((res) => {
+            if (res.data.success) {
+                showNotification(res.data.message, "success");
+
+                const toggleLabel = document.getElementById("toggle-label");
+                if (toggleLabel) {
+                    toggleLabel.textContent = res.data.is_active ? "Activo" : "Inactivo";
+                }
+
+                updateShowActiveBadge(res.data.is_active);
+            } else {
+                checkbox.checked = !checked;
+                showNotification(res.data.message, "error");
+            }
+        })
+        .catch((err) => {
+            checkbox.checked = !checked;
+            showNotification(extractErrorMessage(err, "Error al cambiar el estado del script."), "error");
+        })
+        .finally(() => {
+            checkbox.disabled = false;
+        });
+}
+
+function updateListItemBadge(scriptId, isActive) {
+    const item = document.getElementById(`script-item-${scriptId}`);
+    if (!item) return;
+
+    const badgeContainer = item.querySelector(".flex.flex-wrap.items-center.gap-2.mb-1");
     if (!badgeContainer) return;
 
-    const existingBadge = badgeContainer.querySelector(".badge-active-indicator");
-    if (isActive && !existingBadge) {
-        const badge = document.createElement("span");
+    let badge = badgeContainer.querySelector(".badge-active-indicator");
+    if (isActive && !badge) {
+        badge = document.createElement("span");
         badge.className = "badge badge-success badge-active-indicator";
         badge.innerHTML = '<i class="ri-checkbox-circle-line mr-1"></i>Activo';
         badgeContainer.appendChild(badge);
-    } else if (!isActive && existingBadge) {
-        existingBadge.remove();
+    } else if (!isActive && badge) {
+        badge.remove();
+    }
+}
+
+function updateShowActiveBadge(isActive) {
+    const badgeContainer = document.querySelector(".flex.flex-wrap.items-center.gap-2.mb-2");
+    if (!badgeContainer) return;
+
+    let badge = badgeContainer.querySelector(".badge-active-indicator");
+    if (isActive && !badge) {
+        badge = document.createElement("span");
+        badge.className = "badge badge-success badge-active-indicator";
+        badge.innerHTML = '<i class="ri-checkbox-circle-line mr-1"></i>Activo';
+        badgeContainer.appendChild(badge);
+    } else if (!isActive && badge) {
+        badge.remove();
     }
 }
 
@@ -175,33 +216,30 @@ window.approveScriptShow = function (scriptId) {
     const url = document.querySelector('meta[name="approve-url"]')?.content;
     if (!url) return;
 
-    if (!confirm("¿Confirmas que deseas aprobar este script?")) return;
-
-    axios
-        .patch(url, {}, { headers: { "X-CSRF-TOKEN": csrfToken } })
-        .then((res) => {
-            if (res.data.success) {
-                showNotification(res.data.message, "success");
-                setTimeout(() => window.location.reload(), 1200);
-            } else {
-                showNotification(res.data.message, "error");
-            }
-        })
-        .catch((err) => {
-            showNotification(
-                err.response?.data?.message || "Error al aprobar el script.",
-                "error"
-            );
-        });
+    window.showConfirmModal({
+        title: "Aprobar Script",
+        message: "¿Confirmas que deseas aprobar este script? Podrá activarse en el sitio público.",
+        confirmText: "Aprobar",
+        type: "success",
+        onConfirm: () => {
+            http
+                .patch(url)
+                .then((res) => {
+                    if (res.data.success) {
+                        showNotification(res.data.message, "success");
+                        setTimeout(() => window.location.reload(), 1200);
+                    } else {
+                        showNotification(res.data.message, "error");
+                    }
+                })
+                .catch((err) => {
+                    showNotification(extractErrorMessage(err, "Error al aprobar el script."), "error");
+                });
+        },
+    });
 };
 
-let rejectScriptIdShow = null;
-
-function initRejectModalShow() {
-}
-
 window.openRejectModalShow = function (scriptId, scriptName) {
-    rejectScriptIdShow = scriptId;
     const modal = document.getElementById("reject-modal-show");
     const nameEl = document.getElementById("reject-script-name-show");
     const reasonEl = document.getElementById("rejection-reason-show");
@@ -215,22 +253,19 @@ window.openRejectModalShow = function (scriptId, scriptName) {
 window.closeRejectModalShow = function () {
     const modal = document.getElementById("reject-modal-show");
     if (modal) modal.classList.add("hidden");
-    rejectScriptIdShow = null;
 };
 
 window.submitRejectShow = function () {
     const url = document.querySelector('meta[name="reject-url"]')?.content;
-    const reason = document
-        .getElementById("rejection-reason-show")
-        ?.value.trim();
+    const reason = document.getElementById("rejection-reason-show")?.value.trim();
 
     if (!reason) {
         showNotification("Debes indicar el motivo del rechazo.", "warning");
         return;
     }
 
-    axios
-        .patch(url, { rejection_reason: reason }, { headers: { "X-CSRF-TOKEN": csrfToken } })
+    http
+        .patch(url, { rejection_reason: reason })
         .then((res) => {
             if (res.data.success) {
                 window.closeRejectModalShow();
@@ -241,34 +276,34 @@ window.submitRejectShow = function () {
             }
         })
         .catch((err) => {
-            showNotification(
-                err.response?.data?.message || "Error al rechazar el script.",
-                "error"
-            );
+            showNotification(extractErrorMessage(err, "Error al rechazar el script."), "error");
         });
 };
 
 window.approveScript = function (scriptId, scriptName) {
     const baseUrl = document.querySelector('meta[name="scripts-base-url"]')?.content || "/scripts";
 
-    if (!confirm(`¿Confirmas que deseas aprobar "${scriptName}"?`)) return;
-
-    axios
-        .patch(`${baseUrl}/${scriptId}/approve`, {}, { headers: { "X-CSRF-TOKEN": csrfToken } })
-        .then((res) => {
-            if (res.data.success) {
-                showNotification(res.data.message, "success");
-                setTimeout(() => window.location.reload(), 1200);
-            } else {
-                showNotification(res.data.message, "error");
-            }
-        })
-        .catch((err) => {
-            showNotification(
-                err.response?.data?.message || "Error al aprobar el script.",
-                "error"
-            );
-        });
+    window.showConfirmModal({
+        title: "Aprobar Script",
+        message: `¿Confirmas que deseas aprobar "${scriptName}"?`,
+        confirmText: "Aprobar",
+        type: "success",
+        onConfirm: () => {
+            http
+                .patch(`${baseUrl}/${scriptId}/approve`)
+                .then((res) => {
+                    if (res.data.success) {
+                        showNotification(res.data.message, "success");
+                        setTimeout(() => window.location.reload(), 1200);
+                    } else {
+                        showNotification(res.data.message, "error");
+                    }
+                })
+                .catch((err) => {
+                    showNotification(extractErrorMessage(err, "Error al aprobar el script."), "error");
+                });
+        },
+    });
 };
 
 let rejectScriptId = null;
@@ -301,12 +336,8 @@ window.submitReject = function () {
         return;
     }
 
-    axios
-        .patch(
-            `${baseUrl}/${rejectScriptId}/reject`,
-            { rejection_reason: reason },
-            { headers: { "X-CSRF-TOKEN": csrfToken } }
-        )
+    http
+        .patch(`${baseUrl}/${rejectScriptId}/reject`, { rejection_reason: reason })
         .then((res) => {
             if (res.data.success) {
                 window.closeRejectModal();
@@ -317,45 +348,40 @@ window.submitReject = function () {
             }
         })
         .catch((err) => {
-            showNotification(
-                err.response?.data?.message || "Error al rechazar el script.",
-                "error"
-            );
+            showNotification(extractErrorMessage(err, "Error al rechazar el script."), "error");
         });
 };
 
 window.confirmDeleteScript = function (scriptId, scriptName) {
-    if (
-        !confirm(
-            `¿Estás seguro de que deseas eliminar "${scriptName}"?\nEsta acción no se puede deshacer.`
-        )
-    )
-        return;
+    window.showConfirmModal({
+        title: "Eliminar Script",
+        message: `¿Estás seguro de que deseas eliminar "${scriptName}"? Esta acción no se puede deshacer.`,
+        confirmText: "Eliminar",
+        type: "danger",
+        onConfirm: () => {
+            const deleteUrl =
+                document.querySelector('meta[name="delete-url"]')?.content ||
+                `${document.querySelector('meta[name="scripts-base-url"]')?.content || "/scripts"}/${scriptId}`;
+            const indexUrl =
+                document.querySelector('meta[name="scripts-index-url"]')?.content ||
+                document.querySelector('meta[name="scripts-base-url"]')?.content ||
+                "/scripts";
 
-    const deleteUrl =
-        document.querySelector('meta[name="delete-url"]')?.content ||
-        `${document.querySelector('meta[name="scripts-base-url"]')?.content || "/scripts"}/${scriptId}`;
-    const indexUrl =
-        document.querySelector('meta[name="scripts-index-url"]')?.content ||
-        document.querySelector('meta[name="scripts-base-url"]')?.content ||
-        "/scripts";
-
-    axios
-        .delete(deleteUrl, { headers: { "X-CSRF-TOKEN": csrfToken } })
-        .then((res) => {
-            if (res.data.success) {
-                showNotification(res.data.message, "success");
-                setTimeout(() => {
-                    window.location.href = indexUrl;
-                }, 1200);
-            } else {
-                showNotification(res.data.message, "error");
-            }
-        })
-        .catch((err) => {
-            showNotification(
-                err.response?.data?.message || "Error al eliminar el script.",
-                "error"
-            );
-        });
+            http
+                .delete(deleteUrl)
+                .then((res) => {
+                    if (res.data.success) {
+                        showNotification(res.data.message, "success");
+                        setTimeout(() => {
+                            window.location.href = indexUrl;
+                        }, 1200);
+                    } else {
+                        showNotification(res.data.message, "error");
+                    }
+                })
+                .catch((err) => {
+                    showNotification(extractErrorMessage(err, "Error al eliminar el script."), "error");
+                });
+        },
+    });
 };

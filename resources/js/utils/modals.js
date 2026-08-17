@@ -207,6 +207,9 @@ export function confirmPromptModalAction() {
     closePromptModal();
 }
 
+window.showConfirmModal = showConfirmModal;
+window.closeConfirmModal = closeConfirmModal;
+window.confirmModalAction = confirmModalAction;
 window.showPromptModal = showPromptModal;
 window.closePromptModal = closePromptModal;
 window.confirmPromptModalAction = confirmPromptModalAction;
