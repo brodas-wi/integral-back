@@ -6,7 +6,6 @@ const viewJs = glob.sync("resources/js/views/**/*.js");
 const viewCss = glob.sync("resources/css/views/**/*.css");
 
 export default defineConfig({
-    base: "/adminintegral/public/build/",
     build: {
         manifest: "manifest.json",
         outDir: "public/build",
