@@ -1,13 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-php artisan config:clear
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+# El volumen storage_data solo persiste storage/; el resto de public/
+# (incluido build/) viene siempre fresco de la imagen recién construida.
+# Lo sincronizamos hacia el volumen compartido con nginx en cada arranque
+# para evitar que un build viejo quede "atrapado" en el volumen.
+mkdir -p /var/www/public
+find /var/www/public -mindepth 1 -maxdepth 1 ! -name storage -exec rm -rf {} +
+cp -a /var/www/public-src/. /var/www/public/
 
-php artisan migrate --force
-
-php artisan storage:link || true
+php artisan storage:link --force || true
 
 exec "$@"
