@@ -27,8 +27,8 @@ services:
     image: nginx:alpine
     container_name: integral_nginx_admin
     restart: always
-    ports:
-      - "8080:80"
+    expose:
+      - "80"
     volumes:
       # Mapeo de código/public y logs
       - app_public:/var/www/public:ro
