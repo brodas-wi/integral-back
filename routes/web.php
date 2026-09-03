@@ -330,12 +330,14 @@ Route::middleware(['auth'])->group(function () {
             ->name('api')
             ->middleware('can:media.view,media.manage');
 
-        // View media library
         Route::get('/', [MediaController::class, 'index'])
             ->name('index')
             ->middleware('can:media.view,media.manage');
 
-        // Upload new media
+        Route::get('/trashed', [MediaController::class, 'trashed'])
+            ->name('trashed')
+            ->middleware('can:media.delete,media.manage');
+
         Route::get('/create', [MediaController::class, 'create'])
             ->name('create')
             ->middleware('can:media.upload,media.manage');
@@ -344,12 +346,14 @@ Route::middleware(['auth'])->group(function () {
             ->name('store')
             ->middleware('can:media.upload,media.manage');
 
-        // Download media file (specific route before {media} parameter)
         Route::get('/{media}/download', [MediaController::class, 'download'])
             ->name('download')
             ->middleware('can:media.view,media.manage');
 
-        // Edit media metadata
+        Route::get('/{media}/usages', [MediaController::class, 'usages'])
+            ->name('usages')
+            ->middleware('can:media.view,media.manage');
+
         Route::get('/{media}/edit', [MediaController::class, 'edit'])
             ->name('edit')
             ->middleware('can:media.view,media.manage');
@@ -358,14 +362,31 @@ Route::middleware(['auth'])->group(function () {
             ->name('update')
             ->middleware('can:media.view,media.manage');
 
-        // View media details
         Route::get('/{media}', [MediaController::class, 'show'])
             ->name('show')
             ->middleware('can:media.view,media.manage');
 
-        // Delete media (authorization also checked in controller for better error handling)
         Route::delete('/{media}', [MediaController::class, 'destroy'])
             ->name('destroy');
+
+        Route::post('/bulk-delete', [MediaController::class, 'bulkDelete'])
+            ->name('bulk-delete');
+
+        Route::patch('/{id}/restore', [MediaController::class, 'restore'])
+            ->name('restore')
+            ->middleware('can:media.delete,media.manage');
+
+        Route::post('/bulk-restore', [MediaController::class, 'bulkRestore'])
+            ->name('bulk-restore')
+            ->middleware('can:media.delete,media.manage');
+
+        Route::delete('/{id}/force-delete', [MediaController::class, 'forceDelete'])
+            ->name('force-delete')
+            ->middleware('can:media.delete,media.manage');
+
+        Route::post('/bulk-force-delete', [MediaController::class, 'bulkForceDelete'])
+            ->name('bulk-force-delete')
+            ->middleware('can:media.delete,media.manage');
     });
 
     // ==========================================

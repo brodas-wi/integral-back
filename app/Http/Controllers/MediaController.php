@@ -10,7 +10,6 @@ use Intervention\Image\Laravel\Facades\Image;
 
 class MediaController extends Controller
 {
-    // Show media list
     public function index(Request $request)
     {
         $perPage = (int) $request->input('per_page', 10);
@@ -54,13 +53,31 @@ class MediaController extends Controller
         return view('media.index', compact('media', 'stats'));
     }
 
-    // Show create form
+    public function trashed(Request $request)
+    {
+        $perPage = (int) $request->input('per_page', 10);
+        $perPage = in_array($perPage, [10, 20, 30]) ? $perPage : 10;
+
+        $query = Media::onlyTrashed()->with('uploader')->latest('deleted_at');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('filename', 'like', "%{$search}%")
+                    ->orWhere('alt', 'like', "%{$search}%");
+            });
+        }
+
+        $media = $query->paginate($perPage);
+
+        return view('media.trashed', compact('media'));
+    }
+
     public function create()
     {
         return view('media.create');
     }
 
-    // Store uploaded files
     public function store(Request $request)
     {
         $request->validate([
@@ -126,7 +143,6 @@ class MediaController extends Controller
         return redirect()->route('media.index')->with('success', $message);
     }
 
-    // Process file upload
     private function processUpload($file, $alt = null)
     {
         $originalName = $file->getClientOriginalName();
@@ -213,7 +229,6 @@ class MediaController extends Controller
         ]);
     }
 
-    // Determine file type from mime type
     private function determineFileType(string $mimeType): string
     {
         if (str_starts_with($mimeType, 'image/')) {
@@ -227,19 +242,16 @@ class MediaController extends Controller
         return 'document';
     }
 
-    // Show media details
     public function show(Media $media)
     {
         return view('media.show', compact('media'));
     }
 
-    // Edit media metadata
     public function edit(Media $media)
     {
         return view('media.edit', compact('media'));
     }
 
-    // Update media metadata
     public function update(Request $request, Media $media)
     {
         $validated = $request->validate([
@@ -255,17 +267,29 @@ class MediaController extends Controller
         return redirect()->route('media.show', $media)->with('success', 'Archivo actualizado exitosamente');
     }
 
-    // Delete media file and database record
+    public function usages(Media $media)
+    {
+        $usages = $media->findUsages();
+
+        return response()->json(['usages' => $usages]);
+    }
+
     public function destroy(Media $media)
     {
         if (!auth()->user()->can('media.delete') && !auth()->user()->can('media.manage')) {
             if (request()->expectsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Sin permisos para eliminar'
-                ], 403);
+                return response()->json(['success' => false, 'message' => 'Sin permisos para eliminar'], 403);
             }
             return redirect()->route('media.index')->with('error', 'Sin permisos');
+        }
+
+        $usages = $media->findUsages();
+        if (!empty($usages)) {
+            $message = 'No se puede eliminar: el archivo está en uso en ' . count($usages) . ' lugar(es).';
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $message, 'usages' => $usages], 422);
+            }
+            return redirect()->route('media.index')->with('error', $message);
         }
 
         try {
@@ -273,34 +297,103 @@ class MediaController extends Controller
             $media->delete();
 
             if (request()->expectsJson()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => "'{$filename}' eliminado exitosamente"
-                ]);
+                return response()->json(['success' => true, 'message' => "'{$filename}' movido a la papelera"]);
             }
 
-            return redirect()->route('media.index')->with('success', "'{$filename}' eliminado");
+            return redirect()->route('media.index')->with('success', "'{$filename}' movido a la papelera");
         } catch (\Exception $e) {
-            \Log::error('Media deletion failed: ' . $e->getMessage());
+            \Log::error('Media soft delete failed: ' . $e->getMessage());
 
             if (request()->expectsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Error al eliminar'
-                ], 500);
+                return response()->json(['success' => false, 'message' => 'Error al eliminar'], 500);
             }
 
             return redirect()->route('media.index')->with('error', 'Error al eliminar');
         }
     }
 
-    // Download media file
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) {
+            return response()->json(['success' => false, 'message' => 'No se seleccionaron archivos'], 422);
+        }
+
+        $blocked = [];
+        $deleted = 0;
+
+        foreach (Media::whereIn('id', $ids)->get() as $media) {
+            $usages = $media->findUsages();
+            if (!empty($usages)) {
+                $blocked[] = $media->filename;
+                continue;
+            }
+            $media->delete();
+            $deleted++;
+        }
+
+        if (!empty($blocked)) {
+            $message = "{$deleted} archivo(s) movido(s) a la papelera. Bloqueados por estar en uso: " . implode(', ', $blocked);
+            return response()->json(['success' => $deleted > 0, 'message' => $message, 'blocked' => $blocked]);
+        }
+
+        return response()->json(['success' => true, 'message' => "{$deleted} archivo(s) movido(s) a la papelera"]);
+    }
+
+    public function restore($id)
+    {
+        $media = Media::onlyTrashed()->findOrFail($id);
+        $media->restore();
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => "'{$media->filename}' restaurado"]);
+        }
+
+        return redirect()->route('media.trashed')->with('success', "'{$media->filename}' restaurado");
+    }
+
+    public function bulkRestore(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) {
+            return response()->json(['success' => false, 'message' => 'No se seleccionaron archivos'], 422);
+        }
+
+        $count = Media::onlyTrashed()->whereIn('id', $ids)->get()->each->restore()->count();
+
+        return response()->json(['success' => true, 'message' => "{$count} archivo(s) restaurado(s)"]);
+    }
+
+    public function forceDelete($id)
+    {
+        $media = Media::onlyTrashed()->findOrFail($id);
+        $filename = $media->filename;
+        $media->forceDelete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => "'{$filename}' eliminado permanentemente"]);
+        }
+
+        return redirect()->route('media.trashed')->with('success', "'{$filename}' eliminado permanentemente");
+    }
+
+    public function bulkForceDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) {
+            return response()->json(['success' => false, 'message' => 'No se seleccionaron archivos'], 422);
+        }
+
+        $count = Media::onlyTrashed()->whereIn('id', $ids)->get()->each->forceDelete()->count();
+
+        return response()->json(['success' => true, 'message' => "{$count} archivo(s) eliminado(s) permanentemente"]);
+    }
+
     public function download(Media $media)
     {
         return Storage::disk($media->disk)->download($media->path, $media->filename);
     }
 
-    // API endpoint for media library
     public function apiIndex(Request $request)
     {
         $perPage = (int) $request->input('per_page', 20);

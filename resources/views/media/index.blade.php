@@ -10,13 +10,22 @@
 @endsection
 
 @section('header-actions')
-    @canany(['media.upload', 'media.manage'])
-        <a href="{{ route('media.create') }}" class="btn-primary btn-sm btn-header-action">
-            <i class="ri-upload-2-line sm:mr-2"></i>
-            <span class="btn-text">Subir Archivos</span>
-            <span class="btn-tooltip">Subir Archivos</span>
-        </a>
-    @endcanany
+    <div class="flex items-center gap-2">
+        @canany(['media.delete', 'media.manage'])
+            <a href="{{ route('media.trashed') }}" class="btn-outline btn-sm btn-header-action">
+                <i class="ri-delete-bin-line sm:mr-2"></i>
+                <span class="btn-text">Papelera</span>
+                <span class="btn-tooltip">Papelera</span>
+            </a>
+        @endcanany
+        @canany(['media.upload', 'media.manage'])
+            <a href="{{ route('media.create') }}" class="btn-primary btn-sm btn-header-action">
+                <i class="ri-upload-2-line sm:mr-2"></i>
+                <span class="btn-text">Subir Archivos</span>
+                <span class="btn-tooltip">Subir Archivos</span>
+            </a>
+        @endcanany
+    </div>
 @endsection
 
 @section('content')
@@ -162,6 +171,14 @@
                                                 <span>Abrir</span>
                                             </a>
                                         @endif
+
+                                        @canany(['media.view', 'media.manage'])
+                                            <button type="button" data-check-usages data-media-id="{{ $item->id }}"
+                                                data-filename="{{ addslashes($item->filename) }}" class="dropdown-item">
+                                                <i class="ri-links-line"></i>
+                                                <span>Ver dónde se usa</span>
+                                            </button>
+                                        @endcanany
 
                                         @if ($canDelete)
                                             <button type="button" data-delete-media data-media-id="{{ $item->id }}"
