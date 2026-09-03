@@ -64,7 +64,18 @@ class MediaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'files' => 'required|array|min:1|max:10',
+            'files' => [
+                'required',
+                'array',
+                'min:1',
+                'max:10',
+                function ($attribute, $value, $fail) {
+                    $totalSize = array_sum(array_map(fn($file) => $file->getSize(), $value));
+                    if ($totalSize > 40 * 1024 * 1024) {
+                        $fail('El tamaño total de los archivos no puede superar 40MB por carga.');
+                    }
+                },
+            ],
             'files.*' => [
                 'required',
                 'file',
