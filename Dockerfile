@@ -42,6 +42,13 @@ RUN docker-php-ext-install \
     gd \
     zip
 
+RUN { \
+    echo 'upload_max_filesize = 45M'; \
+    echo 'post_max_size = 45M'; \
+    echo 'memory_limit = 256M'; \
+    echo 'max_execution_time = 120'; \
+} > /usr/local/etc/php/conf.d/uploads.ini
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
@@ -57,13 +64,7 @@ RUN cp -a /var/www/public /var/www/public-src
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public-src
-
-# Nota: ya NO se fija USER www-data aquí. El entrypoint necesita correr
-# como root para poder limpiar/sincronizar el volumen app_public sin
-# toparse con archivos de dueño distinto dejados por builds anteriores.
-# php-fpm baja privilegios internamente a través de su pool (www.conf,
-# que por defecto ya corre los workers como www-data).
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public-src /var/www/public
 
 EXPOSE 9000
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
