@@ -2,6 +2,10 @@
 
 @section('title', 'Medios')
 
+@push('styles')
+    @vite(['resources/css/views/media/usages-modal.css'])
+@endpush
+
 @section('page-title')
     <div class="flex items-center gap-3">
         <span>Medios</span>
