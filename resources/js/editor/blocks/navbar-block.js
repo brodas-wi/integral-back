@@ -60,20 +60,22 @@ const NAVBAR_STYLES = `
 .nb-icon-btn-gap{width:0.75rem;flex-shrink:0;}
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
 .nb-top{display:flex;align-items:stretch;justify-content:space-between;gap:1.5rem;position:relative;padding:0;}
-.nb-top-left{display:flex;align-items:center;padding:0.75rem 0 0.75rem 4rem;flex-shrink:0;}
-.nb-top-right{display:flex;align-items:center;justify-content:flex-end;gap:1.5rem;background:#003B71;border-radius:0 0 0 16px;padding:0.75rem 4rem 0.75rem 2rem;flex:1;}
+.nb-top-left{display:flex;align-items:center;padding:0.75rem 0 0.75rem 4rem;flex:0 0 22%;max-width:22%;box-sizing:border-box;}
+.nb-top-right{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;background:#003B71;border-radius:0 0 0 16px;padding:0.75rem 4rem 0.75rem 2rem;flex:1;box-sizing:border-box;}
+.nb-top-right-actions{display:flex;align-items:center;}
+.nb-top-right-cta{display:flex;align-items:center;gap:0.75rem;flex-shrink:0;}
 .nb-logo-link{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
 .nb-logo-link img{height:40px;width:auto;display:block;}
 .nb-logo-text{font-size:1.125rem;font-weight:800;color:#003B71;}
-.nb-top-actions{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:flex-end;}
+.nb-top-actions{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:flex-start;}
 .nb-top-action{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#fff;font-size:0.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;transition:background 0.15s,color 0.15s;white-space:nowrap;border:1.5px solid #fff;border-radius:9999px;padding:0.5rem 1rem;background:transparent;}
 .nb-top-action i{font-size:1.125rem;color:#fff;transition:color 0.15s;}
 .nb-top-action:hover{background:#fff;color:#003B71;}
 .nb-top-action:hover i{color:#003B71;}
-.nb-banking-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid #fff;transition:background 0.15s,color 0.15s;white-space:nowrap;font-family:inherit;flex-shrink:0;background:#fff;color:#003B71;}
-.nb-banking-btn:hover{background:#f0f4f8;}
-.nb-banking-blue{background:#fff;color:#003B71;}
-.nb-banking-orange{background:#fff;color:#003B71;}
+.nb-banking-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid #E97300;transition:background 0.15s,color 0.15s;white-space:nowrap;font-family:inherit;flex-shrink:0;background:#E97300;color:#fff;}
+.nb-banking-btn:hover{background:#fff;color:#E97300;}
+.nb-banking-blue{background:#E97300;color:#fff;border-color:#E97300;}
+.nb-banking-orange{background:#E97300;color:#fff;border-color:#E97300;}
 .nb-bottom{display:flex;align-items:stretch;padding:0 0 0 4rem;gap:0;position:relative;border-bottom:3px solid #E97300;justify-content:space-between;}
 .nb-nav-list{display:flex;align-items:center;gap:1.5rem;list-style:none;margin:0;padding:0;}
 .nb-bottom-right{display:flex;align-items:center;padding:0.75rem 4rem 0.75rem 2rem;flex-shrink:0;}
@@ -99,11 +101,11 @@ const NAVBAR_STYLES = `
 .nb-mega-cta-btn:hover{opacity:0.88;}
 .nb-mega-cta-btn i{font-size:1rem;line-height:1;}
 .nb-bottom-cta{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid #E97300;font-family:inherit;transition:background 0.15s,color 0.15s;text-align:center;word-break:break-word;white-space:normal;min-width:120px;max-width:180px;line-height:1.25;flex-shrink:0;align-self:center;background:#E97300;color:#fff;}
-.nb-bottom-cta:hover{background:#fff;color:#E97300;}
+.nb-bottom-cta:hover{background:#f0f4f8;color:#003B71;}
 .nb-bottom-cta-line1{letter-spacing:0.04em;}
 .nb-bottom-cta-line2{font-size:0.6875rem;font-weight:500;letter-spacing:0.06em;opacity:0.9;}
-.nb-cta-blue{background:#E97300;color:#fff;border-color:#E97300;}
-.nb-cta-orange{background:#E97300;color:#fff;border-color:#E97300;}
+.nb-cta-blue{background:#fff;color:#003B71;border-color:#fff;}
+.nb-cta-orange{background:#fff;color:#003B71;border-color:#fff;}
 .nb-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:0.5rem;border-radius:0.375rem;transition:background 0.15s;flex-shrink:0;}
 .nb-hamburger:hover{background:rgba(0,59,113,0.06);}
 .nb-hamburger span{display:block;width:24px;height:2px;background:#003B71;border-radius:2px;transition:all 0.25s;}
@@ -340,10 +342,10 @@ function buildNavbarHTML(data, uid) {
         })
         .join("");
     const mobileBankingHtml = [
-        bankingHtml,
         bottomCta.label
             ? `<a href="${bottomCta.href || "#"}" class="nb-bottom-cta ${bottomCtaColorClass}"><span class="nb-bottom-cta-line1">${bottomCta.label}</span>${bottomCtaLine2}</a>`
             : "",
+        bankingHtml,
     ]
         .filter(Boolean)
         .join("");
@@ -354,14 +356,18 @@ function buildNavbarHTML(data, uid) {
                 <div class="nb-logo">${logoHtml}</div>
             </div>
             <div class="nb-top-right">
-                <div class="nb-top-actions">${topActionsHtml}</div>
-                ${bankingHtml}
-                ${iconBtnHtml}
+                <div class="nb-top-right-actions">
+                    <div class="nb-top-actions">${topActionsHtml}</div>
+                </div>
+                <div class="nb-top-right-cta">
+                    ${bottomCtaHtml}
+                    ${iconBtnHtml}
+                </div>
             </div>
         </div>
         <div class="nb-bottom">
             <ul class="nb-nav-list">${navLinksHtml}</ul>
-            <div class="nb-bottom-right">${bottomCtaHtml}</div>
+            <div class="nb-bottom-right">${bankingHtml}</div>
         </div>
         <div class="nb-mobile-bar">
             ${logoHtml}
@@ -438,9 +444,9 @@ const DEFAULT_DATA = {
     ],
     bottom_cta: {
         label: "Programa Surge",
-        sublabel: "Formación Empresarial",
+        sublabel: "",
         href: "#",
-        color: "orange",
+        color: "blue",
     },
 };
 function showNavbarModal(editor, component) {
@@ -524,7 +530,7 @@ function showNavbarModal(editor, component) {
             .nb-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
             .nb-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .nb-btn-save:hover{background:#d97821;}
-            .nb-color-toggle{display:flex;gap:0.375rem;}
+            .nb-color-toggle{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;}
             .nb-color-opt{padding:0.375rem 0.875rem;border-radius:9999px;font-size:0.75rem;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.15s;font-family:inherit;}
             .nb-color-opt-blue{background:#003B71;color:#fff;}
             .nb-color-opt-orange{background:#E97300;color:#fff;}
@@ -1509,13 +1515,15 @@ function showNavbarModal(editor, component) {
     const iconBtnToggleWrap = modal.querySelector("#nb-iconbtn-toggle-wrap");
     const iconBtnSwitchId =
         "nb-iconbtn-switch-" + Math.random().toString(36).slice(2, 6);
+    iconBtnToggleWrap.style.display = "flex";
+    iconBtnToggleWrap.style.alignItems = "center";
     iconBtnToggleWrap.innerHTML = `
-        <label style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;">
-            <input type="checkbox" id="${iconBtnSwitchId}" ${iconBtnData.enabled !== false ? "checked" : ""} style="opacity:0;width:0;height:0;">
+        <label style="position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;margin:0;">
+            <input type="checkbox" id="${iconBtnSwitchId}" ${iconBtnData.enabled !== false ? "checked" : ""} style="opacity:0;width:0;height:0;position:absolute;">
             <span style="position:absolute;inset:0;background:${iconBtnData.enabled !== false ? "#003B71" : "#cbd5e1"};border-radius:9999px;transition:background 0.2s;cursor:pointer;"></span>
             <span style="position:absolute;width:16px;height:16px;left:${iconBtnData.enabled !== false ? "21px" : "3px"};top:3px;background:#fff;border-radius:50%;transition:left 0.2s;pointer-events:none;"></span>
         </label>
-        <span style="font-size:0.875rem;color:#475569;">${iconBtnData.enabled !== false ? "Botón activo" : "Botón desactivado"}</span>`;
+        <span style="font-size:0.875rem;color:#475569;line-height:1;">${iconBtnData.enabled !== false ? "Botón activo" : "Botón desactivado"}</span>`;
 
     const iconBtnSwitch = iconBtnToggleWrap.querySelector(
         `#${iconBtnSwitchId}`,
