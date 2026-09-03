@@ -48,9 +48,7 @@ class Media extends Model
     // Get full URL of the file
     public function getUrlAttribute(): string
     {
-        $path = $this->path;
-        $baseUrl = config('app.asset_url', config('app.url'));
-        return $baseUrl . '/storage/' . $path;
+        return '/storage/' . $this->path;
     }
 
     // Get dimensions string (e.g., "1920 × 1080")

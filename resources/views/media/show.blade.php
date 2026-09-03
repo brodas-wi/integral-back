@@ -116,7 +116,7 @@
                         <div class="flex items-center gap-2">
                             <input type="text" value="{{ $media->url }}" id="file-url" readonly
                                 class="flex-1 text-xs p-2 bg-gray-50 border border-gray-200 rounded">
-                            <button onclick="copyMediaUrl()"
+                            <button data-copy-media-url
                                 class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center"
                                 title="Copiar URL">
                                 <i class="ri-file-copy-line text-lg"></i>
@@ -150,7 +150,7 @@
                             <form id="delete-form" action="{{ route('media.destroy', $media) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" onclick="confirmDeleteMediaShow()" class="btn-danger w-full">
+                                <button type="button" data-delete-media-show class="btn-danger w-full">
                                     <i class="ri-delete-bin-line mr-2"></i>
                                     Eliminar
                                 </button>
@@ -162,3 +162,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    @vite('resources/js/views/media/show.js')
+@endpush

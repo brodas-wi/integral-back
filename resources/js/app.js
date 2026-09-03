@@ -15,17 +15,8 @@ import {
     deselectAllPermissions,
     initPermissionCheckboxes,
 } from "./modules/roles.js";
-import {
-    confirmDeleteMedia,
-    deleteMedia,
-    initMediaUpload,
-    removeMediaFile,
-    copyMediaUrl,
-    confirmDeleteMediaShow,
-} from "./modules/media.js";
 import { initProfileEdit } from "./modules/profile.js";
 
-// ── Global helpers exposed to all views ────────────────────────────────────
 window.toggleDropdown = toggleDropdown;
 
 window.confirmToggleStatus = confirmToggleStatus;
@@ -35,29 +26,17 @@ window.confirmDeleteRole = confirmDeleteRole;
 window.selectAllManagePermissions = selectAllManagePermissions;
 window.deselectAllPermissions = deselectAllPermissions;
 
-window.confirmDeleteMedia = confirmDeleteMedia;
-window.deleteMedia = deleteMedia;
-window.removeMediaFile = removeMediaFile;
-window.copyMediaUrl = copyMediaUrl;
-window.confirmDeleteMediaShow = confirmDeleteMediaShow;
-
 window.initProfileEdit = initProfileEdit;
 
-// ── DOMContentLoaded initializations ──────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector(".permission-checkbox")) {
         initPermissionCheckboxes();
-    }
-
-    if (document.getElementById("drop-zone")) {
-        initMediaUpload();
     }
 
     if (document.getElementById("toggleEditMode")) {
         initProfileEdit();
     }
 
-    // ── Announcement modal (public preview pages only) ─────────────────────
     const path = window.location.pathname;
 
     const isAdminRoute =
