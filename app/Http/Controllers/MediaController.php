@@ -122,14 +122,18 @@ class MediaController extends Controller
         $mimeType = $file->getMimeType();
         $size = $file->getSize();
         $type = $this->determineFileType($mimeType);
-        $extension = $file->getClientOriginalExtension();
-        $storedFilename = Str::uuid() . '.' . $extension;
 
         $width = null;
         $height = null;
         $finalSize = $size;
+        $finalMimeType = $mimeType;
+        $displayName = $originalName;
 
         if ($type === 'image' && $mimeType !== 'image/svg+xml') {
+            $storedFilename = Str::uuid() . '.webp';
+            $finalMimeType = 'image/webp';
+            $displayName = pathinfo($originalName, PATHINFO_FILENAME) . '.webp';
+
             try {
                 $image = Image::read($file);
                 $width = $image->width();
@@ -149,21 +153,7 @@ class MediaController extends Controller
                     mkdir($directory, 0755, true);
                 }
 
-                switch ($mimeType) {
-                    case 'image/jpeg':
-                    case 'image/jpg':
-                        $encoded = $image->toJpeg(quality: 85);
-                        break;
-                    case 'image/png':
-                        $encoded = $image->toPng();
-                        break;
-                    case 'image/webp':
-                        $encoded = $image->toWebp(quality: 85);
-                        break;
-                    default:
-                        $encoded = $image->toJpeg(quality: 85);
-                }
-
+                $encoded = $image->toWebp(quality: 90);
                 file_put_contents($fullPath, $encoded);
 
                 if (file_exists($fullPath)) {
@@ -171,34 +161,37 @@ class MediaController extends Controller
                 }
             } catch (\Exception $e) {
                 \Log::error('Image optimization failed: ' . $e->getMessage());
+                $storedFilename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $finalMimeType = $mimeType;
+                $displayName = $originalName;
                 $path = $file->storeAs('media/images', $storedFilename, 'public');
                 $finalSize = $size;
 
                 try {
                     list($width, $height) = getimagesize($file->getRealPath());
                 } catch (\Exception $dimError) {
-                    // Dimensions unavailable
                 }
+            }
+        } elseif ($type === 'image') {
+            $extension = $file->getClientOriginalExtension();
+            $storedFilename = Str::uuid() . '.' . $extension;
+            $path = $file->storeAs('media/images', $storedFilename, 'public');
+            try {
+                list($width, $height) = getimagesize($file->getRealPath());
+            } catch (\Exception $e) {
             }
         } else {
-            if ($type === 'image') {
-                $path = $file->storeAs('media/images', $storedFilename, 'public');
-                try {
-                    list($width, $height) = getimagesize($file->getRealPath());
-                } catch (\Exception $e) {
-                    // SVG dimensions might not be available
-                }
-            } else {
-                $directory = $type === 'pdf' ? 'media/pdfs' : 'media/documents';
-                $path = $file->storeAs($directory, $storedFilename, 'public');
-            }
+            $extension = $file->getClientOriginalExtension();
+            $storedFilename = Str::uuid() . '.' . $extension;
+            $directory = $type === 'pdf' ? 'media/pdfs' : 'media/documents';
+            $path = $file->storeAs($directory, $storedFilename, 'public');
         }
 
         return Media::create([
-            'filename' => $originalName,
+            'filename' => $displayName,
             'alt' => $alt,
             'stored_filename' => $storedFilename,
-            'mime_type' => $mimeType,
+            'mime_type' => $finalMimeType,
             'type' => $type,
             'size' => $finalSize,
             'path' => $path,
