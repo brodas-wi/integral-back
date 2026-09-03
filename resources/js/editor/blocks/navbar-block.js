@@ -68,8 +68,8 @@ const NAVBAR_STYLES = `
 .nb-logo-link img{height:40px;width:auto;display:block;}
 .nb-logo-text{font-size:1.125rem;font-weight:800;color:#003B71;}
 .nb-top-actions{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:flex-start;}
-.nb-top-action{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#fff;font-size:0.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;transition:background 0.15s,color 0.15s;white-space:nowrap;border:1.5px solid #fff;border-radius:9999px;padding:0.375rem 1rem;background:transparent;}
-.nb-top-action i{font-size:1.125rem;color:#fff;transition:color 0.15s;}
+.nb-top-action{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#fff;font-size:0.8125rem;font-weight:700;letter-spacing:normal;text-transform:uppercase;transition:background 0.15s,color 0.15s;white-space:nowrap;border:1.5px solid #fff;border-radius:9999px;padding:0.5rem 1.25rem;background:transparent;}
+.nb-top-action i{font-size:0.8125rem;color:#fff;transition:color 0.15s;}
 .nb-top-action:hover{background:#fff;color:#003B71;}
 .nb-top-action:hover i{color:#003B71;}
 .nb-banking-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid #E97300;transition:background 0.15s,color 0.15s;white-space:nowrap;font-family:inherit;flex-shrink:0;background:#E97300;color:#fff;}
