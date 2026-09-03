@@ -1,3 +1,12 @@
+const TYPE_LABELS = {
+    page: "Página",
+    navbar: "Navbar",
+    footer: "Footer",
+    banner: "Banner",
+    asset: "Activo Extraordinario",
+    news: "Noticia",
+};
+
 export function showUsagesModal(usages, customMessage = null) {
     const existing = document.getElementById("media-usages-modal");
     if (existing) existing.remove();
@@ -55,7 +64,7 @@ export function showUsagesModal(usages, customMessage = null) {
 
             const typeLabel = document.createElement("span");
             typeLabel.className = "mu-list-type";
-            typeLabel.textContent = `(${usage.type})`;
+            typeLabel.textContent = `(${TYPE_LABELS[usage.type] || usage.type})`;
 
             item.appendChild(link);
             item.appendChild(typeLabel);
