@@ -60,7 +60,7 @@ const NAVBAR_STYLES = `
 .nb-icon-btn-gap{width:0.75rem;flex-shrink:0;}
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
 .nb-top{display:flex;align-items:stretch;justify-content:space-between;gap:1.5rem;position:relative;padding:0;}
-.nb-top-left{display:flex;align-items:center;padding:0.75rem 0 0.75rem 4rem;flex:0 0 22%;max-width:22%;box-sizing:border-box;}
+.nb-top-left{display:flex;align-items:center;padding:0.75rem 0 0.75rem 4rem;flex:0 0 220px;width:220px;box-sizing:border-box;}
 .nb-top-right{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;background:#003B71;border-radius:0 0 0 16px;padding:0.75rem 4rem 0.75rem 2rem;flex:1;box-sizing:border-box;}
 .nb-top-right-actions{display:flex;align-items:center;}
 .nb-top-right-cta{display:flex;align-items:center;gap:0.75rem;flex-shrink:0;}
@@ -76,7 +76,7 @@ const NAVBAR_STYLES = `
 .nb-banking-btn:hover{background:#fff;color:#E97300;}
 .nb-banking-blue{background:#E97300;color:#fff;border-color:#E97300;}
 .nb-banking-orange{background:#E97300;color:#fff;border-color:#E97300;}
-.nb-bottom{display:flex;align-items:stretch;padding:0 0 0 4rem;gap:0;position:relative;border-bottom:3px solid #E97300;justify-content:space-between;}
+.nb-bottom{display:flex;align-items:stretch;padding:0 0 0 calc(4rem + 220px);gap:0;position:relative;border-bottom:3px solid #E97300;justify-content:space-between;}
 .nb-nav-list{display:flex;align-items:center;gap:1.5rem;list-style:none;margin:0;padding:0;}
 .nb-bottom-right{display:flex;align-items:center;padding:0.75rem 4rem 0.75rem 2rem;flex-shrink:0;}
 .nb-nav-item{position:static;}
@@ -140,7 +140,7 @@ const NAVBAR_STYLES = `
 @media(max-width:1280px){
     .nb-top-left{padding:0.75rem 0 0.75rem 2.5rem;}
     .nb-top-right{padding:0.75rem 2.5rem 0.75rem 2rem;}
-    .nb-bottom{padding:0 0 0 2.5rem;}
+    .nb-bottom{padding:0 0 0 calc(2.5rem + 220px);}
     .nb-bottom-right{padding:0.75rem 2.5rem 0.75rem 2rem;}
     .nb-mega{padding:2rem 2.5rem;}
 }
