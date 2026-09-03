@@ -72,15 +72,15 @@ const NAVBAR_STYLES = `
 .nb-top-action i{font-size:1.125rem;color:#fff;transition:color 0.15s;}
 .nb-top-action:hover{background:#fff;color:#003B71;}
 .nb-top-action:hover i{color:#003B71;}
-.nb-banking-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid #c96200;transition:background 0.15s,color 0.15s;white-space:nowrap;font-family:inherit;flex-shrink:0;background:#c96200;color:#fff;}
-.nb-banking-btn:hover{background:#fff;color:#c96200;}
-.nb-banking-blue{background:#c96200;color:#fff;border-color:#c96200;}
-.nb-banking-orange{background:#c96200;color:#fff;border-color:#c96200;}
+.nb-banking-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid #E97300;transition:background 0.15s,color 0.15s;white-space:nowrap;font-family:inherit;flex-shrink:0;background:#E97300;color:#fff;}
+.nb-banking-btn:hover{background:#c96200;border-color:#c96200;color:#fff;}
+.nb-banking-blue{background:#E97300;color:#fff;border-color:#E97300;}
+.nb-banking-orange{background:#E97300;color:#fff;border-color:#E97300;}
 .nb-bottom{display:flex;align-items:stretch;padding:0 0 0 calc(4rem + 220px);gap:0;position:relative;border-bottom:3px solid #E97300;justify-content:space-between;}
 .nb-nav-list{display:flex;align-items:center;gap:1.5rem;list-style:none;margin:0;padding:0;}
 .nb-bottom-right{display:flex;align-items:center;padding:0.75rem 4rem 0.75rem 2rem;flex-shrink:0;}
 .nb-nav-item{position:static;}
-.nb-nav-link{display:inline-flex;align-items:center;gap:0.375rem;padding:0.625rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;}
+.nb-nav-link{display:inline-flex;align-items:center;gap:0.375rem;padding:0.5rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;}
 .nb-nav-link:hover,.nb-nav-item.nb-open>.nb-nav-link{color:#003B71;}
 .nb-mega{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-top:2px solid #E97300;border-bottom:2px solid #E97300;box-shadow:0 8px 32px rgba(0,0,0,0.1);z-index:200;padding:1rem 4rem;}
 .nb-nav-item.nb-open>.nb-mega{display:block;}
