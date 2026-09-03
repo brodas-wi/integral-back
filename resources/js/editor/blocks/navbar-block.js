@@ -53,26 +53,30 @@ if(document.readyState==="loading"){
 })();`;
 const NAVBAR_STYLES = `
 <style>
-.nb-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border-radius:9999px;background:#ffffff;color:#E97300;border:none;cursor:pointer;text-decoration:none;flex-shrink:0;transition:box-shadow 0.2s;align-self:center;}
-.nb-icon-btn:hover{box-shadow:0 4px 14px rgba(0,0,0,0.15);}
-.nb-icon-btn i{font-size:1.25rem;color:#E97300;line-height:1;}
+.nb-icon-btn{display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border-radius:9999px;background:#ffffff;color:#E97300;border:1.5px solid transparent;cursor:pointer;text-decoration:none;flex-shrink:0;transition:background 0.15s,border-color 0.15s;align-self:center;}
+.nb-icon-btn:hover{background:#E97300;border-color:#E97300;}
+.nb-icon-btn i{font-size:1.25rem;color:#E97300;line-height:1;transition:color 0.15s;}
+.nb-icon-btn:hover i{color:#fff;}
 .nb-icon-btn-gap{width:0.75rem;flex-shrink:0;}
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
-.nb-top{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 4rem;gap:1.5rem;position:relative;}
-.nb-top::after{content:'';position:absolute;bottom:0;left:calc(4rem + 60px);right:calc(4rem + 180px);height:1px;background:#E97300;}
+.nb-top{display:flex;align-items:stretch;justify-content:space-between;gap:1.5rem;position:relative;padding:0;}
+.nb-top-left{display:flex;align-items:center;padding:0.75rem 0 0.75rem 4rem;flex-shrink:0;}
+.nb-top-right{display:flex;align-items:center;justify-content:flex-end;gap:1.5rem;background:#003B71;border-radius:0 0 0 16px;padding:0.75rem 4rem 0.75rem 2rem;flex:1;}
 .nb-logo-link{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
 .nb-logo-link img{height:40px;width:auto;display:block;}
 .nb-logo-text{font-size:1.125rem;font-weight:800;color:#003B71;}
-.nb-top-actions{display:flex;align-items:center;gap:1.5rem;flex:1;justify-content:center;}
-.nb-top-action{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#003B71;font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;transition:color 0.15s;white-space:nowrap;}
-.nb-top-action i{font-size:1.5rem;color:#E97300;}
-.nb-top-action:hover{color:#E97300;}
-.nb-banking-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.625rem 1.5rem;border-radius:9999px;font-size:0.9375rem;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:opacity 0.15s;white-space:nowrap;font-family:inherit;flex-shrink:0;}
-.nb-banking-btn:hover{opacity:0.88;}
-.nb-banking-blue{background:#003B71;color:#fff;}
-.nb-banking-orange{background:#E97300;color:#fff;}
-.nb-bottom{display:flex;align-items:stretch;padding:0 4rem;gap:0;position:relative;border-bottom:3px solid #E97300;}
-.nb-nav-list{display:flex;align-items:center;justify-content:space-between;gap:0;list-style:none;margin:0;padding:0;flex:1;}
+.nb-top-actions{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:flex-end;}
+.nb-top-action{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#fff;font-size:0.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;transition:background 0.15s,color 0.15s;white-space:nowrap;border:1.5px solid #fff;border-radius:9999px;padding:0.5rem 1rem;background:transparent;}
+.nb-top-action i{font-size:1.125rem;color:#fff;transition:color 0.15s;}
+.nb-top-action:hover{background:#fff;color:#003B71;}
+.nb-top-action:hover i{color:#003B71;}
+.nb-banking-btn{display:inline-flex;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid #fff;transition:background 0.15s,color 0.15s;white-space:nowrap;font-family:inherit;flex-shrink:0;background:#fff;color:#003B71;}
+.nb-banking-btn:hover{background:#f0f4f8;}
+.nb-banking-blue{background:#fff;color:#003B71;}
+.nb-banking-orange{background:#fff;color:#003B71;}
+.nb-bottom{display:flex;align-items:stretch;padding:0 0 0 4rem;gap:0;position:relative;border-bottom:3px solid #E97300;justify-content:space-between;}
+.nb-nav-list{display:flex;align-items:center;gap:1.5rem;list-style:none;margin:0;padding:0;}
+.nb-bottom-right{display:flex;align-items:center;padding:0.75rem 4rem 0.75rem 2rem;flex-shrink:0;}
 .nb-nav-item{position:static;}
 .nb-nav-link{display:inline-flex;align-items:center;gap:0.375rem;padding:0.875rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;}
 .nb-nav-link:hover,.nb-nav-item.nb-open>.nb-nav-link{color:#003B71;}
@@ -94,12 +98,12 @@ const NAVBAR_STYLES = `
 .nb-mega-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.375rem;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.875rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;}
 .nb-mega-cta-btn:hover{opacity:0.88;}
 .nb-mega-cta-btn i{font-size:1rem;line-height:1;}
-.nb-bottom-cta{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:opacity 0.15s;text-align:center;word-break:break-word;white-space:normal;min-width:120px;max-width:180px;line-height:1.25;margin-left:1.25rem;flex-shrink:0;align-self:center;margin-top:0.375rem;margin-bottom:0.375rem;}
-.nb-bottom-cta:hover{opacity:0.88;}
+.nb-bottom-cta{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.8125rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid #E97300;font-family:inherit;transition:background 0.15s,color 0.15s;text-align:center;word-break:break-word;white-space:normal;min-width:120px;max-width:180px;line-height:1.25;flex-shrink:0;align-self:center;background:#E97300;color:#fff;}
+.nb-bottom-cta:hover{background:#fff;color:#E97300;}
 .nb-bottom-cta-line1{letter-spacing:0.04em;}
-.nb-bottom-cta-line2{font-size:0.6875rem;font-weight:500;letter-spacing:0.06em;opacity:0.85;}
-.nb-cta-blue{background:#003B71;color:#fff;}
-.nb-cta-orange{background:#E97300;color:#fff;}
+.nb-bottom-cta-line2{font-size:0.6875rem;font-weight:500;letter-spacing:0.06em;opacity:0.9;}
+.nb-cta-blue{background:#E97300;color:#fff;border-color:#E97300;}
+.nb-cta-orange{background:#E97300;color:#fff;border-color:#E97300;}
 .nb-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:0.5rem;border-radius:0.375rem;transition:background 0.15s;flex-shrink:0;}
 .nb-hamburger:hover{background:rgba(0,59,113,0.06);}
 .nb-hamburger span{display:block;width:24px;height:2px;background:#003B71;border-radius:2px;transition:all 0.25s;}
@@ -132,8 +136,10 @@ const NAVBAR_STYLES = `
 .nb-mobile-sub-title{font-size:0.8rem;font-weight:700;color:#003B71;text-transform:uppercase;line-height:1.3;}
 .nb-mobile-sub-desc{font-size:0.7rem;color:#E97300;line-height:1.3;}
 @media(max-width:1280px){
-    .nb-top{padding:0.75rem 2.5rem;}
-    .nb-bottom{padding:0 2.5rem;}
+    .nb-top-left{padding:0.75rem 0 0.75rem 2.5rem;}
+    .nb-top-right{padding:0.75rem 2.5rem 0.75rem 2rem;}
+    .nb-bottom{padding:0 0 0 2.5rem;}
+    .nb-bottom-right{padding:0.75rem 2.5rem 0.75rem 2rem;}
     .nb-mega{padding:2rem 2.5rem;}
 }
 @media(max-width:992px){
@@ -344,15 +350,18 @@ function buildNavbarHTML(data, uid) {
 
     return `<div id="nb-root-${uid}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="nb-top">
-            <div class="nb-logo">${logoHtml}</div>
-            <div class="nb-top-actions">${topActionsHtml}</div>
-            ${bankingHtml}
+            <div class="nb-top-left">
+                <div class="nb-logo">${logoHtml}</div>
+            </div>
+            <div class="nb-top-right">
+                <div class="nb-top-actions">${topActionsHtml}</div>
+                ${bankingHtml}
+                ${iconBtnHtml}
+            </div>
         </div>
         <div class="nb-bottom">
             <ul class="nb-nav-list">${navLinksHtml}</ul>
-            ${bottomCtaHtml}
-            <div class="nb-icon-btn-gap"></div>
-            ${iconBtnHtml}
+            <div class="nb-bottom-right">${bottomCtaHtml}</div>
         </div>
         <div class="nb-mobile-bar">
             ${logoHtml}
