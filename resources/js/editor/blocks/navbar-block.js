@@ -116,13 +116,13 @@ const NAVBAR_STYLES = `
 .nb-mobile-menu::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:9999px;}
 .nb-mobile-menu::-webkit-scrollbar-thumb:hover{background:#94a3b8;}
 .nb-mobile-menu.nb-open{display:flex;}
-.nb-mobile-top-actions{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:0.25rem 1rem;border-bottom:1px solid #f1f5f9;padding:0.25rem 0.75rem;}
+.nb-mobile-top-actions{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:0.5rem;background:#003B71;padding:0.75rem;}
 .nb-mobile-top-action{display:flex;align-items:center;gap:0.5rem;padding:0.375rem 0.5rem;color:#003B71;text-decoration:none;font-size:0.8125rem;font-weight:600;white-space:nowrap;text-transform:uppercase;letter-spacing:0.04em;transition:color 0.15s;}
 .nb-mobile-top-action:hover{color:#E97300;}
 .nb-mobile-top-action i{font-size:1.125rem;color:#E97300;flex-shrink:0;}
-.nb-mobile-banking{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:0.625rem;padding:0.625rem 0.5rem;border-bottom:1px solid #f1f5f9;}
+.nb-mobile-banking{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:0.625rem;background:#003B71;padding:0.625rem 0.75rem;border-bottom:1px solid #f1f5f9;}
 .nb-mobile-banking .nb-banking-btn{width:auto;justify-content:center;}
-.nb-mobile-banking .nb-bottom-cta{margin-left:0;margin-top:0;margin-bottom:0;align-self:auto;}
+.nb-mobile-banking .nb-bottom-cta{margin-left:0;margin-top:0;margin-bottom:0;align-self:auto;border-bottom-color:rgba(255,255,255,0.15);}
 .nb-mobile-link{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0.5rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;border-bottom:1px solid #f1f5f9;cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;width:100%;text-align:left;font-family:inherit;transition:color 0.15s;}
 .nb-mobile-link:hover,.nb-mobile-item.nb-open>.nb-mobile-link{color:#003B71;}
 .nb-mobile-link i{color:#94a3b8;font-size:0.875rem;transition:transform 0.2s;}
