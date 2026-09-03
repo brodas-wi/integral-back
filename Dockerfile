@@ -23,7 +23,15 @@ RUN apk add --no-cache \
     unzip \
     oniguruma-dev \
     icu-dev \
-    libzip-dev
+    libzip-dev \
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    freetype-dev
+
+RUN docker-php-ext-configure gd \
+    --with-jpeg \
+    --with-webp \
+    --with-freetype
 
 RUN docker-php-ext-install \
     pdo_mysql \
