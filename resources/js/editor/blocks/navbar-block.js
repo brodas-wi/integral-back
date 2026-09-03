@@ -68,7 +68,7 @@ const NAVBAR_STYLES = `
 .nb-logo-link img{height:40px;width:auto;display:block;}
 .nb-logo-text{font-size:1.125rem;font-weight:800;color:#003B71;}
 .nb-top-actions{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:flex-start;}
-.nb-top-action{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#fff;font-size:0.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;transition:background 0.15s,color 0.15s;white-space:nowrap;border:1.5px solid #fff;border-radius:9999px;padding:0.5rem 1rem;background:transparent;}
+.nb-top-action{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#fff;font-size:0.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;transition:background 0.15s,color 0.15s;white-space:nowrap;border:1.5px solid #fff;border-radius:9999px;padding:0.375rem 1rem;background:transparent;}
 .nb-top-action i{font-size:1.125rem;color:#fff;transition:color 0.15s;}
 .nb-top-action:hover{background:#fff;color:#003B71;}
 .nb-top-action:hover i{color:#003B71;}
@@ -80,7 +80,7 @@ const NAVBAR_STYLES = `
 .nb-nav-list{display:flex;align-items:center;gap:1.5rem;list-style:none;margin:0;padding:0;}
 .nb-bottom-right{display:flex;align-items:center;padding:0.75rem 4rem 0.75rem 2rem;flex-shrink:0;}
 .nb-nav-item{position:static;}
-.nb-nav-link{display:inline-flex;align-items:center;gap:0.375rem;padding:0.875rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;}
+.nb-nav-link{display:inline-flex;align-items:center;gap:0.375rem;padding:0.625rem 1.125rem;color:#E97300;text-decoration:none;font-size:0.9375rem;font-weight:600;transition:color 0.15s;white-space:nowrap;cursor:pointer;background:none;border:none;font-family:inherit;}
 .nb-nav-link:hover,.nb-nav-item.nb-open>.nb-nav-link{color:#003B71;}
 .nb-mega{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-top:2px solid #E97300;border-bottom:2px solid #E97300;box-shadow:0 8px 32px rgba(0,0,0,0.1);z-index:200;padding:1rem 4rem;}
 .nb-nav-item.nb-open>.nb-mega{display:block;}
