@@ -209,7 +209,7 @@ function buildNavbarHTML(data, uid) {
     const logoHtml = `<a href="${logoHref}" class="nb-logo-link">${logoInner}</a>`;
     const topActionsHtml = (data.top_actions || [])
         .map((a) => {
-            const icon = a.icon ? `<i class="${a.icon}"></i>` : "";
+            const icon = a.icon && a.show_icon ? `<i class="${a.icon}"></i>` : "";
             return `<a href="${a.href || "#"}" class="nb-top-action">${icon}${a.label || ""}</a>`;
         })
         .join("");
@@ -302,7 +302,7 @@ function buildNavbarHTML(data, uid) {
         : "";
     const mobileTopActionsHtml = (data.top_actions || [])
         .map((a) => {
-            const icon = a.icon ? `<i class="${a.icon}"></i>` : "";
+            const icon = a.icon && a.show_icon ? `<i class="${a.icon}"></i>` : "";
             return `<a href="${a.href || "#"}" class="nb-mobile-top-action">${icon}${a.label || ""}</a>`;
         })
         .join("");
@@ -395,12 +395,13 @@ const DEFAULT_DATA = {
     logo_text: "Logo",
     logo_href: "/",
     top_actions: [
-        { label: "Contáctanos", href: "#", icon: "ri-phone-line" },
-        { label: "Sucursales", href: "#", icon: "ri-building-line" },
+        { label: "Contáctanos", href: "#", icon: "ri-phone-line", show_icon: false },
+        { label: "Sucursales", href: "#", icon: "ri-building-line", show_icon: false },
         {
             label: "Preguntas Frecuentes",
             href: "#",
             icon: "ri-question-answer-line",
+            show_icon: false,
         },
     ],
     banking_btn: { label: "Mi Banca Integral", href: "#", color: "blue" },
@@ -969,6 +970,7 @@ function showNavbarModal(editor, component) {
             card.dataset.dragIdx = idx;
 
             const iconClass = action.icon || "";
+            const showIconChecked = action.show_icon ? "checked" : "";
             card.innerHTML = `
                 <div class="nb-row">
                     <span class="nb-drag-handle"><i class="ri-draggable"></i></span>
@@ -982,7 +984,11 @@ function showNavbarModal(editor, component) {
                 </div>
                 <div style="position:relative;">
                     <input class="nb-input-sm nb-url-input" style="width:100%;box-sizing:border-box;" placeholder="URL o buscar página..." value="${action.href || "#"}" data-field="href">
-                </div>`;
+                </div>
+                <label style="display:flex;align-items:center;gap:0.375rem;font-size:0.75rem;color:#475569;cursor:pointer;">
+                    <input type="checkbox" class="nb-show-icon-toggle" ${showIconChecked}>
+                    Mostrar icono en el botón
+                </label>`;
             card.querySelector(".nb-pick-icon-btn").addEventListener(
                 "click",
                 () => {
@@ -1006,6 +1012,13 @@ function showNavbarModal(editor, component) {
                     action[input.dataset.field] = input.value;
                 });
             });
+
+            card.querySelector(".nb-show-icon-toggle").addEventListener(
+                "change",
+                (e) => {
+                    action.show_icon = e.target.checked;
+                },
+            );
 
             const urlInput = card.querySelector(".nb-url-input");
             if (urlInput) {
