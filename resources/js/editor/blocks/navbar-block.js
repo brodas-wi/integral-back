@@ -60,7 +60,7 @@ const NAVBAR_STYLES = `
 .nb-icon-btn-gap{width:0.75rem;flex-shrink:0;}
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
 .nb-top{display:flex;align-items:stretch;justify-content:space-between;gap:1.5rem;position:relative;padding:0;}
-.nb-top-left{display:flex;align-items:center;padding:0.75rem 0 0.75rem 4rem;flex:0 0 220px;width:220px;box-sizing:border-box;}
+.nb-top-left{display:flex;align-items:center;padding:0.75rem 0 0.75rem 4rem;flex:0 0 200px;width:200px;box-sizing:border-box;}
 .nb-top-right{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;background:#003B71;border-radius:0 0 0 16px;padding:0.75rem 4rem 0.75rem 2rem;flex:1;box-sizing:border-box;}
 .nb-top-right-actions{display:flex;align-items:center;}
 .nb-top-right-cta{display:flex;align-items:center;gap:0.75rem;flex-shrink:0;}
@@ -76,7 +76,7 @@ const NAVBAR_STYLES = `
 .nb-banking-btn:hover{background:#c96200;border-color:#c96200;color:#fff;}
 .nb-banking-blue{background:#E97300;color:#fff;border-color:#E97300;}
 .nb-banking-orange{background:#E97300;color:#fff;border-color:#E97300;}
-.nb-bottom{display:flex;align-items:stretch;padding:0 0 0 calc(4rem + 220px);gap:0;position:relative;border-bottom:3px solid #E97300;justify-content:space-between;}
+.nb-bottom{display:flex;align-items:stretch;padding:0 0 0 calc(4rem + 200px);gap:0;position:relative;border-bottom:3px solid #E97300;justify-content:space-between;}
 .nb-nav-list{display:flex;align-items:center;gap:1.5rem;list-style:none;margin:0;padding:0;}
 .nb-bottom-right{display:flex;align-items:center;padding:0.75rem 4rem 0.75rem 2rem;flex-shrink:0;}
 .nb-nav-item{position:static;}
@@ -106,9 +106,9 @@ const NAVBAR_STYLES = `
 .nb-bottom-cta-line2{font-size:0.6875rem;font-weight:500;letter-spacing:0.06em;opacity:0.9;}
 .nb-cta-blue{background:#fff;color:#003B71;border-color:#fff;}
 .nb-cta-orange{background:#fff;color:#003B71;border-color:#fff;}
-.nb-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:0.5rem;border-radius:0.375rem;transition:background 0.15s;flex-shrink:0;}
-.nb-hamburger:hover{background:rgba(0,59,113,0.06);}
-.nb-hamburger span{display:block;width:24px;height:2px;background:#003B71;border-radius:2px;transition:all 0.25s;}
+.nb-hamburger{display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:2.25rem;height:2.25rem;background:#E97300;border:1.5px solid #E97300;border-radius:9999px;cursor:pointer;padding:0;transition:background 0.15s,border-color 0.15s;flex-shrink:0;}
+.nb-hamburger:hover{background:#c96200;border-color:#c96200;}
+.nb-hamburger span{display:block;width:16px;height:2px;background:#fff;border-radius:2px;transition:all 0.25s;}
 .nb-mobile-bar{display:none;align-items:center;justify-content:space-between;padding:0.625rem 1.25rem;border-bottom:3px solid #E97300;}
 .nb-mobile-menu{display:none;flex-direction:column;background:#fff;border-top:1px solid #f1f5f9;border-bottom:2px solid #E97300;padding:0.75rem 1.25rem;gap:0;max-height:calc(100vh - 64px);overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;}
 .nb-mobile-menu::-webkit-scrollbar{width:4px;}
@@ -140,7 +140,7 @@ const NAVBAR_STYLES = `
 @media(max-width:1280px){
     .nb-top-left{padding:0.75rem 0 0.75rem 2.5rem;}
     .nb-top-right{padding:0.75rem 2.5rem 0.75rem 2rem;}
-    .nb-bottom{padding:0 0 0 calc(2.5rem + 220px);}
+    .nb-bottom{padding:0 0 0 calc(2.5rem + 200px);}
     .nb-bottom-right{padding:0.75rem 2.5rem 0.75rem 2rem;}
     .nb-mega{padding:2rem 2.5rem;}
 }
