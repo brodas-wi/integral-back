@@ -1,7 +1,5 @@
 import { openMediaPicker } from "@/editor/media-picker";
 
-const TEMP_INTERNAL_URL_PREFIX = "/bancaintegral";
-
 const FOOTER_STYLES = `
 <style>
 .ft-wrapper {
@@ -133,7 +131,7 @@ function buildFooterHTML(data) {
 }
 
 function createFooterScript() {
-    return function () {};
+    return function () { };
 }
 
 function showFooterModal(editor, component) {
@@ -693,7 +691,7 @@ function showFooterModal(editor, component) {
                 );
                 li.addEventListener("mousedown", (e) => {
                     e.preventDefault();
-                    input.value = `${TEMP_INTERNAL_URL_PREFIX}/${page.slug}`;
+                    input.value = `/${page.slug}`;
                     input.dispatchEvent(new Event("input"));
                     dropdown.style.display = "none";
                 });

@@ -1,7 +1,5 @@
 import { initMediaPicker } from "@/utils/media-picker.js";
 
-const TEMP_INTERNAL_URL_PREFIX = "/bancaintegral";
-
 document.addEventListener("DOMContentLoaded", () => {
     initAssetImagePicker();
     initCategoryAutocomplete();
@@ -132,12 +130,11 @@ function initLinkAutocomplete() {
     if (!input || !searchUrl) return;
 
     attachAutocomplete(input, searchUrl, {
-        prefix: TEMP_INTERNAL_URL_PREFIX,
         formatOption: (page, q, highlight) => `
             <span style="font-size:0.8rem;font-weight:600;color:#1e293b;display:block;">${highlight(page.title, q)}</span>
             <span style="font-size:0.7rem;color:#64748b;">/${page.slug}</span>`,
-        onSelect: (page, inputEl, prefix) => {
-            inputEl.value = `${prefix}/${page.slug}`;
+        onSelect: (page, inputEl) => {
+            inputEl.value = `/${page.slug}`;
         },
     });
 }
