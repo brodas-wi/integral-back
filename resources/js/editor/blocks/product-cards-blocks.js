@@ -3,42 +3,45 @@ import { assetUrl } from "@/utils/url.js";
 
 const PC_CAROUSEL_SCRIPT = function () {
     (function () {
-        function getPageWidth(wrap) {
-            var firstPage = wrap.querySelector(".pc-page");
-            return firstPage ? firstPage.getBoundingClientRect().width + 24 : wrap.clientWidth;
+        var SWIPE_THRESHOLD = 60;
+
+        function isEditorContext() {
+            return (
+                !!window.__gjseditor ||
+                document.documentElement.hasAttribute("data-gjs-canvas")
+            );
         }
 
-        function getPageCount(wrap) {
-            return wrap.querySelectorAll(".pc-page").length;
+        function getPages(section) {
+            return Array.prototype.slice.call(
+                section.querySelectorAll(".pc-page"),
+            );
         }
 
-        function getCurrentPage(wrap) {
-            var pageWidth = getPageWidth(wrap);
-            if (!pageWidth) return 0;
-            return Math.round(wrap.scrollLeft / pageWidth);
+        function getActiveIndex(pages) {
+            for (var i = 0; i < pages.length; i++) {
+                if (pages[i].classList.contains("pc-page-active")) return i;
+            }
+            return 0;
         }
 
-        function updateDots(section, wrap) {
+        function updateDots(section, index) {
             var dotsWrap = section.querySelector(".pc-dots");
             if (!dotsWrap) return;
-            var current = getCurrentPage(wrap);
             dotsWrap.querySelectorAll(".pc-dot").forEach(function (dot, i) {
-                dot.classList.toggle("pc-dot-active", i === current);
+                dot.classList.toggle("pc-dot-active", i === index);
             });
         }
 
-        function goToPage(wrap, index) {
-            var pageWidth = getPageWidth(wrap);
-            wrap.scrollTo({ left: pageWidth * index, behavior: "smooth" });
-        }
-
-        function snapToNearestPage(wrap) {
-            var pageWidth = getPageWidth(wrap);
-            if (!pageWidth) return;
-            var target = Math.round(wrap.scrollLeft / pageWidth);
-            var max = getPageCount(wrap) - 1;
-            target = Math.max(0, Math.min(target, max));
-            wrap.scrollTo({ left: pageWidth * target, behavior: "smooth" });
+        function goToPage(section, index) {
+            var pages = getPages(section);
+            var max = pages.length - 1;
+            index = Math.max(0, Math.min(index, max));
+            var current = getActiveIndex(pages);
+            if (index === current) return;
+            pages[current].classList.remove("pc-page-active");
+            pages[index].classList.add("pc-page-active");
+            updateDots(section, index);
         }
 
         function initCarousel(section) {
@@ -47,57 +50,49 @@ const PC_CAROUSEL_SCRIPT = function () {
             var wrap = section.querySelector(".pc-carousel-wrap");
             if (!wrap) return;
 
+            if (isEditorContext()) return;
+
             wrap.querySelectorAll("img").forEach(function (img) {
                 img.setAttribute("draggable", "false");
             });
 
-            var scrollDebounce = null;
-            wrap.addEventListener("scroll", function () {
-                updateDots(section, wrap);
-                clearTimeout(scrollDebounce);
-                scrollDebounce = setTimeout(function () {
-                    updateDots(section, wrap);
-                }, 100);
-            });
-
             section.querySelectorAll(".pc-dot").forEach(function (dot, i) {
                 dot.addEventListener("click", function () {
-                    goToPage(wrap, i);
+                    goToPage(section, i);
                 });
             });
 
             var isDragging = false;
             var startX = 0;
-            var startScrollLeft = 0;
             var moved = false;
-            var snapTimeout = null;
 
             wrap.addEventListener("mousedown", function (e) {
                 if (e.button !== 0) return;
                 isDragging = true;
                 moved = false;
                 startX = e.clientX;
-                startScrollLeft = wrap.scrollLeft;
                 wrap.style.cursor = "grabbing";
-                wrap.style.scrollSnapType = "none";
-                e.preventDefault();
             });
 
             document.addEventListener("mousemove", function (e) {
                 if (!isDragging) return;
-                var delta = startX - e.clientX;
-                if (Math.abs(delta) > 3) moved = true;
-                wrap.scrollLeft = startScrollLeft + delta;
+                if (Math.abs(startX - e.clientX) > 5) moved = true;
             });
 
             document.addEventListener("mouseup", function (e) {
                 if (!isDragging) return;
                 isDragging = false;
                 wrap.style.cursor = "grab";
-                wrap.style.scrollSnapType = "";
                 if (moved) {
                     e.stopPropagation();
-                    snapToNearestPage(wrap);
+                    var delta = startX - e.clientX;
+                    var pages = getPages(section);
+                    var current = getActiveIndex(pages);
+                    if (delta > SWIPE_THRESHOLD) {
+                        goToPage(section, current + 1);
+                    } else if (delta < -SWIPE_THRESHOLD) {
+                        goToPage(section, current - 1);
+                    }
                 }
             });
 
@@ -114,16 +109,13 @@ const PC_CAROUSEL_SCRIPT = function () {
             );
 
             var touchStartX = 0;
-            var touchStartScroll = 0;
             var touchMoved = false;
 
             wrap.addEventListener(
                 "touchstart",
                 function (e) {
                     touchStartX = e.touches[0].clientX;
-                    touchStartScroll = wrap.scrollLeft;
                     touchMoved = false;
-                    wrap.style.scrollSnapType = "none";
                 },
                 { passive: true },
             );
@@ -131,32 +123,31 @@ const PC_CAROUSEL_SCRIPT = function () {
             wrap.addEventListener(
                 "touchmove",
                 function (e) {
-                    var cx = e.touches[0].clientX;
-                    if (Math.abs(touchStartX - cx) > 3) touchMoved = true;
-                    var delta = touchStartX - cx;
-                    wrap.scrollLeft = touchStartScroll + delta;
+                    if (Math.abs(touchStartX - e.touches[0].clientX) > 5) {
+                        touchMoved = true;
+                    }
                 },
                 { passive: true },
             );
 
             wrap.addEventListener(
                 "touchend",
-                function () {
-                    wrap.style.scrollSnapType = "";
-                    if (touchMoved) snapToNearestPage(wrap);
+                function (e) {
+                    if (!touchMoved) return;
+                    var endX = e.changedTouches[0].clientX;
+                    var delta = touchStartX - endX;
+                    var pages = getPages(section);
+                    var current = getActiveIndex(pages);
+                    if (delta > SWIPE_THRESHOLD) {
+                        goToPage(section, current + 1);
+                    } else if (delta < -SWIPE_THRESHOLD) {
+                        goToPage(section, current - 1);
+                    }
                 },
                 { passive: true },
             );
 
-            updateDots(section, wrap);
-
-            window.addEventListener("resize", function () {
-                clearTimeout(snapTimeout);
-                snapTimeout = setTimeout(function () {
-                    snapToNearestPage(wrap);
-                    updateDots(section, wrap);
-                }, 200);
-            });
+            updateDots(section, getActiveIndex(getPages(section)));
         }
 
         function init() {
@@ -177,10 +168,10 @@ const PRODUCT_CARDS_RUNTIME_SCRIPT = `(${PC_CAROUSEL_SCRIPT.toString()})();`;
 
 const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
-.pc-carousel-wrap{position:relative;overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;display:flex;}
-.pc-carousel-wrap::-webkit-scrollbar{display:none;}
-.pc-page{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;padding-right:1.5rem;box-sizing:border-box;}
-.pc-page:last-child{padding-right:0;}
+.pc-carousel-wrap{position:relative;width:100%;cursor:grab;overflow:hidden;}
+.pc-carousel-track{position:relative;width:100%;}
+.pc-page{display:none;grid-template-columns:repeat(4,minmax(240px,1fr));gap:1.5rem;width:100%;box-sizing:border-box;opacity:0;transition:opacity .35s ease;}
+.pc-page.pc-page-active{display:grid;opacity:1;position:relative;}
 .pc-card{display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;min-width:0;user-select:none;}
 .pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
 .pc-card-img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
@@ -198,9 +189,10 @@ const PRODUCT_CARDS_CSS = `
 .pc-more-btn:hover{background:#c96200;}
 .pc-section-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0 0 0.75rem;text-align:center;}
 .pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
-@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}.pc-page{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}}
-@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-page{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}}
-@media(max-width:640px){.pc-page{grid-template-columns:minmax(240px,1fr);}}`;
+@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}.pc-page{grid-template-columns:repeat(3,minmax(220px,1fr));}}
+@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-page{grid-template-columns:repeat(2,minmax(200px,1fr));}}
+@media(max-width:640px){.pc-page{grid-template-columns:minmax(240px,1fr);}}
+.pc-carousel-wrap{min-height:1px;}`;
 
 function buildCardHTML(card) {
     const img = card.img || assetUrl("images/placeholder.svg");
@@ -231,8 +223,8 @@ function buildProductCardsHTML(data) {
     const pages = chunk(cards, 4);
     const pagesHTML = pages
         .map(
-            (pageCards) =>
-                `<div class="pc-page">${pageCards.map(buildCardHTML).join("")}</div>`,
+            (pageCards, i) =>
+                `<div class="pc-page${i === 0 ? " pc-page-active" : ""}">${pageCards.map(buildCardHTML).join("")}</div>`,
         )
         .join("");
     const dotsHTML = pages
@@ -248,7 +240,7 @@ function buildProductCardsHTML(data) {
     const moreBtnHTML = showMore
         ? `<div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div>`
         : "";
-    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap">${pagesHTML}</div>${navHTML}${moreBtnHTML}</section>`;
+    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-carousel-track">${pagesHTML}</div></div>${navHTML}${moreBtnHTML}</section>`;
 }
 const DEFAULT_DATA = {
     heading: "Créditos",
