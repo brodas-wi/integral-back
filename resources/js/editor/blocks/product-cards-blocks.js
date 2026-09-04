@@ -39,9 +39,17 @@ const PC_CAROUSEL_SCRIPT = function () {
             index = Math.max(0, Math.min(index, max));
             var current = getActiveIndex(pages);
             if (index === current) return;
+            var wrap = section.querySelector(".pc-carousel-wrap");
+            var track = section.querySelector(".pc-carousel-track");
+            if (wrap && track) {
+                wrap.style.minHeight = track.getBoundingClientRect().height + "px";
+            }
             pages[current].classList.remove("pc-page-active");
             pages[index].classList.add("pc-page-active");
             updateDots(section, index);
+            setTimeout(function () {
+                if (wrap) wrap.style.minHeight = "";
+            }, 380);
         }
 
         function initCarousel(section) {
@@ -170,8 +178,8 @@ const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .pc-carousel-wrap{position:relative;width:100%;cursor:grab;overflow:hidden;}
 .pc-carousel-track{position:relative;width:100%;}
-.pc-page{display:none;grid-template-columns:repeat(4,minmax(240px,1fr));gap:1.5rem;width:100%;box-sizing:border-box;opacity:0;transition:opacity .35s ease;}
-.pc-page.pc-page-active{display:grid;opacity:1;position:relative;}
+.pc-page{grid-template-columns:repeat(4,minmax(240px,1fr));gap:1.5rem;width:100%;box-sizing:border-box;display:grid;opacity:0;visibility:hidden;position:absolute;top:0;left:0;transition:opacity .35s ease;pointer-events:none;}
+.pc-page.pc-page-active{opacity:1;visibility:visible;position:relative;pointer-events:auto;}
 .pc-card{display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;min-width:0;user-select:none;}
 .pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
 .pc-card-img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
@@ -335,6 +343,23 @@ function showProductCardsModal(editor, component) {
             .pc-section-title{font-size:0.75rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.05em;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;margin-bottom:0.75rem;}
             .pc-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
             .pc-config-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;}
+            .pc-btn-backup{padding:0.5rem 1rem;background:#fff;border:2px solid #003B71;border-radius:0.5rem;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;}
+            .pc-btn-backup:hover{background:#003B71;color:#fff;}
+            .pc-btn-restore{padding:0.5rem 1rem;background:#fff;border:2px solid #0d9488;border-radius:0.5rem;color:#0d9488;font-size:0.8125rem;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;user-select:none;}
+            .pc-btn-restore:hover{background:#0d9488;color:#fff;}
+            .pc-confirm-overlay{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);padding:1rem;}
+            .pc-confirm-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(15,23,42,0.18);font-family:'Inter',sans-serif;overflow:hidden;border:1px solid #e2e8f0;}
+            .pc-confirm-header{padding:1rem 1.25rem 0.75rem;display:flex;align-items:center;gap:0.625rem;border-bottom:1px solid #f1f5f9;}
+            .pc-confirm-header i{font-size:1.25rem;color:#E97300;}
+            .pc-confirm-header h3{margin:0;font-size:0.9375rem;font-weight:700;color:#0f172a;}
+            .pc-confirm-body{padding:1rem 1.25rem;}
+            .pc-confirm-body p{margin:0 0 0.5rem;font-size:0.875rem;color:#475569;line-height:1.5;}
+            .pc-confirm-filename{display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;background:#f1f5f9;border-radius:0.375rem;font-size:0.8rem;font-weight:600;color:#003B71;margin-top:0.25rem;}
+            .pc-confirm-footer{padding:0.75rem 1.25rem 1rem;display:flex;gap:0.625rem;justify-content:flex-end;background:#f8fafc;border-top:1px solid #f1f5f9;}
+            .pc-confirm-cancel{padding:0.5rem 1.125rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .pc-confirm-cancel:hover{background:#f1f5f9;}
+            .pc-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .pc-confirm-ok:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
     }
@@ -418,6 +443,10 @@ function showProductCardsModal(editor, component) {
         </div>
         <div class="pc-modal-footer">
             <button id="pc-modal-cancel" class="pc-btn-cancel">Cancelar</button>
+            <div style="display:flex;gap:0.5rem;margin-right:auto;">
+                <button id="pc-modal-backup" class="pc-btn-backup" title="Descargar configuración como JSON"><i class="ri-download-2-line"></i> Respaldar</button>
+                <label id="pc-modal-restore-label" class="pc-btn-restore" title="Restaurar configuración desde JSON" style="cursor:pointer;"><i class="ri-upload-2-line"></i> Restaurar<input id="pc-modal-restore-input" type="file" accept=".json,application/json" style="display:none;"></label>
+            </div>
             <button id="pc-modal-save" class="pc-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
         </div>`;
 
@@ -542,6 +571,98 @@ function showProductCardsModal(editor, component) {
             block: "nearest",
         });
     });
+
+    modal.querySelector("#pc-modal-backup").addEventListener("click", () => {
+        const snapshot = {
+            heading: modal.querySelector("#pc-heading").value.trim(),
+            subheading: modal.querySelector("#pc-subheading").value.trim(),
+            show_more: modal.querySelector("#pc-show-more").checked,
+            more_label: modal.querySelector("#pc-more-label").value.trim(),
+            more_href: modal.querySelector("#pc-more-href").value.trim() || "#",
+            cards: JSON.parse(JSON.stringify(data.cards)),
+        };
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `product-cards-backup-${ts}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    });
+
+    modal.querySelector("#pc-modal-restore-input").addEventListener(
+        "change",
+        (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                let parsed;
+                try {
+                    parsed = JSON.parse(ev.target.result);
+                } catch {
+                    const errOverlay = document.createElement("div");
+                    errOverlay.className = "pc-confirm-overlay";
+                    errOverlay.innerHTML = `<div class="pc-confirm-modal"><div class="pc-confirm-header"><i class="ri-error-warning-line" style="color:#ef4444;"></i><h3>Archivo inválido</h3></div><div class="pc-confirm-body"><p>El archivo seleccionado no es un JSON válido.</p></div><div class="pc-confirm-footer"><button class="pc-confirm-ok" style="background:#ef4444;">Cerrar</button></div></div>`;
+                    document.body.appendChild(errOverlay);
+                    errOverlay.querySelector(".pc-confirm-ok").onclick = () =>
+                        errOverlay.remove();
+                    e.target.value = "";
+                    return;
+                }
+                const confirmOverlay = document.createElement("div");
+                confirmOverlay.className = "pc-confirm-overlay";
+                confirmOverlay.innerHTML = `
+                    <div class="pc-confirm-modal">
+                        <div class="pc-confirm-header">
+                            <i class="ri-refresh-line"></i>
+                            <h3>Restaurar configuración</h3>
+                        </div>
+                        <div class="pc-confirm-body">
+                            <p>¿Deseas restaurar la configuración de esta sección desde el archivo de respaldo?</p>
+                            <p>Esta acción reemplazará la configuración actual del formulario.</p>
+                            <span class="pc-confirm-filename"><i class="ri-file-code-line"></i>${file.name}</span>
+                        </div>
+                        <div class="pc-confirm-footer">
+                            <button class="pc-confirm-cancel">Cancelar</button>
+                            <button class="pc-confirm-ok"><i class="ri-check-line"></i> Sí, restaurar</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(confirmOverlay);
+                confirmOverlay.querySelector(".pc-confirm-cancel").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                };
+                confirmOverlay.querySelector(".pc-confirm-ok").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                    const restored = {
+                        heading: parsed.heading ?? DEFAULT_DATA.heading,
+                        subheading: parsed.subheading ?? DEFAULT_DATA.subheading,
+                        more_href: parsed.more_href ?? DEFAULT_DATA.more_href,
+                        more_label: parsed.more_label ?? DEFAULT_DATA.more_label,
+                        show_more: parsed.show_more ?? true,
+                        cards: JSON.parse(
+                            JSON.stringify(parsed.cards ?? DEFAULT_DATA.cards),
+                        ),
+                    };
+                    component.addAttributes({
+                        "data-product-cards-config": JSON.stringify(restored),
+                    });
+                    component.components(buildProductCardsHTML(restored));
+                    setTimeout(() => reinitCarouselInCanvas(editor), 300);
+                    overlay.remove();
+                    showProductCardsModal(editor, component);
+                };
+            };
+            reader.readAsText(file);
+        },
+    );
 
     const close = () => overlay.remove();
     modal.querySelector("#pc-modal-close").addEventListener("click", close);
