@@ -32,6 +32,7 @@ const HERO_BANNER_STYLES = `
 .hb-stripe{position:absolute;left:0;right:0;bottom:0;width:100%;height:16px;background:#E97300;z-index:5;}
 @media(max-width:992px){
 .hb-content{padding:3rem 2.5rem;max-width:100%;}
+.hb-box{width:100%;box-sizing:border-box;}
 .hb-badge{font-size:1.875rem;}
 }
 @media(max-width:640px){
