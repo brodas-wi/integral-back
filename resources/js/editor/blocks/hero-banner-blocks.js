@@ -347,17 +347,14 @@ function showHeroBannerModal(editor, component) {
 }
 
 function purgeHeroBannerCssRules(editor) {
-    const hbClasses = [
-        "hb-section", "hb-bg", "hb-content", "hb-box", "hb-box-inner",
-        "hb-badge", "hb-subtitle", "hb-buttons", "hb-btn", "hb-btn-primary",
-        "hb-btn-secondary", "hb-stripe",
-    ];
     const css = editor.Css;
     if (!css) return;
-    hbClasses.forEach((cls) => {
-        const rules = css.getRules(`.${cls}`);
-        rules.forEach((rule) => css.remove(rule));
+    const allRules = css.getAll();
+    const toRemove = allRules.filter((rule) => {
+        const selectors = rule.getSelectorsString?.() || "";
+        return /(^|[\s.#>+~])hb-[a-z-]+/.test(selectors);
     });
+    toRemove.forEach((rule) => css.remove(rule));
 }
 
 export function initializeHeroBannerBlock(editor) {
@@ -439,6 +436,12 @@ export function initializeHeroBannerBlock(editor) {
             type: componentType,
             attributes: { "data-gjs-type": componentType },
         },
+    });
+
+    editor.on("block:drag:stop", (component) => {
+        if (component?.getAttributes?.()["data-gjs-type"] === componentType) {
+            purgeHeroBannerCssRules(editor);
+        }
     });
 
     injectHeroBannerEditorStyles(editor, componentType);
