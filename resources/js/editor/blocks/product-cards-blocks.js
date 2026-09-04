@@ -12,6 +12,21 @@ const PC_CAROUSEL_SCRIPT = function () {
             );
         }
 
+        function cardsPerGroup(width) {
+            if (width >= 1280) return 4;
+            if (width >= 992) return 3;
+            if (width >= 640) return 2;
+            return 1;
+        }
+
+        function chunk(arr, size) {
+            var out = [];
+            for (var i = 0; i < arr.length; i += size) {
+                out.push(arr.slice(i, i + size));
+            }
+            return out.length ? out : [[]];
+        }
+
         function getPages(section) {
             return Array.prototype.slice.call(
                 section.querySelectorAll(".pc-page"),
@@ -30,6 +45,14 @@ const PC_CAROUSEL_SCRIPT = function () {
             if (!dotsWrap) return;
             dotsWrap.querySelectorAll(".pc-dot").forEach(function (dot, i) {
                 dot.classList.toggle("pc-dot-active", i === index);
+            });
+        }
+
+        function bindDots(section) {
+            section.querySelectorAll(".pc-dot").forEach(function (dot, i) {
+                dot.addEventListener("click", function () {
+                    goToPage(section, i);
+                });
             });
         }
 
@@ -52,6 +75,59 @@ const PC_CAROUSEL_SCRIPT = function () {
             }, 380);
         }
 
+        function rebuildGroups(section) {
+            var wrap = section.querySelector(".pc-carousel-wrap");
+            var track = section.querySelector(".pc-carousel-track");
+            var navRow = section.querySelector(".pc-nav-row");
+            var dotsWrap = section.querySelector(".pc-dots");
+            if (!wrap || !track) return;
+
+            if (!section.__pcAllCards) {
+                section.__pcAllCards = Array.prototype.slice.call(
+                    track.querySelectorAll(".pc-card"),
+                );
+            }
+            var allCards = section.__pcAllCards;
+            if (!allCards.length) return;
+
+            var perGroup = cardsPerGroup(wrap.clientWidth || window.innerWidth);
+            if (section.__pcPerGroup === perGroup) return;
+            section.__pcPerGroup = perGroup;
+
+            var groups = chunk(allCards, perGroup);
+
+            track.classList.remove("pc-cards-source");
+            track.innerHTML = "";
+            groups.forEach(function (groupCards, i) {
+                var page = document.createElement("div");
+                page.className = "pc-page" + (i === 0 ? " pc-page-active" : "");
+                page.style.gridTemplateColumns =
+                    "repeat(" + perGroup + ",minmax(240px,1fr))";
+                groupCards.forEach(function (card) {
+                    page.appendChild(card);
+                });
+                track.appendChild(page);
+            });
+
+            if (dotsWrap) {
+                dotsWrap.innerHTML = groups
+                    .map(function (_, i) {
+                        return (
+                            '<button type="button" class="pc-dot' +
+                            (i === 0 ? " pc-dot-active" : "") +
+                            '" aria-label="Ir a la página ' +
+                            (i + 1) +
+                            '"></button>'
+                        );
+                    })
+                    .join("");
+                bindDots(section);
+            }
+            if (navRow) {
+                navRow.style.display = groups.length > 1 ? "flex" : "none";
+            }
+        }
+
         function initCarousel(section) {
             if (!section || section.__pcInit) return;
             section.__pcInit = true;
@@ -64,10 +140,14 @@ const PC_CAROUSEL_SCRIPT = function () {
                 img.setAttribute("draggable", "false");
             });
 
-            section.querySelectorAll(".pc-dot").forEach(function (dot, i) {
-                dot.addEventListener("click", function () {
-                    goToPage(section, i);
-                });
+            rebuildGroups(section);
+
+            var resizeTimeout = null;
+            window.addEventListener("resize", function () {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function () {
+                    rebuildGroups(section);
+                }, 150);
             });
 
             var isDragging = false;
@@ -154,13 +234,13 @@ const PC_CAROUSEL_SCRIPT = function () {
                 },
                 { passive: true },
             );
-
-            updateDots(section, getActiveIndex(getPages(section)));
         }
 
         function init() {
             document.querySelectorAll(".pc-section").forEach(function (s) {
                 delete s.__pcInit;
+                delete s.__pcAllCards;
+                delete s.__pcPerGroup;
                 initCarousel(s);
             });
         }
@@ -178,6 +258,7 @@ const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .pc-carousel-wrap{position:relative;width:100%;cursor:grab;overflow:hidden;}
 .pc-carousel-track{position:relative;width:100%;}
+.pc-carousel-track.pc-cards-source{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:1.5rem;}
 .pc-page{grid-template-columns:repeat(4,minmax(240px,1fr));gap:1.5rem;width:100%;box-sizing:border-box;display:grid;opacity:0;visibility:hidden;position:absolute;top:0;left:0;transition:opacity .35s ease;pointer-events:none;}
 .pc-page.pc-page-active{opacity:1;visibility:visible;position:relative;pointer-events:auto;}
 .pc-card{display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;min-width:0;user-select:none;}
@@ -197,9 +278,8 @@ const PRODUCT_CARDS_CSS = `
 .pc-more-btn:hover{background:#c96200;}
 .pc-section-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0 0 0.75rem;text-align:center;}
 .pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
-@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}.pc-page{grid-template-columns:repeat(3,minmax(220px,1fr));}}
-@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-page{grid-template-columns:repeat(2,minmax(200px,1fr));}}
-@media(max-width:640px){.pc-page{grid-template-columns:minmax(240px,1fr);}}
+@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
+@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}}
 .pc-carousel-wrap{min-height:1px;}`;
 
 function buildCardHTML(card) {
@@ -211,14 +291,6 @@ function buildCardHTML(card) {
     return `<div class="pc-card"><div class="pc-card-img-wrap"><img src="${img}" alt="${title}" class="pc-card-img"></div><div class="pc-card-body"><h3 class="pc-card-title">${title}</h3><p class="pc-card-desc">${desc}</p></div><a href="${href}" class="pc-btn">${btnLabel}</a></div>`;
 }
 
-function chunk(arr, size) {
-    const out = [];
-    for (let i = 0; i < arr.length; i += size) {
-        out.push(arr.slice(i, i + size));
-    }
-    return out.length ? out : [[]];
-}
-
 function buildProductCardsHTML(data) {
     const heading = data.heading || "Créditos";
     const subheading =
@@ -228,28 +300,13 @@ function buildProductCardsHTML(data) {
     const moreLabel = data.more_label || "Ver más";
     const showMore = data.show_more !== false;
     const cards = data.cards || [];
-    const pages = chunk(cards, 4);
-    const pagesHTML = pages
-        .map(
-            (pageCards, i) =>
-                `<div class="pc-page${i === 0 ? " pc-page-active" : ""}">${pageCards.map(buildCardHTML).join("")}</div>`,
-        )
-        .join("");
-    const dotsHTML = pages
-        .map(
-            (_, i) =>
-                `<button type="button" class="pc-dot${i === 0 ? " pc-dot-active" : ""}" aria-label="Ir a la página ${i + 1}"></button>`,
-        )
-        .join("");
-    const navHTML =
-        pages.length > 1
-            ? `<div class="pc-nav-row"><div class="pc-dots">${dotsHTML}</div></div>`
-            : "";
+    const cardsHTML = cards.map(buildCardHTML).join("");
     const moreBtnHTML = showMore
         ? `<div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div>`
         : "";
-    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-carousel-track">${pagesHTML}</div></div>${navHTML}${moreBtnHTML}</section>`;
+    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-carousel-track pc-cards-source">${cardsHTML}</div></div><div class="pc-nav-row" style="display:none;"><div class="pc-dots"></div></div>${moreBtnHTML}</section>`;
 }
+
 const DEFAULT_DATA = {
     heading: "Créditos",
     subheading:
