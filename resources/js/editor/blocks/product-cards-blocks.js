@@ -3,77 +3,97 @@ import { assetUrl } from "@/utils/url.js";
 
 const PC_CAROUSEL_SCRIPT = function () {
     (function () {
+        function getPageWidth(wrap) {
+            var firstPage = wrap.querySelector(".pc-page");
+            return firstPage ? firstPage.getBoundingClientRect().width + 24 : wrap.clientWidth;
+        }
+
+        function getPageCount(wrap) {
+            return wrap.querySelectorAll(".pc-page").length;
+        }
+
+        function getCurrentPage(wrap) {
+            var pageWidth = getPageWidth(wrap);
+            if (!pageWidth) return 0;
+            return Math.round(wrap.scrollLeft / pageWidth);
+        }
+
+        function updateDots(section, wrap) {
+            var dotsWrap = section.querySelector(".pc-dots");
+            if (!dotsWrap) return;
+            var current = getCurrentPage(wrap);
+            dotsWrap.querySelectorAll(".pc-dot").forEach(function (dot, i) {
+                dot.classList.toggle("pc-dot-active", i === current);
+            });
+        }
+
+        function goToPage(wrap, index) {
+            var pageWidth = getPageWidth(wrap);
+            wrap.scrollTo({ left: pageWidth * index, behavior: "smooth" });
+        }
+
+        function snapToNearestPage(wrap) {
+            var pageWidth = getPageWidth(wrap);
+            if (!pageWidth) return;
+            var target = Math.round(wrap.scrollLeft / pageWidth);
+            var max = getPageCount(wrap) - 1;
+            target = Math.max(0, Math.min(target, max));
+            wrap.scrollTo({ left: pageWidth * target, behavior: "smooth" });
+        }
+
         function initCarousel(section) {
             if (!section || section.__pcInit) return;
             section.__pcInit = true;
             var wrap = section.querySelector(".pc-carousel-wrap");
             if (!wrap) return;
 
-            var isDragging = false;
-            var startX = 0;
-            var startScrollLeft = 0;
-            var moved = false;
-            var velX = 0;
-            var lastX = 0;
-            var lastT = 0;
-            var rafId = null;
-
             wrap.querySelectorAll("img").forEach(function (img) {
                 img.setAttribute("draggable", "false");
             });
 
-            setTimeout(function () {
-                var hint = wrap.scrollWidth - wrap.clientWidth;
-                if (hint <= 0) return;
-                var peak = Math.min(60, hint);
-                var start = null;
-                function animateHint(ts) {
-                    if (!start) start = ts;
-                    var p = (ts - start) / 400;
-                    if (p < 0.5) {
-                        wrap.scrollLeft = peak * (p * 2);
-                    } else if (p < 1) {
-                        wrap.scrollLeft = peak * (1 - (p - 0.5) * 2);
-                    } else {
-                        wrap.scrollLeft = 0;
-                        return;
-                    }
-                    requestAnimationFrame(animateHint);
-                }
-                requestAnimationFrame(animateHint);
-            }, 400);
+            var scrollDebounce = null;
+            wrap.addEventListener("scroll", function () {
+                updateDots(section, wrap);
+                clearTimeout(scrollDebounce);
+                scrollDebounce = setTimeout(function () {
+                    updateDots(section, wrap);
+                }, 100);
+            });
 
-            wrap.scrollLeft = 0;
+            section.querySelectorAll(".pc-dot").forEach(function (dot, i) {
+                dot.addEventListener("click", function () {
+                    goToPage(wrap, i);
+                });
+            });
 
-            function maxScroll() {
-                return wrap.scrollWidth - wrap.clientWidth;
+            var prevBtn = section.querySelector(".pc-nav-prev");
+            var nextBtn = section.querySelector(".pc-nav-next");
+            if (prevBtn) {
+                prevBtn.addEventListener("click", function () {
+                    goToPage(wrap, Math.max(0, getCurrentPage(wrap) - 1));
+                });
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener("click", function () {
+                    var max = getPageCount(wrap) - 1;
+                    goToPage(wrap, Math.min(max, getCurrentPage(wrap) + 1));
+                });
             }
 
-            function clamp(val) {
-                return Math.max(0, Math.min(val, maxScroll()));
-            }
-
-            function applyMomentum() {
-                if (Math.abs(velX) < 0.5) return;
-                velX *= 0.92;
-                wrap.scrollLeft = clamp(wrap.scrollLeft + velX);
-                rafId = requestAnimationFrame(applyMomentum);
-            }
+            var isDragging = false;
+            var startX = 0;
+            var startScrollLeft = 0;
+            var moved = false;
+            var snapTimeout = null;
 
             wrap.addEventListener("mousedown", function (e) {
                 if (e.button !== 0) return;
-                if (rafId) {
-                    cancelAnimationFrame(rafId);
-                    rafId = null;
-                }
                 isDragging = true;
                 moved = false;
-                velX = 0;
                 startX = e.clientX;
-                lastX = e.clientX;
-                lastT = Date.now();
                 startScrollLeft = wrap.scrollLeft;
                 wrap.style.cursor = "grabbing";
+                wrap.style.scrollSnapType = "none";
                 e.preventDefault();
             });
 
@@ -81,21 +101,17 @@ const PC_CAROUSEL_SCRIPT = function () {
                 if (!isDragging) return;
                 var delta = startX - e.clientX;
                 if (Math.abs(delta) > 3) moved = true;
-                var now = Date.now();
-                var dt = now - lastT || 1;
-                velX = ((e.clientX - lastX) / dt) * 16 * -1;
-                lastX = e.clientX;
-                lastT = now;
-                wrap.scrollLeft = clamp(startScrollLeft + delta);
+                wrap.scrollLeft = startScrollLeft + delta;
             });
 
             document.addEventListener("mouseup", function (e) {
                 if (!isDragging) return;
                 isDragging = false;
                 wrap.style.cursor = "grab";
+                wrap.style.scrollSnapType = "";
                 if (moved) {
                     e.stopPropagation();
-                    rafId = requestAnimationFrame(applyMomentum);
+                    snapToNearestPage(wrap);
                 }
             });
 
@@ -113,22 +129,15 @@ const PC_CAROUSEL_SCRIPT = function () {
 
             var touchStartX = 0;
             var touchStartScroll = 0;
-            var touchLastX = 0;
-            var touchLastT = 0;
-            var touchVelX = 0;
+            var touchMoved = false;
 
             wrap.addEventListener(
                 "touchstart",
                 function (e) {
-                    if (rafId) {
-                        cancelAnimationFrame(rafId);
-                        rafId = null;
-                    }
                     touchStartX = e.touches[0].clientX;
-                    touchLastX = e.touches[0].clientX;
-                    touchLastT = Date.now();
                     touchStartScroll = wrap.scrollLeft;
-                    touchVelX = 0;
+                    touchMoved = false;
+                    wrap.style.scrollSnapType = "none";
                 },
                 { passive: true },
             );
@@ -136,14 +145,10 @@ const PC_CAROUSEL_SCRIPT = function () {
             wrap.addEventListener(
                 "touchmove",
                 function (e) {
-                    var now = Date.now();
-                    var dt = now - touchLastT || 1;
                     var cx = e.touches[0].clientX;
-                    touchVelX = ((cx - touchLastX) / dt) * 16 * -1;
-                    touchLastX = cx;
-                    touchLastT = now;
+                    if (Math.abs(touchStartX - cx) > 3) touchMoved = true;
                     var delta = touchStartX - cx;
-                    wrap.scrollLeft = clamp(touchStartScroll + delta);
+                    wrap.scrollLeft = touchStartScroll + delta;
                 },
                 { passive: true },
             );
@@ -151,15 +156,21 @@ const PC_CAROUSEL_SCRIPT = function () {
             wrap.addEventListener(
                 "touchend",
                 function () {
-                    rafId = requestAnimationFrame(function momentum() {
-                        if (Math.abs(touchVelX) < 0.5) return;
-                        touchVelX *= 0.92;
-                        wrap.scrollLeft = clamp(wrap.scrollLeft + touchVelX);
-                        rafId = requestAnimationFrame(momentum);
-                    });
+                    wrap.style.scrollSnapType = "";
+                    if (touchMoved) snapToNearestPage(wrap);
                 },
                 { passive: true },
             );
+
+            updateDots(section, wrap);
+
+            window.addEventListener("resize", function () {
+                clearTimeout(snapTimeout);
+                snapTimeout = setTimeout(function () {
+                    snapToNearestPage(wrap);
+                    updateDots(section, wrap);
+                }, 200);
+            });
         }
 
         function init() {
@@ -180,25 +191,33 @@ const PRODUCT_CARDS_RUNTIME_SCRIPT = `(${PC_CAROUSEL_SCRIPT.toString()})();`;
 
 const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
-.pc-carousel-wrap{overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}
+.pc-carousel-wrap{position:relative;overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;display:flex;}
 .pc-carousel-wrap::-webkit-scrollbar{display:none;}
-.pc-track{display:flex;gap:1.5rem;user-select:none;}
-.pc-card{flex:0 0 260px;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;}
+.pc-page{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;padding-right:1.5rem;box-sizing:border-box;}
+.pc-page:last-child{padding-right:0;}
+.pc-card{display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;min-width:0;user-select:none;}
 .pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
-.pc-card-img{width:100%;height:100%;object-fit:cover;display:block;}
+.pc-card-img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
 .pc-card-body{display:flex;flex-direction:column;align-items:center;gap:0.4rem;text-align:center;flex:1;}
 .pc-card-title{font-size:0.95rem;font-weight:700;color:#003B71;text-transform:uppercase;}
 .pc-card-desc{font-size:0.9rem;color:#003B71;line-height:1.5;text-align:center;}
 .pc-btn{display:block;width:100%;padding:0.5rem 1rem;border-radius:9999px;background:#003B71;color:#ffffff;font-size:0.95rem;font-weight:600;text-align:center;text-decoration:none;transition:background .2s;}
 .pc-btn:hover{background:#002a52;}
+.pc-nav-row{display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.5rem;}
+.pc-nav-btn{display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:9999px;background:#fff;border:1.5px solid #003B71;color:#003B71;cursor:pointer;transition:background .15s,color .15s;flex-shrink:0;font-size:1.125rem;}
+.pc-nav-btn:hover{background:#003B71;color:#fff;}
+.pc-nav-btn:disabled{opacity:0.35;cursor:not-allowed;background:#fff;color:#003B71;}
+.pc-dots{display:flex;align-items:center;gap:0.5rem;}
+.pc-dot{width:0.5rem;height:0.5rem;border-radius:9999px;background:#dce8f5;border:none;cursor:pointer;padding:0;transition:background .2s,width .2s;}
+.pc-dot-active{background:#003B71;width:1.5rem;}
 .pc-more-wrap{display:flex;justify-content:center;margin-top:2rem;}
 .pc-more-btn{display:inline-block;padding:0.6rem 2.5rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
 .pc-more-btn:hover{background:#c96200;}
 .pc-section-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0 0 0.75rem;text-align:center;}
 .pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
-@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
-@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-card{flex:0 0 220px;}}
-@media(max-width:480px){.pc-card{flex:0 0 80vw;}}`;
+@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}.pc-page{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}}
+@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-page{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}}
+@media(max-width:640px){.pc-page{grid-template-columns:minmax(240px,1fr);}}`;
 
 function buildCardHTML(card) {
     const img = card.img || assetUrl("images/placeholder.svg");
@@ -207,6 +226,14 @@ function buildCardHTML(card) {
     const href = card.href || "#";
     const btnLabel = card.btn_label || "Solicitar";
     return `<div class="pc-card"><div class="pc-card-img-wrap"><img src="${img}" alt="${title}" class="pc-card-img"></div><div class="pc-card-body"><h3 class="pc-card-title">${title}</h3><p class="pc-card-desc">${desc}</p></div><a href="${href}" class="pc-btn">${btnLabel}</a></div>`;
+}
+
+function chunk(arr, size) {
+    const out = [];
+    for (let i = 0; i < arr.length; i += size) {
+        out.push(arr.slice(i, i + size));
+    }
+    return out.length ? out : [[]];
 }
 
 function buildProductCardsHTML(data) {
@@ -218,11 +245,31 @@ function buildProductCardsHTML(data) {
     const moreLabel = data.more_label || "Ver más";
     const showMore = data.show_more !== false;
     const cards = data.cards || [];
-    const cardsHTML = cards.map(buildCardHTML).join("");
+    const pages = chunk(cards, 4);
+    const pagesHTML = pages
+        .map(
+            (pageCards) =>
+                `<div class="pc-page">${pageCards.map(buildCardHTML).join("")}</div>`,
+        )
+        .join("");
+    const dotsHTML = pages
+        .map(
+            (_, i) =>
+                `<button type="button" class="pc-dot${i === 0 ? " pc-dot-active" : ""}" aria-label="Ir a la página ${i + 1}"></button>`,
+        )
+        .join("");
+    const navHTML =
+        pages.length > 1
+            ? `<div class="pc-nav-row">
+                <button type="button" class="pc-nav-btn pc-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
+                <div class="pc-dots">${dotsHTML}</div>
+                <button type="button" class="pc-nav-btn pc-nav-next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
+            </div>`
+            : "";
     const moreBtnHTML = showMore
         ? `<div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div>`
         : "";
-    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-track">${cardsHTML}</div></div>${moreBtnHTML}</section>`;
+    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap">${pagesHTML}</div>${navHTML}${moreBtnHTML}</section>`;
 }
 const DEFAULT_DATA = {
     heading: "Créditos",
@@ -317,13 +364,6 @@ function showProductCardsModal(editor, component) {
             .pc-section-title{font-size:0.75rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.05em;padding:0.25rem 0;border-bottom:1px solid #e2e8f0;margin-bottom:0.75rem;}
             .pc-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
             .pc-config-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;display:flex;flex-direction:column;gap:0.75rem;}
-            .pc-toggle-wrap{display:flex;align-items:center;gap:0.75rem;}
-            .pc-toggle{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;}
-            .pc-toggle input{opacity:0;width:0;height:0;}
-            .pc-toggle-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:9999px;transition:background 0.2s;cursor:pointer;}
-            .pc-toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform 0.2s;}
-            .pc-toggle input:checked+.pc-toggle-slider{background:#003B71;}
-            .pc-toggle input:checked+.pc-toggle-slider:before{transform:translateX(18px);}
         `;
         document.head.appendChild(style);
     }
