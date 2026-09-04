@@ -338,11 +338,26 @@ function showHeroBannerModal(editor, component) {
         component.addAttributes({
             "data-hero-banner-config": JSON.stringify(data),
         });
+        purgeHeroBannerCssRules(editor);
         component.components(
             buildHeroBannerHTML(data, uid) + HERO_BANNER_STYLES,
         );
         close();
     };
+}
+
+function purgeHeroBannerCssRules(editor) {
+    const hbClasses = [
+        "hb-section", "hb-bg", "hb-content", "hb-box", "hb-box-inner",
+        "hb-badge", "hb-subtitle", "hb-buttons", "hb-btn", "hb-btn-primary",
+        "hb-btn-secondary", "hb-stripe",
+    ];
+    const css = editor.Css;
+    if (!css) return;
+    hbClasses.forEach((cls) => {
+        const rules = css.getRules(`.${cls}`);
+        rules.forEach((rule) => css.remove(rule));
+    });
 }
 
 export function initializeHeroBannerBlock(editor) {
