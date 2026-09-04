@@ -1,25 +1,14 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
-const IC_ANIMATION_CSS = `
-<style>
-.ic-card{opacity:0;animation:ic-fade-in 0.5s ease forwards;}
-.ic-card:nth-child(1){animation-delay:0.05s;}
-.ic-card:nth-child(2){animation-delay:0.15s;}
-.ic-card:nth-child(3){animation-delay:0.25s;}
-.ic-card:nth-child(4){animation-delay:0.35s;}
-.ic-card:nth-child(n+5){animation-delay:0.45s;}
-@keyframes ic-fade-in{from{opacity:0;}to{opacity:1;}}
-</style>`;
-
 function buildCardHTML(card) {
     const img = card.img || assetUrl("images/placeholder.svg");
     const title = card.title || "Título de la tarjeta";
-    return `<div class="ic-card min-w-[240px] rounded-2xl overflow-hidden bg-white shadow-sm" data-gjs-name="Tarjeta">
-        <div class="ic-card-img-wrap aspect-square w-full overflow-hidden bg-[#dce8f5]" data-gjs-name="Imagen">
+    return `<div class="ic-card min-w-[240px] rounded-2xl overflow-hidden bg-white shadow-sm flex flex-col" data-gjs-name="Tarjeta">
+        <div class="ic-card-img-wrap aspect-[4/3] w-full overflow-hidden bg-[#dce8f5]" data-gjs-name="Imagen">
             <img src="${img}" alt="${title}" class="w-full h-full object-cover block" data-gjs-type="image">
         </div>
-        <div class="bg-[#003B71] px-4 py-4" data-gjs-name="Texto">
+        <div class="bg-[#003B71] px-4 py-4 flex-1 flex items-center justify-center" data-gjs-name="Texto">
             <p class="text-white font-extrabold text-[20px] leading-snug text-center" data-gjs-type="text">${title}</p>
         </div>
     </div>`;
@@ -34,14 +23,23 @@ function buildIconCardsGridHTML(data) {
         ? `<p class="text-base text-[#003B71] text-center mt-2" data-gjs-type="text">${subheading}</p>`
         : "";
 
-    return `<section class="w-full bg-white px-16 py-12">
+    return `<section class="ic-section w-full bg-white px-16 py-12">
         <div class="text-center mb-8">
             <h2 class="text-4xl font-extrabold text-[#003B71]" data-gjs-type="text">${heading}</h2>
             ${subheadingHTML}
         </div>
         <div class="ic-grid grid gap-6" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">${cardsHTML}</div>
-    </section>${IC_ANIMATION_CSS}`;
+    </section>`;
 }
+
+const ICON_CARDS_GRID_ANIMATION_CSS = `
+.ic-section .ic-card{opacity:0;animation:ic-fade-in 0.5s ease forwards;}
+.ic-section .ic-card:nth-child(1){animation-delay:0.05s;}
+.ic-section .ic-card:nth-child(2){animation-delay:0.15s;}
+.ic-section .ic-card:nth-child(3){animation-delay:0.25s;}
+.ic-section .ic-card:nth-child(4){animation-delay:0.35s;}
+.ic-section .ic-card:nth-child(n+5){animation-delay:0.45s;}
+@keyframes ic-fade-in{from{opacity:0;}to{opacity:1;}}`;
 
 const DEFAULT_DATA = {
     heading: "¿Cómo podemos ayudarte?",
@@ -139,5 +137,26 @@ export function initializeIconCardsGridBlock(editor) {
                 },
             });
         }
+    });
+
+    injectIconCardsGridStyles(editor);
+}
+
+function injectIconCardsGridStyles(editor) {
+    const styleId = "icon-cards-grid-animation-css";
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement("style");
+        style.id = styleId;
+        style.textContent = ICON_CARDS_GRID_ANIMATION_CSS;
+        document.head.appendChild(style);
+    }
+    editor.on("load", () => {
+        const iframe = editor.Canvas.getFrameEl();
+        const head = iframe?.contentDocument?.head;
+        if (!head || head.querySelector(`#${styleId}`)) return;
+        const style = document.createElement("style");
+        style.id = styleId;
+        style.textContent = ICON_CARDS_GRID_ANIMATION_CSS;
+        head.appendChild(style);
     });
 }
