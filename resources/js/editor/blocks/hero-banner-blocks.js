@@ -1,12 +1,6 @@
 import { assetUrl } from "@/utils/url.js";
 import { openMediaPicker } from "@/editor/media-picker";
 
-const THEME_COLORS = {
-    blue: { curve: "#003B71", curveLine: "#E97300", badge: "#E97300", badgeText: "#ffffff" },
-    orange: { curve: "#E97300", curveLine: "#003B71", badge: "#003B71", badgeText: "#ffffff" },
-    transparent: { curve: "rgba(0,59,113,0.55)", curveLine: "#E97300", badge: "#E97300", badgeText: "#ffffff" },
-};
-
 const HERO_BANNER_STYLES = `
 <style>
 .hb-section{position:relative;width:100%;min-height:460px;display:flex;align-items:center;overflow:hidden;font-family:'Poppins',sans-serif;background:#0a0a0a;}
@@ -22,14 +16,20 @@ const HERO_BANNER_STYLES = `
 .hb-bg img.hb-pos-right-center{object-position:right center;}
 .hb-bg img.hb-pos-right-bottom{object-position:right bottom;}
 .hb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
+.hb-bg.hb-gradient-on::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,#003B71 0%,rgba(0,59,113,0.65) 40%,rgba(0,59,113,0) 75%);}
 .hb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:600px;}
 .hb-box{position:relative;border-radius:1.125rem;padding:1.5rem 2rem;}
 .hb-box::before{content:"";position:absolute;inset:0;border-radius:1.125rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
 .hb-box-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:0.25rem;}
-.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1rem;font-size:2.25rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;}
+.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1rem;font-size:2.25rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;background:#E97300;color:#fff;}
 .hb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
-.hb-curve{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:auto;line-height:0;z-index:5;pointer-events:none;}
-.hb-curve svg{display:block;width:100%;height:150px;}
+.hb-buttons{display:flex;align-items:center;justify-content:center;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;}
+.hb-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.9375rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid transparent;font-family:inherit;transition:background 0.15s,color 0.15s;white-space:nowrap;}
+.hb-btn-primary{background:#E97300;border-color:#E97300;color:#fff;}
+.hb-btn-primary:hover{background:#c96200;border-color:#c96200;}
+.hb-btn-secondary{background:transparent;border-color:#fff;color:#fff;}
+.hb-btn-secondary:hover{background:#fff;color:#003B71;}
+.hb-stripe{position:absolute;left:0;right:0;bottom:0;width:100%;height:16px;background:#E97300;z-index:5;}
 @media(max-width:992px){
 .hb-content{padding:3rem 2.5rem;max-width:100%;}
 .hb-badge{font-size:1.875rem;}
@@ -39,41 +39,51 @@ const HERO_BANNER_STYLES = `
 .hb-box{padding:1.125rem 1.25rem;}
 .hb-badge{font-size:1.5rem;padding:0.6rem 1.35rem;margin-left:-2.25rem;border-radius:0.875rem;}
 .hb-subtitle{font-size:0.9375rem;}
-.hb-curve svg{height:85px;}
+.hb-buttons{justify-content:center;}
+.hb-btn{padding:0.5rem 1.375rem;font-size:0.875rem;}
+.hb-stripe{height:10px;}
 }
 </style>`;
 
 function buildHeroBannerHTML(data, uid) {
     uid = uid || "hb" + Math.random().toString(36).slice(2, 7);
     const bgImage = data.bg_image || assetUrl("images/placeholder.svg");
-    const theme = THEME_COLORS[data.theme] ? data.theme : "blue";
-    const themeColors = THEME_COLORS[theme];
     const posX = data.bg_position_x || "center";
     const posY = data.bg_position_y || "center";
     const posClass = `hb-pos-${posX}-${posY}`;
+    const gradientClass = data.gradient_enabled ? "hb-gradient-on" : "";
 
     const subtitleHtml = data.subtitle
         ? `<p class="hb-subtitle">${data.subtitle}</p>`
         : "";
 
+    const primaryBtn = data.primary_btn || {};
+    const secondaryBtn = data.secondary_btn || {};
+    const primaryBtnHtml = primaryBtn.label
+        ? `<a href="${primaryBtn.href || "#"}" class="hb-btn hb-btn-primary">${primaryBtn.label}</a>`
+        : "";
+    const secondaryBtnHtml = secondaryBtn.label
+        ? `<a href="${secondaryBtn.href || "#"}" class="hb-btn hb-btn-secondary">${secondaryBtn.label}</a>`
+        : "";
+    const buttonsHtml =
+        primaryBtnHtml || secondaryBtnHtml
+            ? `<div class="hb-buttons">${primaryBtnHtml}${secondaryBtnHtml}</div>`
+            : "";
+
     return `<section id="hb-root-${uid}" class="hb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-        <div class="hb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+        <div class="hb-bg ${gradientClass}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <img src="${bgImage}" alt="${data.title || "Banner"}" class="${posClass}" loading="eager" decoding="async" fetchpriority="high" draggable="false" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false">
         </div>
         <div class="hb-content">
             <div class="hb-box">
                 <div class="hb-box-inner">
-                    <span class="hb-badge" style="background:${themeColors.badge};color:${themeColors.badgeText};">${data.title || "Título del banner"}</span>
+                    <span class="hb-badge">${data.title || "Título del banner"}</span>
                     ${subtitleHtml}
+                    ${buttonsHtml}
                 </div>
             </div>
         </div>
-        <div class="hb-curve" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <svg viewBox="0 0 1366 230" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1366 0C1073.5 102.496 725.5 165.891 0 165.891V230H1366V0Z" fill="${themeColors.curve}"></path>
-                <path d="M1366 0C1073.5 102.496 725.5 165.891 -20 165.891" fill="none" stroke="${themeColors.curveLine}" stroke-width="4" vector-effect="non-scaling-stroke"></path>
-            </svg>
-        </div>
+        <div class="hb-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
     </section>`;
 }
 
@@ -81,10 +91,12 @@ const DEFAULT_DATA = {
     bg_image: assetUrl("images/placeholder.svg"),
     bg_position_x: "center",
     bg_position_y: "center",
-    theme: "blue",
+    gradient_enabled: true,
     title: "Cuenta de Ahorro Electrónico",
     subtitle:
         "Recupera el control de tus finanzas. Fácil de usar, práctica para tu día a día y disponible cuando la necesites.",
+    primary_btn: { label: "¡Solicita tu crédito!", href: "#" },
+    secondary_btn: { label: "", href: "#" },
 };
 
 function showHeroBannerModal(editor, component) {
@@ -123,13 +135,7 @@ function showHeroBannerModal(editor, component) {
             .hb-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
             .hb-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .hb-btn-save:hover{background:#d97821;}
-            .hb-theme-toggle{display:flex;gap:0.5rem;}
-            .hb-theme-opt{flex:1;padding:0.625rem 0.5rem;border-radius:0.5rem;font-size:0.8125rem;font-weight:700;cursor:pointer;border:2px solid #e2e8f0;transition:all 0.15s;font-family:inherit;text-align:center;}
-            .hb-theme-opt-blue{background:#003B71;color:#fff;}
-            .hb-theme-opt-orange{background:#E97300;color:#fff;}
-            .hb-theme-opt-transparent{background:rgba(0,59,113,0.55);color:#ffffff;border-color:#cbd5e1;}
-            .hb-theme-opt.hb-theme-inactive{opacity:0.35;}
-            .hb-theme-opt.hb-theme-inactive:hover{opacity:0.65;}
+            .hb-toggle-row{display:flex;align-items:center;gap:0.625rem;}
         `;
         document.head.appendChild(style);
     }
@@ -147,9 +153,20 @@ function showHeroBannerModal(editor, component) {
     const bgImage = currentData.bg_image || DEFAULT_DATA.bg_image;
     const bgPositionX = currentData.bg_position_x || DEFAULT_DATA.bg_position_x;
     const bgPositionY = currentData.bg_position_y || DEFAULT_DATA.bg_position_y;
-    const theme = currentData.theme || DEFAULT_DATA.theme;
     const title = currentData.title || DEFAULT_DATA.title;
     const subtitle = currentData.subtitle ?? DEFAULT_DATA.subtitle;
+    const gradientEnabled =
+        currentData.gradient_enabled !== undefined
+            ? currentData.gradient_enabled
+            : DEFAULT_DATA.gradient_enabled;
+    const primaryBtn = JSON.parse(
+        JSON.stringify(currentData.primary_btn || DEFAULT_DATA.primary_btn),
+    );
+    const secondaryBtn = JSON.parse(
+        JSON.stringify(
+            currentData.secondary_btn || DEFAULT_DATA.secondary_btn,
+        ),
+    );
 
     const overlay = document.createElement("div");
     overlay.id = "hero-banner-config-modal";
@@ -165,7 +182,7 @@ function showHeroBannerModal(editor, component) {
         <div class="hb-modal-tabs">
             <button class="hb-tab-btn active" data-tab="bg"><i class="ri-image-line"></i> Fondo</button>
             <button class="hb-tab-btn" data-tab="content"><i class="ri-text"></i> Contenido</button>
-            <button class="hb-tab-btn" data-tab="theme"><i class="ri-palette-line"></i> Tema</button>
+            <button class="hb-tab-btn" data-tab="buttons"><i class="ri-cursor-line"></i> Botones</button>
         </div>
         <div class="hb-modal-body">
             <div class="hb-tab-panel active" id="hb-panel-bg">
@@ -201,6 +218,13 @@ function showHeroBannerModal(editor, component) {
                         </div>
                     </div>
                 </div>
+                <div class="hb-card">
+                    <label class="hb-label">Degradado sobre la imagen</label>
+                    <div class="hb-toggle-row">
+                        <input type="checkbox" id="hb-gradient-toggle" ${gradientEnabled ? "checked" : ""} style="width:1.125rem;height:1.125rem;cursor:pointer;">
+                        <label for="hb-gradient-toggle" style="font-size:0.8125rem;color:#475569;cursor:pointer;">Aplicar degradado azul hacia transparente sobre la imagen</label>
+                    </div>
+                </div>
             </div>
             <div class="hb-tab-panel" id="hb-panel-content">
                 <div class="hb-card">
@@ -212,15 +236,20 @@ function showHeroBannerModal(editor, component) {
                     <textarea id="hb-subtitle" placeholder="Déjalo vacío si no quieres subtítulo" class="hb-input">${subtitle}</textarea>
                 </div>
             </div>
-            <div class="hb-tab-panel" id="hb-panel-theme">
+            <div class="hb-tab-panel" id="hb-panel-buttons">
                 <div class="hb-card">
-                    <label class="hb-label">Color de tema</label>
-                    <div class="hb-theme-toggle" id="hb-theme-colors">
-                        <button type="button" class="hb-theme-opt hb-theme-opt-blue" data-theme="blue">Azul</button>
-                        <button type="button" class="hb-theme-opt hb-theme-opt-orange" data-theme="orange">Naranja</button>
-                        <button type="button" class="hb-theme-opt hb-theme-opt-transparent" data-theme="transparent">Azul Transparente</button>
+                    <label class="hb-label">Botón primario (opcional)</label>
+                    <div style="display:flex;flex-direction:column;gap:0.625rem;">
+                        <input id="hb-primary-label" type="text" placeholder="Ej: ¡Solicita tu crédito!" value="${primaryBtn.label || ""}" class="hb-input">
+                        <input id="hb-primary-href" type="text" placeholder="URL o #" value="${primaryBtn.href || "#"}" class="hb-input">
                     </div>
-                    <p style="font-size:0.75rem;color:#94a3b8;margin:0.75rem 0 0;">El marco con borde siempre es naranja. El tema controla el color de la curva inferior, la línea superior de la curva y el badge del título.</p>
+                </div>
+                <div class="hb-card">
+                    <label class="hb-label">Botón secundario (opcional)</label>
+                    <div style="display:flex;flex-direction:column;gap:0.625rem;">
+                        <input id="hb-secondary-label" type="text" placeholder="Ej: Conoce más" value="${secondaryBtn.label || ""}" class="hb-input">
+                        <input id="hb-secondary-href" type="text" placeholder="URL o #" value="${secondaryBtn.href || "#"}" class="hb-input">
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,28 +260,6 @@ function showHeroBannerModal(editor, component) {
 
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
-
-    let selectedTheme = THEME_COLORS[theme] ? theme : "blue";
-
-    function setupThemeToggle() {
-        const wrap = modal.querySelector("#hb-theme-colors");
-        wrap.querySelectorAll("[data-theme]").forEach((btn) => {
-            btn.classList.toggle(
-                "hb-theme-inactive",
-                btn.dataset.theme !== selectedTheme,
-            );
-            btn.addEventListener("click", () => {
-                selectedTheme = btn.dataset.theme;
-                wrap.querySelectorAll("[data-theme]").forEach((b) =>
-                    b.classList.toggle(
-                        "hb-theme-inactive",
-                        b.dataset.theme !== selectedTheme,
-                    ),
-                );
-            });
-        });
-    }
-    setupThemeToggle();
 
     modal.querySelectorAll(".hb-tab-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -307,9 +314,19 @@ function showHeroBannerModal(editor, component) {
                 DEFAULT_DATA.bg_image,
             bg_position_x: modal.querySelector("#hb-bg-pos-x").value,
             bg_position_y: modal.querySelector("#hb-bg-pos-y").value,
-            theme: selectedTheme,
+            gradient_enabled: modal.querySelector("#hb-gradient-toggle").checked,
             title: modal.querySelector("#hb-title").value.trim(),
             subtitle: modal.querySelector("#hb-subtitle").value.trim(),
+            primary_btn: {
+                label: modal.querySelector("#hb-primary-label").value.trim(),
+                href: modal.querySelector("#hb-primary-href").value.trim() || "#",
+            },
+            secondary_btn: {
+                label: modal.querySelector("#hb-secondary-label").value.trim(),
+                href:
+                    modal.querySelector("#hb-secondary-href").value.trim() ||
+                    "#",
+            },
         };
 
         const existingInner = component
@@ -388,7 +405,7 @@ export function initializeHeroBannerBlock(editor) {
             <path d="M4 8 h16 v11 h-16 z" fill="none" stroke="#E97300" stroke-width="1"/>
             <rect x="5.5" y="10.5" width="9" height="4" rx="1" fill="#E97300"/>
             <rect x="5.5" y="16" width="11" height="1.4" rx="0.7" fill="#ffffff" fill-opacity="0.85"/>
-            <path d="M2 24 C10 20 22 28 30 22 L30 30 L2 30 Z" fill="#003B71"/>
+            <rect x="2" y="27" width="28" height="3" fill="#E97300"/>
         </svg>`,
         activate: true,
         content: {
