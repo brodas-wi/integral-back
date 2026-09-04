@@ -181,7 +181,7 @@ const PRODUCT_CARDS_CSS = `
 .pc-page{grid-template-columns:repeat(4,minmax(240px,1fr));gap:1.5rem;width:100%;box-sizing:border-box;display:grid;opacity:0;visibility:hidden;position:absolute;top:0;left:0;transition:opacity .35s ease;pointer-events:none;}
 .pc-page.pc-page-active{opacity:1;visibility:visible;position:relative;pointer-events:auto;}
 .pc-card{display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;min-width:0;user-select:none;}
-.pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
+.pc-card-img-wrap{width:100%;max-width:200px;margin:0 auto;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
 .pc-card-img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
 .pc-card-body{display:flex;flex-direction:column;align-items:center;gap:0.4rem;text-align:center;flex:1;}
 .pc-card-title{font-size:0.95rem;font-weight:700;color:#003B71;text-transform:uppercase;}
