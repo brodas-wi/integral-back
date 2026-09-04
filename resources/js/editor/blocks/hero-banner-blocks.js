@@ -438,12 +438,6 @@ export function initializeHeroBannerBlock(editor) {
         },
     });
 
-    editor.on("block:drag:stop", (component) => {
-        if (component?.getAttributes?.()["data-gjs-type"] === componentType) {
-            purgeHeroBannerCssRules(editor);
-        }
-    });
-
     injectHeroBannerEditorStyles(editor, componentType);
 }
 
