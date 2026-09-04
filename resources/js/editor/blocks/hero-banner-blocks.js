@@ -18,12 +18,12 @@ const HERO_BANNER_STYLES = `
 .hb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
 .hb-bg.hb-gradient-on::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,#003B71 0%,rgba(0,59,113,0.65) 40%,rgba(0,59,113,0) 75%);}
 .hb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:600px;}
-.hb-box{position:relative;border-radius:1.125rem;padding:1.5rem 2rem;}
+.hb-box{position:relative;border-radius:1.125rem;padding:1.5rem 2rem 2.5rem;}
 .hb-box::before{content:"";position:absolute;inset:0;border-radius:1.125rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
 .hb-box-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:0.25rem;}
-.hb-badge{display:inline-block;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:1rem;font-size:2.25rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;margin-left:-3.5rem;background:#E97300;color:#fff;}
-.hb-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
-.hb-buttons{display:flex;align-items:center;justify-content:center;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;}
+.hb-badge{display:block;text-align:left;font-size:2.25rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;color:#fff;background:transparent;padding:0;}
+.hb-subtitle{margin:0 0 0.5rem;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
+.hb-buttons{display:flex;align-items:center;justify-content:center;gap:0.75rem;flex-wrap:wrap;position:absolute;left:0;right:0;bottom:0;transform:translateY(50%);z-index:3;}
 .hb-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.9375rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid transparent;font-family:inherit;transition:background 0.15s,color 0.15s;white-space:nowrap;}
 .hb-btn-primary{background:#E97300;border-color:#E97300;color:#fff;}
 .hb-btn-primary:hover{background:#c96200;border-color:#c96200;}
@@ -36,8 +36,8 @@ const HERO_BANNER_STYLES = `
 }
 @media(max-width:640px){
 .hb-content{padding:3rem 1.5rem;}
-.hb-box{padding:1.125rem 1.25rem;}
-.hb-badge{font-size:1.5rem;padding:0.6rem 1.35rem;margin-left:-2.25rem;border-radius:0.875rem;}
+.hb-box{padding:1.125rem 1.25rem 2rem;}
+.hb-badge{font-size:1.5rem;}
 .hb-subtitle{font-size:0.9375rem;}
 .hb-buttons{justify-content:center;}
 .hb-btn{padding:0.5rem 1.375rem;font-size:0.875rem;}
