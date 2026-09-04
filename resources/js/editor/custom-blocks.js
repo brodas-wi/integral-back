@@ -21,6 +21,7 @@ import { serviceCardsBlocks } from "./blocks/service-cards-blocks";
 import { contactInfoBlocks } from "./blocks/contact-info-blocks";
 import { richListBlocks } from "./blocks/rich-list-blocks";
 import { productDetailBlocks } from "./blocks/product-detail-blocks";
+import { initializeIconCardsGridBlock } from "@/editor/blocks/icon-cards-grid-blocks";
 import { financingBlocks } from "./blocks/financing-blocks";
 import { initializeNewsGridBlocks } from "./blocks/news-grid-blocks";
 import { initializeBarChartBlock, initializeBarChartSectionBlock } from "@/editor/blocks/bar-chart-blocks";
@@ -72,6 +73,7 @@ export function addCustomBlocks(editor) {
     initializeBarChartBlock(editor);
     initializeSavingsSectionBlock(editor);
     initializeProductCardsBlock(editor);
+    initializeIconCardsGridBlock(editor);
     initializeButtonBlocks(editor);
     initializeTabsBlocks(editor);
     initializeTableBlocks(editor);
