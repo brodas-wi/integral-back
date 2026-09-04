@@ -30,6 +30,9 @@ const HERO_BANNER_STYLES = `
 .hb-btn-secondary{background:transparent;border-color:#fff;color:#fff;}
 .hb-btn-secondary:hover{background:#fff;color:#003B71;}
 .hb-stripe{position:absolute;left:0;right:0;bottom:0;width:100%;height:16px;background:#E97300;z-index:5;}
+[data-gjs-type="hero-banner-component"] *{pointer-events:none !important;}
+[data-gjs-type="hero-banner-component"].gjs-selected,
+[data-gjs-type="hero-banner-component"].gjs-hovered{outline:2px dashed rgba(233,115,0,0.6) !important;outline-offset:2px;}
 @media(max-width:992px){
 .hb-content{padding:3rem 2.5rem;max-width:100%;}
 .hb-badge{font-size:1.875rem;}
@@ -366,6 +369,18 @@ export function initializeHeroBannerBlock(editor) {
                 hoverable: true,
                 editable: false,
                 highlightable: false,
+                stylable: false,
+                resizable: false,
+                layerable: true,
+                propagate: [
+                    "editable",
+                    "selectable",
+                    "hoverable",
+                    "droppable",
+                    "highlightable",
+                    "stylable",
+                    "resizable",
+                ],
                 attributes: {
                     "data-gjs-type": componentType,
                     "data-hero-banner-config": JSON.stringify(DEFAULT_DATA),
