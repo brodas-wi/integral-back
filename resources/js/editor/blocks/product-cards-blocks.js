@@ -886,7 +886,7 @@ export function initializeProductCardsBlock(editor) {
 }
 
 function injectProductCardsEditorStyles(editor, componentType) {
-    editor.on("load", () => {
+    const inject = () => {
         const iframe = editor.Canvas.getFrameEl();
         const head = iframe?.contentDocument?.head;
         if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
@@ -896,5 +896,8 @@ function injectProductCardsEditorStyles(editor, componentType) {
             [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
         `;
         head.appendChild(style);
-    });
+    };
+    editor.on("load", inject);
+    editor.on("canvas:render", inject);
+    editor.on("storage:end:load", inject);
 }
