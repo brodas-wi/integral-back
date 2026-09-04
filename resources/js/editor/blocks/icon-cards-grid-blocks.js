@@ -23,13 +23,14 @@ function buildIconCardsGridHTML(data) {
         ? `<p class="text-base text-[#003B71] text-center mt-2" data-gjs-type="text">${subheading}</p>`
         : "";
 
-    return `<section class="ic-section w-full bg-white px-16 py-12">
+    return `<section class="w-full bg-white px-16 py-12">
         <div class="text-center mb-8">
             <h2 class="text-4xl font-extrabold text-[#003B71]" data-gjs-type="text">${heading}</h2>
             ${subheadingHTML}
         </div>
         <div class="ic-grid grid gap-6" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">${cardsHTML}</div>
-    </section>`;
+    </section>
+    <style>.ic-card-img-wrap{aspect-ratio:4/3;}</style>`;
 }
 
 const ICON_CARDS_GRID_ANIMATION_CSS = `
