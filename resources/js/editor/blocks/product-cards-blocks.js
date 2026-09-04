@@ -41,20 +41,11 @@ const PC_CAROUSEL_SCRIPT = function () {
             wrap.scrollTo({ left: pageWidth * target, behavior: "smooth" });
         }
 
-        function isEditorContext() {
-            return (
-                !!window.__gjseditor ||
-                document.documentElement.hasAttribute("data-gjs-canvas")
-            );
-        }
-
         function initCarousel(section) {
             if (!section || section.__pcInit) return;
             section.__pcInit = true;
             var wrap = section.querySelector(".pc-carousel-wrap");
             if (!wrap) return;
-
-            if (isEditorContext()) return;
 
             wrap.querySelectorAll("img").forEach(function (img) {
                 img.setAttribute("draggable", "false");
@@ -74,20 +65,6 @@ const PC_CAROUSEL_SCRIPT = function () {
                     goToPage(wrap, i);
                 });
             });
-
-            var prevBtn = section.querySelector(".pc-nav-prev");
-            var nextBtn = section.querySelector(".pc-nav-next");
-            if (prevBtn) {
-                prevBtn.addEventListener("click", function () {
-                    goToPage(wrap, Math.max(0, getCurrentPage(wrap) - 1));
-                });
-            }
-            if (nextBtn) {
-                nextBtn.addEventListener("click", function () {
-                    var max = getPageCount(wrap) - 1;
-                    goToPage(wrap, Math.min(max, getCurrentPage(wrap) + 1));
-                });
-            }
 
             var isDragging = false;
             var startX = 0;
@@ -202,7 +179,7 @@ const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
 .pc-carousel-wrap{position:relative;overflow-x:scroll;width:100%;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;display:flex;}
 .pc-carousel-wrap::-webkit-scrollbar{display:none;}
-.pc-page{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:1.5rem;padding-right:1.5rem;box-sizing:border-box;}
+.pc-page{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;padding-right:1.5rem;box-sizing:border-box;}
 .pc-page:last-child{padding-right:0;}
 .pc-card{display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;min-width:0;user-select:none;}
 .pc-card-img-wrap{width:100%;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
@@ -213,9 +190,6 @@ const PRODUCT_CARDS_CSS = `
 .pc-btn{display:block;width:100%;padding:0.5rem 1rem;border-radius:9999px;background:#003B71;color:#ffffff;font-size:0.95rem;font-weight:600;text-align:center;text-decoration:none;transition:background .2s;}
 .pc-btn:hover{background:#002a52;}
 .pc-nav-row{display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.5rem;}
-.pc-nav-btn{display:flex;align-items:center;justify-content:center;width:2.5rem;height:2.5rem;border-radius:9999px;background:#fff;border:1.5px solid #003B71;color:#003B71;cursor:pointer;transition:background .15s,color .15s;flex-shrink:0;font-size:1.125rem;}
-.pc-nav-btn:hover{background:#003B71;color:#fff;}
-.pc-nav-btn:disabled{opacity:0.35;cursor:not-allowed;background:#fff;color:#003B71;}
 .pc-dots{display:flex;align-items:center;gap:0.5rem;}
 .pc-dot{width:0.5rem;height:0.5rem;border-radius:9999px;background:#dce8f5;border:none;cursor:pointer;padding:0;transition:background .2s,width .2s;}
 .pc-dot-active{background:#003B71;width:1.5rem;}
@@ -224,8 +198,8 @@ const PRODUCT_CARDS_CSS = `
 .pc-more-btn:hover{background:#c96200;}
 .pc-section-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0 0 0.75rem;text-align:center;}
 .pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
-@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}.pc-page{grid-template-columns:repeat(3,minmax(220px,1fr));}}
-@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-page{grid-template-columns:repeat(2,minmax(200px,1fr));}}
+@media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}.pc-page{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}}
+@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-page{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}}
 @media(max-width:640px){.pc-page{grid-template-columns:minmax(240px,1fr);}}`;
 
 function buildCardHTML(card) {
@@ -269,11 +243,7 @@ function buildProductCardsHTML(data) {
         .join("");
     const navHTML =
         pages.length > 1
-            ? `<div class="pc-nav-row">
-                <button type="button" class="pc-nav-btn pc-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
-                <div class="pc-dots">${dotsHTML}</div>
-                <button type="button" class="pc-nav-btn pc-nav-next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
-            </div>`
+            ? `<div class="pc-nav-row"><div class="pc-dots">${dotsHTML}</div></div>`
             : "";
     const moreBtnHTML = showMore
         ? `<div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div>`
@@ -672,6 +642,18 @@ export function initializeProductCardsBlock(editor) {
                 hoverable: true,
                 editable: false,
                 highlightable: false,
+                stylable: false,
+                resizable: false,
+                layerable: true,
+                propagate: [
+                    "editable",
+                    "selectable",
+                    "hoverable",
+                    "droppable",
+                    "highlightable",
+                    "stylable",
+                    "resizable",
+                ],
                 attributes: {
                     "data-gjs-type": componentType,
                     "data-product-cards-config": JSON.stringify(DEFAULT_DATA),
@@ -722,24 +704,27 @@ export function initializeProductCardsBlock(editor) {
         }
     });
 
-    editor.on("component:selected", (comp) => {
-        const el = comp.getEl();
-        if (!el) return;
-        const root = el.closest(`[data-gjs-type="${componentType}"]`);
-        if (root && !el.hasAttribute("data-gjs-type")) {
-            const all = editor
-                .getWrapper()
-                .find(`[data-gjs-type="${componentType}"]`);
-            const rootComp = all.find((c) => c.getEl() === root);
-            if (rootComp) setTimeout(() => editor.select(rootComp), 0);
-        }
-    });
-
     editor.on("canvas:render", () => {
         setTimeout(() => reinitCarouselInCanvas(editor), 600);
     });
 
     editor.on("storage:end:load", () => {
         setTimeout(() => reinitCarouselInCanvas(editor), 800);
+    });
+
+    injectProductCardsEditorStyles(editor, componentType);
+}
+
+function injectProductCardsEditorStyles(editor, componentType) {
+    editor.on("load", () => {
+        const iframe = editor.Canvas.getFrameEl();
+        const head = iframe?.contentDocument?.head;
+        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
+        const style = document.createElement("style");
+        style.id = `${componentType}-editor-css`;
+        style.textContent = `
+            [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
+        `;
+        head.appendChild(style);
     });
 }
