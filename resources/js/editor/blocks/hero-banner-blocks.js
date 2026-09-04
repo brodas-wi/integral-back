@@ -16,7 +16,7 @@ const HERO_BANNER_STYLES = `
 .hb-bg img.hb-pos-right-center{object-position:right center;}
 .hb-bg img.hb-pos-right-bottom{object-position:right bottom;}
 .hb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0) 100%);}
-.hb-bg.hb-gradient-on::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,#003B71 0%,rgba(0,59,113,0.65) 40%,rgba(0,59,113,0) 75%);}
+.hb-bg.hb-gradient-on::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(270deg,rgba(0,59,113,0) 0%,#003B71 55.14%);}
 .hb-content{position:relative;z-index:10;padding:3.5rem 4rem;max-width:600px;}
 .hb-box{position:relative;border-radius:1.125rem;padding:1.5rem 2rem 3.25rem;}
 .hb-box::before{content:"";position:absolute;inset:0;border-radius:1.125rem;border:2px solid #E97300;-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);mask-image:linear-gradient(90deg,#000 0%,#000 45%,transparent 90%);pointer-events:none;}
