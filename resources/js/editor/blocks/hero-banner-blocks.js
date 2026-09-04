@@ -24,13 +24,12 @@ const HERO_BANNER_STYLES = `
 .hb-badge{display:block;text-align:left;font-size:2.25rem;line-height:1.25;font-weight:800;margin-bottom:0.75rem;color:#fff;background:transparent;padding:0;}
 .hb-subtitle{margin:0 0 0.5rem;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;background:transparent;}
 .hb-buttons{display:flex;align-items:center;justify-content:center;gap:0.75rem;flex-wrap:wrap;position:absolute;left:2rem;right:2rem;bottom:0;transform:translateY(50%);z-index:3;}
-.hb-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.9375rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid transparent;font-family:inherit;transition:background 0.15s,color 0.15s;white-space:nowrap;}
+.hb-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;padding:0.625rem 1.75rem;border-radius:9999px;font-size:0.9375rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid transparent;font-family:inherit;transition:background 0.15s,border-color 0.15s,color 0.15s;white-space:nowrap;}
 .hb-btn-primary{background:#E97300;border-color:#E97300;color:#fff;}
 .hb-btn-primary:hover{background:#c96200;border-color:#c96200;}
 .hb-btn-secondary{background:transparent;border-color:#fff;color:#fff;}
 .hb-btn-secondary:hover{background:#fff;color:#003B71;}
 .hb-stripe{position:absolute;left:0;right:0;bottom:0;width:100%;height:16px;background:#E97300;z-index:5;}
-[data-gjs-type="hero-banner-component"] *{pointer-events:none !important;}
 @media(max-width:992px){
 .hb-content{padding:3rem 2.5rem;max-width:100%;}
 .hb-badge{font-size:1.875rem;}
@@ -425,5 +424,21 @@ export function initializeHeroBannerBlock(editor) {
             type: componentType,
             attributes: { "data-gjs-type": componentType },
         },
+    });
+
+    injectHeroBannerEditorStyles(editor, componentType);
+}
+
+function injectHeroBannerEditorStyles(editor, componentType) {
+    editor.on("load", () => {
+        const iframe = editor.Canvas.getFrameEl();
+        const head = iframe?.contentDocument?.head;
+        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
+        const style = document.createElement("style");
+        style.id = `${componentType}-editor-css`;
+        style.textContent = `
+            [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
+        `;
+        head.appendChild(style);
     });
 }
