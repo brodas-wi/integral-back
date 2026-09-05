@@ -3,185 +3,40 @@ import { assetUrl } from "@/utils/url.js";
 
 const PC_CAROUSEL_SCRIPT = function () {
     (function () {
-        var SWIPE_THRESHOLD = 60;
-
-        function isEditorContext() {
-            return (
-                !!window.__gjseditor ||
-                document.documentElement.hasAttribute("data-gjs-canvas")
-            );
-        }
-
-        function cardsPerGroup(width) {
-            if (width >= 1280) return 4;
-            if (width >= 992) return 3;
-            if (width >= 640) return 2;
-            return 1;
-        }
-
-        function chunk(arr, size) {
-            var out = [];
-            for (var i = 0; i < arr.length; i += size) {
-                out.push(arr.slice(i, i + size));
-            }
-            return out.length ? out : [[]];
-        }
-
-        function getPages(section) {
-            return Array.prototype.slice.call(
-                section.querySelectorAll(".pc-page"),
-            );
-        }
-
-        function getActiveIndex(pages) {
-            for (var i = 0; i < pages.length; i++) {
-                if (pages[i].classList.contains("pc-page-active")) return i;
-            }
-            return 0;
-        }
-
-        function updateDots(section, index) {
-            var dotsWrap = section.querySelector(".pc-dots");
-            if (!dotsWrap) return;
-            dotsWrap.querySelectorAll(".pc-dot").forEach(function (dot, i) {
-                dot.classList.toggle("pc-dot-active", i === index);
-            });
-        }
-
-        function bindDots(section) {
-            section.querySelectorAll(".pc-dot").forEach(function (dot, i) {
-                dot.addEventListener("click", function () {
-                    goToPage(section, i);
-                });
-            });
-        }
-
-        function goToPage(section, index) {
-            var pages = getPages(section);
-            var max = pages.length - 1;
-            index = Math.max(0, Math.min(index, max));
-            var current = getActiveIndex(pages);
-            if (index === current) return;
-            var wrap = section.querySelector(".pc-carousel-wrap");
-            var track = section.querySelector(".pc-carousel-track");
-            if (wrap && track) {
-                wrap.style.minHeight = track.getBoundingClientRect().height + "px";
-            }
-            pages[current].classList.remove("pc-page-active");
-            pages[index].classList.add("pc-page-active");
-            updateDots(section, index);
-            setTimeout(function () {
-                if (wrap) wrap.style.minHeight = "";
-            }, 380);
-        }
-
-        function rebuildGroups(section) {
-            var wrap = section.querySelector(".pc-carousel-wrap");
-            var track = section.querySelector(".pc-carousel-track");
-            var navRow = section.querySelector(".pc-nav-row");
-            var dotsWrap = section.querySelector(".pc-dots");
-            if (!wrap || !track) return;
-
-            if (!section.__pcAllCards) {
-                section.__pcAllCards = Array.prototype.slice.call(
-                    track.querySelectorAll(".pc-card"),
-                );
-            }
-            var allCards = section.__pcAllCards;
-            if (!allCards.length) return;
-
-            var perGroup = cardsPerGroup(wrap.clientWidth || window.innerWidth);
-            if (section.__pcPerGroup === perGroup) return;
-            section.__pcPerGroup = perGroup;
-
-            var groups = chunk(allCards, perGroup);
-
-            track.classList.remove("pc-cards-source");
-            track.innerHTML = "";
-            groups.forEach(function (groupCards, i) {
-                var page = document.createElement("div");
-                page.className = "pc-page" + (i === 0 ? " pc-page-active" : "");
-                page.style.gridTemplateColumns =
-                    "repeat(" + perGroup + ",minmax(240px,1fr))";
-                groupCards.forEach(function (card) {
-                    page.appendChild(card);
-                });
-                track.appendChild(page);
-            });
-
-            if (dotsWrap) {
-                dotsWrap.innerHTML = groups
-                    .map(function (_, i) {
-                        return (
-                            '<button type="button" class="pc-dot' +
-                            (i === 0 ? " pc-dot-active" : "") +
-                            '" aria-label="Ir a la página ' +
-                            (i + 1) +
-                            '"></button>'
-                        );
-                    })
-                    .join("");
-                bindDots(section);
-            }
-            if (navRow) {
-                navRow.style.display = groups.length > 1 ? "flex" : "none";
-            }
-        }
-
-        function initCarousel(section) {
-            if (!section || section.__pcInit) return;
-            section.__pcInit = true;
-            var wrap = section.querySelector(".pc-carousel-wrap");
-            if (!wrap) return;
-
-            if (isEditorContext()) return;
+        function initCarousel(wrap) {
+            if (!wrap || wrap.__pcInit) return;
+            wrap.__pcInit = true;
 
             wrap.querySelectorAll("img").forEach(function (img) {
                 img.setAttribute("draggable", "false");
             });
 
-            rebuildGroups(section);
-
-            var resizeTimeout = null;
-            window.addEventListener("resize", function () {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(function () {
-                    rebuildGroups(section);
-                }, 150);
-            });
-
-            var isDragging = false;
+            var isDown = false;
             var startX = 0;
+            var startScroll = 0;
             var moved = false;
 
             wrap.addEventListener("mousedown", function (e) {
                 if (e.button !== 0) return;
-                isDragging = true;
+                isDown = true;
                 moved = false;
                 startX = e.clientX;
+                startScroll = wrap.scrollLeft;
                 wrap.style.cursor = "grabbing";
             });
 
-            document.addEventListener("mousemove", function (e) {
-                if (!isDragging) return;
-                if (Math.abs(startX - e.clientX) > 5) moved = true;
+            window.addEventListener("mousemove", function (e) {
+                if (!isDown) return;
+                var delta = startX - e.clientX;
+                if (Math.abs(delta) > 3) moved = true;
+                wrap.scrollLeft = startScroll + delta;
             });
 
-            document.addEventListener("mouseup", function (e) {
-                if (!isDragging) return;
-                isDragging = false;
+            window.addEventListener("mouseup", function (e) {
+                if (!isDown) return;
+                isDown = false;
                 wrap.style.cursor = "grab";
-                if (moved) {
-                    e.stopPropagation();
-                    var delta = startX - e.clientX;
-                    var pages = getPages(section);
-                    var current = getActiveIndex(pages);
-                    if (delta > SWIPE_THRESHOLD) {
-                        goToPage(section, current + 1);
-                    } else if (delta < -SWIPE_THRESHOLD) {
-                        goToPage(section, current - 1);
-                    }
-                }
+                if (moved) e.stopPropagation();
             });
 
             wrap.addEventListener(
@@ -195,53 +50,11 @@ const PC_CAROUSEL_SCRIPT = function () {
                 },
                 true,
             );
-
-            var touchStartX = 0;
-            var touchMoved = false;
-
-            wrap.addEventListener(
-                "touchstart",
-                function (e) {
-                    touchStartX = e.touches[0].clientX;
-                    touchMoved = false;
-                },
-                { passive: true },
-            );
-
-            wrap.addEventListener(
-                "touchmove",
-                function (e) {
-                    if (Math.abs(touchStartX - e.touches[0].clientX) > 5) {
-                        touchMoved = true;
-                    }
-                },
-                { passive: true },
-            );
-
-            wrap.addEventListener(
-                "touchend",
-                function (e) {
-                    if (!touchMoved) return;
-                    var endX = e.changedTouches[0].clientX;
-                    var delta = touchStartX - endX;
-                    var pages = getPages(section);
-                    var current = getActiveIndex(pages);
-                    if (delta > SWIPE_THRESHOLD) {
-                        goToPage(section, current + 1);
-                    } else if (delta < -SWIPE_THRESHOLD) {
-                        goToPage(section, current - 1);
-                    }
-                },
-                { passive: true },
-            );
         }
 
         function init() {
-            document.querySelectorAll(".pc-section").forEach(function (s) {
-                delete s.__pcInit;
-                delete s.__pcAllCards;
-                delete s.__pcPerGroup;
-                initCarousel(s);
+            document.querySelectorAll(".pc-carousel-wrap").forEach(function (w) {
+                initCarousel(w);
             });
         }
 
@@ -256,12 +69,9 @@ const PRODUCT_CARDS_RUNTIME_SCRIPT = `(${PC_CAROUSEL_SCRIPT.toString()})();`;
 
 const PRODUCT_CARDS_CSS = `
 .pc-section{width:100%;background:#ffffff;padding:3rem 4rem;}
-.pc-carousel-wrap{position:relative;width:100%;cursor:grab;overflow:hidden;}
-.pc-carousel-track{position:relative;width:100%;}
-.pc-carousel-track.pc-cards-source{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:1.5rem;}
-.pc-page{grid-template-columns:repeat(4,minmax(240px,1fr));gap:1.5rem;width:100%;box-sizing:border-box;display:grid;opacity:0;visibility:hidden;position:absolute;top:0;left:0;transition:opacity .35s ease;pointer-events:none;}
-.pc-page.pc-page-active{opacity:1;visibility:visible;position:relative;pointer-events:auto;}
-.pc-card{display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;min-width:0;user-select:none;}
+.pc-carousel-wrap{width:100%;overflow-x:auto;cursor:grab;scroll-snap-type:x proximity;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:0.5rem;}
+.pc-carousel-track{display:flex;gap:1.5rem;}
+.pc-card{flex:0 0 260px;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#ffffff;border:2px solid #003B71;border-radius:1rem;padding:1.25rem;box-sizing:border-box;user-select:none;}
 .pc-card-img-wrap{width:100%;max-width:200px;margin:0 auto;aspect-ratio:1/1;border-radius:0.75rem;overflow:hidden;background:#dce8f5;}
 .pc-card-img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
 .pc-card-body{display:flex;flex-direction:column;align-items:center;gap:0.4rem;text-align:center;flex:1;}
@@ -269,18 +79,14 @@ const PRODUCT_CARDS_CSS = `
 .pc-card-desc{font-size:0.9rem;color:#003B71;line-height:1.5;text-align:center;}
 .pc-btn{display:block;width:100%;padding:0.5rem 1rem;border-radius:9999px;background:#003B71;color:#ffffff;font-size:0.95rem;font-weight:600;text-align:center;text-decoration:none;transition:background .2s;}
 .pc-btn:hover{background:#002a52;}
-.pc-nav-row{display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.5rem;}
-.pc-dots{display:flex;align-items:center;gap:0.5rem;}
-.pc-dot{width:0.5rem;height:0.5rem;border-radius:9999px;background:#dce8f5;border:none;cursor:pointer;padding:0;transition:background .2s,width .2s;}
-.pc-dot-active{background:#003B71;width:1.5rem;}
 .pc-more-wrap{display:flex;justify-content:center;margin-top:2rem;}
 .pc-more-btn{display:inline-block;padding:0.6rem 2.5rem;border-radius:9999px;background:#E97300;color:#ffffff;font-size:1rem;font-weight:600;text-decoration:none;transition:background .2s;}
 .pc-more-btn:hover{background:#c96200;}
 .pc-section-heading{font-size:2.25rem;font-weight:800;color:#003B71;margin:0 0 0.75rem;text-align:center;}
 .pc-section-subheading{font-size:1rem;color:#003B71;margin:0;text-align:center;}
 @media(max-width:1280px){.pc-section{padding:3rem 2.5rem;}}
-@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}}
-.pc-carousel-wrap{min-height:1px;}`;
+@media(max-width:992px){.pc-section{padding:2.5rem 1.5rem;}.pc-card{flex:0 0 220px;}}
+@media(max-width:640px){.pc-card{flex:0 0 78vw;}}`;
 
 function buildCardHTML(card) {
     const img = card.img || assetUrl("images/placeholder.svg");
@@ -304,7 +110,7 @@ function buildProductCardsHTML(data) {
     const moreBtnHTML = showMore
         ? `<div class="pc-more-wrap"><a href="${moreHref}" class="pc-more-btn">${moreLabel}</a></div>`
         : "";
-    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-carousel-track pc-cards-source">${cardsHTML}</div></div><div class="pc-nav-row" style="display:none;"><div class="pc-dots"></div></div>${moreBtnHTML}</section>`;
+    return `<section class="pc-section"><style>${PRODUCT_CARDS_CSS}</style><div style="text-align:center;margin-bottom:2rem;"><h2 class="pc-section-heading">${heading}</h2><p class="pc-section-subheading">${subheading}</p></div><div class="pc-carousel-wrap"><div class="pc-carousel-track">${cardsHTML}</div></div>${moreBtnHTML}</section>`;
 }
 
 const DEFAULT_DATA = {
@@ -712,7 +518,6 @@ function showProductCardsModal(editor, component) {
                         "data-product-cards-config": JSON.stringify(restored),
                     });
                     component.components(buildProductCardsHTML(restored));
-                    setTimeout(() => reinitCarouselInCanvas(editor), 300);
                     overlay.remove();
                     showProductCardsModal(editor, component);
                 };
@@ -746,27 +551,8 @@ function showProductCardsModal(editor, component) {
             "data-product-cards-config": JSON.stringify(data),
         });
         component.components(buildProductCardsHTML(data));
-        setTimeout(() => reinitCarouselInCanvas(editor), 300);
         close();
     });
-}
-
-function reinitCarouselInCanvas(editor) {
-    try {
-        const iframeDoc = editor.Canvas.getFrameEl()?.contentDocument;
-        if (!iframeDoc) return;
-        const existing = iframeDoc.getElementById("pc-runtime-script");
-        if (existing) existing.remove();
-        iframeDoc.querySelectorAll(".pc-section").forEach((s) => {
-            delete s.__pcInit;
-        });
-        const scriptEl = iframeDoc.createElement("script");
-        scriptEl.id = "pc-runtime-script";
-        scriptEl.textContent = PRODUCT_CARDS_RUNTIME_SCRIPT;
-        iframeDoc.head.appendChild(scriptEl);
-    } catch (e) {
-        console.warn("[ProductCards] Error reiniciando carrusel:", e);
-    }
 }
 
 const iconProductCards = `<svg viewBox="0 0 32 32" width="32" height="32">
@@ -866,38 +652,23 @@ export function initializeProductCardsBlock(editor) {
         },
     });
 
-    editor.on("component:mount", (comp) => {
-        const el = comp.getEl();
-        if (el?.getAttribute?.("data-gjs-type") === componentType) {
-            comp.set("type", componentType);
-            setTimeout(() => reinitCarouselInCanvas(editor), 400);
+    editor.on("component:selected", (selected) => {
+        if (!selected || selected.__pcRedirecting) return;
+        const el = selected.getEl?.();
+        if (!el) return;
+        if (el.getAttribute?.("data-gjs-type") === componentType) return;
+        const rootEl = el.closest(`[data-gjs-type="${componentType}"]`);
+        if (!rootEl) return;
+        const rootModel = editor
+            .getWrapper()
+            .find(`[data-gjs-type="${componentType}"]`)
+            .find((c) => c.getEl() === rootEl);
+        if (rootModel && rootModel !== selected) {
+            rootModel.__pcRedirecting = true;
+            editor.select(rootModel);
+            setTimeout(() => {
+                delete rootModel.__pcRedirecting;
+            }, 0);
         }
     });
-
-    editor.on("canvas:render", () => {
-        setTimeout(() => reinitCarouselInCanvas(editor), 600);
-    });
-
-    editor.on("storage:end:load", () => {
-        setTimeout(() => reinitCarouselInCanvas(editor), 800);
-    });
-
-    injectProductCardsEditorStyles(editor, componentType);
-}
-
-function injectProductCardsEditorStyles(editor, componentType) {
-    const inject = () => {
-        const iframe = editor.Canvas.getFrameEl();
-        const head = iframe?.contentDocument?.head;
-        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
-        const style = document.createElement("style");
-        style.id = `${componentType}-editor-css`;
-        style.textContent = `
-            [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
-        `;
-        head.appendChild(style);
-    };
-    editor.on("load", inject);
-    editor.on("canvas:render", inject);
-    editor.on("storage:end:load", inject);
 }
