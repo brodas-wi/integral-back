@@ -155,9 +155,13 @@ const HC_CSS = `
 .hc-card{position:relative;flex:0 0 260px;aspect-ratio:9/14;border-radius:32px;overflow:hidden;cursor:pointer;background:#0a0a0a;}
 .hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;overflow:hidden;}
 .hc-card-media img,.hc-card-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
-.hc-card-video{opacity:0;transition:opacity 0.25s ease;}
+.hc-card-video{opacity:0;transition:opacity 0.25s ease;pointer-events:none;}
+.hc-card-video::-webkit-media-controls{display:none !important;}
+.hc-card-video::-webkit-media-controls-panel{display:none !important;}
+.hc-card-video::-webkit-media-controls-play-button{display:none !important;}
+.hc-card-video::-webkit-media-controls-start-playback-button{display:none !important;}
 .hc-card:hover .hc-card-video{opacity:1;}
-.hc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:4rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.875rem 1rem;pointer-events:none;}
+.hc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:3.5rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.875rem 1rem;pointer-events:none;}
 .hc-card-title{margin:0 0 0.25rem;font-size:1.0625rem;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
 .hc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);line-height:1.4;}
 .hc-card-btn{position:absolute;right:0.75rem;bottom:0.75rem;z-index:6;width:2.25rem;height:2.25rem;border-radius:9999px;background:#fff;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.125rem;text-decoration:none;transition:background 0.2s ease,color 0.2s ease;pointer-events:auto;}
@@ -183,7 +187,7 @@ function buildCardHTML(card, uid, idx) {
     const href = card.href || "#";
 
     const videoHtml = video
-        ? `<video class="hc-card-video" src="${video}" muted loop playsinline preload="metadata"></video>`
+        ? `<video class="hc-card-video" src="${video}" muted loop playsinline preload="metadata" controls="false" disablepictureinpicture disableremoteplayback></video>`
         : "";
 
     return `<div class="hc-card" id="hc-card-${uid}-${idx}">
@@ -282,16 +286,33 @@ function showHeroCardsModal(editor, component) {
             .hc-img-placeholder i{font-size:1.5rem;color:#94a3b8;}
             .hc-pick-btn{flex-shrink:0;padding:0.4rem 0.75rem;background:#003B71;border:none;border-radius:9999px;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.25rem;font-family:inherit;white-space:nowrap;transition:background 0.15s;}
             .hc-pick-btn:hover{background:#002a52;}
-            .hc-btn-remove{background:none;border:none;cursor:pointer;color:#ef4444;padding:0.25rem;display:flex;align-items:center;border-radius:0.25rem;transition:background 0.15s;}
+            .hc-btn-remove{background:none;border:none;cursor:pointer;color:#ef4444;padding:0.375rem;display:flex;align-items:center;justify-content:center;border-radius:9999px;transition:background 0.15s;}
             .hc-btn-remove:hover{background:#fef2f2;}
             .hc-btn-add{padding:0.5rem 1.25rem;border:none;border-radius:9999px;color:#fff;font-size:0.8125rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem;font-family:inherit;transition:background 0.15s;background:#003B71;}
             .hc-btn-add:hover{background:#002a52;}
             .hc-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
             .hc-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;}
             .hc-btn-cancel:hover{background:#f8fafc;}
-            .hc-btn-save{padding:0.5rem 1.25rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+                        .hc-btn-save{padding:0.5rem 1.25rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .hc-btn-save:hover{background:#c96200;}
             .hc-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
+            .hc-btn-backup{padding:0.5rem 1rem;background:#fff;border:2px solid #003B71;border-radius:9999px;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;}
+            .hc-btn-backup:hover{background:#003B71;color:#fff;}
+            .hc-btn-restore{padding:0.5rem 1rem;background:#fff;border:2px solid #0d9488;border-radius:9999px;color:#0d9488;font-size:0.8125rem;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;user-select:none;}
+            .hc-btn-restore:hover{background:#0d9488;color:#fff;}
+            .hc-confirm-overlay{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);padding:1rem;}
+            .hc-confirm-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(15,23,42,0.18);font-family:'Inter',sans-serif;overflow:hidden;border:1px solid #e2e8f0;}
+            .hc-confirm-header{padding:1rem 1.25rem 0.75rem;display:flex;align-items:center;gap:0.625rem;border-bottom:1px solid #f1f5f9;}
+            .hc-confirm-header i{font-size:1.25rem;color:#E97300;}
+            .hc-confirm-header h3{margin:0;font-size:0.9375rem;font-weight:700;color:#0f172a;}
+            .hc-confirm-body{padding:1rem 1.25rem;}
+            .hc-confirm-body p{margin:0 0 0.5rem;font-size:0.875rem;color:#475569;line-height:1.5;}
+            .hc-confirm-filename{display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;background:#f1f5f9;border-radius:0.375rem;font-size:0.8rem;font-weight:600;color:#003B71;margin-top:0.25rem;}
+            .hc-confirm-footer{padding:0.75rem 1.25rem 1rem;display:flex;gap:0.625rem;justify-content:flex-end;background:#f8fafc;border-top:1px solid #f1f5f9;}
+            .hc-confirm-cancel{padding:0.5rem 1.125rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .hc-confirm-cancel:hover{background:#f1f5f9;}
+            .hc-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .hc-confirm-ok:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
     }
@@ -351,6 +372,10 @@ function showHeroCardsModal(editor, component) {
         </div>
         <div class="hc-modal-footer">
             <button id="hc-modal-cancel" class="hc-btn-cancel">Cancelar</button>
+            <div style="display:flex;gap:0.5rem;margin-right:auto;">
+                <button id="hc-modal-backup" class="hc-btn-backup" title="Descargar configuración como JSON"><i class="ri-download-2-line"></i> Respaldar</button>
+                <label id="hc-modal-restore-label" class="hc-btn-restore" title="Restaurar configuración desde JSON" style="cursor:pointer;"><i class="ri-upload-2-line"></i> Restaurar<input id="hc-modal-restore-input" type="file" accept=".json,application/json" style="display:none;"></label>
+            </div>
             <button id="hc-modal-save" class="hc-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
         </div>`;
 
@@ -482,6 +507,95 @@ function showHeroCardsModal(editor, component) {
             block: "nearest",
         });
     });
+
+    modal.querySelector("#hc-modal-backup").addEventListener("click", () => {
+        const snapshot = {
+            heading:
+                modal.querySelector("#hc-heading").value.trim() ||
+                DEFAULT_DATA.heading,
+            subheading:
+                modal.querySelector("#hc-subheading").value.trim() ||
+                DEFAULT_DATA.subheading,
+            cards: JSON.parse(JSON.stringify(data.cards)),
+        };
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `hero-cards-backup-${ts}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    });
+
+    modal.querySelector("#hc-modal-restore-input").addEventListener(
+        "change",
+        (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                let parsed;
+                try {
+                    parsed = JSON.parse(ev.target.result);
+                } catch {
+                    const errOverlay = document.createElement("div");
+                    errOverlay.className = "hc-confirm-overlay";
+                    errOverlay.innerHTML = `<div class="hc-confirm-modal"><div class="hc-confirm-header"><i class="ri-error-warning-line" style="color:#ef4444;"></i><h3>Archivo inválido</h3></div><div class="hc-confirm-body"><p>El archivo seleccionado no es un JSON válido.</p></div><div class="hc-confirm-footer"><button class="hc-confirm-ok" style="background:#ef4444;">Cerrar</button></div></div>`;
+                    document.body.appendChild(errOverlay);
+                    errOverlay.querySelector(".hc-confirm-ok").onclick = () =>
+                        errOverlay.remove();
+                    e.target.value = "";
+                    return;
+                }
+                const confirmOverlay = document.createElement("div");
+                confirmOverlay.className = "hc-confirm-overlay";
+                confirmOverlay.innerHTML = `
+                    <div class="hc-confirm-modal">
+                        <div class="hc-confirm-header">
+                            <i class="ri-refresh-line"></i>
+                            <h3>Restaurar configuración</h3>
+                        </div>
+                        <div class="hc-confirm-body">
+                            <p>¿Deseas restaurar la configuración de esta sección desde el archivo de respaldo?</p>
+                            <p>Esta acción reemplazará la configuración actual del formulario.</p>
+                            <span class="hc-confirm-filename"><i class="ri-file-code-line"></i>${file.name}</span>
+                        </div>
+                        <div class="hc-confirm-footer">
+                            <button class="hc-confirm-cancel">Cancelar</button>
+                            <button class="hc-confirm-ok"><i class="ri-check-line"></i> Sí, restaurar</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(confirmOverlay);
+                confirmOverlay.querySelector(".hc-confirm-cancel").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                };
+                confirmOverlay.querySelector(".hc-confirm-ok").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                    const restored = {
+                        heading: parsed.heading ?? DEFAULT_DATA.heading,
+                        subheading: parsed.subheading ?? DEFAULT_DATA.subheading,
+                        cards: JSON.parse(
+                            JSON.stringify(parsed.cards ?? DEFAULT_DATA.cards),
+                        ),
+                    };
+                    component.addAttributes({
+                        "data-hero-cards-config": JSON.stringify(restored),
+                    });
+                    component.components(buildHeroCardsHTML(restored));
+                    overlay.remove();
+                    showHeroCardsModal(editor, component);
+                };
+            };
+            reader.readAsText(file);
+        },
+    );
 
     const close = () => overlay.remove();
     modal.querySelector("#hc-modal-close").addEventListener("click", close);
