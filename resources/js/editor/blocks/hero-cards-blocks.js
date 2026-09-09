@@ -147,7 +147,7 @@ const HC_RUNTIME_SCRIPT = `(${HC_SCRIPT.toString()})();`;
 
 const HC_CSS = `
 .hc-section{width:100%;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
-.hc-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0 0 0.5rem;text-align:center;}
+.hc-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0 0 0.125rem;text-align:center;}
 .hc-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;}
 .hc-carousel{position:relative;width:100%;}
 .hc-track-wrap{overflow:hidden;width:100%;}
@@ -157,7 +157,7 @@ const HC_CSS = `
 .hc-card-media img,.hc-card-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hc-card-video{opacity:0;transition:opacity 0.25s ease;}
 .hc-card:hover .hc-card-video{opacity:1;}
-.hc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:0.75rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.875rem 1rem 3.25rem;pointer-events:none;}
+.hc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:3rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.875rem 1rem;pointer-events:none;}
 .hc-card-title{margin:0 0 0.25rem;font-size:1.0625rem;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
 .hc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);line-height:1.4;}
 .hc-card-btn{position:absolute;right:0.75rem;bottom:0.75rem;z-index:6;width:2.25rem;height:2.25rem;border-radius:9999px;background:#fff;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.125rem;text-decoration:none;transition:background 0.2s ease,color 0.2s ease;pointer-events:auto;}
@@ -195,7 +195,7 @@ function buildCardHTML(card, uid, idx) {
             <h3 class="hc-card-title">${title}</h3>
             <p class="hc-card-desc">${desc}</p>
         </div>
-        <a href="${href}" class="hc-card-btn"><i class="ri-arrow-down-line"></i></a>
+        <a href="${href}" class="hc-card-btn"><i class="ri-arrow-down-s-line"></i></a>
     </div>`;
 }
 
