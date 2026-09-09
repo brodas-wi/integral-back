@@ -6,11 +6,7 @@ const HERO_VIDEO_STYLES = `
 .hv-section{position:relative;width:100%;min-height:500px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;font-family:'Poppins',sans-serif;background:#0a0a0a;}
 .hv-bg{position:absolute;inset:0;z-index:0;}
 .hv-bg video,.hv-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
-.hv-bg video.hv-video-loading{opacity:0;}
-.hv-bg video{transition:opacity 0.3s;}
 .hv-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0.65) 100%);}
-.hv-mute-btn{position:absolute;top:1.25rem;right:1.25rem;z-index:20;width:2.5rem;height:2.5rem;border-radius:9999px;background:rgba(0,0,0,0.45);border:1.5px solid rgba(255,255,255,0.6);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.125rem;transition:background 0.15s;}
-.hv-mute-btn:hover{background:rgba(0,0,0,0.65);}
 .hv-content{position:relative;z-index:10;width:100%;padding:2.5rem 2rem 3.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:0.75rem;}
 .hv-title{margin:0;font-size:1.75rem;line-height:1.25;font-weight:800;color:#fff;}
 .hv-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;}
@@ -39,61 +35,18 @@ function buildHeroVideoHTML(data, uid) {
         ? `<a href="${data.button_href || "#"}" class="hv-btn">${data.button_label}</a>`
         : "";
 
-    const bgMedia = `<video id="hv-video-${uid}" class="hv-video-loading" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`;
-
-    const muteBtnHtml = `<button type="button" id="hv-mute-${uid}" class="hv-mute-btn" aria-label="Activar sonido" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            <i class="ri-volume-mute-line" data-gjs-editable="false"></i>
-        </button>`;
-
-    const scriptHtml = `<script>
-        (function(){
-            var video = document.getElementById("hv-video-${uid}");
-            var btn = document.getElementById("hv-mute-${uid}");
-            if (!video) return;
-
-            video.addEventListener("loadeddata", function () {
-                video.classList.remove("hv-video-loading");
-            });
-
-            if (!btn) return;
-            var icon = btn.querySelector("i");
-
-            function refreshIcon() {
-                if (video.muted) {
-                    icon.className = "ri-volume-mute-line";
-                    btn.setAttribute("aria-label", "Activar sonido");
-                } else {
-                    icon.className = "ri-volume-up-line";
-                    btn.setAttribute("aria-label", "Silenciar");
-                }
-            }
-
-            btn.addEventListener("click", function () {
-                video.muted = !video.muted;
-                video.play().then(function() {
-                    refreshIcon();
-                }).catch(function(err){
-                    console.error("hero-video mute toggle failed:", err);
-                    refreshIcon();
-                });
-            });
-
-            refreshIcon();
-        })();
-        </script>`;
+    const bgMedia = `<video id="hv-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`;
 
     return `<section id="hv-root-${uid}" class="hv-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hv-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             ${bgMedia}
         </div>
-        ${muteBtnHtml}
         <div class="hv-content">
             ${titleHtml}
             ${subtitleHtml}
             ${buttonHtml}
         </div>
-    </section>
-    ${scriptHtml}`;
+    </section>`;
 }
 
 const DEFAULT_DATA = {
@@ -391,7 +344,7 @@ export function initializeHeroVideoBlock(editor) {
             init() {
                 this.set("type", componentType);
                 this.addAttributes({ "data-gjs-type": componentType });
-                this.on("change:attributes", () => {
+                this.on("change:attributes component:update", () => {
                     setTimeout(() => applyCanvasPosterBackground(editor, this), 50);
                 });
             },
@@ -434,9 +387,7 @@ function injectHeroVideoEditorStyles(editor, componentType) {
         style.id = `${componentType}-editor-css`;
         style.textContent = `
             [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
-            [data-gjs-type="${componentType}"] .hv-bg video { display: none !important; }
-            [data-gjs-type="${componentType}"] .hv-bg { background-size: cover; background-position: center; }
-            [data-gjs-type="${componentType}"] .hv-mute-btn { display: none !important; }
+            [data-gjs-type="${componentType}"] .hv-bg { background-size: cover; background-position: center; background-repeat: no-repeat; }
         `;
         head.appendChild(style);
     });
@@ -461,6 +412,14 @@ function applyCanvasPosterBackground(editor, component) {
     if (!el) return;
     const bgEl = el.querySelector(".hv-bg");
     if (!bgEl) return;
+
+    const videoEl = bgEl.querySelector("video");
+    if (videoEl) {
+        videoEl.pause();
+        videoEl.removeAttribute("src");
+        videoEl.load();
+        videoEl.style.display = "none";
+    }
 
     let posterUrl = "";
     try {
