@@ -54,25 +54,70 @@ function deleteMedia(mediaId) {
                 return;
             }
 
+            if (status === 409 && data.requires_thumbnail_confirmation) {
+                confirmThumbnailDeletion(mediaId, data.thumbnail_filename);
+                return;
+            }
+
             if (data.success) {
                 showNotification(data.message || "Movido a la papelera", "success");
-                const mediaItem = document.getElementById(`media-item-${mediaId}`);
-                if (mediaItem) {
-                    mediaItem.style.transition = "opacity 0.3s, transform 0.3s";
-                    mediaItem.style.opacity = "0";
-                    mediaItem.style.transform = "scale(0.9)";
-                    setTimeout(() => {
-                        mediaItem.remove();
-                        if (document.querySelectorAll('[id^="media-item-"]').length === 0) {
-                            window.location.reload();
-                        }
-                    }, 300);
-                }
+                removeMediaItemFromGrid(mediaId);
             } else {
                 showNotification(data.message || "Error desconocido", "error");
             }
         })
         .catch(() => showNotification("Error al eliminar. Verifica tu conexión.", "error"));
+}
+
+function confirmThumbnailDeletion(mediaId, thumbnailFilename) {
+    showConfirmModal({
+        title: "Miniatura asociada",
+        message: `Este video tiene una miniatura asociada ("${thumbnailFilename}"). Puedes eliminarla también o conservarla.`,
+        confirmText: "Eliminar ambos",
+        cancelText: "Conservar miniatura",
+        type: "warning",
+        onConfirm: () => deleteMediaWithThumbnail(mediaId, true),
+        onCancel: () => deleteMediaWithThumbnail(mediaId, false),
+    });
+}
+
+function deleteMediaWithThumbnail(mediaId, deleteThumbnail) {
+    fetch(buildUrl(`media/${mediaId}/destroy-with-thumbnail`), {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": CSRF.getAttribute("content"),
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({ delete_thumbnail: deleteThumbnail }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                showNotification(data.message || "Movido a la papelera", "success");
+                removeMediaItemFromGrid(mediaId);
+            } else {
+                showNotification(data.message || "Error desconocido", "error");
+            }
+        })
+        .catch(() => showNotification("Error al eliminar. Verifica tu conexión.", "error"));
+}
+
+function removeMediaItemFromGrid(mediaId) {
+    const mediaItem = document.getElementById(`media-item-${mediaId}`);
+    if (mediaItem) {
+        mediaItem.style.transition = "opacity 0.3s, transform 0.3s";
+        mediaItem.style.opacity = "0";
+        mediaItem.style.transform = "scale(0.9)";
+        setTimeout(() => {
+            mediaItem.remove();
+            if (document.querySelectorAll('[id^="media-item-"]').length === 0) {
+                window.location.reload();
+            }
+        }, 300);
+    }
 }
 
 function initCheckUsages() {

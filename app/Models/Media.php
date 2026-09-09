@@ -129,6 +129,21 @@ class Media extends Model
         return $usages;
     }
 
+    public function findAssociatedThumbnail(): ?Media
+    {
+        if (!$this->isVideo()) {
+            return null;
+        }
+
+        $baseName = pathinfo($this->filename, PATHINFO_FILENAME);
+        $videoUuid = pathinfo($this->stored_filename, PATHINFO_FILENAME);
+        $expectedThumbnailName = $baseName . '-thumbnail-' . substr($videoUuid, 0, 8) . '.webp';
+
+        return Media::where('type', 'image')
+            ->where('filename', $expectedThumbnailName)
+            ->first();
+    }
+
     protected static function booted()
     {
         static::deleted(function ($media) {

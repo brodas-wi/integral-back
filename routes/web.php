@@ -369,6 +369,9 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{media}', [MediaController::class, 'destroy'])
             ->name('destroy');
 
+        Route::post('/{media}/destroy-with-thumbnail', [MediaController::class, 'destroyWithThumbnail'])
+            ->name('destroy-with-thumbnail');
+
         Route::post('/bulk-delete', [MediaController::class, 'bulkDelete'])
             ->name('bulk-delete');
 

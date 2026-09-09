@@ -221,6 +221,10 @@ class MediaController extends Controller
                 default => 'media/documents',
             };
             $path = $file->storeAs($directory, $storedFilename, 'public');
+
+            if ($type === 'video') {
+                $this->generateVideoThumbnail($path, $displayName, $storedFilename);
+            }
         }
 
         return Media::create([
@@ -236,6 +240,79 @@ class MediaController extends Controller
             'height' => $height,
             'uploaded_by' => auth()->id(),
         ]);
+    }
+
+    private function generateVideoThumbnail(string $videoPath, string $originalDisplayName, string $videoStoredFilename)
+    {
+        try {
+            $videoFullPath = storage_path('app/public/' . $videoPath);
+            $thumbnailFilename = Str::uuid() . '.webp';
+            $thumbnailRelativePath = 'media/images/' . $thumbnailFilename;
+            $thumbnailFullPath = storage_path('app/public/' . $thumbnailRelativePath);
+
+            $directory = dirname($thumbnailFullPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+
+            $tempFrame = storage_path('app/public/media/images/' . Str::uuid() . '.png');
+
+            $process = new \Symfony\Component\Process\Process([
+                'ffmpeg',
+                '-i',
+                $videoFullPath,
+                '-ss',
+                '00:00:01',
+                '-vframes',
+                '1',
+                '-y',
+                $tempFrame,
+            ]);
+            $process->setTimeout(30);
+            $process->run();
+
+            if (!$process->isSuccessful() || !file_exists($tempFrame)) {
+                \Log::error('FFmpeg thumbnail extraction failed', [
+                    'video' => $videoPath,
+                    'error' => $process->getErrorOutput(),
+                ]);
+                return;
+            }
+
+            $image = Image::read($tempFrame);
+            $width = $image->width();
+            $height = $image->height();
+
+            if ($width > 2000) {
+                $image->scale(width: 2000);
+                $width = $image->width();
+                $height = $image->height();
+            }
+
+            $encoded = $image->toWebp(quality: 90);
+            file_put_contents($thumbnailFullPath, $encoded);
+
+            unlink($tempFrame);
+
+            $videoUuid = pathinfo($videoStoredFilename, PATHINFO_FILENAME);
+            $displayName = pathinfo($originalDisplayName, PATHINFO_FILENAME) . '-thumbnail-' . substr($videoUuid, 0, 8) . '.webp';
+
+            Media::create([
+                'filename' => $displayName,
+                'alt' => null,
+                'stored_filename' => $thumbnailFilename,
+                'mime_type' => 'image/webp',
+                'type' => 'image',
+                'size' => filesize($thumbnailFullPath),
+                'path' => $thumbnailRelativePath,
+                'disk' => 'public',
+                'width' => $width,
+                'height' => $height,
+                'uploaded_by' => auth()->id(),
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Video thumbnail generation failed: ' . $e->getMessage());
+        }
     }
 
     private function determineFileType(string $mimeType): string
@@ -305,6 +382,22 @@ class MediaController extends Controller
             return redirect()->route('media.index')->with('error', $message);
         }
 
+        $skipThumbnailCheck = request()->boolean('skip_thumbnail_check');
+        $thumbnail = $media->findAssociatedThumbnail();
+
+        if ($thumbnail && !$skipThumbnailCheck && request()->expectsJson()) {
+            $thumbnailUsages = $thumbnail->findUsages();
+            if (empty($thumbnailUsages)) {
+                return response()->json([
+                    'success' => false,
+                    'requires_thumbnail_confirmation' => true,
+                    'thumbnail_id' => $thumbnail->id,
+                    'thumbnail_filename' => $thumbnail->filename,
+                    'message' => "Este video tiene una miniatura asociada: '{$thumbnail->filename}'. ¿Deseas eliminarla también?",
+                ], 409);
+            }
+        }
+
         try {
             $filename = $media->filename;
             $media->delete();
@@ -323,6 +416,38 @@ class MediaController extends Controller
 
             return redirect()->route('media.index')->with('error', 'Error al eliminar');
         }
+    }
+
+    public function destroyWithThumbnail(Request $request, Media $media)
+    {
+        if (!auth()->user()->can('media.delete') && !auth()->user()->can('media.manage')) {
+            return response()->json(['success' => false, 'message' => 'Sin permisos para eliminar'], 403);
+        }
+
+        $usages = $media->findUsages();
+        if (!empty($usages)) {
+            $message = 'No se puede eliminar: el archivo está en uso en ' . count($usages) . ' lugar(es).';
+            return response()->json(['success' => false, 'message' => $message, 'usages' => $usages], 422);
+        }
+
+        $deleteThumbnail = $request->boolean('delete_thumbnail');
+        $thumbnail = $media->findAssociatedThumbnail();
+        $filename = $media->filename;
+
+        $media->delete();
+
+        if ($deleteThumbnail && $thumbnail) {
+            $thumbnailUsages = $thumbnail->findUsages();
+            if (empty($thumbnailUsages)) {
+                $thumbnail->delete();
+            }
+        }
+
+        $message = $deleteThumbnail && $thumbnail
+            ? "'{$filename}' y su miniatura fueron movidos a la papelera"
+            : "'{$filename}' movido a la papelera";
+
+        return response()->json(['success' => true, 'message' => $message]);
     }
 
     public function bulkDelete(Request $request)

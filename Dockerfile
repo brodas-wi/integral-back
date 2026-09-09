@@ -26,7 +26,8 @@ RUN apk add --no-cache \
     libzip-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
-    freetype-dev
+    freetype-dev \
+    ffmpeg
 
 RUN docker-php-ext-configure gd \
     --with-jpeg \

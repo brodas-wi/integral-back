@@ -43,6 +43,7 @@
                 <select name="type" class="input-field sm:w-48">
                     <option value="">Todos los tipos</option>
                     <option value="image" {{ request('type') === 'image' ? 'selected' : '' }}>Imágenes</option>
+                    <option value="video" {{ request('type') === 'video' ? 'selected' : '' }}>Videos</option>
                     <option value="document" {{ request('type') === 'document' ? 'selected' : '' }}>Archivos Excel</option>
                     <option value="pdf" {{ request('type') === 'pdf' ? 'selected' : '' }}>PDFs</option>
                 </select>
@@ -95,6 +96,16 @@
                                 <div
                                     class="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs font-medium">
                                     {{ strtoupper(pathinfo($item->filename, PATHINFO_EXTENSION)) }}
+                                </div>
+                            @elseif($item->isVideo())
+                                <video src="{{ $item->url }}" muted preload="metadata"
+                                    class="w-full h-full object-cover"></video>
+                                <div
+                                    class="absolute top-2 right-2 bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">
+                                    {{ strtoupper(pathinfo($item->filename, PATHINFO_EXTENSION)) }}
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    <i class="ri-play-circle-fill text-4xl text-white text-opacity-80"></i>
                                 </div>
                             @elseif($item->isPdf())
                                 <i class="ri-file-pdf-line text-7xl text-red-500"></i>
@@ -169,7 +180,7 @@
                                             </a>
                                         @endif
 
-                                        @if ($item->isImage() || $item->isPdf())
+                                        @if ($item->isImage() || $item->isPdf() || $item->isVideo())
                                             <a href="{{ $item->url }}" target="_blank" class="dropdown-item">
                                                 <i class="ri-external-link-line"></i>
                                                 <span>Abrir</span>
@@ -214,7 +225,7 @@
                 @if (request('search') || request('type') || request('date_from') || request('date_to'))
                     No se encontraron archivos que coincidan con tu búsqueda
                 @else
-                    Comienza subiendo tu primera imagen o documento
+                    Comienza subiendo tu primera imagen, video o documento
                 @endif
             </p>
             @if (request('search') || request('type') || request('date_from') || request('date_to'))
