@@ -3,9 +3,11 @@ import { assetUrl } from "@/utils/url.js";
 
 const HERO_VIDEO_STYLES = `
 <style>
-.hv-section{position:relative;width:100%;min-height:460px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;font-family:'Poppins',sans-serif;background:#0a0a0a;}
+.hv-section{position:relative;width:100%;min-height:500px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;font-family:'Poppins',sans-serif;background:#0a0a0a;}
 .hv-bg{position:absolute;inset:0;z-index:0;}
 .hv-bg video,.hv-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.hv-bg video.hv-video-loading{opacity:0;}
+.hv-bg video{transition:opacity 0.3s;}
 .hv-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.15) 55%,rgba(0,0,0,0.65) 100%);}
 .hv-mute-btn{position:absolute;top:1.25rem;right:1.25rem;z-index:20;width:2.5rem;height:2.5rem;border-radius:9999px;background:rgba(0,0,0,0.45);border:1.5px solid rgba(255,255,255,0.6);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.125rem;transition:background 0.15s;}
 .hv-mute-btn:hover{background:rgba(0,0,0,0.65);}
@@ -37,7 +39,7 @@ function buildHeroVideoHTML(data, uid) {
         ? `<a href="${data.button_href || "#"}" class="hv-btn">${data.button_label}</a>`
         : "";
 
-    const bgMedia = `<video id="hv-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`;
+    const bgMedia = `<video id="hv-video-${uid}" class="hv-video-loading" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`;
 
     const muteBtnHtml = `<button type="button" id="hv-mute-${uid}" class="hv-mute-btn" aria-label="Activar sonido" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             <i class="ri-volume-mute-line" data-gjs-editable="false"></i>
@@ -47,7 +49,13 @@ function buildHeroVideoHTML(data, uid) {
         (function(){
             var video = document.getElementById("hv-video-${uid}");
             var btn = document.getElementById("hv-mute-${uid}");
-            if (!video || !btn) return;
+            if (!video) return;
+
+            video.addEventListener("loadeddata", function () {
+                video.classList.remove("hv-video-loading");
+            });
+
+            if (!btn) return;
             var icon = btn.querySelector("i");
 
             function refreshIcon() {
@@ -62,10 +70,12 @@ function buildHeroVideoHTML(data, uid) {
 
             btn.addEventListener("click", function () {
                 video.muted = !video.muted;
-                if (!video.muted) {
-                    video.play().catch(function(){});
-                }
-                refreshIcon();
+                video.play().then(function() {
+                    refreshIcon();
+                }).catch(function(err){
+                    console.error("hero-video mute toggle failed:", err);
+                    refreshIcon();
+                });
             });
 
             refreshIcon();
@@ -312,6 +322,7 @@ function showHeroVideoModal(editor, component) {
         component.components(
             buildHeroVideoHTML(data, uid) + HERO_VIDEO_STYLES,
         );
+        setTimeout(() => applyCanvasPosterBackground(editor, component), 50);
         close();
     };
 }
@@ -380,6 +391,9 @@ export function initializeHeroVideoBlock(editor) {
             init() {
                 this.set("type", componentType);
                 this.addAttributes({ "data-gjs-type": componentType });
+                this.on("change:attributes", () => {
+                    setTimeout(() => applyCanvasPosterBackground(editor, this), 50);
+                });
             },
         },
     });
