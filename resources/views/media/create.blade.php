@@ -24,7 +24,7 @@
         <div class="card">
             <div class="mb-6">
                 <h3 class="text-xl font-bold text-secondary mb-2">Instrucciones de Carga</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
                     <div class="p-4 bg-blue-50 rounded-lg">
                         <div class="flex items-center gap-2 mb-2">
                             <i class="ri-image-line text-2xl text-blue-600"></i>
@@ -32,6 +32,15 @@
                         </div>
                         <p class="text-sm text-blue-800">PNG, JPG, JPEG, WEBP, SVG</p>
                         <p class="text-sm text-blue-600 font-medium mt-1">Máximo: 5 MB</p>
+                    </div>
+
+                    <div class="p-4 bg-purple-50 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="ri-video-line text-2xl text-purple-600"></i>
+                            <h4 class="font-semibold text-purple-900">Videos</h4>
+                        </div>
+                        <p class="text-sm text-purple-800">MP4, WEBM</p>
+                        <p class="text-sm text-purple-600 font-medium mt-1">Máximo: 80 MB</p>
                     </div>
 
                     <div class="p-4 bg-red-50 rounded-lg">
@@ -60,8 +69,10 @@
                             <p class="font-semibold mb-1">Nota importante:</p>
                             <ul class="list-disc list-inside space-y-1">
                                 <li>Puedes subir hasta 10 archivos a la vez</li>
+                                <li>El tamaño total de la carga no puede superar 100 MB</li>
                                 <li>Las imágenes serán optimizadas automáticamente</li>
                                 <li>Las imágenes grandes se redimensionarán a un máximo de 2000px de ancho</li>
+                                <li>Los videos deben estar en formato MP4 o WEBM</li>
                                 <li>Puedes agregar texto alternativo (ALT) para cada archivo después de seleccionarlo</li>
                             </ul>
                         </div>
@@ -85,7 +96,7 @@
                         <p class="text-sm text-gray-600">Máximo 10 archivos por carga</p>
 
                         <input type="file" name="files[]" id="file-input" multiple
-                            accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,video/mp4,video/webm"
                             class="hidden">
                     </div>
 

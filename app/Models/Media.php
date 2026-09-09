@@ -74,6 +74,11 @@ class Media extends Model
         return $this->type === 'document';
     }
 
+    public function isVideo(): bool
+    {
+        return $this->type === 'video';
+    }
+
     public function uploader()
     {
         return $this->belongsTo(User::class, 'uploaded_by');

@@ -43,10 +43,11 @@ RUN docker-php-ext-install \
     zip
 
 RUN { \
-    echo 'upload_max_filesize = 45M'; \
-    echo 'post_max_size = 45M'; \
+    echo 'upload_max_filesize = 90M'; \
+    echo 'post_max_size = 100M'; \
     echo 'memory_limit = 256M'; \
-    echo 'max_execution_time = 120'; \
+    echo 'max_execution_time = 300'; \
+    echo 'max_input_time = 300'; \
 } > /usr/local/etc/php/conf.d/uploads.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

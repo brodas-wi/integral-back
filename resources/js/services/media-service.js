@@ -135,6 +135,7 @@ export class MediaService {
             xls: "ri-file-excel-line",
             doc: "ri-file-word-line",
             docx: "ri-file-word-line",
+            video: "ri-video-line",
         };
 
         return icons[type] || "ri-file-line";

@@ -37,7 +37,7 @@ function initMediaUpload() {
         const files = Array.from(e.dataTransfer.files);
 
         if (files.length > 10) {
-            showNotification("No puedes subir más de 10 archivos a la vez", "error");
+            showNotification("No puedes subir más de 10 archivos a la vez (máximo 100MB en total)", "error");
             return;
         }
         if (files.length === 0) {
@@ -56,7 +56,7 @@ function initMediaUpload() {
         const files = Array.from(e.target.files);
 
         if (files.length > 10) {
-            showNotification("No puedes subir más de 10 archivos a la vez", "error");
+            showNotification("No puedes subir más de 10 archivos a la vez (máximo 100MB en total)", "error");
             fileInput.value = "";
             return;
         }
@@ -108,6 +108,7 @@ function displayFiles(fileInput, fileList, fileItems, submitBtn) {
         fileItem.className = "bg-gray-50 rounded-lg p-4 border border-gray-200";
 
         const isImage = file.type.startsWith("image/");
+        const isVideo = file.type.startsWith("video/");
 
         if (isImage) {
             const reader = new FileReader();
@@ -118,45 +119,53 @@ function displayFiles(fileInput, fileList, fileItems, submitBtn) {
                 }
             };
             reader.readAsDataURL(file);
+        } else if (isVideo) {
+            const videoUrl = URL.createObjectURL(file);
+            setTimeout(() => {
+                const videoPreview = fileItem.querySelector(".image-preview");
+                if (videoPreview) {
+                    videoPreview.innerHTML = `<video src="${videoUrl}" muted class="w-full h-full object-cover rounded"></video>`;
+                }
+            }, 0);
         }
 
         fileItem.innerHTML = `
-            <div class="flex items-start gap-4">
-                <div class="flex-shrink-0 w-20 h-20 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center image-preview">
-                    ${isImage ? '<div class="animate-pulse bg-gray-300 w-full h-full"></div>' : `<i class="${getFileIcon(file.type)} text-4xl"></i>`}
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-20 h-20 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center image-preview">
+                ${isImage || isVideo ? '<div class="animate-pulse bg-gray-300 w-full h-full"></div>' : `<i class="${getFileIcon(file.type)} text-4xl"></i>`}
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex-1 min-w-0 pr-4">
+                        <p class="font-medium text-secondary truncate">${file.name}</p>
+                        <p class="text-xs text-gray-600 mt-1">${formatFileSize(file.size)}</p>
+                    </div>
+                    <button
+                        type="button"
+                        data-remove-file="${index}"
+                        class="flex-shrink-0 text-red-500 hover:text-red-700 p-2">
+                        <i class="ri-close-line text-xl"></i>
+                    </button>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="flex-1 min-w-0 pr-4">
-                            <p class="font-medium text-secondary truncate">${file.name}</p>
-                            <p class="text-xs text-gray-600 mt-1">${formatFileSize(file.size)}</p>
-                        </div>
-                        <button
-                            type="button"
-                            data-remove-file="${index}"
-                            class="flex-shrink-0 text-red-500 hover:text-red-700 p-2">
-                            <i class="ri-close-line text-xl"></i>
-                        </button>
-                    </div>
-                    ${isImage
+                ${isImage
                 ? `
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-1">
-                            Texto Alternativo (ALT) <span class="text-gray-500">(Opcional)</span>
-                        </label>
-                        <input
-                            type="text"
-                            name="alts[]"
-                            placeholder="Describe esta imagen para accesibilidad..."
-                            class="input-field text-sm"
-                            maxlength="255">
-                    </div>
-                    `
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                        Texto Alternativo (ALT) <span class="text-gray-500">(Opcional)</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="alts[]"
+                        placeholder="Describe esta imagen para accesibilidad..."
+                        class="input-field text-sm"
+                        maxlength="255">
+                </div>
+                `
                 : `<input type="hidden" name="alts[]" value="">`
             }
-                </div>
             </div>
-        `;
+        </div>
+    `;
 
         fileItems.appendChild(fileItem);
     });
@@ -180,6 +189,7 @@ function removeMediaFile(index, fileInput, fileList, fileItems, submitBtn) {
 
 function getFileIcon(type) {
     if (type.startsWith("image/")) return "ri-image-line text-blue-500";
+    if (type.startsWith("video/")) return "ri-video-line text-purple-500";
     if (type === "application/pdf") return "ri-file-pdf-line text-red-500";
     return "ri-file-excel-line text-green-500";
 }

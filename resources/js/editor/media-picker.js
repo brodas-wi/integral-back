@@ -223,6 +223,8 @@ function getFileIconMeta(filename) {
         xlsx: { icon: "ri-file-excel-2-fill", color: "#16a34a", bg: "#f0fdf4" },
         doc: { icon: "ri-file-word-2-fill", color: "#2563eb", bg: "#eff6ff" },
         docx: { icon: "ri-file-word-2-fill", color: "#2563eb", bg: "#eff6ff" },
+        mp4: { icon: "ri-video-fill", color: "#7c3aed", bg: "#f5f3ff" },
+        webm: { icon: "ri-video-fill", color: "#7c3aed", bg: "#f5f3ff" },
     };
 
     return map[ext] || { icon: "ri-file-text-fill", color: "#6b7280", bg: "#f3f4f6" };
@@ -316,14 +318,17 @@ function createModal() {
                 card.className = "mp-card";
 
                 const isImage = item.type === "image";
+                const isVideo = item.type === "video";
                 const thumbHtml = isImage
                     ? `<img src="${item.url}" alt="${item.filename}" loading="lazy">`
-                    : (() => {
-                          const iconMeta = getFileIconMeta(item.filename);
-                          return `<div class="mp-card-icon-thumb" style="background:${iconMeta.bg};">
-                                <i class="${iconMeta.icon}" style="color:${iconMeta.color};"></i>
-                            </div>`;
-                      })();
+                    : isVideo
+                        ? `<video src="${item.url}" muted preload="metadata" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block;"></video>`
+                        : (() => {
+                            const iconMeta = getFileIconMeta(item.filename);
+                            return `<div class="mp-card-icon-thumb" style="background:${iconMeta.bg};">
+                  <i class="${iconMeta.icon}" style="color:${iconMeta.color};"></i>
+              </div>`;
+                        })();
 
                 card.innerHTML = `
                     ${thumbHtml}
@@ -381,13 +386,21 @@ function createModal() {
         selectedUrl = null;
         el._currentType = type;
 
+        const defaultTitles = {
+            image: "Seleccionar imagen",
+            video: "Seleccionar video",
+        };
+
         document.getElementById("mp-title").textContent =
-            title ||
-            (type === "image" ? "Seleccionar imagen" : "Seleccionar archivo");
+            title || defaultTitles[type] || "Seleccionar archivo";
 
         const headerIcon = document.querySelector("#gjs-media-picker-modal .mp-header-left i");
         if (headerIcon) {
-            headerIcon.className = type === "image" ? "ri-image-line" : "ri-file-line";
+            const iconByType = {
+                image: "ri-image-line",
+                video: "ri-video-line",
+            };
+            headerIcon.className = iconByType[type] || "ri-file-line";
         }
 
         searchInput().value = "";

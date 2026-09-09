@@ -48,6 +48,7 @@ class MediaController extends Controller
             'images' => Media::where('type', 'image')->count(),
             'documents' => Media::where('type', 'document')->count(),
             'pdfs' => Media::where('type', 'pdf')->count(),
+            'videos' => Media::where('type', 'video')->count(),
         ];
 
         return view('media.index', compact('media', 'stats'));
@@ -88,8 +89,8 @@ class MediaController extends Controller
                 'max:10',
                 function ($attribute, $value, $fail) {
                     $totalSize = array_sum(array_map(fn($file) => $file->getSize(), $value));
-                    if ($totalSize > 40 * 1024 * 1024) {
-                        $fail('El tamaño total de los archivos no puede superar 40MB por carga.');
+                    if ($totalSize > 100 * 1024 * 1024) {
+                        $fail('El tamaño total de los archivos no puede superar 100MB por carga.');
                     }
                 },
             ],
@@ -115,6 +116,10 @@ class MediaController extends Controller
                     ])) {
                         if ($size > 20 * 1024 * 1024) {
                             $fail('Los archivos Excel no pueden superar 20MB');
+                        }
+                    } elseif (in_array($mimeType, ['video/mp4', 'video/webm'])) {
+                        if ($size > 80 * 1024 * 1024) {
+                            $fail('Los videos no pueden superar 80MB');
                         }
                     } else {
                         $fail('Tipo de archivo no permitido');
@@ -210,7 +215,11 @@ class MediaController extends Controller
         } else {
             $extension = $file->getClientOriginalExtension();
             $storedFilename = Str::uuid() . '.' . $extension;
-            $directory = $type === 'pdf' ? 'media/pdfs' : 'media/documents';
+            $directory = match ($type) {
+                'pdf' => 'media/pdfs',
+                'video' => 'media/videos',
+                default => 'media/documents',
+            };
             $path = $file->storeAs($directory, $storedFilename, 'public');
         }
 
@@ -237,6 +246,10 @@ class MediaController extends Controller
 
         if ($mimeType === 'application/pdf') {
             return 'pdf';
+        }
+
+        if (str_starts_with($mimeType, 'video/')) {
+            return 'video';
         }
 
         return 'document';
@@ -434,6 +447,7 @@ class MediaController extends Controller
             'total'     => Media::count(),
             'images'    => Media::where('type', 'image')->count(),
             'documents' => Media::whereIn('type', ['document', 'pdf'])->count(),
+            'videos'    => Media::where('type', 'video')->count(),
         ];
 
         return response()->json([

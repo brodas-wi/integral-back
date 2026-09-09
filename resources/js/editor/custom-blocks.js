@@ -33,6 +33,7 @@ import { mapFilterBlocks, initializeMapFilterBlocks } from "./blocks/map-filter-
 import { bannerBlocks, initializeBannerBlocks } from "./blocks/banner-blocks";
 import { assetsBlocks, initializeAssetsBlocks } from "@/editor/blocks/assets-blocks";
 import { initializeHeroBannerBlock } from "@/editor/blocks/hero-banner-blocks";
+import { initializeHeroVideoBlock } from "@/editor/blocks/hero-video-blocks";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
@@ -69,6 +70,7 @@ export function addCustomBlocks(editor) {
     initializeBannerBlocks(editor);
     initializeNewsGridBlocks(editor);
     initializeHeroBannerBlock(editor);
+    initializeHeroVideoBlock(editor);
     initializeBarChartSectionBlock(editor);
     initializeBarChartBlock(editor);
     initializeSavingsSectionBlock(editor);

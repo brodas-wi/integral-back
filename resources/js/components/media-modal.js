@@ -40,6 +40,7 @@ export class MediaModal {
         const typeLabel = {
             image: "imagen",
             document: "documento",
+            video: "video",
         };
 
         const header = this.modal.querySelector(".media-modal-header h2");
@@ -112,6 +113,7 @@ export class MediaModal {
                             <select id="media-type-filter">
                                 <option value="">Todos</option>
                                 <option value="image" selected>Imágenes</option>
+                                <option value="video">Videos</option>
                                 <option value="document">Documentos</option>
                             </select>
                         </div>
@@ -297,13 +299,16 @@ export class MediaModal {
         if (type === "image") label = "imágenes";
         else if (type === "pdf") label = "PDFs";
         else if (type === "document") label = "documentos";
+        else if (type === "video") label = "videos";
 
         const count =
             type === "image"
                 ? stats.images
                 : type === "document"
-                  ? (stats.documents ?? stats.total)
-                  : stats.total;
+                    ? (stats.documents ?? stats.total)
+                    : type === "video"
+                        ? stats.videos
+                        : stats.total;
 
         statsContainer.innerHTML = `
             <div class="flex items-center gap-6 text-sm">
@@ -359,6 +364,8 @@ export class MediaModal {
             xlsx: { icon: "ri-file-excel-2-fill", color: "#16a34a", bg: "#f0fdf4" },
             doc: { icon: "ri-file-word-2-fill", color: "#2563eb", bg: "#eff6ff" },
             docx: { icon: "ri-file-word-2-fill", color: "#2563eb", bg: "#eff6ff" },
+            mp4: { icon: "ri-video-fill", color: "#7c3aed", bg: "#f5f3ff" },
+            webm: { icon: "ri-video-fill", color: "#7c3aed", bg: "#f5f3ff" },
         };
 
         return map[ext] || { icon: "ri-file-text-fill", color: "#6b7280", bg: "#f3f4f6" };
@@ -373,11 +380,14 @@ export class MediaModal {
         card.dataset.mediaId = media.id;
 
         const isImage = media.type === "image";
+        const isVideo = media.type === "video";
         const extension = media.filename.split(".").pop().toUpperCase();
 
         let thumbContent;
         if (isImage) {
             thumbContent = `<img src="${media.url}" alt="${media.alt || media.filename}">`;
+        } else if (isVideo) {
+            thumbContent = `<video src="${media.url}" muted preload="metadata" style="width:100%;height:100%;object-fit:cover;pointer-events:none;"></video>`;
         } else {
             const iconMeta = this.getFileIconMeta(media.filename);
             thumbContent = `
