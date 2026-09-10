@@ -528,9 +528,7 @@ function showHeroPagesModal(editor, component) {
                     component.addAttributes({
                         "data-hero-pages-config": JSON.stringify(restored),
                     });
-                    component.components(
-                        buildHeroPagesHTML(restored) + `<style>${HP_CSS}</style>`,
-                    );
+                    component.components(buildHeroPagesHTML(restored));
                     overlay.remove();
                     showHeroPagesModal(editor, component);
                 };
@@ -557,9 +555,7 @@ function showHeroPagesModal(editor, component) {
         component.addAttributes({
             "data-hero-pages-config": JSON.stringify(data),
         });
-        component.components(
-            buildHeroPagesHTML(data) + `<style>${HP_CSS}</style>`,
-        );
+        component.components(buildHeroPagesHTML(data));
         close();
     });
 }
@@ -639,6 +635,8 @@ export function initializeHeroPagesBlock(editor) {
         },
     });
 
+    setupHeroPagesEditorEvents(editor, componentType);
+
     editor.BlockManager.add("hero-pages-block", {
         label: "Tarjetas por Páginas",
         category: "Productos y Servicios",
@@ -669,4 +667,36 @@ export function initializeHeroPagesBlock(editor) {
             }, 0);
         }
     });
+}
+
+function setupHeroPagesEditorEvents(editor, componentType) {
+    editor.on("component:update", (component) => {
+        if (component.get("type") !== componentType) return;
+        setTimeout(() => reinitHeroPages(component), 100);
+    });
+
+    editor.on("storage:end:load", () => {
+        setTimeout(() => reinitAllHeroPages(editor, componentType), 800);
+    });
+
+    editor.on("canvas:render", () => {
+        setTimeout(() => reinitAllHeroPages(editor, componentType), 600);
+    });
+}
+
+function reinitAllHeroPages(editor, componentType) {
+    editor
+        .getWrapper()
+        .find(`[data-gjs-type="${componentType}"]`)
+        .forEach((comp) => reinitHeroPages(comp));
+}
+
+function reinitHeroPages(component) {
+    const el = component.getEl();
+    if (!el || !el.isConnected) return;
+    el.querySelectorAll(".hp-carousel").forEach((wrap) => {
+        wrap.__hpInit = false;
+    });
+    const script = component.get("script");
+    if (script && typeof script === "function") script.call(el);
 }
