@@ -166,7 +166,7 @@ const HC_CSS = `
 .hc-card-video-shield{position:absolute;inset:0;width:100%;height:100%;z-index:10;background:transparent;pointer-events:auto;}
 .hc-card-video{pointer-events:none !important;}
 .hc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:3.5rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.875rem 1rem;pointer-events:none;}
-.hc-card-title{margin:0 0 0.25rem;font-size:1.0625rem;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
+.hc-card-title{margin:0 0 0.25rem;font-size:1.0625rem;font-weight:900;line-height:1;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
 .hc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);line-height:1.4;}
 .hc-card-btn{position:absolute;right:0.75rem;bottom:0.75rem;z-index:20;width:2.25rem;height:2.25rem;border-radius:9999px;background:#fff;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.125rem;text-decoration:none;transition:background 0.2s ease,color 0.2s ease;pointer-events:auto;}
 .hc-card-btn:hover{background:#E97300;color:#fff;}
@@ -724,6 +724,20 @@ export function initializeHeroCardsBlock(editor) {
             init() {
                 this.set("type", componentType);
                 this.addAttributes({ "data-gjs-type": componentType });
+
+                const attrs = this.getAttributes();
+                let config;
+                try {
+                    config = JSON.parse(attrs["data-hero-cards-config"] || "{}");
+                } catch {
+                    config = null;
+                }
+
+                if (config && config.cards) {
+                    const existingInner = this.getEl()?.querySelector("[id^='hc-root-']");
+                    const uid = existingInner?.id?.replace("hc-root-", "");
+                    this.components(buildHeroCardsHTML(config, uid) + `<style>${HC_CSS}</style>`);
+                }
             },
         },
     });
@@ -759,10 +773,11 @@ export function initializeHeroCardsBlock(editor) {
     });
 
     editor.on("component:selected", (selected) => {
-        if (!selected || selected.__hcRedirecting) return;
+        if (!selected) return;
         const el = selected.getEl?.();
         if (!el) return;
         if (el.getAttribute?.("data-gjs-type") === componentType) return;
+        if (el.getAttribute?.("data-gjs-type") === "hc-video-media") return;
         const rootEl = el.closest(`[data-gjs-type="${componentType}"]`);
         if (!rootEl) return;
         const rootModel = editor
@@ -770,11 +785,23 @@ export function initializeHeroCardsBlock(editor) {
             .find(`[data-gjs-type="${componentType}"]`)
             .find((c) => c.getEl() === rootEl);
         if (rootModel && rootModel !== selected) {
-            rootModel.__hcRedirecting = true;
             editor.select(rootModel);
-            setTimeout(() => {
-                delete rootModel.__hcRedirecting;
-            }, 0);
         }
+    });
+
+    injectHeroCardsEditorStyles(editor, componentType);
+}
+
+function injectHeroCardsEditorStyles(editor, componentType) {
+    editor.on("load", () => {
+        const iframe = editor.Canvas.getFrameEl();
+        const head = iframe?.contentDocument?.head;
+        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
+        const style = iframe.contentDocument.createElement("style");
+        style.id = `${componentType}-editor-css`;
+        style.textContent = `
+            [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
+        `;
+        head.appendChild(style);
     });
 }
