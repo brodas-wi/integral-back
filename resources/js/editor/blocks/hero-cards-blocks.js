@@ -777,6 +777,7 @@ export function initializeHeroCardsBlock(editor) {
         const el = selected.getEl?.();
         if (!el) return;
         if (el.getAttribute?.("data-gjs-type") === componentType) return;
+        if (el.getAttribute?.("data-gjs-type") === "hc-video-media") return;
         const rootEl = el.closest(`[data-gjs-type="${componentType}"]`);
         if (!rootEl) return;
         const rootModel = editor
@@ -786,24 +787,6 @@ export function initializeHeroCardsBlock(editor) {
         if (rootModel && rootModel !== selected) {
             editor.select(rootModel);
         }
-    });
-
-    editor.on("component:add", (component) => {
-        const el = component.getEl?.();
-        if (!el) return;
-        const rootEl = el.closest(`[data-gjs-type="${componentType}"]`);
-        if (!rootEl) return;
-        if (el.getAttribute?.("data-gjs-type") === componentType) return;
-        component.set({
-            selectable: false,
-            hoverable: false,
-            editable: false,
-            draggable: false,
-            droppable: false,
-            removable: false,
-            copyable: false,
-            highlightable: false,
-        });
     });
 
     injectHeroCardsEditorStyles(editor, componentType);
@@ -821,29 +804,4 @@ function injectHeroCardsEditorStyles(editor, componentType) {
         `;
         head.appendChild(style);
     });
-
-    editor.on("storage:end:load", () => {
-        setTimeout(() => lockHeroCardsChildren(editor, componentType), 400);
-    });
-}
-
-function lockHeroCardsChildren(editor, componentType) {
-    editor
-        .getWrapper()
-        .find(`[data-gjs-type="${componentType}"]`)
-        .forEach((rootComponent) => {
-            rootComponent.components().forEach(function lockRecursive(child) {
-                child.set({
-                    selectable: false,
-                    hoverable: false,
-                    editable: false,
-                    draggable: false,
-                    droppable: false,
-                    removable: false,
-                    copyable: false,
-                    highlightable: false,
-                });
-                child.components().forEach(lockRecursive);
-            });
-        });
 }
