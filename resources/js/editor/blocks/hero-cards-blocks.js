@@ -188,7 +188,7 @@ function buildCardHTML(card, uid, idx) {
     const href = card.href || "#";
 
     const videoHtml = video
-        ? `<div class="hc-card-video-wrap"><video class="hc-card-video" src="${video}" muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback tabindex="-1"></video><div class="hc-card-video-shield"></div></div>`
+        ? `<div class="hc-card-video-wrap" data-gjs-type="hc-video-media"><video class="hc-card-video" src="${video}" muted loop playsinline autoplay preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="hc-video-media"></video></div>`
         : "";
 
     return `<div class="hc-card" id="hc-card-${uid}-${idx}">
@@ -638,6 +638,28 @@ const iconHeroCards = `<svg viewBox="0 0 32 32" width="32" height="32">
 
 export function initializeHeroCardsBlock(editor) {
     const componentType = "hero-cards-component";
+
+    editor.DomComponents.addType("hc-video-media", {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === "hc-video-media"
+                ? { type: "hc-video-media" }
+                : false,
+        model: {
+            defaults: {
+                tagName: "video",
+                draggable: false,
+                droppable: false,
+                removable: false,
+                copyable: false,
+                selectable: false,
+                hoverable: false,
+                editable: false,
+                highlightable: false,
+                traits: [],
+            },
+        },
+        view: {},
+    });
 
     editor.DomComponents.addType(componentType, {
         isComponent: (el) =>
