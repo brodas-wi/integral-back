@@ -662,7 +662,16 @@ export function initializeHeroCardsBlock(editor) {
                 traits: [],
             },
         },
-        view: {},
+        view: {
+            onRender() {
+                const el = this.el;
+                if (!el) return;
+                el.removeAttribute("autoplay");
+                el.removeAttribute("src");
+                el.muted = true;
+                el.pause();
+            },
+        },
     });
 
     editor.DomComponents.addType(componentType, {
@@ -724,6 +733,18 @@ export function initializeHeroCardsBlock(editor) {
             const selected = ed.getSelected();
             if (selected) showHeroCardsModal(ed, selected);
         },
+    });
+
+    editor.on("component:add component:update", (component) => {
+        if (component.get("type") !== componentType) return;
+        const el = component.getEl();
+        if (!el) return;
+        el.querySelectorAll("video").forEach((video) => {
+            video.removeAttribute("autoplay");
+            video.removeAttribute("src");
+            video.muted = true;
+            video.pause();
+        });
     });
 
     editor.BlockManager.add("hero-cards-block", {
