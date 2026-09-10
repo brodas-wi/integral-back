@@ -156,7 +156,7 @@ const HC_CSS = `
 .hc-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;}
 .hc-carousel{position:relative;width:100%;}
 .hc-track-wrap{overflow:hidden;width:100%;}
-.hc-track{display:flex;gap:1.5rem;transition:transform 0.4s ease;will-change:transform;}
+.hc-track{display:flex;gap:1.5rem;transition:transform 0.4s ease;will-change:transform;justify-content:center;}
 .hc-card{position:relative;flex:0 0 calc(25% - 1.125rem);max-width:280px;aspect-ratio:9/14;border-radius:32px;overflow:hidden;cursor:pointer;background:#0a0a0a;}
 .hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;}
 .hc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
