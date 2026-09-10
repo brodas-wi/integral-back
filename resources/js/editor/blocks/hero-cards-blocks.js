@@ -153,7 +153,7 @@ const HC_RUNTIME_SCRIPT = `(${HC_SCRIPT.toString()})();`;
 const HC_CSS = `
 .hc-section{width:100%;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
 .hc-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0;text-align:center;line-height:1.2;}
-.hc-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.2;}
+.hc-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.5;}
 .hc-carousel{position:relative;width:100%;}
 .hc-track-wrap{overflow:hidden;width:100%;}
 .hc-track{display:flex;gap:1.5rem;transition:transform 0.4s ease;will-change:transform;justify-content:center;}
@@ -777,7 +777,6 @@ export function initializeHeroCardsBlock(editor) {
         const el = selected.getEl?.();
         if (!el) return;
         if (el.getAttribute?.("data-gjs-type") === componentType) return;
-        if (el.getAttribute?.("data-gjs-type") === "hc-video-media") return;
         const rootEl = el.closest(`[data-gjs-type="${componentType}"]`);
         if (!rootEl) return;
         const rootModel = editor
@@ -787,6 +786,24 @@ export function initializeHeroCardsBlock(editor) {
         if (rootModel && rootModel !== selected) {
             editor.select(rootModel);
         }
+    });
+
+    editor.on("component:add", (component) => {
+        const el = component.getEl?.();
+        if (!el) return;
+        const rootEl = el.closest(`[data-gjs-type="${componentType}"]`);
+        if (!rootEl) return;
+        if (el.getAttribute?.("data-gjs-type") === componentType) return;
+        component.set({
+            selectable: false,
+            hoverable: false,
+            editable: false,
+            draggable: false,
+            droppable: false,
+            removable: false,
+            copyable: false,
+            highlightable: false,
+        });
     });
 
     injectHeroCardsEditorStyles(editor, componentType);
@@ -804,4 +821,29 @@ function injectHeroCardsEditorStyles(editor, componentType) {
         `;
         head.appendChild(style);
     });
+
+    editor.on("storage:end:load", () => {
+        setTimeout(() => lockHeroCardsChildren(editor, componentType), 400);
+    });
+}
+
+function lockHeroCardsChildren(editor, componentType) {
+    editor
+        .getWrapper()
+        .find(`[data-gjs-type="${componentType}"]`)
+        .forEach((rootComponent) => {
+            rootComponent.components().forEach(function lockRecursive(child) {
+                child.set({
+                    selectable: false,
+                    hoverable: false,
+                    editable: false,
+                    draggable: false,
+                    droppable: false,
+                    removable: false,
+                    copyable: false,
+                    highlightable: false,
+                });
+                child.components().forEach(lockRecursive);
+            });
+        });
 }
