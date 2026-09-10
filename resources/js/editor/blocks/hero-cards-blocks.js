@@ -153,13 +153,12 @@ const HC_CSS = `
 .hc-track-wrap{overflow:hidden;width:100%;}
 .hc-track{display:flex;gap:1.5rem;transition:transform 0.4s ease;will-change:transform;}
 .hc-card{position:relative;flex:0 0 260px;aspect-ratio:9/14;border-radius:32px;overflow:hidden;cursor:pointer;background:#0a0a0a;}
-.hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;-webkit-mask-image:-webkit-radial-gradient(white,black);}
-.hc-card-media img,.hc-card-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none !important;}
-.hc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;pointer-events:none;overflow:hidden;border-radius:32px;}
+.hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;}
+.hc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.hc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:32px;}
 .hc-card:hover .hc-card-video-wrap{opacity:1;}
-.hc-card-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none !important;}
-.hc-card-video::-webkit-media-controls-enclosure{display:none !important;}
-.hc-card-video::-webkit-media-controls{display:none !important;}
+.hc-card-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.hc-card-video-shield{position:absolute;inset:0;width:100%;height:100%;z-index:2;background:transparent;}
 .hc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:3.5rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.875rem 1rem;pointer-events:none;}
 .hc-card-title{margin:0 0 0.25rem;font-size:1.0625rem;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
 .hc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);line-height:1.4;}
@@ -186,7 +185,7 @@ function buildCardHTML(card, uid, idx) {
     const href = card.href || "#";
 
     const videoHtml = video
-        ? `<div class="hc-card-video-wrap"><video class="hc-card-video" src="${video}" muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback tabindex="-1"></video></div>`
+        ? `<div class="hc-card-video-wrap"><video class="hc-card-video" src="${video}" muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback tabindex="-1"></video><div class="hc-card-video-shield"></div></div>`
         : "";
 
     return `<div class="hc-card" id="hc-card-${uid}-${idx}">
