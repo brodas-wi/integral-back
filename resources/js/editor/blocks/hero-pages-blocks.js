@@ -136,11 +136,13 @@ const HP_RUNTIME_SCRIPT = `(${HP_SCRIPT.toString()})();`;
 
 const HP_CSS = `
 .hp-section{width:100%;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
+.hp-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0;text-align:center;line-height:1.2;}
+.hp-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.5;}
 .hp-carousel{position:relative;width:100%;}
 .hp-viewport{overflow:hidden;width:100%;}
 .hp-pages-track{display:flex;will-change:transform;}
 .hp-page{display:flex;gap:1.5rem;flex-shrink:0;box-sizing:border-box;padding:0 0.125rem;}
-.hp-card{position:relative;flex:1 1 0;aspect-ratio:9/14;border-radius:32px;overflow:hidden;background:#0a0a0a;}
+.hp-card{position:relative;flex:1 1 0;aspect-ratio:4/3;border-radius:32px;overflow:hidden;background:#0a0a0a;}
 .hp-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;}
 .hp-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hp-card-title{position:absolute;top:1rem;left:1rem;right:1rem;z-index:5;margin:0;font-size:1.1875rem;font-weight:800;color:#fff;line-height:1.25;text-shadow:0 2px 6px rgba(0,0,0,0.55),0 1px 2px rgba(0,0,0,0.4);}
@@ -156,8 +158,8 @@ const HP_CSS = `
 .hp-dot{width:0.75rem;height:0.75rem;border-radius:9999px;border:none;background:#cbd5e1;cursor:pointer;padding:0;transition:background 0.2s ease;}
 .hp-dot.active{background:#003B71;}
 @media(max-width:1280px){.hp-section{padding:3rem 2.5rem;}}
-@media(max-width:992px){.hp-section{padding:2.5rem 1.5rem;}}
-@media(max-width:640px){.hp-nav-prev{left:0.25rem;}.hp-nav-next{right:0.25rem;}}
+@media(max-width:992px){.hp-section{padding:2.5rem 1.5rem;}.hp-heading,.hp-subheading{font-size:1.875rem;}}
+@media(max-width:640px){.hp-nav-prev{left:0.25rem;}.hp-nav-next{right:0.25rem;}.hp-heading,.hp-subheading{font-size:1.5rem;}}
 `;
 
 function buildPageCardHTML(card) {
@@ -183,6 +185,8 @@ function buildHeroPagesHTML(data) {
     const cardsHtml = cards.map(buildPageCardHTML).join("");
 
     return `<section class="hp-section">
+        <h2 class="hp-heading">${data.heading || "Título"}</h2>
+        <p class="hp-subheading">${data.subheading || "Subtítulo"}</p>
         <div class="hp-carousel">
             <button type="button" class="hp-nav hp-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
             <div class="hp-viewport">
@@ -195,6 +199,8 @@ function buildHeroPagesHTML(data) {
 }
 
 const DEFAULT_DATA = {
+    heading: "Título",
+    subheading: "Subtítulo descriptivo",
     cards: [
         {
             image: "",
@@ -305,6 +311,8 @@ function showHeroPagesModal(editor, component) {
     })();
 
     const data = {
+        heading: currentData.heading ?? DEFAULT_DATA.heading,
+        subheading: currentData.subheading ?? DEFAULT_DATA.subheading,
         cards: JSON.parse(
             JSON.stringify(currentData.cards ?? DEFAULT_DATA.cards),
         ),
@@ -322,6 +330,16 @@ function showHeroPagesModal(editor, component) {
             <button id="hp-modal-close" class="hp-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
         </div>
         <div class="hp-modal-body">
+            <div class="hp-config-card">
+                <div>
+                    <label class="hp-label">Título principal</label>
+                    <input id="hp-heading" type="text" class="hp-input" value="${data.heading}">
+                </div>
+                <div>
+                    <label class="hp-label">Subtítulo</label>
+                    <input id="hp-subheading" type="text" class="hp-input" value="${data.subheading}">
+                </div>
+            </div>
             <div id="hp-cards-list" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
             <button id="hp-add-card" class="hp-btn-add" style="align-self:flex-start;">
                 <i class="ri-add-line"></i> Agregar tarjeta
@@ -431,7 +449,15 @@ function showHeroPagesModal(editor, component) {
     });
 
     modal.querySelector("#hp-modal-backup").addEventListener("click", () => {
-        const snapshot = { cards: JSON.parse(JSON.stringify(data.cards)) };
+        const snapshot = {
+            heading:
+                modal.querySelector("#hp-heading").value.trim() ||
+                DEFAULT_DATA.heading,
+            subheading:
+                modal.querySelector("#hp-subheading").value.trim() ||
+                DEFAULT_DATA.subheading,
+            cards: JSON.parse(JSON.stringify(data.cards)),
+        };
         const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
             type: "application/json",
         });
@@ -493,6 +519,8 @@ function showHeroPagesModal(editor, component) {
                     confirmOverlay.remove();
                     e.target.value = "";
                     const restored = {
+                        heading: parsed.heading ?? DEFAULT_DATA.heading,
+                        subheading: parsed.subheading ?? DEFAULT_DATA.subheading,
                         cards: JSON.parse(
                             JSON.stringify(parsed.cards ?? DEFAULT_DATA.cards),
                         ),
@@ -519,6 +547,13 @@ function showHeroPagesModal(editor, component) {
     });
 
     modal.querySelector("#hp-modal-save").addEventListener("click", () => {
+        data.heading =
+            modal.querySelector("#hp-heading").value.trim() ||
+            DEFAULT_DATA.heading;
+        data.subheading =
+            modal.querySelector("#hp-subheading").value.trim() ||
+            DEFAULT_DATA.subheading;
+
         component.addAttributes({
             "data-hero-pages-config": JSON.stringify(data),
         });
