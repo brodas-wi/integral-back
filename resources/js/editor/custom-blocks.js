@@ -35,6 +35,7 @@ import { assetsBlocks, initializeAssetsBlocks } from "@/editor/blocks/assets-blo
 import { initializeHeroBannerBlock } from "@/editor/blocks/hero-banner-blocks";
 import { initializeHeroVideoBlock } from "@/editor/blocks/hero-video-blocks";
 import { initializeHeroCardsBlock } from "@/editor/blocks/hero-cards-blocks";
+import { initializeHeroPagesBlock } from "@/editor/blocks/hero-pages-blocks";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
@@ -73,6 +74,7 @@ export function addCustomBlocks(editor) {
     initializeHeroBannerBlock(editor);
     initializeHeroVideoBlock(editor);
     initializeHeroCardsBlock(editor);
+    initializeHeroPagesBlock(editor);
     initializeBarChartSectionBlock(editor);
     initializeBarChartBlock(editor);
     initializeSavingsSectionBlock(editor);
