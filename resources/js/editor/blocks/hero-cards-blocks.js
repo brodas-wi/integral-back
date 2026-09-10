@@ -13,16 +13,18 @@ const HC_SCRIPT = function () {
             card.__hcInit = true;
 
             var video = card.querySelector(".hc-card-video");
+            var shield = card.querySelector(".hc-card-video-shield");
             if (!video) return;
 
             var isTouch = window.matchMedia("(hover: none)").matches;
+            var hoverTarget = shield || card;
 
             if (!isTouch) {
-                card.addEventListener("mouseenter", function () {
+                hoverTarget.addEventListener("mouseenter", function () {
                     video.currentTime = 0;
                     video.play().catch(function () { });
                 });
-                card.addEventListener("mouseleave", function () {
+                hoverTarget.addEventListener("mouseleave", function () {
                     video.pause();
                     video.currentTime = 0;
                 });
@@ -158,11 +160,12 @@ const HC_CSS = `
 .hc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:32px;}
 .hc-card:hover .hc-card-video-wrap{opacity:1;}
 .hc-card-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
-.hc-card-video-shield{position:absolute;inset:0;width:100%;height:100%;z-index:2;background:transparent;}
+.hc-card-video-shield{position:absolute;inset:0;width:100%;height:100%;z-index:10;background:transparent;pointer-events:auto;}
+.hc-card-video{pointer-events:none !important;}
 .hc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:3.5rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.875rem 1rem;pointer-events:none;}
 .hc-card-title{margin:0 0 0.25rem;font-size:1.0625rem;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
 .hc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);line-height:1.4;}
-.hc-card-btn{position:absolute;right:0.75rem;bottom:0.75rem;z-index:6;width:2.25rem;height:2.25rem;border-radius:9999px;background:#fff;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.125rem;text-decoration:none;transition:background 0.2s ease,color 0.2s ease;pointer-events:auto;}
+.hc-card-btn{position:absolute;right:0.75rem;bottom:0.75rem;z-index:20;width:2.25rem;height:2.25rem;border-radius:9999px;background:#fff;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.125rem;text-decoration:none;transition:background 0.2s ease,color 0.2s ease;pointer-events:auto;}
 .hc-card-btn:hover{background:#E97300;color:#fff;}
 .hc-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:2.75rem;height:2.75rem;border-radius:9999px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.25rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:background 0.2s ease,color 0.2s ease;}
 .hc-nav:hover{background:#E97300;color:#fff;}
