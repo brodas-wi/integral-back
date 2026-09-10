@@ -187,7 +187,7 @@ function buildCardHTML(card, uid, idx) {
     const href = card.href || "#";
 
     const videoHtml = video
-        ? `<video class="hc-card-video" src="${video}" muted loop playsinline preload="metadata" controls="false" disablepictureinpicture disableremoteplayback></video>`
+        ? `<video class="hc-card-video" src="${video}" muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback></video>`
         : "";
 
     return `<div class="hc-card" id="hc-card-${uid}-${idx}">
