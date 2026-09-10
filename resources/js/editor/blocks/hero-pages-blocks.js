@@ -142,7 +142,7 @@ const HP_CSS = `
 .hp-viewport{overflow:hidden;width:100%;}
 .hp-pages-track{display:flex;will-change:transform;}
 .hp-page{display:flex;gap:1.5rem;flex-shrink:0;box-sizing:border-box;padding:0 0.125rem;}
-.hp-card{position:relative;flex:1 1 0;aspect-ratio:4/3;border-radius:32px;overflow:hidden;background:#0a0a0a;}
+.hp-card{position:relative;flex:1 1 0;aspect-ratio:4/5;border-radius:32px;overflow:hidden;background:#0a0a0a;}
 .hp-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;}
 .hp-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hp-card-title{position:absolute;top:1rem;left:1rem;right:1rem;z-index:5;margin:0;font-size:1.1875rem;font-weight:800;color:#fff;line-height:1.25;text-shadow:0 2px 6px rgba(0,0,0,0.55),0 1px 2px rgba(0,0,0,0.4);}
