@@ -16,17 +16,17 @@ function buildFixedBannerHTML(data, uid) {
         : "bottom-right";
     const positionStyle = POSITION_STYLES[position];
 
-    const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:1.5rem;box-sizing:border-box;`;
+    const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
-    const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/7;min-height:280px;border-radius:24px;overflow:hidden;box-sizing:border-box;`;
+    const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/7;min-height:220px;border-radius:clamp(12px,2vw,24px);overflow:hidden;box-sizing:border-box;`;
 
     const imgStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
 
-    const boxStyle = `position:absolute;${positionStyle}z-index:5;max-width:420px;background:#E97300;border-radius:16px;padding:1.5rem 1.75rem;display:flex;flex-direction:column;gap:1.25rem;box-sizing:border-box;`;
+    const boxStyle = `position:absolute;${positionStyle}z-index:5;width:min(90%,420px);background:#E97300;border-radius:clamp(10px,1.5vw,16px);padding:clamp(0.875rem,2.2vw,1.5rem) clamp(1rem,2.5vw,1.75rem);display:flex;flex-direction:column;gap:clamp(0.625rem,1.8vw,1.25rem);box-sizing:border-box;`;
 
-    const textStyle = `margin:0;color:#fff;font-weight:500;font-size:clamp(1.375rem,2.4vw,1.875rem);line-height:1.3;`;
+    const textStyle = `margin:0;color:#fff;font-weight:500;font-size:clamp(0.9375rem,2.4vw,1.875rem);line-height:1.3;`;
 
-    const btnStyle = `display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;padding:0.75rem 1.75rem;border-radius:9999px;background:#14243D;color:#fff;font-weight:600;font-size:0.9375rem;text-decoration:none;transition:background 0.2s ease,color 0.2s ease;`;
+    const btnStyle = `display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;padding:clamp(0.5rem,1.5vw,0.75rem) clamp(1.125rem,3vw,1.75rem);border-radius:9999px;background:#14243D;color:#fff;font-weight:600;font-size:clamp(0.75rem,1.6vw,0.9375rem);text-decoration:none;transition:background 0.2s ease,color 0.2s ease;white-space:nowrap;`;
 
     const textHtml = data.text
         ? `<p style="${textStyle}">${data.text}</p>`
