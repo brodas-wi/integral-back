@@ -33,10 +33,10 @@ function buildWideBannerHTML(data, uid) {
     const sectionClass = hasText ? "wb-section wb-has-text" : "wb-section";
 
     return `<section id="wb-root-${uid}" class="${sectionClass}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-        <div class="wb-bg" style="background-image:url('${posterUrl}');background-size:cover;background-position:center;" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+        <div class="wb-bg" style="background-image:url('${posterUrl}');background-size:cover;background-position:center;" data-gjs-type="wb-bg-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             ${bgMedia}
         </div>
-        <div class="wb-content">
+        <div class="wb-content" data-gjs-type="wb-content-block" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             ${line1Html}
             ${line2Html}
         </div>
@@ -300,6 +300,48 @@ export function initializeWideBannerBlock(editor) {
         model: {
             defaults: {
                 tagName: "video",
+                draggable: false,
+                droppable: false,
+                removable: false,
+                copyable: false,
+                selectable: false,
+                hoverable: false,
+                editable: false,
+                highlightable: false,
+                traits: [],
+            },
+        },
+    });
+
+    editor.DomComponents.addType("wb-bg-media", {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === "wb-bg-media"
+                ? { type: "wb-bg-media" }
+                : false,
+        model: {
+            defaults: {
+                tagName: "div",
+                draggable: false,
+                droppable: false,
+                removable: false,
+                copyable: false,
+                selectable: false,
+                hoverable: false,
+                editable: false,
+                highlightable: false,
+                traits: [],
+            },
+        },
+    });
+
+    editor.DomComponents.addType("wb-content-block", {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === "wb-content-block"
+                ? { type: "wb-content-block" }
+                : false,
+        model: {
+            defaults: {
+                tagName: "div",
                 draggable: false,
                 droppable: false,
                 removable: false,
