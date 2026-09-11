@@ -5,7 +5,7 @@ function buildOptionsBannerHTML(data, uid) {
     uid = uid || "ob" + Math.random().toString(36).slice(2, 7);
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
-    const wrapperStyle = `position:relative;width:100%;background:#E97300;border-radius:clamp(16px,2vw,28px);padding:clamp(1.5rem,3.5vw,2.75rem);box-sizing:border-box;`;
+    const wrapperStyle = `position:relative;width:100%;background:#E97300;border-radius:clamp(28px,4vw,40px);padding:clamp(1.5rem,3.5vw,2.75rem);box-sizing:border-box;`;
 
     const headerStyle = `display:flex;align-items:flex-start;justify-content:space-between;gap:1.5rem;margin-bottom:clamp(1.5rem,3vw,2.25rem);flex-wrap:wrap;`;
     const headerTextWrapStyle = `display:flex;flex-direction:column;gap:0.75rem;flex:1;min-width:240px;`;
@@ -50,16 +50,20 @@ function buildOptionCardHTML(card) {
     const badge = card.badge || "Etiqueta";
     const desc = card.desc || "Descripción breve.";
 
-    const cardStyle = `background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,0.12);overflow:hidden;display:grid;grid-template-columns:clamp(90px,25%,140px) 1fr;gap:0;`;
-    const imgWrapStyle = `position:relative;aspect-ratio:1/1;overflow:hidden;`;
+    const cardPadding = `clamp(0.875rem,2vw,1.25rem)`;
+    const cardStyle = `background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,0.12);overflow:hidden;display:grid;grid-template-columns:clamp(90px,25%,140px) 1fr;gap:0;padding:${cardPadding};box-sizing:border-box;`;
+    const imgColStyle = `display:flex;align-items:center;`;
+    const imgWrapStyle = `position:relative;width:100%;aspect-ratio:1/1;border-radius:12px;overflow:hidden;`;
     const imgStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
-    const bodyStyle = `padding:clamp(0.875rem,2vw,1.25rem);display:flex;flex-direction:column;gap:0.625rem;min-width:0;`;
+    const bodyStyle = `padding-left:${cardPadding};display:flex;flex-direction:column;justify-content:center;gap:0.625rem;min-width:0;`;
     const badgeStyle = `display:inline-flex;align-items:center;padding:0.375rem 0.875rem;border-radius:9999px;background:#14243D;color:#fff;font-weight:600;font-size:0.75rem;width:fit-content;`;
     const descStyle = `margin:0;color:#1e293b;font-size:0.8125rem;line-height:1.45;`;
 
     return `<div style="${cardStyle}">
-        <div style="${imgWrapStyle}">
-            <img src="${image}" alt="${badge}" style="${imgStyle}">
+        <div style="${imgColStyle}">
+            <div style="${imgWrapStyle}">
+                <img src="${image}" alt="${badge}" style="${imgStyle}">
+            </div>
         </div>
         <div style="${bodyStyle}">
             <span style="${badgeStyle}">${badge}</span>
