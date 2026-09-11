@@ -13,12 +13,10 @@ const WB_CSS = `
 @media(max-width:640px){.wb-section{aspect-ratio:16/9;min-height:220px;}.wb-line1{font-size:1.0625rem;}.wb-line2{font-size:1.375rem;}.wb-content{padding:1.25rem 1.25rem;}}
 `;
 
-function injectWideBannerStyles(doc) {
-    if (!doc || doc.getElementById("wb-style-tag")) return;
-    const style = doc.createElement("style");
-    style.id = "wb-style-tag";
-    style.textContent = WB_CSS;
-    doc.head.appendChild(style);
+function injectWideBannerStyles(editor) {
+    if (!editor || editor.__wbStylesInjected) return;
+    editor.__wbStylesInjected = true;
+    editor.Css.addRules(WB_CSS);
 }
 
 function buildWideBannerHTML(data, uid) {
@@ -385,12 +383,12 @@ export function initializeWideBannerBlock(editor) {
 }
 
 function setupWideBannerEditorEvents(editor, componentType) {
+    injectWideBannerStyles(editor);
+
     const runAll = () => {
         const iframe = editor.Canvas.getFrameEl();
         const doc = iframe?.contentDocument;
         if (!doc) return;
-
-        injectWideBannerStyles(doc);
 
         let head = doc.head;
         if (!head.querySelector(`#${componentType}-editor-css`)) {
