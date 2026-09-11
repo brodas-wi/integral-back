@@ -2,10 +2,10 @@ import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
 const POSITION_STYLES = {
-    "top-left": "top:2rem;left:2rem;",
-    "top-right": "top:2rem;right:2rem;",
-    "bottom-left": "bottom:2rem;left:2rem;",
-    "bottom-right": "bottom:2rem;right:2rem;",
+    "top-left": "top:clamp(0.75rem,3vw,2rem);left:clamp(0.75rem,3vw,2rem);",
+    "top-right": "top:clamp(0.75rem,3vw,2rem);right:clamp(0.75rem,3vw,2rem);",
+    "bottom-left": "bottom:clamp(0.75rem,3vw,2rem);left:clamp(0.75rem,3vw,2rem);",
+    "bottom-right": "bottom:clamp(0.75rem,3vw,2rem);right:clamp(0.75rem,3vw,2rem);",
 };
 
 function buildFixedBannerHTML(data, uid) {
@@ -22,9 +22,11 @@ function buildFixedBannerHTML(data, uid) {
 
     const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/7;min-height:220px;border-radius:clamp(12px,2vw,24px);overflow:hidden;box-sizing:border-box;`;
 
+    const responsiveWrapperCss = `<style>@media(max-width:768px){#fb-wrapper-${uid}{aspect-ratio:16/10 !important;}}</style>`;
+
     const imgStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
 
-    const boxStyle = `position:absolute;${positionStyle}z-index:5;width:min(90%,420px);background:#E97300;border-radius:clamp(10px,1.5vw,16px);padding:clamp(0.875rem,2.2vw,1.5rem) clamp(1rem,2.5vw,1.75rem);display:flex;flex-direction:column;gap:clamp(0.625rem,1.8vw,1.25rem);box-sizing:border-box;`;
+    const boxStyle = `position:absolute;${positionStyle}z-index:5;width:calc(min(90%,420px) - clamp(1.5rem,6vw,4rem));background:#E97300;border-radius:clamp(10px,1.5vw,16px);padding:clamp(0.875rem,2.2vw,1.5rem) clamp(1rem,2.5vw,1.75rem);display:flex;flex-direction:column;gap:clamp(0.625rem,1.8vw,1.25rem);box-sizing:border-box;`;
 
     const textStyle = `margin:0;color:#fff;font-weight:500;font-size:clamp(0.9375rem,2.4vw,1.875rem);line-height:1.3;`;
 
@@ -37,7 +39,7 @@ function buildFixedBannerHTML(data, uid) {
         ? `<a href="${data.button_href || "#"}" id="fb-btn-${uid}" style="${btnStyle}">${data.button_label}</a>`
         : "";
 
-    return `<section id="fb-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.text || "Banner"}" style="${imgStyle}"><div style="${boxStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${textHtml}${buttonHtml}</div></div><style>#fb-btn-${uid}:hover{background:#0d1930;}</style>${responsivePaddingCss}</section>`;
+    return `<section id="fb-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div id="fb-wrapper-${uid}" style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.text || "Banner"}" style="${imgStyle}"><div style="${boxStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${textHtml}${buttonHtml}</div></div><style>#fb-btn-${uid}:hover{background:#0d1930;}</style>${responsivePaddingCss}${responsiveWrapperCss}</section>`;
 }
 
 const DEFAULT_DATA = {
