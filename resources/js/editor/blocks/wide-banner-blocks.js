@@ -2,9 +2,9 @@ import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
 const WB_CSS = `
-.wb-section{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;box-sizing:border-box;}
-.wb-bg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
-.wb-bg img,.wb-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.wb-section{position:relative;width:100%;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
+.wb-bg{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;background-repeat:no-repeat;}
+.wb-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .wb-section.wb-has-text .wb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);}
 .wb-content{position:relative;z-index:5;text-align:center;padding:1.5rem 2rem;max-width:900px;}
 .wb-line1{margin:0 0 0.25rem;font-size:1.5rem;font-weight:500;color:#fff;line-height:1.3;}
@@ -12,6 +12,14 @@ const WB_CSS = `
 @media(max-width:992px){.wb-line1{font-size:1.25rem;}.wb-line2{font-size:1.75rem;}}
 @media(max-width:640px){.wb-section{aspect-ratio:16/9;min-height:220px;}.wb-line1{font-size:1.0625rem;}.wb-line2{font-size:1.375rem;}.wb-content{padding:1.25rem 1.25rem;}}
 `;
+
+function injectWideBannerStyles(doc) {
+    if (!doc || doc.getElementById("wb-style-tag")) return;
+    const style = doc.createElement("style");
+    style.id = "wb-style-tag";
+    style.textContent = WB_CSS;
+    doc.head.appendChild(style);
+}
 
 function buildWideBannerHTML(data, uid) {
     uid = uid || "wb" + Math.random().toString(36).slice(2, 7);
@@ -32,15 +40,7 @@ function buildWideBannerHTML(data, uid) {
     const hasText = Boolean(data.line1 || data.line2);
     const sectionClass = hasText ? "wb-section wb-has-text" : "wb-section";
 
-    return `<section id="wb-root-${uid}" class="${sectionClass}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-        <div class="wb-bg" style="background-image:url('${posterUrl}');background-size:cover;background-position:center;" data-gjs-type="wb-bg-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            ${bgMedia}
-        </div>
-        <div class="wb-content" data-gjs-type="wb-content-block" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-            ${line1Html}
-            ${line2Html}
-        </div>
-    </section>`;
+    return `<section id="wb-root-${uid}" class="${sectionClass}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="wb-bg" data-wb-poster="${posterUrl}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${bgMedia}</div><div class="wb-content" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${line1Html}${line2Html}</div></section>`;
 }
 
 const DEFAULT_DATA = {
@@ -49,6 +49,19 @@ const DEFAULT_DATA = {
     line1: "",
     line2: "",
 };
+
+function applyWideBannerPosters(rootEl) {
+    if (!rootEl) return;
+    const targets = rootEl.matches?.(".wb-bg")
+        ? [rootEl]
+        : Array.from(rootEl.querySelectorAll?.(".wb-bg") || []);
+    targets.forEach((bgEl) => {
+        const posterUrl = bgEl.getAttribute("data-wb-poster");
+        if (posterUrl) {
+            bgEl.style.backgroundImage = `url("${posterUrl}")`;
+        }
+    });
+}
 
 function showWideBannerModal(editor, component) {
     const existing = document.getElementById("wb-config-modal");
@@ -256,30 +269,14 @@ function showWideBannerModal(editor, component) {
         component.addAttributes({
             "data-wide-banner-config": JSON.stringify(data),
         });
+        component.components(buildWideBannerHTML(data, uid));
 
-        const el = component.getEl();
-        if (el) {
-            el.querySelectorAll("style").forEach((styleTag) => styleTag.remove());
-        }
+        setTimeout(() => {
+            applyWideBannerPosters(component.getEl());
+        }, 50);
 
-        purgeWideBannerCssRules(editor);
-
-        component.components(
-            buildWideBannerHTML(data, uid) + `<style>${WB_CSS}</style>`,
-        );
         close();
     };
-}
-
-function purgeWideBannerCssRules(editor) {
-    const css = editor.Css;
-    if (!css) return;
-    const allRules = css.getAll();
-    const toRemove = allRules.filter((rule) => {
-        const selectors = rule.getSelectorsString?.() || "";
-        return /(^|[\s.#>+~])wb-[a-z-]+/.test(selectors);
-    });
-    toRemove.forEach((rule) => css.remove(rule));
 }
 
 const iconWideBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
@@ -300,48 +297,6 @@ export function initializeWideBannerBlock(editor) {
         model: {
             defaults: {
                 tagName: "video",
-                draggable: false,
-                droppable: false,
-                removable: false,
-                copyable: false,
-                selectable: false,
-                hoverable: false,
-                editable: false,
-                highlightable: false,
-                traits: [],
-            },
-        },
-    });
-
-    editor.DomComponents.addType("wb-bg-media", {
-        isComponent: (el) =>
-            el.getAttribute?.("data-gjs-type") === "wb-bg-media"
-                ? { type: "wb-bg-media" }
-                : false,
-        model: {
-            defaults: {
-                tagName: "div",
-                draggable: false,
-                droppable: false,
-                removable: false,
-                copyable: false,
-                selectable: false,
-                hoverable: false,
-                editable: false,
-                highlightable: false,
-                traits: [],
-            },
-        },
-    });
-
-    editor.DomComponents.addType("wb-content-block", {
-        isComponent: (el) =>
-            el.getAttribute?.("data-gjs-type") === "wb-content-block"
-                ? { type: "wb-content-block" }
-                : false,
-        model: {
-            defaults: {
-                tagName: "div",
                 draggable: false,
                 droppable: false,
                 removable: false,
@@ -389,8 +344,7 @@ export function initializeWideBannerBlock(editor) {
                     "data-gjs-type": componentType,
                     "data-wide-banner-config": JSON.stringify(DEFAULT_DATA),
                 },
-                components:
-                    buildWideBannerHTML(DEFAULT_DATA) + `<style>${WB_CSS}</style>`,
+                components: buildWideBannerHTML(DEFAULT_DATA),
                 traits: [
                     {
                         type: "button",
@@ -427,30 +381,38 @@ export function initializeWideBannerBlock(editor) {
         },
     });
 
-    editor.on("block:drag:stop", (component) => {
-        if (!component || component.get("type") !== componentType) return;
-        purgeWideBannerCssRules(editor);
-    });
-
-    injectWideBannerEditorStyles(editor, componentType);
+    setupWideBannerEditorEvents(editor, componentType);
 }
 
-function injectWideBannerEditorStyles(editor, componentType) {
-    const inject = () => {
+function setupWideBannerEditorEvents(editor, componentType) {
+    const runAll = () => {
         const iframe = editor.Canvas.getFrameEl();
-        const head = iframe?.contentDocument?.head;
-        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
-        const style = iframe.contentDocument.createElement("style");
-        style.id = `${componentType}-editor-css`;
-        style.textContent = `
-            [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
-            [data-gjs-type="${componentType}"] .wb-bg video { display: none !important; }
-            [data-gjs-type="${componentType}"] .wb-bg { background-size: cover; background-position: center; background-repeat: no-repeat; }
-        `;
-        head.appendChild(style);
+        const doc = iframe?.contentDocument;
+        if (!doc) return;
+
+        injectWideBannerStyles(doc);
+
+        let head = doc.head;
+        if (!head.querySelector(`#${componentType}-editor-css`)) {
+            const style = doc.createElement("style");
+            style.id = `${componentType}-editor-css`;
+            style.textContent = `
+                [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
+                [data-gjs-type="${componentType}"] .wb-bg video { display: none !important; }
+            `;
+            head.appendChild(style);
+        }
+
+        doc.querySelectorAll(`[data-gjs-type="${componentType}"]`).forEach((rootEl) => {
+            applyWideBannerPosters(rootEl);
+        });
     };
 
-    editor.on("load", () => setTimeout(inject, 100));
-    editor.on("storage:end:load", () => setTimeout(inject, 400));
-    editor.on("canvas:frame:load", () => setTimeout(inject, 100));
+    editor.on("load", () => setTimeout(runAll, 150));
+    editor.on("storage:end:load", () => setTimeout(runAll, 500));
+    editor.on("canvas:frame:load", () => setTimeout(runAll, 150));
+    editor.on("component:add component:update", (component) => {
+        if (component.get("type") !== componentType) return;
+        setTimeout(runAll, 50);
+    });
 }
