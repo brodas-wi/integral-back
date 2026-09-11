@@ -18,7 +18,7 @@ function buildWideBannerHTML(data, uid) {
     const videoUrl = data.video_url || "";
     const posterUrl = data.poster_url || assetUrl("images/placeholder.svg");
 
-    const bgMedia = `<video id="wb-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`;
+    const bgMedia = `<video id="wb-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="wb-video-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`;
 
     const line1Html = data.line1
         ? `<p class="wb-line1">${data.line1}</p>`
@@ -289,6 +289,37 @@ const iconWideBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="h
 
 export function initializeWideBannerBlock(editor) {
     const componentType = "wide-banner-component";
+
+    editor.DomComponents.addType("wb-video-media", {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === "wb-video-media"
+                ? { type: "wb-video-media" }
+                : false,
+        model: {
+            defaults: {
+                tagName: "video",
+                draggable: false,
+                droppable: false,
+                removable: false,
+                copyable: false,
+                selectable: false,
+                hoverable: false,
+                editable: false,
+                highlightable: false,
+                traits: [],
+            },
+        },
+        view: {
+            onRender() {
+                const el = this.el;
+                if (!el) return;
+                el.removeAttribute("autoplay");
+                el.removeAttribute("src");
+                el.muted = true;
+                el.pause();
+            },
+        },
+    });
 
     editor.DomComponents.addType(componentType, {
         isComponent: (el) =>
