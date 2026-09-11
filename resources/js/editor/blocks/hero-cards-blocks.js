@@ -8,8 +8,8 @@ const HC_CSS = `
 .hc-carousel{position:relative;width:100%;}
 .hc-swiper{overflow:hidden;width:100%;}
 .hc-swiper .swiper-wrapper{align-items:stretch;}
-.hc-swiper .swiper-slide{height:auto;width:260px;flex-shrink:0;display:flex;justify-content:center;}
-.hc-card{position:relative;width:260px;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;background:#0a0a0a;}
+.hc-swiper .swiper-slide{height:auto;flex-shrink:0;display:flex;justify-content:center;box-sizing:border-box;}
+.hc-card{position:relative;width:260px !important;max-width:260px;flex-shrink:0;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;background:#0a0a0a;}
 .hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;}
 .hc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:32px;}
@@ -32,7 +32,7 @@ const HC_CSS = `
 .hc-dots .hc-dot.active{background:#003B71 !important;transform:scale(1.1);}
 @media(max-width:1280px){.hc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.hc-section{padding:2.5rem 1.5rem;}.hc-heading,.hc-subheading{font-size:1.875rem;}}
-@media(max-width:640px){.hc-nav-prev{left:0.25rem;}.hc-nav-next{right:0.25rem;}.hc-heading,.hc-subheading{font-size:1.5rem;}.hc-swiper .swiper-slide{width:230px;}.hc-card{width:230px;height:290px;}}
+@media(max-width:640px){.hc-nav-prev{left:0.25rem;}.hc-nav-next{right:0.25rem;}.hc-heading,.hc-subheading{font-size:1.5rem;}.hc-card{width:230px !important;max-width:230px;height:290px;}}
 `;
 
 function buildCardHTML(card, uid, idx) {
