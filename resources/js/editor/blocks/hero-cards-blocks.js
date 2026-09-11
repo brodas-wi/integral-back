@@ -1,163 +1,15 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
-const HC_SCRIPT = function () {
-    (function () {
-        function resolveHref(raw) {
-            if (!raw) return "#";
-            return raw;
-        }
-
-        function initCard(card) {
-            if (!card || card.__hcInit) return;
-            card.__hcInit = true;
-
-            var video = card.querySelector(".hc-card-video");
-            var shield = card.querySelector(".hc-card-video-shield");
-            if (!video) return;
-
-            video.muted = true;
-            video.volume = 0;
-
-            var isTouch = window.matchMedia("(hover: none)").matches;
-            var hoverTarget = shield || card;
-
-            if (!isTouch) {
-                hoverTarget.addEventListener("mouseenter", function () {
-                    video.currentTime = 0;
-                    video.play().catch(function () { });
-                });
-                hoverTarget.addEventListener("mouseleave", function () {
-                    video.pause();
-                    video.currentTime = 0;
-                });
-            } else {
-                card.addEventListener("click", function (e) {
-                    if (e.target.closest(".hc-card-btn")) return;
-                    if (video.paused) {
-                        video.currentTime = 0;
-                        video.play().catch(function () { });
-                    } else {
-                        video.pause();
-                        video.currentTime = 0;
-                    }
-                });
-            }
-        }
-
-        function initCarousel(wrap) {
-            if (!wrap || wrap.__hcCarouselInit) return;
-            wrap.__hcCarouselInit = true;
-
-            var track = wrap.querySelector(".hc-track");
-            var prevBtn = wrap.querySelector(".hc-nav-prev");
-            var nextBtn = wrap.querySelector(".hc-nav-next");
-            var dotsWrap = wrap.querySelector(".hc-dots");
-            if (!track) return;
-
-            var cards = Array.prototype.slice.call(track.children);
-            var currentIndex = 0;
-
-            function cardsPerView() {
-                var cardWidth = cards[0]?.offsetWidth || 1;
-                var gap = 24;
-                return Math.max(1, Math.floor((track.parentElement.offsetWidth + gap) / (cardWidth + gap)));
-            }
-
-            function maxIndex() {
-                return Math.max(0, cards.length - cardsPerView());
-            }
-
-            function renderDots() {
-                if (!dotsWrap) return;
-                var totalDots = maxIndex() + 1;
-                dotsWrap.innerHTML = "";
-                if (totalDots <= 1) {
-                    dotsWrap.style.display = "none";
-                    return;
-                }
-                dotsWrap.style.display = "flex";
-                for (var i = 0; i < totalDots; i++) {
-                    var dot = document.createElement("button");
-                    dot.type = "button";
-                    dot.className = "hc-dot" + (i === currentIndex ? " active" : "");
-                    dot.addEventListener("click", function (idx) {
-                        return function () {
-                            goTo(idx);
-                        };
-                    }(i));
-                    dotsWrap.appendChild(dot);
-                }
-            }
-
-            function updateNavState() {
-                if (prevBtn) prevBtn.style.display = maxIndex() <= 0 ? "none" : "flex";
-                if (nextBtn) nextBtn.style.display = maxIndex() <= 0 ? "none" : "flex";
-                if (prevBtn) prevBtn.disabled = currentIndex <= 0;
-                if (nextBtn) nextBtn.disabled = currentIndex >= maxIndex();
-                if (dotsWrap) {
-                    dotsWrap.querySelectorAll(".hc-dot").forEach(function (d, i) {
-                        d.classList.toggle("active", i === currentIndex);
-                    });
-                }
-            }
-
-            function goTo(index) {
-                var mi = maxIndex();
-                currentIndex = Math.max(0, Math.min(index, mi));
-                var cardWidth = cards[0]?.offsetWidth || 0;
-                var gap = 24;
-                var offset = currentIndex * (cardWidth + gap);
-                track.style.transform = "translateX(-" + offset + "px)";
-                updateNavState();
-            }
-
-            if (prevBtn) {
-                prevBtn.addEventListener("click", function () {
-                    goTo(currentIndex - 1);
-                });
-            }
-            if (nextBtn) {
-                nextBtn.addEventListener("click", function () {
-                    goTo(currentIndex + 1);
-                });
-            }
-
-            function refresh() {
-                renderDots();
-                goTo(Math.min(currentIndex, maxIndex()));
-            }
-
-            refresh();
-            window.addEventListener("resize", refresh);
-        }
-
-        function init() {
-            document.querySelectorAll(".hc-carousel").forEach(function (w) {
-                initCarousel(w);
-            });
-            document.querySelectorAll(".hc-card").forEach(function (c) {
-                initCard(c);
-            });
-        }
-
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", init);
-        } else {
-            init();
-        }
-    })();
-};
-const HC_RUNTIME_SCRIPT = `(${HC_SCRIPT.toString()})();`;
-
 const HC_CSS = `
-.hc-section{width:100%;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
+.hc-section{width:100%;max-width:1400px;margin:0 auto;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
 .hc-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0;text-align:center;line-height:1.2;}
 .hc-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.5;}
 .hc-carousel{position:relative;width:100%;}
-.hc-track-wrap{overflow:hidden;width:100%;}
-.hc-track{display:flex;gap:1.5rem;transition:transform 0.4s ease;will-change:transform;justify-content:center;}
-.hc-card{position:relative;flex:0 0 calc(25% - 1.125rem);max-width:280px;aspect-ratio:9/14;border-radius:32px;overflow:hidden;cursor:pointer;background:#0a0a0a;}
+.hc-swiper{overflow:hidden;width:100%;}
+.hc-swiper .swiper-wrapper{align-items:stretch;}
+.hc-swiper .swiper-slide{height:auto;width:260px;flex-shrink:0;display:flex;justify-content:center;}
+.hc-card{position:relative;width:260px;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;background:#0a0a0a;}
 .hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;}
 .hc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:32px;}
@@ -170,18 +22,17 @@ const HC_CSS = `
 .hc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);line-height:1.4;}
 .hc-card-btn{position:absolute;right:0.75rem;bottom:0.75rem;z-index:20;width:2.25rem;height:2.25rem;border-radius:9999px;background:#fff;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.125rem;text-decoration:none;transition:background 0.2s ease,color 0.2s ease;pointer-events:auto;}
 .hc-card-btn:hover{background:#E97300;color:#fff;}
-.hc-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:2.75rem;height:2.75rem;border-radius:9999px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.25rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:background 0.2s ease,color 0.2s ease;}
+.hc-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:2.75rem;height:2.75rem;border-radius:9999px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.25rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:background 0.2s ease,color 0.2s ease,opacity 0.2s ease;}
 .hc-nav:hover{background:#E97300;color:#fff;}
-.hc-nav:disabled{opacity:0.35;cursor:not-allowed;}
+.hc-nav.hc-nav-disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;}
 .hc-nav-prev{left:-1.375rem;}
 .hc-nav-next{right:-1.375rem;}
-.hc-dots{display:flex;justify-content:center;gap:0.625rem;margin-top:1.5rem;}
-.hc-dot{width:0.75rem;height:0.75rem;border-radius:9999px;border:none;background:#cbd5e1;cursor:pointer;padding:0;transition:background 0.2s ease;}
-.hc-dot.active{background:#003B71;}
+.hc-dots{display:flex !important;justify-content:center;align-items:center;gap:0.75rem;margin-top:1.75rem;position:static;width:100%;}
+.hc-dots .hc-dot{width:0.875rem !important;height:0.875rem !important;border-radius:9999px !important;border:none !important;background:#cbd5e1 !important;cursor:pointer;padding:0 !important;margin:0 !important;transition:background 0.2s ease,transform 0.2s ease;opacity:1 !important;}
+.hc-dots .hc-dot.active{background:#003B71 !important;transform:scale(1.1);}
 @media(max-width:1280px){.hc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.hc-section{padding:2.5rem 1.5rem;}.hc-heading,.hc-subheading{font-size:1.875rem;}}
-@media(max-width:992px){.hc-card{flex:0 0 calc(33.333% - 1rem);}}
-@media(max-width:640px){.hc-card{flex:0 0 78vw;max-width:none;}.hc-nav-prev{left:0.25rem;}.hc-nav-next{right:0.25rem;}.hc-heading,.hc-subheading{font-size:1.5rem;}}
+@media(max-width:640px){.hc-nav-prev{left:0.25rem;}.hc-nav-next{right:0.25rem;}.hc-heading,.hc-subheading{font-size:1.5rem;}.hc-swiper .swiper-slide{width:230px;}.hc-card{width:230px;height:290px;}}
 `;
 
 function buildCardHTML(card, uid, idx) {
@@ -195,7 +46,7 @@ function buildCardHTML(card, uid, idx) {
         ? `<div class="hc-card-video-wrap" data-gjs-type="hc-video-media"><video class="hc-card-video" src="${video}" muted loop playsinline autoplay preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="hc-video-media"></video></div>`
         : "";
 
-    return `<div class="hc-card" id="hc-card-${uid}-${idx}">
+    return `<div class="swiper-slide"><div class="hc-card" id="hc-card-${uid}-${idx}">
         <div class="hc-card-media">
             <img src="${image}" alt="${title}">
             ${videoHtml}
@@ -205,7 +56,7 @@ function buildCardHTML(card, uid, idx) {
             <p class="hc-card-desc">${desc}</p>
         </div>
         <a href="${href}" class="hc-card-btn"><i class="ri-arrow-down-s-line"></i></a>
-    </div>`;
+    </div></div>`;
 }
 
 function buildHeroCardsHTML(data, uid) {
@@ -220,12 +71,12 @@ function buildHeroCardsHTML(data, uid) {
         <p class="hc-subheading">${data.subheading || "Subtítulo"}</p>
         <div class="hc-carousel">
             <button type="button" class="hc-nav hc-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
-            <div class="hc-track-wrap">
-                <div class="hc-track">${cardsHtml}</div>
+            <div class="hc-swiper swiper">
+                <div class="swiper-wrapper">${cardsHtml}</div>
             </div>
             <button type="button" class="hc-nav hc-nav-next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
+            <div class="hc-dots swiper-pagination"></div>
         </div>
-        <div class="hc-dots"></div>
     </section>`;
 }
 
@@ -709,8 +560,6 @@ export function initializeHeroCardsBlock(editor) {
                     "data-hero-cards-config": JSON.stringify(DEFAULT_DATA),
                 },
                 components: buildHeroCardsHTML(DEFAULT_DATA) + `<style>${HC_CSS}</style>`,
-                script: HC_SCRIPT,
-                "script-props": ["data-hero-cards-config"],
                 traits: [
                     {
                         type: "button",
@@ -773,11 +622,10 @@ export function initializeHeroCardsBlock(editor) {
     });
 
     editor.on("component:selected", (selected) => {
-        if (!selected) return;
+        if (!selected || selected.__hcRedirecting) return;
         const el = selected.getEl?.();
         if (!el) return;
         if (el.getAttribute?.("data-gjs-type") === componentType) return;
-        if (el.getAttribute?.("data-gjs-type") === "hc-video-media") return;
         const rootEl = el.closest(`[data-gjs-type="${componentType}"]`);
         if (!rootEl) return;
         const rootModel = editor
@@ -785,7 +633,11 @@ export function initializeHeroCardsBlock(editor) {
             .find(`[data-gjs-type="${componentType}"]`)
             .find((c) => c.getEl() === rootEl);
         if (rootModel && rootModel !== selected) {
+            rootModel.__hcRedirecting = true;
             editor.select(rootModel);
+            setTimeout(() => {
+                delete rootModel.__hcRedirecting;
+            }, 0);
         }
     });
 
@@ -793,15 +645,21 @@ export function initializeHeroCardsBlock(editor) {
 }
 
 function injectHeroCardsEditorStyles(editor, componentType) {
-    editor.on("load", () => {
+    const inject = () => {
         const iframe = editor.Canvas.getFrameEl();
         const head = iframe?.contentDocument?.head;
         if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
         const style = iframe.contentDocument.createElement("style");
         style.id = `${componentType}-editor-css`;
         style.textContent = `
-            [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
+            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;gap:1.5rem;overflow:hidden;flex-wrap:nowrap;}
+            [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 calc(33.333% - 1rem);max-width:calc(33.333% - 1rem);width:auto !important;}
+            [data-gjs-type="${componentType}"] .hc-dots{display:none;}
         `;
         head.appendChild(style);
-    });
+    };
+
+    editor.on("load", () => setTimeout(inject, 100));
+    editor.on("storage:end:load", () => setTimeout(inject, 400));
+    editor.on("canvas:frame:load", () => setTimeout(inject, 100));
 }
