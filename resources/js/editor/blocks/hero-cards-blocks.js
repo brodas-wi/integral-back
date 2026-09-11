@@ -478,9 +478,21 @@ function showHeroCardsModal(editor, component) {
         component.addAttributes({
             "data-hero-cards-config": JSON.stringify(data),
         });
+        purgeHeroCardsCssRules(editor);
         component.components(buildHeroCardsHTML(data, uid));
         close();
     });
+}
+
+function purgeHeroCardsCssRules(editor) {
+    const css = editor.Css;
+    if (!css) return;
+    const allRules = css.getAll();
+    const toRemove = allRules.filter((rule) => {
+        const selectors = rule.getSelectorsString?.() || "";
+        return /(^|[\s.#>+~])hc-[a-z-]+/.test(selectors);
+    });
+    toRemove.forEach((rule) => css.remove(rule));
 }
 
 const iconHeroCards = `<svg viewBox="0 0 32 32" width="32" height="32">
@@ -638,8 +650,9 @@ function injectHeroCardsEditorStyles(editor, componentType) {
         const style = iframe.contentDocument.createElement("style");
         style.id = `${componentType}-editor-css`;
         style.textContent = `
-            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;gap:1.5rem;overflow:hidden;flex-wrap:nowrap;}
-            [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 calc(33.333% - 1rem);max-width:calc(33.333% - 1rem);width:auto !important;}
+            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;gap:1rem;overflow-x:auto;flex-wrap:nowrap;}
+            [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 auto;width:auto !important;}
+            [data-gjs-type="${componentType}"] .hc-card{width:200px !important;max-width:200px;height:250px !important;}
             [data-gjs-type="${componentType}"] .hc-dots{display:none;}
         `;
         head.appendChild(style);
