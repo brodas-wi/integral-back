@@ -18,7 +18,9 @@ function buildWideBannerHTML(data, uid) {
     const videoUrl = data.video_url || "";
     const posterUrl = data.poster_url || assetUrl("images/placeholder.svg");
 
-    const bgMedia = `<video id="wb-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="wb-video-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`;
+    const bgMedia = videoUrl
+        ? `<video id="wb-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="wb-video-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`
+        : "";
 
     const line1Html = data.line1
         ? `<p class="wb-line1">${data.line1}</p>`

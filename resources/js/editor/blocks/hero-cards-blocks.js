@@ -516,7 +516,7 @@ export function initializeHeroCardsBlock(editor) {
         view: {
             onRender() {
                 const el = this.el;
-                if (!el) return;
+                if (!el || typeof el.pause !== "function") return;
                 el.removeAttribute("autoplay");
                 el.removeAttribute("src");
                 el.muted = true;
