@@ -34,6 +34,7 @@ import { bannerBlocks, initializeBannerBlocks } from "./blocks/banner-blocks";
 import { assetsBlocks, initializeAssetsBlocks } from "@/editor/blocks/assets-blocks";
 import { initializeHeroBannerBlock } from "@/editor/blocks/hero-banner-blocks";
 import { initializeHeroVideoBlock } from "@/editor/blocks/hero-video-blocks";
+import { initializeFixedBannerBlock } from "@/editor/blocks/fixed-banner-blocks";
 import { initializeHeroCardsBlock } from "@/editor/blocks/hero-cards-blocks";
 import { initializeHeroPagesBlock } from "@/editor/blocks/hero-pages-blocks";
 import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
@@ -74,6 +75,7 @@ export function addCustomBlocks(editor) {
     initializeNewsGridBlocks(editor);
     initializeHeroBannerBlock(editor);
     initializeHeroVideoBlock(editor);
+    initializeFixedBannerBlock(editor);
     initializeHeroCardsBlock(editor);
     initializeHeroPagesBlock(editor);
     initializeWideBannerBlock(editor);
