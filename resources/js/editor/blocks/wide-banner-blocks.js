@@ -309,16 +309,6 @@ export function initializeWideBannerBlock(editor) {
                 traits: [],
             },
         },
-        view: {
-            onRender() {
-                const el = this.el;
-                if (!el) return;
-                el.removeAttribute("autoplay");
-                el.removeAttribute("src");
-                el.muted = true;
-                el.pause();
-            },
-        },
     });
 
     editor.DomComponents.addType(componentType, {
@@ -414,48 +404,9 @@ function injectWideBannerEditorStyles(editor, componentType) {
             [data-gjs-type="${componentType}"] .wb-bg { background-size: cover; background-position: center; background-repeat: no-repeat; }
         `;
         head.appendChild(style);
-
-        editor
-            .getWrapper()
-            ?.find(`[data-gjs-type="${componentType}"]`)
-            ?.forEach((component) => applyCanvasPosterBackground(component));
     };
 
     editor.on("load", () => setTimeout(inject, 100));
     editor.on("storage:end:load", () => setTimeout(inject, 400));
     editor.on("canvas:frame:load", () => setTimeout(inject, 100));
-
-    editor.on("component:add component:update", (component) => {
-        if (component.get("type") !== componentType) return;
-        setTimeout(() => applyCanvasPosterBackground(component), 50);
-    });
-}
-
-function applyCanvasPosterBackground(component) {
-    const el = component.getEl();
-    if (!el) return;
-    const bgEl = el.querySelector(".wb-bg");
-    if (!bgEl) return;
-
-    const videoEl = bgEl.querySelector("video");
-    if (videoEl) {
-        videoEl.pause();
-        videoEl.removeAttribute("src");
-        videoEl.load();
-        videoEl.style.display = "none";
-    }
-
-    let posterUrl = "";
-    try {
-        const config = JSON.parse(
-            component.getAttributes()["data-wide-banner-config"] || "{}",
-        );
-        posterUrl = config.poster_url || "";
-    } catch {
-        posterUrl = "";
-    }
-
-    if (posterUrl) {
-        bgEl.style.backgroundImage = `url("${posterUrl}")`;
-    }
 }
