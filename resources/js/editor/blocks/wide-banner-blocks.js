@@ -1,44 +1,43 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
-const WB_CSS = `
-.wb-section{position:relative;width:100%;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
-.wb-bg{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;background-repeat:no-repeat;}
-.wb-bg video{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important;max-width:none !important;object-fit:cover !important;display:block !important;}
-.wb-section.wb-has-text .wb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);}
-.wb-content{position:relative;z-index:5;text-align:center;padding:1.5rem 2rem;max-width:900px;}
-.wb-line1{margin:0 0 0.25rem;font-size:1.5rem;font-weight:500;color:#fff;line-height:1.3;}
-.wb-line2{margin:0;font-size:2.25rem;font-weight:800;color:#fff;line-height:1.25;}
-@media(max-width:992px){.wb-line1{font-size:1.25rem;}.wb-line2{font-size:1.75rem;}}
-@media(max-width:640px){.wb-section{aspect-ratio:16/9;min-height:220px;}.wb-line1{font-size:1.0625rem;}.wb-line2{font-size:1.375rem;}.wb-content{padding:1.25rem 1.25rem;}}
-`;
-
-function injectWideBannerStyles(editor) {
-    if (!editor || editor.__wbStylesInjected) return;
-    editor.__wbStylesInjected = true;
-    editor.Css.addRules(WB_CSS);
-}
-
 function buildWideBannerHTML(data, uid) {
     uid = uid || "wb" + Math.random().toString(36).slice(2, 7);
     const videoUrl = data.video_url || "";
     const posterUrl = data.poster_url || assetUrl("images/placeholder.svg");
+    const hasText = Boolean(data.line1 || data.line2);
+
+    const sectionStyle = `position:relative;width:100%;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;`;
+
+    const bgStyle = `position:absolute;inset:0;width:100%;height:100%;background-image:url('${posterUrl}');background-size:cover;background-position:center;background-repeat:no-repeat;`;
+
+    const videoStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
+
+    const overlayStyle = hasText
+        ? `content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);`
+        : "";
+
+    const overlayHtml = hasText
+        ? `<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);"></div>`
+        : "";
 
     const bgMedia = videoUrl
-        ? `<video id="wb-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="wb-video-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`
+        ? `<video id="wb-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline disablepictureinpicture disableremoteplayback tabindex="-1" style="${videoStyle}" data-gjs-type="wb-video-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`
         : "";
+
+    const contentStyle = `position:relative;z-index:5;text-align:center;padding:1.5rem 2rem;max-width:900px;`;
+
+    const line1Style = `margin:0 0 0.25rem;font-size:clamp(1.0625rem,2.2vw,1.5rem);font-weight:500;color:#fff;line-height:1.3;`;
+    const line2Style = `margin:0;font-size:clamp(1.375rem,3.5vw,2.25rem);font-weight:800;color:#fff;line-height:1.25;`;
 
     const line1Html = data.line1
-        ? `<p class="wb-line1">${data.line1}</p>`
+        ? `<p style="${line1Style}">${data.line1}</p>`
         : "";
     const line2Html = data.line2
-        ? `<p class="wb-line2">${data.line2}</p>`
+        ? `<p style="${line2Style}">${data.line2}</p>`
         : "";
 
-    const hasText = Boolean(data.line1 || data.line2);
-    const sectionClass = hasText ? "wb-section wb-has-text" : "wb-section";
-
-    return `<section id="wb-root-${uid}" class="${sectionClass}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="wb-bg" data-wb-poster="${posterUrl}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${bgMedia}</div><div class="wb-content" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${line1Html}${line2Html}</div></section>`;
+    return `<section id="wb-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="wb-bg" data-wb-poster="${posterUrl}" style="${bgStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${bgMedia}${overlayHtml}</div><div style="${contentStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${line1Html}${line2Html}</div></section>`;
 }
 
 const DEFAULT_DATA = {
@@ -383,8 +382,6 @@ export function initializeWideBannerBlock(editor) {
 }
 
 function setupWideBannerEditorEvents(editor, componentType) {
-    injectWideBannerStyles(editor);
-
     const runAll = () => {
         const iframe = editor.Canvas.getFrameEl();
         const doc = iframe?.contentDocument;
@@ -396,7 +393,7 @@ function setupWideBannerEditorEvents(editor, componentType) {
             style.id = `${componentType}-editor-css`;
             style.textContent = `
                 [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
-                [data-gjs-type="${componentType}"] .wb-bg video { display: none !important; }
+                [data-gjs-type="${componentType}"] video { display: none !important; }
             `;
             head.appendChild(style);
         }
