@@ -7,7 +7,7 @@ function buildWideBannerHTML(data, uid) {
     const posterUrl = data.poster_url || assetUrl("images/placeholder.svg");
     const hasText = Boolean(data.line1 || data.line2);
 
-    const sectionStyle = `position:relative;width:100%;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;`;
+    const sectionStyle = `position:relative;width:100%;max-width:1600px;margin:0 auto;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;`;
 
     const bgStyle = `position:absolute;inset:0;width:100%;height:100%;background-image:url('${posterUrl}');background-size:cover;background-position:center;background-repeat:no-repeat;`;
 
