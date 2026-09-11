@@ -2,7 +2,7 @@ import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
 const WB_CSS = `
-.wb-section{position:relative;width:100%;aspect-ratio:25/5;min-height:160px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;}
+.wb-section{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;box-sizing:border-box;}
 .wb-bg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
 .wb-bg img,.wb-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .wb-section.wb-has-text .wb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);}
@@ -10,7 +10,7 @@ const WB_CSS = `
 .wb-line1{margin:0 0 0.25rem;font-size:1.5rem;font-weight:500;color:#fff;line-height:1.3;}
 .wb-line2{margin:0;font-size:2.25rem;font-weight:800;color:#fff;line-height:1.25;}
 @media(max-width:992px){.wb-line1{font-size:1.25rem;}.wb-line2{font-size:1.75rem;}}
-@media(max-width:640px){.wb-section{aspect-ratio:16/9;min-height:200px;}.wb-line1{font-size:1.0625rem;}.wb-line2{font-size:1.375rem;}.wb-content{padding:1.25rem 1.25rem;}}
+@media(max-width:640px){.wb-section{aspect-ratio:16/9;min-height:220px;}.wb-line1{font-size:1.0625rem;}.wb-line2{font-size:1.375rem;}.wb-content{padding:1.25rem 1.25rem;}}
 `;
 
 function buildWideBannerHTML(data, uid) {
