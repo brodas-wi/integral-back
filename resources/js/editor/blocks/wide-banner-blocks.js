@@ -254,6 +254,12 @@ function showWideBannerModal(editor, component) {
         component.addAttributes({
             "data-wide-banner-config": JSON.stringify(data),
         });
+
+        const el = component.getEl();
+        if (el) {
+            el.querySelectorAll("style").forEach((styleTag) => styleTag.remove());
+        }
+
         component.components(
             buildWideBannerHTML(data, uid) + `<style>${WB_CSS}</style>`,
         );
