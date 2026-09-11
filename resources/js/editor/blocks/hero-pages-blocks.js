@@ -12,7 +12,7 @@ const HP_CSS = `
 .hp-card{position:relative;width:100%;height:100%;max-height:520px;aspect-ratio:4/5;border-radius:32px;overflow:hidden;background:#0a0a0a;margin:0 auto;}
 .hp-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;}
 .hp-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
-.hp-card-title{position:absolute;top:1rem;left:1rem;right:1rem;z-index:5;margin:0;font-size:1.1875rem;font-weight:800;color:#fff;line-height:1.25;text-shadow:0 2px 6px rgba(0,0,0,0.55),0 1px 2px rgba(0,0,0,0.4);}
+.hp-card-title{position:absolute;top:1rem;left:1rem;right:1rem;z-index:5;margin:0;font-size:1.3rem;font-weight:800;color:#fff;line-height:1.25;text-shadow:0 2px 6px rgba(0,0,0,0.55),0 1px 2px rgba(0,0,0,0.4);}
 .hp-card-badge-box{position:absolute;left:0.75rem;right:0.75rem;bottom:0.75rem;z-index:5;display:flex;align-items:center;gap:0.625rem;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.625rem 0.75rem;}
 .hp-card-badge{flex-shrink:0;width:2rem;height:2rem;border-radius:9999px;background:#fff;display:flex;align-items:center;justify-content:center;color:#003B71;font-size:1rem;}
 .hp-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;line-height:1.4;}
