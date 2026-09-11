@@ -2,7 +2,7 @@ import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
 const WB_CSS = `
-.wb-section{position:relative;width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
+.wb-section{position:relative;width:100%;margin-inline:calc(50% - 50vw);max-width:100vw;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
 .wb-bg{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;background-repeat:no-repeat;}
 .wb-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .wb-section.wb-has-text .wb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);}
