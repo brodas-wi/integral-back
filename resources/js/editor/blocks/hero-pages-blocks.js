@@ -27,6 +27,9 @@ const HP_CSS = `
 @media(max-width:1280px){.hp-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.hp-section{padding:2.5rem 1.5rem;}.hp-heading,.hp-subheading{font-size:1.875rem;}}
 @media(max-width:640px){.hp-nav-prev{left:0.25rem;}.hp-nav-next{right:0.25rem;}.hp-heading,.hp-subheading{font-size:1.5rem;}}
+[data-gjs-type="hero-pages-component"] .swiper-wrapper{display:flex;gap:1.5rem;overflow-x:auto;flex-wrap:nowrap;}
+[data-gjs-type="hero-pages-component"] .swiper-slide{flex:0 0 calc(33.333% - 1rem);max-width:calc(33.333% - 1rem);}
+[data-gjs-type="hero-pages-component"] .hp-dots{display:none;}
 `;
 
 function buildPageCardHTML(card) {
