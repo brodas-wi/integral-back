@@ -2,7 +2,7 @@ import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
 const WB_CSS = `
-.wb-section{position:relative;width:100%;aspect-ratio:21/5;min-height:180px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;}
+.wb-section{position:relative;width:100%;aspect-ratio:25/5;min-height:160px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;}
 .wb-bg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
 .wb-bg img,.wb-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .wb-section.wb-has-text .wb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);}
@@ -127,7 +127,7 @@ function showWideBannerModal(editor, component) {
             <div class="wb-tab-panel active" id="wb-panel-video">
                 <div class="wb-proportions-box">
                     <i class="ri-information-line"></i>
-                    <p>Este banner es panorámico (proporción aproximada <strong>21:5</strong>). Para que el video se vea nítido y bien encuadrado en pantallas anchas, sube un archivo con una resolución cercana a <strong>1920×460px</strong> (o cualquier proporción similar horizontal). Evita videos verticales o cuadrados.</p>
+                    <p>Este banner es panorámico (proporción <strong>25:5</strong>, equivalente a 5:1). Para que el video se vea nítido y bien encuadrado en pantallas anchas, sube un archivo con una resolución cercana a <strong>1920×384px</strong> (o cualquier proporción similar horizontal). Evita videos verticales o cuadrados.</p>
                 </div>
                 <div class="wb-card">
                     <label class="wb-label">Video de fondo</label>
@@ -260,11 +260,24 @@ function showWideBannerModal(editor, component) {
             el.querySelectorAll("style").forEach((styleTag) => styleTag.remove());
         }
 
+        purgeWideBannerCssRules(editor);
+
         component.components(
             buildWideBannerHTML(data, uid) + `<style>${WB_CSS}</style>`,
         );
         close();
     };
+}
+
+function purgeWideBannerCssRules(editor) {
+    const css = editor.Css;
+    if (!css) return;
+    const allRules = css.getAll();
+    const toRemove = allRules.filter((rule) => {
+        const selectors = rule.getSelectorsString?.() || "";
+        return /(^|[\s.#>+~])wb-[a-z-]+/.test(selectors);
+    });
+    toRemove.forEach((rule) => css.remove(rule));
 }
 
 const iconWideBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
@@ -347,6 +360,11 @@ export function initializeWideBannerBlock(editor) {
             type: componentType,
             attributes: { "data-gjs-type": componentType },
         },
+    });
+
+    editor.on("block:drag:stop", (component) => {
+        if (!component || component.get("type") !== componentType) return;
+        purgeWideBannerCssRules(editor);
     });
 
     injectWideBannerEditorStyles(editor, componentType);
