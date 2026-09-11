@@ -27,9 +27,6 @@ const HP_CSS = `
 @media(max-width:1280px){.hp-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.hp-section{padding:2.5rem 1.5rem;}.hp-heading,.hp-subheading{font-size:1.875rem;}}
 @media(max-width:640px){.hp-nav-prev{left:0.25rem;}.hp-nav-next{right:0.25rem;}.hp-heading,.hp-subheading{font-size:1.5rem;}}
-[data-gjs-type="hero-pages-component"] .swiper-wrapper{display:flex;gap:1.5rem;overflow-x:auto;flex-wrap:nowrap;}
-[data-gjs-type="hero-pages-component"] .swiper-slide{flex:0 0 calc(33.333% - 1rem);max-width:calc(33.333% - 1rem);}
-[data-gjs-type="hero-pages-component"] .hp-dots{display:none;}
 `;
 
 function buildPageCardHTML(card) {
@@ -514,6 +511,8 @@ export function initializeHeroPagesBlock(editor) {
         },
     });
 
+    injectHeroPagesEditorStyles(editor, componentType);
+
     editor.on("component:selected", (selected) => {
         if (!selected || selected.__hpRedirecting) return;
         const el = selected.getEl?.();
@@ -532,5 +531,21 @@ export function initializeHeroPagesBlock(editor) {
                 delete rootModel.__hpRedirecting;
             }, 0);
         }
+    });
+}
+
+function injectHeroPagesEditorStyles(editor, componentType) {
+    editor.on("load", () => {
+        const iframe = editor.Canvas.getFrameEl();
+        const head = iframe?.contentDocument?.head;
+        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
+        const style = iframe.contentDocument.createElement("style");
+        style.id = `${componentType}-editor-css`;
+        style.textContent = `
+            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex;gap:1.5rem;overflow:hidden;flex-wrap:nowrap;}
+            [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 calc(33.333% - 1rem);max-width:calc(33.333% - 1rem);}
+            [data-gjs-type="${componentType}"] .hp-dots{display:none;}
+        `;
+        head.appendChild(style);
     });
 }
