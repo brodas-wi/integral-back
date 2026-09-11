@@ -4,7 +4,7 @@ import { assetUrl } from "@/utils/url.js";
 const WB_CSS = `
 .wb-section{position:relative;width:100%;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;}
 .wb-bg{position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;background-repeat:no-repeat;}
-.wb-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.wb-bg video{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important;max-width:none !important;object-fit:cover !important;display:block !important;}
 .wb-section.wb-has-text .wb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);}
 .wb-content{position:relative;z-index:5;text-align:center;padding:1.5rem 2rem;max-width:900px;}
 .wb-line1{margin:0 0 0.25rem;font-size:1.5rem;font-weight:500;color:#fff;line-height:1.3;}
