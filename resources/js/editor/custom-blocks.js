@@ -37,6 +37,7 @@ import { initializeHeroVideoBlock } from "@/editor/blocks/hero-video-blocks";
 import { initializeFixedBannerBlock } from "@/editor/blocks/fixed-banner-blocks";
 import { initializeHeroCardsBlock } from "@/editor/blocks/hero-cards-blocks";
 import { initializeHeroPagesBlock } from "@/editor/blocks/hero-pages-blocks";
+import { initializeOptionsBannerBlock } from "@/editor/blocks/options-banner-blocks";
 import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
 
 export function addCustomBlocks(editor) {
@@ -78,6 +79,7 @@ export function addCustomBlocks(editor) {
     initializeFixedBannerBlock(editor);
     initializeHeroCardsBlock(editor);
     initializeHeroPagesBlock(editor);
+    initializeOptionsBannerBlock(editor);
     initializeWideBannerBlock(editor);
     initializeBarChartSectionBlock(editor);
     initializeBarChartBlock(editor);
