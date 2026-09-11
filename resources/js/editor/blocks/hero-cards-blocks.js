@@ -638,9 +638,8 @@ function injectHeroCardsEditorStyles(editor, componentType) {
         const style = iframe.contentDocument.createElement("style");
         style.id = `${componentType}-editor-css`;
         style.textContent = `
-            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;gap:1rem;overflow-x:auto;flex-wrap:nowrap;}
+            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;gap:1.5rem;overflow:hidden;flex-wrap:wrap;justify-content:center;}
             [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 auto;width:auto !important;}
-            [data-gjs-type="${componentType}"] .hc-card{width:200px !important;max-width:200px;height:250px !important;}
             [data-gjs-type="${componentType}"] .hc-dots{display:none;}
         `;
         head.appendChild(style);
