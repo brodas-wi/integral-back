@@ -5,7 +5,7 @@ const WB_CSS = `
 .wb-section{position:relative;width:100%;aspect-ratio:21/5;min-height:180px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;}
 .wb-bg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
 .wb-bg img,.wb-bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
-.wb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);}
+.wb-section.wb-has-text .wb-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,27,51,0.35) 0%,rgba(15,27,51,0.55) 100%);}
 .wb-content{position:relative;z-index:5;text-align:center;padding:1.5rem 2rem;max-width:900px;}
 .wb-line1{margin:0 0 0.25rem;font-size:1.5rem;font-weight:500;color:#fff;line-height:1.3;}
 .wb-line2{margin:0;font-size:2.25rem;font-weight:800;color:#fff;line-height:1.25;}
@@ -27,7 +27,10 @@ function buildWideBannerHTML(data, uid) {
         ? `<p class="wb-line2">${data.line2}</p>`
         : "";
 
-    return `<section id="wb-root-${uid}" class="wb-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+    const hasText = Boolean(data.line1 || data.line2);
+    const sectionClass = hasText ? "wb-section wb-has-text" : "wb-section";
+
+    return `<section id="wb-root-${uid}" class="${sectionClass}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="wb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             ${bgMedia}
         </div>
@@ -41,8 +44,8 @@ function buildWideBannerHTML(data, uid) {
 const DEFAULT_DATA = {
     video_url: "",
     poster_url: assetUrl("images/placeholder.svg"),
-    line1: "Donde hay propósito, hay camino",
-    line2: "Y nosotros lo financiamos",
+    line1: "",
+    line2: "",
 };
 
 function showWideBannerModal(editor, component) {
@@ -151,11 +154,12 @@ function showWideBannerModal(editor, component) {
             </div>
             <div class="wb-tab-panel" id="wb-panel-content">
                 <div class="wb-card">
-                    <label class="wb-label">Línea 1 (superior, peso ligero)</label>
+                    <label class="wb-label">Línea 1 (superior) — opcional</label>
+                    <p class="wb-hint">Si dejas ambas líneas vacías, el banner se mostrará solo con el video, sin oscurecimiento sobre él.</p>
                     <input id="wb-line1" type="text" placeholder="Donde hay propósito, hay camino" value="${line1}" class="wb-input">
                 </div>
                 <div class="wb-card">
-                    <label class="wb-label">Línea 2 (inferior, en negrita)</label>
+                    <label class="wb-label">Línea 2 (inferior) — opcional</label>
                     <input id="wb-line2" type="text" placeholder="Y nosotros lo financiamos" value="${line2}" class="wb-input">
                 </div>
             </div>
