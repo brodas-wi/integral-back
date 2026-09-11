@@ -9,7 +9,7 @@ const HP_CSS = `
 .hp-swiper{overflow:hidden;width:100%;}
 .hp-swiper .swiper-wrapper{align-items:stretch;}
 .hp-swiper .swiper-slide{height:auto;}
-.hp-card{position:relative;width:100%;height:100%;aspect-ratio:4/5;border-radius:32px;overflow:hidden;background:#0a0a0a;}
+.hp-card{position:relative;width:100%;height:100%;max-height:520px;aspect-ratio:4/5;border-radius:32px;overflow:hidden;background:#0a0a0a;margin:0 auto;}
 .hp-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;}
 .hp-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hp-card-title{position:absolute;top:1rem;left:1rem;right:1rem;z-index:5;margin:0;font-size:1.1875rem;font-weight:800;color:#fff;line-height:1.25;text-shadow:0 2px 6px rgba(0,0,0,0.55),0 1px 2px rgba(0,0,0,0.4);}
@@ -26,7 +26,7 @@ const HP_CSS = `
 .hp-dot.active{background:#003B71;}
 @media(max-width:1280px){.hp-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.hp-section{padding:2.5rem 1.5rem;}.hp-heading,.hp-subheading{font-size:1.875rem;}}
-@media(max-width:640px){.hp-nav-prev{left:0.25rem;}.hp-nav-next{right:0.25rem;}.hp-heading,.hp-subheading{font-size:1.5rem;}}
+@media(max-width:640px){.hp-nav-prev{left:0.25rem;}.hp-nav-next{right:0.25rem;}.hp-heading,.hp-subheading{font-size:1.5rem;}.hp-card{max-height:440px;}}
 `;
 
 function buildPageCardHTML(card) {
