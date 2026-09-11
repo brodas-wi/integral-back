@@ -18,6 +18,8 @@ function buildFixedBannerHTML(data, uid) {
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
+    const responsivePaddingCss = `<style>@media(max-width:991px){#fb-root-${uid}{padding:1.5rem !important;}}</style>`;
+
     const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/7;min-height:220px;border-radius:clamp(12px,2vw,24px);overflow:hidden;box-sizing:border-box;`;
 
     const imgStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
@@ -35,7 +37,7 @@ function buildFixedBannerHTML(data, uid) {
         ? `<a href="${data.button_href || "#"}" id="fb-btn-${uid}" style="${btnStyle}">${data.button_label}</a>`
         : "";
 
-    return `<section id="fb-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.text || "Banner"}" style="${imgStyle}"><div style="${boxStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${textHtml}${buttonHtml}</div></div><style>#fb-btn-${uid}:hover{background:#0d1930;}</style></section>`;
+    return `<section id="fb-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.text || "Banner"}" style="${imgStyle}"><div style="${boxStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${textHtml}${buttonHtml}</div></div><style>#fb-btn-${uid}:hover{background:#0d1930;}</style>${responsivePaddingCss}</section>`;
 }
 
 const DEFAULT_DATA = {
