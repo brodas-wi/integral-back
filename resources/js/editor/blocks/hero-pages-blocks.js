@@ -1,148 +1,15 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
-const HP_SCRIPT = function () {
-    (function () {
-        function initCarousel(wrap) {
-            if (!wrap || wrap.__hpInit) return;
-            wrap.__hpInit = true;
-
-            var pagesTrack = wrap.querySelector(".hp-pages-track");
-            var prevBtn = wrap.querySelector(".hp-nav-prev");
-            var nextBtn = wrap.querySelector(".hp-nav-next");
-            var dotsWrap = wrap.querySelector(".hp-dots");
-            var viewport = wrap.querySelector(".hp-viewport");
-            if (!pagesTrack || !viewport) return;
-
-            var allCards = Array.prototype.slice.call(
-                pagesTrack.querySelectorAll(".hp-card"),
-            );
-            var currentPage = 0;
-
-            function cardsPerPage() {
-                var w = viewport.offsetWidth;
-                if (w < 640) return 1;
-                if (w < 992) return 2;
-                return 3;
-            }
-
-            function totalPages(perPage) {
-                return Math.max(1, Math.ceil(allCards.length / perPage));
-            }
-
-            function rebuildPages() {
-                var perPage = cardsPerPage();
-                var pages = totalPages(perPage);
-                pagesTrack.innerHTML = "";
-                pagesTrack.style.width = pages * 100 + "%";
-
-                for (var p = 0; p < pages; p++) {
-                    var pageEl = document.createElement("div");
-                    pageEl.className = "hp-page";
-                    pageEl.style.width = 100 / pages + "%";
-                    var slice = allCards.slice(p * perPage, p * perPage + perPage);
-                    slice.forEach(function (card) {
-                        pageEl.appendChild(card);
-                    });
-                    pagesTrack.appendChild(pageEl);
-                }
-
-                currentPage = Math.min(currentPage, pages - 1);
-                renderDots(pages);
-                goToPage(currentPage, false);
-            }
-
-            function renderDots(pages) {
-                if (!dotsWrap) return;
-                dotsWrap.innerHTML = "";
-                if (pages <= 1) {
-                    dotsWrap.style.display = "none";
-                    return;
-                }
-                dotsWrap.style.display = "flex";
-                for (var i = 0; i < pages; i++) {
-                    var dot = document.createElement("button");
-                    dot.type = "button";
-                    dot.className = "hp-dot" + (i === currentPage ? " active" : "");
-                    dot.addEventListener(
-                        "click",
-                        (function (idx) {
-                            return function () {
-                                goToPage(idx, true);
-                            };
-                        })(i),
-                    );
-                    dotsWrap.appendChild(dot);
-                }
-            }
-
-            function updateNavState(pages) {
-                if (prevBtn) prevBtn.style.display = pages <= 1 ? "none" : "flex";
-                if (nextBtn) nextBtn.style.display = pages <= 1 ? "none" : "flex";
-                if (prevBtn) prevBtn.disabled = currentPage <= 0;
-                if (nextBtn) nextBtn.disabled = currentPage >= pages - 1;
-                if (dotsWrap) {
-                    dotsWrap.querySelectorAll(".hp-dot").forEach(function (d, i) {
-                        d.classList.toggle("active", i === currentPage);
-                    });
-                }
-            }
-
-            function goToPage(index, animate) {
-                var pages = pagesTrack.children.length;
-                currentPage = Math.max(0, Math.min(index, pages - 1));
-                pagesTrack.style.transition = animate
-                    ? "transform 0.45s ease"
-                    : "none";
-                pagesTrack.style.transform =
-                    "translateX(-" + currentPage * (100 / pages) + "%)";
-                updateNavState(pages);
-            }
-
-            if (prevBtn) {
-                prevBtn.addEventListener("click", function () {
-                    goToPage(currentPage - 1, true);
-                });
-            }
-            if (nextBtn) {
-                nextBtn.addEventListener("click", function () {
-                    goToPage(currentPage + 1, true);
-                });
-            }
-
-            rebuildPages();
-
-            var resizeTimer = null;
-            window.addEventListener("resize", function () {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(rebuildPages, 200);
-            });
-        }
-
-        function init() {
-            document.querySelectorAll(".hp-carousel").forEach(function (w) {
-                initCarousel(w);
-            });
-        }
-
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", init);
-        } else {
-            init();
-        }
-    })();
-};
-const HP_RUNTIME_SCRIPT = `(${HP_SCRIPT.toString()})();`;
-
 const HP_CSS = `
 .hp-section{width:100%;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
 .hp-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0;text-align:center;line-height:1.2;}
 .hp-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.5;}
 .hp-carousel{position:relative;width:100%;}
-.hp-viewport{overflow:hidden;width:100%;}
-.hp-pages-track{display:flex;will-change:transform;}
-.hp-page{display:flex;gap:1.5rem;flex-shrink:0;box-sizing:border-box;padding:0 0.125rem;}
-.hp-card{position:relative;flex:1 1 0;aspect-ratio:4/5;border-radius:32px;overflow:hidden;background:#0a0a0a;}
+.hp-swiper{overflow:hidden;width:100%;}
+.hp-swiper .swiper-wrapper{align-items:stretch;}
+.hp-swiper .swiper-slide{height:auto;}
+.hp-card{position:relative;width:100%;height:100%;aspect-ratio:4/5;border-radius:32px;overflow:hidden;background:#0a0a0a;}
 .hp-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;}
 .hp-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hp-card-title{position:absolute;top:1rem;left:1rem;right:1rem;z-index:5;margin:0;font-size:1.1875rem;font-weight:800;color:#fff;line-height:1.25;text-shadow:0 2px 6px rgba(0,0,0,0.55),0 1px 2px rgba(0,0,0,0.4);}
@@ -168,7 +35,7 @@ function buildPageCardHTML(card) {
     const desc = card.desc || "Descripción breve.";
     const icon = card.icon || "ri-shield-check-line";
 
-    return `<div class="hp-card">
+    return `<div class="swiper-slide"><div class="hp-card">
         <div class="hp-card-media">
             <img src="${image}" alt="${title}">
         </div>
@@ -177,7 +44,7 @@ function buildPageCardHTML(card) {
             <span class="hp-card-badge"><i class="${icon}"></i></span>
             <p class="hp-card-desc">${desc}</p>
         </div>
-    </div>`;
+    </div></div>`;
 }
 
 function buildHeroPagesHTML(data) {
@@ -189,12 +56,12 @@ function buildHeroPagesHTML(data) {
         <p class="hp-subheading">${data.subheading || "Subtítulo"}</p>
         <div class="hp-carousel">
             <button type="button" class="hp-nav hp-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
-            <div class="hp-viewport">
-                <div class="hp-pages-track">${cardsHtml}</div>
+            <div class="hp-swiper swiper">
+                <div class="swiper-wrapper">${cardsHtml}</div>
             </div>
             <button type="button" class="hp-nav hp-nav-next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
+            <div class="hp-dots swiper-pagination"></div>
         </div>
-        <div class="hp-dots"></div>
     </section>`;
 }
 
@@ -609,8 +476,6 @@ export function initializeHeroPagesBlock(editor) {
                 },
                 components:
                     buildHeroPagesHTML(DEFAULT_DATA) + `<style>${HP_CSS}</style>`,
-                script: HP_SCRIPT,
-                "script-props": ["data-hero-pages-config"],
                 traits: [
                     {
                         type: "button",
@@ -634,8 +499,6 @@ export function initializeHeroPagesBlock(editor) {
             if (selected) showHeroPagesModal(ed, selected);
         },
     });
-
-    setupHeroPagesEditorEvents(editor, componentType);
 
     editor.BlockManager.add("hero-pages-block", {
         label: "Tarjetas por Páginas",
@@ -667,36 +530,4 @@ export function initializeHeroPagesBlock(editor) {
             }, 0);
         }
     });
-}
-
-function setupHeroPagesEditorEvents(editor, componentType) {
-    editor.on("component:update", (component) => {
-        if (component.get("type") !== componentType) return;
-        setTimeout(() => reinitHeroPages(component), 100);
-    });
-
-    editor.on("storage:end:load", () => {
-        setTimeout(() => reinitAllHeroPages(editor, componentType), 800);
-    });
-
-    editor.on("canvas:render", () => {
-        setTimeout(() => reinitAllHeroPages(editor, componentType), 600);
-    });
-}
-
-function reinitAllHeroPages(editor, componentType) {
-    editor
-        .getWrapper()
-        .find(`[data-gjs-type="${componentType}"]`)
-        .forEach((comp) => reinitHeroPages(comp));
-}
-
-function reinitHeroPages(component) {
-    const el = component.getEl();
-    if (!el || !el.isConnected) return;
-    el.querySelectorAll(".hp-carousel").forEach((wrap) => {
-        wrap.__hpInit = false;
-    });
-    const script = component.get("script");
-    if (script && typeof script === "function") script.call(el);
 }
