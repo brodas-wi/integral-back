@@ -7,7 +7,7 @@ function buildWideBannerHTML(data, uid) {
     const posterUrl = data.poster_url || assetUrl("images/placeholder.svg");
     const hasText = Boolean(data.line1 || data.line2);
 
-    const sectionStyle = `position:relative;width:100%;max-width:1600px;margin:0 auto;aspect-ratio:25/5;min-height:220px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;`;
+    const sectionStyle = `position:relative;width:100%;max-width:1600px;margin:0 auto;aspect-ratio:7/1;min-height:195px;overflow:hidden;background:#0f1b33;display:flex;align-items:center;justify-content:center;box-sizing:border-box;`;
 
     const bgStyle = `position:absolute;inset:0;width:100%;height:100%;background-image:url('${posterUrl}');background-size:cover;background-position:center;background-repeat:no-repeat;`;
 
@@ -139,7 +139,7 @@ function showWideBannerModal(editor, component) {
             <div class="wb-tab-panel active" id="wb-panel-video">
                 <div class="wb-proportions-box">
                     <i class="ri-information-line"></i>
-                    <p>Este banner es panorámico (proporción <strong>25:5</strong>, equivalente a 5:1). Para que el video se vea nítido y bien encuadrado en pantallas anchas, sube un archivo con una resolución cercana a <strong>1920×384px</strong> (o cualquier proporción similar horizontal). Evita videos verticales o cuadrados.</p>
+                    <p>Este banner es panorámico (proporción <strong>7:1</strong>). Para que el video se vea nítido y bien encuadrado en pantallas anchas, sube un archivo con una resolución cercana a <strong>1370×195px</strong> (o cualquier proporción similar, por ejemplo 1920×274px). Evita videos verticales o cuadrados.</p>
                 </div>
                 <div class="wb-card">
                     <label class="wb-label">Video de fondo</label>
