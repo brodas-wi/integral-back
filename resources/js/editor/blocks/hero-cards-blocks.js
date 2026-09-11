@@ -573,20 +573,6 @@ export function initializeHeroCardsBlock(editor) {
             init() {
                 this.set("type", componentType);
                 this.addAttributes({ "data-gjs-type": componentType });
-
-                const attrs = this.getAttributes();
-                let config;
-                try {
-                    config = JSON.parse(attrs["data-hero-cards-config"] || "{}");
-                } catch {
-                    config = null;
-                }
-
-                if (config && config.cards) {
-                    const existingInner = this.getEl()?.querySelector("[id^='hc-root-']");
-                    const uid = existingInner?.id?.replace("hc-root-", "");
-                    this.components(buildHeroCardsHTML(config, uid) + `<style>${HC_CSS}</style>`);
-                }
             },
         },
     });
