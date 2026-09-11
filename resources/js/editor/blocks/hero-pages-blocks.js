@@ -2,13 +2,13 @@ import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
 const HP_CSS = `
-.hp-section{width:100%;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
+.hp-section{width:100%;max-width:1400px;margin:0 auto;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
 .hp-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0;text-align:center;line-height:1.2;}
 .hp-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.5;}
 .hp-carousel{position:relative;width:100%;}
 .hp-swiper{overflow:hidden;width:100%;}
 .hp-swiper .swiper-wrapper{align-items:stretch;}
-.hp-swiper .swiper-slide{height:auto;width:280px;flex-shrink:0;}
+.hp-swiper .swiper-slide{height:auto;width:280px;flex-shrink:0;display:flex;justify-content:center;}
 .hp-card{position:relative;width:280px;height:350px;border-radius:32px;overflow:hidden;background:#0a0a0a;}
 .hp-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;}
 .hp-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
