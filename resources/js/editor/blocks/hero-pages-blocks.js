@@ -535,17 +535,21 @@ export function initializeHeroPagesBlock(editor) {
 }
 
 function injectHeroPagesEditorStyles(editor, componentType) {
-    editor.on("load", () => {
+    const inject = () => {
         const iframe = editor.Canvas.getFrameEl();
         const head = iframe?.contentDocument?.head;
         if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
         const style = iframe.contentDocument.createElement("style");
         style.id = `${componentType}-editor-css`;
         style.textContent = `
-            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex;gap:1.5rem;overflow:hidden;flex-wrap:nowrap;}
+            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;gap:1.5rem;overflow:hidden;flex-wrap:nowrap;}
             [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 calc(33.333% - 1rem);max-width:calc(33.333% - 1rem);}
             [data-gjs-type="${componentType}"] .hp-dots{display:none;}
         `;
         head.appendChild(style);
-    });
+    };
+
+    editor.on("load", () => setTimeout(inject, 100));
+    editor.on("storage:end:load", () => setTimeout(inject, 400));
+    editor.on("canvas:frame:load", () => setTimeout(inject, 100));
 }
