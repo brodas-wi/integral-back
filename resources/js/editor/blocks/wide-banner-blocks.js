@@ -31,7 +31,7 @@ function buildWideBannerHTML(data, uid) {
     const sectionClass = hasText ? "wb-section wb-has-text" : "wb-section";
 
     return `<section id="wb-root-${uid}" class="${sectionClass}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-        <div class="wb-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
+        <div class="wb-bg" style="background-image:url('${posterUrl}');background-size:cover;background-position:center;" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             ${bgMedia}
         </div>
         <div class="wb-content">
