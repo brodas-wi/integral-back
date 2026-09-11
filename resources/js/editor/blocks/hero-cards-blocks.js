@@ -444,7 +444,7 @@ function showHeroCardsModal(editor, component) {
                     component.addAttributes({
                         "data-hero-cards-config": JSON.stringify(restored),
                     });
-                    component.components(buildHeroCardsHTML(restored));
+                    component.components(buildHeroCardsHTML(restored) + `<style>${HC_CSS}</style>`);
                     overlay.remove();
                     showHeroCardsModal(editor, component);
                 };
@@ -478,21 +478,9 @@ function showHeroCardsModal(editor, component) {
         component.addAttributes({
             "data-hero-cards-config": JSON.stringify(data),
         });
-        purgeHeroCardsCssRules(editor);
-        component.components(buildHeroCardsHTML(data, uid));
+        component.components(buildHeroCardsHTML(data, uid) + `<style>${HC_CSS}</style>`);
         close();
     });
-}
-
-function purgeHeroCardsCssRules(editor) {
-    const css = editor.Css;
-    if (!css) return;
-    const allRules = css.getAll();
-    const toRemove = allRules.filter((rule) => {
-        const selectors = rule.getSelectorsString?.() || "";
-        return /(^|[\s.#>+~])hc-[a-z-]+/.test(selectors);
-    });
-    toRemove.forEach((rule) => css.remove(rule));
 }
 
 const iconHeroCards = `<svg viewBox="0 0 32 32" width="32" height="32">
