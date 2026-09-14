@@ -31,6 +31,7 @@ import { buttonBlocks, initializeButtonBlocks } from "./blocks/button-blocks";
 import { badgeBlocks } from "./blocks/badge-blocks";
 import { mapFilterBlocks, initializeMapFilterBlocks } from "./blocks/map-filter-blocks";
 import { initializeBannerBlocks } from "./blocks/banner-blocks";
+import { initializeVideoBannerBlock } from "@/editor/blocks/video-banner-blocks";
 import { assetsBlocks, initializeAssetsBlocks } from "@/editor/blocks/assets-blocks";
 import { initializeHeroBannerBlock } from "@/editor/blocks/hero-banner-blocks";
 import { initializeHeroVideoBlock } from "@/editor/blocks/hero-video-blocks";
@@ -45,6 +46,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(columnBlocks);
 
     initializeBannerBlocks(editor);
+    initializeVideoBannerBlock(editor);
     initializeHeroBannerBlock(editor);
     initializeHeroVideoBlock(editor);
     initializeFixedBannerBlock(editor);
