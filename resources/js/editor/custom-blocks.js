@@ -39,6 +39,7 @@ import { initializeFixedBannerBlock } from "@/editor/blocks/fixed-banner-blocks"
 import { initializeHeroCardsBlock } from "@/editor/blocks/hero-cards-blocks";
 import { initializeHeroPagesBlock } from "@/editor/blocks/hero-pages-blocks";
 import { initializeOptionsBannerBlock } from "@/editor/blocks/options-banner-blocks";
+import { initializeFullBleedBannerBlock } from "@/editor/blocks/full-bleed-banner-blocks";
 import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
 
 export function addCustomBlocks(editor) {
@@ -52,8 +53,9 @@ export function addCustomBlocks(editor) {
     initializeFixedBannerBlock(editor);
     initializeHeroCardsBlock(editor);
     initializeHeroPagesBlock(editor);
-    initializeOptionsBannerBlock(editor);
+    initializeFullBleedBannerBlock(editor);
     initializeWideBannerBlock(editor);
+    initializeOptionsBannerBlock(editor);
     initializeFullImageBlock(editor);
 
     blockRegistry.registerBlocks(tabsBlocks);
