@@ -14,9 +14,9 @@ function buildImageTitleBannerHTML(data, uid) {
 
     const outerStyle = `display:flex;flex-wrap:wrap;gap:0.75rem;width:100%;`;
 
-    const boxColStyle = `flex:1 1 420px;min-width:280px;position:relative;`;
+    const boxColStyle = `flex:0 1 clamp(280px,25vw,420px);min-width:280px;position:relative;`;
 
-    const imgColStyle = `flex:3 1 600px;min-width:280px;position:relative;`;
+    const imgColStyle = `flex:1 1 0;min-width:400px;position:relative;`;
 
     const wrapperStyle = `position:relative;width:100%;height:100%;aspect-ratio:16/7;min-height:220px;border-radius:${radius};overflow:hidden;box-sizing:border-box;`;
 
