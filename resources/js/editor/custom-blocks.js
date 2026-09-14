@@ -43,7 +43,16 @@ import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
     blockRegistry.registerBlocks(columnBlocks);
+
     initializeBannerBlocks(editor);
+    initializeHeroBannerBlock(editor);
+    initializeHeroVideoBlock(editor);
+    initializeFixedBannerBlock(editor);
+    initializeHeroCardsBlock(editor);
+    initializeHeroPagesBlock(editor);
+    initializeOptionsBannerBlock(editor);
+    initializeWideBannerBlock(editor);
+
     blockRegistry.registerBlocks(statsStripBlocks);
     blockRegistry.registerBlocks(tabsBlocks);
     blockRegistry.registerBlocks(aboutBlocks);
@@ -73,13 +82,6 @@ export function addCustomBlocks(editor) {
 
     initializeMapFilterBlocks(editor);
     initializeNewsGridBlocks(editor);
-    initializeHeroBannerBlock(editor);
-    initializeHeroVideoBlock(editor);
-    initializeFixedBannerBlock(editor);
-    initializeHeroCardsBlock(editor);
-    initializeHeroPagesBlock(editor);
-    initializeOptionsBannerBlock(editor);
-    initializeWideBannerBlock(editor);
     initializeBarChartSectionBlock(editor);
     initializeBarChartBlock(editor);
     initializeSavingsSectionBlock(editor);
