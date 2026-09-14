@@ -24,7 +24,9 @@ function buildImageTitleBannerHTML(data, uid) {
 
     const titleStyle = `margin:0;color:#003B71;font-weight:800;font-size:clamp(1.375rem,3vw,2.25rem);line-height:1.25;`;
 
-    return `<section id="it-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.title || "Banner"}" style="${imgStyle}"><div style="${gradientStyle}"></div><div style="${boxStyle}"><h2 style="${titleStyle}">${data.title || "Título"}</h2><div style="${notchStyle}"></div><div style="${topNotchStyle}"></div></div></div></section>`;
+    const responsiveCss = `@media(max-width:768px){#it-root-${uid}{padding:1.5rem 1.25rem;}#it-root-${uid} .it-wrap-${uid}{display:flex;flex-direction:column;gap:0.75rem;}#it-root-${uid} .it-img-${uid}{position:static;aspect-ratio:16/9;min-height:200px;}#it-root-${uid} .it-box-${uid}{position:static;max-width:100%;width:100%;border-radius:20px;padding:1.25rem 1.5rem;}#it-root-${uid} .it-notch-${uid}{display:none;}}`;
+
+    return `<section id="it-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="it-wrap-${uid}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="it-img-${uid}" style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.title || "Banner"}" style="${imgStyle}"><div style="${gradientStyle}"></div><div class="it-box-${uid}" style="${boxStyle}"><h2 style="${titleStyle}">${data.title || "Título"}</h2><div class="it-notch-${uid}" style="${notchStyle}"></div><div class="it-notch-${uid}" style="${topNotchStyle}"></div></div></div></div><div data-gjs-type="it-responsive-style" data-css-content="${responsiveCss.replace(/"/g, "&quot;")}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div></section>`;
 }
 
 const DEFAULT_DATA = {
@@ -174,8 +176,43 @@ const iconImageTitleBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xm
     <rect x="4.5" y="9" width="8" height="2" rx="1" fill="#E97300"/>
 </svg>`;
 
+function responsiveStyleInjectorScript() {
+    const el = this;
+    const cssContent = el.getAttribute("data-css-content");
+    if (!cssContent) return;
+    const doc = el.ownerDocument;
+    const styleId = "it-responsive-" + el.id;
+    if (doc.getElementById(styleId)) return;
+    const styleTag = doc.createElement("style");
+    styleTag.id = styleId;
+    styleTag.textContent = cssContent;
+    doc.head.appendChild(styleTag);
+}
+
 export function initializeBannerBlocks(editor) {
     const componentType = "image-title-banner-component";
+
+    editor.DomComponents.addType("it-responsive-style", {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === "it-responsive-style"
+                ? { type: "it-responsive-style" }
+                : false,
+        model: {
+            defaults: {
+                tagName: "div",
+                draggable: false,
+                droppable: false,
+                removable: false,
+                copyable: false,
+                selectable: false,
+                hoverable: false,
+                editable: false,
+                highlightable: false,
+                traits: [],
+                script: responsiveStyleInjectorScript,
+            },
+        },
+    });
 
     editor.DomComponents.addType(componentType, {
         isComponent: (el) =>
