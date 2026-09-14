@@ -9,7 +9,7 @@ function buildOptionsBannerHTML(data, uid) {
 
     const headerStyle = `display:flex;align-items:flex-start;justify-content:space-between;gap:1.5rem;margin-bottom:clamp(1.5rem,3vw,2.25rem);flex-wrap:wrap;`;
     const headerTextWrapStyle = `display:flex;flex-direction:column;gap:0.75rem;flex:1;min-width:240px;`;
-    const titleStyle = `margin:0;color:#fff;font-weight:800;font-size:clamp(1.25rem,2.6vw,1.875rem);line-height:1.25;`;
+    const titleStyle = `margin:0;color:#fff;font-weight:800;font-size:clamp(1.25rem,2.6vw,1.875rem);line-height:1.1;`;
     const subtitleStyle = `margin:0;color:#fff;font-weight:500;font-size:clamp(1rem,1.8vw,1.25rem);line-height:1.35;`;
 
     const btnStyle = `display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;padding:clamp(0.5rem,1.5vw,0.75rem) clamp(1.125rem,3vw,1.75rem);border-radius:9999px;background:#14243D;color:#fff;font-weight:600;font-size:clamp(0.75rem,1.6vw,0.9375rem);text-decoration:none;transition:background 0.2s ease,color 0.2s ease;white-space:nowrap;width:fit-content;`;
@@ -51,7 +51,7 @@ function buildOptionCardHTML(card) {
     const desc = card.desc || "Descripción breve.";
 
     const cardPadding = `clamp(0.875rem,2vw,1.25rem)`;
-    const cardStyle = `background:#fff;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,0.12);overflow:hidden;display:grid;grid-template-columns:clamp(90px,25%,140px) 1fr;gap:0;padding:${cardPadding};box-sizing:border-box;`;
+    const cardStyle = `background:#fff;border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,0.22);overflow:hidden;display:grid;grid-template-columns:clamp(90px,25%,140px) 1fr;gap:0;padding:${cardPadding};box-sizing:border-box;`;
     const imgColStyle = `display:flex;align-items:center;`;
     const imgWrapStyle = `position:relative;width:100%;aspect-ratio:1/1;border-radius:12px;overflow:hidden;`;
     const imgStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
