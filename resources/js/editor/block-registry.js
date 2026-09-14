@@ -1,5 +1,12 @@
 const OPEN_CATEGORY = "Básico";
 
+const CATEGORY_ORDER = [
+    "Básico",
+    "Columnas",
+    "Banners",
+    "Heroes",
+];
+
 class BlockRegistry {
     constructor() {
         this.blocks = new Map();
@@ -18,13 +25,29 @@ class BlockRegistry {
         });
     }
 
+    getOrderedCategories() {
+        const allCategories = Array.from(this.blocks.keys());
+        const prioritized = CATEGORY_ORDER.filter((cat) =>
+            allCategories.includes(cat),
+        );
+        const remaining = allCategories.filter(
+            (cat) => !CATEGORY_ORDER.includes(cat),
+        );
+        return [...prioritized, ...remaining];
+    }
+
     applyToEditor(editor) {
-        this.blocks.forEach((blocks) => {
+        const orderedCategories = this.getOrderedCategories();
+
+        orderedCategories.forEach((category) => {
+            const blocks = this.blocks.get(category) || [];
             blocks.forEach((block) => {
                 const { id, ...blockConfig } = block;
                 editor.BlockManager.add(id, blockConfig);
             });
         });
+
+        this.blocks.clear();
 
         this.applyCollapseSettings(editor);
         this.hideDefaultCategories(editor);
