@@ -12,7 +12,7 @@ function buildVideoBannerHTML(data, uid) {
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
-    const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/9;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;background:#0a0a0a;`;
+    const wrapperStyle = `position:relative;width:100%;aspect-ratio:20/9;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;background:#0a0a0a;`;
 
     const videoStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
 
@@ -77,6 +77,10 @@ function showVideoBannerModal(editor, component) {
             .vb-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
             .vb-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .vb-btn-save:hover{background:#d97821;}
+            .vb-proportions-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:0.5rem;padding:0.75rem 1rem;display:flex;gap:0.625rem;align-items:flex-start;}
+            .vb-proportions-box i{color:#3b82f6;font-size:1.125rem;flex-shrink:0;margin-top:0.125rem;}
+            .vb-proportions-box p{margin:0;font-size:0.8125rem;color:#1e40af;line-height:1.5;}
+            .vb-proportions-box strong{font-weight:700;}
         `;
         document.head.appendChild(style);
     }
@@ -108,6 +112,10 @@ function showVideoBannerModal(editor, component) {
             <button id="vb-modal-close" class="vb-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
         </div>
         <div class="vb-modal-body">
+            <div class="vb-proportions-box">
+                <i class="ri-information-line"></i>
+                <p>Este banner usa proporción <strong>20:9</strong> (aprox. 2.2:1). Para que el video se vea nítido y sin recortes, sube un archivo con una resolución cercana a <strong>1280×576px</strong> o <strong>1920×864px</strong>.</p>
+            </div>
             <div class="vb-card">
                 <label class="vb-label">Video de fondo</label>
                 <p class="vb-hint">El video se reproduce en loop automáticamente y siempre inicia sin audio (requisito de los navegadores).</p>
