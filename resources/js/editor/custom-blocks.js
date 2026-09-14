@@ -30,7 +30,7 @@ import { tableBlocks, initializeTableBlocks } from "./blocks/table-blocks";
 import { buttonBlocks, initializeButtonBlocks } from "./blocks/button-blocks";
 import { badgeBlocks } from "./blocks/badge-blocks";
 import { mapFilterBlocks, initializeMapFilterBlocks } from "./blocks/map-filter-blocks";
-import { bannerBlocks, initializeBannerBlocks } from "./blocks/banner-blocks";
+import { initializeBannerBlocks } from "./blocks/banner-blocks";
 import { assetsBlocks, initializeAssetsBlocks } from "@/editor/blocks/assets-blocks";
 import { initializeHeroBannerBlock } from "@/editor/blocks/hero-banner-blocks";
 import { initializeHeroVideoBlock } from "@/editor/blocks/hero-video-blocks";
@@ -43,7 +43,6 @@ import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
     blockRegistry.registerBlocks(columnBlocks);
-    blockRegistry.registerBlocks(bannerBlocks);
     blockRegistry.registerBlocks(statsStripBlocks);
     blockRegistry.registerBlocks(tabsBlocks);
     blockRegistry.registerBlocks(aboutBlocks);

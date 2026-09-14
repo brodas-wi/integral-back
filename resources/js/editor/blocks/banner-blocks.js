@@ -1,502 +1,179 @@
-const bannerBlockIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
-    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <rect x="1" y="6" width="30" height="20" fill="#003B71" rx="2"/>
-    <rect x="1" y="22" width="30" height="4" fill="#E97300" rx="0"/>
-    <rect x="3" y="9" width="12" height="2" fill="rgba(255,255,255,0.9)" rx="1"/>
-    <rect x="3" y="13" width="10" height="1.2" fill="rgba(255,255,255,0.6)" rx="0.6"/>
-    <rect x="3" y="16" width="8" height="1.2" fill="rgba(255,255,255,0.6)" rx="0.6"/>
-    <circle cx="23" cy="14" r="5" fill="#E97300"/>
-    <circle cx="23" cy="14" r="4" fill="#f8e7d8"/>
-</svg>`;
+import { openMediaPicker } from "@/editor/media-picker";
+import { assetUrl } from "@/utils/url.js";
 
-const BANNER_STYLES = `
-.banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}
-.banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;display:grid;}
-.banner-slide-container:active{cursor:grabbing;}
-.banner-slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity 0.7s ease;visibility:hidden;display:flex;flex-direction:column;}
-.banner-slide.banner-slide--active{opacity:1;pointer-events:auto;visibility:visible;}
-.banner-slide-inner{position:relative;width:100%;flex:1;min-height:480px;display:flex;align-items:center;}
-.banner-bg{position:absolute;inset:0;z-index:0;}
-.banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
-.banner-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}
-.banner-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}
-.banner-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}
-.banner-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}
-.banner-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}
-.banner-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
-.banner-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}
-.banner-btn--fill-blue{background:#003B71;color:#ffffff;border:2px solid #003B71;}
-.banner-btn--fill-blue:hover{background:#002a52;border-color:#002a52;color:#ffffff;}
-.banner-btn--outline-blue{background:transparent;color:#003B71;border:2px solid #003B71;}
-.banner-btn--outline-blue:hover{background:#003B71;border-color:#003B71;color:#ffffff;}
-.banner-btn--fill-orange{background:#E97300;color:#ffffff;border:2px solid #E97300;}
-.banner-btn--fill-orange:hover{background:#c96200;border-color:#c96200;color:#ffffff;}
-.banner-btn--outline-orange{background:transparent;color:#E97300;border:2px solid #E97300;}
-.banner-btn--outline-orange:hover{background:#E97300;border-color:#E97300;color:#ffffff;}
-.banner-btn--fill-white{background:#ffffff;color:#003B71;border:2px solid #ffffff;}
-.banner-btn--fill-white:hover{background:#dce8f5;border-color:#dce8f5;color:#003B71;}
-.banner-btn--outline-white{background:transparent;color:#ffffff;border:2px solid #ffffff;}
-.banner-btn--outline-white:hover{background:#ffffff;border-color:#ffffff;color:#003B71;}
-.banner-dots-wrapper{display:none;}
-.banner-stripe{position:relative;width:100%;height:26px;background:#E97300;z-index:20;display:flex;align-items:center;justify-content:center;}
-.banner-dots{display:flex;gap:8px;align-items:center;}
-.banner-dot{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;background:rgba(255,255,255,0.5);transition:all 0.3s ease;padding:0;flex-shrink:0;}
-.banner-dot--active{width:28px;background:#ffffff;}
-.banner-empty{display:flex;align-items:center;justify-content:center;min-height:480px;color:rgba(255,255,255,0.5);font-size:14px;padding:40px;}
-@media(max-width:768px){
-    .banner-slide-inner{min-height:340px;}
-    .banner-bg img{object-position:right center;}
-    .banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}
-    .banner-buttons{flex-wrap:wrap;gap:12px;}
-    .banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}
-}
-@media(max-width:480px){
-    .banner-btn{flex:1 1 100%;min-width:0;}
-}`;
+function buildImageTitleBannerHTML(data, uid) {
+    uid = uid || "it" + Math.random().toString(36).slice(2, 7);
+    const imageUrl = data.image_url || assetUrl("images/placeholder.svg");
 
-const BANNER_SKELETON_STYLES = `
-@keyframes bsk-shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
-.bsk-badge{width:120px;height:32px;margin-bottom:20px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
-.bsk-title{height:40px;margin-bottom:12px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
-.bsk-title--short{width:60%;}
-.bsk-line{height:16px;margin-bottom:10px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
-.bsk-line--short{width:55%;}
-.bsk-buttons{display:flex;gap:16px;margin-top:36px;}
-.bsk-btn{height:48px;flex:1;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
-.bsk-bg-img{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}
-@media(max-width:768px){.bsk-buttons{flex-direction:column;}}`;
+    const radius = `clamp(20px,3vw,32px)`;
+    const notchSize = `clamp(28px,3.5vw,40px)`;
 
-function createBannerScript() {
-    return function () {
-        const section = this;
-        const doc = section.ownerDocument ?? document;
-        const origin = (doc.defaultView ?? window).location.origin;
-        const apiEndpoint =
-            doc.querySelector('meta[name="api-banners-url"]')?.content ||
-            `${origin}/api/banners/active`;
+    const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
-        const BUTTON_STYLE_CLASSES = [
-            "fill-blue",
-            "outline-blue",
-            "fill-orange",
-            "outline-orange",
-            "fill-white",
-            "outline-white",
-        ];
+    const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/7;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;`;
 
-        const RUNTIME_STYLES = `.banner-wrapper{position:relative;width:100%;background:#003B71;overflow:hidden;}.banner-slide-container{position:relative;width:100%;user-select:none;cursor:grab;display:grid;}.banner-slide-container:active{cursor:grabbing;}.banner-slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity 0.7s ease;visibility:hidden;display:flex;flex-direction:column;}.banner-slide.banner-slide--active{opacity:1;pointer-events:auto;visibility:visible;}.banner-slide-inner{position:relative;width:100%;flex:1;min-height:480px;display:flex;align-items:center;}.banner-bg{position:absolute;inset:0;z-index:0;}.banner-bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}.banner-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,59,113,0.85) 0%,rgba(0,59,113,0.65) 50%,rgba(0,59,113,0.2) 100%);z-index:1;}.banner-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:64px 64px 96px;max-width:60%;}.banner-category-badge{display:inline-block;margin-bottom:18px;padding:7px 20px;border-radius:999px;border:2px solid rgba(255,255,255,0.65);color:#fff;font-size:13px;font-weight:500;letter-spacing:0.04em;align-self:flex-start;}.banner-title{font-size:clamp(1.8rem,3.2vw,3rem);font-weight:800;color:#fff;line-height:1.15;margin:0 0 20px;}.banner-description{color:rgba(255,255,255,0.9);font-size:clamp(0.95rem,1.4vw,1.1rem);line-height:1.7;margin:0 0 36px;max-width:520px;}.banner-buttons{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}.banner-btn{display:inline-block;padding:12px 32px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,color .2s,border-color .2s;text-decoration:none;white-space:nowrap;line-height:1.4;box-sizing:border-box;}.banner-btn--fill-blue{background:#003B71;color:#ffffff;border:2px solid #003B71;}.banner-btn--fill-blue:hover{background:#002a52;border-color:#002a52;color:#ffffff;}.banner-btn--outline-blue{background:transparent;color:#003B71;border:2px solid #003B71;}.banner-btn--outline-blue:hover{background:#003B71;border-color:#003B71;color:#ffffff;}.banner-btn--fill-orange{background:#E97300;color:#ffffff;border:2px solid #E97300;}.banner-btn--fill-orange:hover{background:#c96200;border-color:#c96200;color:#ffffff;}.banner-btn--outline-orange{background:transparent;color:#E97300;border:2px solid #E97300;}.banner-btn--outline-orange:hover{background:#E97300;border-color:#E97300;color:#ffffff;}.banner-btn--fill-white{background:#ffffff;color:#003B71;border:2px solid #ffffff;}.banner-btn--fill-white:hover{background:#dce8f5;border-color:#dce8f5;color:#003B71;}.banner-btn--outline-white{background:transparent;color:#ffffff;border:2px solid #ffffff;}.banner-btn--outline-white:hover{background:#ffffff;border-color:#ffffff;color:#003B71;}.banner-dots-wrapper{display:none;}.banner-stripe{position:relative;width:100%;height:26px;background:#E97300;z-index:20;display:flex;align-items:center;justify-content:center;}.banner-dots{display:flex;gap:8px;align-items:center;}.banner-dot{width:10px;height:10px;border-radius:999px;border:none;cursor:pointer;background:rgba(255,255,255,0.5);transition:all 0.3s ease;padding:0;flex-shrink:0;}.banner-dot--active{width:28px;background:#ffffff;}.banner-empty{display:flex;align-items:center;justify-content:center;min-height:480px;color:rgba(255,255,255,0.5);font-size:14px;padding:40px;}@media(max-width:768px){.banner-slide-inner{min-height:340px;}.banner-bg img{object-position:right center;}.banner-content{max-width:100%;width:100%;padding:32px 24px 80px;}.banner-buttons{flex-wrap:wrap;gap:12px;}.banner-btn{flex:1 1 45%;min-width:140px;text-align:center;white-space:normal;word-break:break-word;}}@media(max-width:480px){.banner-btn{flex:1 1 100%;min-width:0;}}`;
+    const imgStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
 
-        const SKELETON_STYLES = `@keyframes bsk-shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}.bsk-badge{width:120px;height:32px;margin-bottom:20px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title{height:40px;margin-bottom:12px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-title--short{width:60%;}.bsk-line{height:16px;margin-bottom:10px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-line--short{width:55%;}.bsk-buttons{display:flex;gap:16px;margin-top:36px;}.bsk-btn{height:48px;flex:1;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}.bsk-bg-img{background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);background-size:600px 100%;animation:bsk-shimmer 1.6s infinite linear;}@media(max-width:768px){.bsk-buttons{flex-direction:column;}}`;
+    const gradientStyle = `position:absolute;inset:0;background:linear-gradient(90deg,rgba(233,115,0,0.92) 0%,rgba(233,115,0,0.55) 35%,rgba(233,115,0,0) 65%);`;
 
-        (function ensureStyles() {
-            if (!doc.getElementById("banner-hero-styles")) {
-                const s = doc.createElement("style");
-                s.id = "banner-hero-styles";
-                s.textContent = RUNTIME_STYLES;
-                doc.head.appendChild(s);
-            }
-            if (!doc.getElementById("banner-skeleton-styles")) {
-                const s = doc.createElement("style");
-                s.id = "banner-skeleton-styles";
-                s.textContent = SKELETON_STYLES;
-                doc.head.appendChild(s);
-            }
-        })();
+    const boxStyle = `position:absolute;top:0;left:0;background:#fff;padding:clamp(1.25rem,2.6vw,2rem) clamp(1.5rem,3vw,2.5rem) clamp(2rem,4vw,3rem) clamp(1.5rem,3vw,2.5rem);border-radius:0 0 ${notchSize} 0;max-width:min(85%,420px);box-sizing:border-box;`;
 
-        let banners = [];
-        let currentIndex = 0;
-        let autoplayTimer = null;
-        let isDragging = false;
-        let dragStartX = 0;
-        let dragDelta = 0;
-        const SWIPE_THRESHOLD = 50;
+    const notchStyle = `position:absolute;bottom:calc(-1 * ${notchSize});left:0;width:${notchSize};height:${notchSize};background:radial-gradient(circle at top left,transparent ${notchSize},#fff 0);`;
 
-        const autoplay = section.dataset.autoplay !== "false";
-        const category = section.dataset.category ?? "";
-        const container = section.querySelector(".banner-slide-container");
-        const stripe = section.querySelector(".banner-stripe");
+    const titleStyle = `margin:0;color:#003B71;font-weight:800;font-size:clamp(1.375rem,3vw,2.25rem);line-height:1.25;`;
 
-        if (!container || !stripe) return;
-
-        function resolveButtonStyleClass(style) {
-            if (BUTTON_STYLE_CLASSES.indexOf(style) !== -1) return style;
-            if (style === "outline-blue" || style === "outline-orange")
-                return "outline-white";
-            return "fill-white";
-        }
-
-        function buildButton(text, url, style, external) {
-            const styleClass = resolveButtonStyleClass(style);
-            const tag = url ? "a" : "span";
-            const attrs = url
-                ? `href="${url}"${external ? ' target="_blank" rel="noopener noreferrer"' : ""}`
-                : "";
-            return `<${tag} ${attrs} class="banner-btn banner-btn--${styleClass}">${text}</${tag}>`;
-        }
-
-        async function loadBanners() {
-            if (section.__bannerLoading) return;
-            section.__bannerLoading = true;
-            showSkeleton();
-            try {
-                const res = await fetch(apiEndpoint, {
-                    headers: { Accept: "application/json" },
-                });
-                if (!res.ok) {
-                    showEmpty();
-                    return;
-                }
-                const all = await res.json();
-                banners = Array.isArray(all)
-                    ? category
-                        ? all.filter((b) => b.category === category)
-                        : all
-                    : [];
-                if (banners.length === 0) {
-                    showEmpty();
-                    return;
-                }
-                renderSlides();
-                renderDots();
-                goTo(0, false);
-                if (autoplay) startAutoplay();
-            } catch {
-                showEmpty();
-            } finally {
-                section.__bannerLoading = false;
-            }
-        }
-
-        function showSkeleton() {
-            container.innerHTML = `
-                <div class="banner-slide banner-slide--active">
-                    <div class="banner-slide-inner">
-                        <div class="banner-bg bsk-bg-img"></div>
-                        <div class="banner-overlay"></div>
-                        <div class="banner-content">
-                            <div class="bsk-badge"></div>
-                            <div class="bsk-title"></div>
-                            <div class="bsk-title bsk-title--short"></div>
-                            <div class="bsk-line"></div>
-                            <div class="bsk-line"></div>
-                            <div class="bsk-line bsk-line--short"></div>
-                            <div class="bsk-buttons">
-                                <div class="bsk-btn"></div>
-                                <div class="bsk-btn"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            stripe.innerHTML = "";
-        }
-
-        function renderSlides() {
-            container.innerHTML = banners
-                .map(
-                    (banner, i) => `
-                <div class="banner-slide" data-index="${i}">
-                    <div class="banner-slide-inner">
-                        <div class="banner-bg">
-                            <img src="${banner.image_url}"
-                                 alt="${banner.image_alt ?? banner.title}"
-                                 loading="${i === 0 ? "eager" : "lazy"}"
-                                 decoding="async"
-                                 fetchpriority="${i === 0 ? "high" : "low"}"
-                                 draggable="false">
-                        </div>
-                        <div class="banner-overlay"></div>
-                        <div class="banner-content">
-                            ${banner.category ? `<span class="banner-category-badge">${banner.category}</span>` : ""}
-                            <h2 class="banner-title">${banner.title}</h2>
-                            <p class="banner-description">${banner.description}</p>
-                            ${
-                                banner.btn_primary_text ||
-                                banner.btn_secondary_text
-                                    ? `<div class="banner-buttons">
-                                    ${banner.btn_primary_text ? buildButton(banner.btn_primary_text, banner.btn_primary_url, banner.btn_primary_style, banner.btn_primary_external) : ""}
-                                    ${banner.btn_secondary_text ? buildButton(banner.btn_secondary_text, banner.btn_secondary_url, banner.btn_secondary_style, banner.btn_secondary_external) : ""}
-                                </div>`
-                                    : ""
-                            }
-                        </div>
-                    </div>
-                </div>`,
-                )
-                .join("");
-
-            attachSwipe();
-            preloadImages();
-        }
-
-        function attachSwipe() {
-            container.addEventListener("mousedown", onDragStart);
-            container.addEventListener("touchstart", onDragStart, {
-                passive: true,
-            });
-            container.addEventListener("mousemove", onDragMove);
-            container.addEventListener("touchmove", onDragMove, {
-                passive: true,
-            });
-            container.addEventListener("mouseup", onDragEnd);
-            container.addEventListener("touchend", onDragEnd);
-            container.addEventListener("mouseleave", onDragEnd);
-        }
-
-        function preloadImages() {
-            banners.forEach((banner) => {
-                const img = new Image();
-                img.src = banner.image_url;
-            });
-        }
-
-        function onDragStart(e) {
-            isDragging = true;
-            dragStartX = e.touches ? e.touches[0].clientX : e.clientX;
-            dragDelta = 0;
-        }
-
-        function onDragMove(e) {
-            if (!isDragging) return;
-            dragDelta =
-                (e.touches ? e.touches[0].clientX : e.clientX) - dragStartX;
-        }
-
-        function onDragEnd() {
-            if (!isDragging) return;
-            isDragging = false;
-            if (Math.abs(dragDelta) >= SWIPE_THRESHOLD) {
-                goTo(
-                    dragDelta < 0
-                        ? (currentIndex + 1) % banners.length
-                        : (currentIndex - 1 + banners.length) % banners.length,
-                );
-                resetAutoplay();
-            }
-            dragDelta = 0;
-        }
-
-        function renderDots() {
-            if (banners.length <= 1) {
-                stripe.innerHTML = "";
-                return;
-            }
-
-            const dotsContainer = doc.createElement("div");
-            dotsContainer.className = "banner-dots";
-
-            banners.forEach((_, i) => {
-                const dot = doc.createElement("button");
-                dot.className = "banner-dot";
-                dot.type = "button";
-                dot.dataset.index = String(i);
-                dot.setAttribute("aria-label", `Banner ${i + 1}`);
-                dot.addEventListener("click", () => {
-                    goTo(i);
-                    resetAutoplay();
-                });
-                dotsContainer.appendChild(dot);
-            });
-
-            stripe.innerHTML = "";
-            stripe.appendChild(dotsContainer);
-        }
-
-        function goTo(index, animate = true) {
-            const slides = container.querySelectorAll(".banner-slide");
-            const dots = section.querySelectorAll(".banner-dot");
-
-            slides.forEach((slide, i) => {
-                const active = i === index;
-                if (!animate) slide.style.transition = "none";
-                slide.classList.toggle("banner-slide--active", active);
-                if (!animate)
-                    requestAnimationFrame(() => {
-                        slide.style.transition = "";
-                    });
-            });
-
-            dots.forEach((dot, i) =>
-                dot.classList.toggle("banner-dot--active", i === index),
-            );
-
-            currentIndex = index;
-        }
-
-        function startAutoplay() {
-            if (banners.length <= 1 || !autoplay) return;
-            autoplayTimer = setInterval(
-                () => goTo((currentIndex + 1) % banners.length),
-                5000,
-            );
-        }
-
-        function resetAutoplay() {
-            if (!autoplay) return;
-            clearInterval(autoplayTimer);
-            startAutoplay();
-        }
-
-        function showEmpty() {
-            clearInterval(autoplayTimer);
-            container.innerHTML = `
-                <div class="banner-slide banner-slide--active">
-                    <div class="banner-empty">Sin contenido.</div>
-                </div>`;
-            stripe.innerHTML = "";
-        }
-
-        if (doc.readyState === "loading") {
-            doc.addEventListener("DOMContentLoaded", loadBanners);
-        } else {
-            loadBanners();
-        }
-    };
+    return `<section id="it-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.title || "Banner"}" style="${imgStyle}"><div style="${gradientStyle}"></div><div style="${boxStyle}"><h2 style="${titleStyle}">${data.title || "Título"}</h2><div style="${notchStyle}"></div></div></div></section>`;
 }
 
-function showBannerConfigModal(editor, component) {
-    const existing = document.getElementById("banner-hero-config-modal");
+const DEFAULT_DATA = {
+    image_url: "",
+    title: "Capital de trabajo",
+};
+
+function showImageTitleBannerModal(editor, component) {
+    const existing = document.getElementById("it-config-modal");
     if (existing) existing.remove();
 
-    if (!document.getElementById("bnr-modal-styles")) {
+    if (!document.getElementById("it-modal-styles")) {
         const style = document.createElement("style");
-        style.id = "bnr-modal-styles";
+        style.id = "it-modal-styles";
         style.textContent = `
-            .bnr-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
-            .bnr-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:480px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
-            .bnr-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
-            .bnr-modal-header-left{display:flex;align-items:center;gap:0.5rem;}
-            .bnr-modal-header-left i{font-size:1.125rem;color:#3b82f6;}
-            .bnr-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
-            .bnr-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;}
-            .bnr-modal-close:hover{background:#f1f5f9;color:#475569;}
-            .bnr-modal-body{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;background:#f8fafc;}
-            .bnr-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;}
-            .bnr-label{display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;}
-            .bnr-row{display:flex;gap:0.75rem;align-items:center;justify-content:space-between;}
-            .bnr-select{width:100%;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;box-sizing:border-box;}
-            .bnr-select:focus{border-color:#3b82f6;}
-            .bnr-switch{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;}
-            .bnr-switch input{opacity:0;width:0;height:0;}
-            .bnr-switch-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:9999px;transition:background 0.2s;cursor:pointer;}
-            .bnr-switch-knob{position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:left 0.2s;pointer-events:none;}
-            .bnr-hint{font-size:0.75rem;color:#94a3b8;margin:0;}
-            .bnr-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
-            .bnr-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
-            .bnr-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
-            .bnr-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
-            .bnr-btn-save:hover{background:#d97821;}
+            .it-overlay{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.45);backdrop-filter:blur(3px);padding:1rem;}
+            .it-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:640px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(15,23,42,0.15),0 4px 16px rgba(15,23,42,0.08);font-family:'Inter',sans-serif;color:#1e293b;border:1px solid #e2e8f0;}
+            .it-modal-header{padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0;}
+            .it-modal-header-left{display:flex;align-items:center;gap:0.5rem;}
+            .it-modal-header-left i{font-size:1.125rem;color:#3b82f6;}
+            .it-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
+            .it-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;}
+            .it-modal-close:hover{background:#f1f5f9;color:#475569;}
+            .it-modal-body{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;background:#f8fafc;}
+            .it-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;}
+            .it-label{display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;}
+            .it-input{width:100%;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;box-sizing:border-box;}
+            .it-input:focus{border-color:#3b82f6;}
+            .it-row{display:flex;gap:0.75rem;align-items:center;}
+            .it-pick-btn{flex-shrink:0;padding:0.4rem 0.75rem;background:#003B71;border:none;border-radius:0.5rem;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.25rem;font-family:inherit;white-space:nowrap;transition:background 0.15s;}
+            .it-pick-btn:hover{background:#002a52;}
+            .it-img-preview{width:100%;height:110px;object-fit:cover;border-radius:0.375rem;border:1px solid #e2e8f0;display:block;background:#f1f5f9;}
+            .it-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
+            .it-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .it-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
+            .it-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .it-btn-save:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
     }
 
-    const attrs = component.getAttributes();
-    const currentAutoplay = attrs["data-autoplay"] !== "false";
-    const currentCategory = attrs["data-category"] || "";
+    const currentData = (() => {
+        try {
+            return JSON.parse(
+                component.getAttributes()["data-image-title-config"] || "{}",
+            );
+        } catch {
+            return {};
+        }
+    })();
+
+    const imageUrl = currentData.image_url ?? DEFAULT_DATA.image_url;
+    const title = currentData.title ?? DEFAULT_DATA.title;
 
     const overlay = document.createElement("div");
-    overlay.id = "banner-hero-config-modal";
-    overlay.className = "bnr-overlay";
+    overlay.id = "it-config-modal";
+    overlay.className = "it-overlay";
 
     const modal = document.createElement("div");
-    modal.className = "bnr-modal";
+    modal.className = "it-modal";
     modal.innerHTML = `
-        <div class="bnr-modal-header">
-            <div class="bnr-modal-header-left"><i class="ri-slideshow-line"></i><h2>Configurar Banner Slider</h2></div>
-            <button id="bnr-modal-close" class="bnr-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
+        <div class="it-modal-header">
+            <div class="it-modal-header-left"><i class="ri-image-2-line"></i><h2>Configurar Banner con Título</h2></div>
+            <button id="it-modal-close" class="it-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
         </div>
-        <div class="bnr-modal-body">
-            <div class="bnr-card">
-                <div class="bnr-row">
-                    <label class="bnr-label" style="margin:0;">Avance automático</label>
-                    <label class="bnr-switch">
-                        <input type="checkbox" id="bnr-autoplay" ${currentAutoplay ? "checked" : ""}>
-                        <span class="bnr-switch-slider" id="bnr-autoplay-slider"></span>
-                        <span class="bnr-switch-knob" id="bnr-autoplay-knob"></span>
-                    </label>
+        <div class="it-modal-body">
+            <div class="it-card">
+                <label class="it-label">Imagen de fondo</label>
+                <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                    <img id="it-image-preview" class="it-img-preview" src="${imageUrl || assetUrl("images/placeholder.svg")}" alt="">
+                    <div class="it-row">
+                        <input id="it-image-url" type="text" placeholder="URL de la imagen" value="${imageUrl}" class="it-input">
+                        <button id="it-image-pick" class="it-pick-btn"><i class="ri-image-line"></i> Seleccionar</button>
+                    </div>
                 </div>
             </div>
-            <div class="bnr-card">
-                <label class="bnr-label">Filtrar por categoría</label>
-                <select id="bnr-category" class="bnr-select">
-                    <option value="">Todas las categorías</option>
-                </select>
-                <p class="bnr-hint" style="margin-top:0.5rem;">Solo se mostrarán banners activos que pertenezcan a la categoría seleccionada.</p>
+            <div class="it-card">
+                <label class="it-label">Título</label>
+                <input id="it-title" type="text" placeholder="Capital de trabajo" value="${title}" class="it-input">
             </div>
         </div>
-        <div class="bnr-modal-footer">
-            <button id="bnr-modal-cancel" class="bnr-btn-cancel">Cancelar</button>
-            <button id="bnr-modal-save" class="bnr-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
+        <div class="it-modal-footer">
+            <button id="it-modal-cancel" class="it-btn-cancel">Cancelar</button>
+            <button id="it-modal-save" class="it-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
         </div>`;
 
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
 
-    const autoplayCheckbox = modal.querySelector("#bnr-autoplay");
-    const autoplaySlider = modal.querySelector("#bnr-autoplay-slider");
-    const autoplayKnob = modal.querySelector("#bnr-autoplay-knob");
-    const paintSwitch = () => {
-        autoplaySlider.style.background = autoplayCheckbox.checked
-            ? "#003B71"
-            : "#cbd5e1";
-        autoplayKnob.style.left = autoplayCheckbox.checked ? "21px" : "3px";
-    };
-    paintSwitch();
-    autoplayCheckbox.addEventListener("change", paintSwitch);
+    modal.querySelector("#it-image-pick").addEventListener("click", () => {
+        openMediaPicker({
+            type: "image",
+            title: "Seleccionar imagen de fondo",
+            onSelect: (url) => {
+                modal.querySelector("#it-image-url").value = url;
+                modal.querySelector("#it-image-preview").src = url;
+            },
+        });
+    });
 
-    const categorySelect = modal.querySelector("#bnr-category");
-    (async () => {
-        try {
-            const apiUrl =
-                document.querySelector('meta[name="api-banners-url"]')
-                    ?.content ||
-                `${window.location.origin}/api/banners/active`;
-            const res = await fetch(apiUrl, {
-                headers: { Accept: "application/json" },
-            });
-            if (!res.ok) return;
-            const all = await res.json();
-            if (!Array.isArray(all)) return;
-            const categories = [
-                ...new Set(all.map((b) => b.category).filter(Boolean)),
-            ].sort();
-            categories.forEach((c) => {
-                const opt = document.createElement("option");
-                opt.value = c;
-                opt.textContent = c;
-                categorySelect.appendChild(opt);
-            });
-            categorySelect.value = currentCategory;
-        } catch {}
-    })();
+    modal.querySelector("#it-image-url").addEventListener("input", (e) => {
+        modal.querySelector("#it-image-preview").src = e.target.value;
+    });
 
     const close = () => overlay.remove();
-    modal.querySelector("#bnr-modal-close").onclick = close;
-    modal.querySelector("#bnr-modal-cancel").onclick = close;
+    modal.querySelector("#it-modal-close").onclick = close;
+    modal.querySelector("#it-modal-cancel").onclick = close;
     overlay.onclick = (e) => {
         if (e.target === overlay) close();
     };
 
-    modal.querySelector("#bnr-modal-save").onclick = () => {
+    modal.querySelector("#it-modal-save").onclick = () => {
+        const newData = {
+            image_url: modal.querySelector("#it-image-url").value.trim(),
+            title: modal.querySelector("#it-title").value.trim(),
+        };
+
+        if (!newData.image_url) {
+            if (typeof window.showNotification === "function") {
+                window.showNotification(
+                    "Debes seleccionar una imagen de fondo",
+                    "error",
+                );
+            }
+            return;
+        }
+
+        const existingInner = component
+            .getEl()
+            ?.querySelector("[id^='it-root-']");
+        const uid =
+            existingInner?.id?.replace("it-root-", "") ||
+            "it" + Math.random().toString(36).slice(2, 7);
+
         component.addAttributes({
-            "data-autoplay": autoplayCheckbox.checked ? "true" : "false",
-            "data-category": categorySelect.value || "",
+            "data-image-title-config": JSON.stringify(newData),
         });
+        component.components(buildImageTitleBannerHTML(newData, uid));
         close();
     };
 }
 
-export const bannerBlocks = [
-    {
-        id: "banner-hero",
-        label: "Banner Slider",
-        category: "Banners",
-        media: bannerBlockIcon,
-        content: { type: "banner-hero-component" },
-    },
-];
+const iconImageTitleBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+    <rect width="32" height="32" fill="#4a4a4a" rx="2"/>
+    <rect x="2" y="6" width="28" height="20" rx="2" fill="none" stroke="#E97300" stroke-width="1"/>
+    <path d="M2 8 Q2 6 4 6 L14 6 Q16 6 16 8 L16 14 Q16 16 14 16 L4 16 Q2 16 2 14 Z" fill="#ffffff"/>
+    <rect x="4.5" y="9" width="8" height="2" rx="1" fill="#E97300"/>
+</svg>`;
 
 export function initializeBannerBlocks(editor) {
-    const componentType = "banner-hero-component";
+    const componentType = "image-title-banner-component";
 
     editor.DomComponents.addType(componentType, {
         isComponent: (el) =>
@@ -506,55 +183,40 @@ export function initializeBannerBlocks(editor) {
 
         model: {
             defaults: {
-                name: "Banner Slider",
-                tagName: "section",
+                name: "Banner con Título e Imagen",
+                tagName: "div",
                 draggable: true,
                 droppable: false,
-                editable: false,
-                stylable: false,
-                resizable: false,
+                removable: true,
+                copyable: false,
                 selectable: true,
                 hoverable: true,
-                layerable: true,
+                editable: false,
                 highlightable: false,
-                copyable: false,
-                removable: true,
+                stylable: false,
+                resizable: false,
+                layerable: true,
+                propagate: [
+                    "editable",
+                    "selectable",
+                    "hoverable",
+                    "droppable",
+                    "highlightable",
+                    "stylable",
+                    "resizable",
+                ],
                 attributes: {
                     "data-gjs-type": componentType,
-                    "data-autoplay": "true",
-                    "data-category": "",
+                    "data-image-title-config": JSON.stringify(DEFAULT_DATA),
                 },
-                components: `
-                    <div class="banner-wrapper"
-                         data-gjs-editable="false" data-gjs-selectable="false"
-                         data-gjs-hoverable="false" data-gjs-droppable="false"
-                         data-gjs-highlightable="false">
-                        <div class="banner-slide-container"
-                             data-gjs-editable="false" data-gjs-selectable="false"
-                             data-gjs-hoverable="false" data-gjs-droppable="false"
-                             data-gjs-highlightable="false">
-                        </div>
-                        <div class="banner-dots-wrapper"
-                             data-gjs-editable="false" data-gjs-selectable="false"
-                             data-gjs-hoverable="false" data-gjs-droppable="false"
-                             data-gjs-highlightable="false">
-                            <div class="banner-dots"></div>
-                        </div>
-                        <div class="banner-stripe"
-                             data-gjs-editable="false" data-gjs-selectable="false"
-                             data-gjs-hoverable="false" data-gjs-droppable="false"
-                             data-gjs-highlightable="false">
-                        </div>
-                    </div>
-                `,
-                script: createBannerScript(),
+                components: buildImageTitleBannerHTML(DEFAULT_DATA),
                 traits: [
                     {
                         type: "button",
-                        label: "Banner Slider",
-                        text: "Administrar Banner Slider",
+                        label: "Banner con Título",
+                        text: "Administrar Banner",
                         full: true,
-                        command: "open-banner-config",
+                        command: "open-image-title-banner-config",
                     },
                 ],
             },
@@ -562,118 +224,37 @@ export function initializeBannerBlocks(editor) {
             init() {
                 this.set("type", componentType);
                 this.addAttributes({ "data-gjs-type": componentType });
-                this.on("change:attributes", () => {
-                    const el = this.getEl();
-                    if (!el) return;
-                    const script = this.get("script");
-                    if (script && typeof script === "function") {
-                        setTimeout(() => script.call(el), 100);
-                    }
-                });
             },
         },
     });
 
-    editor.Commands.add("open-banner-config", {
+    editor.Commands.add("open-image-title-banner-config", {
         run(ed) {
             const selected = ed.getSelected();
-            if (selected) showBannerConfigModal(ed, selected);
+            if (selected) showImageTitleBannerModal(ed, selected);
         },
     });
 
-    setupBannerEditorEvents(editor, componentType);
-    injectBannerEditorStyles(editor, componentType);
-}
-
-function setupBannerEditorEvents(editor, componentType) {
-    editor.on("storage:end:load", () => {
-        setTimeout(
-            () => reinitializeBannerComponents(editor, componentType),
-            1000,
-        );
+    editor.BlockManager.add("image-title-banner-block", {
+        label: "Banner con Título e Imagen",
+        category: "Banners",
+        media: iconImageTitleBanner,
+        activate: true,
+        content: {
+            type: componentType,
+            attributes: { "data-gjs-type": componentType },
+        },
     });
 
-    editor.on("component:mount", (component) => {
-        const el = component.getEl();
-        if (el?.getAttribute?.("data-gjs-type") === componentType) {
-            component.set("type", componentType);
-            setTimeout(() => {
-                const script = component.get("script");
-                if (script && typeof script === "function") script.call(el);
-            }, 500);
-        }
-    });
-
-    editor.on("component:clone", (component) => {
-        if (component.get("type") === componentType) {
-            const el = component.getEl();
-            if (el) {
-                setTimeout(() => {
-                    const script = component.get("script");
-                    if (script && typeof script === "function") script.call(el);
-                }, 500);
-            }
-        }
-    });
-
-    editor.on("canvas:render", () => {
-        setTimeout(
-            () => reinitializeBannerComponents(editor, componentType),
-            800,
-        );
-    });
-
-    editor.on("storage:start:store", () => {
-        editor
-            .getWrapper()
-            .find(`[data-gjs-type="${componentType}"]`)
-            .forEach((comp) => {
-                comp.set("type", componentType);
-                comp.addAttributes({ "data-gjs-type": componentType });
-            });
-    });
-}
-
-function reinitializeBannerComponents(editor, componentType) {
-    editor
-        .getWrapper()
-        .find(`[data-gjs-type="${componentType}"]`)
-        .forEach((comp) => {
-            comp.set("type", componentType);
-            const el = comp.getEl();
-            if (el?.isConnected) {
-                const script = comp.get("script");
-                if (script && typeof script === "function") script.call(el);
-            }
-        });
-}
-
-function injectBannerEditorStyles(editor, componentType) {
     editor.on("load", () => {
         const iframe = editor.Canvas.getFrameEl();
-        if (!iframe) return;
-        const head = iframe.contentDocument?.head;
-        if (!head) return;
-
-        if (!head.querySelector("#banner-hero-styles")) {
-            const s = document.createElement("style");
-            s.id = "banner-hero-styles";
-            s.textContent = BANNER_STYLES;
-            head.appendChild(s);
-        }
-
-        if (!head.querySelector("#banner-skeleton-styles")) {
-            const s = document.createElement("style");
-            s.id = "banner-skeleton-styles";
-            s.textContent = BANNER_SKELETON_STYLES;
-            head.appendChild(s);
-        }
-
-        if (!head.querySelector(`#${componentType}-editor-css`)) {
-            const s = document.createElement("style");
-            s.id = `${componentType}-editor-css`;
-            s.textContent = `[data-gjs-type="${componentType}"] * { pointer-events: none !important; } [data-gjs-type="${componentType}"].gjs-selected, [data-gjs-type="${componentType}"].gjs-hovered { outline: 2px dashed rgba(240,135,42,0.6) !important; outline-offset: 2px; }`;
-            head.appendChild(s);
-        }
+        const head = iframe?.contentDocument?.head;
+        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
+        const style = iframe.contentDocument.createElement("style");
+        style.id = `${componentType}-editor-css`;
+        style.textContent = `
+            [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
+        `;
+        head.appendChild(style);
     });
 }
