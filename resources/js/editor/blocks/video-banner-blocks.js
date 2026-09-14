@@ -335,7 +335,7 @@ export function initializeVideoBannerBlock(editor) {
 
     editor.BlockManager.add("video-banner-block", {
         label: "Banner con Video",
-        category: "Banners",
+        category: "Heroes",
         media: iconVideoBanner,
         activate: true,
         content: {

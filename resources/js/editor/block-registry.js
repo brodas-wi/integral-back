@@ -3,8 +3,8 @@ const OPEN_CATEGORY = "Básico";
 const CATEGORY_ORDER = [
     "Básico",
     "Columnas",
-    "Banners",
     "Heroes",
+    "Banners",
 ];
 
 class BlockRegistry {

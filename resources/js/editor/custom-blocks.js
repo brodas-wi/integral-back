@@ -16,7 +16,6 @@ import { promoCtaBlocks } from "./blocks/promo-cta-blocks";
 import { featureBlocks } from "./blocks/feature-blocks";
 import { tabsBlocks, initializeTabsBlocks } from "./blocks/tabs-blocks";
 import { splitContentBlocks } from "./blocks/split-content-blocks";
-import { statsStripBlocks } from "./blocks/stats-strip-blocks";
 import { serviceCardsBlocks } from "./blocks/service-cards-blocks";
 import { contactInfoBlocks } from "./blocks/contact-info-blocks";
 import { richListBlocks } from "./blocks/rich-list-blocks";
@@ -54,8 +53,7 @@ export function addCustomBlocks(editor) {
     initializeHeroPagesBlock(editor);
     initializeOptionsBannerBlock(editor);
     initializeWideBannerBlock(editor);
-
-    blockRegistry.registerBlocks(statsStripBlocks);
+;
     blockRegistry.registerBlocks(tabsBlocks);
     blockRegistry.registerBlocks(aboutBlocks);
     blockRegistry.registerBlocks(missionVisionBlocks);

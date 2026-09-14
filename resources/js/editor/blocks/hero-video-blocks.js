@@ -360,7 +360,7 @@ export function initializeHeroVideoBlock(editor) {
 
     editor.BlockManager.add("hero-video-block", {
         label: "Hero Video",
-        category: "Banners",
+        category: "Heroes",
         media: `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
             <rect width="32" height="32" fill="#4a4a4a" rx="2"/>
             <rect x="4" y="6" width="24" height="15" rx="1" fill="none" stroke="#E97300" stroke-width="1"/>
