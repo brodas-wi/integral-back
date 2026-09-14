@@ -6,6 +6,7 @@ import { missionVisionBlocks } from "./blocks/mission-vision-blocks";
 import { initializeProductCardsBlock } from "./blocks/product-cards-blocks";
 import { dualCardBlocks } from "./blocks/dual-card-blocks";
 import { ctaBlocks } from "./blocks/cta-blocks";
+import { initializeFullImageBlock } from "@/editor/blocks/full-image-blocks";
 import { documentDownloadBlocks, initializeDocumentDownloadBlocks } from "./blocks/document-download-blocks";
 import { initializeSavingsSectionBlock } from "./blocks/savings-carousel-blocks";
 import { productLinkCardsBlocks } from "./blocks/product-link-cards-blocks";
@@ -53,7 +54,8 @@ export function addCustomBlocks(editor) {
     initializeHeroPagesBlock(editor);
     initializeOptionsBannerBlock(editor);
     initializeWideBannerBlock(editor);
-;
+    initializeFullImageBlock(editor);
+
     blockRegistry.registerBlocks(tabsBlocks);
     blockRegistry.registerBlocks(aboutBlocks);
     blockRegistry.registerBlocks(missionVisionBlocks);

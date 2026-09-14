@@ -5,6 +5,7 @@ const CATEGORY_ORDER = [
     "Columnas",
     "Heroes",
     "Banners",
+    "Contenido",
 ];
 
 class BlockRegistry {
