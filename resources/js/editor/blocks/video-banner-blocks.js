@@ -6,12 +6,13 @@ function buildVideoBannerHTML(data, uid) {
     const videoUrl = data.video_url || "";
     const posterUrl = data.poster_url || assetUrl("images/placeholder.svg");
     const hasGradient = Boolean(data.show_gradient);
+    const hasRadius = data.show_radius !== false;
 
-    const radius = `clamp(20px,3vw,32px)`;
+    const radius = hasRadius ? `clamp(20px,3vw,32px)` : `0px`;
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
-    const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/7;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;background:#0a0a0a;`;
+    const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/9;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;background:#0a0a0a;`;
 
     const videoStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
 
@@ -32,6 +33,7 @@ const DEFAULT_DATA = {
     video_url: "",
     poster_url: assetUrl("images/placeholder.svg"),
     show_gradient: false,
+    show_radius: true,
 };
 
 function showVideoBannerModal(editor, component) {
@@ -92,6 +94,7 @@ function showVideoBannerModal(editor, component) {
     const videoUrl = currentData.video_url ?? DEFAULT_DATA.video_url;
     const posterUrl = currentData.poster_url || DEFAULT_DATA.poster_url;
     const showGradient = currentData.show_gradient ?? DEFAULT_DATA.show_gradient;
+    const showRadius = currentData.show_radius ?? DEFAULT_DATA.show_radius;
 
     const overlay = document.createElement("div");
     overlay.id = "vb-config-modal";
@@ -127,7 +130,7 @@ function showVideoBannerModal(editor, component) {
                     </div>
                 </div>
             </div>
-            <div class="vb-card">
+                        <div class="vb-card">
                 <div class="vb-toggle-row">
                     <div class="vb-toggle-text">
                         <span class="vb-toggle-title">Gradiente naranja</span>
@@ -135,6 +138,18 @@ function showVideoBannerModal(editor, component) {
                     </div>
                     <label class="vb-switch">
                         <input id="vb-show-gradient" type="checkbox" ${showGradient ? "checked" : ""}>
+                        <span class="vb-switch-track"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="vb-card">
+                <div class="vb-toggle-row">
+                    <div class="vb-toggle-text">
+                        <span class="vb-toggle-title">Bordes redondeados</span>
+                        <span class="vb-toggle-desc">Desactiva si el video ya tiene esquinas redondeadas</span>
+                    </div>
+                    <label class="vb-switch">
+                        <input id="vb-show-radius" type="checkbox" ${showRadius ? "checked" : ""}>
                         <span class="vb-switch-track"></span>
                     </label>
                 </div>
@@ -192,6 +207,7 @@ function showVideoBannerModal(editor, component) {
                 modal.querySelector("#vb-poster-url").value.trim() ||
                 DEFAULT_DATA.poster_url,
             show_gradient: modal.querySelector("#vb-show-gradient").checked,
+            show_radius: modal.querySelector("#vb-show-radius").checked,
         };
 
         if (!newData.video_url) {
