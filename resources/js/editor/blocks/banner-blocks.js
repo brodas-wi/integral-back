@@ -5,7 +5,7 @@ function buildImageTitleBannerHTML(data, uid) {
     uid = uid || "it" + Math.random().toString(36).slice(2, 7);
     const imageUrl = data.image_url || assetUrl("images/placeholder.svg");
 
-    const radius = `clamp(20px,3vw,32px)`;
+    const radius = `clamp(28px,3vw,40px)`;
     const notchSize = `clamp(28px,3.5vw,40px)`;
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;

@@ -8,7 +8,7 @@ function buildVideoBannerHTML(data, uid) {
     const hasGradient = Boolean(data.show_gradient);
     const hasRadius = data.show_radius !== false;
 
-    const radius = hasRadius ? `clamp(20px,3vw,32px)` : `0px`;
+    const radius = hasRadius ? `clamp(28px,3vw,40px)` : `0px`;
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
