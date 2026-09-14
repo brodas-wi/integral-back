@@ -10,6 +10,8 @@ function buildImageTitleBannerHTML(data, uid) {
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
+    const outerStyle = `position:relative;width:100%;min-width:0;`;
+
     const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/7;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;`;
 
     const imgStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
@@ -24,16 +26,7 @@ function buildImageTitleBannerHTML(data, uid) {
 
     const titleStyle = `margin:0;color:#003B71;font-weight:800;font-size:clamp(1.375rem,3vw,2.25rem);line-height:1.25;`;
 
-    const mobileCss = `<style>
-@media(max-width:768px){
-#it-root-${uid} .it-outer-wrap{display:flex;flex-direction:column;gap:0.75rem;}
-#it-root-${uid} .it-box{position:static !important;max-width:100% !important;width:100%;border-radius:20px !important;padding-top:1rem !important;padding-bottom:1rem !important;}
-#it-root-${uid} .it-notch,#it-root-${uid} .it-notch-top{display:none !important;}
-#it-root-${uid} .it-wrapper{border-radius:20px !important;}
-}
-</style>`;
-
-    return `<section id="it-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="it-outer-wrap" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div class="it-box" style="${boxStyle}"><h2 style="${titleStyle}">${data.title || "Título"}</h2><div class="it-notch" style="${notchStyle}"></div><div class="it-notch-top" style="${topNotchStyle}"></div></div><div class="it-wrapper" style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.title || "Banner"}" style="${imgStyle}"><div style="${gradientStyle}"></div></div></div>${mobileCss}</section>`;
+    return `<section id="it-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${outerStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.title || "Banner"}" style="${imgStyle}"><div style="${gradientStyle}"></div><div style="${boxStyle}"><h2 style="${titleStyle}">${data.title || "Título"}</h2><div style="${notchStyle}"></div><div style="${topNotchStyle}"></div></div></div></div></section>`;
 }
 
 const DEFAULT_DATA = {
