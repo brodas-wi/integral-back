@@ -20,7 +20,7 @@ function buildImageTitleBannerHTML(data, uid) {
 
     const notchStyle = `position:absolute;bottom:calc(-1 * ${notchSize});left:0;width:${notchSize};height:${notchSize};background:radial-gradient(circle at bottom right,transparent ${notchSize},#fff 0);`;
 
-    const topNotchStyle = `position:absolute;top:0;right:calc(-1 * ${notchSize});width:${notchSize};height:${notchSize};background:radial-gradient(circle at top left,transparent ${notchSize},#fff 0);`;
+    const topNotchStyle = `position:absolute;top:0;right:calc(-1 * ${notchSize});width:${notchSize};height:${notchSize};background:radial-gradient(circle at top right,transparent ${notchSize},#fff 0);`;
 
     const titleStyle = `margin:0;color:#003B71;font-weight:800;font-size:clamp(1.375rem,3vw,2.25rem);line-height:1.25;`;
 
