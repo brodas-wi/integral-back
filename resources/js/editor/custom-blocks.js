@@ -94,4 +94,6 @@ export function addCustomBlocks(editor) {
     initializeTableBlocks(editor);
     initializeDocumentDownloadBlocks(editor);
     initializeAssetsBlocks(editor);
+
+    blockRegistry.reorderExistingBlocks(editor);
 }

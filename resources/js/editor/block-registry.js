@@ -53,6 +53,38 @@ class BlockRegistry {
         this.hideDefaultCategories(editor);
     }
 
+    reorderExistingBlocks(editor) {
+        const bm = editor.BlockManager;
+        const allBlocks = bm.getAll();
+        const byCategory = new Map();
+
+        allBlocks.each((block) => {
+            const cat = block.get("category");
+            const catLabel =
+                typeof cat === "object" && cat !== null
+                    ? cat.get("label") || cat.get("id")
+                    : cat;
+            if (!byCategory.has(catLabel)) byCategory.set(catLabel, []);
+            byCategory.get(catLabel).push(block);
+        });
+
+        const allCategoryLabels = Array.from(byCategory.keys());
+        const prioritized = CATEGORY_ORDER.filter((c) =>
+            allCategoryLabels.includes(c),
+        );
+        const remaining = allCategoryLabels.filter(
+            (c) => !CATEGORY_ORDER.includes(c),
+        );
+        const finalOrder = [...prioritized, ...remaining];
+
+        const orderedBlocks = [];
+        finalOrder.forEach((label) => {
+            byCategory.get(label).forEach((block) => orderedBlocks.push(block));
+        });
+
+        bm.getAll().reset(orderedBlocks);
+    }
+
     applyCollapseSettings(editor) {
         setTimeout(() => {
             editor.BlockManager.getCategories().each((category) => {
