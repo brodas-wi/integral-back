@@ -16,9 +16,9 @@ function buildImageTitleBannerHTML(data, uid) {
 
     const gradientStyle = `position:absolute;inset:0;background:linear-gradient(90deg,rgba(233,115,0,0.92) 0%,rgba(233,115,0,0.55) 35%,rgba(233,115,0,0) 65%);`;
 
-    const boxStyle = `position:absolute;top:0;left:0;background:#fff;padding:clamp(1.25rem,2.6vw,2rem) clamp(1.5rem,3vw,2.5rem) clamp(2rem,4vw,3rem) clamp(1.5rem,3vw,2.5rem);border-radius:0 0 ${notchSize} 0;max-width:min(85%,420px);box-sizing:border-box;`;
+    const boxStyle = `position:absolute;top:0;left:0;background:#fff;padding:clamp(1.25rem,2.6vw,2rem) clamp(1.5rem,3vw,2.5rem) clamp(2rem,4vw,3rem) clamp(1.5rem,3vw,2.5rem);border-radius:0 ${notchSize} 0 0;max-width:min(85%,420px);box-sizing:border-box;`;
 
-    const notchStyle = `position:absolute;bottom:calc(-1 * ${notchSize});left:0;width:${notchSize};height:${notchSize};background:radial-gradient(circle at top left,transparent ${notchSize},#fff 0);`;
+    const notchStyle = `position:absolute;bottom:0;right:calc(-1 * ${notchSize});width:${notchSize};height:${notchSize};background:radial-gradient(circle at bottom left,transparent ${notchSize},#fff 0);`;
 
     const titleStyle = `margin:0;color:#003B71;font-weight:800;font-size:clamp(1.375rem,3vw,2.25rem);line-height:1.25;`;
 

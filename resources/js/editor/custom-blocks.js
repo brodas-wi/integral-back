@@ -43,6 +43,7 @@ import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
     blockRegistry.registerBlocks(columnBlocks);
+    initializeBannerBlocks(editor);
     blockRegistry.registerBlocks(statsStripBlocks);
     blockRegistry.registerBlocks(tabsBlocks);
     blockRegistry.registerBlocks(aboutBlocks);
@@ -71,7 +72,6 @@ export function addCustomBlocks(editor) {
     blockRegistry.applyToEditor(editor);
 
     initializeMapFilterBlocks(editor);
-    initializeBannerBlocks(editor);
     initializeNewsGridBlocks(editor);
     initializeHeroBannerBlock(editor);
     initializeHeroVideoBlock(editor);
