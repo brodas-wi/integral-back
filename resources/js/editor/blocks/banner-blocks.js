@@ -10,25 +10,21 @@ function buildImageTitleBannerHTML(data, uid) {
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
-    const containerQueryStyle = `container-type:inline-size;width:100%;`;
-
-    const outerStyle = `display:flex;flex-wrap:wrap;gap:0.75rem;width:100%;`;
-
-    const boxColStyle = `flex:0 1 clamp(280px,25vw,420px);min-width:280px;position:relative;`;
-
-    const imgColStyle = `flex:1 1 0;min-width:400px;position:relative;`;
-
-    const wrapperStyle = `position:relative;width:100%;height:100%;aspect-ratio:16/7;min-height:220px;border-radius:${radius};overflow:hidden;box-sizing:border-box;`;
+    const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/7;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;`;
 
     const imgStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
 
     const gradientStyle = `position:absolute;inset:0;background:linear-gradient(90deg,rgba(233,115,0,0.92) 0%,rgba(233,115,0,0.55) 35%,rgba(233,115,0,0) 65%);`;
 
-    const boxStyle = `background:#fff;padding:clamp(1.5rem,3vw,2rem) clamp(1.5rem,3vw,2rem);border-radius:${radius};width:100%;height:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:flex-start;`;
+    const boxStyle = `position:absolute;top:0;left:0;background:#fff;padding:clamp(2rem,4vw,3rem) clamp(1.5rem,3vw,2.5rem);border-radius:0 0 ${notchSize} 0;max-width:min(85%,420px);box-sizing:border-box;display:flex;align-items:center;justify-content:flex-start;`;
+
+    const notchStyle = `position:absolute;bottom:calc(-1 * ${notchSize});left:0;width:${notchSize};height:${notchSize};background:radial-gradient(circle at bottom right,transparent ${notchSize},#fff 0);`;
+
+    const topNotchStyle = `position:absolute;top:0;right:calc(-1 * ${notchSize});width:${notchSize};height:${notchSize};background:radial-gradient(circle at bottom right,transparent ${notchSize},#fff 0);`;
 
     const titleStyle = `margin:0;color:#003B71;font-weight:800;font-size:clamp(1.375rem,3vw,2.25rem);line-height:1.25;`;
 
-    return `<section id="it-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${outerStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${boxColStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${boxStyle}"><h2 style="${titleStyle}">${data.title || "Título"}</h2></div></div><div style="${imgColStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}"><img src="${imageUrl}" alt="${data.title || "Banner"}" style="${imgStyle}"><div style="${gradientStyle}"></div></div></div></div></section>`;
+    return `<section id="it-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><img src="${imageUrl}" alt="${data.title || "Banner"}" style="${imgStyle}"><div style="${gradientStyle}"></div><div style="${boxStyle}"><h2 style="${titleStyle}">${data.title || "Título"}</h2><div style="${notchStyle}"></div><div style="${topNotchStyle}"></div></div></div></section>`;
 }
 
 const DEFAULT_DATA = {
