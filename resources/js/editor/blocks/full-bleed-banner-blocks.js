@@ -27,7 +27,7 @@ function buildFullBleedBannerHTML(data, uid) {
 
     const titleStyle = `margin:0;color:#fff;font-weight:900;font-size:clamp(1.5rem,4vw,2.75rem);line-height:1.2;text-shadow:0 2px 8px rgba(0,0,0,0.5),0 1px 3px rgba(0,0,0,0.4);`;
 
-    const btnStyle = `display:inline-flex;align-items:center;justify-content:center;padding:clamp(0.75rem,1.8vw,0.875rem) clamp(1.375rem,3.2vw,1.625rem);border-radius:9999px;background:#E97300;color:#fff;font-weight:600;font-size:clamp(0.875rem,1.6vw,1rem);text-decoration:none;transition:background 0.2s ease,color 0.2s ease;white-space:nowrap;`;
+    const btnStyle = `display:inline-flex;align-items:center;justify-content:center;padding:clamp(0.5rem,1.5vw,0.75rem) clamp(1.125rem,3vw,1.75rem);border-radius:9999px;background:#E97300;color:#fff;font-weight:600;font-size:clamp(0.75rem,1.6vw,0.9375rem);text-decoration:none;transition:background 0.2s ease,color 0.2s ease;white-space:nowrap;`;
 
     const titleHtml = data.title
         ? `<h2 style="${titleStyle}">${data.title}</h2>`

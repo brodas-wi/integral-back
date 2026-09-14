@@ -1,6 +1,19 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
+function responsiveStyleInjectorScript() {
+    const el = this;
+    const cssContent = el.getAttribute("data-css-content");
+    if (!cssContent) return;
+    const doc = el.ownerDocument;
+    const styleId = "ob-responsive-" + el.id;
+    if (doc.getElementById(styleId)) return;
+    const styleTag = doc.createElement("style");
+    styleTag.id = styleId;
+    styleTag.textContent = cssContent;
+    doc.head.appendChild(styleTag);
+}
+
 function buildOptionsBannerHTML(data, uid) {
     uid = uid || "ob" + Math.random().toString(36).slice(2, 7);
 
@@ -24,8 +37,8 @@ function buildOptionsBannerHTML(data, uid) {
         ? `<img src="${data.icon_url}" alt="" style="${iconStyle}">`
         : "";
 
-    const headerHtml = `<div style="${headerStyle}">
-        <div style="${headerTextWrapStyle}">
+    const headerHtml = `<div class="ob-header-${uid}" style="${headerStyle}">
+        <div class="ob-header-text-${uid}" style="${headerTextWrapStyle}">
             <h2 style="${titleStyle}">${data.title || "Título"}</h2>
             <p style="${subtitleStyle}">${data.subtitle || "Subtítulo"}</p>
             ${buttonHtml}
@@ -37,15 +50,19 @@ function buildOptionsBannerHTML(data, uid) {
     const gridStyle = `display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(1rem,2vw,1.5rem);`;
 
     const cardsHtml = cards
-        .map((card) => buildOptionCardHTML(card))
+        .map((card) => buildOptionCardHTML(card, uid))
         .join("");
 
     const gridHtml = `<div style="${gridStyle}">${cardsHtml}</div>`;
 
-    return `<section id="ob-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${headerHtml}${gridHtml}</div><style>#ob-btn-${uid}:hover{background:#0d1930;}</style></section>`;
+    const cardPaddingMobile = `0.875rem`;
+
+    const responsiveCss = `@media(max-width:640px){#ob-root-${uid} .ob-header-${uid}{justify-content:center;}#ob-root-${uid} .ob-header-text-${uid}{align-items:center;text-align:center;}#ob-root-${uid} .ob-header-text-${uid} a{width:100%;}#ob-root-${uid} .ob-card-${uid}{grid-template-columns:1fr !important;justify-items:center;text-align:center;}#ob-root-${uid} .ob-card-img-col-${uid}{justify-content:center;}#ob-root-${uid} .ob-card-body-${uid}{align-items:center;padding-left:0 !important;padding-top:${cardPaddingMobile};}}`;
+
+    return `<section id="ob-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${headerHtml}${gridHtml}</div><div data-gjs-type="ob-responsive-style" data-css-content="${responsiveCss.replace(/"/g, "&quot;")}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div></section>`;
 }
 
-function buildOptionCardHTML(card) {
+function buildOptionCardHTML(card, uid) {
     const image = card.image || assetUrl("images/placeholder.svg");
     const badge = card.badge || "Etiqueta";
     const desc = card.desc || "Descripción breve.";
@@ -59,13 +76,13 @@ function buildOptionCardHTML(card) {
     const badgeStyle = `display:inline-flex;align-items:center;padding:0.375rem 0.875rem;border-radius:9999px;background:#14243D;color:#fff;font-weight:600;font-size:0.75rem;width:fit-content;`;
     const descStyle = `margin:0;color:#1e293b;font-size:0.8125rem;line-height:1.45;`;
 
-    return `<div style="${cardStyle}">
-        <div style="${imgColStyle}">
+    return `<div class="ob-card-${uid}" style="${cardStyle}">
+        <div class="ob-card-img-col-${uid}" style="${imgColStyle}">
             <div style="${imgWrapStyle}">
                 <img src="${image}" alt="${badge}" style="${imgStyle}">
             </div>
         </div>
-        <div style="${bodyStyle}">
+        <div class="ob-card-body-${uid}" style="${bodyStyle}">
             <span style="${badgeStyle}">${badge}</span>
             <p style="${descStyle}">${desc}</p>
         </div>
@@ -385,6 +402,28 @@ const iconOptionsBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns
 
 export function initializeOptionsBannerBlock(editor) {
     const componentType = "options-banner-component";
+
+    editor.DomComponents.addType("ob-responsive-style", {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === "ob-responsive-style"
+                ? { type: "ob-responsive-style" }
+                : false,
+        model: {
+            defaults: {
+                tagName: "div",
+                draggable: false,
+                droppable: false,
+                removable: false,
+                copyable: false,
+                selectable: false,
+                hoverable: false,
+                editable: false,
+                highlightable: false,
+                traits: [],
+                script: responsiveStyleInjectorScript,
+            },
+        },
+    });
 
     editor.DomComponents.addType(componentType, {
         isComponent: (el) =>
