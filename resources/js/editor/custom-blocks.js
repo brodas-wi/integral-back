@@ -37,6 +37,7 @@ import { initializeHeroBannerBlock } from "@/editor/blocks/hero-banner-blocks";
 import { initializeHeroVideoBlock } from "@/editor/blocks/hero-video-blocks";
 import { initializeFixedBannerBlock } from "@/editor/blocks/fixed-banner-blocks";
 import { initializeHeroCardsBlock } from "@/editor/blocks/hero-cards-blocks";
+import { initializeSplitCarouselBlock } from "@/editor/blocks/split-carousel-blocks";
 import { initializeHeroPagesBlock } from "@/editor/blocks/hero-pages-blocks";
 import { initializeOptionsBannerBlock } from "@/editor/blocks/options-banner-blocks";
 import { initializeFullBleedBannerBlock } from "@/editor/blocks/full-bleed-banner-blocks";
@@ -52,6 +53,7 @@ export function addCustomBlocks(editor) {
     initializeHeroVideoBlock(editor);
     initializeFixedBannerBlock(editor);
     initializeHeroCardsBlock(editor);
+    initializeSplitCarouselBlock(editor);
     initializeHeroPagesBlock(editor);
     initializeFullBleedBannerBlock(editor);
     initializeWideBannerBlock(editor);
