@@ -1,27 +1,15 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
-function responsiveStyleInjectorScript() {
-    const el = this;
-    const cssContent = el.getAttribute("data-css-content");
-    if (!cssContent) return;
-    const doc = el.ownerDocument;
-    const styleId = "sc-responsive-" + el.id;
-    if (doc.getElementById(styleId)) return;
-    const styleTag = doc.createElement("style");
-    styleTag.id = styleId;
-    styleTag.textContent = cssContent;
-    doc.head.appendChild(styleTag);
-}
-
 const SC_CSS = `
-.sc-section{width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;overflow:visible;}
-.sc-layout{display:flex;flex-wrap:wrap;gap:clamp(1.5rem,3vw,2.5rem);align-items:center;width:100%;}
-.sc-text-col{flex:1 1 280px;min-width:220px;max-width:100%;display:flex;flex-direction:column;justify-content:center;gap:0.75rem;box-sizing:border-box;}
+.sc-section{width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;}
+.sc-layout{display:flex;flex-wrap:wrap;gap:clamp(1.5rem,3vw,2.5rem);}
+.sc-text-col{flex:1 1 260px;min-width:220px;max-width:100%;display:flex;flex-direction:column;justify-content:center;gap:0.75rem;box-sizing:border-box;}
 .sc-heading{margin:0;color:#E97300;font-weight:900;font-size:clamp(1.5rem,3vw,2.25rem);line-height:1.15;}
 .sc-subheading{margin:0;color:#003B71;font-weight:500;font-size:clamp(1rem,1.8vw,1.375rem);line-height:1.5;}
-.sc-carousel-col{flex:2 1 480px;min-width:260px;width:100%;position:relative;box-sizing:border-box;}
-.sc-swiper{overflow:hidden;width:100%;min-height:1px;}
+.sc-carousel-col{flex:2 1 500px;min-width:280px;max-width:100%;box-sizing:border-box;}
+.sc-carousel{width:100%;}
+.sc-swiper{overflow:hidden;width:100%;}
 .sc-swiper .swiper-wrapper{align-items:stretch;}
 .sc-swiper .swiper-slide{height:auto;display:flex;justify-content:center;}
 .sc-card{position:relative;width:100%;max-width:260px;aspect-ratio:13/18;border-radius:24px;overflow:hidden;background:#0a0a0a;margin:0 auto;}
@@ -33,13 +21,16 @@ const SC_CSS = `
 .sc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:0.75rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.75rem 0.875rem;}
 .sc-card-title{margin:0 0 0.25rem;font-size:1rem;font-weight:800;line-height:1.2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
 .sc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;line-height:1.4;text-shadow:0 1px 3px rgba(0,0,0,0.3);}
-.sc-dots{position:relative !important;display:flex !important;justify-content:center;align-items:center;gap:0.625rem;margin-top:1.25rem;height:0.75rem;width:100%;}
-.sc-dots .sc-dot{position:relative !important;width:0.75rem !important;height:0.75rem !important;border-radius:9999px !important;border:none !important;background:#cbd5e1 !important;cursor:pointer;padding:0 !important;margin:0 !important;transition:background 0.2s ease,transform 0.2s ease;opacity:1 !important;}
-.sc-dots .sc-dot.active{background:#003B71 !important;transform:scale(1.1);}
-.sc-nav-row{position:relative !important;display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.5rem;}
+.sc-dots{position:relative;display:flex;justify-content:center;align-items:center;gap:0.625rem;margin-top:1.25rem;height:0.75rem;width:100%;}
+.sc-dots .sc-dot{position:relative;width:0.75rem;height:0.75rem;border-radius:9999px;border:none;background:#cbd5e1;cursor:pointer;padding:0;margin:0;transition:background 0.2s ease,transform 0.2s ease;opacity:1;}
+.sc-dots .sc-dot.active{background:#003B71;transform:scale(1.1);}
+.sc-nav-row{position:relative;display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.5rem;}
 .sc-nav{width:2.5rem;height:2.5rem;flex-shrink:0;border-radius:9999px;background:#E97300;border:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.125rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:background 0.2s ease,color 0.2s ease,opacity 0.2s ease;}
 .sc-nav:hover{background:#c96200;}
 .sc-nav.sc-nav-disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;}
+@media(max-width:640px){
+.sc-text-col{text-align:center;align-items:center;}
+}
 `;
 
 function buildSplitCardHTML(card) {
@@ -64,14 +55,11 @@ function buildSplitCardHTML(card) {
     </div></div>`;
 }
 
-function buildSplitCarouselHTML(data, uid) {
-    uid = uid || "sc" + Math.random().toString(36).slice(2, 7);
+function buildSplitCarouselHTML(data) {
     const cards = data.cards || [];
     const cardsHtml = cards.map(buildSplitCardHTML).join("");
 
-    const responsiveCss = `@media(max-width:768px){#sc-root-${uid} .sc-text-col{align-items:center;text-align:center;}}`;
-
-    return `<section id="sc-root-${uid}" class="sc-section">
+    return `<section class="sc-section">
         <div class="sc-layout">
             <div class="sc-text-col">
                 <h2 class="sc-heading">${data.heading || "Título"}</h2>
@@ -90,7 +78,6 @@ function buildSplitCarouselHTML(data, uid) {
                 </div>
             </div>
         </div>
-        <div data-gjs-type="sc-responsive-style" data-css-content="${responsiveCss.replace(/"/g, "&quot;")}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
     </section>`;
 }
 
@@ -444,17 +431,11 @@ function showSplitCarouselModal(editor, component) {
                             JSON.stringify(parsed.cards ?? DEFAULT_DATA.cards),
                         ),
                     };
-                    const existingInner = component
-                        .getEl()
-                        ?.querySelector("[id^='sc-root-']");
-                    const uid =
-                        existingInner?.id?.replace("sc-root-", "") ||
-                        "sc" + Math.random().toString(36).slice(2, 7);
                     component.addAttributes({
                         "data-split-carousel-config": JSON.stringify(restored),
                     });
                     component.components(
-                        buildSplitCarouselHTML(restored, uid) +
+                        buildSplitCarouselHTML(restored) +
                         `<style>${SC_CSS}</style>`,
                     );
                     overlay.remove();
@@ -480,27 +461,11 @@ function showSplitCarouselModal(editor, component) {
             modal.querySelector("#sc-subheading").value.trim() ||
             DEFAULT_DATA.subheading;
 
-        const existingInner = component
-            .getEl()
-            ?.querySelector("[id^='sc-root-']");
-        const uid =
-            existingInner?.id?.replace("sc-root-", "") ||
-            "sc" + Math.random().toString(36).slice(2, 7);
-
-        const el = component.getEl();
-        if (el) {
-            el.querySelectorAll("style").forEach((s) => s.remove());
-            const doc = el.ownerDocument;
-            doc
-                .querySelectorAll('style[id^="sc-responsive-"]')
-                .forEach((s) => s.remove());
-        }
-
         component.addAttributes({
             "data-split-carousel-config": JSON.stringify(data),
         });
         component.components(
-            buildSplitCarouselHTML(data, uid) + `<style>${SC_CSS}</style>`,
+            buildSplitCarouselHTML(data) + `<style>${SC_CSS}</style>`,
         );
         close();
     });
@@ -515,28 +480,6 @@ const iconSplitCarousel = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns
 
 export function initializeSplitCarouselBlock(editor) {
     const componentType = "split-carousel-component";
-
-    editor.DomComponents.addType("sc-responsive-style", {
-        isComponent: (el) =>
-            el.getAttribute?.("data-gjs-type") === "sc-responsive-style"
-                ? { type: "sc-responsive-style" }
-                : false,
-        model: {
-            defaults: {
-                tagName: "div",
-                draggable: false,
-                droppable: false,
-                removable: false,
-                copyable: false,
-                selectable: false,
-                hoverable: false,
-                editable: false,
-                highlightable: false,
-                traits: [],
-                script: responsiveStyleInjectorScript,
-            },
-        },
-    });
 
     editor.DomComponents.addType("sc-video-media", {
         isComponent: (el) =>
@@ -594,8 +537,7 @@ export function initializeSplitCarouselBlock(editor) {
                     "data-split-carousel-config": JSON.stringify(DEFAULT_DATA),
                 },
                 components:
-                    buildSplitCarouselHTML(DEFAULT_DATA, "default") +
-                    `<style>${SC_CSS}</style>`,
+                    buildSplitCarouselHTML(DEFAULT_DATA) + `<style>${SC_CSS}</style>`,
                 traits: [
                     {
                         type: "button",
@@ -658,11 +600,12 @@ export function initializeSplitCarouselBlock(editor) {
         const style = iframe.contentDocument.createElement("style");
         style.id = `${componentType}-editor-css`;
         style.textContent = `
-            [data-gjs-type="${componentType}"] .sc-layout{align-items:flex-start !important;}
-            [data-gjs-type="${componentType}"] .sc-carousel-col{flex-basis:100% !important;}
+            [data-gjs-type="${componentType}"] .sc-layout{flex-wrap:nowrap !important;align-items:flex-start !important;}
+            [data-gjs-type="${componentType}"] .sc-text-col{flex:0 0 220px !important;}
+            [data-gjs-type="${componentType}"] .sc-carousel-col{flex:1 1 auto !important;}
             [data-gjs-type="${componentType}"] .sc-swiper .swiper-wrapper{display:flex !important;flex-wrap:nowrap !important;gap:1rem;overflow-x:auto;}
-            [data-gjs-type="${componentType}"] .sc-swiper .swiper-slide{flex:0 0 180px !important;width:180px !important;}
-            [data-gjs-type="${componentType}"] .sc-card{width:180px !important;max-width:180px !important;height:250px !important;}
+            [data-gjs-type="${componentType}"] .sc-swiper .swiper-slide{flex:0 0 160px !important;width:160px !important;}
+            [data-gjs-type="${componentType}"] .sc-card{width:160px !important;max-width:160px !important;height:220px !important;}
             [data-gjs-type="${componentType}"] .sc-dots{display:none !important;}
             [data-gjs-type="${componentType}"] video{display:none !important;}
         `;
