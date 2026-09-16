@@ -3,8 +3,8 @@ import { assetUrl } from "@/utils/url.js";
 
 const SC_CSS = `
 .sc-section{width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;}
-.sc-layout{display:flex;gap:clamp(1.5rem,3vw,2.5rem);align-items:flex-start;}
-.sc-text-col{flex:1 1 33%;max-width:33%;min-width:220px;display:flex;flex-direction:column;gap:0.75rem;padding-top:0.5rem;}
+.sc-layout{display:flex;gap:clamp(1.5rem,3vw,2.5rem);align-items:center;}
+.sc-text-col{flex:1 1 33%;max-width:33%;min-width:220px;display:flex;flex-direction:column;justify-content:center;gap:0.75rem;}
 .sc-heading{margin:0;color:#E97300;font-weight:900;font-size:clamp(1.5rem,3vw,2.25rem);line-height:1.15;}
 .sc-subheading{margin:0;color:#003B71;font-weight:500;font-size:clamp(1rem,1.8vw,1.375rem);line-height:1.5;}
 .sc-carousel-col{flex:2 1 67%;min-width:0;position:relative;}
@@ -14,15 +14,18 @@ const SC_CSS = `
 .sc-card{position:relative;width:260px;height:360px;border-radius:24px;overflow:hidden;background:#0a0a0a;}
 .sc-card-media{position:absolute;inset:0;width:100%;height:100%;}
 .sc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.sc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:24px;}
+.sc-card:hover .sc-card-video-wrap{opacity:1;}
+.sc-card-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .sc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:0.75rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.75rem 0.875rem;}
 .sc-card-title{margin:0 0 0.25rem;font-size:1rem;font-weight:800;line-height:1.2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
 .sc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;line-height:1.4;text-shadow:0 1px 3px rgba(0,0,0,0.3);}
-.sc-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:2.5rem;height:2.5rem;border-radius:9999px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.125rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:background 0.2s ease,color 0.2s ease,opacity 0.2s ease;}
-.sc-nav:hover{background:#E97300;color:#fff;}
+.sc-carousel{display:flex;flex-direction:column;align-items:center;}
+.sc-nav{position:static;width:2.5rem;height:2.5rem;border-radius:9999px;background:#E97300;border:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.125rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:background 0.2s ease,color 0.2s ease,opacity 0.2s ease;}
+.sc-nav:hover{background:#c96200;}
 .sc-nav.sc-nav-disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;}
-.sc-nav-prev{left:-1.25rem;}
-.sc-nav-next{right:-1.25rem;}
-.sc-dots{display:flex !important;justify-content:center;align-items:center;gap:0.625rem;margin-top:1.5rem;position:static;width:100%;}
+.sc-nav-row{display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.25rem;width:100%;}
+.sc-dots{display:flex !important;justify-content:center;align-items:center;gap:0.625rem;margin:0;position:static;}
 .sc-dots .sc-dot{width:0.75rem !important;height:0.75rem !important;border-radius:9999px !important;border:none !important;background:#cbd5e1 !important;cursor:pointer;padding:0 !important;margin:0 !important;transition:background 0.2s ease,transform 0.2s ease;opacity:1 !important;}
 .sc-dots .sc-dot.active{background:#003B71 !important;transform:scale(1.1);}
 @media(max-width:768px){
@@ -34,12 +37,18 @@ const SC_CSS = `
 
 function buildSplitCardHTML(card) {
     const image = card.image || assetUrl("images/placeholder.svg");
+    const video = card.video || "";
     const title = card.title || "Título de la tarjeta";
     const desc = card.desc || "Descripción breve.";
+
+    const videoHtml = video
+        ? `<div class="sc-card-video-wrap"><video class="sc-card-video" src="${video}" muted loop playsinline autoplay preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="sc-video-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></video></div>`
+        : "";
 
     return `<div class="swiper-slide"><div class="sc-card">
         <div class="sc-card-media">
             <img src="${image}" alt="${title}">
+            ${videoHtml}
         </div>
         <div class="sc-card-overlay">
             <h3 class="sc-card-title">${title}</h3>
@@ -60,12 +69,14 @@ function buildSplitCarouselHTML(data) {
             </div>
             <div class="sc-carousel-col">
                 <div class="sc-carousel">
-                    <button type="button" class="sc-nav sc-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
                     <div class="sc-swiper swiper">
                         <div class="swiper-wrapper">${cardsHtml}</div>
                     </div>
-                    <button type="button" class="sc-nav sc-nav-next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
-                    <div class="sc-dots swiper-pagination"></div>
+                    <div class="sc-nav-row">
+                        <button type="button" class="sc-nav sc-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
+                        <div class="sc-dots swiper-pagination"></div>
+                        <button type="button" class="sc-nav sc-nav-next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -242,6 +253,13 @@ function showSplitCarouselModal(editor, component) {
                     </div>
                 </div>
                 <div>
+                    <label class="sc-label">Video en hover (opcional)</label>
+                    <div style="display:flex;flex-direction:column;gap:0.5rem;">
+                        <input class="sc-input-sm" placeholder="URL del video (mp4 o webm)" value="${card.video || ""}" data-field="video">
+                        <button class="sc-pick-btn sc-pick-video"><i class="ri-video-line"></i> Seleccionar video</button>
+                    </div>
+                </div>
+                <div>
                     <label class="sc-label">Título</label>
                     <input class="sc-input" placeholder="Título de la tarjeta" value="${card.title || ""}" data-field="title">
                 </div>
@@ -271,6 +289,17 @@ function showSplitCarouselModal(editor, component) {
                         div.querySelector("[data-field='image']").value = url;
                         div.querySelector(`#sc-img-wrap-${idx}`).innerHTML =
                             `<img class="sc-img-preview" src="${url}" alt="">`;
+                    },
+                });
+            });
+
+            div.querySelector(".sc-pick-video").addEventListener("click", () => {
+                openMediaPicker({
+                    type: "video",
+                    title: "Seleccionar video de tarjeta",
+                    onSelect: (url) => {
+                        card.video = url;
+                        div.querySelector("[data-field='video']").value = url;
                     },
                 });
             });
@@ -336,6 +365,27 @@ const iconSplitCarousel = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns
 
 export function initializeSplitCarouselBlock(editor) {
     const componentType = "split-carousel-component";
+
+    editor.DomComponents.addType("sc-video-media", {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === "sc-video-media"
+                ? { type: "sc-video-media" }
+                : false,
+        model: {
+            defaults: {
+                tagName: "video",
+                draggable: false,
+                droppable: false,
+                removable: false,
+                copyable: false,
+                selectable: false,
+                hoverable: false,
+                editable: false,
+                highlightable: false,
+                traits: [],
+            },
+        },
+    });
 
     editor.DomComponents.addType(componentType, {
         isComponent: (el) =>
@@ -435,8 +485,9 @@ export function initializeSplitCarouselBlock(editor) {
         const style = iframe.contentDocument.createElement("style");
         style.id = `${componentType}-editor-css`;
         style.textContent = `
-            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;gap:1.5rem;overflow:hidden;flex-wrap:wrap;}
-            [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 auto;width:auto !important;}
+            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;flex-wrap:nowrap !important;gap:1.5rem;overflow:hidden;}
+            [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 auto;width:220px !important;}
+            [data-gjs-type="${componentType}"] .sc-card{width:220px !important;height:305px !important;}
             [data-gjs-type="${componentType}"] .sc-dots{display:none;}
         `;
         head.appendChild(style);
