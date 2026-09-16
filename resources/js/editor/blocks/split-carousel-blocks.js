@@ -4,14 +4,14 @@ import { assetUrl } from "@/utils/url.js";
 const SC_CSS = `
 .sc-section{width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;}
 .sc-layout{display:flex;gap:clamp(1.5rem,3vw,2.5rem);align-items:center;}
-.sc-text-col{flex:1 1 33%;max-width:33%;min-width:220px;display:flex;flex-direction:column;justify-content:center;gap:0.75rem;}
+.sc-text-col{flex:1 1 33%;max-width:33%;min-width:220px;display:flex;flex-direction:column;justify-content:center;gap:0.75rem;margin-top:-2.5rem;}
 .sc-heading{margin:0;color:#E97300;font-weight:900;font-size:clamp(1.5rem,3vw,2.25rem);line-height:1.15;}
 .sc-subheading{margin:0;color:#003B71;font-weight:500;font-size:clamp(1rem,1.8vw,1.375rem);line-height:1.5;}
 .sc-carousel-col{flex:2 1 67%;min-width:0;position:relative;}
 .sc-swiper{overflow:hidden;width:100%;}
 .sc-swiper .swiper-wrapper{align-items:stretch;}
-.sc-swiper .swiper-slide{height:auto;width:260px;flex-shrink:0;display:flex;justify-content:center;}
-.sc-card{position:relative;width:260px;height:360px;border-radius:24px;overflow:hidden;background:#0a0a0a;}
+.sc-swiper .swiper-slide{height:auto;width:min(260px,100%);flex-shrink:0;display:flex;justify-content:center;}
+.sc-card{position:relative;width:100%;max-width:260px;aspect-ratio:13/18;border-radius:24px;overflow:hidden;background:#0a0a0a;}
 .sc-card-media{position:absolute;inset:0;width:100%;height:100%;}
 .sc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .sc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:24px;}
