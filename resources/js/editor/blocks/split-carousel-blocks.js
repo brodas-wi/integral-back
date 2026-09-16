@@ -15,13 +15,13 @@ function responsiveStyleInjectorScript() {
 }
 
 const SC_CSS = `
-.sc-section{width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;}
-.sc-layout{display:flex;flex-wrap:wrap;gap:clamp(1.5rem,3vw,2.5rem);align-items:center;}
-.sc-text-col{flex:1 1 280px;min-width:220px;display:flex;flex-direction:column;justify-content:center;gap:0.75rem;}
+.sc-section{width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;overflow:visible;}
+.sc-layout{display:flex;flex-wrap:wrap;gap:clamp(1.5rem,3vw,2.5rem);align-items:center;width:100%;}
+.sc-text-col{flex:1 1 280px;min-width:220px;max-width:100%;display:flex;flex-direction:column;justify-content:center;gap:0.75rem;box-sizing:border-box;}
 .sc-heading{margin:0;color:#E97300;font-weight:900;font-size:clamp(1.5rem,3vw,2.25rem);line-height:1.15;}
 .sc-subheading{margin:0;color:#003B71;font-weight:500;font-size:clamp(1rem,1.8vw,1.375rem);line-height:1.5;}
-.sc-carousel-col{flex:2 1 480px;min-width:0;position:relative;}
-.sc-swiper{overflow:hidden;width:100%;}
+.sc-carousel-col{flex:2 1 480px;min-width:260px;width:100%;position:relative;box-sizing:border-box;}
+.sc-swiper{overflow:hidden;width:100%;min-height:1px;}
 .sc-swiper .swiper-wrapper{align-items:stretch;}
 .sc-swiper .swiper-slide{height:auto;display:flex;justify-content:center;}
 .sc-card{position:relative;width:100%;max-width:260px;aspect-ratio:13/18;border-radius:24px;overflow:hidden;background:#0a0a0a;margin:0 auto;}
@@ -163,6 +163,23 @@ function showSplitCarouselModal(editor, component) {
             .sc-btn-save{padding:0.5rem 1.25rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .sc-btn-save:hover{background:#c96200;}
             .sc-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
+            .sc-btn-backup{padding:0.5rem 1rem;background:#fff;border:2px solid #003B71;border-radius:9999px;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;}
+            .sc-btn-backup:hover{background:#003B71;color:#fff;}
+            .sc-btn-restore{padding:0.5rem 1rem;background:#fff;border:2px solid #0d9488;border-radius:9999px;color:#0d9488;font-size:0.8125rem;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;user-select:none;cursor:pointer;}
+            .sc-btn-restore:hover{background:#0d9488;color:#fff;}
+            .sc-confirm-overlay{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);padding:1rem;}
+            .sc-confirm-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(15,23,42,0.18);font-family:'Inter',sans-serif;overflow:hidden;border:1px solid #e2e8f0;}
+            .sc-confirm-header{padding:1rem 1.25rem 0.75rem;display:flex;align-items:center;gap:0.625rem;border-bottom:1px solid #f1f5f9;}
+            .sc-confirm-header i{font-size:1.25rem;color:#E97300;}
+            .sc-confirm-header h3{margin:0;font-size:0.9375rem;font-weight:700;color:#0f172a;}
+            .sc-confirm-body{padding:1rem 1.25rem;}
+            .sc-confirm-body p{margin:0 0 0.5rem;font-size:0.875rem;color:#475569;line-height:1.5;}
+            .sc-confirm-filename{display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;background:#f1f5f9;border-radius:0.375rem;font-size:0.8rem;font-weight:600;color:#003B71;margin-top:0.25rem;}
+            .sc-confirm-footer{padding:0.75rem 1.25rem 1rem;display:flex;gap:0.625rem;justify-content:flex-end;background:#f8fafc;border-top:1px solid #f1f5f9;}
+            .sc-confirm-cancel{padding:0.5rem 1.125rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .sc-confirm-cancel:hover{background:#f1f5f9;}
+            .sc-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .sc-confirm-ok:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
     }
@@ -222,6 +239,10 @@ function showSplitCarouselModal(editor, component) {
         </div>
         <div class="sc-modal-footer">
             <button id="sc-modal-cancel" class="sc-btn-cancel">Cancelar</button>
+            <div style="display:flex;gap:0.5rem;margin-right:auto;">
+                <button id="sc-modal-backup" class="sc-btn-backup" title="Descargar configuración como JSON"><i class="ri-download-2-line"></i> Respaldar</button>
+                <label id="sc-modal-restore-label" class="sc-btn-restore" title="Restaurar configuración desde JSON"><i class="ri-upload-2-line"></i> Restaurar<input id="sc-modal-restore-input" type="file" accept=".json,application/json" style="display:none;"></label>
+            </div>
             <button id="sc-modal-save" class="sc-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
         </div>`;
 
@@ -345,6 +366,104 @@ function showSplitCarouselModal(editor, component) {
             block: "nearest",
         });
     });
+
+    modal.querySelector("#sc-modal-backup").addEventListener("click", () => {
+        const snapshot = {
+            heading:
+                modal.querySelector("#sc-heading").value.trim() ||
+                DEFAULT_DATA.heading,
+            subheading:
+                modal.querySelector("#sc-subheading").value.trim() ||
+                DEFAULT_DATA.subheading,
+            cards: JSON.parse(JSON.stringify(data.cards)),
+        };
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `split-carousel-backup-${ts}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    });
+
+    modal.querySelector("#sc-modal-restore-input").addEventListener(
+        "change",
+        (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                let parsed;
+                try {
+                    parsed = JSON.parse(ev.target.result);
+                } catch {
+                    const errOverlay = document.createElement("div");
+                    errOverlay.className = "sc-confirm-overlay";
+                    errOverlay.innerHTML = `<div class="sc-confirm-modal"><div class="sc-confirm-header"><i class="ri-error-warning-line" style="color:#ef4444;"></i><h3>Archivo inválido</h3></div><div class="sc-confirm-body"><p>El archivo seleccionado no es un JSON válido.</p></div><div class="sc-confirm-footer"><button class="sc-confirm-ok" style="background:#ef4444;">Cerrar</button></div></div>`;
+                    document.body.appendChild(errOverlay);
+                    errOverlay.querySelector(".sc-confirm-ok").onclick = () =>
+                        errOverlay.remove();
+                    e.target.value = "";
+                    return;
+                }
+                const confirmOverlay = document.createElement("div");
+                confirmOverlay.className = "sc-confirm-overlay";
+                confirmOverlay.innerHTML = `
+                    <div class="sc-confirm-modal">
+                        <div class="sc-confirm-header">
+                            <i class="ri-refresh-line"></i>
+                            <h3>Restaurar configuración</h3>
+                        </div>
+                        <div class="sc-confirm-body">
+                            <p>¿Deseas restaurar la configuración de esta sección desde el archivo de respaldo?</p>
+                            <p>Esta acción reemplazará la configuración actual del formulario.</p>
+                            <span class="sc-confirm-filename"><i class="ri-file-code-line"></i>${file.name}</span>
+                        </div>
+                        <div class="sc-confirm-footer">
+                            <button class="sc-confirm-cancel">Cancelar</button>
+                            <button class="sc-confirm-ok"><i class="ri-check-line"></i> Sí, restaurar</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(confirmOverlay);
+                confirmOverlay.querySelector(".sc-confirm-cancel").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                };
+                confirmOverlay.querySelector(".sc-confirm-ok").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                    const restored = {
+                        heading: parsed.heading ?? DEFAULT_DATA.heading,
+                        subheading: parsed.subheading ?? DEFAULT_DATA.subheading,
+                        cards: JSON.parse(
+                            JSON.stringify(parsed.cards ?? DEFAULT_DATA.cards),
+                        ),
+                    };
+                    const existingInner = component
+                        .getEl()
+                        ?.querySelector("[id^='sc-root-']");
+                    const uid =
+                        existingInner?.id?.replace("sc-root-", "") ||
+                        "sc" + Math.random().toString(36).slice(2, 7);
+                    component.addAttributes({
+                        "data-split-carousel-config": JSON.stringify(restored),
+                    });
+                    component.components(
+                        buildSplitCarouselHTML(restored, uid) +
+                            `<style>${SC_CSS}</style>`,
+                    );
+                    overlay.remove();
+                    showSplitCarouselModal(editor, component);
+                };
+            };
+            reader.readAsText(file);
+        },
+    );
 
     const close = () => overlay.remove();
     modal.querySelector("#sc-modal-close").addEventListener("click", close);
