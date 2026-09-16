@@ -455,7 +455,7 @@ function showSplitCarouselModal(editor, component) {
                     });
                     component.components(
                         buildSplitCarouselHTML(restored, uid) +
-                            `<style>${SC_CSS}</style>`,
+                        `<style>${SC_CSS}</style>`,
                     );
                     overlay.remove();
                     showSplitCarouselModal(editor, component);
@@ -486,6 +486,19 @@ function showSplitCarouselModal(editor, component) {
         const uid =
             existingInner?.id?.replace("sc-root-", "") ||
             "sc" + Math.random().toString(36).slice(2, 7);
+
+        const el = component.getEl();
+        if (el) {
+            el.querySelectorAll("style").forEach((s) => s.remove());
+            const oldStyleId = existingInner
+                ? "sc-responsive-" + existingInner.id
+                : null;
+            if (oldStyleId) {
+                const doc = el.ownerDocument;
+                const oldTag = doc.getElementById(oldStyleId);
+                if (oldTag) oldTag.remove();
+            }
+        }
 
         component.addAttributes({
             "data-split-carousel-config": JSON.stringify(data),
