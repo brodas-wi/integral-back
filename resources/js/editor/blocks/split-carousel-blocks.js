@@ -1,6 +1,19 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { assetUrl } from "@/utils/url.js";
 
+function responsiveStyleInjectorScript() {
+    const el = this;
+    const cssContent = el.getAttribute("data-css-content");
+    if (!cssContent) return;
+    const doc = el.ownerDocument;
+    const styleId = "sc-responsive-" + el.id;
+    if (doc.getElementById(styleId)) return;
+    const styleTag = doc.createElement("style");
+    styleTag.id = styleId;
+    styleTag.textContent = cssContent;
+    doc.head.appendChild(styleTag);
+}
+
 const SC_CSS = `
 .sc-section{width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;}
 .sc-layout{display:flex;gap:clamp(1.5rem,3vw,2.5rem);align-items:center;}
@@ -57,11 +70,14 @@ function buildSplitCardHTML(card) {
     </div></div>`;
 }
 
-function buildSplitCarouselHTML(data) {
+function buildSplitCarouselHTML(data, uid) {
+    uid = uid || "sc" + Math.random().toString(36).slice(2, 7);
     const cards = data.cards || [];
     const cardsHtml = cards.map(buildSplitCardHTML).join("");
 
-    return `<section class="sc-section">
+    const responsiveCss = `@media(max-width:768px){#sc-root-${uid} .sc-text-col{align-items:center;text-align:center;}}`;
+
+    return `<section id="sc-root-${uid}" class="sc-section">
         <div class="sc-layout">
             <div class="sc-text-col">
                 <h2 class="sc-heading">${data.heading || "Título"}</h2>
@@ -80,6 +96,7 @@ function buildSplitCarouselHTML(data) {
                 </div>
             </div>
         </div>
+        <div data-gjs-type="sc-responsive-style" data-css-content="${responsiveCss.replace(/"/g, "&quot;")}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
     </section>`;
 }
 
@@ -346,11 +363,18 @@ function showSplitCarouselModal(editor, component) {
             modal.querySelector("#sc-subheading").value.trim() ||
             DEFAULT_DATA.subheading;
 
+        const existingInner = component
+            .getEl()
+            ?.querySelector("[id^='sc-root-']");
+        const uid =
+            existingInner?.id?.replace("sc-root-", "") ||
+            "sc" + Math.random().toString(36).slice(2, 7);
+
         component.addAttributes({
             "data-split-carousel-config": JSON.stringify(data),
         });
         component.components(
-            buildSplitCarouselHTML(data) + `<style>${SC_CSS}</style>`,
+            buildSplitCarouselHTML(data, uid) + `<style>${SC_CSS}</style>`,
         );
         close();
     });
@@ -366,7 +390,29 @@ const iconSplitCarousel = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns
 export function initializeSplitCarouselBlock(editor) {
     const componentType = "split-carousel-component";
 
-    editor.DomComponents.addType("sc-video-media", {
+    editor.DomComponents.addType("sc-responsive-style", {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === "sc-responsive-style"
+                ? { type: "sc-responsive-style" }
+                : false,
+        model: {
+            defaults: {
+                tagName: "div",
+                draggable: false,
+                droppable: false,
+                removable: false,
+                copyable: false,
+                selectable: false,
+                hoverable: false,
+                editable: false,
+                highlightable: false,
+                traits: [],
+                script: responsiveStyleInjectorScript,
+            },
+        },
+    });
+
+    editor.DomComponents.addType(componentType, {
         isComponent: (el) =>
             el.getAttribute?.("data-gjs-type") === "sc-video-media"
                 ? { type: "sc-video-media" }
@@ -422,7 +468,7 @@ export function initializeSplitCarouselBlock(editor) {
                     "data-split-carousel-config": JSON.stringify(DEFAULT_DATA),
                 },
                 components:
-                    buildSplitCarouselHTML(DEFAULT_DATA) + `<style>${SC_CSS}</style>`,
+                    buildSplitCarouselHTML(DEFAULT_DATA, "default") + `<style>${SC_CSS}</style>`,
                 traits: [
                     {
                         type: "button",
