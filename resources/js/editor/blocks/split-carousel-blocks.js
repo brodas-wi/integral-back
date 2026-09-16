@@ -490,14 +490,10 @@ function showSplitCarouselModal(editor, component) {
         const el = component.getEl();
         if (el) {
             el.querySelectorAll("style").forEach((s) => s.remove());
-            const oldStyleId = existingInner
-                ? "sc-responsive-" + existingInner.id
-                : null;
-            if (oldStyleId) {
-                const doc = el.ownerDocument;
-                const oldTag = doc.getElementById(oldStyleId);
-                if (oldTag) oldTag.remove();
-            }
+            const doc = el.ownerDocument;
+            doc
+                .querySelectorAll('style[id^="sc-responsive-"]')
+                .forEach((s) => s.remove());
         }
 
         component.addAttributes({
