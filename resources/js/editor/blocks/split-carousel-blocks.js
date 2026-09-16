@@ -33,10 +33,10 @@ const SC_CSS = `
 .sc-card-overlay{position:absolute;left:0.75rem;right:0.75rem;bottom:0.75rem;z-index:5;background:rgba(0,0,0,0.5);border-radius:12px;padding:0.75rem 0.875rem;}
 .sc-card-title{margin:0 0 0.25rem;font-size:1rem;font-weight:800;line-height:1.2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
 .sc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;line-height:1.4;text-shadow:0 1px 3px rgba(0,0,0,0.3);}
-.sc-dots{display:flex !important;justify-content:center;align-items:center;gap:0.625rem;margin-top:1.25rem;}
-.sc-dots .sc-dot{width:0.75rem !important;height:0.75rem !important;border-radius:9999px !important;border:none !important;background:#cbd5e1 !important;cursor:pointer;padding:0 !important;margin:0 !important;transition:background 0.2s ease,transform 0.2s ease;opacity:1 !important;}
+.sc-dots{position:relative !important;display:flex !important;justify-content:center;align-items:center;gap:0.625rem;margin-top:1.25rem;height:0.75rem;width:100%;}
+.sc-dots .sc-dot{position:relative !important;width:0.75rem !important;height:0.75rem !important;border-radius:9999px !important;border:none !important;background:#cbd5e1 !important;cursor:pointer;padding:0 !important;margin:0 !important;transition:background 0.2s ease,transform 0.2s ease;opacity:1 !important;}
 .sc-dots .sc-dot.active{background:#003B71 !important;transform:scale(1.1);}
-.sc-nav-row{display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.25rem;}
+.sc-nav-row{position:relative !important;display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.5rem;}
 .sc-nav{width:2.5rem;height:2.5rem;flex-shrink:0;border-radius:9999px;background:#E97300;border:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.125rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:background 0.2s ease,color 0.2s ease,opacity 0.2s ease;}
 .sc-nav:hover{background:#c96200;}
 .sc-nav.sc-nav-disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;}
