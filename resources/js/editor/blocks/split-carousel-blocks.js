@@ -12,7 +12,7 @@ const SC_CSS = `
 .sc-swiper{overflow:hidden;width:100%;}
 .sc-swiper .swiper-wrapper{align-items:stretch;}
 .sc-swiper .swiper-slide{height:auto;display:flex;justify-content:center;}
-.sc-card{position:relative;width:100%;max-width:260px;aspect-ratio:13/18;border-radius:24px;overflow:hidden;background:#0a0a0a;margin:0 auto;}
+.sc-card{position:relative;width:100%;max-width:260px;aspect-ratio:13/18;border-radius:24px;overflow:hidden;margin:0 auto;}
 .sc-card-media{position:absolute;inset:0;width:100%;height:100%;}
 .sc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .sc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:24px;}
@@ -22,6 +22,7 @@ const SC_CSS = `
 .sc-card-title{margin:0 0 0.25rem;font-size:1rem;font-weight:800;line-height:1.2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);}
 .sc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;line-height:1.4;text-shadow:0 1px 3px rgba(0,0,0,0.3);}
 .sc-dots{position:relative;display:flex;justify-content:center;align-items:center;gap:0.625rem;margin-top:1.25rem;height:0.75rem;width:100%;}
+.sc-dots:empty{display:none !important;margin-top:0;height:0;}
 .sc-dots .sc-dot{position:relative;width:0.75rem;height:0.75rem;border-radius:9999px;border:none;background:#cbd5e1;cursor:pointer;padding:0;margin:0;transition:background 0.2s ease,transform 0.2s ease;opacity:1;}
 .sc-dots .sc-dot.active{background:#003B71;transform:scale(1.1);}
 .sc-nav-row{position:relative;display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-top:1.5rem;}
@@ -70,10 +71,10 @@ function buildSplitCarouselHTML(data) {
                     <div class="sc-swiper swiper">
                         <div class="swiper-wrapper">${cardsHtml}</div>
                     </div>
-                    <div class="sc-dots swiper-pagination"></div>
+                    <div class="sc-dots swiper-pagination" data-swiper-pagination></div>
                     <div class="sc-nav-row">
-                        <button type="button" class="sc-nav sc-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
-                        <button type="button" class="sc-nav sc-nav-next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
+                        <button type="button" class="sc-nav sc-nav-prev" data-swiper-prev aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
+                        <button type="button" class="sc-nav sc-nav-next" data-swiper-next aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
                     </div>
                 </div>
             </div>
@@ -591,24 +592,5 @@ export function initializeSplitCarouselBlock(editor) {
                 delete rootModel.__scRedirecting;
             }, 0);
         }
-    });
-
-    editor.on("load", () => {
-        const iframe = editor.Canvas.getFrameEl();
-        const head = iframe?.contentDocument?.head;
-        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
-        const style = iframe.contentDocument.createElement("style");
-        style.id = `${componentType}-editor-css`;
-        style.textContent = `
-            [data-gjs-type="${componentType}"] .sc-layout{flex-wrap:nowrap !important;align-items:flex-start !important;}
-            [data-gjs-type="${componentType}"] .sc-text-col{flex:0 0 220px !important;}
-            [data-gjs-type="${componentType}"] .sc-carousel-col{flex:1 1 auto !important;}
-            [data-gjs-type="${componentType}"] .sc-swiper .swiper-wrapper{display:flex !important;flex-wrap:nowrap !important;gap:1rem;overflow-x:auto;}
-            [data-gjs-type="${componentType}"] .sc-swiper .swiper-slide{flex:0 0 160px !important;width:160px !important;}
-            [data-gjs-type="${componentType}"] .sc-card{width:160px !important;max-width:160px !important;height:220px !important;}
-            [data-gjs-type="${componentType}"] .sc-dots{display:none !important;}
-            [data-gjs-type="${componentType}"] video{display:none !important;}
-        `;
-        head.appendChild(style);
     });
 }
