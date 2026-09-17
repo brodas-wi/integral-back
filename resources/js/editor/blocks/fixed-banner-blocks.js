@@ -85,6 +85,23 @@ function showFixedBannerModal(editor, component) {
             .fb-position-option:hover{border-color:#cbd5e1;}
             .fb-position-option.active{border-color:#E97300;background:#fff7ed;color:#c2410c;}
             .fb-position-option input{accent-color:#E97300;}
+            .fb-btn-backup{padding:0.5rem 1rem;background:#fff;border:2px solid #003B71;border-radius:0.5rem;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;}
+            .fb-btn-backup:hover{background:#003B71;color:#fff;}
+            .fb-btn-restore{padding:0.5rem 1rem;background:#fff;border:2px solid #0d9488;border-radius:0.5rem;color:#0d9488;font-size:0.8125rem;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;user-select:none;cursor:pointer;}
+            .fb-btn-restore:hover{background:#0d9488;color:#fff;}
+            .fb-confirm-overlay{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);padding:1rem;}
+            .fb-confirm-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(15,23,42,0.18);font-family:'Inter',sans-serif;overflow:hidden;border:1px solid #e2e8f0;}
+            .fb-confirm-header{padding:1rem 1.25rem 0.75rem;display:flex;align-items:center;gap:0.625rem;border-bottom:1px solid #f1f5f9;}
+            .fb-confirm-header i{font-size:1.25rem;color:#E97300;}
+            .fb-confirm-header h3{margin:0;font-size:0.9375rem;font-weight:700;color:#0f172a;}
+            .fb-confirm-body{padding:1rem 1.25rem;}
+            .fb-confirm-body p{margin:0 0 0.5rem;font-size:0.875rem;color:#475569;line-height:1.5;}
+            .fb-confirm-filename{display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;background:#f1f5f9;border-radius:0.375rem;font-size:0.8rem;font-weight:600;color:#003B71;margin-top:0.25rem;}
+            .fb-confirm-footer{padding:0.75rem 1.25rem 1rem;display:flex;gap:0.625rem;justify-content:flex-end;background:#f8fafc;border-top:1px solid #f1f5f9;}
+            .fb-confirm-cancel{padding:0.5rem 1.125rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .fb-confirm-cancel:hover{background:#f1f5f9;}
+            .fb-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .fb-confirm-ok:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
     }
@@ -166,6 +183,10 @@ function showFixedBannerModal(editor, component) {
         </div>
         <div class="fb-modal-footer">
             <button id="fb-modal-cancel" class="fb-btn-cancel">Cancelar</button>
+            <div style="display:flex;gap:0.5rem;margin-right:auto;">
+                <button id="fb-modal-backup" class="fb-btn-backup" title="Descargar configuración como JSON"><i class="ri-download-2-line"></i> Respaldar</button>
+                <label id="fb-modal-restore-label" class="fb-btn-restore" title="Restaurar configuración desde JSON"><i class="ri-upload-2-line"></i> Restaurar<input id="fb-modal-restore-input" type="file" accept=".json,application/json" style="display:none;"></label>
+            </div>
             <button id="fb-modal-save" class="fb-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
         </div>`;
 
@@ -195,6 +216,107 @@ function showFixedBannerModal(editor, component) {
             label.classList.add("active");
         });
     });
+
+    modal.querySelector("#fb-modal-backup").addEventListener("click", () => {
+        const selectedPosition =
+            modal.querySelector('input[name="fb-box-position"]:checked')
+                ?.value || "bottom-right";
+        const snapshot = {
+            image_url: modal.querySelector("#fb-image-url").value.trim(),
+            text: modal.querySelector("#fb-text").value.trim(),
+            button_label: modal.querySelector("#fb-button-label").value.trim(),
+            button_href:
+                modal.querySelector("#fb-button-href").value.trim() || "#",
+            box_position: selectedPosition,
+        };
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `fixed-banner-backup-${ts}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    });
+
+    modal.querySelector("#fb-modal-restore-input").addEventListener(
+        "change",
+        (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                let parsed;
+                try {
+                    parsed = JSON.parse(ev.target.result);
+                } catch {
+                    const errOverlay = document.createElement("div");
+                    errOverlay.className = "fb-confirm-overlay";
+                    errOverlay.innerHTML = `<div class="fb-confirm-modal"><div class="fb-confirm-header"><i class="ri-error-warning-line" style="color:#ef4444;"></i><h3>Archivo inválido</h3></div><div class="fb-confirm-body"><p>El archivo seleccionado no es un JSON válido.</p></div><div class="fb-confirm-footer"><button class="fb-confirm-ok" style="background:#ef4444;">Cerrar</button></div></div>`;
+                    document.body.appendChild(errOverlay);
+                    errOverlay.querySelector(".fb-confirm-ok").onclick = () =>
+                        errOverlay.remove();
+                    e.target.value = "";
+                    return;
+                }
+                const confirmOverlay = document.createElement("div");
+                confirmOverlay.className = "fb-confirm-overlay";
+                confirmOverlay.innerHTML = `
+                    <div class="fb-confirm-modal">
+                        <div class="fb-confirm-header">
+                            <i class="ri-refresh-line"></i>
+                            <h3>Restaurar configuración</h3>
+                        </div>
+                        <div class="fb-confirm-body">
+                            <p>¿Deseas restaurar la configuración de este banner desde el archivo de respaldo?</p>
+                            <p>Esta acción reemplazará la configuración actual del formulario.</p>
+                            <span class="fb-confirm-filename"><i class="ri-file-code-line"></i>${file.name}</span>
+                        </div>
+                        <div class="fb-confirm-footer">
+                            <button class="fb-confirm-cancel">Cancelar</button>
+                            <button class="fb-confirm-ok"><i class="ri-check-line"></i> Sí, restaurar</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(confirmOverlay);
+                confirmOverlay.querySelector(".fb-confirm-cancel").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                };
+                confirmOverlay.querySelector(".fb-confirm-ok").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                    const restored = {
+                        image_url: parsed.image_url ?? DEFAULT_DATA.image_url,
+                        text: parsed.text ?? DEFAULT_DATA.text,
+                        button_label:
+                            parsed.button_label ?? DEFAULT_DATA.button_label,
+                        button_href: parsed.button_href ?? DEFAULT_DATA.button_href,
+                        box_position:
+                            parsed.box_position ?? DEFAULT_DATA.box_position,
+                    };
+
+                    const existingInner = component
+                        .getEl()
+                        ?.querySelector("[id^='fb-root-']");
+                    const uid =
+                        existingInner?.id?.replace("fb-root-", "") ||
+                        "fb" + Math.random().toString(36).slice(2, 7);
+
+                    component.addAttributes({
+                        "data-fixed-banner-config": JSON.stringify(restored),
+                    });
+                    component.components(buildFixedBannerHTML(restored, uid));
+                    overlay.remove();
+                    showFixedBannerModal(editor, component);
+                };
+            };
+            reader.readAsText(file);
+        },
+    );
 
     const close = () => overlay.remove();
     modal.querySelector("#fb-modal-close").onclick = close;
