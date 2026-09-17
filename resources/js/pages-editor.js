@@ -24,7 +24,7 @@ import {
 } from "./editor/editor-commands";
 import { showConfirmModal } from "./editor/utils/modals";
 import Swiper from "swiper";
-import "swiper/css";
+import swiperCssUrl from "swiper/css?url";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const editorService = new EditorService();
@@ -176,10 +176,21 @@ function waitForCanvasFrame(editor) {
 }
 
 function setupSwiperAutoInit(editor) {
+    const injectSwiperCss = (doc) => {
+        if (doc.head.querySelector("#swiper-canvas-css")) return;
+        const link = doc.createElement("link");
+        link.id = "swiper-canvas-css";
+        link.rel = "stylesheet";
+        link.href = swiperCssUrl;
+        doc.head.appendChild(link);
+    };
+
     const initSwipersInFrame = () => {
         const iframe = editor.Canvas.getFrameEl();
         const doc = iframe?.contentDocument;
         if (!doc) return;
+
+        injectSwiperCss(doc);
 
         doc.querySelectorAll(".swiper").forEach((el) => {
             if (el.swiper) {
