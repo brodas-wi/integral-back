@@ -47,7 +47,7 @@ function buildOptionsBannerHTML(data, uid) {
     </div>`;
 
     const cards = data.cards || [];
-    const gridStyle = `display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));max-width:920px;gap:clamp(1rem,2vw,1.5rem);`;
+    const gridStyle = `display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));width:100%;gap:clamp(1rem,2vw,1.5rem);`;
 
     const cardsHtml = cards
         .map((card) => buildOptionCardHTML(card, uid))
