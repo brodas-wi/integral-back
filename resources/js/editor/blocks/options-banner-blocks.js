@@ -47,7 +47,7 @@ function buildOptionsBannerHTML(data, uid) {
     </div>`;
 
     const cards = data.cards || [];
-    const gridStyle = `display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(1rem,2vw,1.5rem);`;
+    const gridStyle = `display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));max-width:920px;gap:clamp(1rem,2vw,1.5rem);`;
 
     const cardsHtml = cards
         .map((card) => buildOptionCardHTML(card, uid))
@@ -158,7 +158,7 @@ function showOptionsBannerModal(editor, component) {
             .ob-btn-cancel:hover{background:#f8fafc;}
             .ob-btn-save{padding:0.5rem 1.25rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .ob-btn-save:hover{background:#c96200;}
-                        .ob-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
+            .ob-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
             .ob-btn-backup{padding:0.5rem 1rem;background:#fff;border:2px solid #003B71;border-radius:9999px;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;}
             .ob-btn-backup:hover{background:#003B71;color:#fff;}
             .ob-btn-restore{padding:0.5rem 1rem;background:#fff;border:2px solid #0d9488;border-radius:9999px;color:#0d9488;font-size:0.8125rem;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;user-select:none;cursor:pointer;}
