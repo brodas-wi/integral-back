@@ -73,17 +73,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.querySelectorAll(".swiper").forEach((el) => {
+        if (el.swiper) return;
+        const scope = el.closest("[class*='-carousel']") || el.parentElement;
         new Swiper(el, {
             slidesPerView: "auto",
             spaceBetween: 24,
             navigation: {
-                nextEl: el.parentElement?.querySelector(".hc-nav-next"),
-                prevEl: el.parentElement?.querySelector(".hc-nav-prev"),
-                disabledClass: "hc-nav-disabled",
+                nextEl: scope?.querySelector("[data-swiper-next]"),
+                prevEl: scope?.querySelector("[data-swiper-prev]"),
+                disabledClass: "swiper-nav-disabled-state",
             },
             pagination: {
-                el: el.parentElement?.querySelector(".hc-dots"),
-                bulletClass: "hc-dot",
+                el: scope?.querySelector("[data-swiper-pagination]"),
                 bulletActiveClass: "active",
                 clickable: true,
             },

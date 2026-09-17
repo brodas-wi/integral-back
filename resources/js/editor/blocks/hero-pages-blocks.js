@@ -9,7 +9,7 @@ const HP_CSS = `
 .hp-swiper{overflow:hidden;width:100%;}
 .hp-swiper .swiper-wrapper{align-items:stretch;}
 .hp-swiper .swiper-slide{height:auto;width:280px;flex-shrink:0;display:flex;justify-content:center;}
-.hp-card{position:relative;width:280px;height:350px;border-radius:32px;overflow:hidden;background:#0a0a0a;}
+.hp-card{position:relative;width:280px;height:350px;border-radius:32px;overflow:hidden;}
 .hp-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;}
 .hp-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hp-card-title{position:absolute;top:1rem;left:1rem;right:1rem;z-index:5;margin:0;font-size:1.3rem;font-weight:800;color:#fff;line-height:1.25;text-shadow:0 2px 6px rgba(0,0,0,0.55),0 1px 2px rgba(0,0,0,0.4);}
@@ -22,6 +22,7 @@ const HP_CSS = `
 .hp-nav-prev{left:-1.375rem;}
 .hp-nav-next{right:-1.375rem;}
 .hp-dots{display:flex !important;justify-content:center;align-items:center;gap:0.75rem;margin-top:1.75rem;position:static;width:100%;}
+.hp-dots:empty{display:none !important;margin-top:0;}
 .hp-dots .hp-dot{width:0.875rem !important;height:0.875rem !important;border-radius:9999px !important;border:none !important;background:#cbd5e1 !important;cursor:pointer;padding:0 !important;margin:0 !important;transition:background 0.2s ease,transform 0.2s ease;opacity:1 !important;}
 .hp-dots .hp-dot.active{background:#003B71 !important;transform:scale(1.1);}
 @media(max-width:1280px){.hp-section{padding:3rem 2.5rem;}}
@@ -55,12 +56,12 @@ function buildHeroPagesHTML(data) {
         <h2 class="hp-heading">${data.heading || "Título"}</h2>
         <p class="hp-subheading">${data.subheading || "Subtítulo"}</p>
         <div class="hp-carousel">
-            <button type="button" class="hp-nav hp-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
+            <button type="button" class="hp-nav hp-nav-prev" data-swiper-prev aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
             <div class="hp-swiper swiper">
                 <div class="swiper-wrapper">${cardsHtml}</div>
             </div>
-            <button type="button" class="hp-nav hp-nav-next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
-            <div class="hp-dots swiper-pagination"></div>
+            <button type="button" class="hp-nav hp-nav-next" data-swiper-next aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
+            <div class="hp-dots swiper-pagination" data-swiper-pagination></div>
         </div>
     </section>`;
 }
@@ -511,8 +512,6 @@ export function initializeHeroPagesBlock(editor) {
         },
     });
 
-    injectHeroPagesEditorStyles(editor, componentType);
-
     editor.on("component:selected", (selected) => {
         if (!selected || selected.__hpRedirecting) return;
         const el = selected.getEl?.();
@@ -532,24 +531,4 @@ export function initializeHeroPagesBlock(editor) {
             }, 0);
         }
     });
-}
-
-function injectHeroPagesEditorStyles(editor, componentType) {
-    const inject = () => {
-        const iframe = editor.Canvas.getFrameEl();
-        const head = iframe?.contentDocument?.head;
-        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
-        const style = iframe.contentDocument.createElement("style");
-        style.id = `${componentType}-editor-css`;
-        style.textContent = `
-            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;gap:1.5rem;overflow:hidden;flex-wrap:nowrap;}
-            [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 calc(33.333% - 1rem);max-width:calc(33.333% - 1rem);}
-            [data-gjs-type="${componentType}"] .hp-dots{display:none;}
-        `;
-        head.appendChild(style);
-    };
-
-    editor.on("load", () => setTimeout(inject, 100));
-    editor.on("storage:end:load", () => setTimeout(inject, 400));
-    editor.on("canvas:frame:load", () => setTimeout(inject, 100));
 }

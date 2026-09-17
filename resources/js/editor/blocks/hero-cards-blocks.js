@@ -71,12 +71,12 @@ function buildHeroCardsHTML(data, uid) {
         <h2 class="hc-heading">${data.heading || "Título"}</h2>
         <p class="hc-subheading">${data.subheading || "Subtítulo"}</p>
         <div class="hc-carousel">
-            <button type="button" class="hc-nav hc-nav-prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
+            <button type="button" class="hc-nav hc-nav-prev" data-swiper-prev aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
             <div class="hc-swiper swiper">
                 <div class="swiper-wrapper">${cardsHtml}</div>
             </div>
-            <button type="button" class="hc-nav hc-nav-next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
-            <div class="hc-dots swiper-pagination"></div>
+            <button type="button" class="hc-nav hc-nav-next" data-swiper-next aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
+            <div class="hc-dots swiper-pagination" data-swiper-pagination></div>
         </div>
     </section>`;
 }
