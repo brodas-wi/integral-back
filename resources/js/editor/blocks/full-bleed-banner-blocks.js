@@ -75,15 +75,32 @@ function showFullBleedBannerModal(editor, component) {
             .fu-pick-btn:hover{background:#002a52;}
             .fu-img-preview{width:100%;height:130px;object-fit:cover;border-radius:0.375rem;border:1px solid #e2e8f0;display:block;background:#f1f5f9;}
             .fu-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
-            .fu-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .fu-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .fu-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
-            .fu-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .fu-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .fu-btn-save:hover{background:#d97821;}
             .fu-align-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.625rem;}
             .fu-align-option{border:2px solid #e2e8f0;border-radius:0.5rem;padding:0.75rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:500;color:#475569;transition:border-color 0.15s,background 0.15s;}
             .fu-align-option:hover{border-color:#cbd5e1;}
             .fu-align-option.active{border-color:#E97300;background:#fff7ed;color:#c2410c;}
             .fu-align-option input{accent-color:#E97300;}
+            .fu-btn-backup{padding:0.5rem 1rem;background:#fff;border:2px solid #003B71;border-radius:0.5rem;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;}
+            .fu-btn-backup:hover{background:#003B71;color:#fff;}
+            .fu-btn-restore{padding:0.5rem 1rem;background:#fff;border:2px solid #0d9488;border-radius:0.5rem;color:#0d9488;font-size:0.8125rem;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;user-select:none;cursor:pointer;}
+            .fu-btn-restore:hover{background:#0d9488;color:#fff;}
+            .fu-confirm-overlay{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);padding:1rem;}
+            .fu-confirm-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(15,23,42,0.18);font-family:'Inter',sans-serif;overflow:hidden;border:1px solid #e2e8f0;}
+            .fu-confirm-header{padding:1rem 1.25rem 0.75rem;display:flex;align-items:center;gap:0.625rem;border-bottom:1px solid #f1f5f9;}
+            .fu-confirm-header i{font-size:1.25rem;color:#E97300;}
+            .fu-confirm-header h3{margin:0;font-size:0.9375rem;font-weight:700;color:#0f172a;}
+            .fu-confirm-body{padding:1rem 1.25rem;}
+            .fu-confirm-body p{margin:0 0 0.5rem;font-size:0.875rem;color:#475569;line-height:1.5;}
+            .fu-confirm-filename{display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;background:#f1f5f9;border-radius:0.375rem;font-size:0.8rem;font-weight:600;color:#003B71;margin-top:0.25rem;}
+            .fu-confirm-footer{padding:0.75rem 1.25rem 1rem;display:flex;gap:0.625rem;justify-content:flex-end;background:#f8fafc;border-top:1px solid #f1f5f9;}
+            .fu-confirm-cancel{padding:0.5rem 1.125rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .fu-confirm-cancel:hover{background:#f1f5f9;}
+            .fu-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .fu-confirm-ok:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
     }
@@ -159,6 +176,10 @@ function showFullBleedBannerModal(editor, component) {
         </div>
         <div class="fu-modal-footer">
             <button id="fu-modal-cancel" class="fu-btn-cancel">Cancelar</button>
+            <div style="display:flex;gap:0.5rem;margin-right:auto;">
+                <button id="fu-modal-backup" class="fu-btn-backup" title="Descargar configuración como JSON"><i class="ri-download-2-line"></i> Respaldar</button>
+                <label id="fu-modal-restore-label" class="fu-btn-restore" title="Restaurar configuración desde JSON"><i class="ri-upload-2-line"></i> Restaurar<input id="fu-modal-restore-input" type="file" accept=".json,application/json" style="display:none;"></label>
+            </div>
             <button id="fu-modal-save" class="fu-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
         </div>`;
 
@@ -188,6 +209,108 @@ function showFullBleedBannerModal(editor, component) {
             label.classList.add("active");
         });
     });
+
+    modal.querySelector("#fu-modal-backup").addEventListener("click", () => {
+        const selectedAlign =
+            modal.querySelector('input[name="fu-align"]:checked')?.value ||
+            "left";
+        const snapshot = {
+            image_url: modal.querySelector("#fu-image-url").value.trim(),
+            title: modal.querySelector("#fu-title").value.trim(),
+            button_label: modal.querySelector("#fu-button-label").value.trim(),
+            button_href:
+                modal.querySelector("#fu-button-href").value.trim() || "#",
+            align: selectedAlign,
+        };
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `full-bleed-banner-backup-${ts}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    });
+
+    modal.querySelector("#fu-modal-restore-input").addEventListener(
+        "change",
+        (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                let parsed;
+                try {
+                    parsed = JSON.parse(ev.target.result);
+                } catch {
+                    const errOverlay = document.createElement("div");
+                    errOverlay.className = "fu-confirm-overlay";
+                    errOverlay.innerHTML = `<div class="fu-confirm-modal"><div class="fu-confirm-header"><i class="ri-error-warning-line" style="color:#ef4444;"></i><h3>Archivo inválido</h3></div><div class="fu-confirm-body"><p>El archivo seleccionado no es un JSON válido.</p></div><div class="fu-confirm-footer"><button class="fu-confirm-ok" style="background:#ef4444;">Cerrar</button></div></div>`;
+                    document.body.appendChild(errOverlay);
+                    errOverlay.querySelector(".fu-confirm-ok").onclick = () =>
+                        errOverlay.remove();
+                    e.target.value = "";
+                    return;
+                }
+                const confirmOverlay = document.createElement("div");
+                confirmOverlay.className = "fu-confirm-overlay";
+                confirmOverlay.innerHTML = `
+                    <div class="fu-confirm-modal">
+                        <div class="fu-confirm-header">
+                            <i class="ri-refresh-line"></i>
+                            <h3>Restaurar configuración</h3>
+                        </div>
+                        <div class="fu-confirm-body">
+                            <p>¿Deseas restaurar la configuración de este banner desde el archivo de respaldo?</p>
+                            <p>Esta acción reemplazará la configuración actual del formulario.</p>
+                            <span class="fu-confirm-filename"><i class="ri-file-code-line"></i>${file.name}</span>
+                        </div>
+                        <div class="fu-confirm-footer">
+                            <button class="fu-confirm-cancel">Cancelar</button>
+                            <button class="fu-confirm-ok"><i class="ri-check-line"></i> Sí, restaurar</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(confirmOverlay);
+                confirmOverlay.querySelector(".fu-confirm-cancel").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                };
+                confirmOverlay.querySelector(".fu-confirm-ok").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                    const restored = {
+                        image_url: parsed.image_url ?? DEFAULT_DATA.image_url,
+                        title: parsed.title ?? DEFAULT_DATA.title,
+                        button_label:
+                            parsed.button_label ?? DEFAULT_DATA.button_label,
+                        button_href: parsed.button_href ?? DEFAULT_DATA.button_href,
+                        align: parsed.align ?? DEFAULT_DATA.align,
+                    };
+
+                    const existingInner = component
+                        .getEl()
+                        ?.querySelector("[id^='fu-root-']");
+                    const uid =
+                        existingInner?.id?.replace("fu-root-", "") ||
+                        "fu" + Math.random().toString(36).slice(2, 7);
+
+                    component.addAttributes({
+                        "data-full-bleed-config": JSON.stringify(restored),
+                    });
+                    component.components(
+                        buildFullBleedBannerHTML(restored, uid),
+                    );
+                    overlay.remove();
+                    showFullBleedBannerModal(editor, component);
+                };
+            };
+            reader.readAsText(file);
+        },
+    );
 
     const close = () => overlay.remove();
     modal.querySelector("#fu-modal-close").onclick = close;
