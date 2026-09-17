@@ -12,9 +12,9 @@ function buildVideoBannerHTML(data, uid) {
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
-    const wrapperStyle = `position:relative;width:100%;aspect-ratio:20/9;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;background:#0a0a0a;`;
+    const wrapperStyle = `position:relative;width:100%;aspect-ratio:20/9;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;background:#0a0a0a;isolation:isolate;clip-path:inset(0 round ${radius});`;
 
-    const videoStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:${radius};`;
+    const videoStyle = `position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;`;
 
     const gradientStyle = `position:absolute;inset:0;background:linear-gradient(90deg,rgba(233,115,0,0.92) 0%,rgba(233,115,0,0.55) 35%,rgba(233,115,0,0) 65%);`;
 
