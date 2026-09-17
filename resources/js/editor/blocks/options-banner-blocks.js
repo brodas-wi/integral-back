@@ -158,7 +158,24 @@ function showOptionsBannerModal(editor, component) {
             .ob-btn-cancel:hover{background:#f8fafc;}
             .ob-btn-save{padding:0.5rem 1.25rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .ob-btn-save:hover{background:#c96200;}
-            .ob-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
+                        .ob-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
+            .ob-btn-backup{padding:0.5rem 1rem;background:#fff;border:2px solid #003B71;border-radius:9999px;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;}
+            .ob-btn-backup:hover{background:#003B71;color:#fff;}
+            .ob-btn-restore{padding:0.5rem 1rem;background:#fff;border:2px solid #0d9488;border-radius:9999px;color:#0d9488;font-size:0.8125rem;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;user-select:none;cursor:pointer;}
+            .ob-btn-restore:hover{background:#0d9488;color:#fff;}
+            .ob-confirm-overlay{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);padding:1rem;}
+            .ob-confirm-modal{background:#fff;border-radius:0.75rem;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(15,23,42,0.18);font-family:'Inter',sans-serif;overflow:hidden;border:1px solid #e2e8f0;}
+            .ob-confirm-header{padding:1rem 1.25rem 0.75rem;display:flex;align-items:center;gap:0.625rem;border-bottom:1px solid #f1f5f9;}
+            .ob-confirm-header i{font-size:1.25rem;color:#E97300;}
+            .ob-confirm-header h3{margin:0;font-size:0.9375rem;font-weight:700;color:#0f172a;}
+            .ob-confirm-body{padding:1rem 1.25rem;}
+            .ob-confirm-body p{margin:0 0 0.5rem;font-size:0.875rem;color:#475569;line-height:1.5;}
+            .ob-confirm-filename{display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;background:#f1f5f9;border-radius:0.375rem;font-size:0.8rem;font-weight:600;color:#003B71;margin-top:0.25rem;}
+            .ob-confirm-footer{padding:0.75rem 1.25rem 1rem;display:flex;gap:0.625rem;justify-content:flex-end;background:#f8fafc;border-top:1px solid #f1f5f9;}
+            .ob-confirm-cancel{padding:0.5rem 1.125rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .ob-confirm-cancel:hover{background:#f1f5f9;}
+            .ob-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .ob-confirm-ok:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
     }
@@ -236,6 +253,10 @@ function showOptionsBannerModal(editor, component) {
         </div>
         <div class="ob-modal-footer">
             <button id="ob-modal-cancel" class="ob-btn-cancel">Cancelar</button>
+            <div style="display:flex;gap:0.5rem;margin-right:auto;">
+                <button id="ob-modal-backup" class="ob-btn-backup" title="Descargar configuración como JSON"><i class="ri-download-2-line"></i> Respaldar</button>
+                <label id="ob-modal-restore-label" class="ob-btn-restore" title="Restaurar configuración desde JSON"><i class="ri-upload-2-line"></i> Restaurar<input id="ob-modal-restore-input" type="file" accept=".json,application/json" style="display:none;"></label>
+            </div>
             <button id="ob-modal-save" class="ob-btn-save"><i class="ri-check-line"></i> Aplicar cambios</button>
         </div>`;
 
@@ -358,6 +379,103 @@ function showOptionsBannerModal(editor, component) {
             block: "nearest",
         });
     });
+
+    modal.querySelector("#ob-modal-backup").addEventListener("click", () => {
+        const snapshot = {
+            title:
+                modal.querySelector("#ob-title").value.trim() ||
+                DEFAULT_DATA.title,
+            subtitle:
+                modal.querySelector("#ob-subtitle").value.trim() ||
+                DEFAULT_DATA.subtitle,
+            button_label: modal.querySelector("#ob-button-label").value.trim(),
+            button_href:
+                modal.querySelector("#ob-button-href").value.trim() || "#",
+            icon_url: modal.querySelector("#ob-icon-url").value.trim(),
+            cards: JSON.parse(JSON.stringify(data.cards)),
+        };
+        const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `options-banner-backup-${ts}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    });
+
+    modal.querySelector("#ob-modal-restore-input").addEventListener(
+        "change",
+        (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                let parsed;
+                try {
+                    parsed = JSON.parse(ev.target.result);
+                } catch {
+                    const errOverlay = document.createElement("div");
+                    errOverlay.className = "ob-confirm-overlay";
+                    errOverlay.innerHTML = `<div class="ob-confirm-modal"><div class="ob-confirm-header"><i class="ri-error-warning-line" style="color:#ef4444;"></i><h3>Archivo inválido</h3></div><div class="ob-confirm-body"><p>El archivo seleccionado no es un JSON válido.</p></div><div class="ob-confirm-footer"><button class="ob-confirm-ok" style="background:#ef4444;">Cerrar</button></div></div>`;
+                    document.body.appendChild(errOverlay);
+                    errOverlay.querySelector(".ob-confirm-ok").onclick = () =>
+                        errOverlay.remove();
+                    e.target.value = "";
+                    return;
+                }
+                const confirmOverlay = document.createElement("div");
+                confirmOverlay.className = "ob-confirm-overlay";
+                confirmOverlay.innerHTML = `
+                    <div class="ob-confirm-modal">
+                        <div class="ob-confirm-header">
+                            <i class="ri-refresh-line"></i>
+                            <h3>Restaurar configuración</h3>
+                        </div>
+                        <div class="ob-confirm-body">
+                            <p>¿Deseas restaurar la configuración de esta sección desde el archivo de respaldo?</p>
+                            <p>Esta acción reemplazará la configuración actual del formulario.</p>
+                            <span class="ob-confirm-filename"><i class="ri-file-code-line"></i>${file.name}</span>
+                        </div>
+                        <div class="ob-confirm-footer">
+                            <button class="ob-confirm-cancel">Cancelar</button>
+                            <button class="ob-confirm-ok"><i class="ri-check-line"></i> Sí, restaurar</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(confirmOverlay);
+                confirmOverlay.querySelector(".ob-confirm-cancel").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                };
+                confirmOverlay.querySelector(".ob-confirm-ok").onclick = () => {
+                    confirmOverlay.remove();
+                    e.target.value = "";
+                    const restored = {
+                        title: parsed.title ?? DEFAULT_DATA.title,
+                        subtitle: parsed.subtitle ?? DEFAULT_DATA.subtitle,
+                        button_label:
+                            parsed.button_label ?? DEFAULT_DATA.button_label,
+                        button_href: parsed.button_href ?? DEFAULT_DATA.button_href,
+                        icon_url: parsed.icon_url ?? DEFAULT_DATA.icon_url,
+                        cards: JSON.parse(
+                            JSON.stringify(parsed.cards ?? DEFAULT_DATA.cards),
+                        ),
+                    };
+                    component.addAttributes({
+                        "data-options-banner-config": JSON.stringify(restored),
+                    });
+                    component.components(buildOptionsBannerHTML(restored));
+                    overlay.remove();
+                    showOptionsBannerModal(editor, component);
+                };
+            };
+            reader.readAsText(file);
+        },
+    );
 
     const close = () => overlay.remove();
     modal.querySelector("#ob-modal-close").onclick = close;
