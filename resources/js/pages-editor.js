@@ -23,6 +23,8 @@ import {
     addColorToolbarButton,
 } from "./editor/editor-commands";
 import { showConfirmModal } from "./editor/utils/modals";
+import Swiper from "swiper";
+import "swiper/css";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const editorService = new EditorService();
@@ -60,6 +62,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     await Promise.all([editorLoaded, waitForCanvasFrame(editor)]);
+
+    setupSwiperAutoInit(editor);
 
     if (editorState.isEditMode) {
         try {
@@ -169,6 +173,43 @@ function waitForCanvasFrame(editor) {
             resolve();
         }, 3000);
     });
+}
+
+function setupSwiperAutoInit(editor) {
+    const initSwipersInFrame = () => {
+        const iframe = editor.Canvas.getFrameEl();
+        const doc = iframe?.contentDocument;
+        if (!doc) return;
+
+        doc.querySelectorAll(".swiper").forEach((el) => {
+            if (el.swiper) {
+                el.swiper.destroy(true, true);
+            }
+            new Swiper(el, {
+                slidesPerView: "auto",
+                spaceBetween: 24,
+                navigation: {
+                    nextEl: el.parentElement?.querySelector(".hc-nav-next"),
+                    prevEl: el.parentElement?.querySelector(".hc-nav-prev"),
+                    disabledClass: "hc-nav-disabled",
+                },
+                pagination: {
+                    el: el.parentElement?.querySelector(".hc-dots"),
+                    clickableClass: "hc-dot-clickable",
+                    bulletClass: "hc-dot",
+                    bulletActiveClass: "active",
+                    clickable: true,
+                },
+                watchOverflow: true,
+            });
+        });
+    };
+
+    editor.on("component:add component:update storage:end:load", () => {
+        setTimeout(initSwipersInFrame, 150);
+    });
+
+    setTimeout(initSwipersInFrame, 300);
 }
 
 function injectCanvasFix(editor) {

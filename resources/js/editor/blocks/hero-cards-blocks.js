@@ -9,7 +9,7 @@ const HC_CSS = `
 .hc-swiper{overflow:hidden;width:100%;}
 .hc-swiper .swiper-wrapper{align-items:stretch;}
 .hc-swiper .swiper-slide{height:auto;flex-shrink:0;display:flex;justify-content:center;box-sizing:border-box;}
-.hc-card{position:relative;width:260px !important;max-width:260px;flex-shrink:0;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;background:#0a0a0a;}
+.hc-card{position:relative;width:260px !important;max-width:260px;flex-shrink:0;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;}
 .hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;}
 .hc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:32px;}
@@ -28,6 +28,7 @@ const HC_CSS = `
 .hc-nav-prev{left:-1.375rem;}
 .hc-nav-next{right:-1.375rem;}
 .hc-dots{display:flex !important;justify-content:center;align-items:center;gap:0.75rem;margin-top:1.75rem;position:static;width:100%;}
+.hc-dots:empty{display:none !important;margin-top:0;}
 .hc-dots .hc-dot{width:0.875rem !important;height:0.875rem !important;border-radius:9999px !important;border:none !important;background:#cbd5e1 !important;cursor:pointer;padding:0 !important;margin:0 !important;transition:background 0.2s ease,transform 0.2s ease;opacity:1 !important;}
 .hc-dots .hc-dot.active{background:#003B71 !important;transform:scale(1.1);}
 @media(max-width:1280px){.hc-section{padding:3rem 2.5rem;}}
@@ -626,26 +627,4 @@ export function initializeHeroCardsBlock(editor) {
             }, 0);
         }
     });
-
-    injectHeroCardsEditorStyles(editor, componentType);
-}
-
-function injectHeroCardsEditorStyles(editor, componentType) {
-    const inject = () => {
-        const iframe = editor.Canvas.getFrameEl();
-        const head = iframe?.contentDocument?.head;
-        if (!head || head.querySelector(`#${componentType}-editor-css`)) return;
-        const style = iframe.contentDocument.createElement("style");
-        style.id = `${componentType}-editor-css`;
-        style.textContent = `
-            [data-gjs-type="${componentType}"] .swiper-wrapper{display:flex !important;gap:1.5rem;overflow:hidden;flex-wrap:wrap;justify-content:center;}
-            [data-gjs-type="${componentType}"] .swiper-slide{flex:0 0 auto;width:auto !important;}
-            [data-gjs-type="${componentType}"] .hc-dots{display:none;}
-        `;
-        head.appendChild(style);
-    };
-
-    editor.on("load", () => setTimeout(inject, 100));
-    editor.on("storage:end:load", () => setTimeout(inject, 400));
-    editor.on("canvas:frame:load", () => setTimeout(inject, 100));
 }

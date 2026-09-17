@@ -16,6 +16,8 @@ import {
     initPermissionCheckboxes,
 } from "./modules/roles.js";
 import { initProfileEdit } from "./modules/profile.js";
+import Swiper from "swiper";
+import "swiper/css";
 
 window.toggleDropdown = toggleDropdown;
 
@@ -69,4 +71,23 @@ document.addEventListener("DOMContentLoaded", function () {
             initAnnouncementModal();
         });
     }
+
+    document.querySelectorAll(".swiper").forEach((el) => {
+        new Swiper(el, {
+            slidesPerView: "auto",
+            spaceBetween: 24,
+            navigation: {
+                nextEl: el.parentElement?.querySelector(".hc-nav-next"),
+                prevEl: el.parentElement?.querySelector(".hc-nav-prev"),
+                disabledClass: "hc-nav-disabled",
+            },
+            pagination: {
+                el: el.parentElement?.querySelector(".hc-dots"),
+                bulletClass: "hc-dot",
+                bulletActiveClass: "active",
+                clickable: true,
+            },
+            watchOverflow: true,
+        });
+    });
 });
