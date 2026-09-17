@@ -70,7 +70,7 @@ function showFixedBannerModal(editor, component) {
             .fb-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;}
             .fb-label{display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;}
             .fb-row{display:flex;gap:0.75rem;align-items:center;}
-            .fb-input{flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;width:100%;box-sizing:border-box;}
+            .fb-input{flex:1;padding:0.5rem 1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:9999px;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;width:100%;box-sizing:border-box;}
             .fb-input:focus{border-color:#3b82f6;}
             .fb-pick-btn{flex-shrink:0;padding:0.4rem 0.75rem;background:#003B71;border:none;border-radius:9999px;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.25rem;font-family:inherit;white-space:nowrap;transition:background 0.15s;}
             .fb-pick-btn:hover{background:#002a52;}
@@ -81,7 +81,7 @@ function showFixedBannerModal(editor, component) {
             .fb-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .fb-btn-save:hover{background:#d97821;}
             .fb-position-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.625rem;}
-            .fb-position-option{border:2px solid #e2e8f0;border-radius:0.5rem;padding:0.75rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:500;color:#475569;transition:border-color 0.15s,background 0.15s;}
+            .fb-position-option{border:2px solid #e2e8f0;border-radius:9999px;padding:0.75rem 1.25rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:500;color:#475569;transition:border-color 0.15s,background 0.15s;}
             .fb-position-option:hover{border-color:#cbd5e1;}
             .fb-position-option.active{border-color:#E97300;background:#fff7ed;color:#c2410c;}
             .fb-position-option input{accent-color:#E97300;}
@@ -98,9 +98,9 @@ function showFixedBannerModal(editor, component) {
             .fb-confirm-body p{margin:0 0 0.5rem;font-size:0.875rem;color:#475569;line-height:1.5;}
             .fb-confirm-filename{display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;background:#f1f5f9;border-radius:0.375rem;font-size:0.8rem;font-weight:600;color:#003B71;margin-top:0.25rem;}
             .fb-confirm-footer{padding:0.75rem 1.25rem 1rem;display:flex;gap:0.625rem;justify-content:flex-end;background:#f8fafc;border-top:1px solid #f1f5f9;}
-            .fb-confirm-cancel{padding:0.5rem 1.125rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .fb-confirm-cancel{padding:0.5rem 1.125rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .fb-confirm-cancel:hover{background:#f1f5f9;}
-            .fb-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .fb-confirm-ok{padding:0.5rem 1.125rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .fb-confirm-ok:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
