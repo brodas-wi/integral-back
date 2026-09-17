@@ -12,11 +12,9 @@ function buildVideoBannerHTML(data, uid) {
 
     const sectionStyle = `width:100%;max-width:1600px;margin:0 auto;padding:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;`;
 
-    const wrapperStyle = `position:relative;width:100%;aspect-ratio:20/9;min-height:260px;box-sizing:border-box;background:#0a0a0a;border-radius:${radius};overflow:hidden;`;
+    const wrapperStyle = `position:relative;width:100%;aspect-ratio:20/9;min-height:260px;border-radius:${radius};overflow:hidden;box-sizing:border-box;background:#0a0a0a;`;
 
-    const innerStyle = `position:absolute;inset:-1px;width:calc(100% + 2px);height:calc(100% + 2px);`;
-
-    const videoStyle = `width:100%;height:100%;object-fit:cover;display:block;`;
+    const videoStyle = `position:absolute;top:-1px;left:-1px;width:calc(100% + 2px);height:calc(100% + 2px);object-fit:cover;display:block;`;
 
     const gradientStyle = `position:absolute;inset:0;background:linear-gradient(90deg,rgba(233,115,0,0.92) 0%,rgba(233,115,0,0.55) 35%,rgba(233,115,0,0) 65%);`;
 
@@ -25,8 +23,8 @@ function buildVideoBannerHTML(data, uid) {
         : "";
 
     const videoHtml = videoUrl
-        ? `<div style="${innerStyle}"><video id="vb-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="vb-video-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false" style="${videoStyle}"></video></div>`
-        : `<div style="${innerStyle}"><img src="${posterUrl}" alt="Banner video" style="${videoStyle}"></div>`;
+        ? `<video id="vb-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="vb-video-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false" style="${videoStyle}"></video>`
+        : `<img src="${posterUrl}" alt="Banner video" style="${videoStyle}">`;
 
     return `<section id="vb-root-${uid}" style="${sectionStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><div style="${wrapperStyle}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">${videoHtml}${gradientHtml}</div></section>`;
 }
