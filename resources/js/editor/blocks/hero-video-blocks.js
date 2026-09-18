@@ -395,7 +395,6 @@ function injectHeroVideoEditorStyles(editor, componentType) {
         style.textContent = `
             [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
             [data-gjs-type="${componentType}"] .hv-bg { background-size: cover; background-position: center; background-repeat: no-repeat; }
-            [data-gjs-type="${componentType}"] .hv-mute-btn { display: none !important; }
         `;
         head.appendChild(style);
     });
@@ -405,14 +404,18 @@ function injectHeroVideoEditorStyles(editor, componentType) {
         applyCanvasPosterBackground(editor, component);
     });
 
-    editor.on("load", () => {
+    const pauseAllInstances = () => {
         editor
             .getWrapper()
             ?.find(`[data-gjs-type="${componentType}"]`)
             ?.forEach((component) =>
                 applyCanvasPosterBackground(editor, component),
             );
-    });
+    };
+
+    editor.on("load", () => setTimeout(pauseAllInstances, 100));
+    editor.on("storage:end:load", () => setTimeout(pauseAllInstances, 400));
+    editor.on("canvas:frame:load", () => setTimeout(pauseAllInstances, 100));
 }
 
 function applyCanvasPosterBackground(editor, component) {
