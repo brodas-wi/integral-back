@@ -6,10 +6,10 @@ const HC_CSS = `
 .hc-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0;text-align:center;line-height:1.2;}
 .hc-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.5;}
 .hc-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;width:100%;justify-content:center;justify-items:center;}
-.hc-card{position:relative;width:100%;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;}
-.hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;}
+.hc-card{position:relative;width:100%;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;isolation:isolate;}
+.hc-card-media{position:absolute;inset:0;width:100%;height:100%;}
 .hc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
-.hc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:32px;}
+.hc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;}
 .hc-card:hover .hc-card-video-wrap{opacity:1;}
 .hc-card-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hc-card-video-shield{position:absolute;inset:0;width:100%;height:100%;z-index:10;background:transparent;pointer-events:auto;}
