@@ -244,9 +244,9 @@ function showVideoBannerModal(editor, component) {
 }
 
 const iconVideoBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-    <rect width="32" height="32" fill="#4a4a4a" rx="2"/>
-    <rect x="2" y="8" width="28" height="16" rx="2" fill="none" stroke="#E97300" stroke-width="1"/>
-    <path d="M13 13.5 L20 16 L13 18.5 Z" fill="#E97300"/>
+    <rect width="32" height="32" fill="#ffffff" rx="2"/>
+    <rect x="9" y="11" width="14" height="10" rx="1.5" fill="none" stroke="#E97300" stroke-width="1.3"/>
+    <path d="M14.5 14.5 L14.5 17.5 L17.5 16 Z" fill="#E97300"/>
 </svg>`;
 
 export function initializeVideoBannerBlock(editor) {
@@ -334,7 +334,7 @@ export function initializeVideoBannerBlock(editor) {
     });
 
     editor.BlockManager.add("video-banner-block", {
-        label: "Banner con Video",
+        label: "Sección de Video",
         category: "Heroes",
         media: iconVideoBanner,
         activate: true,

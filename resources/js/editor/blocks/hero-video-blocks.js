@@ -366,14 +366,13 @@ export function initializeHeroVideoBlock(editor) {
     });
 
     editor.BlockManager.add("hero-video-block", {
-        label: "Hero Video",
+        label: "Video Pantalla Completa",
         category: "Heroes",
         media: `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" fill="#4a4a4a" rx="2"/>
-            <rect x="4" y="6" width="24" height="15" rx="1" fill="none" stroke="#E97300" stroke-width="1"/>
-            <path d="M13 10.5 L20 13.5 L13 16.5 Z" fill="#E97300"/>
-            <rect x="5.5" y="24" width="21" height="1.4" rx="0.7" fill="#ffffff" fill-opacity="0.85"/>
-            <rect x="2" y="27" width="28" height="3" fill="#E97300"/>
+            <rect width="32" height="32" fill="#E97300" rx="2"/>
+            <path d="M13 12 L13 19 L19.5 15.5 Z" fill="#ffffff"/>
+            <rect x="4" y="23" width="14" height="2" rx="1" fill="#ffffff"/>
+            <rect x="4" y="27" width="8" height="1.5" rx="0.75" fill="#ffffff" fill-opacity="0.75"/>
         </svg>`,
         activate: true,
         content: {
