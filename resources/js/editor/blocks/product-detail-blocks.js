@@ -161,6 +161,12 @@ const ctaButton = (label = "Adquiere tu servicio") => `
 const productTitle = (title = "Nombre del Producto") => `
 <h2 class="text-4xl font-black text-[#E97300] break-words leading-tight text-center w-full">${title}</h2>`;
 
+const twoLineTitle = (line1 = "Línea uno", line2 = "Línea dos") => `
+<h2 class="text-4xl font-black leading-tight break-words m-0">
+    <span class="block text-[#003B71]">${line1}</span>
+    <span class="block text-[#E97300]">${line2}</span>
+</h2>`;
+
 const COVERAGE_TABLE_DATA = {
     title: "Coberturas",
     cols: 3,
@@ -326,6 +332,19 @@ const iconProductTitle = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect x="8" y="19" width="16" height="2" rx="1" fill="#E97300" fill-opacity="0.4"/>
 </svg>`;
 
+const iconProductDetailTwoLineTitle = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="3" y="5" width="12" height="1.2" rx="0.6" fill="#003B71"/>
+    <rect x="3" y="7" width="9.5" height="1.2" rx="0.6" fill="#E97300"/>
+    <rect x="3" y="10.5" width="12" height="0.5" rx="0.25" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="3" y="12.2" width="10" height="0.5" rx="0.25" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="3" y="13.9" width="11" height="0.5" rx="0.25" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="3" y="15.6" width="9" height="0.5" rx="0.25" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="20.5" y="5" width="8" height="3" rx="1.5" fill="#E97300"/>
+    <rect x="20.5" y="10.5" width="8" height="0.7" rx="0.35" fill="#9ca3af"/>
+    <rect x="20.5" y="12" width="6" height="0.7" rx="0.35" fill="#9ca3af"/>
+</svg>`;
+
 const CATEGORY = "Detalle de Producto";
 
 export const productDetailBlocks = [
@@ -345,6 +364,28 @@ export const productDetailBlocks = [
             ${productTitle("Nombre del Producto")}
             ${ctaButton("Adquiere tu servicio")}
             ${footnoteGroup(3)}
+        </div>
+    </div>
+</section>
+${PRODUCT_DETAIL_GRID_STYLES}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
+    },
+
+    {
+        id: "product-detail-two-line-title",
+        label: "Sección: 2 columnas (título doble + cta)",
+        category: CATEGORY,
+        media: iconProductDetailTwoLineTitle,
+        content: `
+<section class="w-full bg-white px-16 py-12">
+    <div class="pd-asymmetric-grid">
+        <div class="flex flex-col gap-5">
+            ${twoLineTitle("¡Adquiere", "tu producto nuevo!")}
+            ${bulletList(5, "CONDICIONES:")}
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            ${ctaButton("Solicita tu crédito")}
+            ${footnoteGroup(2)}
         </div>
     </div>
 </section>
