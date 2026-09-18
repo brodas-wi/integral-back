@@ -205,22 +205,59 @@ const coverageTable = (n = 5) => `
 
 const iconProductDetail = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <rect x="2" y="3" width="14" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
-    <rect x="4" y="5" width="10" height="2" rx="1" fill="#003B71" fill-opacity="0.7"/>
-    <rect x="4" y="9" width="10" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
-    <rect x="4" y="11" width="8" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
-    <rect x="4" y="13" width="9" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
-    <rect x="4" y="16" width="3" height="1" rx="0.5" fill="#E97300" fill-opacity="0.8"/>
-    <circle cx="5" cy="20" r="1" fill="#003B71" fill-opacity="0.5"/>
-    <rect x="7" y="19.3" width="7" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
-    <circle cx="5" cy="23" r="1" fill="#003B71" fill-opacity="0.5"/>
-    <rect x="7" y="22.3" width="6" height="1" rx="0.5" fill="#003B71" fill-opacity="0.4"/>
-    <rect x="18" y="3" width="12" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
-    <rect x="20" y="6" width="8" height="4" rx="1" fill="#E97300" fill-opacity="0.3"/>
-    <rect x="20" y="13" width="8" height="4" rx="2" fill="#E97300" fill-opacity="0.8"/>
-    <rect x="20" y="20" width="8" height="1" rx="0.5" fill="#003B71" fill-opacity="0.2"/>
-    <rect x="20" y="22" width="6" height="1" rx="0.5" fill="#003B71" fill-opacity="0.2"/>
-    <rect x="20" y="24" width="7" height="1" rx="0.5" fill="#003B71" fill-opacity="0.2"/>
+    <rect x="2" y="4" width="6.5" height="2" rx="1" fill="#E97300"/>
+    <rect x="2" y="8.5" width="7" height="0.9" rx="0.45" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="2" y="10.7" width="5.8" height="0.9" rx="0.45" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="2" y="12.9" width="6.5" height="0.9" rx="0.45" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="2" y="15.1" width="5" height="0.9" rx="0.45" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="21" y="13" width="9" height="3.2" rx="1.6" fill="#E97300"/>
+    <rect x="21" y="18.2" width="9" height="0.9" rx="0.45" fill="#9ca3af"/>
+    <rect x="21" y="20.4" width="7" height="0.9" rx="0.45" fill="#9ca3af"/>
+</svg>`;
+
+const iconProductDetailRepeatBlocks = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="2" y="5.5" width="6" height="0.9" rx="0.45" fill="#003B71"/>
+    <rect x="2" y="7.4" width="10.5" height="0.6" rx="0.3" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="2" y="11.5" width="6" height="0.9" rx="0.45" fill="#003B71"/>
+    <rect x="2" y="13.4" width="10.5" height="0.6" rx="0.3" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="2" y="17.5" width="6" height="0.9" rx="0.45" fill="#003B71"/>
+    <rect x="2" y="19.4" width="10.5" height="0.6" rx="0.3" fill="#003B71" fill-opacity="0.4"/>
+    <rect x="20" y="5.5" width="9" height="2.8" rx="0.7" fill="#E97300"/>
+    <rect x="20" y="10.5" width="9" height="2.8" rx="1.4" fill="#E97300"/>
+    <rect x="20" y="15.5" width="9" height="4.5" rx="1" fill="none" stroke="#003B71" stroke-width="0.7"/>
+</svg>`;
+
+const iconProductDetailBoxDouble = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="2" y="6" width="10" height="1" rx="0.5" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="2" y="8.5" width="8" height="1" rx="0.5" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="2" y="11.5" width="7" height="0.9" rx="0.45" fill="#E97300"/>
+    <rect x="2" y="14.5" width="9" height="0.7" rx="0.35" fill="#003B71" fill-opacity="0.35"/>
+    <rect x="2" y="16.5" width="7.5" height="0.7" rx="0.35" fill="#003B71" fill-opacity="0.35"/>
+    <rect x="20" y="6" width="10" height="2.2" rx="0.5" fill="#E97300"/>
+    <rect x="20" y="15" width="10" height="10" rx="1.5" fill="none" stroke="#003B71" stroke-width="0.9"/>
+    <line x1="20" y1="20" x2="30" y2="20" stroke="#E97300" stroke-width="1"/>
+</svg>`;
+
+const iconProductDetailIconCard = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="9" y="4" width="14" height="24" rx="2" fill="#ffffff" stroke="var(--border-strong)" stroke-width="0.7"/>
+    <circle cx="16" cy="9.5" r="2.6" fill="#E97300"/>
+    <rect x="11.5" y="14.5" width="9" height="1.1" rx="0.55" fill="#E97300"/>
+    <circle cx="12.2" cy="19" r="0.6" fill="#003B71" fill-opacity="0.6"/>
+    <rect x="13.5" y="18.6" width="7" height="0.7" rx="0.35" fill="#003B71" fill-opacity="0.5"/>
+    <circle cx="12.2" cy="21.5" r="0.6" fill="#003B71" fill-opacity="0.6"/>
+    <rect x="13.5" y="21.1" width="6" height="0.7" rx="0.35" fill="#003B71" fill-opacity="0.5"/>
+    <circle cx="12.2" cy="24" r="0.6" fill="#003B71" fill-opacity="0.6"/>
+    <rect x="13.5" y="23.6" width="6.5" height="0.7" rx="0.35" fill="#003B71" fill-opacity="0.5"/>
+</svg>`;
+
+const iconPriceBoxSimple = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="4" y="10" width="24" height="12" rx="3" fill="none" stroke="#003B71" stroke-width="1.4"/>
+    <rect x="8" y="13.5" width="16" height="1.6" rx="0.8" fill="#003B71"/>
+    <rect x="10" y="17" width="12" height="2.4" rx="1.2" fill="#E97300"/>
 </svg>`;
 
 const iconProductDetailBox = `<svg viewBox="0 0 32 32" width="32" height="32">
@@ -345,6 +382,12 @@ const iconProductDetailTwoLineTitle = `<svg viewBox="0 0 32 32" width="32" heigh
     <rect x="20.5" y="12" width="6" height="0.7" rx="0.35" fill="#9ca3af"/>
 </svg>`;
 
+const iconTwoLineTitleItem = `<svg viewBox="0 0 32 32" width="32" height="32">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="5" y="11" width="22" height="4.5" rx="1.5" fill="#003B71"/>
+    <rect x="5" y="17.5" width="18" height="4.5" rx="1.5" fill="#E97300"/>
+</svg>`;
+
 const CATEGORY = "Detalle de Producto";
 
 export const productDetailBlocks = [
@@ -419,9 +462,9 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
 
     {
         id: "product-detail-box-double",
-        label: "Sección: 2 columnas + cuadro de precio doble",
+        label: "Sección: 2 columnas + precio doble",
         category: CATEGORY,
-        media: iconProductDetailBox,
+        media: iconProductDetailBoxDouble,
         content: `
 <section class="w-full bg-white px-16 py-12">
     <div class="pd-asymmetric-grid">
@@ -540,9 +583,9 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
 
     {
         id: "product-detail-repeat-blocks",
-        label: "Sección: bloques título+párrafo repetidos + acción",
+        label: "Sección: parrafos + cta + precio",
         category: CATEGORY,
-        media: iconProductDetail,
+        media: iconProductDetailRepeatBlocks,
         content: `
 <section class="w-full bg-white px-16 py-12">
     <div class="pd-asymmetric-grid">
@@ -631,20 +674,8 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
 
     {
-        id: "product-detail-bullet-item",
-        label: "Ítem: bullet individual",
-        category: CATEGORY,
-        media: iconBulletItem,
-        content: `
-<ul class="list-none p-0 m-0 flex flex-col gap-3">
-    ${bulletItem()}
-</ul>
-${PRODUCT_DETAIL_COLOR_STYLES}`,
-    },
-
-    {
         id: "product-detail-bullet-list",
-        label: "Ítem: lista de ventajas (con título)",
+        label: "Ítem: Titulo + lista",
         category: CATEGORY,
         media: iconBulletItem,
         content: `
@@ -683,10 +714,20 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
 
     {
-        id: "product-detail-price-box",
-        label: "Ítem: cuadro de precio simple",
+        id: "product-detail-two-line-title-item",
+        label: "Ítem: título doble (azul + naranja)",
         category: CATEGORY,
-        media: iconProductDetailBox,
+        media: iconTwoLineTitleItem,
+        content: `
+${twoLineTitle("¡Adquiere", "tu producto nuevo!")}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
+    },
+
+    {
+        id: "product-detail-price-box",
+        label: "Ítem: cuadro de precio",
+        category: CATEGORY,
+        media: iconPriceBoxSimple,
         content: `
 ${priceBox()}
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
@@ -706,7 +747,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
         id: "product-detail-icon-card",
         label: "Ítem: tarjeta con ícono + lista",
         category: CATEGORY,
-        media: iconProductDetailCardsGrid,
+        media: iconProductDetailIconCard,
         content: `
 <div class="pd-cards-grid" style="grid-template-columns:1fr;max-width:320px;">
     ${iconCard("Lorem ipsum", 3)}
