@@ -170,9 +170,10 @@ function showImageTitleBannerModal(editor, component) {
 }
 
 const iconImageTitleBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-    <rect width="32" height="32" fill="#E97300" rx="2"/>
-    <path d="M4 8 Q4 6 6 6 L14 6 Q16 6 16 8 L16 14 Q16 16 14 16 L6 16 Q4 16 4 14 Z" fill="#ffffff"/>
-    <rect x="6.5" y="9" width="8" height="2" rx="1" fill="#E97300"/>
+    <rect width="32" height="32" fill="#ffffff" rx="2"/>
+    <rect x="3" y="3" width="26" height="26" rx="3" fill="#E97300"/>
+    <path d="M7 9 Q7 6 10 6 L19 6 Q22 6 22 9 L22 18 Q22 21 19 21 L10 21 Q7 21 7 18 Z" fill="#ffffff"/>
+    <rect x="10" y="11.5" width="9" height="2.4" rx="1.2" fill="#E97300"/>
 </svg>`;
 
 function responsiveStyleInjectorScript() {
