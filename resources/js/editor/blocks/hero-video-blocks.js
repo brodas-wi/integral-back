@@ -14,6 +14,10 @@ const HERO_VIDEO_STYLES = `
 .hv-btn:hover{background:#c96200;}
 .hv-mute-btn{position:absolute;top:1.25rem;right:1.25rem;z-index:15;width:2.5rem;height:2.5rem;border-radius:9999px;background:rgba(0,0,0,0.45);border:1.5px solid rgba(255,255,255,0.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.0625rem;cursor:pointer;transition:background 0.15s,border-color 0.15s;backdrop-filter:blur(2px);}
 .hv-mute-btn:hover{background:rgba(0,0,0,0.65);border-color:#fff;}
+.hv-bg video::-webkit-media-controls{display:none !important;}
+.hv-bg video::-webkit-media-controls-panel{display:none !important;opacity:0 !important;}
+.hv-bg video::-webkit-media-controls-start-playback-button{display:none !important;}
+.hv-bg video::-moz-media-controls{display:none !important;}
 @media(max-width:640px){
 .hv-title{font-size:1.375rem;}
 .hv-subtitle{font-size:0.9375rem;}
