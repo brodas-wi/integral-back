@@ -170,10 +170,9 @@ function showImageTitleBannerModal(editor, component) {
 }
 
 const iconImageTitleBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-    <rect width="32" height="32" fill="#4a4a4a" rx="2"/>
-    <rect x="2" y="6" width="28" height="20" rx="2" fill="none" stroke="#E97300" stroke-width="1"/>
-    <path d="M2 8 Q2 6 4 6 L14 6 Q16 6 16 8 L16 14 Q16 16 14 16 L4 16 Q2 16 2 14 Z" fill="#ffffff"/>
-    <rect x="4.5" y="9" width="8" height="2" rx="1" fill="#E97300"/>
+    <rect width="32" height="32" fill="#E97300" rx="2"/>
+    <path d="M4 8 Q4 6 6 6 L14 6 Q16 6 16 8 L16 14 Q16 16 14 16 L6 16 Q4 16 4 14 Z" fill="#ffffff"/>
+    <rect x="6.5" y="9" width="8" height="2" rx="1" fill="#E97300"/>
 </svg>`;
 
 function responsiveStyleInjectorScript() {
@@ -222,7 +221,7 @@ export function initializeBannerBlocks(editor) {
 
         model: {
             defaults: {
-                name: "Banner con Imagen",
+                name: "Sección con Imagen y Texto",
                 tagName: "div",
                 draggable: true,
                 droppable: false,
@@ -275,7 +274,7 @@ export function initializeBannerBlocks(editor) {
     });
 
     editor.BlockManager.add("image-title-banner-block", {
-        label: "Banner con Imagen",
+        label: "Sección con Imagen y Texto",
         category: "Heroes",
         media: iconImageTitleBanner,
         activate: true,
