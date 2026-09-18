@@ -5,7 +5,7 @@ const HC_CSS = `
 .hc-section{width:100%;max-width:1400px;margin:0 auto;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
 .hc-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0;text-align:center;line-height:1.2;}
 .hc-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.5;}
-.hc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,300px));gap:1.5rem;width:100%;justify-content:center;}
+.hc-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;width:100%;justify-content:center;justify-items:center;}
 .hc-card{position:relative;width:100%;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;}
 .hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;}
 .hc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
@@ -19,6 +19,9 @@ const HC_CSS = `
 .hc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);line-height:1.4;}
 .hc-card-btn{position:absolute;right:0.75rem;bottom:0.75rem;z-index:20;width:2.25rem;height:2.25rem;border-radius:9999px;background:#fff;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.125rem;text-decoration:none;transition:background 0.2s ease,color 0.2s ease;pointer-events:auto;}
 .hc-card-btn:hover{background:#E97300;color:#fff;}
+@media(min-width:600px){.hc-grid{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:900px){.hc-grid{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:1200px){.hc-grid{grid-template-columns:repeat(4,1fr);}}
 @media(max-width:1280px){.hc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.hc-section{padding:2.5rem 1.5rem;}.hc-heading,.hc-subheading{font-size:1.875rem;}}
 @media(max-width:640px){.hc-heading,.hc-subheading{font-size:1.5rem;}.hc-card{height:290px;}}
