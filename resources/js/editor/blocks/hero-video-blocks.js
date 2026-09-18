@@ -40,29 +40,7 @@ function buildHeroVideoHTML(data, uid) {
     const bgMedia = `<video id="hv-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`;
 
     const muteBtnHtml = videoUrl
-        ? `<button type="button" class="hv-mute-btn" id="hv-mute-btn-${uid}" aria-label="Activar sonido" data-muted="true" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><i class="ri-volume-mute-line"></i></button>`
-        : "";
-
-    const muteScript = videoUrl
-        ? `<script>(function(){
-    var btn=document.getElementById("hv-mute-btn-${uid}");
-    var video=document.getElementById("hv-video-${uid}");
-    if(!btn||!video||btn.dataset.bound)return;
-    btn.dataset.bound="true";
-    function syncIcon(){
-        var muted=video.muted;
-        btn.dataset.muted=muted?"true":"false";
-        btn.setAttribute("aria-label",muted?"Activar sonido":"Silenciar video");
-        btn.innerHTML=muted?'<i class="ri-volume-mute-line"></i>':'<i class="ri-volume-up-line"></i>';
-    }
-    btn.addEventListener("click",function(){
-        video.muted=!video.muted;
-        if(!video.muted){video.play().catch(function(){});}
-        syncIcon();
-    });
-    video.addEventListener("volumechange",syncIcon);
-    syncIcon();
-})();</script>`
+        ? `<button type="button" class="hv-mute-btn" data-hv-mute-btn data-hv-target="hv-video-${uid}" aria-label="Activar sonido" data-muted="true" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><i class="ri-volume-mute-line"></i></button>`
         : "";
 
     return `<section id="hv-root-${uid}" class="hv-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
@@ -75,7 +53,7 @@ function buildHeroVideoHTML(data, uid) {
             ${subtitleHtml}
             ${buttonHtml}
         </div>
-    </section>${muteScript}`;
+    </section>`;
 }
 
 const DEFAULT_DATA = {
