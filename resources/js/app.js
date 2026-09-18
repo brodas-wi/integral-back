@@ -75,9 +75,21 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".swiper").forEach((el) => {
         if (el.swiper) return;
         const scope = el.closest("[class*='-carousel']") || el.parentElement;
+        const shouldFill = el.hasAttribute("data-swiper-fill");
+        const minSlideWidth =
+            parseInt(el.dataset.swiperMinSlideWidth, 10) || 260;
+        const gap = 24;
+
+        const computeSlidesPerView = () => {
+            if (!shouldFill) return "auto";
+            const width = el.clientWidth || 1;
+            const fit = Math.floor((width + gap) / (minSlideWidth + gap));
+            return Math.max(1, fit);
+        };
+
         new Swiper(el, {
-            slidesPerView: "auto",
-            spaceBetween: 24,
+            slidesPerView: computeSlidesPerView(),
+            spaceBetween: gap,
             navigation: {
                 nextEl: scope?.querySelector("[data-swiper-next]"),
                 prevEl: scope?.querySelector("[data-swiper-prev]"),
@@ -89,6 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 clickable: true,
             },
             watchOverflow: true,
+            on: shouldFill
+                ? {
+                    resize(swiper) {
+                        swiper.params.slidesPerView = computeSlidesPerView();
+                        swiper.update();
+                    },
+                }
+                : {},
         });
     });
 });

@@ -68,7 +68,7 @@ function buildSplitCarouselHTML(data) {
             </div>
             <div class="sc-carousel-col">
                 <div class="sc-carousel">
-                    <div class="sc-swiper swiper">
+                    <div class="sc-swiper swiper" data-swiper-fill data-swiper-min-slide-width="260">
                         <div class="swiper-wrapper">${cardsHtml}</div>
                     </div>
                     <div class="sc-dots swiper-pagination" data-swiper-pagination></div>
