@@ -40,15 +40,22 @@ function initHeroVideoMuteButtons() {
                 : '<i class="ri-volume-up-line"></i>';
         };
 
+        video.controls = false;
+        video.setAttribute("controlsList", "nodownload noplaybackrate");
+
         btn.addEventListener("click", () => {
             video.muted = !video.muted;
+            video.controls = false;
             if (!video.muted) {
                 video.play().catch(() => { });
             }
             syncIcon();
         });
 
-        video.addEventListener("volumechange", syncIcon);
+        video.addEventListener("volumechange", () => {
+            video.controls = false;
+            syncIcon();
+        });
         syncIcon();
     });
 }
