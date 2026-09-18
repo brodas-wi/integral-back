@@ -363,7 +363,7 @@ function showHeroCardsModal(editor, component) {
         const ts = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `hero-cards-backup-${ts}.json`;
+        a.download = `card-grid-backup-${ts}.json`;
         document.body.appendChild(a);
         a.click();
         a.remove();
