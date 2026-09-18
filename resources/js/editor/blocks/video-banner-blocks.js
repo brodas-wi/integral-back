@@ -108,7 +108,7 @@ function showVideoBannerModal(editor, component) {
     modal.className = "vb-modal";
     modal.innerHTML = `
         <div class="vb-modal-header">
-            <div class="vb-modal-header-left"><i class="ri-movie-line"></i><h2>Configurar Banner de Video</h2></div>
+            <div class="vb-modal-header-left"><i class="ri-movie-line"></i><h2>Configurar Video Hero</h2></div>
             <button id="vb-modal-close" class="vb-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
         </div>
         <div class="vb-modal-body">
@@ -245,8 +245,8 @@ function showVideoBannerModal(editor, component) {
 
 const iconVideoBanner = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
     <rect width="32" height="32" fill="#ffffff" rx="2"/>
-    <rect x="9" y="11" width="14" height="10" rx="1.5" fill="none" stroke="#E97300" stroke-width="1.3"/>
-    <path d="M14.5 14.5 L14.5 17.5 L17.5 16 Z" fill="#E97300"/>
+    <rect x="3" y="3" width="26" height="26" rx="3" fill="#E97300"/>
+    <path d="M13 11 L13 21 L22 16 Z" fill="#ffffff"/>
 </svg>`;
 
 export function initializeVideoBannerBlock(editor) {
@@ -334,7 +334,7 @@ export function initializeVideoBannerBlock(editor) {
     });
 
     editor.BlockManager.add("video-banner-block", {
-        label: "Sección de Video",
+        label: "Hero Video",
         category: "Heroes",
         media: iconVideoBanner,
         activate: true,

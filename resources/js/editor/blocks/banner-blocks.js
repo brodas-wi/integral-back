@@ -221,7 +221,7 @@ export function initializeBannerBlocks(editor) {
 
         model: {
             defaults: {
-                name: "Sección con Imagen y Texto",
+                name: "Hero Imagen y Texto",
                 tagName: "div",
                 draggable: true,
                 droppable: false,
@@ -274,7 +274,7 @@ export function initializeBannerBlocks(editor) {
     });
 
     editor.BlockManager.add("image-title-banner-block", {
-        label: "Sección con Imagen y Texto",
+        label: "Hero Imagen y Texto",
         category: "Heroes",
         media: iconImageTitleBanner,
         activate: true,
