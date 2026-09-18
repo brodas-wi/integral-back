@@ -343,7 +343,7 @@ export function initializeHeroVideoBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Hero Video",
+                        label: false,
                         text: "Administrar Hero Video",
                         full: true,
                         command: "open-hero-video-config",

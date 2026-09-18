@@ -620,7 +620,7 @@ export function initializeProductCardsBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Productos",
+                        label: false,
                         text: "Administrar Sección",
                         full: true,
                         command: "open-product-cards-config",

@@ -1230,7 +1230,7 @@ export function initializeFooterBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Footer",
+                        label: false,
                         text: "Administrar Footer",
                         full: true,
                         command: "open-footer-config",

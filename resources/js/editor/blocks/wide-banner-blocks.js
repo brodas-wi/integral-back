@@ -345,7 +345,7 @@ export function initializeWideBannerBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Banner Ancho",
+                        label: false,
                         text: "Administrar Banner",
                         full: true,
                         command: "open-wide-banner-config",

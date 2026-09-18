@@ -542,7 +542,7 @@ export function initializeSplitCarouselBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Sección con Carrusel",
+                        label: false,
                         text: "Administrar Sección",
                         full: true,
                         command: "open-split-carousel-config",

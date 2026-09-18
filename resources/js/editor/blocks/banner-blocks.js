@@ -252,7 +252,7 @@ export function initializeBannerBlocks(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Banner con Título",
+                        label: false,
                         text: "Administrar Banner",
                         full: true,
                         command: "open-image-title-banner-config",

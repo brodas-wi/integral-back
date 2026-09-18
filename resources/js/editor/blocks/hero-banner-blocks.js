@@ -400,7 +400,7 @@ export function initializeHeroBannerBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Banner",
+                        label: false,
                         text: "Administrar Banner",
                         full: true,
                         command: "open-hero-banner-config",

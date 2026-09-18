@@ -640,8 +640,8 @@ export function initializeMapFilterBlocks(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Mapa con Filtros",
-                        text: "Administrar Mapa y Filtros",
+                        label: false,
+                        text: "Administrar Mapa",
                         full: true,
                         command: "open-map-filter-config",
                     },

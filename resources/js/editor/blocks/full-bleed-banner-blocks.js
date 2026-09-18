@@ -428,7 +428,7 @@ export function initializeFullBleedBannerBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Banner Completo",
+                        label: false,
                         text: "Administrar Banner",
                         full: true,
                         command: "open-full-bleed-banner-config",

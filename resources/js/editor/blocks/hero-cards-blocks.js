@@ -541,6 +541,7 @@ export function initializeHeroCardsBlock(editor) {
                 traits: [
                     {
                         type: "button",
+                        label: false,
                         text: "Administrar Tarjetas",
                         full: true,
                         command: "open-hero-cards-config",

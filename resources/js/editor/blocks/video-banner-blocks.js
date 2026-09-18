@@ -311,7 +311,7 @@ export function initializeVideoBannerBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Banner con Video",
+                        label: false,
                         text: "Administrar Banner",
                         full: true,
                         command: "open-video-banner-config",

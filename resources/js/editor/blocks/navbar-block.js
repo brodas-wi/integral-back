@@ -1863,7 +1863,7 @@ export function initializeNavbarBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Navbar",
+                        label: false,
                         text: "Administrar Navbar",
                         full: true,
                         command: "open-navbar-config",

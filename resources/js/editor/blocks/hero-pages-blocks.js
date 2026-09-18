@@ -480,7 +480,7 @@ export function initializeHeroPagesBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Tarjetas por Páginas",
+                        label: false,
                         text: "Administrar Tarjetas",
                         full: true,
                         command: "open-hero-pages-config",

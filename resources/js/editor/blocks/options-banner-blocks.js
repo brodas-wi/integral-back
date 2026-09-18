@@ -581,7 +581,7 @@ export function initializeOptionsBannerBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Banner de Opciones",
+                        label: false,
                         text: "Administrar Banner",
                         full: true,
                         command: "open-options-banner-config",

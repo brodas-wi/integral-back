@@ -412,7 +412,7 @@ export function initializeFixedBannerBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Banner con Imagen",
+                        label: false,
                         text: "Administrar Banner",
                         full: true,
                         command: "open-fixed-banner-config",

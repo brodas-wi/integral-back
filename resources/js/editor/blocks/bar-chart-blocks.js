@@ -340,7 +340,7 @@ export function initializeBarChartBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Gráfico",
+                        label: false,
                         text: "Administrar Barras",
                         full: true,
                         command: "open-bar-chart-config",

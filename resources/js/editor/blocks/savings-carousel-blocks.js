@@ -619,7 +619,7 @@ export function initializeSavingsSectionBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Sección",
+                        label: false,
                         text: "Administrar Sección",
                         full: true,
                         command: "open-savings-config",
