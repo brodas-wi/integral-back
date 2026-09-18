@@ -5,7 +5,7 @@ const HC_CSS = `
 .hc-section{width:100%;max-width:1400px;margin:0 auto;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
 .hc-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0;text-align:center;line-height:1.2;}
 .hc-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.5;}
-.hc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;width:100%;}
+.hc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,300px));gap:1.5rem;width:100%;justify-content:center;}
 .hc-card{position:relative;width:100%;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;}
 .hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;}
 .hc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
