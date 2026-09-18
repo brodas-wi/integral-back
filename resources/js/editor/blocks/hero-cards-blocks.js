@@ -5,11 +5,8 @@ const HC_CSS = `
 .hc-section{width:100%;max-width:1400px;margin:0 auto;background:#ffffff;padding:3rem 4rem;box-sizing:border-box;}
 .hc-heading{font-size:2.25rem;font-weight:800;color:#E97300;margin:0;text-align:center;line-height:1.2;}
 .hc-subheading{font-size:2.25rem;font-weight:500;color:#003B71;margin:0 0 2rem;text-align:center;line-height:1.5;}
-.hc-carousel{position:relative;width:100%;}
-.hc-swiper{overflow:hidden;width:100%;}
-.hc-swiper .swiper-wrapper{align-items:stretch;}
-.hc-swiper .swiper-slide{height:auto;flex-shrink:0;display:flex;justify-content:center;box-sizing:border-box;}
-.hc-card{position:relative;width:260px !important;max-width:260px;flex-shrink:0;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;}
+.hc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;width:100%;}
+.hc-card{position:relative;width:100%;height:325px;border-radius:32px;overflow:hidden;cursor:pointer;}
 .hc-card-media{position:absolute;inset:0;width:100%;height:100%;border-radius:32px;overflow:hidden;isolation:isolate;}
 .hc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:32px;}
@@ -22,18 +19,9 @@ const HC_CSS = `
 .hc-card-desc{margin:0;font-size:0.8125rem;font-weight:500;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.35);line-height:1.4;}
 .hc-card-btn{position:absolute;right:0.75rem;bottom:0.75rem;z-index:20;width:2.25rem;height:2.25rem;border-radius:9999px;background:#fff;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.125rem;text-decoration:none;transition:background 0.2s ease,color 0.2s ease;pointer-events:auto;}
 .hc-card-btn:hover{background:#E97300;color:#fff;}
-.hc-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:2.75rem;height:2.75rem;border-radius:9999px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;color:#E97300;font-size:1.25rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:background 0.2s ease,color 0.2s ease,opacity 0.2s ease;}
-.hc-nav:hover{background:#E97300;color:#fff;}
-.hc-nav.hc-nav-disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;}
-.hc-nav-prev{left:-1.375rem;}
-.hc-nav-next{right:-1.375rem;}
-.hc-dots{display:flex !important;justify-content:center;align-items:center;gap:0.75rem;margin-top:1.75rem;position:static;width:100%;}
-.hc-dots:empty{display:none !important;margin-top:0;}
-.hc-dots .hc-dot{width:0.875rem !important;height:0.875rem !important;border-radius:9999px !important;border:none !important;background:#cbd5e1 !important;cursor:pointer;padding:0 !important;margin:0 !important;transition:background 0.2s ease,transform 0.2s ease;opacity:1 !important;}
-.hc-dots .hc-dot.active{background:#003B71 !important;transform:scale(1.1);}
 @media(max-width:1280px){.hc-section{padding:3rem 2.5rem;}}
 @media(max-width:992px){.hc-section{padding:2.5rem 1.5rem;}.hc-heading,.hc-subheading{font-size:1.875rem;}}
-@media(max-width:640px){.hc-nav-prev{left:0.25rem;}.hc-nav-next{right:0.25rem;}.hc-heading,.hc-subheading{font-size:1.5rem;}.hc-card{width:230px !important;max-width:230px;height:290px;}}
+@media(max-width:640px){.hc-heading,.hc-subheading{font-size:1.5rem;}.hc-card{height:290px;}}
 `;
 
 function buildCardHTML(card, uid, idx) {
@@ -47,7 +35,7 @@ function buildCardHTML(card, uid, idx) {
         ? `<div class="hc-card-video-wrap" data-gjs-type="hc-video-media"><video class="hc-card-video" src="${video}" muted loop playsinline autoplay preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="hc-video-media"></video></div>`
         : "";
 
-    return `<div class="swiper-slide"><div class="hc-card" id="hc-card-${uid}-${idx}">
+    return `<div class="hc-card" id="hc-card-${uid}-${idx}">
         <div class="hc-card-media">
             <img src="${image}" alt="${title}">
             ${videoHtml}
@@ -57,7 +45,7 @@ function buildCardHTML(card, uid, idx) {
             <p class="hc-card-desc">${desc}</p>
         </div>
         <a href="${href}" class="hc-card-btn"><i class="ri-arrow-down-s-line"></i></a>
-    </div></div>`;
+    </div>`;
 }
 
 function buildHeroCardsHTML(data, uid) {
@@ -70,14 +58,7 @@ function buildHeroCardsHTML(data, uid) {
     return `<section class="hc-section" id="hc-root-${uid}">
         <h2 class="hc-heading">${data.heading || "Título"}</h2>
         <p class="hc-subheading">${data.subheading || "Subtítulo"}</p>
-        <div class="hc-carousel">
-            <button type="button" class="hc-nav hc-nav-prev" data-swiper-prev aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
-            <div class="hc-swiper swiper">
-                <div class="swiper-wrapper">${cardsHtml}</div>
-            </div>
-            <button type="button" class="hc-nav hc-nav-next" data-swiper-next aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
-            <div class="hc-dots swiper-pagination" data-swiper-pagination></div>
-        </div>
+        <div class="hc-grid">${cardsHtml}</div>
     </section>`;
 }
 
@@ -150,7 +131,7 @@ function showHeroCardsModal(editor, component) {
             .hc-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
             .hc-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;}
             .hc-btn-cancel:hover{background:#f8fafc;}
-                        .hc-btn-save{padding:0.5rem 1.25rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .hc-btn-save{padding:0.5rem 1.25rem;background:#E97300;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .hc-btn-save:hover{background:#c96200;}
             .hc-card-num{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:#003B71;color:#fff;font-size:0.7rem;font-weight:700;flex-shrink:0;}
             .hc-btn-backup{padding:0.5rem 1rem;background:#fff;border:2px solid #003B71;border-radius:9999px;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:0.375rem;transition:background 0.15s,color 0.15s;}
@@ -200,7 +181,7 @@ function showHeroCardsModal(editor, component) {
     modal.className = "hc-modal";
     modal.innerHTML = `
         <div class="hc-modal-header">
-            <h2><i class="ri-gallery-line"></i> Configurar Tarjetas Hero</h2>
+            <h2><i class="ri-gallery-line"></i> Configurar Tarjetas</h2>
             <button id="hc-modal-close" class="hc-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
         </div>
         <div class="hc-modal-tabs">
@@ -263,9 +244,6 @@ function showHeroCardsModal(editor, component) {
             const imgHtml = card.image
                 ? `<img class="hc-img-preview" src="${card.image}" alt="">`
                 : `<div class="hc-img-placeholder"><i class="ri-image-line"></i></div>`;
-            const videoLabel = card.video
-                ? card.video.split("/").pop()
-                : "Sin video seleccionado";
             div.innerHTML = `
                 <div class="hc-card-config-header">
                     <span class="hc-card-num">${idx + 1}</span>
@@ -485,11 +463,10 @@ function showHeroCardsModal(editor, component) {
 }
 
 const iconHeroCards = `<svg viewBox="0 0 32 32" width="32" height="32">
-    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <rect x="2" y="6" width="7" height="20" rx="1.5" fill="#003B71" fill-opacity="0.15" stroke="#003B71" stroke-width="0.8"/>
-    <rect x="11.5" y="6" width="7" height="20" rx="1.5" fill="#003B71" fill-opacity="0.25" stroke="#003B71" stroke-width="0.8"/>
-    <rect x="21" y="6" width="7" height="20" rx="1.5" fill="#E97300" fill-opacity="0.3" stroke="#E97300" stroke-width="0.8"/>
-    <circle cx="24.5" cy="22.5" r="1.6" fill="#E97300"/>
+    <rect width="32" height="32" fill="#ffffff" rx="2"/>
+    <rect x="7" y="5.5" width="18" height="2.2" rx="1.1" fill="#94a3b8"/>
+    <rect x="5" y="11" width="10" height="15" rx="1.5" fill="#003B71"/>
+    <rect x="17" y="11" width="10" height="15" rx="1.5" fill="#E97300"/>
 </svg>`;
 
 export function initializeHeroCardsBlock(editor) {
@@ -534,7 +511,7 @@ export function initializeHeroCardsBlock(editor) {
 
         model: {
             defaults: {
-                name: "Tarjetas Hero",
+                name: "Grid con Tarjetas",
                 tagName: "div",
                 draggable: true,
                 droppable: false,
@@ -564,7 +541,6 @@ export function initializeHeroCardsBlock(editor) {
                 traits: [
                     {
                         type: "button",
-                        label: "Tarjetas Hero",
                         text: "Administrar Tarjetas",
                         full: true,
                         command: "open-hero-cards-config",
@@ -598,7 +574,7 @@ export function initializeHeroCardsBlock(editor) {
     });
 
     editor.BlockManager.add("hero-cards-block", {
-        label: "Tarjetas Hero",
+        label: "Grid con Tarjetas",
         category: "Productos y Servicios",
         media: iconHeroCards,
         activate: true,
