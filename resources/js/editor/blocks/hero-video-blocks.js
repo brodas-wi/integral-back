@@ -12,6 +12,8 @@ const HERO_VIDEO_STYLES = `
 .hv-subtitle{margin:0;font-size:1.0625rem;font-weight:500;color:#fff;line-height:1.4;}
 .hv-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:0.5rem;padding:0.625rem 2rem;border-radius:9999px;font-size:0.9375rem;font-weight:700;text-decoration:none;cursor:pointer;border:1.5px solid transparent;font-family:inherit;transition:background 0.15s,border-color 0.15s,color 0.15s;white-space:nowrap;background:#E97300;color:#fff;}
 .hv-btn:hover{background:#c96200;}
+.hv-mute-btn{position:absolute;top:1.25rem;right:1.25rem;z-index:15;width:2.5rem;height:2.5rem;border-radius:9999px;background:rgba(0,0,0,0.45);border:1.5px solid rgba(255,255,255,0.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.0625rem;cursor:pointer;transition:background 0.15s,border-color 0.15s;backdrop-filter:blur(2px);}
+.hv-mute-btn:hover{background:rgba(0,0,0,0.65);border-color:#fff;}
 @media(max-width:640px){
 .hv-title{font-size:1.375rem;}
 .hv-subtitle{font-size:0.9375rem;}
@@ -37,16 +39,43 @@ function buildHeroVideoHTML(data, uid) {
 
     const bgMedia = `<video id="hv-video-${uid}" src="${videoUrl}" poster="${posterUrl}" autoplay muted loop playsinline data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-highlightable="false"></video>`;
 
+    const muteBtnHtml = videoUrl
+        ? `<button type="button" class="hv-mute-btn" id="hv-mute-btn-${uid}" aria-label="Activar sonido" data-muted="true" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"><i class="ri-volume-mute-line"></i></button>`
+        : "";
+
+    const muteScript = videoUrl
+        ? `<script>(function(){
+    var btn=document.getElementById("hv-mute-btn-${uid}");
+    var video=document.getElementById("hv-video-${uid}");
+    if(!btn||!video||btn.dataset.bound)return;
+    btn.dataset.bound="true";
+    function syncIcon(){
+        var muted=video.muted;
+        btn.dataset.muted=muted?"true":"false";
+        btn.setAttribute("aria-label",muted?"Activar sonido":"Silenciar video");
+        btn.innerHTML=muted?'<i class="ri-volume-mute-line"></i>':'<i class="ri-volume-up-line"></i>';
+    }
+    btn.addEventListener("click",function(){
+        video.muted=!video.muted;
+        if(!video.muted){video.play().catch(function(){});}
+        syncIcon();
+    });
+    video.addEventListener("volumechange",syncIcon);
+    syncIcon();
+})();</script>`
+        : "";
+
     return `<section id="hv-root-${uid}" class="hv-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
         <div class="hv-bg" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
             ${bgMedia}
+            ${muteBtnHtml}
         </div>
         <div class="hv-content">
             ${titleHtml}
             ${subtitleHtml}
             ${buttonHtml}
         </div>
-    </section>`;
+    </section>${muteScript}`;
 }
 
 const DEFAULT_DATA = {
@@ -388,6 +417,7 @@ function injectHeroVideoEditorStyles(editor, componentType) {
         style.textContent = `
             [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
             [data-gjs-type="${componentType}"] .hv-bg { background-size: cover; background-position: center; background-repeat: no-repeat; }
+            [data-gjs-type="${componentType}"] .hv-mute-btn { display: none !important; }
         `;
         head.appendChild(style);
     });
