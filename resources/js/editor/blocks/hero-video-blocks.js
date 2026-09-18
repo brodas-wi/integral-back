@@ -17,7 +17,6 @@ const HERO_VIDEO_STYLES = `
 .hv-bg video::-webkit-media-controls{display:none !important;}
 .hv-bg video::-webkit-media-controls-panel{display:none !important;opacity:0 !important;}
 .hv-bg video::-webkit-media-controls-start-playback-button{display:none !important;}
-.hv-bg video::-moz-media-controls{display:none !important;}
 @media(max-width:640px){
 .hv-title{font-size:1.375rem;}
 .hv-subtitle{font-size:0.9375rem;}
