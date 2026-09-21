@@ -434,6 +434,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
             ${bulletList(5, "CONDICIONES:")}
         </div>
         <div class="flex flex-col items-center gap-4">
+            ${productTitle("Nombre del Producto")}
             ${ctaButton("Solicita tu crédito")}
             ${footnoteGroup(2)}
         </div>
@@ -452,7 +453,7 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
 <section class="w-full bg-white px-16 py-12">
     <div class="pd-asymmetric-grid">
         <div class="flex flex-col gap-5">
-            <p class="text-lg font-bold text-[#003B71] leading-snug">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            ${twoLineTitle("¡Adquiere", "tu producto nuevo!")}
             ${bulletList(4, "Ventajas:")}
         </div>
         <div class="flex flex-col items-center gap-4">
