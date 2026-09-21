@@ -501,9 +501,8 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
 <section class="w-full bg-white px-16 py-12">
     <div class="pd-asymmetric-grid">
         <div class="pd-nested-two-col">
-            <div class="pd-nested-two-col-full flex flex-col gap-2">
-                <p class="text-lg font-bold text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <p class="text-base font-bold text-[#E97300] leading-snug m-0">Lorem ipsum dolor sit amet, subtítulo destacado de la sección.</p>
+            <div class="pd-nested-two-col-full">
+                ${twoLineTitle("¡Adquiere", "tu producto nuevo!")}
             </div>
             ${bulletList(4, "Ventajas:")}
             ${bulletList(4, "Requisitos:")}
