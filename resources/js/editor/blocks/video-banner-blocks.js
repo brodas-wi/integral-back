@@ -118,7 +118,7 @@ function showVideoBannerModal(editor, component) {
             </div>
             <div class="vb-card">
                 <label class="vb-label">Video de fondo</label>
-                <p class="vb-hint">El video se reproduce en loop automáticamente y siempre inicia sin audio (requisito de los navegadores).</p>
+                <p class="vb-hint">Opcional. Si no seleccionas un video, se mostrará la imagen de portada como banner estático. El video se reproduce en loop automáticamente.</p>
                 <div style="display:flex;flex-direction:column;gap:0.5rem;">
                     <video id="vb-video-preview" class="vb-video-preview" src="${videoUrl}" muted></video>
                     <div class="vb-row">
@@ -218,10 +218,10 @@ function showVideoBannerModal(editor, component) {
             show_radius: modal.querySelector("#vb-show-radius").checked,
         };
 
-        if (!newData.video_url) {
+        if (!newData.video_url && !newData.poster_url) {
             if (typeof window.showNotification === "function") {
                 window.showNotification(
-                    "Debes seleccionar un video de fondo",
+                    "Debes seleccionar al menos una imagen de portada",
                     "error",
                 );
             }
