@@ -87,6 +87,13 @@ const PRODUCT_DETAIL_COLOR_STYLES = `
 .pd-box-divider{background-color:#E97300;}
 </style>`;
 
+const PRODUCT_DETAIL_NESTED_TWO_COL_STYLES = `
+<style>
+.pd-nested-two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.pd-nested-two-col-full{grid-column:1/-1;}
+@media(max-width:640px){.pd-nested-two-col{grid-template-columns:1fr;}}
+</style>`;
+
 const bulletItem = () => `
 <li class="flex items-start gap-2 text-base text-[#003B71]">
     <span class="mt-2 w-1.5 h-1.5 rounded-full bg-[#003B71] shrink-0"></span>
@@ -482,6 +489,35 @@ ${PRODUCT_DETAIL_COLOR_STYLES}`,
     </div>
 </section>
 ${PRODUCT_DETAIL_GRID_STYLES}
+${PRODUCT_DETAIL_COLOR_STYLES}`,
+    },
+
+    {
+        id: "product-detail-box-double-nested-cols",
+        label: "Sección: 2 columnas internas + precio doble",
+        category: CATEGORY,
+        media: iconProductDetailBoxDouble,
+        content: `
+<section class="w-full bg-white px-16 py-12">
+    <div class="pd-asymmetric-grid">
+        <div class="pd-nested-two-col">
+            <div class="pd-nested-two-col-full flex flex-col gap-2">
+                <p class="text-lg font-bold text-[#003B71] leading-snug m-0">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p class="text-base font-bold text-[#E97300] leading-snug m-0">Lorem ipsum dolor sit amet, subtítulo destacado de la sección.</p>
+            </div>
+            ${bulletList(4, "Ventajas:")}
+            ${bulletList(4, "Requisitos:")}
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            ${productTitle("Nombre del Producto")}
+            ${ctaButton("Solicita tu crédito")}
+            ${priceBoxDouble()}
+            ${footnoteGroup(2)}
+        </div>
+    </div>
+</section>
+${PRODUCT_DETAIL_GRID_STYLES}
+${PRODUCT_DETAIL_NESTED_TWO_COL_STYLES}
 ${PRODUCT_DETAIL_COLOR_STYLES}`,
     },
 
