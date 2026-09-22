@@ -42,12 +42,12 @@
                         $adminGroupActive = request()->routeIs('users.*') || request()->routeIs('roles.*');
                     @endphp
                     @canany(['users.view', 'users.manage', 'roles.view', 'roles.manage'])
-                        <div class="sidebar-group" data-group="administracion"
+                        <div class="sidebar-group" data-group="administrar"
                             data-open="{{ $adminGroupActive ? 'true' : 'false' }}">
                             <button type="button" class="sidebar-group-btn">
                                 <div class="flex items-center gap-3">
                                     <i class="ri-settings-3-line text-xl"></i>
-                                    <span>Administración</span>
+                                    <span>Administrar</span>
                                 </div>
                                 <i class="ri-arrow-down-s-line sidebar-group-arrow text-lg"></i>
                             </button>

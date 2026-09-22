@@ -298,7 +298,7 @@
     @canany(['users.view', 'users.manage', 'roles.view', 'roles.manage'])
         <div class="mb-8">
             <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <i class="ri-settings-3-line text-base"></i> Administración
+                <i class="ri-settings-3-line text-base"></i> Administrar
             </h4>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
