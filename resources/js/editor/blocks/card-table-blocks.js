@@ -524,6 +524,7 @@ function setupCardTableEditorEvents(editor, componentType) {
                     if (!comp.get("cardTableData")) {
                         comp.set("cardTableData", defaultCardTableData(3, 5));
                     }
+                    ctRebuildComponentHTML(comp);
                 });
         }, 800);
     });
@@ -550,11 +551,6 @@ function injectCardTableEditorStyles(editor, componentType) {
         s.id = `${componentType}-editor-css`;
         s.textContent = `
             [data-gjs-type="${componentType}"] * { pointer-events: none !important; user-select: none !important; }
-            [data-gjs-type="${componentType}"].gjs-selected,
-            [data-gjs-type="${componentType}"].gjs-hovered {
-                outline: 2px dashed rgba(0,59,113,0.5) !important;
-                outline-offset: 2px;
-            }
         `;
         head.appendChild(s);
     };
