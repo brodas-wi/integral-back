@@ -460,8 +460,8 @@ export function initializeCardTableBlocks(editor) {
                     {
                         type: "button",
                         name: "edit-card-table",
-                        label: "Editar tabla",
-                        text: "Abrir editor de tabla",
+                        label: false,
+                        text: "Editar tabla",
                         command(editor) {
                             const selected = editor.getSelected();
                             if (selected && window.__openCardTableAdminModal) {
@@ -530,23 +530,25 @@ function setupCardTableEditorEvents(editor, componentType) {
 }
 
 function injectCardTableEditorStyles(editor, componentType) {
-    editor.on("load", () => {
+    const inject = () => {
         const iframe = editor.Canvas.getFrameEl();
         if (!iframe) return;
         const head = iframe.contentDocument?.head;
         if (!head) return;
-        if (!head.querySelector(`#${componentType}-editor-css`)) {
-            const s = document.createElement("style");
-            s.id = `${componentType}-editor-css`;
-            s.textContent = `
-                [data-gjs-type="${componentType}"] * { pointer-events: none !important; user-select: none !important; }
-                [data-gjs-type="${componentType}"].gjs-selected,
-                [data-gjs-type="${componentType}"].gjs-hovered {
-                    outline: 2px dashed rgba(0,59,113,0.5) !important;
-                    outline-offset: 2px;
-                }
-            `;
-            head.appendChild(s);
-        }
-    });
+        if (head.querySelector(`#${componentType}-editor-css`)) return;
+        const s = document.createElement("style");
+        s.id = `${componentType}-editor-css`;
+        s.textContent = `
+            [data-gjs-type="${componentType}"] * { pointer-events: none !important; user-select: none !important; }
+            [data-gjs-type="${componentType}"].gjs-selected,
+            [data-gjs-type="${componentType}"].gjs-hovered {
+                outline: 2px dashed rgba(0,59,113,0.5) !important;
+                outline-offset: 2px;
+            }
+        `;
+        head.appendChild(s);
+    };
+    editor.on("load", inject);
+    editor.on("canvas:frame:load", inject);
+    inject();
 }
