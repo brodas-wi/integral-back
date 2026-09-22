@@ -112,6 +112,9 @@ function buildCardTableWrapper(data) {
 function ctRebuildComponentHTML(component) {
     const data = component.get("cardTableData");
     if (!data) return;
+    component.addAttributes({
+        "data-card-table-config": JSON.stringify(data),
+    });
     component.components(buildCardTableWrapper(data));
     lockComponentTree(component);
 }
@@ -440,7 +443,18 @@ export function initializeCardTableBlocks(editor) {
     editor.DomComponents.addType(componentType, {
         isComponent: (el) => {
             if (el.getAttribute?.("data-gjs-type") === componentType) {
-                return { type: componentType };
+                const raw = el.getAttribute("data-card-table-config");
+                let cardTableData = null;
+                if (raw) {
+                    try {
+                        cardTableData = JSON.parse(raw);
+                    } catch {
+                        cardTableData = null;
+                    }
+                }
+                return cardTableData
+                    ? { type: componentType, cardTableData }
+                    : { type: componentType };
             }
             return false;
         },
@@ -502,7 +516,16 @@ export function initializeCardTableBlocks(editor) {
                 this.set("type", componentType);
                 this.addAttributes({ "data-gjs-type": componentType });
                 if (!this.get("cardTableData")) {
-                    this.set("cardTableData", defaultCardTableData(3, 5));
+                    const raw = this.getAttributes()["data-card-table-config"];
+                    if (raw) {
+                        try {
+                            this.set("cardTableData", JSON.parse(raw));
+                        } catch {
+                            this.set("cardTableData", defaultCardTableData(3, 5));
+                        }
+                    } else {
+                        this.set("cardTableData", defaultCardTableData(3, 5));
+                    }
                 }
                 lockComponentTree(this);
             },
@@ -514,13 +537,25 @@ export function initializeCardTableBlocks(editor) {
 }
 
 function setupCardTableEditorEvents(editor, componentType) {
+    const restoreCardTableData = (comp) => {
+        comp.set("type", componentType);
+        if (comp.get("cardTableData")) return;
+        const raw = comp.getAttributes()["data-card-table-config"];
+        if (raw) {
+            try {
+                comp.set("cardTableData", JSON.parse(raw));
+                return;
+            } catch {
+                // falls through to default
+            }
+        }
+        comp.set("cardTableData", defaultCardTableData(3, 5));
+    };
+
     editor.on("component:mount", (component) => {
         const el = component.getEl();
         if (el?.getAttribute?.("data-gjs-type") === componentType) {
-            component.set("type", componentType);
-            if (!component.get("cardTableData")) {
-                component.set("cardTableData", defaultCardTableData(3, 5));
-            }
+            restoreCardTableData(component);
             lockComponentTree(component);
         }
     });
@@ -531,10 +566,7 @@ function setupCardTableEditorEvents(editor, componentType) {
                 .getWrapper()
                 .find(`[data-gjs-type="${componentType}"]`)
                 .forEach((comp) => {
-                    comp.set("type", componentType);
-                    if (!comp.get("cardTableData")) {
-                        comp.set("cardTableData", defaultCardTableData(3, 5));
-                    }
+                    restoreCardTableData(comp);
                     lockComponentTree(comp);
                 });
         }, 800);
