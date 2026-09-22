@@ -128,17 +128,18 @@ const CT_MODAL_STYLES = `
 .ctam-modal-header-left{display:flex;align-items:center;gap:0.5rem;}
 .ctam-modal-header-left i{font-size:1.125rem;color:#003B71;}
 .ctam-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
-.ctam-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s,color 0.15s;}
+.ctam-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:9999px;border:none;background:#f1f5f9;color:#94a3b8;cursor:pointer;transition:background 0.15s,color 0.15s;}
 .ctam-modal-close:hover{background:#f1f5f9;color:#475569;}
 .ctam-modal-close i{font-size:1.125rem;}
 .ctam-toolbar{display:flex;flex-wrap:wrap;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid #f1f5f9;background:#f8fafc;flex-shrink:0;align-items:flex-end;}
 .ctam-toolbar-group{display:flex;flex-direction:column;gap:0.375rem;}
 .ctam-toolbar-label{font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;}
-.ctam-modal-input,.ctam-modal-select{padding:0.5rem 0.75rem;background:#ffffff;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;}
+.ctam-modal-input,.ctam-modal-select{padding:0.5rem 1rem;background:#ffffff;border:1px solid #e2e8f0;border-radius:9999px;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2394a3b8'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.65rem center;background-size:1rem;}
+.ctam-modal-input{background-image:none;}
 .ctam-modal-input:focus,.ctam-modal-select:focus{border-color:#003B71;}
-.ctam-toolbar-checkbox{display:flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:500;color:#334155;cursor:pointer;user-select:none;padding:0.5rem 0.75rem;background:#ffffff;border:1px solid #e2e8f0;border-radius:0.5rem;}
+.ctam-toolbar-checkbox{display:flex;align-items:center;gap:0.5rem;font-size:0.8125rem;font-weight:500;color:#334155;cursor:pointer;user-select:none;padding:0.5rem 1rem;background:#ffffff;border:1px solid #e2e8f0;border-radius:9999px;}
 .ctam-toolbar-checkbox input{accent-color:#003B71;cursor:pointer;width:1rem;height:1rem;}
-.ctam-btn-rebuild{padding:0.5rem 1rem;background:#ffffff;border:2px solid #003B71;border-radius:0.5rem;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:0.375rem;font-family:inherit;transition:background 0.15s,color 0.15s;}
+.ctam-btn-rebuild{padding:0.5rem 1.1rem;background:#ffffff;border:2px solid #003B71;border-radius:9999px;color:#003B71;font-size:0.8125rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:0.375rem;font-family:inherit;transition:background 0.15s,color 0.15s;}
 .ctam-btn-rebuild:hover{background:#003B71;color:#fff;}
 .ctam-body{flex:1;overflow-y:auto;padding:1.25rem;background:#f8fafc;}
 .ctam-body::-webkit-scrollbar{width:5px;}
@@ -151,16 +152,16 @@ const CT_MODAL_STYLES = `
 .ctam-cell-input{width:100%;border:none;outline:none;font-size:0.8rem;background:transparent;resize:vertical;min-height:36px;font-family:inherit;color:#1e293b;box-sizing:border-box;}
 .ctam-col-input{width:100%;border:none;outline:none;font-size:0.8rem;font-weight:600;background:transparent;font-family:inherit;color:#1e293b;box-sizing:border-box;text-align:center;margin-bottom:4px;}
 .ctam-cell-actions{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;align-items:center;}
-.ctam-cell-btn{padding:3px 8px;border-radius:0.375rem;font-size:0.65rem;font-weight:600;cursor:pointer;border:1.5px solid;transition:all 0.15s;line-height:1.4;font-family:inherit;}
+.ctam-cell-btn{padding:3px 10px;border-radius:9999px;font-size:0.65rem;font-weight:600;cursor:pointer;border:1.5px solid;transition:all 0.15s;line-height:1.4;font-family:inherit;}
 .ctam-cell-btn:hover{opacity:0.8;}
 .ctam-cell-btn-badge{background:transparent;color:#003B71;border-color:#003B71;}
 .ctam-cell-btn-badge.active{background:#003B71;color:#fff;border-color:#003B71;}
 .ctam-cell.has-badge{background:#fef9ee !important;}
-.ctam-color-select{width:100%;font-size:0.7rem;padding:2px;margin-top:2px;}
-.ctam-align-select{width:100%;font-size:0.7rem;padding:2px;margin-top:4px;}
+.ctam-color-select,.ctam-align-select{width:100%;font-size:0.7rem;padding:0.35rem 1.6rem 0.35rem 0.7rem;margin-top:4px;border:1px solid #e2e8f0;border-radius:9999px;background:#ffffff;color:#1e293b;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2394a3b8'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.5rem center;background-size:0.85rem;cursor:pointer;transition:border-color 0.15s;}
+.ctam-color-select:focus,.ctam-align-select:focus{border-color:#003B71;}
 .ctam-color-swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle;}
 .ctam-modal-footer{display:flex;align-items:center;justify-content:flex-end;padding:1rem 1.25rem;border-top:1px solid #f1f5f9;background:#ffffff;flex-shrink:0;gap:0.75rem;}
-.ctam-btn{padding:0.5rem 1.25rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;cursor:pointer;border:2px solid transparent;transition:opacity 0.15s,background 0.15s,border-color 0.15s;display:inline-flex;align-items:center;gap:0.375rem;font-family:inherit;}
+.ctam-btn{padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.875rem;font-weight:600;cursor:pointer;border:2px solid transparent;transition:opacity 0.15s,background 0.15s,border-color 0.15s;display:inline-flex;align-items:center;gap:0.375rem;font-family:inherit;}
 .ctam-btn-cancel{background:#ffffff;border-color:#e2e8f0;color:#475569;}
 .ctam-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
 .ctam-btn-primary{background:#003B71;color:#fff;border-color:#003B71;}
@@ -467,6 +468,7 @@ export function initializeCardTableBlocks(editor) {
                         name: "edit-card-table",
                         label: false,
                         text: "Editar tabla",
+                        full: true,
                         command(editor) {
                             const selected = editor.getSelected();
                             if (selected && window.__openCardTableAdminModal) {
