@@ -112,7 +112,12 @@ function buildCardTableWrapper(data) {
 function ctRebuildComponentHTML(component) {
     const data = component.get("cardTableData");
     if (!data) return;
-    component.components(buildCardTableWrapper(data));
+    const el = component.getEl();
+    if (el) {
+        el.innerHTML = buildCardTableWrapper(data);
+    } else {
+        component.components(buildCardTableWrapper(data));
+    }
 }
 
 const CT_MODAL_STYLES = `
@@ -454,7 +459,7 @@ export function initializeCardTableBlocks(editor) {
                 attributes: {
                     "data-gjs-type": componentType,
                 },
-                components: buildCardTableWrapper(defaultCardTableData(3, 5)),
+                components: [],
                 script: createCardTableScript(),
                 traits: [
                     {
@@ -483,8 +488,10 @@ export function initializeCardTableBlocks(editor) {
                 this.addAttributes({ "data-gjs-type": componentType });
                 if (!this.get("cardTableData")) {
                     this.set("cardTableData", defaultCardTableData(3, 5));
-                    ctRebuildComponentHTML(this);
                 }
+                this.listenTo(this, "component:mount", () =>
+                    ctRebuildComponentHTML(this),
+                );
             },
         },
     });
@@ -501,6 +508,7 @@ function setupCardTableEditorEvents(editor, componentType) {
             if (!component.get("cardTableData")) {
                 component.set("cardTableData", defaultCardTableData(3, 5));
             }
+            ctRebuildComponentHTML(component);
         }
     });
 
