@@ -61,8 +61,8 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">URL Pública</label>
                         <div class="flex items-center gap-2">
-                            <input type="text" id="page-preview-url" value="{{ $publicPageUrl }}"
-                                readonly class="input-field flex-1 bg-gray-50">
+                            <input type="text" id="page-preview-url" value="{{ $publicPageUrl }}" readonly
+                                class="input-field flex-1 bg-gray-50">
                             <a href="{{ $publicPageUrl }}" target="_blank" id="page-preview-link"
                                 class="btn-secondary whitespace-nowrap">
                                 <i class="ri-external-link-line mr-1"></i>
@@ -189,10 +189,8 @@
                     @endcanany
 
                     @canany(['pages.create', 'pages.manage'])
-                        <button type="button" id="duplicate-page-btn"
-                            data-slug="{{ $page->slug }}"
-                            data-title="{{ addslashes($page->title) }}"
-                            class="btn-secondary btn-sm w-full">
+                        <button type="button" id="duplicate-page-btn" data-slug="{{ $page->slug }}"
+                            data-title="{{ addslashes($page->title) }}" class="btn-outline-secondary btn-sm w-full">
                             <i class="ri-file-copy-line mr-2"></i>
                             Duplicar
                         </button>

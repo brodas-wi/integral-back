@@ -169,6 +169,15 @@ async function deletePage(slug) {
     }
 }
 
+function getCurrentPageSlug() {
+    return (
+        document.querySelector("[data-toggle-publish]")?.dataset.slug ||
+        document.querySelector("[data-delete-page]")?.dataset.slug ||
+        document.getElementById("duplicate-page-btn")?.dataset.slug ||
+        window.location.pathname.split("/").filter(Boolean).pop()
+    );
+}
+
 function initFooterRelation() {
     const btn = document.getElementById("save-footer-relation");
     if (!btn) return;
@@ -176,9 +185,7 @@ function initFooterRelation() {
     btn.addEventListener("click", async () => {
         const select = document.getElementById("footer-select");
         const footerId = select?.value || null;
-        const slug =
-            document.querySelector("[data-toggle-publish]")?.dataset.slug ||
-            window.location.pathname.split("/").filter(Boolean).pop();
+        const slug = getCurrentPageSlug();
 
         try {
             const res = await fetch(buildUrl(`pages/${slug}/footer`), {
@@ -209,9 +216,7 @@ function initNavbarRelation() {
     btn.addEventListener("click", async () => {
         const select = document.getElementById("navbar-select");
         const navbarId = select?.value || null;
-        const slug =
-            document.querySelector("[data-toggle-publish]")?.dataset.slug ||
-            window.location.pathname.split("/").filter(Boolean).pop();
+        const slug = getCurrentPageSlug();
 
         try {
             const res = await fetch(buildUrl(`pages/${slug}/navbar`), {
@@ -286,9 +291,7 @@ function initTitleSlugEditor() {
     if (!formContainer) return;
 
     const pageId = formContainer.dataset.pageId;
-    const currentSlug =
-        document.querySelector("[data-toggle-publish]")?.dataset.slug ||
-        window.location.pathname.split("/").filter(Boolean).pop();
+    const currentSlug = getCurrentPageSlug();
 
     const titleInput = document.getElementById("page-title-input");
     const slugInput = document.getElementById("page-slug-input");
@@ -321,8 +324,8 @@ function initTitleSlugEditor() {
             type === "error"
                 ? "text-red-600"
                 : type === "success"
-                  ? "text-green-600"
-                  : "text-gray-500",
+                    ? "text-green-600"
+                    : "text-gray-500",
         );
     }
 
@@ -524,11 +527,18 @@ function initTitleSlugEditor() {
                 .querySelectorAll("[data-toggle-publish]")
                 .forEach((btn) => {
                     btn.dataset.slug = data.page.slug;
+                    btn.dataset.published = data.page.is_published ? "1" : "0";
                 });
             document.querySelectorAll("[data-delete-page]").forEach((btn) => {
                 btn.dataset.slug = data.page.slug;
                 btn.dataset.pageTitle = data.page.title;
             });
+
+            const duplicateBtn = document.getElementById("duplicate-page-btn");
+            if (duplicateBtn) {
+                duplicateBtn.dataset.slug = data.page.slug;
+                duplicateBtn.dataset.title = data.page.title;
+            }
 
             showNotification(data.message, "success");
             saveBtn.disabled = true;

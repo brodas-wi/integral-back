@@ -57,8 +57,9 @@ function initDeletePage() {
     document.querySelectorAll("[data-delete-page]").forEach((btn) => {
         btn.addEventListener("click", () => {
             const pageId = btn.dataset.pageId;
+            const slug = btn.dataset.slug;
             const pageTitle = btn.dataset.pageTitle;
-            confirmDeletePage(pageId, pageTitle);
+            confirmDeletePage(pageId, slug, pageTitle);
         });
     });
 }
@@ -126,25 +127,24 @@ async function submitTogglePublish(slug) {
     }
 }
 
-function confirmDeletePage(pageId, pageTitle) {
+function confirmDeletePage(pageId, slug, pageTitle) {
     showConfirmModal({
         title: "¿Eliminar página?",
         message: `¿Estás seguro de que deseas eliminar "${pageTitle}"? Esta acción no se puede deshacer.`,
         confirmText: "Eliminar",
         cancelText: "Cancelar",
         type: "danger",
-        onConfirm: () => deletePage(pageId),
+        onConfirm: () => deletePage(pageId, slug),
     });
 }
 
-function deletePage(pageId) {
+function deletePage(pageId, slug) {
     if (!CSRF) {
         showNotification("Error de configuración. Recarga la página.", "error");
         return;
     }
 
     const pageItem = document.getElementById(`page-item-${pageId}`);
-    const slug = pageItem?.querySelector(".font-mono")?.textContent?.trim();
 
     if (!slug) {
         showNotification("Error al identificar la página.", "error");

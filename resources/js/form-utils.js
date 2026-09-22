@@ -226,7 +226,7 @@ function showConfirmModal(options) {
 
     modal.innerHTML = `
         <div class="absolute inset-0 bg-black bg-opacity-50 transition-opacity" onclick="closeConfirmModal()"></div>
-        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full relative z-10 animate-scale-in">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full relative z-10 animate-scale-in">
             <div class="p-6">
                 <div class="flex items-start gap-4">
                     <div class="flex-shrink-0 w-12 h-12 rounded-full ${iconColor} flex items-center justify-center">
@@ -247,7 +247,7 @@ function showConfirmModal(options) {
                 </button>
                 <button 
                     onclick="confirmModalAction()" 
-                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-all font-medium"
+                    class="px-4 py-2 bg-primary text-white rounded-full hover:bg-opacity-90 transition-all font-medium"
                 >
                     ${config.confirmText}
                 </button>

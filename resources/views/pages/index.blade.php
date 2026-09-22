@@ -56,7 +56,7 @@
                         <i class="ri-search-line mr-2"></i>
                         Buscar
                     </button>
-                    @if(request('search') || request('status') || request('date_from') || request('date_to'))
+                    @if (request('search') || request('status') || request('date_from') || request('date_to'))
                         <a href="{{ route('pages.index') }}" class="btn-outline whitespace-nowrap">
                             <i class="ri-close-line mr-2"></i>
                             Limpiar
@@ -67,22 +67,22 @@
         </form>
     </div>
 
-    @if($pages->count() > 0)
+    @if ($pages->count() > 0)
         <div class="grid gap-4 pages-grid">
-            @foreach($pages as $page)
-                <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4" id="page-item-{{ $page->id }}">
+            @foreach ($pages as $page)
+                <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4"
+                    id="page-item-{{ $page->id }}">
                     <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
                         <div class="flex-1 min-w-0">
                             <h3 class="text-base font-bold text-secondary mb-1 line-clamp-2">{{ $page->title }}</h3>
-                            <button type="button"
-                                data-copy-slug
-                                data-slug="{{ $page->slug }}"
+                            <button type="button" data-copy-slug data-slug="{{ $page->slug }}"
                                 class="text-[11px] text-gray-500 font-mono truncate max-w-full inline-flex items-center gap-1 hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0">
                                 <i class="ri-file-copy-line text-[11px]"></i>
                                 <span class="truncate">{{ $page->slug }}</span>
                             </button>
                         </div>
-                        <span class="badge {{ $page->is_published ? 'badge-success' : 'badge-warning' }} flex-shrink-0 whitespace-nowrap">
+                        <span
+                            class="badge {{ $page->is_published ? 'badge-success' : 'badge-warning' }} flex-shrink-0 whitespace-nowrap">
                             <i class="ri-{{ $page->is_published ? 'eye' : 'eye-off' }}-line mr-1"></i>
                             {{ $page->is_published ? 'Publicada' : 'Borrador' }}
                         </span>
@@ -99,23 +99,25 @@
                             <span class="font-semibold text-secondary">{{ $page->created_at->format('d/m/Y H:i') }}</span>
                         </div>
 
-                        @if($page->creator)
+                        @if ($page->creator)
                             <div class="flex items-center justify-between text-sm text-gray-600">
                                 <span>Por:</span>
                                 <span class="font-semibold text-secondary truncate ml-2">{{ $page->creator->name }}</span>
                             </div>
                         @endif
 
-                        @if($page->updated_at->ne($page->created_at))
+                        @if ($page->updated_at->ne($page->created_at))
                             <div class="flex items-center justify-between text-sm text-gray-600">
                                 <span>Actualizado:</span>
-                                <span class="font-semibold text-secondary">{{ $page->updated_at->format('d/m/Y H:i') }}</span>
+                                <span
+                                    class="font-semibold text-secondary">{{ $page->updated_at->format('d/m/Y H:i') }}</span>
                             </div>
 
-                            @if($page->editor)
+                            @if ($page->editor)
                                 <div class="flex items-center justify-between text-sm text-gray-600">
                                     <span>Por:</span>
-                                    <span class="font-semibold text-secondary truncate ml-2">{{ $page->editor->name }}</span>
+                                    <span
+                                        class="font-semibold text-secondary truncate ml-2">{{ $page->editor->name }}</span>
                                 </div>
                             @endif
                         @endif
@@ -131,7 +133,8 @@
                         @endcanany
 
                         <div class="dropdown" data-dropdown>
-                            <button type="button" class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center"
+                            <button type="button"
+                                class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center"
                                 onclick="toggleDropdown(this.closest('.dropdown'))">
                                 <i class="ri-more-2-fill text-lg"></i>
                             </button>
@@ -149,21 +152,16 @@
                                 </a>
 
                                 @canany(['pages.publish', 'pages.manage'])
-                                    <button type="button"
-                                        data-toggle-publish
-                                        data-slug="{{ $page->slug }}"
-                                        data-published="{{ $page->is_published ? '1' : '0' }}"
-                                        class="dropdown-item">
+                                    <button type="button" data-toggle-publish data-slug="{{ $page->slug }}"
+                                        data-published="{{ $page->is_published ? '1' : '0' }}" class="dropdown-item">
                                         <i class="ri-{{ $page->is_published ? 'eye-off' : 'eye' }}-line"></i>
                                         <span>{{ $page->is_published ? 'Despublicar' : 'Publicar' }}</span>
                                     </button>
                                 @endcanany
 
                                 @canany(['pages.delete', 'pages.manage'])
-                                    <button type="button"
-                                        data-delete-page
-                                        data-page-id="{{ $page->id }}"
-                                        data-page-title="{{ addslashes($page->title) }}"
+                                    <button type="button" data-delete-page data-page-id="{{ $page->id }}"
+                                        data-slug="{{ $page->slug }}" data-page-title="{{ addslashes($page->title) }}"
                                         class="dropdown-item-danger">
                                         <i class="ri-delete-bin-line"></i>
                                         <span>Eliminar</span>
@@ -176,7 +174,7 @@
             @endforeach
         </div>
 
-        @if($pages->hasPages())
+        @if ($pages->hasPages())
             <div class="mt-6">
                 {{ $pages->appends(request()->query())->links() }}
             </div>
@@ -186,13 +184,13 @@
             <i class="ri-file-text-line text-6xl text-gray-400 mb-4"></i>
             <h3 class="text-xl font-semibold text-secondary mb-2">No hay páginas</h3>
             <p class="text-gray-600 mb-6">
-                @if(request('search') || request('status') || request('date_from') || request('date_to'))
+                @if (request('search') || request('status') || request('date_from') || request('date_to'))
                     No se encontraron páginas que coincidan con tu búsqueda
                 @else
                     Comienza creando tu primera página
                 @endif
             </p>
-            @if(request('search') || request('status') || request('date_from') || request('date_to'))
+            @if (request('search') || request('status') || request('date_from') || request('date_to'))
                 <a href="{{ route('pages.index') }}" class="btn-outline inline-flex items-center">
                     <i class="ri-close-line mr-2"></i>
                     Limpiar búsqueda

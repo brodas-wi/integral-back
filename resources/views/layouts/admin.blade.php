@@ -203,7 +203,7 @@
                 @auth
                     <div class="p-4 border-t border-gray-200">
                         <a href="{{ route('profile.edit') }}"
-                            class="flex items-center gap-3 p-2 rounded-lg transition-all hover:bg-gray-100 {{ request()->routeIs('profile.*') ? 'bg-primary bg-opacity-10' : '' }}">
+                            class="flex items-center gap-3 p-2 rounded-full transition-all hover:bg-gray-100 {{ request()->routeIs('profile.*') ? 'bg-primary bg-opacity-10' : '' }}">
                             <div
                                 class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -217,7 +217,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-all font-medium">
+                                class="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-full transition-all font-medium">
                                 <i class="ri-logout-box-line text-xl"></i>
                                 <span>Cerrar Sesión</span>
                             </button>
