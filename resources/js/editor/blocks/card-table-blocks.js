@@ -29,7 +29,8 @@ const CT_COLORS = {
 function ctDefaultColumn(i) {
     return {
         text: `Columna ${i + 1}`,
-        align: "center",
+        headAlign: "center",
+        cellAlign: "center",
         color: i === 0 ? "blue" : i % 2 === 0 ? "blue" : "orange",
     };
 }
@@ -63,7 +64,8 @@ function buildCardTableHTML(data) {
     html += `<div class="ct-headrow" style="grid-template-columns:repeat(${cols},1fr);">`;
     columns.forEach((col) => {
         const c = CT_COLORS[col.color] || CT_COLORS.blue;
-        html += `<div class="ct-head" style="color:${c.text};text-align:${col.align || "center"};">${col.text || ""}</div>`;
+        const headAlign = col.headAlign || col.align || "center";
+        html += `<div class="ct-head" style="color:${c.text};text-align:${headAlign};">${col.text || ""}</div>`;
     });
     html += `</div>`;
 
@@ -76,7 +78,7 @@ function buildCardTableHTML(data) {
             const cellStyle = hasLine
                 ? `border-left:2px solid ${c.line};`
                 : "";
-            const align = col.align || "center";
+            const align = col.cellAlign || col.align || "center";
             const inner = cell.isBadge
                 ? `<span class="ct-badge" style="background:${c.badgeBg};color:${c.badgeText};">${cell.text || ""}</span>`
                 : `<span style="color:${c.text};font-weight:700;">${cell.text || ""}</span>`;
@@ -173,8 +175,9 @@ const CT_MODAL_STYLES = `
 .ctam-cell-btn-badge{background:transparent;color:#003B71;border-color:#003B71;}
 .ctam-cell-btn-badge.active{background:#003B71;color:#fff;border-color:#003B71;}
 .ctam-cell.has-badge{background:#fef9ee !important;}
-.ctam-color-select,.ctam-align-select{width:100%;font-size:0.7rem;padding:0.35rem 1.6rem 0.35rem 0.7rem;margin-top:4px;border:1px solid #e2e8f0;border-radius:9999px;background:#ffffff;color:#1e293b;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2394a3b8'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.5rem center;background-size:0.85rem;cursor:pointer;transition:border-color 0.15s;}
-.ctam-color-select:focus,.ctam-align-select:focus{border-color:#003B71;}
+.ctam-color-select,.ctam-head-align-select,.ctam-cell-align-select{width:100%;font-size:0.7rem;padding:0.35rem 1.6rem 0.35rem 0.7rem;margin-top:4px;border:1px solid #e2e8f0;border-radius:9999px;background:#ffffff;color:#1e293b;font-family:inherit;outline:none;appearance:none;-webkit-appearance:none;-moz-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2394a3b8'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.5rem center;background-size:0.85rem;cursor:pointer;transition:border-color 0.15s;}
+.ctam-color-select:focus,.ctam-head-align-select:focus,.ctam-cell-align-select:focus{border-color:#003B71;}
+.ctam-align-label{display:block;font-size:0.6rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.03em;margin-top:6px;}
 .ctam-color-swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle;}
 .ctam-modal-footer{display:flex;align-items:center;justify-content:flex-end;padding:1rem 1.25rem;border-top:1px solid #f1f5f9;background:#ffffff;flex-shrink:0;gap:0.75rem;}
 .ctam-btn{padding:0.5rem 1.25rem;border-radius:9999px;font-size:0.875rem;font-weight:600;cursor:pointer;border:2px solid transparent;transition:opacity 0.15s,background 0.15s,border-color 0.15s;display:inline-flex;align-items:center;gap:0.375rem;font-family:inherit;}
@@ -254,10 +257,15 @@ function createCardTableAdminModal(editor, componentType) {
             : defaultCardTableData(3, 5);
 
         const cols = tableData.cols || 3;
-        tableData.columns = Array.from(
-            { length: cols },
-            (_, i) => tableData.columns[i] || ctDefaultColumn(i),
-        );
+        tableData.columns = Array.from({ length: cols }, (_, i) => {
+            const col = tableData.columns[i] || ctDefaultColumn(i);
+            return {
+                text: col.text,
+                headAlign: col.headAlign || col.align || "center",
+                cellAlign: col.cellAlign || col.align || "center",
+                color: col.color,
+            };
+        });
         tableData.rows = tableData.rows.map((row) =>
             Array.from({ length: cols }, (_, ci) => row[ci] || ctDefaultCell()),
         );
@@ -288,7 +296,8 @@ function createCardTableAdminModal(editor, componentType) {
             document.querySelectorAll(".ctam-col-block"),
         ).map((block) => ({
             text: block.querySelector(".ctam-col-input").value,
-            align: block.querySelector(".ctam-align-select").value,
+            headAlign: block.querySelector(".ctam-head-align-select").value,
+            cellAlign: block.querySelector(".ctam-cell-align-select").value,
             color: block.querySelector(".ctam-color-select").value,
         }));
 
@@ -318,10 +327,17 @@ function createCardTableAdminModal(editor, componentType) {
             <th>
                 <div class="ctam-col-block">
                     <input class="ctam-col-input" value="${col.text || ""}" placeholder="Col ${i + 1}">
-                    <select class="ctam-align-select">
-                        <option value="left" ${col.align === "left" ? "selected" : ""}>Izquierda</option>
-                        <option value="center" ${col.align === "center" ? "selected" : ""}>Centro</option>
-                        <option value="right" ${col.align === "right" ? "selected" : ""}>Derecha</option>
+                    <label class="ctam-align-label">Alinear título</label>
+                    <select class="ctam-head-align-select">
+                        <option value="left" ${col.headAlign === "left" ? "selected" : ""}>Izquierda</option>
+                        <option value="center" ${col.headAlign === "center" ? "selected" : ""}>Centro</option>
+                        <option value="right" ${col.headAlign === "right" ? "selected" : ""}>Derecha</option>
+                    </select>
+                    <label class="ctam-align-label">Alinear datos</label>
+                    <select class="ctam-cell-align-select">
+                        <option value="left" ${col.cellAlign === "left" ? "selected" : ""}>Izquierda</option>
+                        <option value="center" ${col.cellAlign === "center" ? "selected" : ""}>Centro</option>
+                        <option value="right" ${col.cellAlign === "right" ? "selected" : ""}>Derecha</option>
                     </select>
                     <select class="ctam-color-select">
                         ${colorOption("blue", "Azul", col.color)}
