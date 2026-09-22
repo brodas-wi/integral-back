@@ -447,6 +447,8 @@ export function initializeCardTableBlocks(editor) {
                     "hoverable",
                     "droppable",
                     "highlightable",
+                    "stylable",
+                    "resizable",
                 ],
                 cardTableData: null,
                 attributes: {
@@ -537,7 +539,7 @@ function injectCardTableEditorStyles(editor, componentType) {
             const s = document.createElement("style");
             s.id = `${componentType}-editor-css`;
             s.textContent = `
-                [data-gjs-type="${componentType}"] * { pointer-events: none !important; }
+                [data-gjs-type="${componentType}"] * { pointer-events: none !important; user-select: none !important; }
                 [data-gjs-type="${componentType}"].gjs-selected,
                 [data-gjs-type="${componentType}"].gjs-hovered {
                     outline: 2px dashed rgba(0,59,113,0.5) !important;
