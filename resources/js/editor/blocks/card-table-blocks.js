@@ -112,12 +112,25 @@ function buildCardTableWrapper(data) {
 function ctRebuildComponentHTML(component) {
     const data = component.get("cardTableData");
     if (!data) return;
-    const el = component.getEl();
-    if (el) {
-        el.innerHTML = buildCardTableWrapper(data);
-    } else {
-        component.components(buildCardTableWrapper(data));
-    }
+    component.components(buildCardTableWrapper(data));
+    lockComponentTree(component);
+}
+
+function lockComponentTree(component) {
+    component.components().forEach((child) => {
+        child.set({
+            editable: false,
+            selectable: false,
+            hoverable: false,
+            highlightable: false,
+            draggable: false,
+            droppable: false,
+            removable: false,
+            copyable: false,
+            layerable: false,
+        });
+        lockComponentTree(child);
+    });
 }
 
 const CT_MODAL_STYLES = `
@@ -460,7 +473,7 @@ export function initializeCardTableBlocks(editor) {
                 attributes: {
                     "data-gjs-type": componentType,
                 },
-                components: [],
+                components: buildCardTableWrapper(defaultCardTableData(3, 5)),
                 script: createCardTableScript(),
                 traits: [
                     {
@@ -491,9 +504,7 @@ export function initializeCardTableBlocks(editor) {
                 if (!this.get("cardTableData")) {
                     this.set("cardTableData", defaultCardTableData(3, 5));
                 }
-                this.listenTo(this, "component:mount", () =>
-                    ctRebuildComponentHTML(this),
-                );
+                lockComponentTree(this);
             },
         },
     });
@@ -510,7 +521,7 @@ function setupCardTableEditorEvents(editor, componentType) {
             if (!component.get("cardTableData")) {
                 component.set("cardTableData", defaultCardTableData(3, 5));
             }
-            ctRebuildComponentHTML(component);
+            lockComponentTree(component);
         }
     });
 
@@ -524,7 +535,7 @@ function setupCardTableEditorEvents(editor, componentType) {
                     if (!comp.get("cardTableData")) {
                         comp.set("cardTableData", defaultCardTableData(3, 5));
                     }
-                    ctRebuildComponentHTML(comp);
+                    lockComponentTree(comp);
                 });
         }, 800);
     });
