@@ -30,7 +30,9 @@
         </div>
     </div>
 
-    @canany(['pages.view', 'pages.manage', 'navbars.view', 'navbars.manage', 'footers.view', 'footers.manage', 'media.view', 'media.manage', 'banners.view', 'banners.manage', 'announcements.view', 'announcements.manage', 'scripts.view', 'scripts.manage'])
+    @canany(['pages.view', 'pages.manage', 'navbars.view', 'navbars.manage', 'footers.view', 'footers.manage', 'media.view',
+        'media.manage', 'banners.view', 'banners.manage', 'announcements.view', 'announcements.manage', 'scripts.view',
+        'scripts.manage'])
         <div class="mb-8">
             <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                 <i class="ri-layout-line text-base"></i> Contenido
@@ -51,12 +53,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-green-500">
                             <a href="{{ route('pages.index') }}"
-                                class="flex-1 bg-green-500 hover:bg-green-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-green-500 hover:bg-green-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['pages.create', 'pages.manage'])
                                 <a href="{{ route('pages.create') }}"
-                                    class="flex-1 bg-white text-green-600 hover:bg-green-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-white text-green-600 hover:bg-green-50 font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -78,12 +80,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-teal-500">
                             <a href="{{ route('navbars.index') }}"
-                                class="flex-1 bg-teal-500 hover:bg-teal-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-teal-500 hover:bg-teal-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['navbars.create', 'navbars.manage'])
                                 <a href="{{ route('navbars.create') }}"
-                                    class="flex-1 bg-teal-400 hover:bg-teal-300 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-teal-400 hover:bg-teal-300 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -105,12 +107,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-cyan-500">
                             <a href="{{ route('footers.index') }}"
-                                class="flex-1 bg-cyan-500 hover:bg-cyan-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-cyan-500 hover:bg-cyan-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['footers.create', 'footers.manage'])
                                 <a href="{{ route('footers.create') }}"
-                                    class="flex-1 bg-cyan-400 hover:bg-cyan-300 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-cyan-400 hover:bg-cyan-300 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -132,12 +134,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-orange-500">
                             <a href="{{ route('media.index') }}"
-                                class="flex-1 bg-orange-500 hover:bg-orange-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-orange-500 hover:bg-orange-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['media.upload', 'media.manage'])
                                 <a href="{{ route('media.create') }}"
-                                    class="flex-1 bg-white text-orange-600 hover:bg-orange-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-white text-orange-600 hover:bg-orange-50 font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-upload-2-line mr-2"></i> Subir
                                 </a>
                             @endcanany
@@ -159,12 +161,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-yellow-500">
                             <a href="{{ route('banners.index') }}"
-                                class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['banners.create', 'banners.manage'])
                                 <a href="{{ route('banners.create') }}"
-                                    class="flex-1 bg-white text-yellow-600 hover:bg-yellow-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-white text-yellow-600 hover:bg-yellow-50 font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -186,12 +188,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-pink-500">
                             <a href="{{ route('announcements.index') }}"
-                                class="flex-1 bg-pink-500 hover:bg-pink-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-pink-500 hover:bg-pink-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['announcements.create', 'announcements.manage'])
                                 <a href="{{ route('announcements.create') }}"
-                                    class="flex-1 bg-white text-pink-600 hover:bg-pink-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-white text-pink-600 hover:bg-pink-50 font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -213,12 +215,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-slate-500">
                             <a href="{{ route('scripts.index') }}"
-                                class="flex-1 bg-slate-500 hover:bg-slate-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-slate-500 hover:bg-slate-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['scripts.create', 'scripts.manage'])
                                 <a href="{{ route('scripts.create') }}"
-                                    class="flex-1 bg-white text-slate-600 hover:bg-slate-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-white text-slate-600 hover:bg-slate-50 font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -251,12 +253,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-red-500">
                             <a href="{{ route('agencies.index') }}"
-                                class="flex-1 bg-red-500 hover:bg-red-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-red-500 hover:bg-red-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['agencies.create', 'agencies.manage'])
                                 <a href="{{ route('agencies.create') }}"
-                                    class="flex-1 bg-white text-red-600 hover:bg-red-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-white text-red-600 hover:bg-red-50 font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -278,12 +280,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-indigo-500">
                             <a href="{{ route('payment-points.index') }}"
-                                class="flex-1 bg-indigo-500 hover:bg-indigo-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-indigo-500 hover:bg-indigo-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['payment_points.create', 'payment_points.manage'])
                                 <a href="{{ route('payment-points.create') }}"
-                                    class="flex-1 bg-white text-indigo-600 hover:bg-indigo-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-white text-indigo-600 hover:bg-indigo-50 font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -316,12 +318,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-blue-500">
                             <a href="{{ route('users.index') }}"
-                                class="flex-1 bg-blue-500 hover:bg-blue-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-blue-500 hover:bg-blue-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['users.create', 'users.manage'])
                                 <a href="{{ route('users.create') }}"
-                                    class="flex-1 bg-white text-blue-600 hover:bg-blue-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-white text-blue-600 hover:bg-blue-50 font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
@@ -343,12 +345,12 @@
                         </div>
                         <div class="flex gap-2 pt-4 border-t border-purple-500">
                             <a href="{{ route('roles.index') }}"
-                                class="flex-1 bg-purple-500 hover:bg-purple-400 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                class="flex-1 bg-purple-500 hover:bg-purple-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                 <i class="ri-list-check mr-2"></i> Ver
                             </a>
                             @canany(['roles.create', 'roles.manage'])
                                 <a href="{{ route('roles.create') }}"
-                                    class="flex-1 bg-white text-purple-600 hover:bg-purple-50 font-medium py-2 px-4 rounded-lg transition-all duration-200 inline-flex items-center justify-center text-sm">
+                                    class="flex-1 bg-white text-purple-600 hover:bg-purple-50 font-medium py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center justify-center text-sm">
                                     <i class="ri-add-line mr-2"></i> Crear
                                 </a>
                             @endcanany
