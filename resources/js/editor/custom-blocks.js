@@ -27,6 +27,7 @@ import { initializeNewsGridBlocks } from "./blocks/news-grid-blocks";
 import { initializeBarChartBlock, initializeBarChartSectionBlock } from "@/editor/blocks/bar-chart-blocks";
 import { formBlocks } from "./blocks/form-blocks";
 import { tableBlocks, initializeTableBlocks } from "./blocks/table-blocks";
+import { cardTableBlocks, initializeCardTableBlocks } from "./blocks/card-table-blocks";
 import { buttonBlocks, initializeButtonBlocks } from "./blocks/button-blocks";
 import { badgeBlocks } from "./blocks/badge-blocks";
 import { mapFilterBlocks, initializeMapFilterBlocks } from "./blocks/map-filter-blocks";
@@ -79,6 +80,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(richListBlocks);
     blockRegistry.registerBlocks(formBlocks);
     blockRegistry.registerBlocks(tableBlocks);
+    blockRegistry.registerBlocks(cardTableBlocks);
     blockRegistry.registerBlocks(buttonBlocks);
     blockRegistry.registerBlocks(badgeBlocks);
     blockRegistry.registerBlocks(financingBlocks);
@@ -96,6 +98,7 @@ export function addCustomBlocks(editor) {
     initializeButtonBlocks(editor);
     initializeTabsBlocks(editor);
     initializeTableBlocks(editor);
+    initializeCardTableBlocks(editor);
     initializeDocumentDownloadBlocks(editor);
     initializeAssetsBlocks(editor);
 
