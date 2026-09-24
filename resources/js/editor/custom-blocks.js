@@ -21,6 +21,7 @@ import { serviceCardsBlocks } from "./blocks/service-cards-blocks";
 import { contactInfoBlocks } from "./blocks/contact-info-blocks";
 import { richListBlocks } from "./blocks/rich-list-blocks";
 import { productDetailBlocks } from "./blocks/product-detail-blocks";
+import { productBenefitsBlock } from "./blocks/product-benefits-block";
 import { initializeIconCardsGridBlock } from "@/editor/blocks/icon-cards-grid-blocks";
 import { financingBlocks } from "./blocks/financing-blocks";
 import { initializeNewsGridBlocks } from "./blocks/news-grid-blocks";
@@ -71,6 +72,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(dualCardBlocks)
     blockRegistry.registerBlocks(splitContentBlocks);
     blockRegistry.registerBlocks(productDetailBlocks);
+    blockRegistry.registerBlocks([productBenefitsBlock]);
     blockRegistry.registerBlocks(ctaBlocks);
     blockRegistry.registerBlocks(documentDownloadBlocks);
     blockRegistry.registerBlocks(promoCtaBlocks);
