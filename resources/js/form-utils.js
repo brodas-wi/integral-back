@@ -241,7 +241,7 @@ function showConfirmModal(options) {
             <div class="px-6 py-4 bg-gray-50 rounded-b-xl flex gap-3 justify-end">
                 <button 
                     onclick="closeConfirmModal()" 
-                    class="px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-all font-medium"
+                    class="px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-full hover:bg-gray-100 transition-all font-medium"
                 >
                     ${config.cancelText}
                 </button>
