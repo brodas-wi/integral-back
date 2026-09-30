@@ -70,9 +70,9 @@ export const contactInfoBlocks = [
 <section class="ci-section">
     <div class="ci-row-wrap">
         <div class="ci-pill-row">
-            ${CONTACT_ITEM("ri-phone-fill", "Contáctenos", "(503)-2250-6090", "tel:+50322506090")}
+            ${CONTACT_ITEM("ri-phone-line", "Contáctenos", "(503)-2250-6090", "tel:+50322506090")}
             <div class="ci-divider"></div>
-            ${CONTACT_ITEM("ri-mail-fill", "Correo", "servicio.cliente@bancointegral.com", "mailto:servicio.cliente@bancointegral.com")}
+            ${CONTACT_ITEM("ri-mail-line", "Correo", "servicio.cliente@bancointegral.com", "mailto:servicio.cliente@bancointegral.com")}
         </div>
     </div>
 </section>
