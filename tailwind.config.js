@@ -14,7 +14,10 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary: "#f0872a",
+                primary: {
+                    DEFAULT: "#f0872a",
+                    dark: "#d97821",
+                },
                 secondary: "#0d3f6a",
                 light: "#f4f4f4",
                 brand: {
@@ -46,13 +49,13 @@ export default {
     },
 
     safelist: [
-        "rounded-none","rounded-sm","rounded","rounded-md",
-        "rounded-lg","rounded-xl","rounded-2xl","rounded-3xl","rounded-full",
-        "text-xs","text-sm","text-base","text-lg","text-xl",
-        "text-2xl","text-3xl","text-4xl","text-5xl","text-6xl",
-        "text-7xl","text-8xl","text-9xl",
-        "font-thin","font-extralight","font-light","font-normal",
-        "font-medium","font-semibold","font-bold","font-extrabold","font-black",
+        "rounded-none", "rounded-sm", "rounded", "rounded-md",
+        "rounded-lg", "rounded-xl", "rounded-2xl", "rounded-3xl", "rounded-full",
+        "text-xs", "text-sm", "text-base", "text-lg", "text-xl",
+        "text-2xl", "text-3xl", "text-4xl", "text-5xl", "text-6xl",
+        "text-7xl", "text-8xl", "text-9xl",
+        "font-thin", "font-extralight", "font-light", "font-normal",
+        "font-medium", "font-semibold", "font-bold", "font-extrabold", "font-black",
 
         {
             pattern:
@@ -76,6 +79,37 @@ export default {
             pattern: /^scale-(90|95|100|105|110|125)$/,
             variants: ["hover", "group-hover", "active", "focus-visible", "group-focus-visible"],
         },
+        {
+            pattern:
+                /^(bg|text|border|ring|fill|stroke|outline|decoration)-(primary|primary-dark|secondary|light)$/,
+            variants: [
+                "hover",
+                "focus",
+                "focus-visible",
+                "active",
+                "group-hover",
+                "group-focus",
+                "group-focus-visible",
+                "peer-hover",
+            ],
+        },
+        {
+            pattern: /^(bg|text|border)-(primary|secondary)\/(5|10|20|30|40|50|60|70|80|90)$/,
+            variants: ["hover", "group-hover"],
+        },
+        "bg-[#f0872a]",
+        "text-[#f0872a]",
+        "border-[#f0872a]",
+        "hover:bg-[#f0872a]",
+        "hover:text-[#f0872a]",
+        "bg-[#0d3f6a]",
+        "text-[#0d3f6a]",
+        "border-[#0d3f6a]",
+        "hover:bg-[#0d3f6a]",
+        "hover:text-[#0d3f6a]",
+        "bg-[#f4f4f4]",
+        "text-[#f4f4f4]",
+        "border-[#f4f4f4]",
         "text-[#003B71]",
         "text-[#E97300]",
         "group-hover:text-[#E97300]",
