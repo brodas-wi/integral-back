@@ -1,3 +1,5 @@
+import { assetUrl } from "@/utils/url.js";
+
 const iconLinksIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect y="4" width="32" height="24" fill="white"/>
