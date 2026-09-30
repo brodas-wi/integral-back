@@ -2,23 +2,23 @@ const THEME_COLORS = [
     {
         label: "Primary",
         value: "#f0872a",
-        textClass: "text-[#f0872a]",
-        bgClass: "bg-[#f0872a]",
-        borderClass: "border-[#f0872a]",
+        textClass: "text-primary",
+        bgClass: "bg-primary",
+        borderClass: "border-primary",
     },
     {
         label: "Secondary",
         value: "#0d3f6a",
-        textClass: "text-[#0d3f6a]",
-        bgClass: "bg-[#0d3f6a]",
-        borderClass: "border-[#0d3f6a]",
+        textClass: "text-secondary",
+        bgClass: "bg-secondary",
+        borderClass: "border-secondary",
     },
     {
         label: "Light",
         value: "#f4f4f4",
-        textClass: "text-[#f4f4f4]",
-        bgClass: "bg-[#f4f4f4]",
-        borderClass: "border-[#f4f4f4]",
+        textClass: "text-light",
+        bgClass: "bg-light",
+        borderClass: "border-light",
     },
     {
         label: "Blanco",
@@ -520,7 +520,7 @@ export class ColorPickerModal {
                     <input type="text" class="cp-hex-input" placeholder="#000000" maxlength="7" spellcheck="false">
                     <button class="cp-btn-apply" data-action="apply-custom">Seleccionar</button>
                 </div>
-                <p class="cp-custom-hint">Genera clase <code>${prefix}[#hex]</code> con estilo inline como respaldo.</p>
+                <p class="cp-custom-hint">Genera clase <code>${prefix}[#hex]</code> con estilo inline como respaldo. Los colores del tema usan clases con nombre.</p>
             </div>
         `;
     }
@@ -690,6 +690,10 @@ const NAMED_THEME = new Set([
     "transparent",
     "inherit",
     "current",
+    "primary",
+    "primary-dark",
+    "secondary",
+    "light",
 ]);
 const VALID_SHADES = new Set([
     "50",
@@ -807,9 +811,10 @@ export function applyColorToComponent(editor, component, changes) {
 function _stripColorClasses(classes, prefix) {
     return classes.filter((c) => {
         if (!c.startsWith(prefix)) return true;
-        const rest = c.slice(prefix.length);
+        const rest = c.slice(prefix.length).split("/")[0];
         if (rest.startsWith("[")) return false;
         if (NAMED_THEME.has(rest)) return false;
+        if (rest.startsWith("brand-")) return false;
         const parts = rest.split("-");
         if (VALID_SHADES.has(parts[parts.length - 1])) return false;
         return true;
