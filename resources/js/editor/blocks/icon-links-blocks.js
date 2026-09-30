@@ -1,71 +1,54 @@
-import { assetUrl } from "@/utils/url.js";
-
 const iconLinksIcon = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <circle cx="6" cy="11" r="4" fill="#E97300" fill-opacity="0.85"/>
-    <circle cx="16" cy="11" r="4" fill="#E97300" fill-opacity="0.85"/>
-    <circle cx="26" cy="11" r="4" fill="#E97300" fill-opacity="0.85"/>
-    <rect x="4" y="10" width="4" height="2" rx="1" fill="white" fill-opacity="0.8"/>
-    <rect x="14" y="10" width="4" height="2" rx="1" fill="white" fill-opacity="0.8"/>
-    <rect x="24" y="10" width="4" height="2" rx="1" fill="white" fill-opacity="0.8"/>
-    <rect x="3" y="18" width="6" height="1.5" rx="0.75" fill="#003B71" fill-opacity="0.7"/>
-    <rect x="13" y="18" width="6" height="1.5" rx="0.75" fill="#003B71" fill-opacity="0.7"/>
-    <rect x="23" y="18" width="6" height="1.5" rx="0.75" fill="#003B71" fill-opacity="0.7"/>
-    <rect x="4" y="21" width="4" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
-    <rect x="14" y="21" width="4" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
-    <rect x="24" y="21" width="4" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
+    <rect y="4" width="32" height="24" fill="white"/>
+    <circle cx="5.1" cy="13" r="3.3" fill="#E97300"/>
+    <circle cx="12.4" cy="13" r="3.3" fill="#E97300"/>
+    <circle cx="19.6" cy="13" r="3.3" fill="#E97300"/>
+    <circle cx="26.9" cy="13" r="3.3" fill="#E97300"/>
+    <rect x="3.4" y="11.8" width="3.4" height="2.4" rx="0.6" fill="white" fill-opacity="0.9"/>
+    <rect x="10.7" y="11.8" width="3.4" height="2.4" rx="0.6" fill="white" fill-opacity="0.9"/>
+    <rect x="17.9" y="11.8" width="3.4" height="2.4" rx="0.6" fill="white" fill-opacity="0.9"/>
+    <rect x="25.2" y="11.8" width="3.4" height="2.4" rx="0.6" fill="white" fill-opacity="0.9"/>
+    <rect x="2.4" y="19.5" width="5.4" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.75"/>
+    <rect x="9.7" y="19.5" width="5.4" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.75"/>
+    <rect x="16.9" y="19.5" width="5.4" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.75"/>
+    <rect x="24.2" y="19.5" width="5.4" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.75"/>
 </svg>`;
 
 const iconLinkItem = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <circle cx="16" cy="12" r="6" fill="#E97300" fill-opacity="0.85"/>
-    <rect x="13" y="10" width="6" height="4" rx="1" fill="white" fill-opacity="0.8"/>
-    <rect x="10" y="21" width="12" height="1.5" rx="0.75" fill="#003B71" fill-opacity="0.7"/>
-    <rect x="11" y="24" width="10" height="1" rx="0.5" fill="#003B71" fill-opacity="0.3"/>
+    <circle cx="16" cy="12.5" r="9" fill="#E97300"/>
+    <rect x="12" y="10" width="8" height="5.5" rx="1.5" fill="white" fill-opacity="0.9"/>
+    <rect x="7" y="24" width="18" height="2.4" rx="1.2" fill="#003B71" fill-opacity="0.75"/>
 </svg>`;
 
 const ICON_LINK_ITEM = `
-<a href="#" class="flex flex-col items-center text-center gap-4 no-underline il-link-item">
-    <div class="w-16 h-16 rounded-full flex items-center justify-center shrink-0 il-icon-badge">
-        <img src="${assetUrl("images/placeholder.svg")}" alt="" class="w-8 h-8 object-contain">
-    </div>
-    <span class="text-base font-semibold leading-snug il-link-label transition-colors duration-200">Nombre del servicio</span>
+<a href="#" class="group flex flex-col items-center gap-4 text-center no-underline focus-visible:outline-none">
+    <img src="${assetUrl("images/placeholder.svg")}" alt="" class="h-16 w-16 object-contain transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none md:h-20 md:w-20">
+    <span class="text-base font-semibold leading-snug text-[#003B71] transition-colors duration-200 group-hover:text-[#E97300] group-focus-visible:text-[#E97300]">Nombre del servicio</span>
 </a>`;
-
-const ICON_LINKS_STYLES = `
-<style>
-.il-section{width:100%;background:#ffffff;padding:3.5rem 4rem;}
-.il-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
-.il-icon-badge{background-color:#E97300;}
-.il-link-label{color:#003B71;}
-.il-link-item:hover .il-link-label{color:#E97300;}
-@media(max-width:1280px){.il-section{padding:3rem 2.5rem;}}
-@media(max-width:992px){.il-section{padding:2.5rem 1.5rem;}.il-grid{grid-template-columns:repeat(2,1fr);gap:2rem;}}
-@media(max-width:480px){.il-grid{grid-template-columns:repeat(2,1fr);gap:1.5rem;}}
-</style>`;
 
 export const iconLinksBlocks = [
     {
         id: "icon-links-strip",
         label: "Iconos con enlace",
-        category: "Productos y Servicios",
+        category: "Accesos rápidos",
         media: iconLinksIcon,
         content: `
-<section class="il-section">
-    <div class="il-grid">
+<section class="w-full bg-white px-6 py-10 lg:px-10 lg:py-12 xl:px-16 xl:py-14">
+    <div class="grid grid-cols-2 gap-6 lg:grid-cols-4 lg:gap-8">
         ${ICON_LINK_ITEM}
         ${ICON_LINK_ITEM}
         ${ICON_LINK_ITEM}
         ${ICON_LINK_ITEM}
     </div>
-</section>
-${ICON_LINKS_STYLES}`,
+</section>`,
     },
     {
         id: "icon-link-item",
         label: "Icono con enlace",
-        category: "Productos y Servicios",
+        category: "Interactivos",
         media: iconLinkItem,
-        content: `${ICON_LINK_ITEM}${ICON_LINKS_STYLES}`,
+        content: ICON_LINK_ITEM,
     },
 ];
