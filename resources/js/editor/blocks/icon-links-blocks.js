@@ -27,7 +27,7 @@ const iconLinkItem = `<svg viewBox="0 0 32 32" width="32" height="32">
 const ICON_LINK_ITEM = `
 <a href="#" class="group flex flex-col items-center gap-4 text-center no-underline focus-visible:outline-none">
     <img src="${assetUrl("images/placeholder.svg")}" alt="" class="h-14 w-14 object-contain transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none md:h-16 md:w-16">
-    <span class="text-base font-semibold leading-snug text-[#003B71] transition-colors duration-200 group-hover:text-[#E97300] group-focus-visible:text-[#E97300]">Nombre del servicio</span>
+    <span class="text-base font-semibold leading-snug text-brand-blue transition-colors duration-200 group-hover:text-brand-orange group-focus-visible:text-brand-orange">Nombre del servicio</span>
 </a>`;
 
 export const iconLinksBlocks = [
