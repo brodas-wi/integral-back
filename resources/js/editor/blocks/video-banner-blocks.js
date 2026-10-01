@@ -108,7 +108,7 @@ function showVideoBannerModal(editor, component) {
     modal.className = "vb-modal";
     modal.innerHTML = `
         <div class="vb-modal-header">
-            <div class="vb-modal-header-left"><i class="ri-movie-line"></i><h2>Configurar Video Hero</h2></div>
+            <div class="vb-modal-header-left"><i class="ri-movie-line"></i><h2>Configurar Banner</h2></div>
             <button id="vb-modal-close" class="vb-modal-close"><i class="ri-close-line" style="font-size:1.125rem;"></i></button>
         </div>
         <div class="vb-modal-body">

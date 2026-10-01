@@ -310,6 +310,8 @@ function createModal() {
     let hasMore = false;
     let isLoading = false;
     let requestId = 0;
+    let totalItems = null;
+    let loadedCount = 0;
     const PER_PAGE = 20;
 
     const grid = () => document.getElementById("mp-grid");
@@ -335,6 +337,8 @@ function createModal() {
             grid().innerHTML = loadingHtml;
             currentPage = 1;
             hasMore = false;
+            loadedCount = 0;
+            totalItems = null;
         }
 
         try {
@@ -355,10 +359,10 @@ function createModal() {
             if (currentRequest !== requestId) return;
 
             const items = data.items || [];
-            const lastPage = data.last_page ?? data.meta?.last_page;
-            hasMore =
-                data.has_more ??
-                (lastPage ? page < lastPage : items.length >= PER_PAGE);
+            const pg = data.pagination;
+            hasMore = pg ? Boolean(pg.hasMore) : items.length >= PER_PAGE;
+            totalItems = pg?.totalItems ?? null;
+            loadedCount = append ? loadedCount + items.length : items.length;
             currentPage = page;
 
             grid().querySelector(".mp-loading-more")?.remove();
@@ -435,7 +439,8 @@ function createModal() {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "mp-load-more";
-        btn.innerHTML = `<i class="ri-arrow-down-line"></i> Cargar más`;
+        const counter = totalItems ? ` (${loadedCount} de ${totalItems})` : "";
+        btn.innerHTML = `<i class="ri-arrow-down-line"></i> Cargar más${counter}`;
         btn.addEventListener("click", loadNext);
         grid().appendChild(btn);
     }

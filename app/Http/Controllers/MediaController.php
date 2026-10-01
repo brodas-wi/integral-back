@@ -537,7 +537,7 @@ class MediaController extends Controller
         $perPage = (int) $request->input('per_page', 20);
         $perPage = in_array($perPage, [10, 20, 30]) ? $perPage : 20;
 
-        $query = Media::with('uploader')->latest();
+        $query = Media::with('uploader')->latest()->orderByDesc('id');
 
         $types = $request->input('types', []);
         $type  = $request->input('type');
@@ -593,6 +593,7 @@ class MediaController extends Controller
                 'current' => $media->currentPage(),
                 'total'   => $media->lastPage(),
                 'hasMore' => $media->hasMorePages(),
+                'totalItems' => $media->total(),
             ],
             'stats' => $stats,
         ]);
