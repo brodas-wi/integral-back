@@ -64,7 +64,7 @@ function injectStyles() {
             justify-content: center;
             width: 2rem;
             height: 2rem;
-            border-radius: 0.375rem;
+            border-radius: 9999px;
             border: none;
             background: transparent;
             color: #94a3b8;
@@ -75,24 +75,37 @@ function injectStyles() {
         .mp-close i { font-size: 1.125rem; }
 
         .mp-search {
+            position: relative;
             display: flex;
             align-items: center;
-            gap: 0.625rem;
             padding: 0.75rem 1.25rem;
             border-bottom: 1px solid #f1f5f9;
             background: #f8fafc;
             flex-shrink: 0;
         }
-        .mp-search i { color: #94a3b8; font-size: 1rem; flex-shrink: 0; }
+        .mp-search i {
+            position: absolute;
+            left: 2.125rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1rem;
+            pointer-events: none;
+        }
         .mp-search input {
             flex: 1;
-            background: transparent;
-            border: none;
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 9999px;
             outline: none;
             color: #1e293b;
             font-size: 0.875rem;
             font-family: inherit;
+            transition: border-color 0.15s;
         }
+        .mp-search input:focus { border-color: #003B71; }
         .mp-search input::placeholder { color: #b0bec5; }
 
         .mp-grid-wrap {
@@ -185,7 +198,7 @@ function injectStyles() {
 
         .mp-btn {
             padding: 0.5rem 1.25rem;
-            border-radius: 0.5rem;
+            border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
@@ -210,6 +223,26 @@ function injectStyles() {
             opacity: 0.4;
             cursor: not-allowed;
         }
+
+        .mp-load-more {
+            grid-column: 1 / -1;
+            justify-self: center;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1.25rem;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 9999px;
+            color: #475569;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .mp-load-more:hover { background: #f8fafc; border-color: #cbd5e1; }
+        .mp-loading-more { padding: 1rem; }
     `;
     document.head.appendChild(style);
 }
@@ -273,24 +306,42 @@ function createModal() {
     let selectedUrl = null;
     let onSelectCb = null;
     let searchTimer = null;
+    let currentPage = 1;
+    let hasMore = false;
+    let isLoading = false;
+    let requestId = 0;
+    const PER_PAGE = 20;
 
     const grid = () => document.getElementById("mp-grid");
     const confirmBtn = () => document.getElementById("mp-confirm");
     const footerInfo = () => document.getElementById("mp-footer-info");
     const searchInput = () => document.getElementById("mp-search-input");
 
-    async function load(search = "", type = "image") {
-        grid().innerHTML = `
-            <div class="mp-loading">
+    async function load(search = "", type = "image", page = 1) {
+        const append = page > 1;
+        const currentRequest = ++requestId;
+        isLoading = true;
+        removeLoadMore();
+
+        const loadingHtml = `
+            <div class="mp-loading${append ? " mp-loading-more" : ""}">
                 <div class="mp-spinner"></div>
                 <span>Cargando...</span>
             </div>`;
+
+        if (append) {
+            grid().insertAdjacentHTML("beforeend", loadingHtml);
+        } else {
+            grid().innerHTML = loadingHtml;
+            currentPage = 1;
+            hasMore = false;
+        }
 
         try {
             const apiUrl =
                 document.querySelector('meta[name="media-api-url"]')?.content ??
                 "/media/api";
-            const params = new URLSearchParams({ per_page: 60 });
+            const params = new URLSearchParams({ per_page: PER_PAGE, page });
             if (type) params.append("type", type);
             if (search) params.append("search", search);
 
@@ -301,9 +352,18 @@ function createModal() {
                 },
             });
             const data = await res.json();
-            const items = data.items || [];
+            if (currentRequest !== requestId) return;
 
-            if (!items.length) {
+            const items = data.items || [];
+            const lastPage = data.last_page ?? data.meta?.last_page;
+            hasMore =
+                data.has_more ??
+                (lastPage ? page < lastPage : items.length >= PER_PAGE);
+            currentPage = page;
+
+            grid().querySelector(".mp-loading-more")?.remove();
+
+            if (!items.length && !append) {
                 grid().innerHTML = `
                     <div class="mp-loading">
                         <i class="ri-image-line" style="font-size:2rem;color:#cbd5e1;"></i>
@@ -312,10 +372,11 @@ function createModal() {
                 return;
             }
 
-            grid().innerHTML = "";
+            if (!append) grid().innerHTML = "";
             items.forEach((item) => {
                 const card = document.createElement("div");
-                card.className = "mp-card";
+                card.className =
+                    "mp-card" + (item.url === selectedUrl ? " selected" : "");
 
                 const isImage = item.type === "image";
                 const isVideo = item.type === "video";
@@ -345,13 +406,43 @@ function createModal() {
                 });
                 grid().appendChild(card);
             });
+
+            renderLoadMore();
         } catch {
+            if (currentRequest !== requestId) return;
+            if (append) {
+                grid().querySelector(".mp-loading-more")?.remove();
+                renderLoadMore();
+                return;
+            }
             grid().innerHTML = `
                 <div class="mp-loading">
                     <i class="ri-error-warning-line" style="font-size:2rem;color:#f87171;"></i>
                     <span style="color:#dc2626;">Error al cargar archivos</span>
                 </div>`;
+        } finally {
+            if (currentRequest === requestId) isLoading = false;
         }
+    }
+
+    function removeLoadMore() {
+        grid().querySelector(".mp-load-more")?.remove();
+    }
+
+    function renderLoadMore() {
+        removeLoadMore();
+        if (!hasMore) return;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "mp-load-more";
+        btn.innerHTML = `<i class="ri-arrow-down-line"></i> Cargar más`;
+        btn.addEventListener("click", loadNext);
+        grid().appendChild(btn);
+    }
+
+    function loadNext() {
+        if (isLoading || !hasMore) return;
+        load(searchInput().value.trim(), el._currentType, currentPage + 1);
     }
 
     function close() {
@@ -379,6 +470,13 @@ function createModal() {
                 el._currentType && load(e.target.value, el._currentType);
             }, 300);
         });
+
+    el.querySelector(".mp-grid-wrap").addEventListener("scroll", (e) => {
+        const wrap = e.target;
+        if (wrap.scrollTop + wrap.clientHeight >= wrap.scrollHeight - 200) {
+            loadNext();
+        }
+    });
 
     // API pública en el elemento
     el._open = ({ type = "image", title, onSelect }) => {

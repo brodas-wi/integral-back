@@ -50,16 +50,16 @@ function showVideoBannerModal(editor, component) {
             .vb-modal-header-left{display:flex;align-items:center;gap:0.5rem;}
             .vb-modal-header-left i{font-size:1.125rem;color:#3b82f6;}
             .vb-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
-            .vb-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;}
+            .vb-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:9999px;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;}
             .vb-modal-close:hover{background:#f1f5f9;color:#475569;}
             .vb-modal-body{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;background:#f8fafc;}
             .vb-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;}
             .vb-label{display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;}
             .vb-hint{font-size:0.75rem;color:#94a3b8;margin:0 0 0.75rem;}
-            .vb-input{width:100%;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;box-sizing:border-box;}
+            .vb-input{width:100%;padding:0.5rem 1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:9999px;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;box-sizing:border-box;}
             .vb-input:focus{border-color:#3b82f6;}
             .vb-row{display:flex;gap:0.75rem;align-items:center;}
-            .vb-pick-btn{flex-shrink:0;padding:0.4rem 0.75rem;background:#003B71;border:none;border-radius:0.5rem;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.25rem;font-family:inherit;white-space:nowrap;transition:background 0.15s;}
+            .vb-pick-btn{flex-shrink:0;padding:0.5rem 1rem;background:#003B71;border:none;border-radius:9999px;color:#fff;font-size:0.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.25rem;font-family:inherit;white-space:nowrap;transition:background 0.15s;}
             .vb-pick-btn:hover{background:#002a52;}
             .vb-video-preview{width:100%;height:110px;object-fit:cover;border-radius:0.375rem;border:1px solid #e2e8f0;display:block;background:#0a0a0a;}
             .vb-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
@@ -73,9 +73,9 @@ function showVideoBannerModal(editor, component) {
             .vb-switch input:checked + .vb-switch-track{background:#E97300;}
             .vb-switch input:checked + .vb-switch-track::before{transform:translateX(20px);}
             .vb-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
-            .vb-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .vb-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:9999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .vb-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
-            .vb-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .vb-btn-save{display:inline-flex;align-items:center;gap:0.375rem;padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:9999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .vb-btn-save:hover{background:#d97821;}
             .vb-proportions-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:0.5rem;padding:0.75rem 1rem;display:flex;gap:0.625rem;align-items:flex-start;}
             .vb-proportions-box i{color:#3b82f6;font-size:1.125rem;flex-shrink:0;margin-top:0.125rem;}
