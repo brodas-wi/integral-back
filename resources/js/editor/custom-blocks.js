@@ -66,7 +66,6 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(aboutBlocks);
     blockRegistry.registerBlocks(missionVisionBlocks);
     blockRegistry.registerBlocks(productLinkCardsBlocks);
-    blockRegistry.registerBlocks(iconLinksBlocks);
     blockRegistry.registerBlocks(iconCardsBlocks);
     blockRegistry.registerBlocks(assistanceCardsBlocks);
     blockRegistry.registerBlocks(dualCardBlocks)
@@ -81,12 +80,13 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(contactInfoBlocks);
     blockRegistry.registerBlocks(richListBlocks);
     blockRegistry.registerBlocks(formBlocks);
+    blockRegistry.registerBlocks(mapFilterBlocks);
+    blockRegistry.registerBlocks(iconLinksBlocks);
     blockRegistry.registerBlocks(tableBlocks);
     blockRegistry.registerBlocks(cardTableBlocks);
     blockRegistry.registerBlocks(buttonBlocks);
     blockRegistry.registerBlocks(badgeBlocks);
     blockRegistry.registerBlocks(financingBlocks);
-    blockRegistry.registerBlocks(mapFilterBlocks);
     blockRegistry.registerBlocks(assetsBlocks);
     blockRegistry.applyToEditor(editor);
 
