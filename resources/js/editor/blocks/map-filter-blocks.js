@@ -312,7 +312,7 @@ function createMapFilterScript() {
             toggle.disabled = points.length === 0;
 
             if (!points.length) {
-                label.textContent = "No hay ubicaciones disponibles en esta área";
+                label.textContent = "Sin ubicaciones en esta área";
                 dropdown.innerHTML = "";
                 return;
             }
@@ -538,18 +538,19 @@ function showMapFilterModal(editor, component) {
             .mp-modal-header-left{display:flex;align-items:center;gap:0.5rem;}
             .mp-modal-header-left i{font-size:1.125rem;color:#3b82f6;}
             .mp-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
-            .mp-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border-radius:0.375rem;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;}
+            .mp-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;flex-shrink:0;padding:0;border-radius:50%;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:background 0.15s;}
             .mp-modal-close:hover{background:#f1f5f9;color:#475569;}
             .mp-modal-body{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;background:#f8fafc;}
             .mp-card{background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;padding:1rem;}
             .mp-label{display:block;font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.625rem;}
-            .mp-input{flex:1;padding:0.5rem 0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.5rem;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;width:100%;box-sizing:border-box;}
+            .mp-input{flex:1;padding:0.5rem 1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:999px;color:#1e293b;font-size:0.875rem;outline:none;font-family:inherit;transition:border-color 0.15s;width:100%;box-sizing:border-box;}
+textarea.mp-input{border-radius:1.25rem;padding:0.75rem 1rem;}
             .mp-input:focus{border-color:#3b82f6;}
             .mp-hint{font-size:0.75rem;color:#94a3b8;margin:0.375rem 0 0;}
             .mp-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
-            .mp-btn-cancel{padding:0.5rem 1.25rem;background:#fff;border:2px solid #e2e8f0;border-radius:0.5rem;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .mp-btn-cancel{padding:0.5rem 1.5rem;background:#fff;border:2px solid #e2e8f0;border-radius:999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .mp-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
-            .mp-btn-save{padding:0.5rem 1.25rem;background:#f0872a;border:none;border-radius:0.5rem;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+            .mp-btn-save{padding:0.5rem 1.5rem;background:#f0872a;border:none;border-radius:999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .mp-btn-save:hover{background:#d97821;}
         `;
         document.head.appendChild(style);
@@ -706,6 +707,16 @@ export function initializeMapFilterBlocks(editor) {
 }
 
 function setupMapFilterEditorEvents(editor, componentType) {
+    editor.on("block:drag:stop", (component, block) => {
+        if (!component || block?.getId?.() !== "map-filter-block") return;
+        if (typeof window.showNotification === "function") {
+            window.showNotification(
+                "Gestiona el mapa desde el panel de configuración del componente.",
+                "info",
+            );
+        }
+    });
+
     editor.on("storage:end:load", () => {
         setTimeout(
             () => reinitializeMapFilterComponents(editor, componentType),
