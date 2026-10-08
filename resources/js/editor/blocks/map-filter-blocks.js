@@ -14,7 +14,7 @@ const MAP_FILTER_STYLES = `
 .mp-filter{position:relative;}
 .mp-filter-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-bottom:2px solid #E97300;padding:0.5rem 0.25rem 0.625rem;cursor:pointer;font-family:inherit;}
 .mp-filter-label{font-size:0.9375rem;font-weight:700;color:#003B71;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.mp-filter-arrow{color:#003B71;font-size:0.75rem;transition:transform 0.2s ease;flex-shrink:0;margin-left:0.75rem;}
+.mp-filter-arrow{width:0;height:0;border-left:0.4375rem solid transparent;border-right:0.4375rem solid transparent;border-top:0.5625rem solid #003B71;transition:transform 0.2s ease;flex-shrink:0;margin-left:0.75rem;}
 .mp-filter.mp-filter-open .mp-filter-arrow{transform:rotate(180deg);}
 .mp-filter-btn:disabled{opacity:0.5;cursor:default;}
 .mp-filter-dropdown{display:none;position:absolute;top:calc(100% + 0.625rem);left:0;right:0;background:#ffffff;border-radius:0.5rem;box-shadow:0 14px 36px rgba(0,0,0,0.2);overflow:hidden;max-height:260px;overflow-y:auto;}
@@ -79,7 +79,7 @@ function buildMapFilterHTML(data, uid) {
             <div class="mp-filter" data-filter-index="0">
                 <button type="button" class="mp-filter-btn" data-filter-toggle="0">
                     <span class="mp-filter-label" data-filter-label="0">Agencias / Puntos de pago</span>
-                    <i class="ri-arrow-down-s-line mp-filter-arrow"></i>
+                    <span class="mp-filter-arrow" aria-hidden="true"></span>
                 </button>
                 <div class="mp-filter-dropdown">
                     <button type="button" class="mp-filter-option" data-type="">Todos</button>
@@ -90,7 +90,7 @@ function buildMapFilterHTML(data, uid) {
             <div class="mp-filter" data-filter-index="1">
                 <button type="button" class="mp-filter-btn" data-filter-toggle="1">
                     <span class="mp-filter-label" data-filter-label="1">Departamento</span>
-                    <i class="ri-arrow-down-s-line mp-filter-arrow"></i>
+                    <span class="mp-filter-arrow" aria-hidden="true"></span>
                 </button>
                 <div class="mp-filter-dropdown">
                     <button type="button" class="mp-filter-option" disabled>Cargando...</button>
@@ -99,7 +99,7 @@ function buildMapFilterHTML(data, uid) {
             <div class="mp-filter" data-filter-index="2">
                 <button type="button" class="mp-filter-btn" data-filter-toggle="2">
                     <span class="mp-filter-label" data-filter-label="2">Seleccione una ubicación</span>
-                    <i class="ri-arrow-down-s-line mp-filter-arrow"></i>
+                    <span class="mp-filter-arrow" aria-hidden="true"></span>
                 </button>
                 <div class="mp-filter-dropdown">
                     <button type="button" class="mp-filter-option" disabled>Cargando...</button>
@@ -124,7 +124,7 @@ function createMapFilterScript() {
         const root = this;
         const doc = root.ownerDocument ?? document;
 
-        const RUNTIME_STYLES = `.mp-section{width:100%;background:#ffffff;padding:3.5rem 4rem;font-family:'Poppins',sans-serif;}.mp-stats{font-size:1.125rem;font-weight:700;color:#003B71;margin:0 0 1.75rem;line-height:1.5;}.mp-stats .mp-num{color:#E97300;}.mp-title{font-size:1.75rem;font-weight:800;color:#E97300;margin:0 0 1.5rem;}.mp-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-bottom:2rem;position:relative;z-index:30;}.mp-filter{position:relative;}.mp-filter-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-bottom:2px solid #E97300;padding:0.5rem 0.25rem 0.625rem;cursor:pointer;font-family:inherit;}.mp-filter-label{font-size:0.9375rem;font-weight:700;color:#003B71;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.mp-filter-arrow{color:#003B71;font-size:0.75rem;transition:transform 0.2s ease;flex-shrink:0;margin-left:0.75rem;}.mp-filter.mp-filter-open .mp-filter-arrow{transform:rotate(180deg);}.mp-filter-btn:disabled{opacity:0.5;cursor:default;}.mp-filter-dropdown{display:none;position:absolute;top:calc(100% + 0.625rem);left:0;right:0;background:#ffffff;border-radius:0.5rem;box-shadow:0 14px 36px rgba(0,0,0,0.2);overflow:hidden;max-height:260px;overflow-y:auto;}.mp-filter.mp-filter-open .mp-filter-dropdown{display:block;}.mp-filter-option{display:block;width:100%;text-align:center;padding:0.75rem 1rem;background:none;border:none;border-bottom:2px solid #E97300;font-size:0.875rem;font-weight:700;color:#003B71;cursor:pointer;font-family:inherit;transition:background 0.15s;}.mp-filter-option:last-child{border-bottom:none;}.mp-filter-option:hover{background:#f8fafc;}.mp-filter-option:disabled{opacity:0.5;cursor:default;pointer-events:none;}.mp-map-wrapper{position:relative;width:100%;height:440px;border-radius:0.5rem;overflow:hidden;}.mp-map{width:100%;height:100%;z-index:1;}.mp-map-overlay{position:absolute;inset:0;background:rgba(0,59,113,0.4);opacity:0;pointer-events:none;transition:opacity 0.2s ease;z-index:20;}.mp-map-overlay.mp-overlay-active{opacity:1;}.mp-pin{background:transparent!important;border:none!important;}.mp-popup{font-family:'Poppins',sans-serif;min-width:180px;}.mp-popup-name{margin:0 0 0.375rem;font-size:0.875rem;font-weight:700;color:#003B71;}.mp-popup-line{margin:0 0 0.25rem;font-size:0.8125rem;color:#475569;display:flex;align-items:flex-start;gap:0.375rem;line-height:1.4;}.mp-popup-line i{color:#E97300;margin-top:0.125rem;}.mp-popup-line:last-child{margin-bottom:0;}@media(max-width:1280px){.mp-section{padding:3rem 2.5rem;}}@media(max-width:992px){.mp-section{padding:2.5rem 1.5rem;}.mp-filters{grid-template-columns:1fr;gap:1.25rem;}.mp-map-wrapper{height:320px;}}`;
+        const RUNTIME_STYLES = `.mp-section{width:100%;background:#ffffff;padding:3.5rem 4rem;font-family:'Poppins',sans-serif;}.mp-stats{font-size:1.125rem;font-weight:700;color:#003B71;margin:0 0 1.75rem;line-height:1.5;}.mp-stats .mp-num{color:#E97300;}.mp-title{font-size:1.75rem;font-weight:800;color:#E97300;margin:0 0 1.5rem;}.mp-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-bottom:2rem;position:relative;z-index:30;}.mp-filter{position:relative;}.mp-filter-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-bottom:2px solid #E97300;padding:0.5rem 0.25rem 0.625rem;cursor:pointer;font-family:inherit;}.mp-filter-label{font-size:0.9375rem;font-weight:700;color:#003B71;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.mp-filter-arrow{width:0;height:0;border-left:0.4375rem solid transparent;border-right:0.4375rem solid transparent;border-top:0.5625rem solid #003B71;transition:transform 0.2s ease;flex-shrink:0;margin-left:0.75rem;}.mp-filter.mp-filter-open .mp-filter-arrow{transform:rotate(180deg);}.mp-filter-btn:disabled{opacity:0.5;cursor:default;}.mp-filter-dropdown{display:none;position:absolute;top:calc(100% + 0.625rem);left:0;right:0;background:#ffffff;border-radius:0.5rem;box-shadow:0 14px 36px rgba(0,0,0,0.2);overflow:hidden;max-height:260px;overflow-y:auto;}.mp-filter.mp-filter-open .mp-filter-dropdown{display:block;}.mp-filter-option{display:block;width:100%;text-align:center;padding:0.75rem 1rem;background:none;border:none;border-bottom:2px solid #E97300;font-size:0.875rem;font-weight:700;color:#003B71;cursor:pointer;font-family:inherit;transition:background 0.15s;}.mp-filter-option:last-child{border-bottom:none;}.mp-filter-option:hover{background:#f8fafc;}.mp-filter-option:disabled{opacity:0.5;cursor:default;pointer-events:none;}.mp-map-wrapper{position:relative;width:100%;height:440px;border-radius:0.5rem;overflow:hidden;}.mp-map{width:100%;height:100%;z-index:1;}.mp-map-overlay{position:absolute;inset:0;background:rgba(0,59,113,0.4);opacity:0;pointer-events:none;transition:opacity 0.2s ease;z-index:20;}.mp-map-overlay.mp-overlay-active{opacity:1;}.mp-pin{background:transparent!important;border:none!important;}.mp-popup{font-family:'Poppins',sans-serif;min-width:180px;}.mp-popup-name{margin:0 0 0.375rem;font-size:0.875rem;font-weight:700;color:#003B71;}.mp-popup-line{margin:0 0 0.25rem;font-size:0.8125rem;color:#475569;display:flex;align-items:flex-start;gap:0.375rem;line-height:1.4;}.mp-popup-line i{color:#E97300;margin-top:0.125rem;}.mp-popup-line:last-child{margin-bottom:0;}@media(max-width:1280px){.mp-section{padding:3rem 2.5rem;}}@media(max-width:992px){.mp-section{padding:2.5rem 1.5rem;}.mp-filters{grid-template-columns:1fr;gap:1.25rem;}.mp-map-wrapper{height:320px;}}`;
 
         if (!doc.getElementById("mp-filter-styles")) {
             const s = doc.createElement("style");
@@ -547,7 +547,7 @@ function showMapFilterModal(editor, component) {
 textarea.mp-input{border-radius:1.25rem;padding:0.75rem 1rem;}
             .mp-input:focus{border-color:#3b82f6;}
             .mp-hint{font-size:0.75rem;color:#94a3b8;margin:0.375rem 0 0;}
-            .mp-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.75rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
+            .mp-modal-footer{padding:1rem 1.25rem;border-top:1px solid #f1f5f9;display:flex;gap:0.5rem;justify-content:flex-end;background:#fff;flex-shrink:0;}
             .mp-btn-cancel{padding:0.5rem 1.5rem;background:#fff;border:2px solid #e2e8f0;border-radius:999px;color:#475569;font-size:0.875rem;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;}
             .mp-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;}
             .mp-btn-save{padding:0.5rem 1.5rem;background:#f0872a;border:none;border-radius:999px;color:#fff;font-size:0.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;}
