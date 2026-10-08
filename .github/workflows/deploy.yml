@@ -1,0 +1,26 @@
+name: Deploy a Dokploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: dokploy-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Disparar despliegue
+        env:
+          DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
+          DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
+          DOKPLOY_COMPOSE_ID: ${{ secrets.DOKPLOY_COMPOSE_ID }}
+        run: |
+          curl --fail-with-body -sS -X POST "${DOKPLOY_URL%/}/api/compose.deploy" \
+            -H "Content-Type: application/json" \
+            -H "x-api-key: ${DOKPLOY_API_KEY}" \
+            -d "{\"composeId\":\"${DOKPLOY_COMPOSE_ID}\",\"title\":\"Deploy ${GITHUB_SHA::7}\"}"
