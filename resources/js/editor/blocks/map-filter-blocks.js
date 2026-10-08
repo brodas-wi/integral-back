@@ -16,6 +16,7 @@ const MAP_FILTER_STYLES = `
 .mp-filter-label{font-size:0.9375rem;font-weight:700;color:#003B71;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mp-filter-arrow{color:#003B71;font-size:0.75rem;transition:transform 0.2s ease;flex-shrink:0;margin-left:0.75rem;}
 .mp-filter.mp-filter-open .mp-filter-arrow{transform:rotate(180deg);}
+.mp-filter-btn:disabled{opacity:0.5;cursor:default;}
 .mp-filter-dropdown{display:none;position:absolute;top:calc(100% + 0.625rem);left:0;right:0;background:#ffffff;border-radius:0.5rem;box-shadow:0 14px 36px rgba(0,0,0,0.2);overflow:hidden;max-height:260px;overflow-y:auto;}
 .mp-filter.mp-filter-open .mp-filter-dropdown{display:block;}
 .mp-filter-option{display:block;width:100%;text-align:center;padding:0.75rem 1rem;background:none;border:none;border-bottom:2px solid #E97300;font-size:0.875rem;font-weight:700;color:#003B71;cursor:pointer;font-family:inherit;transition:background 0.15s;}
@@ -59,9 +60,21 @@ const LOCK_ATTRS =
 function buildMapFilterHTML(data, uid) {
     uid = uid || "mp" + Math.random().toString(36).slice(2, 7);
 
+    const title = String(data.title ?? DEFAULT_MAP_FILTER_DATA.title).trim();
+    const statsText = String(
+        data.statsText ?? DEFAULT_MAP_FILTER_DATA.statsText,
+    ).trim();
+
+    const statsHtml = statsText
+        ? `<p class="mp-stats" data-mp-stats data-mp-template="${mapFilterEscapeHtml(statsText)}" ${LOCK_ATTRS}>Cargando disponibilidad de agencias y puntos de pago...</p>`
+        : "";
+    const titleHtml = title
+        ? `<h2 class="mp-title" ${LOCK_ATTRS}>${mapFilterEscapeHtml(title)}</h2>`
+        : "";
+
     return `<section id="mp-root-${uid}" class="mp-section" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
-        <p class="mp-stats" data-mp-stats ${LOCK_ATTRS}>Cargando disponibilidad de agencias y puntos de pago...</p>
-        <h2 class="mp-title" ${LOCK_ATTRS}>${mapFilterEscapeHtml(data.title || "Horarios y Agencias:")}</h2>
+        ${statsHtml}
+        ${titleHtml}
         <div class="mp-filters" data-mp-filters ${LOCK_ATTRS}>
             <div class="mp-filter" data-filter-index="0">
                 <button type="button" class="mp-filter-btn" data-filter-toggle="0">
@@ -102,6 +115,8 @@ function buildMapFilterHTML(data, uid) {
 
 const DEFAULT_MAP_FILTER_DATA = {
     title: "Horarios y Agencias:",
+    statsText:
+        "{agencias} agencias y {puntos} puntos de pago activos distribuidos en todo el país.",
 };
 
 function createMapFilterScript() {
@@ -109,7 +124,7 @@ function createMapFilterScript() {
         const root = this;
         const doc = root.ownerDocument ?? document;
 
-        const RUNTIME_STYLES = `.mp-section{width:100%;background:#ffffff;padding:3.5rem 4rem;font-family:'Poppins',sans-serif;}.mp-stats{font-size:1.125rem;font-weight:700;color:#003B71;margin:0 0 1.75rem;line-height:1.5;}.mp-stats .mp-num{color:#E97300;}.mp-title{font-size:1.75rem;font-weight:800;color:#E97300;margin:0 0 1.5rem;}.mp-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-bottom:2rem;position:relative;z-index:30;}.mp-filter{position:relative;}.mp-filter-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-bottom:2px solid #E97300;padding:0.5rem 0.25rem 0.625rem;cursor:pointer;font-family:inherit;}.mp-filter-label{font-size:0.9375rem;font-weight:700;color:#003B71;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.mp-filter-arrow{color:#003B71;font-size:0.75rem;transition:transform 0.2s ease;flex-shrink:0;margin-left:0.75rem;}.mp-filter.mp-filter-open .mp-filter-arrow{transform:rotate(180deg);}.mp-filter-dropdown{display:none;position:absolute;top:calc(100% + 0.625rem);left:0;right:0;background:#ffffff;border-radius:0.5rem;box-shadow:0 14px 36px rgba(0,0,0,0.2);overflow:hidden;max-height:260px;overflow-y:auto;}.mp-filter.mp-filter-open .mp-filter-dropdown{display:block;}.mp-filter-option{display:block;width:100%;text-align:center;padding:0.75rem 1rem;background:none;border:none;border-bottom:2px solid #E97300;font-size:0.875rem;font-weight:700;color:#003B71;cursor:pointer;font-family:inherit;transition:background 0.15s;}.mp-filter-option:last-child{border-bottom:none;}.mp-filter-option:hover{background:#f8fafc;}.mp-filter-option:disabled{opacity:0.5;cursor:default;pointer-events:none;}.mp-map-wrapper{position:relative;width:100%;height:440px;border-radius:0.5rem;overflow:hidden;}.mp-map{width:100%;height:100%;z-index:1;}.mp-map-overlay{position:absolute;inset:0;background:rgba(0,59,113,0.4);opacity:0;pointer-events:none;transition:opacity 0.2s ease;z-index:20;}.mp-map-overlay.mp-overlay-active{opacity:1;}.mp-pin{background:transparent!important;border:none!important;}.mp-popup{font-family:'Poppins',sans-serif;min-width:180px;}.mp-popup-name{margin:0 0 0.375rem;font-size:0.875rem;font-weight:700;color:#003B71;}.mp-popup-line{margin:0 0 0.25rem;font-size:0.8125rem;color:#475569;display:flex;align-items:flex-start;gap:0.375rem;line-height:1.4;}.mp-popup-line i{color:#E97300;margin-top:0.125rem;}.mp-popup-line:last-child{margin-bottom:0;}@media(max-width:1280px){.mp-section{padding:3rem 2.5rem;}}@media(max-width:992px){.mp-section{padding:2.5rem 1.5rem;}.mp-filters{grid-template-columns:1fr;gap:1.25rem;}.mp-map-wrapper{height:320px;}}`;
+        const RUNTIME_STYLES = `.mp-section{width:100%;background:#ffffff;padding:3.5rem 4rem;font-family:'Poppins',sans-serif;}.mp-stats{font-size:1.125rem;font-weight:700;color:#003B71;margin:0 0 1.75rem;line-height:1.5;}.mp-stats .mp-num{color:#E97300;}.mp-title{font-size:1.75rem;font-weight:800;color:#E97300;margin:0 0 1.5rem;}.mp-filters{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-bottom:2rem;position:relative;z-index:30;}.mp-filter{position:relative;}.mp-filter-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-bottom:2px solid #E97300;padding:0.5rem 0.25rem 0.625rem;cursor:pointer;font-family:inherit;}.mp-filter-label{font-size:0.9375rem;font-weight:700;color:#003B71;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.mp-filter-arrow{color:#003B71;font-size:0.75rem;transition:transform 0.2s ease;flex-shrink:0;margin-left:0.75rem;}.mp-filter.mp-filter-open .mp-filter-arrow{transform:rotate(180deg);}.mp-filter-btn:disabled{opacity:0.5;cursor:default;}.mp-filter-dropdown{display:none;position:absolute;top:calc(100% + 0.625rem);left:0;right:0;background:#ffffff;border-radius:0.5rem;box-shadow:0 14px 36px rgba(0,0,0,0.2);overflow:hidden;max-height:260px;overflow-y:auto;}.mp-filter.mp-filter-open .mp-filter-dropdown{display:block;}.mp-filter-option{display:block;width:100%;text-align:center;padding:0.75rem 1rem;background:none;border:none;border-bottom:2px solid #E97300;font-size:0.875rem;font-weight:700;color:#003B71;cursor:pointer;font-family:inherit;transition:background 0.15s;}.mp-filter-option:last-child{border-bottom:none;}.mp-filter-option:hover{background:#f8fafc;}.mp-filter-option:disabled{opacity:0.5;cursor:default;pointer-events:none;}.mp-map-wrapper{position:relative;width:100%;height:440px;border-radius:0.5rem;overflow:hidden;}.mp-map{width:100%;height:100%;z-index:1;}.mp-map-overlay{position:absolute;inset:0;background:rgba(0,59,113,0.4);opacity:0;pointer-events:none;transition:opacity 0.2s ease;z-index:20;}.mp-map-overlay.mp-overlay-active{opacity:1;}.mp-pin{background:transparent!important;border:none!important;}.mp-popup{font-family:'Poppins',sans-serif;min-width:180px;}.mp-popup-name{margin:0 0 0.375rem;font-size:0.875rem;font-weight:700;color:#003B71;}.mp-popup-line{margin:0 0 0.25rem;font-size:0.8125rem;color:#475569;display:flex;align-items:flex-start;gap:0.375rem;line-height:1.4;}.mp-popup-line i{color:#E97300;margin-top:0.125rem;}.mp-popup-line:last-child{margin-bottom:0;}@media(max-width:1280px){.mp-section{padding:3rem 2.5rem;}}@media(max-width:992px){.mp-section{padding:2.5rem 1.5rem;}.mp-filters{grid-template-columns:1fr;gap:1.25rem;}.mp-map-wrapper{height:320px;}}`;
 
         if (!doc.getElementById("mp-filter-styles")) {
             const s = doc.createElement("style");
@@ -161,12 +176,8 @@ function createMapFilterScript() {
             );
         }
 
-        function highlightStats(text) {
-            return escapeHtml(text).replace(
-                /\*\*(.+?)\*\*/g,
-                '<span class="mp-num">$1</span>',
-            );
-        }
+        const DEFAULT_STATS_TEMPLATE =
+            "{agencias} agencias y {puntos} puntos de pago activos distribuidos en todo el país.";
 
         function renderStats(success) {
             if (!statsEl) return;
@@ -175,10 +186,17 @@ function createMapFilterScript() {
                     "No fue posible cargar la disponibilidad de agencias y puntos de pago.";
                 return;
             }
-            const agencyCount = state.agencies.length;
-            const pointCount = state.paymentPoints.length;
-            const text = `**${agencyCount}** agencias y **${pointCount}** puntos de pago activos distribuidos en todo el país.`;
-            statsEl.innerHTML = highlightStats(text);
+            const template =
+                statsEl.dataset.mpTemplate ?? DEFAULT_STATS_TEMPLATE;
+            const counts = {
+                agencias: state.agencies.length,
+                puntos: state.paymentPoints.length,
+                total: state.agencies.length + state.paymentPoints.length,
+            };
+            statsEl.innerHTML = escapeHtml(template).replace(
+                /\{(agencias|puntos|total)\}/g,
+                (_, key) => `<span class="mp-num">${counts[key]}</span>`,
+            );
         }
 
         function pinIconSvg(color) {
@@ -282,14 +300,25 @@ function createMapFilterScript() {
         }
 
         function rebuildLocationFilterOptions() {
-            const dropdown = filtersWrap.querySelector(
-                '[data-filter-index="2"] .mp-filter-dropdown',
-            );
-            const label = filtersWrap.querySelector('[data-filter-label="2"]');
-            if (!dropdown) return;
+            const filter = filtersWrap.querySelector('[data-filter-index="2"]');
+            const dropdown = filter?.querySelector(".mp-filter-dropdown");
+            const toggle = filter?.querySelector(".mp-filter-btn");
+            const label = filter?.querySelector('[data-filter-label="2"]');
+            if (!dropdown || !toggle || !label) return;
 
             const points = filteredPoints();
-            const optionsHtml = [
+            state.pointKey = null;
+            filter.classList.remove("mp-filter-open");
+            toggle.disabled = points.length === 0;
+
+            if (!points.length) {
+                label.textContent = "No hay ubicaciones disponibles en esta área";
+                dropdown.innerHTML = "";
+                return;
+            }
+
+            label.textContent = "Seleccione una ubicación";
+            dropdown.innerHTML = [
                 `<button type="button" class="mp-filter-option" data-point-key="">Todas</button>`,
             ]
                 .concat(
@@ -299,10 +328,6 @@ function createMapFilterScript() {
                     ),
                 )
                 .join("");
-            dropdown.innerHTML = optionsHtml;
-
-            state.pointKey = null;
-            if (label) label.textContent = "Seleccione una ubicación";
 
             dropdown.querySelectorAll(".mp-filter-option").forEach((opt) => {
                 opt.addEventListener("click", () => {
@@ -540,7 +565,9 @@ function showMapFilterModal(editor, component) {
         }
     })();
 
-    const title = currentData.title || DEFAULT_MAP_FILTER_DATA.title;
+    const title = currentData.title ?? DEFAULT_MAP_FILTER_DATA.title;
+    const statsText =
+        currentData.statsText ?? DEFAULT_MAP_FILTER_DATA.statsText;
 
     const overlay = document.createElement("div");
     overlay.id = "map-filter-config-modal";
@@ -555,10 +582,16 @@ function showMapFilterModal(editor, component) {
         </div>
         <div class="mp-modal-body">
             <div class="mp-card">
-                <label class="mp-label">Título</label>
-                <input id="mp-title" type="text" value="${title}" class="mp-input">
+                <label class="mp-label">Texto de estadísticas</label>
+                <textarea id="mp-stats-text" rows="3" class="mp-input" style="resize:vertical;">${mapFilterEscapeHtml(statsText)}</textarea>
+                <p class="mp-hint">Use {agencias}, {puntos} y {total} donde desee mostrar cada cantidad (se resaltan en color). Déjelo vacío para ocultar el texto.</p>
             </div>
-            <p class="mp-hint">El texto de estadísticas, los filtros y las ubicaciones del mapa se generan automáticamente a partir de las agencias y puntos de pago activos con coordenadas registrados en el sistema. Este bloque no admite edición de contenido interno.</p>
+            <div class="mp-card">
+                <label class="mp-label">Título</label>
+                <input id="mp-title" type="text" value="${mapFilterEscapeHtml(title)}" class="mp-input">
+                <p class="mp-hint">Déjelo vacío para ocultar el título.</p>
+            </div>
+            <p class="mp-hint">Los filtros y las ubicaciones del mapa se generan automáticamente a partir de las agencias y puntos de pago activos con coordenadas registrados en el sistema.</p>
         </div>
         <div class="mp-modal-footer">
             <button id="mp-modal-cancel" class="mp-btn-cancel">Cancelar</button>
@@ -578,6 +611,7 @@ function showMapFilterModal(editor, component) {
     modal.querySelector("#mp-modal-save").onclick = () => {
         const data = {
             title: modal.querySelector("#mp-title").value.trim(),
+            statsText: modal.querySelector("#mp-stats-text").value.trim(),
         };
 
         const existingInner = component
@@ -589,8 +623,13 @@ function showMapFilterModal(editor, component) {
         component.addAttributes({ "data-map-config": JSON.stringify(data) });
         component.components(
             buildMapFilterHTML(data, uid) +
-                `<style>${MAP_FILTER_STYLES}</style>`,
+            `<style>${MAP_FILTER_STYLES}</style>`,
         );
+        const el = component.getEl();
+        const script = component.get("script");
+        if (el && typeof script === "function") {
+            setTimeout(() => script.call(el), 300);
+        }
         close();
     };
 }
