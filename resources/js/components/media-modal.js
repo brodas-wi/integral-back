@@ -36,6 +36,16 @@ export class MediaModal {
             "#type-filter-container",
         );
         const typeFilter = this.modal.querySelector("#media-type-filter");
+        const searchInput = this.modal.querySelector("#media-search");
+
+        searchInput.value = "";
+        typeFilter.value = this.currentFilters.type;
+
+        const typeArticle = {
+            image: "una",
+            document: "un",
+            video: "un",
+        };
 
         const typeLabel = {
             image: "imagen",
@@ -50,17 +60,20 @@ export class MediaModal {
             typeFilterContainer.classList.add("hidden");
             typeFilter.value = options.filters.type;
             const label = typeLabel[options.filters.type] ?? "archivo";
-            if (header) header.textContent = `Seleccionar ${label}`;
+            if (header)
+                header.textContent = options.title || `Seleccionar ${label}`;
             if (subheader)
-                subheader.textContent = `Elige un ${label} de tu biblioteca de medios`;
+                subheader.textContent = `Elige ${typeArticle[options.filters.type] ?? "un"} ${label} de tu biblioteca de medios`;
         } else {
             typeFilterContainer.classList.remove("hidden");
-            if (header) header.textContent = "Seleccionar archivo";
+            if (header)
+                header.textContent = options.title || "Seleccionar archivo";
             if (subheader)
                 subheader.textContent =
                     "Elige un archivo de tu biblioteca de medios";
         }
 
+        clearTimeout(this.closeTimer);
         this.isOpen = true;
         this.modal.classList.add("modal-open");
         document.body.style.overflow = "hidden";
@@ -83,7 +96,7 @@ export class MediaModal {
 
         this.isOpen = false;
         this.selectedMedia = null;
-        setTimeout(() => {
+        this.closeTimer = setTimeout(() => {
             this.modal.classList.remove("modal-open");
             document.body.style.overflow = "";
         }, 150);
@@ -238,11 +251,12 @@ export class MediaModal {
             });
 
         // Close on escape
-        document.addEventListener("keydown", (e) => {
+        this.onKeydown = (e) => {
             if (e.key === "Escape" && this.isOpen) {
                 this.close();
             }
-        });
+        };
+        document.addEventListener("keydown", this.onKeydown);
     }
 
     /**
@@ -434,6 +448,8 @@ export class MediaModal {
      * Destroy modal and cleanup
      */
     destroy() {
+        clearTimeout(this.closeTimer);
+        document.removeEventListener("keydown", this.onKeydown);
         if (this.modal) {
             this.modal.remove();
             this.modal = null;

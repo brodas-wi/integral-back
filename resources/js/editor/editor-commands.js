@@ -1,4 +1,8 @@
-import { MediaModal } from "../components/media-modal";
+import {
+    openMediaPicker,
+    closeMediaPicker,
+    destroyMediaPicker,
+} from "./media-picker";
 import { IconPickerModal } from "./components/icon-picker-modal";
 import {
     ColorPickerModal,
@@ -7,7 +11,6 @@ import {
 } from "./components/color-picker-modal";
 
 export function setupEditorCommands(editor) {
-    let mediaModal = null;
     let iconPickerModal = null;
     let colorPickerModal = null;
 
@@ -18,7 +21,7 @@ export function setupEditorCommands(editor) {
                 ed._colorPickerModal = new ColorPickerModal();
             }
 
-            const modal  = ed._colorPickerModal;
+            const modal = ed._colorPickerModal;
             const target = options.target || ed.getSelected();
             if (!target) return;
 
@@ -76,67 +79,41 @@ export function setupEditorCommands(editor) {
 
     editor.Commands.add("open-assets", {
         run(editor, sender, options = {}) {
-            if (!mediaModal) {
-                mediaModal = new MediaModal();
-            }
-
             const target = options.target || editor.getSelected();
 
-            const openModal = () => {
-                mediaModal.open(
-                    (selectedMedia) => {
-                        handleMediaSelection(editor, selectedMedia, target);
-                    },
-                    { filters: { type: "image" } },
-                );
-            };
-
-            if (mediaModal.isOpen) {
-                mediaModal.close();
-                setTimeout(openModal, 200);
-            } else {
-                openModal();
-            }
+            openMediaPicker({
+                type: "image",
+                fullMedia: true,
+                onSelect: (media) =>
+                    handleMediaSelection(editor, media, target),
+            });
         },
     });
 
     editor.Commands.add("select-media", {
         run(editor, sender, options = {}) {
-            if (!mediaModal) {
-                mediaModal = new MediaModal();
-            }
-
             const target = options.target || editor.getSelected();
-            const mediaType = options.type || "";
 
-            mediaModal.open(
-                (selectedMedia) => {
+            openMediaPicker({
+                type: options.type || "",
+                fullMedia: true,
+                onSelect: (media) => {
                     if (options.onSelect) {
-                        options.onSelect(selectedMedia);
+                        options.onSelect(media);
                     } else {
-                        handleMediaSelection(editor, selectedMedia, target);
+                        handleMediaSelection(editor, media, target);
                     }
                 },
-                {
-                    filters: {
-                        type: mediaType,
-                    },
-                },
-            );
+            });
         },
 
-        stop(editor) {
-            if (mediaModal && mediaModal.isOpen) {
-                mediaModal.close();
-            }
+        stop() {
+            closeMediaPicker();
         },
     });
 
     editor.on("destroy", () => {
-        if (mediaModal) {
-            mediaModal.destroy();
-            mediaModal = null;
-        }
+        destroyMediaPicker();
         if (iconPickerModal) {
             iconPickerModal.destroy();
             iconPickerModal = null;
