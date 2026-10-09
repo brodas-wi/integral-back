@@ -12,6 +12,7 @@ import { initializeSavingsSectionBlock } from "./blocks/savings-carousel-blocks"
 import { productLinkCardsBlocks } from "./blocks/product-link-cards-blocks";
 import { iconLinksBlocks } from "./blocks/icon-links-blocks";
 import { iconCardsBlocks } from "./blocks/icon-cards-blocks";
+import { paymentChannelsBlocks } from "./blocks/payment-channels-blocks";
 import { assistanceCardsBlocks } from "./blocks/assistance-cards-blocks";
 import { promoCtaBlocks } from "./blocks/promo-cta-blocks";
 import { featureBlocks } from "./blocks/feature-blocks";
@@ -67,6 +68,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(missionVisionBlocks);
     blockRegistry.registerBlocks(productLinkCardsBlocks);
     blockRegistry.registerBlocks(iconCardsBlocks);
+    blockRegistry.registerBlocks(paymentChannelsBlocks);
     blockRegistry.registerBlocks(assistanceCardsBlocks);
     blockRegistry.registerBlocks(dualCardBlocks)
     blockRegistry.registerBlocks(splitContentBlocks);
