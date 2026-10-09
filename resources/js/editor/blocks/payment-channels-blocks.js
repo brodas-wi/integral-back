@@ -46,7 +46,7 @@ const buildCard = (title) => `
 
 const buildPaymentChannels = () => `
 <section class="pc-section w-full bg-white flex flex-col gap-6 md:gap-8 p-6 sm:p-8 md:p-12 lg:px-16">
-    <p class="pc-heading text-lg sm:text-xl md:text-2xl font-bold leading-snug">Puedes pagar tu crédito en los corresponsales financieros autorizados:</p>
+    <p class="pc-heading text-lg font-bold leading-snug">Puedes pagar tu crédito en los corresponsales financieros autorizados:</p>
     <div class="pc-grid grid gap-4 md:gap-6">
         ${buildCard("Mi Banca Empresarial")}
         ${buildCard("Mi Banca Integral")}
