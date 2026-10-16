@@ -40,6 +40,10 @@ export function initializeGrapesJS() {
         width: "auto",
         storageManager: false,
 
+        selectorManager: {
+            escapeName: (name) => `${name}`,
+        },
+
         canvas: {
             styles: canvasStyles,
             scripts: canvasScripts,
