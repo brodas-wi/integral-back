@@ -1613,13 +1613,13 @@ function showNavbarModal(editor, component) {
         const restoreOverlay = () => {
             overlay.style.zIndex = "";
         };
-        const bringPickerToFront = () => {
-            Array.from(document.body.children).forEach((node) => {
-                if (node === overlay || node.id === "navbar-config-modal") return;
+        const logLayers = () => {
+            document.querySelectorAll("body *").forEach((node) => {
+                if (overlay.contains(node)) return;
                 const cs = getComputedStyle(node);
                 if (cs.position !== "fixed") return;
-                console.log("[Navbar] capa fija:", node.tagName, node.id, node.className, cs.zIndex, cs.display, cs.visibility, cs.opacity);
-                if (cs.display !== "none") node.style.zIndex = "2147483647";
+                const r = node.getBoundingClientRect();
+                console.log("[Navbar] fija:", node.tagName, node.id, String(node.className).slice(0, 60), "z:" + cs.zIndex, cs.display, cs.visibility, cs.opacity, Math.round(r.width) + "x" + Math.round(r.height));
             });
         };
         openMediaPicker({
@@ -1641,8 +1641,7 @@ function showNavbarModal(editor, component) {
                 if (wrap) wrap.innerHTML = imgPreviewHtml(url);
             },
         });
-        setTimeout(bringPickerToFront, 0);
-        setTimeout(bringPickerToFront, 150);
+        setTimeout(logLayers, 300);
     });
 
     const iconBtnHrefInput = modal.querySelector("#nb-iconbtn-href");
