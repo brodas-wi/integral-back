@@ -1592,41 +1592,40 @@ function showNavbarModal(editor, component) {
         iconBtnData.label || "Buscar";
     modal.querySelector("#nb-iconbtn-href").value = iconBtnData.href || "#";
 
-    modal.querySelector("#nb-iconbtn-image").addEventListener("input", (e) => {
+    modal.querySelector("#nb-iconbtn-image")?.addEventListener("input", (e) => {
         iconBtnData.image_url = e.target.value.trim();
-        modal.querySelector("#nb-iconbtn-preview-wrap").innerHTML =
-            imgPreviewHtml(iconBtnData.image_url);
+        const wrap = modal.querySelector("#nb-iconbtn-preview-wrap");
+        if (wrap) wrap.innerHTML = imgPreviewHtml(iconBtnData.image_url);
     });
-    modal.querySelector("#nb-menubtn-image").addEventListener("input", (e) => {
+    modal.querySelector("#nb-menubtn-image")?.addEventListener("input", (e) => {
         menuBtnData.image_url = e.target.value.trim();
-        modal.querySelector("#nb-menubtn-preview-wrap").innerHTML =
-            imgPreviewHtml(menuBtnData.image_url);
+        const wrap = modal.querySelector("#nb-menubtn-preview-wrap");
+        if (wrap) wrap.innerHTML = imgPreviewHtml(menuBtnData.image_url);
     });
     modal.querySelector("#nb-iconbtn-label").addEventListener("input", (e) => {
         iconBtnData.label = e.target.value;
     });
 
-    modal.querySelector("#nb-iconbtn-pick").addEventListener("click", () => {
+    modal.addEventListener("click", (e) => {
+        const pickBtn = e.target.closest("#nb-iconbtn-pick, #nb-menubtn-pick");
+        if (!pickBtn) return;
+        const isMenu = pickBtn.id === "nb-menubtn-pick";
         openMediaPicker({
             type: "image",
-            title: "Seleccionar imagen del botón de búsqueda",
+            title: isMenu
+                ? "Seleccionar imagen del botón de menú"
+                : "Seleccionar imagen del botón de búsqueda",
             onSelect: (url) => {
-                iconBtnData.image_url = url;
-                modal.querySelector("#nb-iconbtn-image").value = url;
-                modal.querySelector("#nb-iconbtn-preview-wrap").innerHTML =
-                    imgPreviewHtml(url);
-            },
-        });
-    });
-    modal.querySelector("#nb-menubtn-pick").addEventListener("click", () => {
-        openMediaPicker({
-            type: "image",
-            title: "Seleccionar imagen del botón de menú",
-            onSelect: (url) => {
-                menuBtnData.image_url = url;
-                modal.querySelector("#nb-menubtn-image").value = url;
-                modal.querySelector("#nb-menubtn-preview-wrap").innerHTML =
-                    imgPreviewHtml(url);
+                const input = modal.querySelector(
+                    isMenu ? "#nb-menubtn-image" : "#nb-iconbtn-image",
+                );
+                const wrap = modal.querySelector(
+                    isMenu ? "#nb-menubtn-preview-wrap" : "#nb-iconbtn-preview-wrap",
+                );
+                if (isMenu) menuBtnData.image_url = url;
+                else iconBtnData.image_url = url;
+                if (input) input.value = url;
+                if (wrap) wrap.innerHTML = imgPreviewHtml(url);
             },
         });
     });
