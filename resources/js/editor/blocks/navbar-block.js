@@ -1613,8 +1613,15 @@ function showNavbarModal(editor, component) {
         const restoreOverlay = () => {
             overlay.style.zIndex = "";
         };
-        overlay.style.zIndex = "1000";
-        overlay.addEventListener("mousemove", restoreOverlay, { once: true });
+        const bringPickerToFront = () => {
+            Array.from(document.body.children).forEach((node) => {
+                if (node === overlay || node.id === "navbar-config-modal") return;
+                const cs = getComputedStyle(node);
+                if (cs.position !== "fixed") return;
+                console.log("[Navbar] capa fija:", node.tagName, node.id, node.className, cs.zIndex, cs.display, cs.visibility, cs.opacity);
+                if (cs.display !== "none") node.style.zIndex = "2147483647";
+            });
+        };
         openMediaPicker({
             type: "image",
             title: isMenu
@@ -1634,6 +1641,8 @@ function showNavbarModal(editor, component) {
                 if (wrap) wrap.innerHTML = imgPreviewHtml(url);
             },
         });
+        setTimeout(bringPickerToFront, 0);
+        setTimeout(bringPickerToFront, 150);
     });
 
     const iconBtnHrefInput = modal.querySelector("#nb-iconbtn-href");
