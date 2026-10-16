@@ -721,7 +721,6 @@ function showNavbarModal(editor, component) {
                     </div>
                 </div>
             </div>
-        </div>
             <div class="nb-tab-panel" id="nb-panel-icon-btn">
                 <div class="nb-card">
                     <label class="nb-label">Botón de acción con icono</label>
@@ -1609,13 +1608,20 @@ function showNavbarModal(editor, component) {
     modal.addEventListener("click", (e) => {
         const pickBtn = e.target.closest("#nb-iconbtn-pick, #nb-menubtn-pick");
         if (!pickBtn) return;
+        console.log("[Navbar] clic en selector:", pickBtn.id, typeof openMediaPicker);
         const isMenu = pickBtn.id === "nb-menubtn-pick";
+        const restoreOverlay = () => {
+            overlay.style.zIndex = "";
+        };
+        overlay.style.zIndex = "1000";
+        overlay.addEventListener("mousemove", restoreOverlay, { once: true });
         openMediaPicker({
             type: "image",
             title: isMenu
                 ? "Seleccionar imagen del botón de menú"
                 : "Seleccionar imagen del botón de búsqueda",
             onSelect: (url) => {
+                restoreOverlay();
                 const input = modal.querySelector(
                     isMenu ? "#nb-menubtn-image" : "#nb-iconbtn-image",
                 );
