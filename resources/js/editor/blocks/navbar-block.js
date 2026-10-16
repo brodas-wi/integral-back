@@ -58,6 +58,10 @@ const NAVBAR_STYLES = `
 .nb-icon-btn i{font-size:1.25rem;color:#E97300;line-height:1;transition:color 0.15s;}
 .nb-icon-btn:hover i{color:#fff;}
 .nb-icon-btn-gap{width:0.75rem;flex-shrink:0;}
+.nb-icon-btn img{width:1.25rem;height:1.25rem;object-fit:contain;display:block;pointer-events:none;}
+.nb-icon-btn.nb-icon-btn-img:hover{background:#fff;border-color:#E97300;}
+.nb-hamburger img{width:1.25rem;height:1.25rem;object-fit:contain;display:block;pointer-events:none;}
+.nb-mobile-bar .nb-icon-btn{box-shadow:0 2px 8px rgba(0,59,113,0.18);}
 .nb-wrapper{background:#fff;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:1000;font-family:'Poppins',sans-serif;}
 .nb-top{display:flex;align-items:stretch;justify-content:space-between;gap:0;position:relative;padding:0;}
 .nb-top-left{display:flex;align-items:center;padding:0.75rem 0 0.75rem 4rem;flex:0 0 200px;width:200px;box-sizing:border-box;}
@@ -298,9 +302,16 @@ function buildNavbarHTML(data, uid) {
         : "";
 
     const iconBtn = data.icon_btn || {};
+    const iconBtnInner = iconBtn.image_url
+        ? `<img src="${iconBtn.image_url}" alt="${iconBtn.label || ""}">`
+        : `<i class="${iconBtn.icon || "ri-search-line"}"></i>`;
     const iconBtnHtml = iconBtn.enabled
-        ? `<a href="${iconBtn.href || "#"}" class="nb-icon-btn" title="${iconBtn.label || ""}"><i class="${iconBtn.icon || "ri-search-line"}"></i></a>`
+        ? `<a href="${iconBtn.href || "#"}" class="nb-icon-btn${iconBtn.image_url ? " nb-icon-btn-img" : ""}" title="${iconBtn.label || ""}">${iconBtnInner}</a>`
         : "";
+    const menuBtn = data.menu_btn || {};
+    const menuBtnInner = menuBtn.image_url
+        ? `<img src="${menuBtn.image_url}" alt="Menú">`
+        : `<span></span><span></span><span></span>`;
     const mobileTopActionsHtml = (data.top_actions || [])
         .map((a) => {
             const icon = a.icon && a.show_icon ? `<i class="${a.icon}"></i>` : "";
@@ -374,7 +385,7 @@ function buildNavbarHTML(data, uid) {
             ${logoHtml}
             <div style="display:flex;align-items:center;gap:0.5rem;">
                 ${iconBtnHtml}
-                <button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú"><span></span><span></span><span></span></button>
+                <button class="nb-hamburger" type="button" id="nb-toggle-${uid}" aria-label="Menú">${menuBtnInner}</button>
             </div>
         </div>
         <div class="nb-mobile-menu" id="nb-mobile-${uid}">
@@ -388,8 +399,12 @@ const DEFAULT_DATA = {
     icon_btn: {
         enabled: false,
         icon: "ri-search-line",
+        image_url: "",
         href: "#",
         label: "Buscar",
+    },
+    menu_btn: {
+        image_url: "",
     },
     logo_url: "",
     logo_alt: "Logo",
@@ -451,6 +466,12 @@ const DEFAULT_DATA = {
         color: "blue",
     },
 };
+function imgPreviewHtml(url) {
+    return url
+        ? `<img src="${url}" alt="" style="width:48px;height:48px;object-fit:contain;border-radius:0.375rem;border:1px solid #e2e8f0;padding:4px;background:#f8fafc;display:block;">`
+        : `<div class="nb-icon-preview" style="width:48px;height:48px;"><i class="ri-image-line"></i></div>`;
+}
+
 function showNavbarModal(editor, component) {
     const existing = document.getElementById("navbar-config-modal");
     if (existing) existing.remove();
@@ -710,11 +731,11 @@ function showNavbarModal(editor, component) {
                             <div class="nb-color-toggle" id="nb-iconbtn-toggle-wrap"></div>
                         </div>
                         <div>
-                            <label class="nb-label" style="margin-bottom:0.375rem;">Clase del icono</label>
+                            <label class="nb-label" style="margin-bottom:0.375rem;">Imagen del botón</label>
                             <div class="nb-row">
-                                <div class="nb-icon-preview"><i id="nb-iconbtn-preview" class="${currentData.icon_btn?.icon || "ri-search-line"}"></i></div>
-                                <input id="nb-iconbtn-icon" type="text" placeholder="ri-search-line" value="${currentData.icon_btn?.icon || "ri-search-line"}" class="nb-input" readonly>
-                                <button class="nb-pick-btn" id="nb-iconbtn-pick"><i class="ri-emotion-happy-line"></i> Icono</button>
+                                <div id="nb-iconbtn-preview-wrap">${imgPreviewHtml(currentData.icon_btn?.image_url)}</div>
+                                <input id="nb-iconbtn-image" type="text" placeholder="URL de la imagen" value="${currentData.icon_btn?.image_url || ""}" class="nb-input">
+                                <button class="nb-pick-btn" id="nb-iconbtn-pick" type="button"><i class="ri-image-line"></i> Seleccionar</button>
                             </div>
                         </div>
                         <div>
@@ -725,6 +746,14 @@ function showNavbarModal(editor, component) {
                             <label class="nb-label" style="margin-bottom:0.375rem;">URL</label>
                             <input id="nb-iconbtn-href" type="text" placeholder="URL o buscar página..." value="${currentData.icon_btn?.href || "#"}" class="nb-input">
                         </div>
+                    </div>
+                </div>
+                <div class="nb-card">
+                    <label class="nb-label">Botón de menú (hamburguesa, solo móvil)</label>
+                    <div class="nb-row">
+                        <div id="nb-menubtn-preview-wrap">${imgPreviewHtml(currentData.menu_btn?.image_url)}</div>
+                        <input id="nb-menubtn-image" type="text" placeholder="URL de la imagen" value="${currentData.menu_btn?.image_url || ""}" class="nb-input">
+                        <button class="nb-pick-btn" id="nb-menubtn-pick" type="button"><i class="ri-image-line"></i> Seleccionar</button>
                     </div>
                 </div>
             </div>
@@ -1556,28 +1585,49 @@ function showNavbarModal(editor, component) {
                 : "Botón desactivado";
     });
 
-    modal.querySelector("#nb-iconbtn-icon").value =
-        iconBtnData.icon || "ri-search-line";
-    modal.querySelector("#nb-iconbtn-preview").className =
-        iconBtnData.icon || "ri-search-line";
+    const menuBtnData = JSON.parse(
+        JSON.stringify(currentData.menu_btn || DEFAULT_DATA.menu_btn),
+    );
     modal.querySelector("#nb-iconbtn-label").value =
         iconBtnData.label || "Buscar";
     modal.querySelector("#nb-iconbtn-href").value = iconBtnData.href || "#";
 
-    modal.querySelector("#nb-iconbtn-icon").addEventListener("input", (e) => {
-        iconBtnData.icon = e.target.value;
-        modal.querySelector("#nb-iconbtn-preview").className = e.target.value;
+    modal.querySelector("#nb-iconbtn-image").addEventListener("input", (e) => {
+        iconBtnData.image_url = e.target.value.trim();
+        modal.querySelector("#nb-iconbtn-preview-wrap").innerHTML =
+            imgPreviewHtml(iconBtnData.image_url);
+    });
+    modal.querySelector("#nb-menubtn-image").addEventListener("input", (e) => {
+        menuBtnData.image_url = e.target.value.trim();
+        modal.querySelector("#nb-menubtn-preview-wrap").innerHTML =
+            imgPreviewHtml(menuBtnData.image_url);
     });
     modal.querySelector("#nb-iconbtn-label").addEventListener("input", (e) => {
         iconBtnData.label = e.target.value;
     });
 
     modal.querySelector("#nb-iconbtn-pick").addEventListener("click", () => {
-        const picker = new IconPickerModal();
-        picker.open((selected) => {
-            iconBtnData.icon = selected;
-            modal.querySelector("#nb-iconbtn-icon").value = selected;
-            modal.querySelector("#nb-iconbtn-preview").className = selected;
+        openMediaPicker({
+            type: "image",
+            title: "Seleccionar imagen del botón de búsqueda",
+            onSelect: (url) => {
+                iconBtnData.image_url = url;
+                modal.querySelector("#nb-iconbtn-image").value = url;
+                modal.querySelector("#nb-iconbtn-preview-wrap").innerHTML =
+                    imgPreviewHtml(url);
+            },
+        });
+    });
+    modal.querySelector("#nb-menubtn-pick").addEventListener("click", () => {
+        openMediaPicker({
+            type: "image",
+            title: "Seleccionar imagen del botón de menú",
+            onSelect: (url) => {
+                menuBtnData.image_url = url;
+                modal.querySelector("#nb-menubtn-image").value = url;
+                modal.querySelector("#nb-menubtn-preview-wrap").innerHTML =
+                    imgPreviewHtml(url);
+            },
         });
     });
 
@@ -1591,11 +1641,13 @@ function showNavbarModal(editor, component) {
     }
     modal.querySelector("#nb-modal-backup").onclick = () => {
         const snapshot = {
+            menu_btn: {
+                image_url: modal.querySelector("#nb-menubtn-image").value.trim(),
+            },
             icon_btn: {
                 enabled: iconBtnData.enabled !== false,
-                icon:
-                    modal.querySelector("#nb-iconbtn-icon").value.trim() ||
-                    "ri-search-line",
+                image_url: modal.querySelector("#nb-iconbtn-image").value.trim(),
+                icon: iconBtnData.icon || "ri-search-line",
                 label:
                     modal.querySelector("#nb-iconbtn-label").value.trim() ||
                     "Buscar",
@@ -1708,11 +1760,13 @@ function showNavbarModal(editor, component) {
     };
     modal.querySelector("#nb-modal-save").onclick = () => {
         const data = {
+            menu_btn: {
+                image_url: modal.querySelector("#nb-menubtn-image").value.trim(),
+            },
             icon_btn: {
                 enabled: iconBtnData.enabled !== false,
-                icon:
-                    modal.querySelector("#nb-iconbtn-icon").value.trim() ||
-                    "ri-search-line",
+                image_url: modal.querySelector("#nb-iconbtn-image").value.trim(),
+                icon: iconBtnData.icon || "ri-search-line",
                 label:
                     modal.querySelector("#nb-iconbtn-label").value.trim() ||
                     "Buscar",
