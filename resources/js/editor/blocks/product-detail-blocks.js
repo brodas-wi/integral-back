@@ -49,7 +49,7 @@ export const productDetailBlocks = [
         media: ICONS.twoColumns,
         styles: ["asymmetric"],
         body: split({
-            main: `${text("lead")}${bulletList(5, "Ventajas:")}`,
+            main: `${text("lead")}${bulletList(5, "VENTAJAS")}`,
             aside: actionPanel({ notes: 3 }),
         }),
     }),
@@ -60,7 +60,7 @@ export const productDetailBlocks = [
         media: ICONS.twoLineSection,
         styles: ["asymmetric"],
         body: split({
-            main: `${twoLineTitle("¡Adquiere", "tu producto nuevo!")}${bulletList(5, "CONDICIONES:")}`,
+            main: `${twoLineTitle("¡Adquiere", "tu producto nuevo!")}${bulletList(5, "CONDICIONES")}`,
             aside: actionPanel({ cta: "Solicita tu crédito", notes: 2 }),
         }),
     }),
@@ -71,7 +71,7 @@ export const productDetailBlocks = [
         media: ICONS.withPriceBox,
         styles: ["asymmetric"],
         body: split({
-            main: `${twoLineTitle("¡Adquiere", "tu producto nuevo!")}${bulletList(4, "Ventajas:")}`,
+            main: `${twoLineTitle("¡Adquiere", "tu producto nuevo!")}${bulletList(4, "VENTAJAS")}`,
             aside: actionPanel({ price: priceBox(), notes: 3 }),
         }),
     }),
@@ -82,7 +82,7 @@ export const productDetailBlocks = [
         media: ICONS.withPriceDouble,
         styles: ["asymmetric"],
         body: split({
-            main: `${text("lead")}${text("accentLead", "Lorem ipsum dolor sit amet, subtítulo destacado de la sección.")}${bulletList(6, "Ventajas")}`,
+            main: `${text("lead")}${text("accentLead", "Lorem ipsum dolor sit amet, subtítulo destacado de la sección.")}${bulletList(6, "VENTAJAS")}`,
             aside: actionPanel({ cta: "Solicita tu crédito", price: priceBoxDouble(), notes: 2 }),
         }),
     }),
@@ -94,7 +94,7 @@ export const productDetailBlocks = [
         styles: ["asymmetric", "nested"],
         body: split({
             mainClass: "pd-nested-two-col",
-            main: `<div class="pd-nested-two-col-full">${twoLineTitle("¡Adquiere", "tu producto nuevo!")}</div>${bulletList(4, "Ventajas:")}${bulletList(4, "Requisitos:")}`,
+            main: `<div class="pd-nested-two-col-full">${twoLineTitle("¡Adquiere", "tu producto nuevo!")}</div>${bulletList(4, "VENTAJAS")}${bulletList(4, "REQUISITOS")}`,
             aside: actionPanel({ cta: "Solicita tu crédito", price: priceBoxDouble(), notes: 2 }),
         }),
     }),
@@ -107,8 +107,8 @@ export const productDetailBlocks = [
         containerClass: "flex flex-col gap-6",
         body: `${text("lead")}
 <div class="pd-three-col-grid">
-    ${bulletList(3, "Ventajas:")}
-    ${bulletList(3, "Beneficios:")}
+    ${bulletList(3, "VENTAJAS")}
+    ${bulletList(3, "BENEFICIOS")}
     <div class="${ASIDE_CLASS}">${actionPanel({ notes: 3 })}</div>
 </div>`,
     }),
@@ -120,8 +120,8 @@ export const productDetailBlocks = [
         styles: ["headerGrid"],
         body: `<div class="pd-header-grid">
     <div class="pd-hg-intro">${text("lead")}</div>
-    <div class="pd-hg-col1">${bulletList(4, "Ventajas")}</div>
-    <div class="pd-hg-col2">${bulletList(2, "Requisitos")}</div>
+    <div class="pd-hg-col1">${bulletList(4, "VENTAJAS")}</div>
+    <div class="pd-hg-col2">${bulletList(2, "REQUISITOS")}</div>
     <div class="pd-hg-action ${ASIDE_CLASS}">${actionPanel({ notes: 3 })}</div>
 </div>`,
     }),
@@ -136,7 +136,7 @@ export const productDetailBlocks = [
 <div class="pd-cards-grid">${CARD_TITLES.map((name) => iconCard(`Lorem ipsum ${name}`, 3)).join("")}</div>`,
             aside: actionPanel({
                 notes: 2,
-                after: `${bulletList(4, "Ventajas:")}${bulletList(2, "Condiciones:")}`,
+                after: `${bulletList(4, "VENTAJAS")}${bulletList(2, "CONDICIONES")}`,
             }),
         }),
     }),
@@ -217,7 +217,7 @@ ${coverageTable("blue")}
         id: "product-detail-bullet-list",
         label: "Ítem: Titulo + lista",
         media: ICONS.bulletItem,
-        body: bulletList(4, "Ventajas:"),
+        body: bulletList(4, "VENTAJAS"),
     }),
 
     itemBlock({
