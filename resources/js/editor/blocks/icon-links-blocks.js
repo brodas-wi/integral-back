@@ -10,28 +10,24 @@ const DEFAULT_LABELS = [
 ];
 
 const STYLES = `<style>
-.il-section{width:100%;background-color:#fff;box-sizing:border-box;}
-.il-container{width:100%;max-width:1600px;margin:0 auto;padding-top:clamp(1.5rem,3vw,2.5rem);padding-bottom:clamp(1.5rem,3vw,2.5rem);padding-left:clamp(1.5rem,4vw,3.5rem);padding-right:clamp(1.5rem,4vw,3.5rem);box-sizing:border-box;}
+.il-section{width:100%;background-color:#fff;box-sizing:border-box;padding-top:clamp(1.5rem,3vw,2.5rem);padding-bottom:clamp(1.5rem,3vw,2.5rem);padding-left:max(clamp(1.5rem,4vw,3.5rem),calc((100% - 1600px) / 2 + clamp(1.5rem,4vw,3.5rem)));padding-right:max(clamp(1.5rem,4vw,3.5rem),calc((100% - 1600px) / 2 + clamp(1.5rem,4vw,3.5rem)));}
 .il-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5rem;}
-.il-item{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem 0.5rem;border-radius:1rem;text-align:center;text-decoration:none;transition:background-color 0.25s ease;-webkit-tap-highlight-color:transparent;}
-.il-icon{display:block;width:4rem;height:4rem;object-fit:contain;transition:transform 0.3s ease;}
-.il-label{font-size:1rem;font-weight:700;line-height:1.35;color:#003B71;transition:color 0.2s ease;}
+.il-item{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:0.5rem 0.25rem;text-align:center;text-decoration:none;-webkit-tap-highlight-color:transparent;}
+.il-icon{display:block;width:4rem;height:4rem;object-fit:contain;transition:filter 0.3s ease;}
+.il-label{padding-bottom:0.3rem;font-size:1rem;font-weight:700;line-height:1.35;color:#003B71;background-image:linear-gradient(#E97300,#E97300);background-repeat:no-repeat;background-position:center bottom;background-size:0% 2px;transition:color 0.25s ease,background-size 0.3s ease;}
 @media(hover:hover){
-.il-item:hover{background-color:rgba(233,115,0,0.06);}
-.il-item:hover .il-icon{transform:translateY(-4px) scale(1.08);}
-.il-item:hover .il-label{color:#E97300;}
+.il-item:hover .il-label{color:#E97300;background-size:100% 2px;}
+.il-item:hover .il-icon{filter:drop-shadow(0 4px 8px rgba(233,115,0,0.35));}
 }
-.il-item:focus-visible{outline:2px solid #E97300;outline-offset:2px;background-color:rgba(233,115,0,0.06);}
-.il-item:focus-visible .il-icon{transform:translateY(-4px) scale(1.08);}
-.il-item:focus-visible .il-label{color:#E97300;}
-.il-item:active .il-icon{transform:scale(0.96);}
+.il-item:focus-visible{outline:none;}
+.il-item:focus-visible .il-label{color:#E97300;background-size:100% 2px;}
+.il-item:focus-visible .il-icon{filter:drop-shadow(0 4px 8px rgba(233,115,0,0.35));}
 @media(max-width:992px){
 .il-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;}
 .il-icon{width:3.5rem;height:3.5rem;}
 }
 @media(prefers-reduced-motion:reduce){
-.il-item,.il-icon,.il-label{transition:none;}
-.il-item:hover .il-icon,.il-item:focus-visible .il-icon,.il-item:active .il-icon{transform:none;}
+.il-icon,.il-label{transition:none;}
 }
 </style>`;
 
@@ -68,9 +64,7 @@ const iconLinkItem = (label = "Nombre del servicio") => `
 
 const iconLinksStrip = (labels) => `
 <section class="il-section">
-    <div class="il-container">
-        <div class="il-grid">${labels.map(iconLinkItem).join("")}</div>
-    </div>
+    <div class="il-grid">${labels.map(iconLinkItem).join("")}</div>
 </section>
 ${STYLES}`;
 
