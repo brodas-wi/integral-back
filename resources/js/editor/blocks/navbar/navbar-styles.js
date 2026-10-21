@@ -1,4 +1,19 @@
-export const NAVBAR_STYLES = `<style>
+const TOKENS = {
+    "--nb-blue": "#003B71",
+    "--nb-navy": "#14243D",
+    "--nb-orange": "#E97300",
+    "--nb-orange-dark": "#C96200",
+    "--nb-max": "1600px",
+    "--nb-gutter": "clamp(1.25rem,5vw,4rem)",
+    "--nb-logo-pad": "clamp(1rem,2vw,1.5rem)",
+    "--nb-logo-col": "200px",
+    "--nb-mobile-gutter": "1.25rem",
+};
+
+const resolveTokens = (css) =>
+    css.replace(/var\((--nb-[a-z-]+)\)/g, (match, name) => TOKENS[name] ?? match);
+
+export const NAVBAR_STYLES = resolveTokens(`<style>
 .nb-wrapper{--nb-blue:#003B71;--nb-navy:#14243D;--nb-orange:#E97300;--nb-orange-dark:#C96200;--nb-max:1600px;--nb-gutter:clamp(1.25rem,5vw,4rem);--nb-logo-pad:clamp(1rem,2vw,1.5rem);--nb-logo-col:200px;--nb-mobile-gutter:1.25rem;--nb-offset:64px;position:fixed;top:0;left:0;right:0;z-index:1000;width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-family:'Poppins',sans-serif;}
 .nb-wrapper *,.nb-wrapper *::before,.nb-wrapper *::after{box-sizing:border-box;}
 .nb-top-inner,.nb-bottom-inner,.nb-mobile-bar-inner{width:100%;max-width:var(--nb-max);margin:0 auto;}
@@ -80,4 +95,4 @@ export const NAVBAR_STYLES = `<style>
 .nb-mobile-bar{display:block;}
 .nb-mobile-menu.nb-open{display:flex;}
 }
-</style>`;
+</style>`);
