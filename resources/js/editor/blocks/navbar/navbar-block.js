@@ -52,7 +52,7 @@ function setupEditorEvents(editor) {
         if (doc.getElementById("navbar-component-css")) return;
         const style = doc.createElement("style");
         style.id = "navbar-component-css";
-        style.textContent = `[data-gjs-type="${COMPONENT_TYPE}"]{position:relative !important;top:auto !important;}body{padding-top:0 !important;}`;
+        style.textContent = `[data-gjs-type="${COMPONENT_TYPE}"]{position:relative !important;top:auto !important;}[data-gjs-type="${COMPONENT_TYPE}"] *{pointer-events:none !important;}body{padding-top:0 !important;}`;
         doc.head.appendChild(style);
     });
 }
@@ -74,6 +74,18 @@ export function initializeNavbarBlock(editor) {
                 hoverable: true,
                 editable: false,
                 highlightable: false,
+                stylable: false,
+                resizable: false,
+                layerable: true,
+                propagate: [
+                    "editable",
+                    "selectable",
+                    "hoverable",
+                    "droppable",
+                    "highlightable",
+                    "stylable",
+                    "resizable",
+                ],
                 attributes: {
                     "data-gjs-type": COMPONENT_TYPE,
                     class: "nb-wrapper",
