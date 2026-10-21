@@ -55,6 +55,9 @@ const colorToggle = (bind, fallback, small = false, options = ["blue", "orange"]
         )
         .join("")}</div>`;
 
+const positionToggle = (bind) =>
+    `<div class="nb-color-toggle" data-color-group data-default="left"><button type="button" class="nb-color-opt nb-color-opt-blue" data-action="set-color" data-path="${bind}" data-value="left">Izquierda</button><button type="button" class="nb-color-opt nb-color-opt-blue" data-action="set-color" data-path="${bind}" data-value="right">Derecha</button></div>`;
+
 const iconRow = (bind) =>
     `<div class="nb-row"><div class="nb-icon-preview"><i data-icon-preview="${bind}"></i></div><input type="text" class="nb-input-sm nb-grow" data-bind="${bind}" placeholder="Sin icono (opcional)"><button type="button" class="nb-pick-btn" data-action="pick-icon" data-path="${bind}"><i class="ri-emotion-happy-line"></i> Icono</button></div>`;
 
@@ -101,6 +104,7 @@ const ctaButtonCard = (button, buttonIndex, itemPath) => {
 <div class="nb-row"><span class="nb-col-title nb-cta-title">Botón ${buttonIndex + 1}</span>${smallInput(`${path}.label`, "Texto del botón", "nb-grow")}${removeBtn(`${itemPath}.cta_column.buttons`, buttonIndex)}</div>
 ${urlInput(`${path}.href`, "URL del botón", true)}
 ${iconRow(`${path}.icon`)}
+<div class="nb-row"><span class="nb-col-title nb-cta-title">Posición del icono</span>${positionToggle(`${path}.icon_position`)}</div>
 <div class="nb-row"><span class="nb-col-title nb-cta-title">Color</span>${colorToggle(`${path}.color`, "orange")}</div>
 </div>`;
 };
@@ -508,7 +512,7 @@ export function showNavbarModal(editor, component) {
         "add-cta-button": (el) => {
             const buttons = getByPath(state, `${el.dataset.path}.cta_column.buttons`);
             if (buttons.length < MAX_CTA_BUTTONS) {
-                buttons.push({ label: "Nuevo botón", href: "#", color: "orange", icon: "" });
+                buttons.push({ label: "Nuevo botón", href: "#", color: "orange", icon: "", icon_position: "left" });
             }
             renderList("nav_links");
         },

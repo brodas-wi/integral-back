@@ -91,7 +91,7 @@ const desktopCtaColumn = (cta) => {
         .slice(0, MAX_CTA_BUTTONS)
         .map(
             (button) =>
-                `<a href="${esc(button.href || "#")}" class="nb-btn nb-btn-${button.color === "blue" ? "blue" : "orange"}">${iconTag(button.icon)}${esc(button.label || "Ver más")}</a>`,
+                `<a href="${esc(button.href || "#")}" class="nb-btn nb-btn-${button.color === "blue" ? "blue" : "orange"}">${button.icon_position === "right" ? `${esc(button.label || "Ver más")}${iconTag(button.icon)}` : `${iconTag(button.icon)}${esc(button.label || "Ver más")}`}</a>`,
         )
         .join("");
     return `<div class="nb-mega-cta-col"><p class="nb-mega-cta-text">${alternatingText(cta.text)}</p><div class="nb-mega-cta-buttons">${buttons}</div></div>`;
