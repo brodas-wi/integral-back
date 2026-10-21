@@ -1,7 +1,7 @@
 import { clone } from "./navbar-utils";
 
 export const COMPONENT_TYPE = "navbar-component";
-export const NAVBAR_VERSION = "8";
+export const NAVBAR_VERSION = "9";
 export const MAX_SUBMENU_COLUMNS = 3;
 export const MAX_CTA_BUTTONS = 2;
 export const MAX_BOTTOM_BUTTONS = 3;
