@@ -2,7 +2,7 @@ import { styleTag } from "./styles";
 import { ctaButton, footnoteGroup, productTitle } from "./parts";
 
 export const MAIN_CLASS = "flex flex-col gap-5";
-export const ASIDE_CLASS = "flex flex-col items-center gap-4";
+export const ASIDE_CLASS = "pd-aside";
 
 export const section = ({ body, styles = [], containerClass = "" }) => {
     const classes = ["pd-container", containerClass].filter(Boolean).join(" ");

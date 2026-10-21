@@ -82,7 +82,7 @@ export const iconCardRow = (count = 4) =>
     `<div class="pd-cards-row">${repeat(count, () => iconCardSimple())}</div>`;
 
 export const ctaButton = (label = "Adquiere tu servicio") =>
-    `<a href="#" class="inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center tracking-wide max-w-full transition-colors no-underline">${label}</a>`;
+    `<a href="#" class="pd-cta inline-block py-3 px-8 rounded-full pd-btn-orange text-white text-base font-bold text-center tracking-wide max-w-full transition-colors no-underline">${label}</a>`;
 
 export const productTitle = (title = "Nombre del Producto") =>
     `<h2 class="text-4xl font-black pd-text-orange break-words leading-tight text-center w-full">${title}</h2>`;
