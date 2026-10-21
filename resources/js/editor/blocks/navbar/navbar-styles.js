@@ -67,10 +67,10 @@ export const NAVBAR_STYLES = resolveTokens(`<style>
 .nb-mobile-bar .nb-logo-link img{height:36px;}
 .nb-mobile-bar .nb-icon-btn{box-shadow:0 2px 8px rgba(0,59,113,0.18);}
 .nb-mobile-bar-actions{display:flex;align-items:center;gap:0.75rem;}
-.nb-hamburger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;width:2.5rem;height:2.5rem;padding:0;border:1.5px solid var(--nb-orange);border-radius:9999px;background:var(--nb-orange);box-shadow:0 2px 8px rgba(0,59,113,0.18);cursor:pointer;}
-.nb-hamburger span{display:block;width:16px;height:2px;border-radius:2px;background:#fff;}
-.nb-hamburger i{font-size:1.375rem;line-height:1;color:#fff;pointer-events:none;}
-.nb-hamburger img{display:block;width:1.375rem;height:1.375rem;object-fit:contain;pointer-events:none;}
+.nb-hamburger{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;width:2.5rem;height:2.5rem;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:pointer;}
+.nb-hamburger span{display:block;width:22px;height:2px;border-radius:2px;background:#003B71;}
+.nb-hamburger i{font-size:1.75rem;line-height:1;color:#003B71;pointer-events:none;}
+.nb-hamburger img{display:block;width:1.75rem;height:1.75rem;object-fit:contain;pointer-events:none;}
 .nb-mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;height:calc(100dvh - var(--nb-offset));padding:0.5rem var(--nb-mobile-gutter) 2rem;overflow-y:auto;background:var(--nb-navy);color:#fff;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.3) transparent;}
 .nb-mobile-link{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;width:100%;padding:1rem 0.25rem;border:0;border-bottom:1px solid rgba(255,255,255,0.15);background:none;color:#fff;font-family:inherit;font-size:1rem;font-weight:600;text-align:left;text-decoration:none;cursor:pointer;transition:color 0.15s;}
 .nb-mobile-link:hover,.nb-mobile-item.nb-open>.nb-mobile-link{color:var(--nb-orange);}
