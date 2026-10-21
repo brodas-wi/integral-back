@@ -1,6 +1,6 @@
 import { EditorService } from "./services/editor-service";
 import { initializeNavbarGrapesJS } from "./editor/navbar-grapes-config";
-import { initializeNavbarBlock, NAVBAR_RUNTIME_SCRIPT } from "./editor/blocks/navbar-block";
+import { initializeNavbarBlock, NAVBAR_RUNTIME_SCRIPT } from "./editor/blocks/navbar/navbar-block";
 import {
     applyCustomStyles,
     translateDynamicUI,
@@ -119,9 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function performSave(name) {
         const method = isEditMode ? "PUT" : "POST";
         const content = editorService.getEditorContent(editor);
-        if (!content.js_content || content.js_content.trim() === "") {
-            content.js_content = NAVBAR_RUNTIME_SCRIPT;
-        }
+        content.js_content = NAVBAR_RUNTIME_SCRIPT;
         const data = await editorService.savePage(
             editor,
             { ...content, name, is_active: isActive },
