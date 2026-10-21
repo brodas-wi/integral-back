@@ -8,14 +8,19 @@ const MODAL_CSS = `
 .nb-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
 .nb-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border:0;border-radius:9999px;background:transparent;color:#94a3b8;font-size:1.125rem;cursor:pointer;}
 .nb-modal-close:hover{background:#f1f5f9;color:#475569;}
-.nb-modal-tabs{display:flex;gap:0.5rem;flex-shrink:0;padding:0.625rem 1.25rem;overflow-x:auto;overflow-y:hidden;border-bottom:1px solid #e2e8f0;}
-.nb-tab-btn{display:flex;align-items:center;gap:0.375rem;flex-shrink:0;padding:0.5rem 1rem;border:0;border-radius:9999px;background:transparent;color:#94a3b8;font-family:inherit;font-size:0.8125rem;font-weight:500;white-space:nowrap;cursor:pointer;transition:color 0.15s;}
+.nb-modal-tabs{display:flex;flex-wrap:wrap;gap:0.25rem;flex-shrink:0;padding:0.5rem 1rem;border-bottom:1px solid #e2e8f0;}
+.nb-tab-btn{display:flex;align-items:center;gap:0.375rem;flex-shrink:0;padding:0.4375rem 0.75rem;border:0;border-radius:9999px;background:transparent;color:#94a3b8;font-family:inherit;font-size:0.8125rem;font-weight:500;white-space:nowrap;cursor:pointer;transition:color 0.15s;}
 .nb-tab-btn i{font-size:1rem;}
 .nb-tab-btn:hover{background:#f1f5f9;}
 .nb-tab-btn.active{background:#e8f0f8;color:#003B71;}
 .nb-modal-body{display:flex;flex:1;flex-direction:column;gap:1rem;padding:1.25rem;overflow-y:auto;background:#f8fafc;}
-.nb-modal-body::-webkit-scrollbar{width:5px;}
-.nb-modal-body::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:3px;}
+.nb-modal,.nb-modal *{scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;}
+@supports not (scrollbar-color:auto){
+.nb-modal *::-webkit-scrollbar{width:6px;height:6px;}
+.nb-modal *::-webkit-scrollbar-track{background:transparent;}
+.nb-modal *::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:9999px;}
+.nb-modal *::-webkit-scrollbar-thumb:hover{background:#b6c2d1;}
+}
 .nb-tab-panel{display:none;flex-direction:column;gap:1rem;}
 .nb-tab-panel.active{display:flex;}
 .nb-card{padding:1rem;background:#fff;border:1px solid #e2e8f0;border-radius:0.625rem;}
