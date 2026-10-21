@@ -43,8 +43,8 @@ export const NAVBAR_STYLES = resolveTokens(`<style>
 .nb-icon-btn i{font-size:1.25rem;line-height:1;}
 .nb-icon-btn img{display:block;width:1.25rem;height:1.25rem;object-fit:contain;pointer-events:none;}
 .nb-bottom{background:#fff;}
-.nb-bottom-inner{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:0.625rem var(--nb-gutter) 0.625rem var(--nb-logo-col);}
-.nb-nav-list{display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;min-width:0;margin:0;padding:0;list-style:none;}
+.nb-bottom-inner{display:flex;align-items:center;justify-content:flex-end;gap:1.5rem;padding:0.625rem var(--nb-gutter) 0.625rem var(--nb-logo-col);}
+.nb-nav-list{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:0.25rem;min-width:0;margin:0 0 0 auto;padding:0;list-style:none;}
 .nb-nav-item{position:static;}
 .nb-nav-link{display:inline-flex;align-items:center;gap:0.375rem;padding:0.5rem 1.125rem;border:0;background:none;color:var(--nb-navy);font-family:inherit;font-size:0.9375rem;font-weight:600;text-decoration:none;white-space:nowrap;cursor:pointer;transition:color 0.15s;}
 .nb-nav-link:hover,.nb-nav-item.nb-open>.nb-nav-link{color:var(--nb-orange);}
