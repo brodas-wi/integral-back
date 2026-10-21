@@ -81,7 +81,7 @@ export const NAVBAR_STYLES = resolveTokens(`<style>
 .nb-mobile-item.nb-open>.nb-mobile-link i{transform:rotate(180deg);}
 .nb-mobile-link-content{display:flex;align-items:center;gap:0.5rem;}
 .nb-mobile-link-content i{font-size:1.125rem;transform:none;}
-.nb-mobile-submenu{display:none;flex-direction:column;gap:1.25rem;margin:0.75rem 0.25rem 1rem 0.5rem;padding:0.25rem 0.5rem 0.25rem 1rem;border-left:2px solid rgba(233,115,0,0.35);}
+.nb-mobile-submenu{display:none;flex-direction:column;gap:1.25rem;margin:0.75rem 0.25rem 1rem 0.5rem;padding:0.25rem 0.5rem 0.25rem 0.5rem;}
 .nb-mobile-item.nb-open>.nb-mobile-submenu{display:flex;}
 .nb-mobile-sub-col{display:flex;flex-direction:column;gap:0.75rem;}
 .nb-mobile-sub-badge{font-size:0.8125rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--nb-orange);}
