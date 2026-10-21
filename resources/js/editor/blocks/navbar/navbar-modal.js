@@ -136,10 +136,10 @@ const buildPanels = () => ({
     ),
     "icon-btn":
         card(
-            `<label class="nb-label">Botón de acción con icono</label><div class="nb-stack"><div class="nb-toggle-row"><div class="nb-toggle-text"><span class="nb-toggle-title">Mostrar botón de búsqueda</span><span class="nb-toggle-desc">Aparece en la barra superior y en la barra móvil</span></div><label class="nb-switch"><input type="checkbox" data-bind="icon_btn.enabled"><span class="nb-switch-track"></span></label></div>${field("Imagen del botón", mediaField("icon_btn.image_url", "Seleccionar imagen del botón de búsqueda", "URL de la imagen"))}${field("Etiqueta (tooltip)", textInput("icon_btn.label", "Buscar"))}${field("URL", urlInput("icon_btn.href"))}</div>`,
+            `<label class="nb-label">Botón de acción con icono</label><div class="nb-stack"><div class="nb-toggle-row"><div class="nb-toggle-text"><span class="nb-toggle-title">Mostrar botón de búsqueda</span><span class="nb-toggle-desc">Aparece en la barra superior y en la barra móvil</span></div><label class="nb-switch"><input type="checkbox" data-bind="icon_btn.enabled"><span class="nb-switch-track"></span></label></div>${field("Imagen del botón", mediaField("icon_btn.image_url", "Seleccionar imagen del botón de búsqueda", "URL de la imagen"))}${field("Icono (se usa si no hay imagen)", iconRow("icon_btn.icon"))}${field("Etiqueta (tooltip)", textInput("icon_btn.label", "Buscar"))}${field("URL", urlInput("icon_btn.href"))}</div>`,
         ) +
         card(
-            `<label class="nb-label">Botón de menú (hamburguesa, solo móvil)</label>${mediaField("menu_btn.image_url", "Seleccionar imagen del botón de menú", "URL de la imagen")}`,
+            `<label class="nb-label">Botón de menú (hamburguesa, solo móvil)</label><div class="nb-stack">${field("Imagen del botón", mediaField("menu_btn.image_url", "Seleccionar imagen del botón de menú", "URL de la imagen"))}${field("Icono (se usa si no hay imagen)", iconRow("menu_btn.icon"))}</div>`,
         ),
 });
 
@@ -189,7 +189,7 @@ function buildPayload(state) {
         label: trim(data.icon_btn.label) || "Buscar",
         href: trim(data.icon_btn.href) || "#",
     };
-    data.menu_btn = { image_url: trim(data.menu_btn.image_url) };
+    data.menu_btn = { image_url: trim(data.menu_btn.image_url), icon: trim(data.menu_btn.icon) };
     return data;
 }
 
@@ -348,38 +348,19 @@ export function showNavbarModal(editor, component) {
     }
 
     function pickMedia(path, title) {
-        const known = new Set(document.body.children);
-        let timer = null;
-        const restore = () => {
-            clearInterval(timer);
-            overlay.style.visibility = "";
-        };
-        overlay.style.visibility = "hidden";
-        openMediaPicker({
-            type: "image",
-            title,
-            onSelect: (url) => {
-                restore();
-                updateField(path, url);
-            },
-        });
-        setTimeout(() => {
-            const added = Array.from(document.body.children).filter((node) => !known.has(node));
-            if (!added.length) {
-                restore();
-                return;
-            }
-            timer = setInterval(() => {
-                const closed = added.every(
-                    (node) =>
-                        !node.isConnected ||
-                        getComputedStyle(node).display === "none" ||
-                        node.getBoundingClientRect().width === 0,
-                );
-                if (closed) restore();
-            }, 250);
-        }, 300);
-        cleanups.push(() => clearInterval(timer));
+        try {
+            openMediaPicker({
+                type: "image",
+                title,
+                onSelect: (url) => updateField(path, url),
+            });
+        } catch (error) {
+            console.error("[Navbar] No se pudo abrir el selector de medios:", error);
+            return;
+        }
+
+        const picker = document.getElementById("media-modal");
+        if (picker) picker.style.setProperty("z-index", "1000001", "important");
     }
 
     async function restoreFrom(input) {

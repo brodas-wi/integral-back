@@ -1,7 +1,7 @@
 import { clone } from "./navbar-utils";
 
 export const COMPONENT_TYPE = "navbar-component";
-export const NAVBAR_VERSION = "5";
+export const NAVBAR_VERSION = "6";
 export const MAX_SUBMENU_COLUMNS = 3;
 export const MAX_CTA_BUTTONS = 2;
 
@@ -42,7 +42,7 @@ export const DEFAULT_DATA = {
     ],
     bottom_cta: { label: "Programa Surge", sublabel: "", href: "#", color: "blue" },
     icon_btn: { enabled: true, icon: "ri-search-line", image_url: "", href: "#", label: "Buscar" },
-    menu_btn: { image_url: "" },
+    menu_btn: { image_url: "", icon: "" },
 };
 
 const asArray = (value, fallback) => (Array.isArray(value) ? value : fallback);

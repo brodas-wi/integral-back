@@ -56,11 +56,11 @@ const searchBtnHtml = (data) => {
 };
 
 const hamburgerHtml = (data) => {
-    const imageUrl = data.menu_btn.image_url;
-    const inner = imageUrl
-        ? `<img src="${esc(imageUrl)}" alt="Menú">`
-        : "<span></span><span></span><span></span>";
-    return `<button class="nb-hamburger${imageUrl ? " nb-hamburger-img" : ""}" type="button" aria-label="Menú" aria-expanded="false">${inner}</button>`;
+    const { image_url: imageUrl, icon } = data.menu_btn;
+    let inner = "<span></span><span></span><span></span>";
+    if (imageUrl) inner = `<img src="${esc(imageUrl)}" alt="Menú">`;
+    else if (icon) inner = `<i class="${esc(icon)}"></i>`;
+    return `<button class="nb-hamburger" type="button" aria-label="Menú" aria-expanded="false">${inner}</button>`;
 };
 
 const desktopColumn = (column) => {
