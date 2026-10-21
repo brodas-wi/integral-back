@@ -8,7 +8,7 @@ const MODAL_CSS = `
 .nb-modal-header-left h2{margin:0;font-size:0.9375rem;font-weight:600;color:#0f172a;}
 .nb-modal-close{display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border:0;border-radius:0.375rem;background:transparent;color:#94a3b8;font-size:1.125rem;cursor:pointer;}
 .nb-modal-close:hover{background:#f1f5f9;color:#475569;}
-.nb-modal-tabs{display:flex;flex-shrink:0;overflow-x:auto;border-bottom:1px solid #e2e8f0;}
+.nb-modal-tabs{display:flex;flex-shrink:0;overflow-x:auto;overflow-y:hidden;border-bottom:1px solid #e2e8f0;}
 .nb-tab-btn{display:flex;align-items:center;gap:0.375rem;flex-shrink:0;margin-bottom:-1px;padding:0.75rem 1rem;border:0;border-bottom:2px solid transparent;background:transparent;color:#94a3b8;font-family:inherit;font-size:0.8125rem;font-weight:500;white-space:nowrap;cursor:pointer;transition:color 0.15s;}
 .nb-tab-btn i{font-size:1rem;}
 .nb-tab-btn.active{color:#003B71;border-bottom-color:#003B71;}
@@ -73,6 +73,7 @@ const MODAL_CSS = `
 .nb-color-opt{padding:0.375rem 0.875rem;border:2px solid transparent;border-radius:9999px;font-family:inherit;font-size:0.75rem;font-weight:700;color:#fff;cursor:pointer;transition:opacity 0.15s;}
 .nb-color-opt-blue{background:#003B71;}
 .nb-color-opt-orange{background:#E97300;}
+.nb-color-opt-white{background:#fff;color:#003B71;border-color:#cbd5e1;}
 .nb-color-opt.nb-color-inactive{opacity:0.35;border-color:#e2e8f0;}
 .nb-color-opt.nb-color-inactive:hover{opacity:0.6;}
 .nb-color-toggle.nb-small{gap:0.25rem;}

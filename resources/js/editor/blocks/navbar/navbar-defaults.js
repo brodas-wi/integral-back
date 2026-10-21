@@ -1,9 +1,11 @@
 import { clone } from "./navbar-utils";
 
 export const COMPONENT_TYPE = "navbar-component";
-export const NAVBAR_VERSION = "7";
+export const NAVBAR_VERSION = "8";
 export const MAX_SUBMENU_COLUMNS = 3;
 export const MAX_CTA_BUTTONS = 2;
+export const MAX_BOTTOM_BUTTONS = 3;
+const BUTTON_COLORS = ["blue", "white", "orange"];
 
 export const DEFAULT_DATA = {
     logo_url: "",
@@ -15,7 +17,7 @@ export const DEFAULT_DATA = {
         { label: "Agencias y corresponsales", href: "#", icon: "ri-building-line", show_icon: false },
         { label: "Preguntas frecuentes", href: "#", icon: "ri-question-answer-line", show_icon: false },
     ],
-    banking_btn: { label: "Mi Banca Integral", href: "#" },
+    bottom_buttons: [{ label: "Mi Banca Integral", href: "#", color: "orange" }],
     nav_links: [
         { type: "link", label: "Inicio", href: "/", icon: "" },
         {
@@ -40,7 +42,7 @@ export const DEFAULT_DATA = {
         { type: "link", label: "Remesas", href: "#", icon: "" },
         { type: "link", label: "Seguros y otros servicios", href: "#", icon: "" },
     ],
-    bottom_cta: { label: "Programa Surge", sublabel: "", href: "#", color: "blue" },
+    top_button: { label: "Programa Surge", sublabel: "", href: "#", color: "white" },
     icon_btn: { enabled: true, icon: "ri-search-line", image_url: "", href: "#", label: "Buscar" },
     menu_btn: { image_url: "", icon: "" },
 };
@@ -80,17 +82,46 @@ export function normalizeNavLinks(links) {
     );
 }
 
+const pickColor = (color, fallback) => (BUTTON_COLORS.includes(color) ? color : fallback);
+
+function migrateLegacy(source) {
+    const data = { ...source };
+    if (!data.top_button && data.bottom_cta) {
+        data.top_button = {
+            ...data.bottom_cta,
+            color: data.bottom_cta.color === "orange" ? "orange" : "white",
+        };
+    }
+    if (!Array.isArray(data.bottom_buttons) && data.banking_btn) {
+        data.bottom_buttons = [{ ...data.banking_btn, color: "orange" }];
+    }
+    delete data.bottom_cta;
+    delete data.banking_btn;
+    return data;
+}
+
 export function mergeNavbarData(input) {
     const base = clone(DEFAULT_DATA);
-    const source = clone(input || {});
+    const source = migrateLegacy(clone(input || {}));
+
+    const bottomButtons = asArray(source.bottom_buttons, base.bottom_buttons)
+        .slice(0, MAX_BOTTOM_BUTTONS)
+        .map((button) => ({
+            label: button.label || "",
+            href: button.href || "#",
+            color: pickColor(button.color, "orange"),
+        }));
+
+    const topButton = { ...base.top_button, ...source.top_button };
+    topButton.color = pickColor(topButton.color, "white");
 
     return {
         ...base,
         ...source,
         top_actions: asArray(source.top_actions, base.top_actions),
         nav_links: normalizeNavLinks(asArray(source.nav_links, base.nav_links)),
-        banking_btn: { ...base.banking_btn, ...source.banking_btn },
-        bottom_cta: { ...base.bottom_cta, ...source.bottom_cta },
+        bottom_buttons: bottomButtons,
+        top_button: topButton,
         icon_btn: { ...base.icon_btn, ...source.icon_btn },
         menu_btn: { ...base.menu_btn, ...source.menu_btn },
     };

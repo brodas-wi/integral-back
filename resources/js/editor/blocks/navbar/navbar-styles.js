@@ -36,6 +36,9 @@ export const NAVBAR_STYLES = resolveTokens(`<style>
 .nb-btn-blue:hover{opacity:0.88;}
 .nb-btn-white{background:#fff;border-color:#fff;color:var(--nb-blue);}
 .nb-btn-white:hover{background:#f0f4f8;border-color:#f0f4f8;}
+.nb-bottom .nb-btn-white,.nb-bottom .nb-btn-white:hover{border-color:var(--nb-blue);}
+.nb-top .nb-btn-blue,.nb-mobile-actions .nb-btn-blue{border-color:#fff;}
+.nb-bottom-buttons{display:flex;align-items:center;gap:0.75rem;flex-shrink:0;}
 .nb-cta{flex-direction:column;gap:0;white-space:normal;}
 .nb-cta-line2{font-size:0.6875rem;font-weight:500;opacity:0.9;}
 .nb-icon-btn{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:2.25rem;height:2.25rem;border:1.5px solid transparent;border-radius:9999px;background:#fff;color:var(--nb-orange);text-decoration:none;transition:border-color 0.15s;}

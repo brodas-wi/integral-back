@@ -35,15 +35,24 @@ const actionHtml = (action, className) => {
     return `<a href="${esc(action.href || "#")}" class="${className}">${icon}${esc(action.label)}</a>`;
 };
 
-const bankingHtml = (data) =>
-    `<a href="${esc(data.banking_btn.href || "#")}" class="nb-btn nb-btn-orange">${esc(data.banking_btn.label || "Banca en Línea")}</a>`;
+const BUTTON_CLASSES = { blue: "nb-btn-blue", white: "nb-btn-white", orange: "nb-btn-orange" };
 
-const ctaHtml = (data) => {
-    const cta = data.bottom_cta;
-    if (!cta.label) return "";
-    const colorClass = cta.color === "orange" ? "nb-btn-orange" : "nb-btn-white";
-    const sublabel = cta.sublabel ? `<span class="nb-cta-line2">${esc(cta.sublabel)}</span>` : "";
-    return `<a href="${esc(cta.href || "#")}" class="nb-btn nb-cta ${colorClass}"><span>${esc(cta.label)}</span>${sublabel}</a>`;
+const buttonClass = (color) => BUTTON_CLASSES[color] || BUTTON_CLASSES.orange;
+
+const bottomButtonsHtml = (data) =>
+    data.bottom_buttons
+        .filter((button) => button.label)
+        .map(
+            (button) =>
+                `<a href="${esc(button.href || "#")}" class="nb-btn ${buttonClass(button.color)}">${esc(button.label)}</a>`,
+        )
+        .join("");
+
+const topButtonHtml = (data) => {
+    const button = data.top_button;
+    if (!button.label) return "";
+    const sublabel = button.sublabel ? `<span class="nb-cta-line2">${esc(button.sublabel)}</span>` : "";
+    return `<a href="${esc(button.href || "#")}" class="nb-btn nb-cta ${buttonClass(button.color)}"><span>${esc(button.label)}</span>${sublabel}</a>`;
 };
 
 const searchBtnHtml = (data) => {
@@ -122,8 +131,8 @@ const mobileItem = (item) => {
 export function buildNavbarHTML(input, uid = createUid()) {
     const data = mergeNavbarData(input);
     const logo = logoHtml(data);
-    const banking = bankingHtml(data);
-    const cta = ctaHtml(data);
+    const bottomButtons = bottomButtonsHtml(data);
+    const topButton = topButtonHtml(data);
     const search = searchBtnHtml(data);
 
     return `<div id="nb-root-${uid}" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false">
@@ -131,12 +140,12 @@ export function buildNavbarHTML(input, uid = createUid()) {
 <div class="nb-top-left">${logo}</div>
 <div class="nb-top-right">
 <div class="nb-top-actions">${data.top_actions.map((action) => actionHtml(action, "nb-top-action")).join("")}</div>
-<div class="nb-top-extra">${cta}${search}</div>
+<div class="nb-top-extra">${topButton}${search}</div>
 </div>
 </div></div>
 <div class="nb-bottom"><div class="nb-bottom-inner">
 <ul class="nb-nav-list">${data.nav_links.map(desktopItem).join("")}</ul>
-${banking}
+${bottomButtons ? `<div class="nb-bottom-buttons">${bottomButtons}</div>` : ""}
 </div></div>
 <div class="nb-mobile-bar"><div class="nb-mobile-bar-inner">
 ${logo}
@@ -144,7 +153,7 @@ ${logo}
 </div></div>
 <div class="nb-mobile-menu">
 ${data.nav_links.map(mobileItem).join("")}
-<div class="nb-mobile-actions">${banking}${cta}</div>
+<div class="nb-mobile-actions">${bottomButtons}${topButton}</div>
 <div class="nb-mobile-contact">${data.top_actions.map((action) => actionHtml(action, "nb-mobile-contact-link")).join("")}</div>
 </div>
 </div>`;

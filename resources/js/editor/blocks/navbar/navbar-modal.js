@@ -1,6 +1,6 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { IconPickerModal } from "@/editor/components/icon-picker-modal";
-import { MAX_CTA_BUTTONS, MAX_SUBMENU_COLUMNS, mergeNavbarData } from "./navbar-defaults";
+import { MAX_BOTTOM_BUTTONS, MAX_CTA_BUTTONS, MAX_SUBMENU_COLUMNS, mergeNavbarData } from "./navbar-defaults";
 import { applyNavbarConfig, readNavbarConfig } from "./navbar-template";
 import { attachUrlAutocomplete } from "./navbar-url-autocomplete";
 import { ensureModalStyles } from "./navbar-modal-styles";
@@ -9,9 +9,9 @@ import { clone, escapeHtml, getByPath, setByPath } from "./navbar-utils";
 const TABS = [
     { id: "logo", icon: "ri-image-line", label: "Logo" },
     { id: "top-actions", icon: "ri-links-line", label: "Acciones superiores" },
-    { id: "banking", icon: "ri-bank-card-line", label: "Banca en línea" },
+    { id: "top-button", icon: "ri-cursor-line", label: "Botón superior" },
     { id: "nav", icon: "ri-menu-line", label: "Navegación" },
-    { id: "bottom-cta", icon: "ri-cursor-line", label: "CTA inferior" },
+    { id: "bottom-buttons", icon: "ri-bank-card-line", label: "Botones inferiores" },
     { id: "icon-btn", icon: "ri-search-line", label: "Botón icono" },
 ];
 
@@ -44,8 +44,16 @@ const removeBtn = (list, index) =>
 const addBtn = (action, label, className, attrs = "") =>
     `<button type="button" class="nb-btn-add ${className}" data-action="${action}" ${attrs}><i class="ri-add-line"></i> ${label}</button>`;
 
-const colorToggle = (bind, fallback, small = false) =>
-    `<div class="nb-color-toggle${small ? " nb-small" : ""}" data-color-group data-default="${fallback}"><button type="button" class="nb-color-opt nb-color-opt-blue" data-action="set-color" data-path="${bind}" data-value="blue">Azul</button><button type="button" class="nb-color-opt nb-color-opt-orange" data-action="set-color" data-path="${bind}" data-value="orange">Naranja</button></div>`;
+const COLOR_LABELS = { blue: "Azul", white: "Blanco", orange: "Naranja" };
+const BUTTON_COLORS = ["blue", "white", "orange"];
+
+const colorToggle = (bind, fallback, small = false, options = ["blue", "orange"]) =>
+    `<div class="nb-color-toggle${small ? " nb-small" : ""}" data-color-group data-default="${fallback}">${options
+        .map(
+            (value) =>
+                `<button type="button" class="nb-color-opt nb-color-opt-${value}" data-action="set-color" data-path="${bind}" data-value="${value}">${COLOR_LABELS[value]}</button>`,
+        )
+        .join("")}</div>`;
 
 const iconRow = (bind) =>
     `<div class="nb-row"><div class="nb-icon-preview"><i data-icon-preview="${bind}"></i></div><input type="text" class="nb-input-sm nb-grow" data-bind="${bind}" placeholder="Sin icono (opcional)"><button type="button" class="nb-pick-btn" data-action="pick-icon" data-path="${bind}"><i class="ri-emotion-happy-line"></i> Icono</button></div>`;
@@ -60,6 +68,15 @@ const topActionCard = (action, index) => {
 ${urlInput(`${path}.href`, undefined, true)}
 ${iconRow(`${path}.icon`)}
 <label class="nb-check"><input type="checkbox" data-bind="${path}.show_icon"> Mostrar icono en el botón</label>
+</div>`;
+};
+
+const bottomButtonCard = (button, index) => {
+    const path = `bottom_buttons.${index}`;
+    return `<div class="nb-action-card" data-drag-idx="${index}">
+<div class="nb-row"><span class="nb-drag-handle"><i class="ri-draggable"></i></span>${smallInput(`${path}.label`, "Texto del botón", "nb-grow")}${removeBtn("bottom_buttons", index)}</div>
+${urlInput(`${path}.href`, undefined, true)}
+<div class="nb-row"><span class="nb-col-title">Estilo</span>${colorToggle(`${path}.color`, "orange", false, BUTTON_COLORS)}</div>
 </div>`;
 };
 
@@ -125,14 +142,14 @@ const buildPanels = () => ({
     "top-actions": card(
         `<p class="nb-hint">Botones de la barra superior (Contáctanos, Agencias, etc.). Puedes reordenarlos arrastrando.</p><div class="nb-list" data-list-root="top_actions"></div><div class="nb-add-row">${addBtn("add-top-action", "Agregar acción", "nb-btn-add-action")}</div>`,
     ),
-    banking: card(
-        `<label class="nb-label">Botón de Banca en Línea</label><div class="nb-stack">${field("Texto del botón", textInput("banking_btn.label", "Mi Banca Integral"))}${field("URL", urlInput("banking_btn.href"))}</div>`,
+    "bottom-buttons": card(
+        `<p class="nb-hint">Botones a la derecha de la barra inferior (Mi Banca Integral, etc.). Máximo ${MAX_BOTTOM_BUTTONS}. Puedes reordenarlos arrastrando.</p><div class="nb-list" data-list-root="bottom_buttons"></div><div class="nb-add-row">${addBtn("add-bottom-button", "Agregar botón", "nb-btn-add-action")}</div>`,
     ),
     nav: card(
         `<p class="nb-hint">Links de la barra inferior. Los submenús generan mega-menús con columnas.</p><div class="nb-list" data-list-root="nav_links"></div><div class="nb-add-row">${addBtn("add-link", "Agregar link", "nb-btn-add-link")}${addBtn("add-submenu", "Agregar submenú", "nb-btn-add-submenu")}</div>`,
     ),
-    "bottom-cta": card(
-        `<label class="nb-label">Botón CTA superior (Programa Surge)</label><div class="nb-stack">${field("Texto principal", textInput("bottom_cta.label", "Programa Surge"))}${field("Subtexto (opcional)", textInput("bottom_cta.sublabel", "Formación Empresarial"))}${field("URL", urlInput("bottom_cta.href"))}${field("Estilo (azul: píldora blanca, naranja: píldora naranja)", colorToggle("bottom_cta.color", "blue"))}</div>`,
+    "top-button": card(
+        `<label class="nb-label">Botón superior (Programa Surge)</label><div class="nb-stack">${field("Texto principal", textInput("top_button.label", "Programa Surge"))}${field("Subtexto (opcional)", textInput("top_button.sublabel", "Formación Empresarial"))}${field("URL", urlInput("top_button.href"))}${field("Estilo", colorToggle("top_button.color", "white", false, BUTTON_COLORS))}</div>`,
     ),
     "icon-btn":
         card(
@@ -172,15 +189,16 @@ function buildPayload(state) {
         data[key] = trim(data[key]);
     });
     data.logo_href = trim(data.logo_href) || "/";
-    data.banking_btn = {
-        label: trim(data.banking_btn.label),
-        href: trim(data.banking_btn.href) || "#",
-    };
-    data.bottom_cta = {
-        label: trim(data.bottom_cta.label),
-        sublabel: trim(data.bottom_cta.sublabel),
-        href: trim(data.bottom_cta.href) || "#",
-        color: data.bottom_cta.color === "orange" ? "orange" : "blue",
+    data.bottom_buttons = data.bottom_buttons.map((button) => ({
+        label: trim(button.label),
+        href: trim(button.href) || "#",
+        color: BUTTON_COLORS.includes(button.color) ? button.color : "orange",
+    }));
+    data.top_button = {
+        label: trim(data.top_button.label),
+        sublabel: trim(data.top_button.sublabel),
+        href: trim(data.top_button.href) || "#",
+        color: BUTTON_COLORS.includes(data.top_button.color) ? data.top_button.color : "white",
     };
     data.icon_btn = {
         enabled: Boolean(data.icon_btn.enabled),
@@ -300,8 +318,13 @@ export function showNavbarModal(editor, component) {
     const lists = {
         top_actions: modal.querySelector('[data-list-root="top_actions"]'),
         nav_links: modal.querySelector('[data-list-root="nav_links"]'),
+        bottom_buttons: modal.querySelector('[data-list-root="bottom_buttons"]'),
     };
-    const renderers = { top_actions: topActionCard, nav_links: navCard };
+    const renderers = {
+        top_actions: topActionCard,
+        nav_links: navCard,
+        bottom_buttons: bottomButtonCard,
+    };
 
     function syncPreviews() {
         modal.querySelectorAll("[data-img-preview]").forEach((el) => {
@@ -333,6 +356,10 @@ export function showNavbarModal(editor, component) {
     function renderList(name) {
         lists[name].innerHTML = state[name].map(renderers[name]).join("");
         hydrate(lists[name]);
+        if (name === "bottom_buttons") {
+            const add = modal.querySelector('[data-action="add-bottom-button"]');
+            if (add) add.disabled = state.bottom_buttons.length >= MAX_BOTTOM_BUTTONS;
+        }
     }
 
     function scrollToLast(name) {
@@ -400,8 +427,7 @@ export function showNavbarModal(editor, component) {
         if (!accepted) return;
 
         state = mergeNavbarData(parsed);
-        renderList("top_actions");
-        renderList("nav_links");
+        ["top_actions", "nav_links", "bottom_buttons"].forEach((name) => renderList(name));
         hydrate(modal);
     }
 
@@ -440,6 +466,12 @@ export function showNavbarModal(editor, component) {
             state.top_actions.push({ label: "Nueva acción", href: "#", icon: "ri-star-line", show_icon: false });
             renderList("top_actions");
             scrollToLast("top_actions");
+        },
+        "add-bottom-button": () => {
+            if (state.bottom_buttons.length >= MAX_BOTTOM_BUTTONS) return;
+            state.bottom_buttons.push({ label: "Nuevo botón", href: "#", color: "orange" });
+            renderList("bottom_buttons");
+            scrollToLast("bottom_buttons");
         },
         "add-link": () => {
             state.nav_links.push({ type: "link", label: "Nuevo enlace", href: "#", icon: "" });
@@ -523,8 +555,8 @@ export function showNavbarModal(editor, component) {
 
     enableSorting(lists.top_actions, () => state.top_actions, () => renderList("top_actions"));
     enableSorting(lists.nav_links, () => state.nav_links, () => renderList("nav_links"));
+    enableSorting(lists.bottom_buttons, () => state.bottom_buttons, () => renderList("bottom_buttons"));
 
-    renderList("top_actions");
-    renderList("nav_links");
+    ["top_actions", "nav_links", "bottom_buttons"].forEach((name) => renderList(name));
     hydrate(modal);
 }
