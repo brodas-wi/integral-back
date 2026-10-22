@@ -103,15 +103,15 @@
                     </div>
 
                     <div class="flex items-center gap-2 mt-1 pt-3 border-t border-gray-100">
-                        @canany(['forms.edit', 'forms.manage'])
-                            <a href="{{ route('forms.edit', $form) }}"
+                        @canany(['forms.view', 'forms.manage'])
+                            <a href="{{ route('forms.show', $form) }}"
                                 class="btn-outline btn-sm flex-1 flex items-center justify-center gap-2">
-                                <i class="ri-edit-line"></i>
-                                <span>Editar</span>
+                                <i class="ri-information-line"></i>
+                                <span>Detalles</span>
                             </a>
                         @endcanany
 
-                        @canany(['forms.edit', 'forms.delete', 'forms.manage', 'form_submissions.view',
+                        @canany(['forms.edit', 'forms.create', 'forms.delete', 'forms.manage', 'form_submissions.view',
                             'form_submissions.manage'])
                             <div class="dropdown" data-dropdown>
                                 <button type="button"
@@ -120,6 +120,20 @@
                                     <i class="ri-more-2-fill text-lg"></i>
                                 </button>
                                 <div class="dropdown-menu">
+                                    @canany(['forms.edit', 'forms.manage'])
+                                        <a href="{{ route('forms.edit', $form) }}" class="dropdown-item">
+                                            <i class="ri-edit-line"></i>
+                                            <span>Editar</span>
+                                        </a>
+                                    @endcanany
+
+                                    @canany(['forms.create', 'forms.manage'])
+                                        <button type="button" data-duplicate-form data-form-id="{{ $form->id }}"
+                                            data-form-name="{{ $form->name }}" class="dropdown-item">
+                                            <i class="ri-file-copy-2-line"></i>
+                                            <span>Duplicar</span>
+                                        </button>
+                                    @endcanany
                                     @canany(['form_submissions.view', 'form_submissions.manage'])
                                         <a href="{{ route('forms.submissions.index', $form) }}" class="dropdown-item">
                                             <i class="ri-inbox-line"></i>
@@ -141,6 +155,14 @@
                                             <i class="ri-archive-line"></i>
                                             <span>Archivar</span>
                                         </button>
+
+                                        @if ($form->submissions_count === 0)
+                                            <button type="button" data-force-delete data-form-id="{{ $form->id }}"
+                                                data-form-name="{{ $form->name }}" class="dropdown-item-danger">
+                                                <i class="ri-delete-bin-line"></i>
+                                                <span>Eliminar</span>
+                                            </button>
+                                        @endif
                                     @endcanany
                                 </div>
                             </div>

@@ -40,6 +40,11 @@ class FormVersion extends Model
         return $this->belongsTo(Form::class)->withTrashed();
     }
 
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function submissions(): HasMany
     {
         return $this->hasMany(FormSubmission::class);

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Enums\FormFieldType;
 use App\Http\Requests\SaveFormRequest;
 use App\Models\Form;
+use App\Models\FormVersion;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use App\Services\Forms\FormService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -104,6 +107,78 @@ class FormController extends Controller
             'success' => true,
             'message' => $form->is_active ? 'Formulario activado' : 'Formulario desactivado',
             'is_active' => $form->is_active,
+        ]);
+    }
+
+    public function show(Form $form): View
+    {
+        $form->load('currentVersion');
+
+        return view('forms.show', [
+            'form' => $form,
+            'version' => $form->currentVersion,
+            'versions' => $form->versions()
+                ->withCount('submissions')
+                ->with('creator:id,name')
+                ->orderByDesc('version')
+                ->get(),
+            'submissionsCount' => $form->submissions()->count(),
+            'typeLabels' => collect(FormFieldType::cases())->mapWithKeys(fn (FormFieldType $type) => [$type->value => $type->label()])->all(),
+        ]);
+    }
+
+    public function duplicate(Request $request, Form $form): JsonResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:150'],
+        ], [
+            'name.required' => 'Escribe un nombre para la copia.',
+            'name.max' => 'El nombre no puede superar 150 caracteres.',
+        ]);
+
+        $copy = $this->formService->duplicate($form->load('currentVersion'), trim($data['name']));
+
+        session()->flash('success', 'Formulario duplicado. Revisa su contenido y actívalo cuando esté listo.');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Formulario duplicado',
+            'redirect' => route('forms.edit', $copy),
+        ], 201);
+    }
+
+    public function forceDestroy(Form $form): JsonResponse
+    {
+        $blocked = response()->json([
+            'success' => false,
+            'message' => 'Este formulario ya tiene respuestas, no se puede eliminar. Puedes archivarlo.',
+        ], 409);
+
+        try {
+            $deleted = DB::transaction(function () use ($form) {
+                $locked = Form::query()->whereKey($form->id)->lockForUpdate()->firstOrFail();
+
+                if ($locked->submissions()->withTrashed()->exists()) {
+                    return false;
+                }
+
+                $locked->forceFill(['current_version_id' => null])->save();
+                FormVersion::query()->where('form_id', $locked->id)->delete();
+                $locked->forceDelete();
+
+                return true;
+            });
+        } catch (QueryException) {
+            return $blocked;
+        }
+
+        if (!$deleted) {
+            return $blocked;
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Formulario eliminado definitivamente.',
         ]);
     }
 

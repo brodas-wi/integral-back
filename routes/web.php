@@ -703,6 +703,18 @@ Route::middleware(['auth'])->group(function () {
             ->name('edit')
             ->middleware('can:forms.edit,forms.manage');
 
+        Route::get('/{form}', [FormController::class, 'show'])
+            ->name('show')
+            ->middleware('can:forms.view,forms.manage');
+
+        Route::post('/{form}/duplicate', [FormController::class, 'duplicate'])
+            ->name('duplicate')
+            ->middleware('can:forms.create,forms.manage');
+
+        Route::delete('/{form}/permanent', [FormController::class, 'forceDestroy'])
+            ->name('force-destroy')
+            ->middleware('can:forms.delete,forms.manage');
+
         Route::put('/{form}', [FormController::class, 'update'])
             ->name('update')
             ->middleware('can:forms.edit,forms.manage');

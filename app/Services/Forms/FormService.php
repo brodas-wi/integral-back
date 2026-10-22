@@ -52,6 +52,23 @@ class FormService
         });
     }
 
+    public function duplicate(Form $source, string $name): Form
+    {
+        $version = $source->currentVersion;
+
+        abort_if(!$version, 422, 'El formulario no tiene contenido para duplicar.');
+
+        return $this->create([
+            'name' => $name,
+            'is_active' => false,
+            'title' => $version->title,
+            'description' => $version->description,
+            'submit_label' => $version->submit_label,
+            'fields' => $version->fields,
+            'settings' => $version->settings,
+        ]);
+    }
+
     public function setActive(Form $form, bool $active): Form
     {
         $form->update(['is_active' => $active, 'updated_by' => auth()->id()]);

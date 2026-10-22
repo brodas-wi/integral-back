@@ -5,7 +5,7 @@ import { copyText } from "@/utils/clipboard.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
 
-async function send(method, path) {
+async function send(method, path, body = null) {
     if (!CSRF) throw new Error("Error de configuración. Recarga la página.");
 
     const response = await fetch(buildUrl(path), {
@@ -14,8 +14,10 @@ async function send(method, path) {
             "X-CSRF-TOKEN": CSRF,
             Accept: "application/json",
             "X-Requested-With": "XMLHttpRequest",
+            ...(body ? { "Content-Type": "application/json" } : {}),
         },
         credentials: "same-origin",
+        body: body ? JSON.stringify(body) : undefined,
     });
 
     if (response.status === 401 || response.status === 419) {
@@ -25,7 +27,8 @@ async function send(method, path) {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok || !data.success) {
-        throw new Error(data.message || `Error del servidor: ${response.status}`);
+        const first = data.errors ? Object.values(data.errors)[0]?.[0] : null;
+        throw new Error(first || data.message || `Error del servidor: ${response.status}`);
     }
 
     return data;
@@ -65,7 +68,100 @@ function confirmArchive(id, name) {
     });
 }
 
+function askDuplicateName(defaultName) {
+    return new Promise((resolve) => {
+        const overlay = document.createElement("div");
+        overlay.className = "fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4";
+        overlay.innerHTML = `
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 space-y-4" role="dialog" aria-modal="true">
+                <div>
+                    <h3 class="text-lg font-bold text-secondary">Duplicar formulario</h3>
+                    <p class="text-sm text-gray-600 mt-1">Se copia solo la estructura. Las respuestas no se copian y la copia queda inactiva.</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1" for="dup-name">Nombre de la copia</label>
+                    <input type="text" id="dup-name" maxlength="150" class="input-field">
+                    <p id="dup-error" class="text-xs text-red-600 mt-1 hidden"></p>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" data-cancel class="btn-outline btn-sm">Cancelar</button>
+                    <button type="button" data-accept class="btn-primary btn-sm">Duplicar</button>
+                </div>
+            </div>`;
+        document.body.append(overlay);
+
+        const input = overlay.querySelector("#dup-name");
+        const error = overlay.querySelector("#dup-error");
+        input.value = `${defaultName} (copia)`.slice(0, 150);
+        input.focus();
+        input.select();
+
+        const finish = (value) => {
+            document.removeEventListener("keydown", onKey, true);
+            overlay.remove();
+            resolve(value);
+        };
+        const accept = () => {
+            const value = input.value.trim();
+            if (!value) {
+                error.textContent = "Escribe un nombre para la copia.";
+                error.classList.remove("hidden");
+                return;
+            }
+            finish(value);
+        };
+        const onKey = (event) => {
+            if (event.key === "Escape") finish(null);
+            if (event.key === "Enter") {
+                event.preventDefault();
+                accept();
+            }
+        };
+
+        document.addEventListener("keydown", onKey, true);
+        overlay.querySelector("[data-cancel]").addEventListener("click", () => finish(null));
+        overlay.querySelector("[data-accept]").addEventListener("click", accept);
+        overlay.addEventListener("mousedown", (event) => {
+            if (event.target === overlay) finish(null);
+        });
+    });
+}
+
+async function duplicateForm(id, name) {
+    const newName = await askDuplicateName(name);
+    if (!newName) return;
+
+    try {
+        const data = await send("POST", `forms/${id}/duplicate`, { name: newName });
+        window.location.href = data.redirect;
+    } catch (error) {
+        showNotification(error.message || "No se pudo duplicar el formulario", "error");
+    }
+}
+
+function confirmForceDelete(id, name) {
+    showConfirmModal({
+        title: "¿Eliminar formulario?",
+        message: `"${name}" se eliminará definitivamente junto con sus versiones. Esta acción no se puede deshacer.`,
+        confirmText: "Eliminar",
+        cancelText: "Cancelar",
+        type: "danger",
+        onConfirm: () => run("DELETE", `forms/${id}/permanent`),
+    });
+}
+
 document.addEventListener("click", async (event) => {
+    const duplicate = event.target.closest("[data-duplicate-form]");
+    if (duplicate) {
+        duplicateForm(duplicate.dataset.formId, duplicate.dataset.formName);
+        return;
+    }
+
+    const forceDelete = event.target.closest("[data-force-delete]");
+    if (forceDelete) {
+        confirmForceDelete(forceDelete.dataset.formId, forceDelete.dataset.formName);
+        return;
+    }
     const copy = event.target.closest("[data-copy-slug]");
     if (copy) {
         const copied = await copyText(copy.dataset.slug);
