@@ -90,7 +90,7 @@ class FormSchemaNormalizer
         $width = ($raw['width'] ?? 'full') === 'half' ? 'half' : 'full';
 
         return [
-            'key' => $this->resolveKey($raw['key'] ?? null, $type, $label, $history, $used),
+            'key' => $this->resolveKey($raw['key'] ?? null, $type, $label, $history, $used, "{$path}.key"),
             'type' => $type->value,
             'label' => $label,
             'required' => $isConsent ? true : filter_var($raw['required'] ?? false, FILTER_VALIDATE_BOOLEAN),
@@ -100,16 +100,21 @@ class FormSchemaNormalizer
         ];
     }
 
-    private function resolveKey(mixed $requested, FormFieldType $type, string $label, array $history, array $used): string
+    private function resolveKey(mixed $requested, FormFieldType $type, string $label, array $history, array $used, string $path): string
     {
         $requested = is_string($requested) ? trim($requested) : '';
 
-        if (
-            $requested !== ''
-            && isset($history[$requested])
-            && $history[$requested] === $type->value
-            && !in_array($requested, $used, true)
-        ) {
+        if ($requested !== '') {
+            if (!preg_match('/^[a-z][a-z0-9_]{1,39}$/', $requested)) {
+                $this->fail($path, "La clave «{$requested}» debe empezar con una letra minúscula y usar solo minúsculas, números y guion bajo (2 a 40 caracteres).");
+            } elseif (in_array($requested, self::RESERVED_VARIABLES, true)) {
+                $this->fail($path, "La clave «{$requested}» está reservada.");
+            } elseif (in_array($requested, $used, true)) {
+                $this->fail($path, "La clave «{$requested}» está repetida en este formulario.");
+            } elseif (isset($history[$requested]) && $history[$requested] !== $type->value) {
+                $this->fail($path, "La clave «{$requested}» ya se usó antes con otro tipo de campo. Elige otra para no mezclar respuestas.");
+            }
+
             return $requested;
         }
 
