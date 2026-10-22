@@ -63,8 +63,17 @@ function refreshDependentUi() {
     const emailFields = fields.filter((field) => field.type === "email" && field.key);
     select.innerHTML = "";
 
+    const pendingEmail = fields.some((field) => field.type === "email" && !field.key);
+
     if (!emailFields.length) {
-        select.append(new Option("No hay campos de correo con clave", ""));
+        select.append(
+            new Option(
+                pendingEmail
+                    ? "Se asignará automáticamente al guardar"
+                    : "No hay campos de correo en el formulario",
+                "",
+            ),
+        );
     } else {
         emailFields.forEach((field) => {
             select.append(new Option(`${field.label || "Correo"} (${field.key})`, field.key));
