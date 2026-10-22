@@ -1,4 +1,7 @@
-const ASSETS_BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32">
+const COMPONENT_TYPE = "assets-catalog-component";
+const CATEGORY = "Interactivos";
+
+const BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
     <rect x="3" y="10" width="12" height="19" fill="none" stroke="#003B71" stroke-width="1" rx="1"/>
     <rect x="5.5" y="13" width="2.5" height="2.5" fill="#003B71" fill-opacity="0.5"/>
@@ -13,531 +16,218 @@ const ASSETS_BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32">
     <circle cx="26" cy="27.8" r="1.3" fill="#003B71"/>
 </svg>`;
 
-const ASSETS_RUNTIME_STYLES = `
-.ast-section {
-    width: 100%;
-    background: #ffffff;
-    padding: 3rem 4rem;
-    font-family: 'Poppins', sans-serif;
-}
+const PROPAGATED = [
+    "editable",
+    "selectable",
+    "hoverable",
+    "droppable",
+    "highlightable",
+    "stylable",
+    "resizable",
+];
 
-.ast-header {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #003B71;
-    margin: 0 0 1.25rem;
-}
+const LOCKED = 'data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"';
 
-.ast-stripe {
-    width: 100%;
-    height: 3px;
-    background: #E97300;
-    margin-bottom: 1.5rem;
-}
+const INITIAL_CONTENT = `
+<p class="ast-header" contenteditable="true" data-gjs-type="text" data-gjs-editable="true" data-gjs-selectable="false" data-gjs-hoverable="false">Mayor información a: 0000-0000</p>
+<div class="ast-stripe" ${LOCKED}></div>
+<div class="ast-tabs" role="tablist" data-ast-tabs ${LOCKED}></div>
+<div data-ast-content ${LOCKED}></div>`;
 
-.ast-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    border-bottom: 2px solid #E97300;
-    margin-bottom: 1.25rem;
-}
-
-.ast-tab {
-    padding: 1rem 1.5rem;
-    background: #ffffff;
-    border: none;
-    font-size: 1.0625rem;
-    font-weight: 700;
-    color: #003B71;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.15s, color 0.15s;
-}
-
-.ast-tab--active {
-    background: #E97300;
-    color: #ffffff;
-}
-
-.ast-group {
-    margin-bottom: 2.5rem;
-}
-
-.ast-group:last-child {
-    margin-bottom: 0;
-}
-
-.ast-subtitle {
-    font-size: 1.0625rem;
-    font-weight: 700;
-    color: #003B71;
-    margin: 0 0 0.5rem;
-}
-
-.ast-subtitle-stripe {
-    width: 120px;
-    height: 2px;
-    background: #E97300;
-    margin-bottom: 1.5rem;
-}
-
-.ast-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-}
-
-.ast-card {
-    display: block;
-    background: #ffffff;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    text-decoration: none;
-    transition: box-shadow 0.2s ease;
-}
-
-.ast-card:hover {
-    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.16);
-}
-
-.ast-card-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-}
-
-.ast-card-body {
-    padding: 0.75rem 0.875rem;
-}
-
-.ast-card-name {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    color: #003B71;
-    line-height: 1.4;
-    margin: 0 0 0.25rem;
-}
-
-.ast-card-desc {
-    font-size: 0.75rem;
-    color: #003B71;
-    line-height: 1.4;
-    margin: 0;
-}
-
-.ast-empty {
-    padding: 3rem 1rem;
-    text-align: center;
-    color: #94a3b8;
-    font-size: 0.875rem;
-}
-
-.ast-loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 4rem 1rem;
-    color: #94a3b8;
-    font-size: 0.875rem;
-}
-
-.ast-spinner {
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 3px solid #e5e7eb;
-    border-top-color: #E97300;
-    border-radius: 50%;
-    animation: ast-spin 0.8s linear infinite;
-}
-
-@keyframes ast-spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@media (max-width: 1280px) {
-    .ast-section {
-        padding: 3rem 2.5rem;
-    }
-    .ast-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 992px) {
-    .ast-section {
-        padding: 2.5rem 1.5rem;
-    }
-    .ast-tab {
-        padding: 0.75rem 1.125rem;
-        font-size: 0.9375rem;
-    }
-    .ast-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .ast-grid {
-        grid-template-columns: 1fr;
-    }
-}
-`;
-
+/*
+ * Este script se serializa con toString() y se ejecuta en la página pública,
+ * así que debe ser autónomo: no puede usar variables ni funciones externas.
+ */
 function createAssetsScript() {
     return function () {
         const section = this;
         const doc = section.ownerDocument ?? document;
-        const win = doc.defaultView ?? window;
         const appBase = doc.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
         const apiEndpoint =
             doc.querySelector('meta[name="api-assets-url"]')?.content ||
             (appBase ? `${appBase}/api/assets/active` : "");
 
-        const RUNTIME_STYLES = `
-.ast-section {
-    width: 100%;
-    background: #ffffff;
-    padding: 3rem 4rem;
-    font-family: 'Poppins', sans-serif;
-}
+        const GUTTER = "clamp(1.5rem,4vw,3.5rem)";
+        const SIDE = `max(${GUTTER},calc((100% - 1600px) / 2 + ${GUTTER}))`;
 
-.ast-header {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #003B71;
-    margin: 0 0 1.25rem;
+        const STYLES = `
+.ast-section{width:100%;box-sizing:border-box;background-color:#fff;font-family:'Poppins',sans-serif;padding-top:clamp(2rem,4vw,3rem);padding-bottom:clamp(2rem,4vw,3rem);padding-left:${SIDE};padding-right:${SIDE};}
+.ast-header{margin:0 0 1.25rem;font-size:1.125rem;font-weight:700;color:#003B71;}
+.ast-stripe{width:100%;height:3px;margin-bottom:1.5rem;background-color:#E97300;}
+.ast-tabs{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem;padding-top:0.25rem;border-bottom:2px solid #E97300;}
+.ast-tab{flex:1 1 0;min-width:8rem;padding:1rem 1.5rem;border:0;border-radius:0.75rem 0.75rem 0 0;background-color:#fff;box-shadow:0 4px 14px rgba(0,59,113,0.12);font-family:inherit;font-size:1.3125rem;font-weight:700;line-height:1.25;color:#003B71;cursor:pointer;transition:background-color 0.15s ease,color 0.15s ease;}
+.ast-tab:hover{background-color:#fff4e8;}
+.ast-tab:focus-visible{outline:2px solid #E97300;outline-offset:-2px;}
+.ast-tab--active,.ast-tab--active:hover{background-color:#E97300;color:#fff;}
+.ast-group{margin-bottom:2.5rem;}
+.ast-group:last-child{margin-bottom:0;}
+.ast-subtitle{margin:0 0 0.5rem;font-size:1.0625rem;font-weight:700;color:#003B71;}
+.ast-subtitle-stripe{width:100%;height:2px;margin-bottom:1.5rem;background-color:#E97300;}
+.ast-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5rem;}
+.ast-card{display:block;overflow:hidden;border-radius:0.5rem;background-color:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.1);text-decoration:none;transition:box-shadow 0.2s ease;}
+.ast-card:hover,.ast-card:focus-visible{box-shadow:0 8px 26px rgba(0,0,0,0.16);}
+.ast-card:focus-visible{outline:2px solid #E97300;outline-offset:2px;}
+.ast-card-img{display:block;width:100%;height:200px;object-fit:cover;}
+.ast-card-body{padding:0.75rem 0.875rem;}
+.ast-card-name{margin:0 0 0.25rem;font-size:0.8125rem;font-weight:700;line-height:1.4;color:#003B71;}
+.ast-card-desc{margin:0;font-size:0.75rem;line-height:1.4;color:#003B71;}
+.ast-empty{padding:3rem 1rem;text-align:center;font-size:0.875rem;color:#94a3b8;}
+.ast-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:4rem 1rem;font-size:0.875rem;color:#94a3b8;}
+.ast-spinner{width:2.25rem;height:2.25rem;border:3px solid #e5e7eb;border-top-color:#E97300;border-radius:50%;animation:ast-spin 0.8s linear infinite;}
+@keyframes ast-spin{to{transform:rotate(360deg);}}
+@media(max-width:1280px){.ast-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:992px){
+.ast-tab{padding:0.875rem 1.125rem;font-size:1.125rem;}
+.ast-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
-
-.ast-stripe {
-    width: 100%;
-    height: 3px;
-    background: #E97300;
-    margin-bottom: 1.5rem;
+@media(max-width:640px){
+.ast-tab{flex:1 1 100%;font-size:1rem;}
+.ast-grid{grid-template-columns:minmax(0,1fr);}
 }
-
-.ast-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    border-bottom: 2px solid #E97300;
-    margin-bottom: 1.25rem;
-}
-
-.ast-tab {
-    padding: 1rem 1.5rem;
-    background: #ffffff;
-    border: none;
-    font-size: 1.0625rem;
-    font-weight: 700;
-    color: #003B71;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.15s, color 0.15s;
-}
-
-.ast-tab--active {
-    background: #E97300;
-    color: #ffffff;
-}
-
-.ast-group {
-    margin-bottom: 2.5rem;
-}
-
-.ast-group:last-child {
-    margin-bottom: 0;
-}
-
-.ast-subtitle {
-    font-size: 1.0625rem;
-    font-weight: 700;
-    color: #003B71;
-    margin: 0 0 0.5rem;
-}
-
-.ast-subtitle-stripe {
-    width: 120px;
-    height: 2px;
-    background: #E97300;
-    margin-bottom: 1.5rem;
-}
-
-.ast-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-}
-
-.ast-card {
-    display: block;
-    background: #ffffff;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    text-decoration: none;
-    transition: box-shadow 0.2s ease;
-}
-
-.ast-card:hover {
-    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.16);
-}
-
-.ast-card-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-}
-
-.ast-card-body {
-    padding: 0.75rem 0.875rem;
-}
-
-.ast-card-name {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    color: #003B71;
-    line-height: 1.4;
-    margin: 0 0 0.25rem;
-}
-
-.ast-card-desc {
-    font-size: 0.75rem;
-    color: #003B71;
-    line-height: 1.4;
-    margin: 0;
-}
-
-.ast-empty {
-    padding: 3rem 1rem;
-    text-align: center;
-    color: #94a3b8;
-    font-size: 0.875rem;
-}
-
-.ast-loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 4rem 1rem;
-    color: #94a3b8;
-    font-size: 0.875rem;
-}
-
-.ast-spinner {
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 3px solid #e5e7eb;
-    border-top-color: #E97300;
-    border-radius: 50%;
-    animation: ast-spin 0.8s linear infinite;
-}
-
-@keyframes ast-spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@media (max-width: 1280px) {
-    .ast-section {
-        padding: 3rem 2.5rem;
-    }
-    .ast-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 992px) {
-    .ast-section {
-        padding: 2.5rem 1.5rem;
-    }
-    .ast-tab {
-        padding: 0.75rem 1.125rem;
-        font-size: 0.9375rem;
-    }
-    .ast-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .ast-grid {
-        grid-template-columns: 1fr;
-    }
-}
+@media(prefers-reduced-motion:reduce){.ast-tab,.ast-card,.ast-spinner{transition:none;animation-duration:2.4s;}}
 `;
 
-        if (!doc.getElementById("assets-block-styles")) {
-            const s = doc.createElement("style");
-            s.id = "assets-block-styles";
-            s.textContent = RUNTIME_STYLES;
-            doc.head.appendChild(s);
+        let style = doc.getElementById("assets-block-styles");
+        if (!style) {
+            style = doc.createElement("style");
+            style.id = "assets-block-styles";
+            doc.head.appendChild(style);
         }
+        if (style.textContent !== STYLES) style.textContent = STYLES;
 
         const tabsWrap = section.querySelector("[data-ast-tabs]");
         const contentEl = section.querySelector("[data-ast-content]");
         if (!tabsWrap || !contentEl) return;
 
+        const ESCAPES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+        const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ESCAPES[char]);
+        const safeUrl = (url) => (/^(https?:\/\/|\/|#|mailto:|tel:)/i.test(String(url ?? "")) ? url : "#");
+        const safeImage = (url) => (/^(https?:\/\/|\/)/i.test(String(url ?? "")) ? url : "");
+        const truncate = (text, max) =>
+            text && text.length > max ? `${text.slice(0, max).trim()}...` : text || "";
+
         const defaultCategory = section.dataset.defaultCategory || "";
-        let allAssets = [];
+        const requestId = (section.__astRequest = (section.__astRequest || 0) + 1);
+        let assets = [];
         let activeSlug = "";
 
-        function truncateText(text, maxLength) {
-            if (!text) return "";
-            return text.length > maxLength
-                ? `${text.slice(0, maxLength).trim()}...`
-                : text;
-        }
-
-        function buildCard(asset) {
-            const target = asset.link_is_external
-                ? ' target="_blank" rel="noopener noreferrer"'
-                : "";
-            const displayName =
-                asset.name || truncateText(asset.short_description, 60);
-            const altText =
-                asset.name ||
-                asset.short_description ||
-                "Activo extraordinario";
-
-            return `<a href="${asset.link_url}"${target} class="ast-card">
-                <img src="${asset.image_url}" alt="${altText}" class="ast-card-img" loading="lazy">
-                <div class="ast-card-body">
-                    <p class="ast-card-name">${displayName}</p>
-                    ${asset.name && asset.short_description ? `<p class="ast-card-desc">${asset.short_description}</p>` : ""}
-                </div>
-            </a>`;
-        }
-
-        function getOrderedCategories() {
-            const categories = [];
+        const categories = () => {
             const seen = new Set();
-            allAssets.forEach((a) => {
-                if (!seen.has(a.category_slug)) {
-                    seen.add(a.category_slug);
-                    categories.push({ slug: a.category_slug, name: a.category });
-                }
+            const list = [];
+            assets.forEach((asset) => {
+                if (seen.has(asset.category_slug)) return;
+                seen.add(asset.category_slug);
+                list.push({ slug: asset.category_slug, name: asset.category });
             });
-            return categories.sort((a, b) => a.name.localeCompare(b, "es", { sensitivity: "base" }));
-        }
+            return list.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
+        };
 
-        function buildGroupHtml(name, items) {
-            const cardsHtml = items.length
-                ? items.map(buildCard).join("")
-                : `<div class="ast-empty">No hay activos extraordinarios disponibles en esta categoría.</div>`;
+        const card = (asset) => {
+            const external = asset.link_is_external ? ' target="_blank" rel="noopener noreferrer"' : "";
+            const title = asset.name || truncate(asset.short_description, 60);
+            const alt = asset.name || asset.short_description || "Activo extraordinario";
+            const description =
+                asset.name && asset.short_description
+                    ? `<p class="ast-card-desc">${esc(asset.short_description)}</p>`
+                    : "";
 
-            return `<div class="ast-group">
-                <p class="ast-subtitle">${name}</p>
-                <div class="ast-subtitle-stripe"></div>
-                <div class="ast-grid">${cardsHtml}</div>
-            </div>`;
-        }
+            return `<a href="${esc(safeUrl(asset.link_url))}"${external} class="ast-card"><img src="${esc(safeImage(asset.image_url))}" alt="${esc(alt)}" class="ast-card-img" loading="lazy"><div class="ast-card-body"><p class="ast-card-name">${esc(title)}</p>${description}</div></a>`;
+        };
 
-        function renderContent() {
+        const group = (name, items) => {
+            const cards = items.length
+                ? items.map(card).join("")
+                : '<div class="ast-empty">No hay activos extraordinarios disponibles en esta categoría.</div>';
+
+            return `<div class="ast-group"><p class="ast-subtitle">${esc(name)}</p><div class="ast-subtitle-stripe"></div><div class="ast-grid">${cards}</div></div>`;
+        };
+
+        const renderContent = () => {
             if (activeSlug) {
-                const filtered = allAssets.filter(
-                    (a) => a.category_slug === activeSlug,
-                );
-                const label =
-                    filtered[0]?.category ||
-                    getOrderedCategories().find((c) => c.slug === activeSlug)
-                        ?.name ||
-                    "";
-                contentEl.innerHTML = buildGroupHtml(label, filtered);
+                const filtered = assets.filter((asset) => asset.category_slug === activeSlug);
+                const label = filtered[0]?.category || categories().find((c) => c.slug === activeSlug)?.name || "";
+                contentEl.innerHTML = group(label, filtered);
                 return;
             }
 
-            const categories = getOrderedCategories();
-            contentEl.innerHTML = categories
-                .map((cat) =>
-                    buildGroupHtml(
-                        cat.name,
-                        allAssets.filter((a) => a.category_slug === cat.slug),
-                    ),
+            contentEl.innerHTML = categories()
+                .map((category) =>
+                    group(category.name, assets.filter((asset) => asset.category_slug === category.slug)),
                 )
                 .join("");
-        }
+        };
 
-        function renderTabs() {
-            const categories = getOrderedCategories();
+        const renderTabs = () => {
+            const tab = (slug, label) => {
+                const active = slug === activeSlug;
+                return `<button type="button" role="tab" aria-selected="${active}" class="ast-tab${active ? " ast-tab--active" : ""}" data-tab-slug="${esc(slug)}">${esc(label)}</button>`;
+            };
 
-            const tabsHtml = [
-                `<button type="button" class="ast-tab ast-tab--active" data-tab-slug="">Todos</button>`,
-                ...categories.map(
-                    (c) =>
-                        `<button type="button" class="ast-tab" data-tab-slug="${c.slug}">${c.name}</button>`,
-                ),
-            ].join("");
+            tabsWrap.innerHTML = [tab("", "Todos"), ...categories().map((c) => tab(c.slug, c.name))].join("");
+        };
 
-            tabsWrap.innerHTML = tabsHtml;
-
-            tabsWrap.querySelectorAll("[data-tab-slug]").forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    tabsWrap
-                        .querySelectorAll(".ast-tab")
-                        .forEach((t) => t.classList.remove("ast-tab--active"));
-                    btn.classList.add("ast-tab--active");
-                    activeSlug = btn.dataset.tabSlug;
-                    renderContent();
+        if (!tabsWrap.__astBound) {
+            tabsWrap.__astBound = true;
+            tabsWrap.addEventListener("click", (event) => {
+                const button = event.target.closest("[data-tab-slug]");
+                if (!button) return;
+                activeSlug = button.dataset.tabSlug;
+                tabsWrap.querySelectorAll(".ast-tab").forEach((item) => {
+                    const active = item === button;
+                    item.classList.toggle("ast-tab--active", active);
+                    item.setAttribute("aria-selected", String(active));
                 });
+                renderContent();
             });
-
-            if (defaultCategory) {
-                const match = tabsWrap.querySelector(
-                    `[data-tab-slug="${defaultCategory}"]`,
-                );
-                if (match) match.click();
-            }
         }
 
-        async function loadAssets() {
+        const showMessage = (message) => {
+            tabsWrap.innerHTML =
+                '<button type="button" role="tab" aria-selected="true" class="ast-tab ast-tab--active" data-tab-slug="">Todos</button>';
+            contentEl.innerHTML = `<div class="ast-empty">${message}</div>`;
+        };
+
+        const load = async () => {
             if (!apiEndpoint) {
-                tabsWrap.innerHTML = `<button type="button" class="ast-tab ast-tab--active">Todos</button>`;
-                contentEl.innerHTML = `<div class="ast-empty">Vista previa del catálogo (los datos reales se cargan en el sitio publicado).</div>`;
+                showMessage("Vista previa del catálogo (los datos reales se cargan en el sitio publicado).");
                 return;
             }
 
-            contentEl.innerHTML = `
-                <div class="ast-loading">
-                    <div class="ast-spinner"></div>
-                    <span>Cargando activos extraordinarios...</span>
-                </div>`;
+            contentEl.innerHTML =
+                '<div class="ast-loading"><div class="ast-spinner"></div><span>Cargando activos extraordinarios...</span></div>';
 
             try {
-                const res = await fetch(apiEndpoint, {
-                    headers: { Accept: "application/json" },
-                });
-                if (!res.ok) {
-                    contentEl.innerHTML = `<div class="ast-empty">No se pudieron cargar los activos extraordinarios.</div>`;
+                const response = await fetch(apiEndpoint, { headers: { Accept: "application/json" } });
+                if (requestId !== section.__astRequest) return;
+
+                if (!response.ok) {
+                    showMessage("No se pudieron cargar los activos extraordinarios.");
                     return;
                 }
-                allAssets = await res.json();
-                if (!Array.isArray(allAssets) || allAssets.length === 0) {
-                    tabsWrap.innerHTML = `<button type="button" class="ast-tab ast-tab--active">Todos</button>`;
-                    contentEl.innerHTML = `<div class="ast-empty">No hay activos extraordinarios disponibles.</div>`;
+
+                const data = await response.json();
+                if (requestId !== section.__astRequest) return;
+
+                if (!Array.isArray(data) || !data.length) {
+                    showMessage("No hay activos extraordinarios disponibles.");
                     return;
                 }
+
+                assets = data;
+                activeSlug = categories().some((c) => c.slug === defaultCategory) ? defaultCategory : "";
                 renderTabs();
                 renderContent();
             } catch {
-                contentEl.innerHTML = `<div class="ast-empty">No se pudieron cargar los activos extraordinarios.</div>`;
+                if (requestId === section.__astRequest) {
+                    showMessage("No se pudieron cargar los activos extraordinarios.");
+                }
             }
-        }
+        };
 
         if (doc.readyState === "loading") {
-            doc.addEventListener("DOMContentLoaded", loadAssets);
+            doc.addEventListener("DOMContentLoaded", load, { once: true });
         } else {
-            loadAssets();
+            load();
         }
     };
 }
@@ -546,20 +236,87 @@ export const assetsBlocks = [
     {
         id: "assets-catalog",
         label: "Catálogo de Activos Extraordinarios",
-        category: "Interactivos",
-        media: ASSETS_BLOCK_ICON,
-        content: { type: "assets-catalog-component" },
+        category: CATEGORY,
+        media: BLOCK_ICON,
+        content: { type: COMPONENT_TYPE },
     },
 ];
 
-export function initializeAssetsBlocks(editor) {
-    const componentType = "assets-catalog-component";
+const DEFAULT_CATEGORY_OPTION = { id: "", name: "Todas (mostrar 'Todos')" };
 
-    editor.DomComponents.addType(componentType, {
+function runScript(component) {
+    const el = component.getEl();
+    const script = component.get("script");
+    if (el?.isConnected && typeof script === "function") script.call(el);
+}
+
+function runAll(editor) {
+    editor
+        .getWrapper()
+        .find(`[data-gjs-type="${COMPONENT_TYPE}"]`)
+        .forEach((component) => {
+            component.set("type", COMPONENT_TYPE);
+            runScript(component);
+        });
+}
+
+async function loadCategoryOptions(editor) {
+    try {
+        const base = document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
+        const response = await fetch(`${base}/api/asset-categories/all`, {
+            headers: { Accept: "application/json" },
+        });
+        if (!response.ok) return;
+
+        const categories = await response.json();
+        if (!Array.isArray(categories) || !categories.length) return;
+
+        const trait = editor.DomComponents.getType(COMPONENT_TYPE)
+            ?.model.prototype.defaults.traits.find((item) => item.name === "data-default-category");
+        if (!trait) return;
+
+        trait.options = [DEFAULT_CATEGORY_OPTION, ...categories.map((c) => ({ id: c.slug, name: c.name }))];
+    } catch {
+        /* sin categorías: el selector queda con la opción "Todas" */
+    }
+}
+
+function setupEditorEvents(editor) {
+    editor.on("storage:end:load", () => setTimeout(() => runAll(editor), 1000));
+    editor.on("canvas:render", () => setTimeout(() => runAll(editor), 800));
+
+    editor.on("component:mount", (component) => {
+        if (component.getEl()?.getAttribute?.("data-gjs-type") !== COMPONENT_TYPE) return;
+        component.set("type", COMPONENT_TYPE);
+        setTimeout(() => runScript(component), 500);
+    });
+
+    editor.on("storage:start:store", () => {
+        editor
+            .getWrapper()
+            .find(`[data-gjs-type="${COMPONENT_TYPE}"]`)
+            .forEach((component) => {
+                component.set("type", COMPONENT_TYPE);
+                component.addAttributes({ "data-gjs-type": COMPONENT_TYPE });
+            });
+    });
+
+    editor.on("load", () => {
+        const doc = editor.Canvas.getFrameEl()?.contentDocument;
+        const styleId = `${COMPONENT_TYPE}-editor-css`;
+        if (!doc?.head || doc.getElementById(styleId)) return;
+
+        const style = doc.createElement("style");
+        style.id = styleId;
+        style.textContent = `[data-gjs-type="${COMPONENT_TYPE}"] *{pointer-events:none !important;}[data-gjs-type="${COMPONENT_TYPE}"].gjs-selected,[data-gjs-type="${COMPONENT_TYPE}"].gjs-hovered{outline:2px dashed rgba(240,135,42,0.6) !important;outline-offset:2px;}`;
+        doc.head.appendChild(style);
+    });
+}
+
+export function initializeAssetsBlocks(editor) {
+    editor.DomComponents.addType(COMPONENT_TYPE, {
         isComponent: (el) =>
-            el.getAttribute?.("data-gjs-type") === componentType
-                ? { type: componentType }
-                : false,
+            el.getAttribute?.("data-gjs-type") === COMPONENT_TYPE ? { type: COMPONENT_TYPE } : false,
 
         model: {
             defaults: {
@@ -577,143 +334,31 @@ export function initializeAssetsBlocks(editor) {
                 copyable: false,
                 removable: true,
                 attributes: {
-                    "data-gjs-type": componentType,
+                    "data-gjs-type": COMPONENT_TYPE,
                     "data-default-category": "",
                     class: "ast-section",
                 },
-                components: `
-                    <p class="ast-header" contenteditable="true" data-gjs-type="text" data-gjs-editable="true" data-gjs-selectable="false" data-gjs-hoverable="false">Mayor información a: 0000-0000</p>
-                    <div class="ast-stripe" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
-                    <div class="ast-tabs" data-ast-tabs data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
-                    <div data-ast-content data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></div>
-                `,
+                components: INITIAL_CONTENT,
                 script: createAssetsScript(),
                 traits: [
                     {
                         type: "select",
                         name: "data-default-category",
                         label: "Categoría inicial",
-                        options: [{ id: "", name: "Todas (mostrar 'Todos')" }],
+                        options: [DEFAULT_CATEGORY_OPTION],
                         changeProp: false,
                     },
                 ],
             },
 
             init() {
-                this.set("type", componentType);
-                this.addAttributes({ "data-gjs-type": componentType });
-                this.on("change:attributes", () => {
-                    const el = this.getEl();
-                    if (!el) return;
-                    const script = this.get("script");
-                    if (script && typeof script === "function") {
-                        setTimeout(() => script.call(el), 100);
-                    }
-                });
+                this.set("type", COMPONENT_TYPE);
+                this.addAttributes({ "data-gjs-type": COMPONENT_TYPE });
+                this.on("change:attributes", () => setTimeout(() => runScript(this), 100));
             },
         },
     });
 
-    setupAssetsEditorEvents(editor, componentType);
-    injectAssetsEditorStyles(editor, componentType);
-    loadAssetCategoryOptions(editor, componentType);
-}
-
-async function loadAssetCategoryOptions(editor, componentType) {
-    try {
-        const appBase = document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
-        const res = await fetch(`${appBase}/api/asset-categories/all`, {
-            headers: { Accept: "application/json" },
-        });
-        if (!res.ok) return;
-
-        const categories = await res.json();
-        if (!Array.isArray(categories) || categories.length === 0) return;
-
-        const type = editor.DomComponents.getType(componentType);
-        if (!type) return;
-
-        const traits = type.model.prototype.defaults.traits;
-        const trait = traits.find((t) => t.name === "data-default-category");
-        if (!trait) return;
-
-        trait.options = [
-            { id: "", name: "Todas (mostrar 'Todos')" },
-            ...categories.map((c) => ({ id: c.slug, name: c.name })),
-        ];
-    } catch {}
-}
-
-function setupAssetsEditorEvents(editor, componentType) {
-    editor.on("storage:end:load", () => {
-        setTimeout(
-            () => reinitializeAssetsComponents(editor, componentType),
-            1000,
-        );
-    });
-
-    editor.on("component:mount", (component) => {
-        const el = component.getEl();
-        if (el?.getAttribute?.("data-gjs-type") === componentType) {
-            component.set("type", componentType);
-            setTimeout(() => {
-                const script = component.get("script");
-                if (script && typeof script === "function") script.call(el);
-            }, 500);
-        }
-    });
-
-    editor.on("canvas:render", () => {
-        setTimeout(
-            () => reinitializeAssetsComponents(editor, componentType),
-            800,
-        );
-    });
-
-    editor.on("storage:start:store", () => {
-        editor
-            .getWrapper()
-            .find(`[data-gjs-type="${componentType}"]`)
-            .forEach((comp) => {
-                comp.set("type", componentType);
-                comp.addAttributes({ "data-gjs-type": componentType });
-            });
-    });
-}
-
-function reinitializeAssetsComponents(editor, componentType) {
-    editor
-        .getWrapper()
-        .find(`[data-gjs-type="${componentType}"]`)
-        .forEach((comp) => {
-            comp.set("type", componentType);
-            const el = comp.getEl();
-            if (el?.isConnected) {
-                const script = comp.get("script");
-                if (script && typeof script === "function") script.call(el);
-            }
-        });
-}
-
-function injectAssetsEditorStyles(editor, componentType) {
-    editor.on("load", () => {
-        const iframe = editor.Canvas.getFrameEl();
-        if (!iframe) return;
-        const head = iframe.contentDocument?.head;
-        if (!head) return;
-
-        if (!head.querySelector("#assets-block-styles")) {
-            const s = document.createElement("style");
-            s.id = "assets-block-styles";
-            s.textContent = ASSETS_RUNTIME_STYLES;
-            head.appendChild(s);
-        }
-
-        if (!head.querySelector(`#${componentType}-editor-css`)) {
-            const s = document.createElement("style");
-            s.id = `${componentType}-editor-css`;
-            s.textContent = `[data-gjs-type="${componentType}"] * { pointer-events: none !important; } [data-gjs-type="${componentType}"].gjs-selected, [data-gjs-type="${componentType}"].gjs-hovered { outline: 2px dashed rgba(240,135,42,0.6) !important; outline-offset: 2px; }`;
-            head.appendChild(s);
-        }
-    });
+    setupEditorEvents(editor);
+    loadCategoryOptions(editor);
 }
