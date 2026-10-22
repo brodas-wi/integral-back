@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\FormFieldType;
 use App\Http\Requests\SaveFormRequest;
 use App\Models\Form;
-use App\Models\FormSubmission;
 use App\Services\Forms\FormService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -38,11 +37,6 @@ class FormController extends Controller
 
         return view('forms.index', [
             'forms' => $forms,
-            'stats' => [
-                'total' => Form::count(),
-                'active' => Form::active()->count(),
-                'submissions' => FormSubmission::count(),
-            ],
         ]);
     }
 

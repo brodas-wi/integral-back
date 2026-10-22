@@ -720,6 +720,11 @@ Route::middleware(['auth'])->group(function () {
             ->withTrashed()
             ->middleware('can:form_submissions.view,form_submissions.manage');
 
+        Route::get('/{form}/submissions/export', [FormSubmissionController::class, 'export'])
+            ->name('submissions.export')
+            ->withTrashed()
+            ->middleware('can:form_submissions.export,form_submissions.manage');
+
         Route::get('/{form}/submissions/{submission}', [FormSubmissionController::class, 'show'])
             ->name('submissions.show')
             ->withTrashed()

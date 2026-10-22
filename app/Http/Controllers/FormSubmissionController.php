@@ -4,27 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Form;
 use App\Models\FormSubmission;
+use App\Services\Forms\FormSubmissionExporter;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FormSubmissionController extends Controller
 {
     public function index(Request $request, Form $form): View
     {
-        $filters = $request->validate([
-            'search' => ['nullable', 'string', 'max:100'],
-            'date_from' => ['nullable', 'date'],
-            'date_to' => ['nullable', 'date'],
-            'per_page' => ['nullable', 'in:10,20,50'],
-        ]);
+        $filters = $this->filters($request);
 
         $submissions = $form->submissions()
-            ->when($filters['search'] ?? null, function ($query, $search) {
-                $term = '%' . addcslashes(trim($search), '%_\\') . '%';
-                $query->where(fn ($w) => $w->where('email', 'like', $term)->orWhere('search_text', 'like', $term));
-            })
-            ->when($filters['date_from'] ?? null, fn ($query, $date) => $query->whereDate('created_at', '>=', $date))
-            ->when($filters['date_to'] ?? null, fn ($query, $date) => $query->whereDate('created_at', '<=', $date))
+            ->filter($filters)
             ->latest('created_at')
             ->paginate((int) ($filters['per_page'] ?? 20))
             ->withQueryString();
@@ -43,6 +37,30 @@ class FormSubmissionController extends Controller
         $submission->load('version:id,form_id,version');
 
         return view('forms.submissions.show', compact('form', 'submission'));
+    }
+
+    public function export(Request $request, Form $form, FormSubmissionExporter $exporter): StreamedResponse
+    {
+        $filters = $this->filters($request);
+        $query = $form->submissions()->filter($filters);
+
+        $name = Str::limit($form->slug, 60, '') . '-respuestas-' . now()->format('Ymd-His') . '.csv';
+
+        return response()->streamDownload(
+            fn() => $exporter->write($form, $query),
+            $name,
+            ['Content-Type' => 'text/csv; charset=UTF-8'],
+        );
+    }
+
+    private function filters(Request $request): array
+    {
+        return $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'date_from' => ['nullable', 'date'],
+            'date_to' => ['nullable', 'date'],
+            'per_page' => ['nullable', 'in:10,20,50'],
+        ]);
     }
 
     private function ensureBelongs(Form $form, FormSubmission $submission): void

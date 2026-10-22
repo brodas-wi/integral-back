@@ -10,6 +10,13 @@
 @endsection
 
 @section('header-actions')
+    @canany(['form_submissions.export', 'form_submissions.manage'])
+        <a href="{{ route('forms.submissions.export', array_merge(['form' => $form], request()->only(['search', 'date_from', 'date_to']))) }}"
+            class="btn-primary btn-sm">
+            <i class="ri-download-2-line mr-2"></i>
+            Exportar CSV
+        </a>
+    @endcanany
     <a href="{{ route('forms.index') }}" class="btn-outline btn-sm">
         <i class="ri-arrow-left-line mr-2"></i>
         Volver

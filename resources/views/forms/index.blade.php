@@ -5,8 +5,8 @@
 @section('page-title')
     <div class="flex items-center gap-3">
         <span>Formularios</span>
-        <span class="badge badge-info">{{ $stats['total'] }}
-            {{ $stats['total'] === 1 ? 'formulario' : 'formularios' }}</span>
+        <span class="badge badge-info">{{ $forms->total() }}
+            {{ $forms->total() === 1 ? 'formulario' : 'formularios' }}</span>
     </div>
 @endsection
 
@@ -21,21 +21,6 @@
 @endsection
 
 @section('content')
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div class="card flex items-center justify-between">
-            <span class="text-sm text-gray-600">Formularios activos</span>
-            <span class="text-2xl font-bold text-secondary">{{ $stats['active'] }}</span>
-        </div>
-        <div class="card flex items-center justify-between">
-            <span class="text-sm text-gray-600">Total de formularios</span>
-            <span class="text-2xl font-bold text-secondary">{{ $stats['total'] }}</span>
-        </div>
-        <div class="card flex items-center justify-between">
-            <span class="text-sm text-gray-600">Respuestas recibidas</span>
-            <span class="text-2xl font-bold text-secondary">{{ $stats['submissions'] }}</span>
-        </div>
-    </div>
-
     <div class="card mb-6">
         <form method="GET" action="{{ route('forms.index') }}" class="flex flex-col sm:flex-row gap-4">
             <div class="flex-1">
@@ -126,7 +111,8 @@
                             </a>
                         @endcanany
 
-                        @canany(['forms.edit', 'forms.delete', 'forms.manage', 'form_submissions.view', 'form_submissions.manage'])
+                        @canany(['forms.edit', 'forms.delete', 'forms.manage', 'form_submissions.view',
+                            'form_submissions.manage'])
                             <div class="dropdown" data-dropdown>
                                 <button type="button"
                                     class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center"

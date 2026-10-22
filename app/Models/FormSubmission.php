@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class FormSubmission extends Model
@@ -52,6 +53,17 @@ class FormSubmission extends Model
                 $submission->uuid = (string) Str::uuid();
             }
         });
+    }
+
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        return $query
+            ->when($filters['search'] ?? null, function ($query, $search) {
+                $term = '%' . addcslashes(trim($search), '%_\\') . '%';
+                $query->where(fn($w) => $w->where('email', 'like', $term)->orWhere('search_text', 'like', $term));
+            })
+            ->when($filters['date_from'] ?? null, fn($query, $date) => $query->whereDate('created_at', '>=', $date))
+            ->when($filters['date_to'] ?? null, fn($query, $date) => $query->whereDate('created_at', '<=', $date));
     }
 
     public function form(): BelongsTo
