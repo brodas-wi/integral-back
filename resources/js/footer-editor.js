@@ -1,6 +1,8 @@
+import "../css/views/editor/media-modal.css";
+import "../css/views/editor/icon-picker-modal.css";
 import { EditorService } from "./services/editor-service";
 import { initializeFooterGrapesJS } from "./editor/footer-grapes-config";
-import { initializeFooterBlock } from "./editor/blocks/footer-block";
+import { initializeFooterBlock } from "./editor/blocks/footer/footer-block";
 import {
     applyCustomStyles,
     translateDynamicUI,
