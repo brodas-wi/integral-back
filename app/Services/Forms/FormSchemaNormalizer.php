@@ -81,10 +81,11 @@ class FormSchemaNormalizer
     private function baseField(array $raw, FormFieldType $type, string $path, array $history, array $used): array
     {
         $isConsent = $type === FormFieldType::Consent;
-        $label = $this->string($raw['label'] ?? null, "{$path}.label", 200, !$isConsent, 'La etiqueta');
+        $isNote = $type === FormFieldType::Note;
+        $label = $this->string($raw['label'] ?? null, "{$path}.label", 200, !$isConsent && !$isNote, 'La etiqueta');
 
-        if ($isConsent && $label === '') {
-            $label = 'Consentimiento';
+        if ($label === '' && ($isConsent || $isNote)) {
+            $label = $isNote ? 'Nota' : 'Consentimiento';
         }
 
         $width = ($raw['width'] ?? 'full') === 'half' ? 'half' : 'full';
@@ -93,7 +94,7 @@ class FormSchemaNormalizer
             'key' => $this->resolveKey($raw['key'] ?? null, $type, $label, $history, $used, "{$path}.key"),
             'type' => $type->value,
             'label' => $label,
-            'required' => $isConsent ? true : filter_var($raw['required'] ?? false, FILTER_VALIDATE_BOOLEAN),
+            'required' => $isNote ? false : ($isConsent ? true : filter_var($raw['required'] ?? false, FILTER_VALIDATE_BOOLEAN)),
             'width' => $type->forcesFullWidth() ? 'full' : $width,
             'placeholder' => $this->nullable($raw['placeholder'] ?? null, "{$path}.placeholder", 150, 'El texto de ejemplo'),
             'help' => $this->nullable($raw['help'] ?? null, "{$path}.help", 200, 'El texto de ayuda'),
@@ -155,6 +156,9 @@ class FormSchemaNormalizer
             ],
             FormFieldType::Consent => [
                 'text' => $this->string($raw['text'] ?? null, "{$path}.text", 1000, true, 'El texto de consentimiento'),
+            ],
+            FormFieldType::Note => [
+                'text' => $this->string($raw['text'] ?? null, "{$path}.text", 2000, true, 'El texto de la nota'),
             ],
             FormFieldType::Location => [
                 'department_label' => $this->string($raw['department_label'] ?? null, "{$path}.department_label", 60, false, 'La etiqueta de departamento') ?: 'Departamento',
@@ -225,7 +229,8 @@ class FormSchemaNormalizer
         $thanks = is_array($input['thanks'] ?? null) ? $input['thanks'] : [];
         $emails = is_array($input['emails'] ?? null) ? $input['emails'] : [];
 
-        $allowedVariables = array_merge(self::RESERVED_VARIABLES, array_column($fields, 'key'));
+        $dataFields = array_filter($fields, fn ($f) => $f['type'] !== FormFieldType::Note->value);
+        $allowedVariables = array_merge(self::RESERVED_VARIABLES, array_column($dataFields, 'key'));
         $emailKeys = array_column(array_filter($fields, fn($f) => $f['type'] === FormFieldType::Email->value), 'key');
 
         return [

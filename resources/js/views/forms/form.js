@@ -85,12 +85,17 @@ function refreshDependentUi() {
 
     const hint = $("variables-hint");
     hint.innerHTML = "";
-    [...RESERVED_VARIABLES, ...fields.map((field) => field.key).filter(Boolean)].forEach((name) => {
-        const chip = document.createElement("code");
-        chip.className = "text-xs bg-white border border-gray-200 rounded-full px-2 py-1";
-        chip.textContent = `{{${name}}}`;
-        hint.appendChild(chip);
-    });
+    [
+        ...RESERVED_VARIABLES,
+        ...fields.filter((field) => field.type !== "note").map((field) => field.key),
+    ]
+        .filter(Boolean)
+        .forEach((name) => {
+            const chip = document.createElement("code");
+            chip.className = "text-xs bg-white border border-gray-200 rounded-full px-2 py-1";
+            chip.textContent = `{{${name}}}`;
+            hint.appendChild(chip);
+        });
 }
 
 function collect(fields) {

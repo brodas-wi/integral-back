@@ -25,8 +25,7 @@
 @section('content')
     <div id="form-editor" class="space-y-6 max-w-4xl"
         data-submit-url="{{ $form ? route('forms.update', $form) : route('forms.store') }}"
-        data-method="{{ $form ? 'PUT' : 'POST' }}"
-        data-base-version="{{ $form?->currentVersion?->version }}">
+        data-method="{{ $form ? 'PUT' : 'POST' }}" data-base-version="{{ $form?->currentVersion?->version }}">
 
         <script type="application/json" id="form-initial">{!! json_encode($initial, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) !!}</script>
 
@@ -56,10 +55,7 @@
                     <p class="text-xs text-gray-600">Usa cualquiera de estas dos formas en un botón o enlace de la página
                         pública. El slug no cambia aunque edites el nombre.</p>
                     @php
-                        $snippets = [
-                            'data-open-form="' . $form->slug . '"',
-                            'href="#form:' . $form->slug . '"',
-                        ];
+                        $snippets = ['data-open-form="' . $form->slug . '"', 'href="#form:' . $form->slug . '"'];
                     @endphp
                     @foreach ($snippets as $snippet)
                         <div class="flex items-center gap-2">
@@ -116,21 +112,27 @@
                     <ul class="list-disc pl-5 space-y-1 text-xs">
                         <li><code>type</code>: tipo del campo (lista abajo).</li>
                         <li><code>label</code>: etiqueta que ve el usuario.</li>
-                        <li><code>required</code>: <code>true</code> o <code>false</code>. El consentimiento siempre es requerido.</li>
-                        <li><code>width</code>: <code>"full"</code> (fila completa) o <code>"half"</code> (media fila, dos campos juntos).</li>
+                        <li><code>required</code>: <code>true</code> o <code>false</code>. El consentimiento siempre es
+                            requerido.</li>
+                        <li><code>width</code>: <code>"full"</code> (fila completa) o <code>"half"</code> (media fila, dos
+                            campos juntos).</li>
                         <li><code>placeholder</code> y <code>help</code>: texto de ejemplo y de ayuda, opcionales.</li>
-                        <li><code>key</code>: identificador estable. Lo genera el sistema al guardar. <strong>No lo cambies ni lo borres</strong>, así las respuestas anteriores siguen asociadas al campo.</li>
+                        <li><code>key</code>: identificador estable. Lo genera el sistema al guardar. <strong>No lo cambies
+                                ni lo borres</strong>, así las respuestas anteriores siguen asociadas al campo.</li>
                         <li><code>max_length</code>: en texto, nombre propio y área de texto.</li>
-                        <li><code>min</code> y <code>max</code>: en entero y decimal. <code>decimals</code>: máximo de decimales.</li>
+                        <li><code>min</code> y <code>max</code>: en entero y decimal. <code>decimals</code>: máximo de
+                            decimales.</li>
                         <li><code>verify_check_digit</code>: en DUI, verifica el dígito verificador.</li>
                         <li><code>options</code>: en lista y casillas, un arreglo de <code>{"label": "Texto"}</code>.</li>
-                        <li><code>text</code>: en consentimiento, el texto que se acepta.</li>
+                        <li><code>text</code>: en consentimiento, el texto que se acepta. En nota informativa, el texto gris
+                            que se muestra (no captura datos, no requiere etiqueta).</li>
                         <li><code>department_label</code> y <code>municipality_label</code>: en ubicación.</li>
                     </ul>
                     <p class="text-xs font-semibold">Tipos disponibles:</p>
                     <div class="flex flex-wrap gap-2">
                         @foreach ($fieldTypes as $type)
-                            <span class="badge badge-gray"><code>{{ $type['value'] }}</code>&nbsp;{{ $type['label'] }}</span>
+                            <span
+                                class="badge badge-gray"><code>{{ $type['value'] }}</code>&nbsp;{{ $type['label'] }}</span>
                         @endforeach
                     </div>
                 </div>
@@ -159,7 +161,8 @@
                     <p class="text-xs text-gray-500 mt-1">Al terminar, el formulario se cierra y se limpia.</p>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1" for="t-redirect">Redirigir a (opcional)</label>
+                    <label class="block text-xs font-medium text-gray-700 mb-1" for="t-redirect">Redirigir a
+                        (opcional)</label>
                     <input type="text" id="t-redirect" class="input-field" placeholder="/gracias o https://...">
                     <p class="text-xs text-gray-500 mt-1">Si lo completas, en lugar de cerrarse va a esta página.</p>
                 </div>
@@ -178,8 +181,7 @@
                 <div>
                     <label class="block text-xs font-medium text-gray-700 mb-1" for="n-recipients">Destinatarios (uno por
                         línea, máximo 10)</label>
-                    <textarea id="n-recipients" rows="3" class="input-field !rounded-2xl"
-                        placeholder="equipo@empresa.com"></textarea>
+                    <textarea id="n-recipients" rows="3" class="input-field !rounded-2xl" placeholder="equipo@empresa.com"></textarea>
                 </div>
 
                 <div>

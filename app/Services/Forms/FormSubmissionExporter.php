@@ -48,6 +48,10 @@ class FormSubmissionExporter
             ->get(['fields'])
             ->each(function (FormVersion $version) use (&$columns) {
                 foreach ($version->fields as $field) {
+                    if ($field['type'] === 'note') {
+                        continue;
+                    }
+
                     $columns[$field['key']] = $field['type'] === 'consent'
                         ? ($field['text'] ?? $field['label'])
                         : $field['label'];

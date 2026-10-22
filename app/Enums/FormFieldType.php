@@ -18,6 +18,7 @@ enum FormFieldType: string
     case CheckboxGroup = 'checkbox_group';
     case Consent = 'consent';
     case Location = 'location';
+    case Note = 'note';
 
     public function label(): string
     {
@@ -36,7 +37,13 @@ enum FormFieldType: string
             self::CheckboxGroup => 'Casillas de selección',
             self::Consent => 'Consentimiento',
             self::Location => 'Departamento y municipio',
+            self::Note => 'Nota informativa',
         };
+    }
+
+    public function capturesData(): bool
+    {
+        return $this !== self::Note;
     }
 
     public function hasOptions(): bool
@@ -46,6 +53,6 @@ enum FormFieldType: string
 
     public function forcesFullWidth(): bool
     {
-        return in_array($this, [self::Textarea, self::CheckboxGroup, self::Consent, self::Location], true);
+        return in_array($this, [self::Textarea, self::CheckboxGroup, self::Consent, self::Location, self::Note], true);
     }
 }
