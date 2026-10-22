@@ -18,6 +18,7 @@ use App\Http\Controllers\ExtraordinaryAssetController;
 use App\Http\Controllers\ExtraordinaryAssetCategoryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsCategoryController;
+use App\Http\Controllers\FormController;
 use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
@@ -680,6 +681,39 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/api/news/active', [NewsController::class, 'apiActive'])
         ->name('api.news.active');
+
+    // ==========================================
+    // FORMS MODULE ROUTES
+    // ==========================================
+    Route::prefix('forms')->name('forms.')->group(function () {
+        Route::get('/', [FormController::class, 'index'])
+            ->name('index')
+            ->middleware('can:forms.view,forms.manage');
+
+        Route::get('/create', [FormController::class, 'create'])
+            ->name('create')
+            ->middleware('can:forms.create,forms.manage');
+
+        Route::post('/', [FormController::class, 'store'])
+            ->name('store')
+            ->middleware('can:forms.create,forms.manage');
+
+        Route::get('/{form}/edit', [FormController::class, 'edit'])
+            ->name('edit')
+            ->middleware('can:forms.edit,forms.manage');
+
+        Route::put('/{form}', [FormController::class, 'update'])
+            ->name('update')
+            ->middleware('can:forms.edit,forms.manage');
+
+        Route::patch('/{form}/toggle-active', [FormController::class, 'toggleActive'])
+            ->name('toggle-active')
+            ->middleware('can:forms.edit,forms.manage');
+
+        Route::delete('/{form}', [FormController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware('can:forms.delete,forms.manage');
+    });
 
     // ==========================================
     // SCRIPTS MODULE ROUTES

@@ -82,12 +82,14 @@
                             request()->routeIs('assets.*') ||
                             request()->routeIs('asset-categories.*') ||
                             request()->routeIs('news.*') ||
-                            request()->routeIs('news-categories.*');
+                            request()->routeIs('news-categories.*') ||
+                            request()->routeIs('forms.*');
                     @endphp
                     @canany(['pages.view', 'pages.manage', 'navbars.view', 'navbars.manage', 'footers.view',
                         'footers.manage', 'media.view', 'media.manage', 'banners.view', 'banners.manage',
                         'announcements.view', 'announcements.manage', 'scripts.view', 'scripts.manage', 'assets.view',
-                        'assets.manage', 'news.view', 'news.manage', 'news_categories.view', 'news_categories.manage'])
+                        'assets.manage', 'news.view', 'news.manage', 'news_categories.view', 'news_categories.manage',
+                        'forms.view', 'forms.manage'])
                         <div class="sidebar-group" data-group="contenido"
                             data-open="{{ $contentGroupActive ? 'true' : 'false' }}">
                             <button type="button" class="sidebar-group-btn">
@@ -159,6 +161,13 @@
                                         class="sidebar-child-link {{ request()->routeIs('news.*') || request()->routeIs('news-categories.*') ? 'active' : '' }}">
                                         <i class="ri-newspaper-line text-lg"></i>
                                         <span>Noticias</span>
+                                    </a>
+                                @endcanany
+                                @canany(['forms.view', 'forms.manage'])
+                                    <a href="{{ route('forms.index') }}"
+                                        class="sidebar-child-link {{ request()->routeIs('forms.*') ? 'active' : '' }}">
+                                        <i class="ri-survey-line text-lg"></i>
+                                        <span>Formularios</span>
                                     </a>
                                 @endcanany
                             </div>
