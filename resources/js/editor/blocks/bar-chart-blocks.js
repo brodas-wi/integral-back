@@ -338,6 +338,7 @@ export function initializeBarChartBlock(editor) {
                 },
                 components: buildBarChartHTML(BAR_CHART_DEFAULT_DATA) + BAR_CHART_STYLES,
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

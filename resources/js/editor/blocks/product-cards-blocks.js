@@ -618,6 +618,7 @@ export function initializeProductCardsBlock(editor) {
                 script: PC_CAROUSEL_SCRIPT,
                 "script-props": ["data-product-cards-config"],
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

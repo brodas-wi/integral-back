@@ -678,6 +678,7 @@ export function initializeMapFilterBlocks(editor) {
                     `<style>${MAP_FILTER_STYLES}</style>`,
                 script: createMapFilterScript(),
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

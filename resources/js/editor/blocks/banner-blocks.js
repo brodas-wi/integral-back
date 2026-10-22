@@ -250,6 +250,7 @@ export function initializeBannerBlocks(editor) {
                 },
                 components: buildImageTitleBannerHTML(DEFAULT_DATA),
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

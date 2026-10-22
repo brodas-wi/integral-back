@@ -410,6 +410,7 @@ export function initializeFixedBannerBlock(editor) {
                 },
                 components: buildFixedBannerHTML(DEFAULT_DATA),
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

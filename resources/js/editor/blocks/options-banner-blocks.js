@@ -579,6 +579,7 @@ export function initializeOptionsBannerBlock(editor) {
                 },
                 components: buildOptionsBannerHTML(DEFAULT_DATA),
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

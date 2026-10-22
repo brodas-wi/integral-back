@@ -77,6 +77,7 @@ function registerTypes(editor) {
                 attributes: initialAttributes(),
                 components: buildVideoBannerHTML(DEFAULT_DATA) + BANNER_STYLES,
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

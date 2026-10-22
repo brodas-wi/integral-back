@@ -426,6 +426,7 @@ export function initializeFullBleedBannerBlock(editor) {
                 },
                 components: buildFullBleedBannerHTML(DEFAULT_DATA),
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

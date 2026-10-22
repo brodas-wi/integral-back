@@ -617,6 +617,7 @@ export function initializeSavingsSectionBlock(editor) {
                 script: SAVINGS_CAROUSEL_SCRIPT,
                 "script-props": ["data-savings-config"],
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

@@ -540,6 +540,7 @@ export function initializeSplitCarouselBlock(editor) {
                 components:
                     buildSplitCarouselHTML(DEFAULT_DATA) + `<style>${SC_CSS}</style>`,
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

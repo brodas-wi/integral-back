@@ -478,6 +478,7 @@ export function initializeHeroPagesBlock(editor) {
                 components:
                     buildHeroPagesHTML(DEFAULT_DATA) + `<style>${HP_CSS}</style>`,
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

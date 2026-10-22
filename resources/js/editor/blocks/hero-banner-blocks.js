@@ -398,6 +398,7 @@ export function initializeHeroBannerBlock(editor) {
                 components:
                     buildHeroBannerHTML(DEFAULT_DATA) + HERO_BANNER_STYLES,
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

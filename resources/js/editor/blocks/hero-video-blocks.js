@@ -341,6 +341,7 @@ export function initializeHeroVideoBlock(editor) {
                 components:
                     buildHeroVideoHTML(DEFAULT_DATA) + HERO_VIDEO_STYLES,
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

@@ -542,6 +542,7 @@ export function initializeHeroCardsBlock(editor) {
                 },
                 components: buildHeroCardsHTML(DEFAULT_DATA) + `<style>${HC_CSS}</style>`,
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,

@@ -343,6 +343,7 @@ export function initializeWideBannerBlock(editor) {
                 },
                 components: buildWideBannerHTML(DEFAULT_DATA),
                 traits: [
+                    "id",
                     {
                         type: "button",
                         label: false,
