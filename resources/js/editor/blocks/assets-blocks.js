@@ -1,19 +1,24 @@
 const COMPONENT_TYPE = "assets-catalog-component";
 const CATEGORY = "Interactivos";
 
-const BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32">
+const BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <rect x="3" y="10" width="12" height="19" fill="none" stroke="#003B71" stroke-width="1" rx="1"/>
-    <rect x="5.5" y="13" width="2.5" height="2.5" fill="#003B71" fill-opacity="0.5"/>
-    <rect x="10" y="13" width="2.5" height="2.5" fill="#003B71" fill-opacity="0.5"/>
-    <rect x="5.5" y="17.5" width="2.5" height="2.5" fill="#003B71" fill-opacity="0.5"/>
-    <rect x="10" y="17.5" width="2.5" height="2.5" fill="#003B71" fill-opacity="0.5"/>
-    <rect x="7" y="23" width="4" height="6" fill="#003B71" fill-opacity="0.7"/>
-    <rect x="2" y="26" width="28" height="1.5" rx="0.75" fill="#E97300"/>
-    <path d="M17 24c0-1.5 1-2.5 2.5-2.5h6c1.5 0 2.5 1 2.5 2.5v1.5h-11V24z" fill="#E97300" fill-opacity="0.85"/>
-    <rect x="16.5" y="25" width="12" height="2.5" rx="1" fill="#E97300"/>
-    <circle cx="19" cy="27.8" r="1.3" fill="#003B71"/>
-    <circle cx="26" cy="27.8" r="1.3" fill="#003B71"/>
+    <rect x="2" y="2.5" width="28" height="1" fill="#E97300"/>
+    <path d="M2 11V8.5Q2 7 3.5 7H9.5Q11 7 11 8.5V11Z" fill="#E97300"/>
+    <path d="M12 11V8.5Q12 7 13.5 7H18.5Q20 7 20 8.5V11Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.5"/>
+    <path d="M21 11V8.5Q21 7 22.5 7H28.5Q30 7 30 8.5V11Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.5"/>
+    <rect x="2" y="11" width="28" height="1" fill="#E97300"/>
+    <rect x="2" y="14" width="9" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.75"/>
+    <rect x="2" y="17" width="28" height="0.8" fill="#E97300"/>
+    <rect x="2" y="20" width="8" height="10" rx="1" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.5"/>
+    <rect x="2" y="20" width="8" height="5.5" rx="1" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="3.5" y="27" width="5" height="1" rx="0.5" fill="#003B71" fill-opacity="0.6"/>
+    <rect x="12" y="20" width="8" height="10" rx="1" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.5"/>
+    <rect x="12" y="20" width="8" height="5.5" rx="1" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="13.5" y="27" width="5" height="1" rx="0.5" fill="#003B71" fill-opacity="0.6"/>
+    <rect x="22" y="20" width="8" height="10" rx="1" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.5"/>
+    <rect x="22" y="20" width="8" height="5.5" rx="1" fill="#003B71" fill-opacity="0.3"/>
+    <rect x="23.5" y="27" width="5" height="1" rx="0.5" fill="#003B71" fill-opacity="0.6"/>
 </svg>`;
 
 const PROPAGATED = [
