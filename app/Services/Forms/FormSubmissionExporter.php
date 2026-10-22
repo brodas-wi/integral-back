@@ -12,7 +12,7 @@ class FormSubmissionExporter
 
     public function write(Form $form, Builder|\Illuminate\Database\Eloquent\Relations\Relation $query): void
     {
-        $columns = $this->columns($form);
+        $columns = $this->usedColumns($form, $query);
         $out = fopen('php://output', 'w');
 
         fwrite($out, "\xEF\xBB\xBF");
@@ -57,9 +57,34 @@ class FormSubmissionExporter
         return $columns;
     }
 
+    private function usedColumns(Form $form, $query): array
+    {
+        $all = $this->columns($form);
+        $used = [];
+        $hasRows = false;
+
+        (clone $query)->lazyByIdDesc(500)->each(function ($submission) use (&$used, &$hasRows) {
+            $hasRows = true;
+
+            foreach ($submission->answers as $answer) {
+                if (($answer['display'] ?? '') !== '') {
+                    $used[$answer['key']] = true;
+                }
+            }
+        });
+
+        if (!$hasRows) {
+            $current = collect($form->currentVersion?->fields ?? [])->pluck('key')->all();
+
+            return array_filter($all, fn ($label, $key) => in_array($key, $current, true), ARRAY_FILTER_USE_BOTH);
+        }
+
+        return array_filter($all, fn ($label, $key) => isset($used[$key]), ARRAY_FILTER_USE_BOTH);
+    }
+
     private function put($handle, array $row): void
     {
-        fputcsv($handle, array_map(fn ($value) => $this->safe($value), $row), self::DELIMITER, '"', '');
+        fputcsv($handle, array_map(fn($value) => $this->safe($value), $row), self::DELIMITER, '"', '');
     }
 
     private function safe(mixed $value): string
