@@ -17,8 +17,6 @@
 @endsection
 
 @php
-    $statusLabels = ['new' => 'Nueva', 'reviewed' => 'Revisada', 'archived' => 'Archivada'];
-    $statusBadges = ['new' => 'badge-info', 'reviewed' => 'badge-success', 'archived' => 'badge-gray'];
     $mailLabels = ['pending' => 'Pendiente', 'sent' => 'Enviado', 'failed' => 'Falló', 'not_applicable' => 'N/A'];
     $mailBadges = ['pending' => 'badge-warning', 'sent' => 'badge-success', 'failed' => 'badge-danger', 'not_applicable' => 'badge-gray'];
 @endphp
@@ -31,27 +29,11 @@
         @endif
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        @foreach ($statusLabels as $key => $label)
-            <div class="card flex items-center justify-between">
-                <span class="text-sm text-gray-600">{{ $label }}s</span>
-                <span class="text-2xl font-bold text-secondary">{{ $counts[$key] ?? 0 }}</span>
-            </div>
-        @endforeach
-    </div>
-
     <div class="card mb-6">
         <form method="GET" action="{{ route('forms.submissions.index', $form) }}" class="space-y-4">
             <div class="flex flex-col sm:flex-row gap-4">
                 <input type="text" name="search" value="{{ request('search') }}"
                     placeholder="Buscar por correo o contenido..." class="input-field flex-1">
-                <select name="status" class="input-field sm:w-48">
-                    <option value="">Todos los estados</option>
-                    @foreach ($statusLabels as $key => $label)
-                        <option value="{{ $key }}" {{ request('status') === $key ? 'selected' : '' }}>
-                            {{ $label }}</option>
-                    @endforeach
-                </select>
             </div>
             <div class="flex flex-col sm:flex-row gap-4">
                 <div class="flex-1">
@@ -95,7 +77,6 @@
                         <tr class="table-header">
                             <th class="table-header">Fecha</th>
                             <th class="table-header">Resumen</th>
-                            <th class="table-header">Estado</th>
                             <th class="table-header">Correos</th>
                             <th class="table-header text-right">Acciones</th>
                         </tr>
@@ -119,10 +100,6 @@
                                     @if ($submission->email)
                                         <span class="block truncate text-xs text-gray-500">{{ $submission->email }}</span>
                                     @endif
-                                </td>
-                                <td class="py-3 px-4">
-                                    <span class="badge {{ $statusBadges[$submission->status] ?? 'badge-gray' }}">
-                                        {{ $statusLabels[$submission->status] ?? $submission->status }}</span>
                                 </td>
                                 <td class="py-3 px-4">
                                     <div class="flex flex-col gap-1 items-start">

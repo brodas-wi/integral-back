@@ -724,11 +724,6 @@ Route::middleware(['auth'])->group(function () {
             ->name('submissions.show')
             ->withTrashed()
             ->middleware('can:form_submissions.view,form_submissions.manage');
-
-        Route::patch('/{form}/submissions/{submission}', [FormSubmissionController::class, 'update'])
-            ->name('submissions.update')
-            ->withTrashed()
-            ->middleware('can:form_submissions.manage');
     });
 
     // ==========================================
