@@ -22,21 +22,29 @@ const smallInput = (bind, placeholder = "", className = "") =>
 const removeBtn = (list, index, title) =>
     `<button type="button" class="ftm-icon-btn ftm-danger" data-action="remove" data-list="${list}" data-index="${index}" title="${title}"><i class="ri-delete-bin-line"></i></button>`;
 
-const linkRow = (_, index, listPath) => {
+const moveBtn = (list, index, offset, total) => {
+    const up = offset < 0;
+    const disabled = up ? index === 0 : index === total - 1;
+    return `<button type="button" class="ftm-icon-btn" data-action="move" data-list="${list}" data-index="${index}" data-offset="${offset}" title="${up ? "Subir" : "Bajar"}" ${disabled ? "disabled" : ""}><i class="${up ? "ri-arrow-up-s-line" : "ri-arrow-down-s-line"}"></i></button>`;
+};
+
+const moveGroup = (list, index, total) => moveBtn(list, index, -1, total) + moveBtn(list, index, 1, total);
+
+const linkRow = (_, index, listPath, total) => {
     const path = `${listPath}.${index}`;
-    return `<div class="ftm-link" data-sort-idx="${index}">
-<div class="ftm-row"><span class="ftm-handle ftm-handle-link"><i class="ri-draggable"></i></span>${smallInput(`${path}.label`, "Texto del enlace", "ftm-grow")}${removeBtn(listPath, index, "Eliminar enlace")}</div>
+    return `<div class="ftm-link" data-item="${path}">
+<div class="ftm-row">${smallInput(`${path}.label`, "Texto del enlace", "ftm-grow")}${moveGroup(listPath, index, total)}${removeBtn(listPath, index, "Eliminar enlace")}</div>
 <div class="ftm-row"><div class="ftm-icon-preview"><i data-icon-preview="${path}.icon"></i></div>${smallInput(`${path}.icon`, "Icono (opcional)", "ftm-grow")}<button type="button" class="ftm-pick" data-action="pick-icon" data-path="${path}.icon"><i class="ri-emotion-happy-line"></i> Icono</button></div>
 <div class="ftm-row"><input type="text" class="ftm-input-sm ftm-grow ftm-url" data-bind="${path}.href" data-href-for="${path}" placeholder="URL o buscar página..."><label class="ftm-check"><input type="checkbox" data-bind="${path}.isText"> Solo texto</label></div>
 </div>`;
 };
 
-const sectionCard = (section, index) => {
+const sectionCard = (section, index, all) => {
     const listPath = `sections.${index}.links`;
-    return `<div class="ftm-section" data-sort-idx="${index}">
-<div class="ftm-section-head"><span class="ftm-handle ftm-handle-section"><i class="ri-draggable"></i></span>${smallInput(`sections.${index}.title`, "Título de la sección", "ftm-grow")}${removeBtn("sections", index, "Eliminar sección")}</div>
+    return `<div class="ftm-section" data-item="sections.${index}">
+<div class="ftm-section-head">${smallInput(`sections.${index}.title`, "Título de la sección", "ftm-grow")}${moveGroup("sections", index, all.length)}${removeBtn("sections", index, "Eliminar sección")}</div>
 <div class="ftm-section-body">
-<div class="ftm-links" data-links="${listPath}">${section.links.map((link, i) => linkRow(link, i, listPath)).join("")}</div>
+<div class="ftm-links" data-links="${listPath}">${section.links.map((link, i) => linkRow(link, i, listPath, section.links.length)).join("")}</div>
 <button type="button" class="ftm-btn-add" data-action="add-link" data-index="${index}"><i class="ri-add-line"></i> Agregar enlace</button>
 </div>
 </div>`;
@@ -50,7 +58,7 @@ const buildPanels = () => ({
         card(
             `<label class="ftm-label">Texto alternativo / logo de texto</label>${textInput("logo_alt", "Texto alternativo")}<p class="ftm-hint">Se muestra como texto cuando no hay imagen de logo.</p>`,
         ),
-    sections: `<p class="ftm-hint ftm-hint-top">Máximo ${MAX_SECTIONS} secciones. Reordena secciones y enlaces arrastrando desde el asa.</p><div class="ftm-list" data-list="sections"></div><button type="button" class="ftm-btn-add" data-action="add-section"><i class="ri-add-line"></i> Agregar sección</button>`,
+    sections: `<p class="ftm-hint ftm-hint-top">Máximo ${MAX_SECTIONS} secciones. Usa las flechas para cambiar el orden de secciones y enlaces.</p><div class="ftm-list" data-list="sections"></div><button type="button" class="ftm-btn-add" data-action="add-section"><i class="ri-add-line"></i> Agregar sección</button>`,
 });
 
 const buildShell = () => {
@@ -211,15 +219,18 @@ export function showFooterModal(editor, component) {
 
     const render = () => {
         list.innerHTML = state.sections.map(sectionCard).join("");
-        list.querySelectorAll("[data-links]").forEach((container) =>
-            enableSorting(
-                container,
-                { item: ".ftm-link", handle: ".ftm-handle-link" },
-                () => getByPath(state, container.dataset.links),
-                render,
-            ),
-        );
         hydrate();
+    };
+
+    const revealItem = (path) => {
+        requestAnimationFrame(() => {
+            const target = modal.querySelector(`[data-item="${path}"]`);
+            if (!target) return;
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+            target.classList.remove("ftm-flash");
+            void target.offsetWidth;
+            target.classList.add("ftm-flash");
+        });
     };
 
     const updateField = (path, value) => {
@@ -303,6 +314,16 @@ export function showFooterModal(editor, component) {
         },
         "pick-media": (el) => pickMedia(el.dataset.path, el.dataset.title),
         "pick-icon": (el) => iconPicker.open((selected) => updateField(el.dataset.path, selected)),
+        move: (el) => {
+            const listPath = el.dataset.list;
+            const items = getByPath(state, listPath);
+            const from = Number(el.dataset.index);
+            const to = from + Number(el.dataset.offset);
+            if (to < 0 || to >= items.length) return;
+            items.splice(to, 0, items.splice(from, 1)[0]);
+            render();
+            revealItem(`${listPath}.${to}`);
+        },
         remove: (el) => {
             getByPath(state, el.dataset.list).splice(Number(el.dataset.index), 1);
             render();
@@ -353,20 +374,6 @@ export function showFooterModal(editor, component) {
     overlay.addEventListener("mousedown", (event) => {
         if (event.target === overlay) close();
     });
-
-    const resetDraggable = () =>
-        modal.querySelectorAll("[draggable='true']").forEach((el) => {
-            el.draggable = false;
-        });
-    document.addEventListener("mouseup", resetDraggable);
-    cleanups.push(() => document.removeEventListener("mouseup", resetDraggable));
-
-    enableSorting(
-        list,
-        { item: ".ftm-section", handle: ".ftm-handle-section" },
-        () => state.sections,
-        render,
-    );
 
     render();
 }

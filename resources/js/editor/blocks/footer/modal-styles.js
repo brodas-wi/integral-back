@@ -48,11 +48,10 @@ const MODAL_CSS = `
 .ftm-section-body{display:flex;flex-direction:column;gap:0.75rem;padding:0.875rem;}
 .ftm-links{display:flex;flex-direction:column;gap:0.625rem;}
 .ftm-link{display:flex;flex-direction:column;gap:0.5rem;padding:0.75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.625rem;}
-.ftm-section.ftm-dragging,.ftm-link.ftm-dragging{opacity:0.4;}
-.ftm-section.ftm-drag-over,.ftm-link.ftm-drag-over{border-color:#003B71;box-shadow:0 0 0 2px rgba(0,59,113,0.15);}
-.ftm-handle{display:flex;align-items:center;flex-shrink:0;padding:0 0.125rem;color:#94a3b8;cursor:grab;}
-.ftm-handle:hover{color:#475569;}
-.ftm-handle:active{cursor:grabbing;}
+.ftm-icon-btn:not(.ftm-danger):hover:not(:disabled){background:#e2e8f0;color:#1e293b;}
+.ftm-icon-btn:disabled{opacity:0.3;cursor:not-allowed;}
+@keyframes ftm-flash{0%{box-shadow:0 0 0 3px rgba(233,115,0,0.55);}100%{box-shadow:0 0 0 3px rgba(233,115,0,0);}}
+.ftm-flash{animation:ftm-flash 1.2s ease-out;}
 .ftm-icon-btn{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:1.75rem;height:1.75rem;padding:0;border:0;border-radius:9999px;background:transparent;color:#64748b;font-size:1rem;cursor:pointer;transition:background 0.15s,color 0.15s;}
 .ftm-icon-btn.ftm-danger{color:#ef4444;}
 .ftm-icon-btn.ftm-danger:hover{background:#fef2f2;color:#dc2626;}

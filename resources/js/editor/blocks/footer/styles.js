@@ -6,7 +6,9 @@ export const FOOTER_STYLES = `<style>
 .ft-logo-text{font-size:1.25rem;font-weight:800;color:#fff;}
 .ft-section{min-width:0;}
 .ft-section-title{margin:0 0 0.875rem;padding:0;font-size:0.9375rem;font-weight:700;color:#fff;}
-.ft-links{display:flex;flex-direction:column;gap:0.5rem;margin:0;padding:0;list-style:none;}
+.ft-links{display:flex;flex-direction:column;gap:0.5rem;margin:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:1.125rem;list-style:disc;}
+.ft-links li::marker{color:#fff;}
+.ft-links li:hover::marker{color:#E97300;}
 .ft-link,.ft-text{display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;line-height:1.4;color:#fff;text-decoration:none;overflow-wrap:anywhere;}
 .ft-link{transition:color 0.2s ease;}
 .ft-link i,.ft-text i{flex-shrink:0;font-size:1rem;color:#fff;transition:color 0.2s ease;}

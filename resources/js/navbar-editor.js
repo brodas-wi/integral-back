@@ -1,4 +1,5 @@
 import "../css/views/editor/media-modal.css";
+import "../css/views/editor/icon-picker-modal.css";
 import { EditorService } from "./services/editor-service";
 import { initializeNavbarGrapesJS } from "./editor/navbar-grapes-config";
 import { initializeNavbarBlock, NAVBAR_RUNTIME_SCRIPT } from "./editor/blocks/navbar/navbar-block";

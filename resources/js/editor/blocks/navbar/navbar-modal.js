@@ -1,6 +1,11 @@
 import { openMediaPicker } from "@/editor/media-picker";
 import { IconPickerModal } from "@/editor/components/icon-picker-modal";
-import { MAX_BOTTOM_BUTTONS, MAX_CTA_BUTTONS, MAX_SUBMENU_COLUMNS, mergeNavbarData } from "./navbar-defaults";
+import {
+    MAX_BOTTOM_BUTTONS,
+    MAX_CTA_BUTTONS,
+    MAX_SUBMENU_COLUMNS,
+    mergeNavbarData,
+} from "./navbar-defaults";
 import { applyNavbarConfig, readNavbarConfig } from "./navbar-template";
 import { attachUrlAutocomplete } from "./navbar-url-autocomplete";
 import { ensureModalStyles } from "./navbar-modal-styles";
@@ -14,6 +19,9 @@ const TABS = [
     { id: "bottom-buttons", icon: "ri-bank-card-line", label: "Botones inferiores" },
     { id: "icon-btn", icon: "ri-search-line", label: "Botón icono" },
 ];
+
+const COLOR_LABELS = { blue: "Azul", white: "Blanco", orange: "Naranja" };
+const BUTTON_COLORS = ["blue", "white", "orange"];
 
 const newItem = () => ({ label: "Nuevo item", desc: "", href: "#" });
 const newColumn = () => ({ badge: "Nueva columna", badge_color: "blue", items: [newItem()] });
@@ -39,13 +47,19 @@ const urlInput = (bind, placeholder = "URL o buscar página...", small = false) 
     `<input type="text" class="${small ? "nb-input-sm" : "nb-input"} nb-url-input" data-bind="${bind}" placeholder="${escapeHtml(placeholder)}">`;
 
 const removeBtn = (list, index) =>
-    `<button type="button" class="nb-btn-remove" data-action="remove" data-list="${list}" data-index="${index}"><i class="ri-delete-bin-line"></i></button>`;
+    `<button type="button" class="nb-btn-remove" data-action="remove" data-list="${list}" data-index="${index}" title="Eliminar"><i class="ri-delete-bin-line"></i></button>`;
+
+const moveBtn = (list, index, offset, total) => {
+    const up = offset < 0;
+    const disabled = up ? index === 0 : index === total - 1;
+    return `<button type="button" class="nb-move-btn" data-action="move" data-list="${list}" data-index="${index}" data-offset="${offset}" title="${up ? "Subir" : "Bajar"}" ${disabled ? "disabled" : ""}><i class="${up ? "ri-arrow-up-s-line" : "ri-arrow-down-s-line"}"></i></button>`;
+};
+
+const moveGroup = (list, index, total) =>
+    moveBtn(list, index, -1, total) + moveBtn(list, index, 1, total);
 
 const addBtn = (action, label, className, attrs = "") =>
     `<button type="button" class="nb-btn-add ${className}" data-action="${action}" ${attrs}><i class="ri-add-line"></i> ${label}</button>`;
-
-const COLOR_LABELS = { blue: "Azul", white: "Blanco", orange: "Naranja" };
-const BUTTON_COLORS = ["blue", "white", "orange"];
 
 const colorToggle = (bind, fallback, small = false, options = ["blue", "orange"]) =>
     `<div class="nb-color-toggle${small ? " nb-small" : ""}" data-color-group data-default="${fallback}">${options
@@ -64,44 +78,44 @@ const iconRow = (bind) =>
 const mediaField = (bind, title, placeholder) =>
     `<div class="nb-row"><div class="nb-img-preview" data-img-preview="${bind}"></div>${textInput(bind, placeholder)}<button type="button" class="nb-pick-btn" data-action="pick-media" data-path="${bind}" data-title="${escapeHtml(title)}"><i class="ri-image-line"></i> Seleccionar</button></div>`;
 
-const topActionCard = (action, index) => {
+const topActionCard = (action, index, all) => {
     const path = `top_actions.${index}`;
-    return `<div class="nb-action-card" data-drag-idx="${index}">
-<div class="nb-row"><span class="nb-drag-handle"><i class="ri-draggable"></i></span>${smallInput(`${path}.label`, "Texto del botón", "nb-grow")}${removeBtn("top_actions", index)}</div>
+    return `<div class="nb-action-card" data-item="${path}">
+<div class="nb-row">${smallInput(`${path}.label`, "Texto del botón", "nb-grow")}${moveGroup("top_actions", index, all.length)}${removeBtn("top_actions", index)}</div>
 ${urlInput(`${path}.href`, undefined, true)}
 ${iconRow(`${path}.icon`)}
 <label class="nb-check"><input type="checkbox" data-bind="${path}.show_icon"> Mostrar icono en el botón</label>
 </div>`;
 };
 
-const bottomButtonCard = (button, index) => {
+const bottomButtonCard = (button, index, all) => {
     const path = `bottom_buttons.${index}`;
-    return `<div class="nb-action-card" data-drag-idx="${index}">
-<div class="nb-row"><span class="nb-drag-handle"><i class="ri-draggable"></i></span>${smallInput(`${path}.label`, "Texto del botón", "nb-grow")}${removeBtn("bottom_buttons", index)}</div>
+    return `<div class="nb-action-card" data-item="${path}">
+<div class="nb-row">${smallInput(`${path}.label`, "Texto del botón", "nb-grow")}${moveGroup("bottom_buttons", index, all.length)}${removeBtn("bottom_buttons", index)}</div>
 ${urlInput(`${path}.href`, undefined, true)}
 <div class="nb-row"><span class="nb-col-title">Estilo</span>${colorToggle(`${path}.color`, "orange", false, BUTTON_COLORS)}</div>
 </div>`;
 };
 
-const columnCard = (column, columnIndex, itemPath) => {
+const columnCard = (column, columnIndex, itemPath, totalColumns) => {
     const path = `${itemPath}.columns.${columnIndex}`;
     const items = (column.items || [])
         .map((item, itemIndex) => {
             const itemBind = `${path}.items.${itemIndex}`;
-            return `<div class="nb-col-item"><div class="nb-row">${smallInput(`${itemBind}.label`, "Título del item", "nb-grow")}${removeBtn(`${path}.items`, itemIndex)}</div>${smallInput(`${itemBind}.desc`, "Descripción (opcional)")}${urlInput(`${itemBind}.href`, "URL", true)}</div>`;
+            return `<div class="nb-col-item" data-item="${itemBind}"><div class="nb-row">${smallInput(`${itemBind}.label`, "Título del item", "nb-grow")}${moveGroup(`${path}.items`, itemIndex, column.items.length)}${removeBtn(`${path}.items`, itemIndex)}</div>${smallInput(`${itemBind}.desc`, "Descripción (opcional)")}${urlInput(`${itemBind}.href`, "URL", true)}</div>`;
         })
         .join("");
-    return `<div class="nb-col-card">
-<div class="nb-row"><span class="nb-col-title">Columna ${columnIndex + 1}</span>${smallInput(`${path}.badge`, "Badge (ej: Tus ahorros)", "nb-grow")}${colorToggle(`${path}.badge_color`, "blue", true)}${removeBtn(`${itemPath}.columns`, columnIndex)}</div>
+    return `<div class="nb-col-card" data-item="${path}">
+<div class="nb-row"><span class="nb-col-title">Columna ${columnIndex + 1}</span>${smallInput(`${path}.badge`, "Badge (ej: Tus ahorros)", "nb-grow")}${colorToggle(`${path}.badge_color`, "blue", true)}${moveGroup(`${itemPath}.columns`, columnIndex, totalColumns)}${removeBtn(`${itemPath}.columns`, columnIndex)}</div>
 <div class="nb-col-items">${items}</div>
 <div class="nb-add-row">${addBtn("add-item", "Agregar item", "nb-btn-add-item", `data-list="${path}.items"`)}</div>
 </div>`;
 };
 
-const ctaButtonCard = (button, buttonIndex, itemPath) => {
+const ctaButtonCard = (button, buttonIndex, itemPath, totalButtons) => {
     const path = `${itemPath}.cta_column.buttons.${buttonIndex}`;
-    return `<div class="nb-action-card">
-<div class="nb-row"><span class="nb-col-title nb-cta-title">Botón ${buttonIndex + 1}</span>${smallInput(`${path}.label`, "Texto del botón", "nb-grow")}${removeBtn(`${itemPath}.cta_column.buttons`, buttonIndex)}</div>
+    return `<div class="nb-action-card" data-item="${path}">
+<div class="nb-row"><span class="nb-col-title nb-cta-title">Botón ${buttonIndex + 1}</span>${smallInput(`${path}.label`, "Texto del botón", "nb-grow")}${moveGroup(`${itemPath}.cta_column.buttons`, buttonIndex, totalButtons)}${removeBtn(`${itemPath}.cta_column.buttons`, buttonIndex)}</div>
 ${urlInput(`${path}.href`, "URL del botón", true)}
 ${iconRow(`${path}.icon`)}
 <div class="nb-row"><span class="nb-col-title nb-cta-title">Posición del icono</span>${positionToggle(`${path}.icon_position`)}</div>
@@ -110,8 +124,12 @@ ${iconRow(`${path}.icon`)}
 };
 
 const submenuBody = (item, path) => {
-    const columns = (item.columns || []).map((column, index) => columnCard(column, index, path)).join("");
-    const buttons = item.cta_column.buttons.map((button, index) => ctaButtonCard(button, index, path)).join("");
+    const columns = (item.columns || [])
+        .map((column, index, all) => columnCard(column, index, path, all.length))
+        .join("");
+    const buttons = item.cta_column.buttons
+        .map((button, index, all) => ctaButtonCard(button, index, path, all.length))
+        .join("");
     const columnsFull = (item.columns || []).length >= MAX_SUBMENU_COLUMNS;
     const buttonsFull = item.cta_column.buttons.length >= MAX_CTA_BUTTONS;
     return `<div class="nb-link-card-body">
@@ -127,15 +145,15 @@ const submenuBody = (item, path) => {
 </div>`;
 };
 
-const navCard = (item, index) => {
+const navCard = (item, index, all) => {
     const path = `nav_links.${index}`;
     const submenu = item.type === "submenu";
     const badge = `<span class="nb-type-badge ${submenu ? "nb-type-submenu" : "nb-type-link"}" data-action="toggle-type" data-index="${index}" title="Clic para cambiar tipo">${submenu ? "Submenú" : "Link"} ↕</span>`;
-    const header = `<div class="nb-link-card-header"><span class="nb-drag-handle"><i class="ri-draggable"></i></span>${badge}${smallInput(`${path}.label`, submenu ? "Título del menú" : "Texto del enlace", "nb-grow")}${removeBtn("nav_links", index)}</div>`;
+    const header = `<div class="nb-link-card-header">${badge}${smallInput(`${path}.label`, submenu ? "Título del menú" : "Texto del enlace", "nb-grow")}${moveGroup("nav_links", index, all.length)}${removeBtn("nav_links", index)}</div>`;
     const body = submenu
         ? submenuBody(item, path)
         : `<div class="nb-link-card-body">${urlInput(`${path}.href`, undefined, true)}${iconRow(`${path}.icon`)}</div>`;
-    return `<div class="nb-link-card" data-drag-idx="${index}">${header}${body}</div>`;
+    return `<div class="nb-link-card" data-item="${path}">${header}${body}</div>`;
 };
 
 const buildPanels = () => ({
@@ -144,16 +162,16 @@ const buildPanels = () => ({
         card(`<label class="nb-label">Enlace del logo</label>${urlInput("logo_href", "Ej: / o https://...")}`) +
         card(`<label class="nb-label">Texto alternativo / Logo de texto</label><div class="nb-row">${textInput("logo_alt", "Texto alternativo")}${textInput("logo_text", "Texto si no hay imagen")}</div>`),
     "top-actions": card(
-        `<p class="nb-hint">Botones de la barra superior (Contáctanos, Agencias, etc.). Puedes reordenarlos arrastrando.</p><div class="nb-list" data-list-root="top_actions"></div><div class="nb-add-row">${addBtn("add-top-action", "Agregar acción", "nb-btn-add-action")}</div>`,
-    ),
-    "bottom-buttons": card(
-        `<p class="nb-hint">Botones a la derecha de la barra inferior (Mi Banca Integral, etc.). Máximo ${MAX_BOTTOM_BUTTONS}. Puedes reordenarlos arrastrando.</p><div class="nb-list" data-list-root="bottom_buttons"></div><div class="nb-add-row">${addBtn("add-bottom-button", "Agregar botón", "nb-btn-add-action")}</div>`,
-    ),
-    nav: card(
-        `<p class="nb-hint">Links de la barra inferior. Los submenús generan mega-menús con columnas.</p><div class="nb-list" data-list-root="nav_links"></div><div class="nb-add-row">${addBtn("add-link", "Agregar link", "nb-btn-add-link")}${addBtn("add-submenu", "Agregar submenú", "nb-btn-add-submenu")}</div>`,
+        `<p class="nb-hint">Botones de la barra superior (Contáctanos, Agencias, etc.). Usa las flechas para cambiar el orden.</p><div class="nb-list" data-list-root="top_actions"></div><div class="nb-add-row">${addBtn("add-top-action", "Agregar acción", "nb-btn-add-action")}</div>`,
     ),
     "top-button": card(
         `<label class="nb-label">Botón superior (Programa Surge)</label><div class="nb-stack">${field("Texto principal", textInput("top_button.label", "Programa Surge"))}${field("Subtexto (opcional)", textInput("top_button.sublabel", "Formación Empresarial"))}${field("URL", urlInput("top_button.href"))}${field("Estilo", colorToggle("top_button.color", "white", false, BUTTON_COLORS))}</div>`,
+    ),
+    nav: card(
+        `<p class="nb-hint">Links de la barra inferior. Los submenús generan mega-menús con columnas. Usa las flechas para cambiar el orden.</p><div class="nb-list" data-list-root="nav_links"></div><div class="nb-add-row">${addBtn("add-link", "Agregar link", "nb-btn-add-link")}${addBtn("add-submenu", "Agregar submenú", "nb-btn-add-submenu")}</div>`,
+    ),
+    "bottom-buttons": card(
+        `<p class="nb-hint">Botones a la derecha de la barra inferior (Mi Banca Integral, etc.). Máximo ${MAX_BOTTOM_BUTTONS}. Usa las flechas para cambiar el orden.</p><div class="nb-list" data-list-root="bottom_buttons"></div><div class="nb-add-row">${addBtn("add-bottom-button", "Agregar botón", "nb-btn-add-action")}</div>`,
     ),
     "icon-btn":
         card(
@@ -244,63 +262,6 @@ function confirmDialog({ icon, iconColor, title, message, detail, confirmLabel, 
     });
 }
 
-function enableSorting(list, getItems, rerender) {
-    let from = null;
-    const clearMarks = () =>
-        list.querySelectorAll(".nb-drag-over").forEach((el) => el.classList.remove("nb-drag-over"));
-    const cardOf = (event) =>
-        event.target instanceof Element ? event.target.closest("[data-drag-idx]") : null;
-
-    list.addEventListener("mousedown", (event) => {
-        if (!(event.target instanceof Element) || !event.target.closest(".nb-drag-handle")) return;
-        const card = cardOf(event);
-        if (card) card.draggable = true;
-    });
-
-    list.addEventListener("dragstart", (event) => {
-        const card = cardOf(event);
-        if (!card || !card.draggable) return;
-        from = Number(card.dataset.dragIdx);
-        event.dataTransfer.effectAllowed = "move";
-        event.dataTransfer.setData("text/plain", String(from));
-        requestAnimationFrame(() => card.classList.add("nb-dragging"));
-    });
-
-    list.addEventListener("dragover", (event) => {
-        if (from === null) return;
-        const card = cardOf(event);
-        if (!card) return;
-        event.preventDefault();
-        event.dataTransfer.dropEffect = "move";
-        clearMarks();
-        if (Number(card.dataset.dragIdx) !== from) card.classList.add("nb-drag-over");
-    });
-
-    list.addEventListener("drop", (event) => {
-        if (from === null) return;
-        const card = cardOf(event);
-        if (!card) return;
-        event.preventDefault();
-        const source = from;
-        const target = Number(card.dataset.dragIdx);
-        from = null;
-        clearMarks();
-        if (source === target) return;
-        const items = getItems();
-        items.splice(target, 0, items.splice(source, 1)[0]);
-        rerender();
-    });
-
-    list.addEventListener("dragend", () => {
-        from = null;
-        clearMarks();
-        list.querySelectorAll(".nb-dragging").forEach((el) => {
-            el.classList.remove("nb-dragging");
-            el.draggable = false;
-        });
-    });
-}
-
 export function showNavbarModal(editor, component) {
     ensureModalStyles();
     const previous = document.getElementById("navbar-config-modal");
@@ -308,7 +269,6 @@ export function showNavbarModal(editor, component) {
 
     let state = mergeNavbarData(readNavbarConfig(component) || {});
     const iconPicker = new IconPickerModal();
-    const cleanups = [];
 
     const overlay = document.createElement("div");
     overlay.id = "navbar-config-modal";
@@ -355,6 +315,17 @@ export function showNavbarModal(editor, component) {
             button.classList.toggle("nb-color-inactive", current !== button.dataset.value);
         });
         syncPreviews();
+    }
+
+    function revealItem(path) {
+        requestAnimationFrame(() => {
+            const target = modal.querySelector(`[data-item="${path}"]`);
+            if (!target) return;
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+            target.classList.remove("nb-flash");
+            void target.offsetWidth;
+            target.classList.add("nb-flash");
+        });
     }
 
     function renderList(name) {
@@ -436,7 +407,6 @@ export function showNavbarModal(editor, component) {
     }
 
     const close = () => {
-        cleanups.forEach((fn) => fn());
         iconPicker.close();
         overlay.remove();
     };
@@ -461,6 +431,16 @@ export function showNavbarModal(editor, component) {
             el.parentElement
                 .querySelectorAll("[data-action='set-color']")
                 .forEach((button) => button.classList.toggle("nb-color-inactive", button !== el));
+        },
+        move: (el) => {
+            const listPath = el.dataset.list;
+            const items = getByPath(state, listPath);
+            const from = Number(el.dataset.index);
+            const to = from + Number(el.dataset.offset);
+            if (to < 0 || to >= items.length) return;
+            items.splice(to, 0, items.splice(from, 1)[0]);
+            renderList(listPath.split(".")[0]);
+            revealItem(`${listPath}.${to}`);
         },
         remove: (el) => {
             getByPath(state, el.dataset.list).splice(Number(el.dataset.index), 1);
@@ -549,17 +529,6 @@ export function showNavbarModal(editor, component) {
     overlay.addEventListener("mousedown", (event) => {
         if (event.target === overlay) close();
     });
-
-    const resetDraggable = () =>
-        modal.querySelectorAll("[draggable='true']").forEach((el) => {
-            el.draggable = false;
-        });
-    document.addEventListener("mouseup", resetDraggable);
-    cleanups.push(() => document.removeEventListener("mouseup", resetDraggable));
-
-    enableSorting(lists.top_actions, () => state.top_actions, () => renderList("top_actions"));
-    enableSorting(lists.nav_links, () => state.nav_links, () => renderList("nav_links"));
-    enableSorting(lists.bottom_buttons, () => state.bottom_buttons, () => renderList("bottom_buttons"));
 
     ["top_actions", "nav_links", "bottom_buttons"].forEach((name) => renderList(name));
     hydrate(modal);
