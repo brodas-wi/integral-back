@@ -19,6 +19,7 @@ use App\Http\Controllers\ExtraordinaryAssetCategoryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsCategoryController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\FormSubmissionController;
 use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
@@ -713,6 +714,21 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{form}', [FormController::class, 'destroy'])
             ->name('destroy')
             ->middleware('can:forms.delete,forms.manage');
+
+        Route::get('/{form}/submissions', [FormSubmissionController::class, 'index'])
+            ->name('submissions.index')
+            ->withTrashed()
+            ->middleware('can:form_submissions.view,form_submissions.manage');
+
+        Route::get('/{form}/submissions/{submission}', [FormSubmissionController::class, 'show'])
+            ->name('submissions.show')
+            ->withTrashed()
+            ->middleware('can:form_submissions.view,form_submissions.manage');
+
+        Route::patch('/{form}/submissions/{submission}', [FormSubmissionController::class, 'update'])
+            ->name('submissions.update')
+            ->withTrashed()
+            ->middleware('can:form_submissions.manage');
     });
 
     // ==========================================

@@ -126,7 +126,7 @@
                             </a>
                         @endcanany
 
-                        @canany(['forms.edit', 'forms.delete', 'forms.manage'])
+                        @canany(['forms.edit', 'forms.delete', 'forms.manage', 'form_submissions.view', 'form_submissions.manage'])
                             <div class="dropdown" data-dropdown>
                                 <button type="button"
                                     class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center"
@@ -134,6 +134,13 @@
                                     <i class="ri-more-2-fill text-lg"></i>
                                 </button>
                                 <div class="dropdown-menu">
+                                    @canany(['form_submissions.view', 'form_submissions.manage'])
+                                        <a href="{{ route('forms.submissions.index', $form) }}" class="dropdown-item">
+                                            <i class="ri-inbox-line"></i>
+                                            <span>Ver respuestas ({{ $form->submissions_count }})</span>
+                                        </a>
+                                    @endcanany
+
                                     @canany(['forms.edit', 'forms.manage'])
                                         <button type="button" data-toggle-form data-form-id="{{ $form->id }}"
                                             data-active="{{ $form->is_active ? '1' : '0' }}" class="dropdown-item">
