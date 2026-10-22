@@ -84,7 +84,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(formBlocks);
     blockRegistry.registerBlocks(mapFilterBlocks);
     blockRegistry.registerBlocks(iconLinksBlocks);
-    blockRegistry.registerBlocks(tableBlocks);
+    // blockRegistry.registerBlocks(tableBlocks);
     blockRegistry.registerBlocks(cardTableBlocks);
     blockRegistry.registerBlocks(buttonBlocks);
     blockRegistry.registerBlocks(badgeBlocks);
@@ -101,7 +101,7 @@ export function addCustomBlocks(editor) {
     initializeIconCardsGridBlock(editor);
     initializeButtonBlocks(editor);
     initializeTabsBlocks(editor);
-    initializeTableBlocks(editor);
+    // initializeTableBlocks(editor);
     initializeCardTableBlocks(editor);
     initializeDocumentDownloadBlocks(editor);
     initializeAssetsBlocks(editor);

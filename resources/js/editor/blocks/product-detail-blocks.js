@@ -192,13 +192,12 @@ ${text("body", "Lorem ipsum dolor sit amet, texto adicional de cierre de la secc
     }),
 
     sectionBlock({
-        id: "product-detail-table",
-        label: "Sección: tabla de coberturas + acción",
-        media: ICONS.table,
-        styles: ["asymmetric", "table"],
+        id: "product-detail-text-sections",
+        label: "Sección: textos + lista + acción",
+        media: ICONS.twoColumns,
+        styles: ["asymmetric"],
         body: split({
             main: `${text("body")}
-${coverageTable("blue")}
 <div class="flex flex-col gap-2">
     ${text("heading", "Subtítulo de la sección")}
     ${text("body", "Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.")}
