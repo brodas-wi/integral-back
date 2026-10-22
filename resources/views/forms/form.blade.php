@@ -6,7 +6,7 @@
     <div class="flex items-center gap-3">
         <span>{{ $form ? 'Editar formulario' : 'Nuevo formulario' }}</span>
         @if ($form)
-            <span class="badge badge-info">v{{ $form->currentVersion?->version ?? '-' }}</span>
+            <span id="version-badge" class="badge badge-info">v{{ $form->currentVersion?->version ?? '-' }}</span>
         @endif
     </div>
 @endsection
@@ -25,7 +25,8 @@
 @section('content')
     <div id="form-editor" class="space-y-6 max-w-4xl"
         data-submit-url="{{ $form ? route('forms.update', $form) : route('forms.store') }}"
-        data-method="{{ $form ? 'PUT' : 'POST' }}">
+        data-method="{{ $form ? 'PUT' : 'POST' }}"
+        data-base-version="{{ $form?->currentVersion?->version }}">
 
         <script type="application/json" id="form-initial">{!! json_encode($initial, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) !!}</script>
 

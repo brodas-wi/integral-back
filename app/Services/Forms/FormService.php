@@ -29,10 +29,15 @@ class FormService
         });
     }
 
-    public function update(Form $form, array $payload): Form
+    public function update(Form $form, array $payload, ?int $baseVersion = null): Form
     {
-        return DB::transaction(function () use ($form, $payload) {
+        return DB::transaction(function () use ($form, $payload, $baseVersion) {
             $form = Form::query()->whereKey($form->id)->lockForUpdate()->firstOrFail();
+            $currentVersion = $form->currentVersion?->version;
+
+            if ($baseVersion !== null && $currentVersion !== null && $currentVersion !== $baseVersion) {
+                abort(409, "Este formulario cambió mientras lo editabas (ahora está en la versión {$currentVersion}). Recarga la página para ver los cambios más recientes.");
+            }
             $content = $this->normalizer->normalize($payload, $this->keyHistory($form));
 
             $form->fill([

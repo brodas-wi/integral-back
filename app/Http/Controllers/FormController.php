@@ -83,7 +83,12 @@ class FormController extends Controller
     {
         $previousVersionId = $form->current_version_id;
 
-        $updated = $this->formService->update($form, $request->validated());
+        $updated = $this->formService->update(
+            $form,
+            $request->validated(),
+            $request->integer('base_version') ?: null,
+        );
+        $updated->load('currentVersion');
         $version = $updated->currentVersion;
         $changed = $updated->current_version_id !== $previousVersionId;
 
@@ -93,7 +98,7 @@ class FormController extends Controller
                 ? "Formulario actualizado. Se creó la versión {$version->version}."
                 : 'Formulario guardado. El contenido no cambió, no se creó una versión nueva.',
             'version' => $version->version,
-            'fields' => $version->fields,
+            'initial' => $this->initialFor($updated),
         ]);
     }
 

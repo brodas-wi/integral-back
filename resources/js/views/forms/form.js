@@ -100,6 +100,7 @@ function collect(fields) {
         .filter(Boolean);
 
     return {
+        base_version: root.dataset.baseVersion ? Number(root.dataset.baseVersion) : null,
         name: $("f-name").value,
         is_active: $("f-active").checked,
         title: $("f-title").value,
@@ -199,6 +200,11 @@ async function save() {
             return;
         }
 
+        if (response.status === 409) {
+            showErrors([data.message || "El formulario cambió mientras lo editabas. Recarga la página."]);
+            return;
+        }
+
         if (!response.ok || !data.success) {
             throw new Error(data.message || `Error del servidor: ${response.status}`);
         }
@@ -208,11 +214,13 @@ async function save() {
             return;
         }
 
-        if (Array.isArray(data.fields)) {
-            $("f-fields-json").value = JSON.stringify(data.fields, null, 2);
+        if (data.initial) {
+            fill(data.initial);
+            refreshDependentUi();
         }
-        initialConfirmField = $("c-field").value || initialConfirmField;
-        refreshDependentUi();
+        root.dataset.baseVersion = data.version;
+        const badge = $("version-badge");
+        if (badge) badge.textContent = `v${data.version}`;
         showNotification(data.message, "success");
     } catch (error) {
         showNotification(error.message || "Ocurrió un error al guardar", "error");

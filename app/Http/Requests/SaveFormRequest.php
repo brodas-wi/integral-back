@@ -16,6 +16,7 @@ class SaveFormRequest extends FormRequest
         return [
             'name' => ['nullable', 'string', 'max:150'],
             'is_active' => ['nullable', 'boolean'],
+            'base_version' => ['nullable', 'integer'],
             'title' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'submit_label' => ['nullable', 'string'],
