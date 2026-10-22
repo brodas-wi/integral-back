@@ -31,6 +31,7 @@
                 <option value="">Todos los estados</option>
                 <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Activos</option>
                 <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactivos</option>
+                <option value="archived" {{ request('status') === 'archived' ? 'selected' : '' }}>Archivados</option>
             </select>
             <select name="per_page" class="input-field sm:w-28" onchange="this.form.submit()">
                 @foreach ([10, 20, 30] as $size)
@@ -67,11 +68,18 @@
                                 <span class="truncate">{{ $form->slug }}</span>
                             </button>
                         </div>
-                        <span
-                            class="badge {{ $form->is_active ? 'badge-success' : 'badge-warning' }} flex-shrink-0 whitespace-nowrap">
-                            <i class="ri-{{ $form->is_active ? 'eye' : 'eye-off' }}-line mr-1"></i>
-                            {{ $form->is_active ? 'Activo' : 'Inactivo' }}
-                        </span>
+                        @if ($form->trashed())
+                            <span class="badge badge-gray flex-shrink-0 whitespace-nowrap">
+                                <i class="ri-archive-line mr-1"></i>
+                                Archivado
+                            </span>
+                        @else
+                            <span
+                                class="badge {{ $form->is_active ? 'badge-success' : 'badge-warning' }} flex-shrink-0 whitespace-nowrap">
+                                <i class="ri-{{ $form->is_active ? 'eye' : 'eye-off' }}-line mr-1"></i>
+                                {{ $form->is_active ? 'Activo' : 'Inactivo' }}
+                            </span>
+                        @endif
                     </div>
 
                     <div class="space-y-1.5 flex-1">
@@ -120,50 +128,75 @@
                                     <i class="ri-more-2-fill text-lg"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    @canany(['forms.edit', 'forms.manage'])
-                                        <a href="{{ route('forms.edit', $form) }}" class="dropdown-item">
-                                            <i class="ri-edit-line"></i>
-                                            <span>Editar</span>
-                                        </a>
-                                    @endcanany
+                                    @if ($form->trashed())
+                                        @canany(['form_submissions.view', 'form_submissions.manage'])
+                                            <a href="{{ route('forms.submissions.index', $form) }}" class="dropdown-item">
+                                                <i class="ri-inbox-line"></i>
+                                                <span>Ver respuestas ({{ $form->submissions_count }})</span>
+                                            </a>
+                                        @endcanany
 
-                                    @canany(['forms.create', 'forms.manage'])
-                                        <button type="button" data-duplicate-form data-form-id="{{ $form->id }}"
-                                            data-form-name="{{ $form->name }}" class="dropdown-item">
-                                            <i class="ri-file-copy-2-line"></i>
-                                            <span>Duplicar</span>
-                                        </button>
-                                    @endcanany
-                                    @canany(['form_submissions.view', 'form_submissions.manage'])
-                                        <a href="{{ route('forms.submissions.index', $form) }}" class="dropdown-item">
-                                            <i class="ri-inbox-line"></i>
-                                            <span>Ver respuestas ({{ $form->submissions_count }})</span>
-                                        </a>
-                                    @endcanany
-
-                                    @canany(['forms.edit', 'forms.manage'])
-                                        <button type="button" data-toggle-form data-form-id="{{ $form->id }}"
-                                            data-active="{{ $form->is_active ? '1' : '0' }}" class="dropdown-item">
-                                            <i class="ri-{{ $form->is_active ? 'eye-off' : 'eye' }}-line"></i>
-                                            <span>{{ $form->is_active ? 'Desactivar' : 'Activar' }}</span>
-                                        </button>
-                                    @endcanany
-
-                                    @canany(['forms.delete', 'forms.manage'])
-                                        <button type="button" data-delete-form data-form-id="{{ $form->id }}"
-                                            data-form-name="{{ $form->name }}" class="dropdown-item-danger">
-                                            <i class="ri-archive-line"></i>
-                                            <span>Archivar</span>
-                                        </button>
-
-                                        @if ($form->submissions_count === 0)
-                                            <button type="button" data-force-delete data-form-id="{{ $form->id }}"
-                                                data-form-name="{{ $form->name }}" class="dropdown-item-danger">
-                                                <i class="ri-delete-bin-line"></i>
-                                                <span>Eliminar</span>
+                                        @canany(['forms.delete', 'forms.manage'])
+                                            <button type="button" data-restore-form data-form-id="{{ $form->id }}"
+                                                data-form-name="{{ $form->name }}" class="dropdown-item">
+                                                <i class="ri-arrow-go-back-line"></i>
+                                                <span>Restaurar</span>
                                             </button>
-                                        @endif
-                                    @endcanany
+
+                                            @if ($form->submissions_count === 0)
+                                                <button type="button" data-force-delete data-form-id="{{ $form->id }}"
+                                                    data-form-name="{{ $form->name }}" class="dropdown-item-danger">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                    <span>Eliminar</span>
+                                                </button>
+                                            @endif
+                                        @endcanany
+                                    @else
+                                        @canany(['forms.edit', 'forms.manage'])
+                                            <a href="{{ route('forms.edit', $form) }}" class="dropdown-item">
+                                                <i class="ri-edit-line"></i>
+                                                <span>Editar</span>
+                                            </a>
+                                        @endcanany
+
+                                        @canany(['forms.create', 'forms.manage'])
+                                            <button type="button" data-duplicate-form data-form-id="{{ $form->id }}"
+                                                data-form-name="{{ $form->name }}" class="dropdown-item">
+                                                <i class="ri-file-copy-2-line"></i>
+                                                <span>Duplicar</span>
+                                            </button>
+                                        @endcanany
+                                        @canany(['form_submissions.view', 'form_submissions.manage'])
+                                            <a href="{{ route('forms.submissions.index', $form) }}" class="dropdown-item">
+                                                <i class="ri-inbox-line"></i>
+                                                <span>Ver respuestas ({{ $form->submissions_count }})</span>
+                                            </a>
+                                        @endcanany
+
+                                        @canany(['forms.edit', 'forms.manage'])
+                                            <button type="button" data-toggle-form data-form-id="{{ $form->id }}"
+                                                data-active="{{ $form->is_active ? '1' : '0' }}" class="dropdown-item">
+                                                <i class="ri-{{ $form->is_active ? 'eye-off' : 'eye' }}-line"></i>
+                                                <span>{{ $form->is_active ? 'Desactivar' : 'Activar' }}</span>
+                                            </button>
+                                        @endcanany
+
+                                        @canany(['forms.delete', 'forms.manage'])
+                                            <button type="button" data-delete-form data-form-id="{{ $form->id }}"
+                                                data-form-name="{{ $form->name }}" class="dropdown-item-danger">
+                                                <i class="ri-archive-line"></i>
+                                                <span>Archivar</span>
+                                            </button>
+
+                                            @if ($form->submissions_count === 0)
+                                                <button type="button" data-force-delete data-form-id="{{ $form->id }}"
+                                                    data-form-name="{{ $form->name }}" class="dropdown-item-danger">
+                                                    <i class="ri-delete-bin-line"></i>
+                                                    <span>Eliminar</span>
+                                                </button>
+                                            @endif
+                                        @endcanany
+                                    @endif
                                 </div>
                             </div>
                         @endcanany

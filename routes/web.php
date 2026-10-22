@@ -705,7 +705,13 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/{form}', [FormController::class, 'show'])
             ->name('show')
+            ->withTrashed()
             ->middleware('can:forms.view,forms.manage');
+
+        Route::patch('/{form}/restore', [FormController::class, 'restore'])
+            ->name('restore')
+            ->withTrashed()
+            ->middleware('can:forms.delete,forms.manage');
 
         Route::post('/{form}/duplicate', [FormController::class, 'duplicate'])
             ->name('duplicate')
@@ -713,6 +719,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::delete('/{form}/permanent', [FormController::class, 'forceDestroy'])
             ->name('force-destroy')
+            ->withTrashed()
             ->middleware('can:forms.delete,forms.manage');
 
         Route::put('/{form}', [FormController::class, 'update'])

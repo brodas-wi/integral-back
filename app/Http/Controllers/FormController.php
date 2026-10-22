@@ -34,6 +34,7 @@ class FormController extends Controller
             })
             ->when($request->input('status') === 'active', fn ($query) => $query->where('is_active', true))
             ->when($request->input('status') === 'inactive', fn ($query) => $query->where('is_active', false))
+            ->when($request->input('status') === 'archived', fn ($query) => $query->onlyTrashed())
             ->latest('updated_at')
             ->paginate($perPage)
             ->withQueryString();
@@ -147,6 +148,17 @@ class FormController extends Controller
         ], 201);
     }
 
+    public function restore(Form $form): JsonResponse
+    {
+        $form->restore();
+        $form->forceFill(['is_active' => false, 'updated_by' => auth()->id()])->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Formulario restaurado. Está inactivo, actívalo cuando quieras publicarlo.',
+        ]);
+    }
+
     public function forceDestroy(Form $form): JsonResponse
     {
         $blocked = response()->json([
@@ -156,7 +168,7 @@ class FormController extends Controller
 
         try {
             $deleted = DB::transaction(function () use ($form) {
-                $locked = Form::query()->whereKey($form->id)->lockForUpdate()->firstOrFail();
+                $locked = Form::withTrashed()->whereKey($form->id)->lockForUpdate()->firstOrFail();
 
                 if ($locked->submissions()->withTrashed()->exists()) {
                     return false;

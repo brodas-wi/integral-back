@@ -5,8 +5,8 @@
 @section('page-title')
     <div class="flex items-center gap-3">
         <span>{{ $form->name }}</span>
-        <span class="badge {{ $form->is_active ? 'badge-success' : 'badge-warning' }}">
-            {{ $form->is_active ? 'Activo' : 'Inactivo' }}</span>
+        <span class="badge {{ $form->trashed() ? 'badge-gray' : ($form->is_active ? 'badge-success' : 'badge-warning') }}">
+            {{ $form->trashed() ? 'Archivado' : ($form->is_active ? 'Activo' : 'Inactivo') }}</span>
     </div>
 @endsection
 
@@ -22,10 +22,12 @@
         </a>
     @endcanany
     @canany(['forms.edit', 'forms.manage'])
-        <a href="{{ route('forms.edit', $form) }}" class="btn-primary btn-sm">
-            <i class="ri-edit-line mr-2"></i>
-            Editar
-        </a>
+        @unless ($form->trashed())
+            <a href="{{ route('forms.edit', $form) }}" class="btn-primary btn-sm">
+                <i class="ri-edit-line mr-2"></i>
+                Editar
+            </a>
+        @endunless
     @endcanany
 @endsection
 
@@ -35,14 +37,23 @@
     $notify = $settings['emails']['notify'] ?? [];
     $confirmation = $settings['emails']['confirmation'] ?? [];
     $thanks = $settings['thanks'] ?? [];
-    $select = collect($fields)->first(fn ($f) => $f['type'] === 'select' && !empty($f['options']));
+    $select = collect($fields)->first(fn($f) => $f['type'] === 'select' && !empty($f['options']));
     $exampleKey = $select['key'] ?? 'campo';
     $exampleValue = $select['options'][0]['value'] ?? 'valor';
 
     $snippets = [
         ['Botón con atributo', 'data-open-form="' . $form->slug . '"'],
         ['Enlace (sirve en el campo de URL de los bloques)', 'href="#form:' . $form->slug . '"'],
-        ['Con un campo preseleccionado', 'data-open-form="' . $form->slug . '" data-form-prefill=\'{"' . $exampleKey . '":"' . $exampleValue . '"}\''],
+        [
+            'Con un campo preseleccionado',
+            'data-open-form="' .
+            $form->slug .
+            '" data-form-prefill=\'{"' .
+            $exampleKey .
+            '":"' .
+            $exampleValue .
+            '"}\'',
+        ],
         ['Desde la URL de cualquier página', '?form=' . $form->slug . '&' . $exampleKey . '=' . $exampleValue],
     ];
 @endphp
@@ -53,17 +64,23 @@
             <div class="card space-y-2 text-sm">
                 <h3 class="text-base font-bold text-secondary mb-2">General</h3>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Slug</span>
-                    <span class="font-mono text-xs break-all text-right">{{ $form->slug }}</span></div>
+                    <span class="font-mono text-xs break-all text-right">{{ $form->slug }}</span>
+                </div>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Versión actual</span>
-                    <span class="font-semibold">v{{ $version?->version ?? '-' }}</span></div>
+                    <span class="font-semibold">v{{ $version?->version ?? '-' }}</span>
+                </div>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Campos</span>
-                    <span class="font-semibold">{{ count($fields) }}</span></div>
+                    <span class="font-semibold">{{ count($fields) }}</span>
+                </div>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Respuestas</span>
-                    <span class="font-semibold">{{ $submissionsCount }}</span></div>
+                    <span class="font-semibold">{{ $submissionsCount }}</span>
+                </div>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Creado</span>
-                    <span>{{ $form->created_at->format('d/m/Y H:i') }}</span></div>
+                    <span>{{ $form->created_at->format('d/m/Y H:i') }}</span>
+                </div>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Actualizado</span>
-                    <span>{{ $form->updated_at->format('d/m/Y H:i') }}</span></div>
+                    <span>{{ $form->updated_at->format('d/m/Y H:i') }}</span>
+                </div>
             </div>
 
             <div class="lg:col-span-2 card space-y-3">
@@ -119,11 +136,13 @@
                                         class="font-mono text-xs bg-gray-50 border border-gray-200 rounded-full px-2 py-1 hover:border-primary">{{ $field['key'] }}</button>
                                 </td>
                                 <td class="py-3 px-4">{{ $typeLabels[$field['type']] ?? $field['type'] }}</td>
-                                <td class="py-3 px-4">{{ ($field['required'] ?? false) ? 'Sí' : 'No' }}</td>
-                                <td class="py-3 px-4">{{ ($field['width'] ?? 'full') === 'half' ? 'Media fila' : 'Fila completa' }}</td>
+                                <td class="py-3 px-4">{{ $field['required'] ?? false ? 'Sí' : 'No' }}</td>
+                                <td class="py-3 px-4">
+                                    {{ ($field['width'] ?? 'full') === 'half' ? 'Media fila' : 'Fila completa' }}</td>
                                 <td class="py-3 px-4 text-xs text-gray-600 space-y-1">
                                     @foreach ($field['options'] ?? [] as $option)
-                                        <div><code class="bg-gray-50 border border-gray-200 rounded px-1">{{ $option['value'] }}</code>
+                                        <div><code
+                                                class="bg-gray-50 border border-gray-200 rounded px-1">{{ $option['value'] }}</code>
                                             {{ $option['label'] }}</div>
                                     @endforeach
                                     @isset($field['max_length'])
@@ -156,24 +175,30 @@
             <div class="card space-y-2 text-sm">
                 <h3 class="text-base font-bold text-secondary mb-2">Agradecimiento</h3>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Título</span>
-                    <span>{{ $thanks['title'] ?? '—' }}</span></div>
+                    <span>{{ $thanks['title'] ?? '—' }}</span>
+                </div>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Subtítulo</span>
-                    <span class="text-right">{{ $thanks['subtitle'] ?? '—' }}</span></div>
+                    <span class="text-right">{{ $thanks['subtitle'] ?? '—' }}</span>
+                </div>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Segundos</span>
-                    <span>{{ $thanks['seconds'] ?? '—' }}</span></div>
+                    <span>{{ $thanks['seconds'] ?? '—' }}</span>
+                </div>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Redirección</span>
-                    <span class="break-all text-right">{{ $thanks['redirect_url'] ?? 'Ninguna (cierra y limpia)' }}</span></div>
+                    <span class="break-all text-right">{{ $thanks['redirect_url'] ?? 'Ninguna (cierra y limpia)' }}</span>
+                </div>
             </div>
 
             <div class="card space-y-2 text-sm">
                 <h3 class="text-base font-bold text-secondary mb-2">Correos</h3>
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Aviso interno</span>
-                    <span>{{ ($notify['enabled'] ?? false) ? 'Activo' : 'Desactivado' }}</span></div>
+                    <span>{{ $notify['enabled'] ?? false ? 'Activo' : 'Desactivado' }}</span>
+                </div>
                 @if (!empty($notify['recipients']))
                     <div class="text-xs text-gray-600 break-all">{{ implode(', ', $notify['recipients']) }}</div>
                 @endif
                 <div class="flex justify-between gap-3"><span class="text-gray-600">Confirmación al usuario</span>
-                    <span>{{ ($confirmation['enabled'] ?? false) ? 'Activa' : 'Desactivada' }}</span></div>
+                    <span>{{ $confirmation['enabled'] ?? false ? 'Activa' : 'Desactivada' }}</span>
+                </div>
                 @if (!empty($confirmation['field_key']))
                     <div class="text-xs text-gray-600">Campo de correo: <code>{{ $confirmation['field_key'] }}</code></div>
                 @endif

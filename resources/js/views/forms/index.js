@@ -139,6 +139,17 @@ async function duplicateForm(id, name) {
     }
 }
 
+function confirmRestore(id, name) {
+    showConfirmModal({
+        title: "¿Restaurar formulario?",
+        message: `"${name}" volverá al listado, inactivo. Podrás activarlo cuando quieras.`,
+        confirmText: "Restaurar",
+        cancelText: "Cancelar",
+        type: "warning",
+        onConfirm: () => run("PATCH", `forms/${id}/restore`),
+    });
+}
+
 function confirmForceDelete(id, name) {
     showConfirmModal({
         title: "¿Eliminar formulario?",
@@ -151,6 +162,12 @@ function confirmForceDelete(id, name) {
 }
 
 document.addEventListener("click", async (event) => {
+    const restore = event.target.closest("[data-restore-form]");
+    if (restore) {
+        confirmRestore(restore.dataset.formId, restore.dataset.formName);
+        return;
+    }
+
     const duplicate = event.target.closest("[data-duplicate-form]");
     if (duplicate) {
         duplicateForm(duplicate.dataset.formId, duplicate.dataset.formName);
