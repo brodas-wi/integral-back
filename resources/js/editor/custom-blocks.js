@@ -14,7 +14,7 @@ import { iconLinksBlocks } from "./blocks/icon-links-blocks";
 import { iconCardsBlocks } from "./blocks/icon-cards-blocks";
 import { paymentChannelsBlocks } from "./blocks/payment-channels-blocks";
 import { assistanceCardsBlocks } from "./blocks/assistance-cards-blocks";
-import { promoCtaBlocks } from "./blocks/promo-cta-blocks";
+// import { promoCtaBlocks } from "./blocks/promo-cta-blocks";
 import { featureBlocks } from "./blocks/feature-blocks";
 import { tabsBlocks, initializeTabsBlocks } from "./blocks/tabs-blocks";
 import { splitContentBlocks } from "./blocks/split-content-blocks";
@@ -48,6 +48,7 @@ import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
 import { initializeDownloadsBlock } from "@/editor/blocks/downloads-blocks.js";
 import { initializeFaqBlock } from "@/editor/blocks/faq-blocks.js";
 import { initializeContactBlock } from "@/editor/blocks/contact-blocks.js";
+import { initializeTextButtonBlock } from "./text-button-blocks.js";
 import { initializeContactCardsBlock } from "@/editor/blocks/contact-cards-blocks.js";
 
 export function addCustomBlocks(editor) {
@@ -80,7 +81,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks([productBenefitsBlock, productBenefitsBlockRight]);
     blockRegistry.registerBlocks(ctaBlocks);
     blockRegistry.registerBlocks(documentDownloadBlocks);
-    blockRegistry.registerBlocks(promoCtaBlocks);
+    // blockRegistry.registerBlocks(promoCtaBlocks);
     blockRegistry.registerBlocks(featureBlocks);
     blockRegistry.registerBlocks(serviceCardsBlocks);
     blockRegistry.registerBlocks(contactInfoBlocks);
@@ -112,6 +113,7 @@ export function addCustomBlocks(editor) {
     initializeAssetsBlocks(editor);
     initializeFaqBlock(editor);
     initializeContactBlock(editor);
+    initializeTextButtonBlock(editor);
     initializeContactCardsBlock(editor);
 
     blockRegistry.reorderExistingBlocks(editor);
