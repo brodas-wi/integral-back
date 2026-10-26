@@ -1,5 +1,5 @@
 export const COMPONENT_TYPE = "faq-component";
-export const VERSION = 1;
+export const VERSION = 2;
 export const CONFIG_ATTR = "data-faq-config";
 export const VERSION_ATTR = "data-faq-version";
 export const LINE_STYLES = ["text", "short", "full"];
@@ -51,7 +51,15 @@ const FQ_CSS = `
 .fq-question{color:#003B71;font-weight:700;font-size:clamp(0.875rem,1.2vw,1rem);line-height:1.4;}
 .fq-arrow{flex-shrink:0;color:#14243D;font-size:1.5rem;line-height:1;transition:transform 0.2s ease;}
 .fq-item[open] .fq-arrow{transform:rotate(90deg);}
-.fq-answer{padding-bottom:1.25rem;padding-right:2.5rem;color:#14243D;font-size:0.9375rem;line-height:1.6;white-space:pre-line;}
+.fq-answer{padding-bottom:1.25rem;padding-right:2.5rem;color:#14243D;font-size:0.9375rem;line-height:1.6;}
+.fq-answer p{margin:0 0 0.75rem;}
+.fq-answer > :last-child{margin-bottom:0;}
+.fq-list{margin:0 0 0.75rem;padding-left:1.5rem;}
+.fq-list li{margin-bottom:0.25rem;}
+.fq-list .fq-list{margin-top:0.25rem;margin-bottom:0;}
+ul.fq-list{list-style-type:disc;}
+ul.fq-list ul.fq-list{list-style-type:circle;}
+ol.fq-list{list-style-type:decimal;}
 .fq-divider{width:100%;height:2px;background-color:#E97300;}
 @media(max-width:768px){
 .fq-title-col{flex:0 0 100%;max-width:100%;padding-top:0;}
@@ -77,6 +85,65 @@ export function escapeHtml(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;");
+}
+
+const LIST_LINE = /^(\s*)([-*•–]|\d+[.)])\s+(.+)$/;
+
+function renderList(items) {
+    let html = "";
+    const stack = [];
+    items.forEach((item) => {
+        const tag = item.ordered ? "ol" : "ul";
+        while (stack.length && item.indent < stack[stack.length - 1].indent) {
+            html += `</li></${stack.pop().tag}>`;
+        }
+        let top = stack[stack.length - 1];
+        if (top && item.indent === top.indent && top.tag !== tag) {
+            html += `</li></${stack.pop().tag}>`;
+            top = stack[stack.length - 1];
+        }
+        if (top && item.indent === top.indent) {
+            html += `</li><li>${item.text}`;
+        } else {
+            html += `<${tag} class="fq-list"><li>${item.text}`;
+            stack.push({ indent: item.indent, tag });
+        }
+    });
+    while (stack.length) html += `</li></${stack.pop().tag}>`;
+    return html;
+}
+
+export function renderAnswer(raw) {
+    const lines = String(raw ?? "").replace(/\r\n?/g, "\n").replace(/\t/g, "  ").split("\n");
+    let html = "";
+    let paragraph = [];
+    let list = [];
+    const flushParagraph = () => {
+        if (paragraph.length) html += `<p>${paragraph.join("<br>")}</p>`;
+        paragraph = [];
+    };
+    const flushList = () => {
+        if (list.length) html += renderList(list);
+        list = [];
+    };
+    lines.forEach((line) => {
+        if (!line.trim()) return flushParagraph();
+        const match = line.match(LIST_LINE);
+        if (match) {
+            flushParagraph();
+            list.push({
+                indent: match[1].length,
+                ordered: /\d/.test(match[2]),
+                text: escapeHtml(match[3].trim()),
+            });
+        } else {
+            flushList();
+            paragraph.push(escapeHtml(line.trim()));
+        }
+    });
+    flushParagraph();
+    flushList();
+    return html;
 }
 
 export function normalizeConfig(raw) {
@@ -105,7 +172,7 @@ export function readConfig(component) {
 
 function buildItemHTML(item, isLast) {
     const question = escapeHtml(item.question || "Pregunta");
-    const answer = escapeHtml(item.answer || "Respuesta.");
+    const answer = renderAnswer(item.answer || "Respuesta.");
     return `<details class="fq-item${isLast ? " fq-item-last" : ""}"><summary class="fq-summary"><span class="fq-question">${question}</span><i class="ri-arrow-right-s-line fq-arrow"></i></summary><div class="fq-answer">${answer}</div></details>`;
 }
 

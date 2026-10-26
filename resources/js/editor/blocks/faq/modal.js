@@ -48,6 +48,7 @@ const MODAL_CSS = `
 .fqm-input:focus{border-color:#003B71;}
 .fqm-textarea{min-height:4.5rem;resize:vertical;line-height:1.5;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent;}
 .fqm-hint{margin:0;font-size:0.75rem;color:#94a3b8;line-height:1.4;}
+.fqm-tools{display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-top:0.5rem;}
 .fqm-pill{display:inline-flex;align-items:center;justify-content:center;gap:0.375rem;padding-top:0.4rem;padding-right:0.875rem;padding-bottom:0.4rem;padding-left:0.875rem;border:2px solid transparent;border-radius:9999px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background 0.15s,color 0.15s,opacity 0.15s;align-self:flex-start;}
 .fqm-pill-primary{background:#003B71;color:#fff;}
 .fqm-pill-primary:hover{background:#002a52;}
@@ -111,6 +112,11 @@ function itemHTML(item, sIdx, iIdx, total) {
         <div>
             <label class="fqm-label">Respuesta</label>
             <textarea class="fqm-input fqm-textarea" placeholder="Escribe la respuesta" data-bind="${base}.answer">${esc(item.answer)}</textarea>
+            <div class="fqm-tools">
+                <button type="button" class="fqm-pill fqm-pill-soft" data-action="fmt-ul" title="Convertir las líneas seleccionadas en viñetas"><i class="ri-list-unordered"></i> Viñetas</button>
+                <button type="button" class="fqm-pill fqm-pill-soft" data-action="fmt-ol" title="Convertir las líneas seleccionadas en lista numerada"><i class="ri-list-ordered"></i> Numerada</button>
+            </div>
+            <p class="fqm-hint">Separa los párrafos con una línea en blanco. Para una sublista, deja dos espacios antes de la viñeta o el número.</p>
         </div>
     </div>`;
 }
@@ -208,6 +214,27 @@ function swap(list, idx, direction) {
     if (target < 0 || target >= list.length) return -1;
     [list[idx], list[target]] = [list[target], list[idx]];
     return target;
+}
+
+function formatLines(textarea, ordered) {
+    const { value, selectionStart, selectionEnd } = textarea;
+    const start = selectionStart === 0 ? 0 : value.lastIndexOf("\n", selectionStart - 1) + 1;
+    const nextBreak = value.indexOf("\n", selectionEnd);
+    const end = nextBreak === -1 ? value.length : nextBreak;
+    let count = 0;
+    const lines = value
+        .slice(start, end)
+        .split("\n")
+        .map((line) => {
+            if (!line.trim()) return line;
+            count += 1;
+            const clean = line.replace(/^(\s*)([-*•–]|\d+[.)])\s+/, "$1");
+            const indent = clean.match(/^\s*/)[0];
+            return `${indent}${ordered ? `${count}.` : "-"} ${clean.slice(indent.length)}`;
+        });
+    textarea.value = value.slice(0, start) + lines.join("\n") + value.slice(end);
+    textarea.dispatchEvent(new Event("input", { bubbles: true }));
+    textarea.focus();
 }
 
 function showFaqModal(editor, component) {
@@ -311,6 +338,8 @@ function showFaqModal(editor, component) {
         },
         "item-up": (el) => moveItem(el, -1),
         "item-down": (el) => moveItem(el, 1),
+        "fmt-ul": (el) => formatLines(el.closest("[data-item]").querySelector("textarea"), false),
+        "fmt-ol": (el) => formatLines(el.closest("[data-item]").querySelector("textarea"), true),
         backup: download,
         restore: () => fileInput.click(),
     };
