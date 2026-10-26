@@ -750,6 +750,10 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('can:form_submissions.view,form_submissions.manage');
     });
 
+    Route::get('/api/forms/options', [FormController::class, 'apiOptions'])
+        ->name('api.forms.options')
+        ->middleware('can:pages.edit,pages.manage');
+
     // ==========================================
     // SCRIPTS MODULE ROUTES
     // ==========================================

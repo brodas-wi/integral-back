@@ -58,10 +58,10 @@ function registerTypes(editor) {
                 traits: [
                     "id",
                     {
-                        type: "text",
+                        type: "select",
                         name: SLUG_TRAIT,
-                        label: "Formulario (slug)",
-                        placeholder: "contacto",
+                        label: "Formulario",
+                        options: [option("", "Cargando formularios…")],
                     },
                 ],
             },
@@ -171,10 +171,85 @@ function registerBlocks(editor) {
     );
 }
 
+const OPTIONS_TTL = 15000;
+let formsCache = { at: 0, forms: [] };
+let formsPending = null;
+
+function option(value, label) {
+    return { id: value, value, label, name: label };
+}
+
+function optionsUrl() {
+    return (
+        document.querySelector('meta[name="api-forms-options-url"]')?.content ||
+        "/api/forms/options"
+    );
+}
+
+function loadForms() {
+    if (Date.now() - formsCache.at < OPTIONS_TTL) return Promise.resolve(formsCache.forms);
+
+    formsPending ??= fetch(optionsUrl(), {
+        headers: { Accept: "application/json", "X-Requested-With": "XMLHttpRequest" },
+        credentials: "same-origin",
+    })
+        .then((response) => {
+            if (!response.ok) throw new Error(String(response.status));
+            return response.json();
+        })
+        .then((data) => {
+            formsCache = { at: Date.now(), forms: Array.isArray(data) ? data : [] };
+            return formsCache.forms;
+        })
+        .finally(() => {
+            formsPending = null;
+        });
+
+    return formsPending;
+}
+
+async function refreshFormTrait(editor, component) {
+    let forms = [];
+    let failed = false;
+
+    try {
+        forms = await loadForms();
+    } catch {
+        failed = true;
+    }
+
+    if (editor.getSelected() !== component) return;
+
+    const current = component.getAttributes()[SLUG_TRAIT] ?? "";
+    const options = [
+        option("", failed ? "No se pudo cargar la lista" : "Selecciona un formulario"),
+        ...forms.map((form) => option(form.slug, form.name)),
+    ];
+    if (current && !forms.some((form) => form.slug === current)) {
+        options.push(option(current, `${current} (no disponible)`));
+    }
+
+    const signature = JSON.stringify(options);
+    if (component.__infSignature === signature) return;
+    component.__infSignature = signature;
+
+    const index = component.getTraits().findIndex((trait) => trait.get("name") === SLUG_TRAIT);
+    component.removeTrait(SLUG_TRAIT);
+    component.addTrait(
+        { type: "select", name: SLUG_TRAIT, label: "Formulario", options },
+        { at: index < 0 ? 1 : index },
+    );
+}
+
 export function registerInlineFormCore(editor) {
     registerTypes(editor);
     registerLinkType(editor);
     registerBlocks(editor);
+
+    editor.on("component:selected", (component) => {
+        if (component?.get("type") === SECTION_TYPE) refreshFormTrait(editor, component);
+    });
+    editor.on("load", () => loadForms().catch(() => {}));
 
     editor.on("canvas:frame:load", ({ window: frameWindow }) =>
         injectCanvasStyle(frameWindow?.document),

@@ -20,6 +20,7 @@
     <meta name="map-locations-url" content="{{ route('api.map-locations') }}">
     <meta name="api-news-url" content="{{ route('api.news.active') }}">
     <meta name="api-news-categories-url" content="{{ route('api.news-categories.active') }}">
+    <meta name="api-forms-options-url" content="{{ route('api.forms.options') }}">
 
     <title>{{ isset($page) ? 'Editar: ' . $page->title : 'Nueva Página' }} - Editor</title>
 

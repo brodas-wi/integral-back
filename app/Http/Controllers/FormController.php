@@ -111,6 +111,19 @@ class FormController extends Controller
         ]);
     }
 
+    public function apiOptions(): JsonResponse
+    {
+        $forms = Form::query()
+            ->active()
+            ->whereNotNull('current_version_id')
+            ->orderBy('name')
+            ->get(['id', 'name', 'slug']);
+
+        return response()->json(
+            $forms->map(fn (Form $form) => ['slug' => $form->slug, 'name' => $form->name])->values()
+        );
+    }
+
     public function show(Form $form): View
     {
         $form->load('currentVersion');
