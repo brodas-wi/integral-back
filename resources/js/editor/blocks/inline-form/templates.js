@@ -23,7 +23,7 @@ const INF_CSS = `
 .inf-info-text{color:#003B71;font-size:0.8125rem;line-height:1.4;overflow-wrap:anywhere;}
 .inf-main{min-width:0;}
 .inf-card{box-sizing:border-box;padding-top:clamp(1.25rem,3vw,2rem);padding-right:clamp(1.25rem,3vw,2rem);padding-bottom:clamp(1.25rem,3vw,2rem);padding-left:clamp(1.25rem,3vw,2rem);border-radius:1.5rem;background-color:#fff;box-shadow:0 10px 40px rgba(0,59,113,0.1);}
-.inf-form{position:relative;min-width:0;}
+.inf-form{position:relative;min-width:0;min-height:8rem;}
 .inf-form .fo-form{margin:0;}
 .inf-form .fo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1.25rem;row-gap:1.125rem;}
 .inf-form .fo-field{display:flex;flex-direction:column;gap:0.375rem;width:auto;max-width:none;min-width:0;margin:0;}

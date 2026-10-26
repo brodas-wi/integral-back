@@ -43,6 +43,8 @@ function injectCanvasStyle(doc) {
     doc.head.appendChild(style);
 }
 
+const SLUG_TRAIT = "data-form-slug";
+
 function registerTypes(editor) {
     editor.DomComponents.addType(SECTION_TYPE, {
         isComponent: (el) =>
@@ -52,6 +54,24 @@ function registerTypes(editor) {
                 ...BASE_DEFAULTS,
                 name: "Sección con Formulario",
                 tagName: "section",
+                traits: [
+                    "id",
+                    {
+                        type: "text",
+                        name: SLUG_TRAIT,
+                        label: "Formulario (slug)",
+                        placeholder: "contacto",
+                    },
+                ],
+            },
+            init() {
+                this.on(`change:attributes:${SLUG_TRAIT}`, this.syncSlug);
+            },
+            syncSlug() {
+                const current = this.getAttributes()[SLUG_TRAIT] ?? "";
+                const slug = normalizeSlug(current);
+                if (slug !== current) this.addAttributes({ [SLUG_TRAIT]: slug });
+                this.findType(FORM_TYPE)[0]?.addAttributes({ [SLUG_ATTR]: slug });
             },
         },
     });
@@ -67,23 +87,8 @@ function registerTypes(editor) {
                 draggable: false,
                 removable: false,
                 copyable: false,
-                traits: [
-                    "id",
-                    {
-                        type: "text",
-                        name: SLUG_ATTR,
-                        label: "Formulario (slug)",
-                        placeholder: "contacto",
-                    },
-                ],
-            },
-            init() {
-                this.on(`change:attributes:${SLUG_ATTR}`, this.syncSlug);
-            },
-            syncSlug() {
-                const current = this.getAttributes()[SLUG_ATTR];
-                const clean = normalizeSlug(current);
-                if (clean !== current) this.addAttributes({ [SLUG_ATTR]: clean });
+                selectable: false,
+                hoverable: false,
             },
         },
     });
