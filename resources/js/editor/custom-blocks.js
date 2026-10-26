@@ -45,6 +45,7 @@ import { initializeHeroPagesBlock } from "@/editor/blocks/hero-pages-blocks";
 import { initializeOptionsBannerBlock } from "@/editor/blocks/options-banner-blocks";
 import { initializeFullBleedBannerBlock } from "@/editor/blocks/full-bleed-banner-blocks";
 import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
+import { initializeDownloadsBlock } from "@/editor/blocks/downloads-blocks.js";
 import { initializeFaqBlock } from "@/editor/blocks/faq-blocks.js";
 
 export function addCustomBlocks(editor) {
@@ -76,7 +77,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(productDetailBlocks);
     blockRegistry.registerBlocks([productBenefitsBlock, productBenefitsBlockRight]);
     blockRegistry.registerBlocks(ctaBlocks);
-    blockRegistry.registerBlocks(documentDownloadBlocks);
+    // blockRegistry.registerBlocks(documentDownloadBlocks);
     blockRegistry.registerBlocks(promoCtaBlocks);
     blockRegistry.registerBlocks(featureBlocks);
     blockRegistry.registerBlocks(serviceCardsBlocks);
@@ -104,7 +105,8 @@ export function addCustomBlocks(editor) {
     initializeTabsBlocks(editor);
     // initializeTableBlocks(editor);
     initializeCardTableBlocks(editor);
-    initializeDocumentDownloadBlocks(editor);
+    // initializeDocumentDownloadBlocks(editor);
+    initializeDownloadsBlock(editor);
     initializeAssetsBlocks(editor);
     initializeFaqBlock(editor);
 
