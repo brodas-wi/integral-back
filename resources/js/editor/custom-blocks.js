@@ -47,7 +47,7 @@ import { initializeFullBleedBannerBlock } from "@/editor/blocks/full-bleed-banne
 import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
 import { initializeDownloadsBlock } from "@/editor/blocks/downloads-blocks.js";
 import { initializeFaqBlock } from "@/editor/blocks/faq-blocks.js";
-import { initializeContactBlock } from "./contact-blocks.js";
+import { initializeContactBlock } from "@/editor/blocks/contact-blocks.js";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
