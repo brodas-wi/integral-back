@@ -45,7 +45,7 @@ import { initializeHeroPagesBlock } from "@/editor/blocks/hero-pages-blocks";
 import { initializeOptionsBannerBlock } from "@/editor/blocks/options-banner-blocks";
 import { initializeFullBleedBannerBlock } from "@/editor/blocks/full-bleed-banner-blocks";
 import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
-import { initializeFaqBlock } from "./faq-blocks.js";
+import { initializeFaqBlock } from "@/editor/blocks/faq-blocks.js";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
