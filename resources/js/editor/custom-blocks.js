@@ -77,7 +77,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(productDetailBlocks);
     blockRegistry.registerBlocks([productBenefitsBlock, productBenefitsBlockRight]);
     blockRegistry.registerBlocks(ctaBlocks);
-    // blockRegistry.registerBlocks(documentDownloadBlocks);
+    blockRegistry.registerBlocks(documentDownloadBlocks);
     blockRegistry.registerBlocks(promoCtaBlocks);
     blockRegistry.registerBlocks(featureBlocks);
     blockRegistry.registerBlocks(serviceCardsBlocks);
@@ -105,7 +105,7 @@ export function addCustomBlocks(editor) {
     initializeTabsBlocks(editor);
     // initializeTableBlocks(editor);
     initializeCardTableBlocks(editor);
-    // initializeDocumentDownloadBlocks(editor);
+    initializeDocumentDownloadBlocks(editor);
     initializeDownloadsBlock(editor);
     initializeAssetsBlocks(editor);
     initializeFaqBlock(editor);
