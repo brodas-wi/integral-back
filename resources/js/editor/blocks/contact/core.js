@@ -1,7 +1,7 @@
 export const SECTION_TYPE = "ct-section";
 export const BUTTON_TYPE = "ct-whatsapp";
 
-const CATEGORY = "Contenido";
+const CATEGORY = "Contacto";
 const DEFAULT_PHONE = "50322506090";
 
 const FIXED = 'data-gjs-removable="false" data-gjs-draggable="false" data-gjs-copyable="false"';
