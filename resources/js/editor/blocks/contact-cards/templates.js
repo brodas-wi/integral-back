@@ -1,6 +1,7 @@
+import { assetUrl } from "@/utils/url.js";
+
 export const SECTION_TYPE = "cc-section";
 export const CARD_TYPE = "cc-card";
-export const ICON_TYPE = "cc-icon";
 
 export const DEFAULT_CARD = {
     title: "Título de la tarjeta",
@@ -26,11 +27,6 @@ const LOCKED = `${FIXED} data-gjs-selectable="false" data-gjs-hoverable="false" 
 const ZONE = `${FIXED} data-gjs-droppable="true"`;
 const TEXT = `${FIXED} data-gjs-type="text"`;
 
-const PLACEHOLDER_SVG =
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>';
-
-export const PLACEHOLDER = `data:image/svg+xml,${encodeURIComponent(PLACEHOLDER_SVG)}`;
-
 const CC_CSS = `
 .cc-section{width:100%;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 .cc-container{width:100%;max-width:1600px;margin:0 auto;box-sizing:border-box;padding-top:clamp(1.5rem,4vw,3.5rem);padding-right:clamp(1.5rem,4vw,3.5rem);padding-bottom:clamp(1.5rem,4vw,3.5rem);padding-left:clamp(1.5rem,4vw,3.5rem);}
@@ -39,7 +35,8 @@ const CC_CSS = `
 .cc-subtitle{margin:0.5rem 0 0;color:#003B71;font-weight:400;font-size:clamp(0.875rem,1.3vw,1rem);line-height:1.6;}
 .cc-line{height:2px;margin-top:1rem;background-color:#E97300;}
 .cc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.5rem);}
-.cc-card{display:flex;flex-direction:column;align-items:center;gap:0.75rem;box-sizing:border-box;padding-top:2rem;padding-right:1.25rem;padding-bottom:2rem;padding-left:1.25rem;border-radius:1.25rem;background-color:#fff;box-shadow:0 6px 24px rgba(0,59,113,0.1);text-align:center;}
+.cc-card{display:flex;flex-direction:column;align-items:center;gap:0.75rem;box-sizing:border-box;padding-top:2rem;padding-right:1.25rem;padding-bottom:2rem;padding-left:1.25rem;border-radius:1.25rem;background-color:#fff;box-shadow:0 6px 24px rgba(0,59,113,0.1);text-align:center;transition:transform 0.25s ease,box-shadow 0.25s ease;}
+.cc-card:hover{transform:translateY(-6px);box-shadow:0 14px 34px rgba(0,59,113,0.18);}
 .cc-card-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:4.5rem;height:4.5rem;margin-bottom:0.5rem;border-radius:9999px;background-color:#E97300;}
 .cc-card-img{display:block;width:2.25rem;height:2.25rem;object-fit:contain;}
 .cc-card-title{margin:0;color:#003B71;font-weight:600;font-size:clamp(1rem,1.4vw,1.125rem);line-height:1.3;}
@@ -49,6 +46,10 @@ const CC_CSS = `
 }
 @media(max-width:640px){
 .cc-grid{grid-template-columns:minmax(0,1fr);}
+}
+@media(prefers-reduced-motion:reduce){
+.cc-card{transition:none;}
+.cc-card:hover{transform:none;}
 }
 `;
 
@@ -85,7 +86,7 @@ export function escapeHtml(value) {
 }
 
 export function buildCard(card = DEFAULT_CARD) {
-    return `<div class="cc-card" data-gjs-type="${CARD_TYPE}"><div class="cc-card-icon" ${SHELL}><img class="cc-card-img" src="${PLACEHOLDER}" alt="" data-gjs-type="${ICON_TYPE}" ${FIXED}></div><h3 class="cc-card-title" ${TEXT}>${escapeHtml(card.title)}</h3><p class="cc-card-desc" ${TEXT}>${escapeHtml(card.desc)}</p></div>`;
+    return `<div class="cc-card" data-gjs-type="${CARD_TYPE}"><div class="cc-card-icon" ${SHELL}><img class="cc-card-img" src="${escapeHtml(assetUrl("images/placeholder.svg"))}" alt="" ${FIXED}></div><h3 class="cc-card-title" ${TEXT}>${escapeHtml(card.title)}</h3><p class="cc-card-desc" ${TEXT}>${escapeHtml(card.desc)}</p></div>`;
 }
 
 export function buildSection(data = DEFAULT_SECTION) {
