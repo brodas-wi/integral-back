@@ -27,7 +27,8 @@ import { initializeIconCardsGridBlock } from "@/editor/blocks/icon-cards-grid-bl
 import { financingBlocks } from "./blocks/financing-blocks";
 import { initializeNewsGridBlocks } from "./blocks/news-grid-blocks";
 import { initializeBarChartBlock, initializeBarChartSectionBlock } from "@/editor/blocks/bar-chart-blocks";
-import { formBlocks } from "./blocks/form-blocks";
+// import { formBlocks } from "./blocks/form-blocks";
+import { initializeInlineFormBlock } from "@/editor/blocks/inline-form-blocks.js";
 import { tableBlocks, initializeTableBlocks } from "./blocks/table-blocks";
 import { cardTableBlocks, initializeCardTableBlocks } from "./blocks/card-table-blocks";
 import { buttonBlocks, initializeButtonBlocks } from "./blocks/button-blocks";
@@ -86,7 +87,8 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(serviceCardsBlocks);
     blockRegistry.registerBlocks(contactInfoBlocks);
     blockRegistry.registerBlocks(richListBlocks);
-    blockRegistry.registerBlocks(formBlocks);
+    // blockRegistry.registerBlocks(formBlocks);
+    initializeInlineFormBlock(editor);
     blockRegistry.registerBlocks(mapFilterBlocks);
     blockRegistry.registerBlocks(iconLinksBlocks);
     // blockRegistry.registerBlocks(tableBlocks);
