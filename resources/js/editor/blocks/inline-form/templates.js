@@ -1,5 +1,6 @@
 export const SECTION_TYPE = "inf-section";
 export const FORM_TYPE = "inf-form";
+export const LINK_TYPE = "inf-link";
 
 const FIXED = 'data-gjs-removable="false" data-gjs-draggable="false" data-gjs-copyable="false"';
 const SHELL = `${FIXED} data-gjs-droppable="false" data-gjs-selectable="false" data-gjs-hoverable="false"`;
@@ -18,7 +19,9 @@ const INF_CSS = `
 .inf-info{display:flex;flex-direction:column;gap:0.75rem;box-sizing:border-box;padding-top:1.25rem;padding-right:1.25rem;padding-bottom:1.25rem;padding-left:1.25rem;border-radius:1rem;background-color:#F1F5F9;}
 .inf-info-title{margin:0;color:#003B71;font-weight:700;font-size:0.9375rem;line-height:1.3;}
 .inf-info-list{margin:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:0.625rem;}
-.inf-info-item{display:flex;align-items:center;gap:0.625rem;}
+.inf-info-link{display:flex;align-items:center;gap:0.625rem;color:#003B71;text-decoration:none;}
+.inf-info-link:hover .inf-info-text{text-decoration:underline;}
+.inf-info-link:focus-visible{outline:2px solid #E97300;outline-offset:2px;border-radius:0.25rem;}
 .inf-info-icon{flex-shrink:0;color:#E97300;font-size:1.125rem;line-height:1;}
 .inf-info-text{color:#003B71;font-size:0.8125rem;line-height:1.4;overflow-wrap:anywhere;}
 .inf-main{min-width:0;}
@@ -101,11 +104,13 @@ ${fieldIcon(8, 6.5, 16)}${fieldIcon(8, 11.5, 7.6)}${fieldIcon(16.4, 11.5, 7.6)}$
 <rect x="16" y="25.2" width="8" height="2.2" rx="1.1" fill="#E97300"/>`),
 };
 
-const infoItem = (icon, text) =>
-    `<li class="inf-info-item" ${SHELL}><i class="${icon} inf-info-icon" ${LOCKED}></i><span class="inf-info-text" ${TEXT}>${text}</span></li>`;
+const infoItem = (icon, text, href, newTab = false) => {
+    const target = newTab ? ` target="_blank" rel="noopener noreferrer"` : "";
+    return `<li class="inf-info-item" ${SHELL}><a class="inf-info-link" href="${href}"${target} data-gjs-type="${LINK_TYPE}" ${FIXED}><i class="${icon} inf-info-icon" ${LOCKED}></i><span class="inf-info-text" ${TEXT}>${text}</span></a></li>`;
+};
 
 const aside = () =>
-    `<div class="inf-aside" ${SHELL}><h2 class="inf-title" ${TEXT}>Contáctanos</h2><p class="inf-desc" ${TEXT}>Favor completa el formulario con la información en los campos correspondientes y con gusto nos contactaremos contigo.</p><div class="inf-line" ${LOCKED}></div><div class="inf-info" ${SHELL}><h3 class="inf-info-title" ${TEXT}>También puedes escribirnos</h3><ul class="inf-info-list" ${SHELL}>${infoItem("ri-phone-line", "Call Center: 2250-6090")}${infoItem("ri-whatsapp-line", "WhatsApp: 2250-6090")}${infoItem("ri-mail-line", "servicio.cliente@bancointegral.com")}</ul></div></div>`;
+    `<div class="inf-aside" ${SHELL}><h2 class="inf-title" ${TEXT}>Contáctanos</h2><p class="inf-desc" ${TEXT}>Favor completa el formulario con la información en los campos correspondientes y con gusto nos contactaremos contigo.</p><div class="inf-line" ${LOCKED}></div><div class="inf-info" ${SHELL}><h3 class="inf-info-title" ${TEXT}>También puedes escribirnos</h3><ul class="inf-info-list" ${SHELL}>${infoItem("ri-phone-line", "Call Center: 2250-6090", "tel:+50322506090")}${infoItem("ri-whatsapp-line", "WhatsApp: 2250-6090", "https://wa.me/50322506090", true)}${infoItem("ri-mail-line", "servicio.cliente@bancointegral.com", "mailto:servicio.cliente@bancointegral.com")}</ul></div></div>`;
 
 const formSlot = () =>
     `<div class="inf-main" ${SHELL}><div class="inf-card" ${SHELL}><div class="inf-form" data-inline-form="" data-gjs-type="${FORM_TYPE}" ${FIXED} data-gjs-droppable="false"></div></div></div>`;

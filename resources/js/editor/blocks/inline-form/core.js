@@ -1,6 +1,7 @@
 import {
     FORM_TYPE,
     ICONS,
+    LINK_TYPE,
     SECTION_TYPE,
     STYLES,
     buildContactSection,
@@ -94,6 +95,61 @@ function registerTypes(editor) {
     });
 }
 
+const SCHEME = /^[a-z][a-z0-9+.-]*:/i;
+const SAFE_SCHEME = /^(https?:|mailto:|tel:)/i;
+
+function isSafeHref(value) {
+    const url = String(value ?? "").trim();
+    return !SCHEME.test(url) || SAFE_SCHEME.test(url);
+}
+
+function registerLinkType(editor) {
+    editor.DomComponents.addType(LINK_TYPE, {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === LINK_TYPE ? { type: LINK_TYPE } : false,
+        model: {
+            defaults: {
+                ...BASE_DEFAULTS,
+                name: "Enlace de Contacto",
+                tagName: "a",
+                draggable: false,
+                removable: false,
+                copyable: false,
+                traits: [
+                    "id",
+                    {
+                        type: "text",
+                        name: "href",
+                        label: "Enlace (URL)",
+                        placeholder: "tel:+503..., mailto:..., https://...",
+                    },
+                    {
+                        type: "checkbox",
+                        name: "target",
+                        label: "Abrir en nueva pestaña",
+                        valueTrue: "_blank",
+                        valueFalse: "",
+                    },
+                ],
+            },
+            init() {
+                this.on("change:attributes:href", this.sanitizeHref);
+                this.on("change:attributes:target", this.syncRel);
+            },
+            sanitizeHref() {
+                if (!isSafeHref(this.getAttributes().href)) this.addAttributes({ href: "#" });
+            },
+            syncRel() {
+                if (this.getAttributes().target === "_blank") {
+                    this.addAttributes({ rel: "noopener noreferrer" });
+                } else {
+                    this.removeAttributes("rel");
+                }
+            },
+        },
+    });
+}
+
 function registerBlocks(editor) {
     const blocks = [
         {
@@ -117,6 +173,7 @@ function registerBlocks(editor) {
 
 export function registerInlineFormCore(editor) {
     registerTypes(editor);
+    registerLinkType(editor);
     registerBlocks(editor);
 
     editor.on("canvas:frame:load", ({ window: frameWindow }) =>
