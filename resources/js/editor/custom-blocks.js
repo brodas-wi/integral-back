@@ -48,6 +48,7 @@ import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
 import { initializeDownloadsBlock } from "@/editor/blocks/downloads-blocks.js";
 import { initializeFaqBlock } from "@/editor/blocks/faq-blocks.js";
 import { initializeContactBlock } from "@/editor/blocks/contact-blocks.js";
+import { initializeContactCardsBlock } from "@/editor/blocks/contact-cards-blocks.js";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
@@ -111,6 +112,7 @@ export function addCustomBlocks(editor) {
     initializeAssetsBlocks(editor);
     initializeFaqBlock(editor);
     initializeContactBlock(editor);
+    initializeContactCardsBlock(editor);
 
     blockRegistry.reorderExistingBlocks(editor);
 }
