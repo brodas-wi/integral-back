@@ -48,7 +48,7 @@ import { initializeWideBannerBlock } from "@/editor/blocks/wide-banner-blocks";
 import { initializeDownloadsBlock } from "@/editor/blocks/downloads-blocks.js";
 import { initializeFaqBlock } from "@/editor/blocks/faq-blocks.js";
 import { initializeContactBlock } from "@/editor/blocks/contact-blocks.js";
-import { initializeTextButtonBlock } from "./text-button-blocks.js";
+import { initializeTextButtonBlock } from "@/editor/blocks/text-button-blocks.js";
 import { initializeContactCardsBlock } from "@/editor/blocks/contact-cards-blocks.js";
 
 export function addCustomBlocks(editor) {
