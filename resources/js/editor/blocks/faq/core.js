@@ -1,5 +1,5 @@
 export const COMPONENT_TYPE = "faq-component";
-export const VERSION = 2;
+export const VERSION = 3;
 export const CONFIG_ATTR = "data-faq-config";
 export const VERSION_ATTR = "data-faq-version";
 export const LINE_STYLES = ["text", "short", "full"];
@@ -51,7 +51,7 @@ const FQ_CSS = `
 .fq-question{color:#003B71;font-weight:700;font-size:clamp(0.875rem,1.2vw,1rem);line-height:1.4;}
 .fq-arrow{flex-shrink:0;color:#14243D;font-size:1.5rem;line-height:1;transition:transform 0.2s ease;}
 .fq-item[open] .fq-arrow{transform:rotate(90deg);}
-.fq-answer{padding-bottom:1.25rem;padding-right:2.5rem;color:#14243D;font-size:0.9375rem;line-height:1.6;}
+.fq-answer{padding-bottom:1.25rem;padding-right:2.5rem;color:#003B71;font-size:0.9375rem;line-height:1.6;}
 .fq-answer p{margin:0 0 0.75rem;}
 .fq-answer > :last-child{margin-bottom:0;}
 .fq-list{margin:0 0 0.75rem;padding-left:1.5rem;}
