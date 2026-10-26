@@ -63,10 +63,15 @@ const INF_CSS = `
 .inf-form .fo-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;}
 .inf-form .fo-state{display:flex;flex-direction:column;align-items:center;gap:0.75rem;padding-top:2rem;padding-bottom:2rem;color:#003B71;font-size:0.875rem;text-align:center;}
 .inf-form .fo-state p{margin:0;}
-.inf-form .fo-spinner{display:none;}
-.inf-thanks{display:flex;flex-direction:column;align-items:center;gap:0.5rem;padding-top:2.5rem;padding-right:1rem;padding-bottom:2.5rem;padding-left:1rem;text-align:center;}
-.inf-thanks-title{margin:0;color:#003B71;font-weight:700;font-size:1.25rem;line-height:1.3;}
-.inf-thanks-sub{margin:0;color:#003B71;font-size:0.9375rem;line-height:1.5;}
+.inf-form .inf-content{transition:opacity 0.3s ease,filter 0.3s ease;}
+.inf-form .fo-state[role="status"]{min-height:8rem;justify-content:center;padding-top:0;padding-bottom:0;}
+.inf-form .fo-state[role="status"] p{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
+.inf-form .fo-state .fo-spinner{display:block;box-sizing:border-box;width:2.75rem;height:2.75rem;border:3px solid rgba(0,59,113,0.12);border-top-color:#E97300;border-radius:9999px;animation:fo-spin 0.8s linear infinite;}
+.inf-form.inf-done .inf-content{opacity:0.3;filter:blur(1.5px);pointer-events:none;user-select:none;}
+.inf-form .inf-thanks{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;box-sizing:border-box;padding-top:1.5rem;padding-right:1.5rem;padding-bottom:1.5rem;padding-left:1.5rem;text-align:center;}
+.inf-form .inf-thanks p{margin:0;}
+.inf-form .inf-thanks-title{color:#E97300;font-weight:800;font-size:clamp(1.75rem,5vw,2.5rem);line-height:1.2;}
+.inf-form .inf-thanks-sub{max-width:28rem;color:#E97300;font-weight:700;font-size:clamp(1rem,2vw,1.25rem);line-height:1.4;}
 @media(max-width:992px){
 .inf-container{grid-template-columns:minmax(0,1fr);}
 }
@@ -75,7 +80,8 @@ const INF_CSS = `
 .inf-form .fo-submit{width:100%;}
 }
 @media(prefers-reduced-motion:reduce){
-.inf-form .fo-input,.inf-form .fo-textarea,.inf-form .fo-select select,.inf-form .fo-submit{transition:none;}
+.inf-form .fo-input,.inf-form .fo-textarea,.inf-form .fo-select select,.inf-form .fo-submit,.inf-form .inf-content{transition:none;}
+.inf-form .fo-state .fo-spinner{animation-duration:2.4s;}
 }
 `;
 
