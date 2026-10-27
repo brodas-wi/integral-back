@@ -98,8 +98,8 @@
         <div class="card space-y-4">
             <div>
                 <h3 class="text-base font-bold text-secondary">Campos</h3>
-                <p class="text-xs text-gray-500 mt-1">Editor temporal en JSON. El constructor visual con flechas de subir y
-                    bajar llega en la siguiente fase.</p>
+                {{-- <p class="text-xs text-gray-500 mt-1">Editor temporal en JSON. El constructor visual con flechas de subir y
+                    bajar llega en la siguiente fase.</p> --}}
             </div>
 
             <textarea id="f-fields-json" rows="18" spellcheck="false"

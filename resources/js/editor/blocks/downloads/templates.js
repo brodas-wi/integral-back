@@ -36,6 +36,7 @@ const SHELL = `${FIXED} data-gjs-droppable="false"`;
 const ZONE = `${FIXED} data-gjs-droppable="true"`;
 const LOCKED = `${FIXED} data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-editable="false"`;
 const TEXT = `${FIXED} data-gjs-type="text"`;
+const TEXT_REMOVABLE = 'data-gjs-type="text" data-gjs-draggable="false" data-gjs-copyable="false"';
 
 const DL_CSS = `
 .dl-section{width:100%;box-sizing:border-box;font-family:'Poppins',sans-serif;}
@@ -115,7 +116,7 @@ export function buildFile(file = DEFAULT_FILE) {
 }
 
 export function buildItem(item = { subtitle: "Nombre del subtítulo", files: [DEFAULT_FILE] }) {
-    return `<div class="dl-item" data-gjs-type="${ITEM_TYPE}"><h3 class="dl-subtitle" ${TEXT}>${escapeHtml(item.subtitle)}</h3><div class="dl-files" ${ZONE}>${item.files.map((file) => buildFile(file)).join("")}</div></div>`;
+    return `<div class="dl-item" data-gjs-type="${ITEM_TYPE}"><h3 class="dl-subtitle" ${TEXT_REMOVABLE}>${escapeHtml(item.subtitle)}</h3><div class="dl-files" ${ZONE}>${item.files.map((file) => buildFile(file)).join("")}</div></div>`;
 }
 
 export function buildSection(data = DEFAULT_SECTION) {
