@@ -54,6 +54,7 @@ import { initializeContactCardsBlock } from "@/editor/blocks/contact-cards-block
 import { initializeTitleSectionBlock } from "@/editor/blocks/title-section-blocks.js";
 import { initializeInfoPanelsBlock } from "@/editor/blocks/info-panels-blocks.js";
 import { initializeHighlightBoxBlock } from "@/editor/blocks/highlight-box-blocks.js";
+import { initializeOfficialChannelsBlock } from "@/editor/blocks/official-channels-blocks.js";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
@@ -123,6 +124,7 @@ export function addCustomBlocks(editor) {
     initializeTitleSectionBlock(editor);
     initializeInfoPanelsBlock(editor);
     initializeHighlightBoxBlock(editor);
+    initializeOfficialChannelsBlock(editor);
 
     blockRegistry.reorderExistingBlocks(editor);
 }
