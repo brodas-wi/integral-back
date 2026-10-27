@@ -16,7 +16,7 @@ import { paymentChannelsBlocks } from "./blocks/payment-channels-blocks";
 import { assistanceCardsBlocks } from "./blocks/assistance-cards-blocks";
 // import { promoCtaBlocks } from "./blocks/promo-cta-blocks";
 import { featureBlocks } from "./blocks/feature-blocks";
-import { tabsBlocks, initializeTabsBlocks } from "./blocks/tabs-blocks";
+// import { tabsBlocks, initializeTabsBlocks } from "./blocks/tabs-blocks";
 import { splitContentBlocks } from "./blocks/split-content-blocks";
 import { serviceCardsBlocks } from "./blocks/service-cards-blocks";
 import { contactInfoBlocks } from "./blocks/contact-info-blocks";
@@ -29,7 +29,7 @@ import { initializeNewsGridBlocks } from "./blocks/news-grid-blocks";
 import { initializeBarChartBlock, initializeBarChartSectionBlock } from "@/editor/blocks/bar-chart-blocks";
 // import { formBlocks } from "./blocks/form-blocks";
 import { initializeInlineFormBlock } from "@/editor/blocks/inline-form-blocks.js";
-import { tableBlocks, initializeTableBlocks } from "./blocks/table-blocks";
+// import { tableBlocks, initializeTableBlocks } from "./blocks/table-blocks";
 import { cardTableBlocks, initializeCardTableBlocks } from "./blocks/card-table-blocks";
 import { buttonBlocks, initializeButtonBlocks } from "./blocks/button-blocks";
 import { badgeBlocks } from "./blocks/badge-blocks";
@@ -79,7 +79,7 @@ export function addCustomBlocks(editor) {
     initializeOptionsBannerBlock(editor);
     initializeFullImageBlock(editor);
 
-    blockRegistry.registerBlocks(tabsBlocks);
+    // blockRegistry.registerBlocks(tabsBlocks);
     blockRegistry.registerBlocks(aboutBlocks);
     blockRegistry.registerBlocks(missionVisionBlocks);
     blockRegistry.registerBlocks(productLinkCardsBlocks);
