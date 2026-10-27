@@ -127,6 +127,11 @@
                         <li><code>text</code>: en consentimiento, el texto que se acepta. En nota informativa, el texto gris
                             que se muestra (no captura datos, no requiere etiqueta).</li>
                         <li><code>department_label</code> y <code>municipality_label</code>: en ubicación.</li>
+                        <li>Enlaces en el consentimiento: escribe <code>[texto](/ruta)</code> dentro de <code>text</code>,
+                            por ejemplo <code>[Política de Privacidad](/politica-de-privacidad)</code>. Se abre en una
+                            pestaña nueva. Máximo 5 enlaces, con ruta que empiece con <code>/</code> o <code>https://</code>.</li>
+                        <li>Lista de agencias (<code>agency</code>): no lleva <code>options</code>. Muestra las agencias
+                            activas y se actualiza sola.</li>
                     </ul>
                     <p class="text-xs font-semibold">Tipos disponibles:</p>
                     <div class="flex flex-wrap gap-2">

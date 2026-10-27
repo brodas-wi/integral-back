@@ -18,6 +18,7 @@ enum FormFieldType: string
     case CheckboxGroup = 'checkbox_group';
     case Consent = 'consent';
     case Location = 'location';
+    case Agency = 'agency';
     case Note = 'note';
 
     public function label(): string
@@ -37,6 +38,7 @@ enum FormFieldType: string
             self::CheckboxGroup => 'Casillas de selección',
             self::Consent => 'Consentimiento',
             self::Location => 'Departamento y municipio',
+            self::Agency => 'Lista de agencias',
             self::Note => 'Nota informativa',
         };
     }

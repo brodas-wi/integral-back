@@ -158,7 +158,10 @@
                                         <div>Verifica dígito del DUI</div>
                                     @endif
                                     @if (!empty($field['text']))
-                                        <div>{{ $field['text'] }}</div>
+                                        <div>{{ preg_replace('/\[([^\]]*)\]\([^)]*\)/u', '$1', $field['text']) }}</div>
+                                    @endif
+                                    @if ($field['type'] === 'agency')
+                                        <div>Opciones: agencias activas (automático)</div>
                                     @endif
                                     @if (!empty($field['help']))
                                         <div>Ayuda: {{ $field['help'] }}</div>

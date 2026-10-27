@@ -11,6 +11,7 @@ class FormSchemaNormalizer
     public const MAX_FIELDS = 40;
     public const MAX_OPTIONS = 50;
     public const MAX_RECIPIENTS = 10;
+    public const MAX_LINKS = 5;
     public const RESERVED_VARIABLES = ['form_title', 'submission_id', 'date'];
 
     private array $errors = [];
@@ -155,7 +156,7 @@ class FormSchemaNormalizer
                 'options' => $this->normalizeOptions($raw['options'] ?? null, $path),
             ],
             FormFieldType::Consent => [
-                'text' => $this->string($raw['text'] ?? null, "{$path}.text", 1000, true, 'El texto de consentimiento'),
+                'text' => $this->consentText($raw['text'] ?? null, "{$path}.text"),
             ],
             FormFieldType::Note => [
                 'text' => $this->string($raw['text'] ?? null, "{$path}.text", 2000, true, 'El texto de la nota'),
@@ -166,6 +167,37 @@ class FormSchemaNormalizer
             ],
             default => [],
         };
+    }
+
+    private function consentText(mixed $value, string $path): string
+    {
+        $text = $this->string($value, $path, 1000, true, 'El texto de consentimiento');
+
+        preg_match_all('/\[([^\]]*)\]\(([^)]*)\)/u', $text, $matches, PREG_SET_ORDER);
+
+        if (count($matches) > self::MAX_LINKS) {
+            $this->fail($path, 'El texto admite como máximo ' . self::MAX_LINKS . ' enlaces.');
+        }
+
+        foreach ($matches as [$full, $label, $url]) {
+            if (trim($label) === '') {
+                $this->fail($path, "El enlace «{$full}» no tiene texto.");
+            }
+
+            if (!$this->isLinkUrl(trim($url))) {
+                $this->fail($path, "La dirección del enlace «{$label}» debe empezar con / o con http(s)://.");
+            }
+        }
+
+        return $text;
+    }
+
+    private function isLinkUrl(string $url): bool
+    {
+        $isRelative = str_starts_with($url, '/') && !str_starts_with($url, '//');
+        $isAbsolute = filter_var($url, FILTER_VALIDATE_URL) && preg_match('/^https?:\/\//i', $url);
+
+        return mb_strlen($url) <= 2048 && ($isRelative || $isAbsolute);
     }
 
     private function rangeSettings(array $raw, string $path, bool $decimal): array
