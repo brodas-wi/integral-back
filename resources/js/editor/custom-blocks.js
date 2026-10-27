@@ -51,6 +51,8 @@ import { initializeFaqBlock } from "@/editor/blocks/faq-blocks.js";
 import { initializeContactBlock } from "@/editor/blocks/contact-blocks.js";
 import { initializeTextButtonBlock } from "@/editor/blocks/text-button-blocks.js";
 import { initializeContactCardsBlock } from "@/editor/blocks/contact-cards-blocks.js";
+import { initializeTitleSectionBlock } from "@/editor/blocks/title-section-blocks.js";
+import { initializeInfoPanelsBlock } from "@/editor/blocks/info-panels-blocks.js";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
@@ -117,6 +119,8 @@ export function addCustomBlocks(editor) {
     initializeContactBlock(editor);
     initializeTextButtonBlock(editor);
     initializeContactCardsBlock(editor);
+    initializeTitleSectionBlock(editor);
+    initializeInfoPanelsBlock(editor);
 
     blockRegistry.reorderExistingBlocks(editor);
 }
