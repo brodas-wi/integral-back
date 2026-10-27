@@ -24,14 +24,12 @@ export const DEFAULT_DATA = {
     ],
 };
 
-const FIXED = 'data-gjs-removable="false" data-gjs-draggable="false" data-gjs-copyable="false"';
-const HIDDEN = 'data-gjs-selectable="false" data-gjs-hoverable="false"';
-const SHELL = `${FIXED} data-gjs-droppable="false" ${HIDDEN}`;
-const GROUPS = `${FIXED} data-gjs-droppable=".ts-group" ${HIDDEN}`;
-const TITLE_COL = `${FIXED} data-gjs-droppable=".ts-title,.ts-line" ${HIDDEN}`;
-const BODY = `${FIXED} data-gjs-droppable=".ts-para,.ts-list" ${HIDDEN}`;
-const IN_TITLE_COL = 'data-gjs-draggable=".ts-title-col"';
-const IN_BODY = 'data-gjs-draggable=".ts-body"';
+const SHELL = "";
+const GROUPS = "";
+const TITLE_COL = "";
+const BODY = "";
+const IN_TITLE_COL = "";
+const IN_BODY = "";
 
 const TS_CSS = `
 .ts-section{width:100%;box-sizing:border-box;font-family:'Poppins',sans-serif;}

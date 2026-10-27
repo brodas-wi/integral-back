@@ -64,27 +64,41 @@ function registerTypes(editor) {
     registerBase(editor, GROUP_TYPE, {
         name: "Sección de Texto",
         tagName: "div",
-        draggable: ".ts-groups",
     });
 
     registerTextType(editor, PARA_TYPE, {
         name: "Párrafo de Sección",
         tagName: "p",
-        draggable: ".ts-body",
     });
 
     registerBase(editor, LIST_TYPE, {
         name: "Lista de Sección",
         tagName: "ul",
-        draggable: ".ts-body",
-        droppable: ".ts-item",
+        droppable: true,
     });
 
     registerTextType(editor, ITEM_TYPE, {
         name: "Ítem de Lista",
         tagName: "li",
-        draggable: ".ts-list",
     });
+}
+
+const LEGACY_CLASS = /^ts-(section|container|groups|group|title-col|title|line|body|para|list|item)$/;
+const DROP_CLASS = /^ts-(container|groups|title-col|body|list)$/;
+const FREE = {
+    draggable: true,
+    removable: true,
+    copyable: true,
+    selectable: true,
+    hoverable: true,
+    layerable: true,
+};
+
+function releaseLegacy(component) {
+    const classes = (component.getClasses?.() ?? []).map(String);
+    if (!classes.some((name) => LEGACY_CLASS.test(name))) return;
+    const droppable = classes.some((name) => DROP_CLASS.test(name));
+    component.set(droppable ? { ...FREE, droppable: true } : FREE, { silent: true });
 }
 
 function registerBlocks(editor) {
@@ -109,19 +123,19 @@ function registerBlocks(editor) {
         },
         {
             id: "text-sections-bullets-block",
-            label: "Lista con Viñetas",
+            label: "Lista con Viñetas de Sección",
             media: ICONS.bullets,
             content: buildList(false),
         },
         {
             id: "text-sections-numbered-block",
-            label: "Lista Numerada",
+            label: "Lista Numerada de Sección",
             media: ICONS.numbered,
             content: buildList(true),
         },
         {
             id: "text-sections-item-block",
-            label: "Ítem de Lista",
+            label: "Ítem de Lista de Sección",
             media: ICONS.item,
             content: buildItem(),
         },
@@ -135,4 +149,5 @@ function registerBlocks(editor) {
 export function registerTextSectionsCore(editor) {
     registerTypes(editor);
     registerBlocks(editor);
+    editor.on("component:mount", releaseLegacy);
 }
