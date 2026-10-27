@@ -56,6 +56,7 @@ import { initializeInfoPanelsBlock } from "@/editor/blocks/info-panels-blocks.js
 import { initializeHighlightBoxBlock } from "@/editor/blocks/highlight-box-blocks.js";
 import { initializeOfficialChannelsBlock } from "@/editor/blocks/official-channels-blocks.js";
 import { initializeLetterCardsBlock } from "@/editor/blocks/letter-cards-blocks.js";
+import { initializeRequestChannelsBlock } from "@/editor/blocks/request-channels-blocks.js";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
@@ -127,6 +128,7 @@ export function addCustomBlocks(editor) {
     initializeHighlightBoxBlock(editor);
     initializeOfficialChannelsBlock(editor);
     initializeLetterCardsBlock(editor);
+    initializeRequestChannelsBlock(editor);
 
     blockRegistry.reorderExistingBlocks(editor);
 }
