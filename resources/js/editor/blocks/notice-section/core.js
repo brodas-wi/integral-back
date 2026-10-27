@@ -143,24 +143,6 @@ function registerBlocks(editor) {
             content: `${buildSection()}${STYLES}`,
         },
         {
-            id: "notice-section-para-block",
-            label: "Párrafo de Contenido",
-            media: ICONS.para,
-            content: buildPara(),
-        },
-        {
-            id: "notice-section-list-block",
-            label: "Lista Numerada",
-            media: ICONS.list,
-            content: buildList(),
-        },
-        {
-            id: "notice-section-item-block",
-            label: "Ítem de Lista Numerada",
-            media: ICONS.item,
-            content: buildItem(),
-        },
-        {
             id: "notice-section-notice-block",
             label: "Aviso con Ícono",
             media: ICONS.notice,

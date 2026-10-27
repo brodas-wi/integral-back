@@ -185,18 +185,6 @@ function registerBlocks(editor) {
             media: ICONS.card,
             content: buildCard(),
         },
-        {
-            id: "request-channels-text-block",
-            label: "Texto de Medio",
-            media: ICONS.text,
-            content: buildText(),
-        },
-        {
-            id: "request-channels-link-block",
-            label: "Enlace de Medio",
-            media: ICONS.link,
-            content: buildLink(),
-        },
     ];
 
     blocks.forEach(({ id, ...block }) =>

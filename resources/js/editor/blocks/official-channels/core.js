@@ -195,18 +195,6 @@ function registerBlocks(editor) {
             content: buildCard(),
         },
         {
-            id: "official-channels-text-block",
-            label: "Texto de Canal",
-            media: ICONS.text,
-            content: buildText(),
-        },
-        {
-            id: "official-channels-link-block",
-            label: "Enlace de Canal",
-            media: ICONS.link,
-            content: buildLink(),
-        },
-        {
             id: "official-channels-notice-block",
             label: "Aviso Destacado",
             media: ICONS.notice,

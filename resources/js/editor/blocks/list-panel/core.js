@@ -52,18 +52,6 @@ function registerBlocks(editor) {
             media: ICONS.section,
             content: `${buildSection()}${STYLES}`,
         },
-        {
-            id: "list-panel-item-block",
-            label: "Ítem de Lista",
-            media: ICONS.item,
-            content: buildItem(),
-        },
-        {
-            id: "list-panel-note-block",
-            label: "Párrafo de Cierre",
-            media: ICONS.note,
-            content: buildNote(),
-        },
     ];
 
     blocks.forEach(({ id, ...block }) =>

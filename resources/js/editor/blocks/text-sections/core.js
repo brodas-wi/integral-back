@@ -115,30 +115,6 @@ function registerBlocks(editor) {
             media: ICONS.group,
             content: buildGroup(),
         },
-        {
-            id: "text-sections-para-block",
-            label: "Párrafo de Sección",
-            media: ICONS.para,
-            content: buildPara(),
-        },
-        {
-            id: "text-sections-bullets-block",
-            label: "Lista con Viñetas de Sección",
-            media: ICONS.bullets,
-            content: buildList(false),
-        },
-        {
-            id: "text-sections-numbered-block",
-            label: "Lista Numerada de Sección",
-            media: ICONS.numbered,
-            content: buildList(true),
-        },
-        {
-            id: "text-sections-item-block",
-            label: "Ítem de Lista de Sección",
-            media: ICONS.item,
-            content: buildItem(),
-        },
     ];
 
     blocks.forEach(({ id, ...block }) =>
