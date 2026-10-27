@@ -109,31 +109,30 @@
                 <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4"
                     id="media-item-{{ $item->id }}">
                     <div class="relative mb-3">
-                        <a href="{{ route('media.show', $item) }}" class="block">
-                            <div
-                                class="w-full h-36 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative group-hover:opacity-90 transition-opacity">
-                                @if ($item->isImage())
-                                    <img src="{{ $item->url }}" alt="{{ $item->alt ?? $item->filename }}"
-                                        class="w-full h-full object-cover" loading="lazy" decoding="async">
-                                @elseif ($item->isVideo())
-                                    <video src="{{ $item->url }}" muted preload="none"
-                                        class="w-full h-full object-cover"></video>
-                                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                        <i class="ri-play-circle-fill text-4xl text-white text-opacity-80"></i>
-                                    </div>
-                                @elseif ($item->isPdf())
-                                    <i class="ri-file-pdf-line text-7xl text-red-500"></i>
-                                @else
-                                    <i class="ri-file-excel-line text-7xl text-green-500"></i>
-                                @endif
-                            </div>
-                        </a>
+                        <div
+                            class="w-full h-36 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative">
+                            @if ($item->isImage())
+                                <img src="{{ $item->url }}" alt="{{ $item->alt ?? $item->filename }}"
+                                    class="w-full h-full object-cover" loading="lazy" decoding="async">
+                            @elseif ($item->isVideo())
+                                <video src="{{ $item->url }}" muted preload="none"
+                                    class="w-full h-full object-cover"></video>
+                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    <i class="ri-play-circle-fill text-4xl text-white text-opacity-80"></i>
+                                </div>
+                            @elseif ($item->isPdf())
+                                <i class="ri-file-pdf-line text-7xl text-red-500"></i>
+                            @else
+                                <i class="ri-file-excel-line text-7xl text-green-500"></i>
+                            @endif
+                        </div>
 
-                        <div class="media-badges">
+                        <div style="position:absolute;top:0.5rem;right:0.5rem;z-index:10;display:flex;align-items:center;gap:0.375rem;">
                             @if ($usageCount > 0)
                                 <button type="button" data-check-usages data-media-id="{{ $item->id }}"
                                     title="En uso en {{ $usageCount }} {{ $usageCount === 1 ? 'lugar' : 'lugares' }}"
-                                    aria-label="Ver dónde se usa" class="media-usage-badge">
+                                    aria-label="Ver dónde se usa"
+                                    style="display:flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;padding:0;border:0;border-radius:9999px;background-color:#E97300;color:#fff;font-size:0.875rem;line-height:1;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,0.25);">
                                     <i class="ri-links-line"></i>
                                 </button>
                             @endif
