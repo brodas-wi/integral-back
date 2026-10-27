@@ -9,6 +9,7 @@ export const DEFAULT_FILE = {
 
 export const DEFAULT_SECTION = {
     title: "Documentos de interés",
+    description: "Consulta y descarga los documentos que necesitas.",
     items: [
         {
             subtitle: "Directorio Oficinas de Gestión de Cobros",
@@ -36,13 +37,16 @@ const SHELL = `${FIXED} data-gjs-droppable="false"`;
 const ZONE = `${FIXED} data-gjs-droppable="true"`;
 const LOCKED = `${FIXED} data-gjs-selectable="false" data-gjs-hoverable="false" data-gjs-editable="false"`;
 const TEXT = `${FIXED} data-gjs-type="text"`;
-const TEXT_REMOVABLE = 'data-gjs-type="text" data-gjs-draggable="false" data-gjs-copyable="false"';
+const TEXT_REMOVABLE = 'data-gjs-type="text" data-gjs-draggable=".dl-item"';
+const TEXT_HEAD = 'data-gjs-type="text" data-gjs-draggable=".dl-head"';
+const HEAD = `${FIXED} data-gjs-droppable=".dl-desc"`;
 
 const DL_CSS = `
 .dl-section{width:100%;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 .dl-container{width:100%;max-width:1600px;margin:0 auto;box-sizing:border-box;padding-top:clamp(1.5rem,4vw,3.5rem);padding-right:clamp(1.5rem,4vw,3.5rem);padding-bottom:clamp(1.5rem,4vw,3.5rem);padding-left:clamp(1.5rem,4vw,3.5rem);}
 .dl-head{margin-bottom:1.5rem;}
 .dl-title{margin:0;color:#003B71;font-weight:700;font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;}
+.dl-desc{margin:0.5rem 0 0;color:#003B71;font-weight:400;font-size:clamp(0.9375rem,1.4vw,1.0625rem);line-height:1.6;}
 .dl-line{height:2px;margin-top:1rem;background-color:#E97300;}
 .dl-groups{display:flex;flex-direction:column;gap:clamp(1.25rem,2.5vw,1.75rem);}
 .dl-item{display:flex;flex-direction:column;gap:0.875rem;}
@@ -116,9 +120,9 @@ export function buildFile(file = DEFAULT_FILE) {
 }
 
 export function buildItem(item = { subtitle: "Nombre del subtítulo", files: [DEFAULT_FILE] }) {
-    return `<div class="dl-item" data-gjs-type="${ITEM_TYPE}"><h3 class="dl-subtitle" ${TEXT_REMOVABLE}>${escapeHtml(item.subtitle)}</h3><div class="dl-files" ${ZONE}>${item.files.map((file) => buildFile(file)).join("")}</div></div>`;
+    return `<div class="dl-item" data-gjs-type="${ITEM_TYPE}" data-gjs-droppable=".dl-subtitle"><h3 class="dl-subtitle" ${TEXT_REMOVABLE}>${escapeHtml(item.subtitle)}</h3><div class="dl-files" ${ZONE}>${item.files.map((file) => buildFile(file)).join("")}</div></div>`;
 }
 
 export function buildSection(data = DEFAULT_SECTION) {
-    return `<section class="dl-section" data-gjs-type="${SECTION_TYPE}"><div class="dl-container" ${SHELL}><div class="dl-head" ${SHELL}><h2 class="dl-title" ${TEXT}>${escapeHtml(data.title)}</h2><div class="dl-line" ${LOCKED}></div></div><div class="dl-groups" ${ZONE}>${data.items.map((item) => buildItem(item)).join("")}</div></div></section>`;
+    return `<section class="dl-section" data-gjs-type="${SECTION_TYPE}"><div class="dl-container" ${SHELL}><div class="dl-head" ${HEAD}><h2 class="dl-title" ${TEXT}>${escapeHtml(data.title)}</h2><p class="dl-desc" ${TEXT_HEAD}>${escapeHtml(data.description)}</p><div class="dl-line" ${LOCKED}></div></div><div class="dl-groups" ${ZONE}>${data.items.map((item) => buildItem(item)).join("")}</div></div></section>`;
 }
