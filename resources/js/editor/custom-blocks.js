@@ -58,6 +58,7 @@ import { initializeOfficialChannelsBlock } from "@/editor/blocks/official-channe
 import { initializeLetterCardsBlock } from "@/editor/blocks/letter-cards-blocks.js";
 import { initializeRequestChannelsBlock } from "@/editor/blocks/request-channels-blocks.js";
 import { initializeListPanelBlock } from "@/editor/blocks/list-panel-blocks.js";
+import { initializeTextSectionsBlock } from "@/editor/blocks/text-sections-blocks.js";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
@@ -131,6 +132,7 @@ export function addCustomBlocks(editor) {
     initializeLetterCardsBlock(editor);
     initializeRequestChannelsBlock(editor);
     initializeListPanelBlock(editor);
+    initializeTextSectionsBlock(editor);
 
     blockRegistry.reorderExistingBlocks(editor);
 }
