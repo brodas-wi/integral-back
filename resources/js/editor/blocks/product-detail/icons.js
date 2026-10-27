@@ -49,6 +49,19 @@ export const ICONS = {
 <rect x="20" y="15" width="10" height="10" rx="1.5" fill="none" stroke="#003B71" stroke-width="0.9"/>
 <line x1="20" y1="20" x2="30" y2="20" stroke="#E97300" stroke-width="1"/>`),
 
+    statsColumns: svg(`
+<rect x="2" y="5" width="14" height="1.6" rx="0.8" fill="#003B71"/>
+<rect x="2" y="8" width="11" height="1.6" rx="0.8" fill="#E97300"/>
+<rect x="2" y="13" width="14" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.45"/>
+<rect x="2" y="15" width="12" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.45"/>
+<rect x="2" y="17" width="13" height="0.8" rx="0.4" fill="#003B71" fill-opacity="0.45"/>
+<rect x="19" y="4" width="11" height="9" rx="1.5" fill="#ffffff" stroke="#003B71" stroke-width="0.9"/>
+<rect x="21" y="7.2" width="3" height="2.6" rx="0.6" fill="#E97300"/>
+<rect x="25" y="7.6" width="3.5" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.6"/>
+<rect x="19" y="16" width="11" height="9" rx="1.5" fill="#ffffff" stroke="#003B71" stroke-width="0.9"/>
+<rect x="21" y="19.2" width="3" height="2.6" rx="0.6" fill="#E97300"/>
+<rect x="25" y="19.6" width="3.5" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.6"/>`),
+
     threeCol: svg(`
 <rect x="2" y="3" width="8" height="26" fill="none" stroke="#003B71" stroke-width="0.8" stroke-opacity="0.3" rx="1"/>
 <rect x="4" y="5" width="4" height="4" rx="2" fill="#E97300" fill-opacity="0.6"/>

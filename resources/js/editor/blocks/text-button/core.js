@@ -1,5 +1,6 @@
 export const SECTION_TYPE = "tb-section";
 export const BUTTON_TYPE = "tb-button";
+export const STAT_SECTION_TYPE = "tb-stat-section";
 
 const CATEGORY = "Llamadas a la acción";
 const SCHEME = /^[a-z][a-z0-9+.-]*:/i;
@@ -32,8 +33,13 @@ const TB_CSS = `
 .tb-btn:hover,.tb-btn:focus-visible{background-color:#C96200;}
 .tb-btn:focus-visible{outline:2px solid #14243D;outline-offset:2px;}
 .tb-btn-icon{font-size:1.25rem;line-height:1;}
+.tb-stat{display:flex;flex-direction:column;align-items:center;gap:0.25rem;text-align:center;}
+.tb-stat-value{margin:0;color:#E97300;font-weight:700;font-size:clamp(1.75rem,3.2vw,2.25rem);line-height:1.1;white-space:nowrap;}
+.tb-stat-label{margin:0;color:#003B71;font-weight:600;font-size:clamp(0.875rem,1.3vw,0.9375rem);line-height:1.4;}
+.tb-stat-note{margin:0;color:#6B7280;font-weight:400;font-size:clamp(0.875rem,1.3vw,0.9375rem);line-height:1.4;}
 @media(max-width:640px){
 .tb-text{flex-basis:100%;max-width:100%;}
+.tb-stat{align-items:flex-start;text-align:left;}
 }
 @media(prefers-reduced-motion:reduce){
 .tb-btn{transition:none;}
@@ -46,6 +52,16 @@ const BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http:
     <rect x="3" y="15" width="12" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.45"/>
     <rect x="3" y="18" width="9" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.45"/>
     <rect x="19" y="12" width="10" height="7" rx="3.5" fill="#E97300"/>
+</svg>`;
+
+const STAT_ICON = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="3" y="10" width="14" height="2.4" rx="1.2" fill="#003B71" fill-opacity="0.75"/>
+    <rect x="3" y="15" width="12" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.45"/>
+    <rect x="3" y="18" width="9" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.45"/>
+    <rect x="20" y="9" width="9" height="3.4" rx="1.2" fill="#E97300"/>
+    <rect x="21" y="15" width="7" height="1.3" rx="0.65" fill="#003B71" fill-opacity="0.75"/>
+    <rect x="21.5" y="18" width="6" height="1.1" rx="0.55" fill="#9ca3af"/>
 </svg>`;
 
 function isSafeHref(value) {
@@ -61,28 +77,53 @@ function buildButton() {
     return `<a class="tb-btn" href="#" data-gjs-type="${BUTTON_TYPE}" ${FIXED}><span class="tb-btn-label" ${TEXT}>Ir a sugerencias</span></a>`;
 }
 
-function buildSection() {
-    return `<section class="tb-section" data-gjs-type="${SECTION_TYPE}"><div class="tb-container" ${SHELL}><div class="tb-text" ${SHELL}><h2 class="tb-title" ${TEXT}>¿Tienes una queja, reclamo o sugerencia?</h2><p class="tb-desc" ${TEXT}>Tu opinión nos ayuda a mejorar. Escríbenos a través de nuestro buzón en línea y con gusto te contactaremos.</p></div><div class="tb-action" ${SHELL}>${buildButton()}</div></div></section><style>${TB_CSS}</style>`;
+function buildSection({ type, title, desc, action }) {
+    return `<section class="tb-section" data-gjs-type="${type}"><div class="tb-container" ${SHELL}><div class="tb-text" ${SHELL}><h2 class="tb-title" ${TEXT}>${title}</h2><p class="tb-desc" ${TEXT}>${desc}</p></div><div class="tb-action" ${SHELL}>${action}</div></div></section><style>${TB_CSS}</style>`;
 }
 
+function buildStat() {
+    return `<div class="tb-stat" ${SHELL}><p class="tb-stat-value" ${TEXT}>7 días</p><p class="tb-stat-label" ${TEXT}>de la semana</p><p class="tb-stat-note" ${TEXT}>Horarios extendidos</p></div>`;
+}
+
+const buildButtonSection = () =>
+    buildSection({
+        type: SECTION_TYPE,
+        title: "¿Tienes una queja, reclamo o sugerencia?",
+        desc: "Tu opinión nos ayuda a mejorar. Escríbenos a través de nuestro buzón en línea y con gusto te contactaremos.",
+        action: buildButton(),
+    });
+
+const buildStatSection = () =>
+    buildSection({
+        type: STAT_SECTION_TYPE,
+        title: "Paga tu crédito también en Puntoxpress y Akí Pago",
+        desc: "Para tu comodidad, también puedes realizar los pagos de tus créditos en la red Puntoxpress y Akí Pago, abierto en horarios extendidos, los 7 días de la semana.",
+        action: buildStat(),
+    });
+
 function registerTypes(editor) {
-    editor.DomComponents.addType(SECTION_TYPE, {
-        isComponent: (el) =>
-            el.getAttribute?.("data-gjs-type") === SECTION_TYPE ? { type: SECTION_TYPE } : false,
-        model: {
-            defaults: {
-                name: "Texto con Botón",
-                tagName: "section",
-                draggable: true,
-                droppable: false,
-                removable: true,
-                copyable: true,
-                selectable: true,
-                hoverable: true,
-                editable: false,
-                highlightable: false,
+    [
+        [SECTION_TYPE, "Texto con Botón"],
+        [STAT_SECTION_TYPE, "Texto con Contador"],
+    ].forEach(([type, name]) => {
+        editor.DomComponents.addType(type, {
+            isComponent: (el) =>
+                el.getAttribute?.("data-gjs-type") === type ? { type } : false,
+            model: {
+                defaults: {
+                    name,
+                    tagName: "section",
+                    draggable: true,
+                    droppable: false,
+                    removable: true,
+                    copyable: true,
+                    selectable: true,
+                    hoverable: true,
+                    editable: false,
+                    highlightable: false,
+                },
             },
-        },
+        });
     });
 
     editor.DomComponents.addType(BUTTON_TYPE, {
@@ -157,6 +198,14 @@ export function registerTextButtonCore(editor) {
         category: CATEGORY,
         media: BLOCK_ICON,
         activate: true,
-        content: buildSection(),
+        content: buildButtonSection(),
+    });
+
+    editor.BlockManager.add("text-stat-block", {
+        label: "Texto con Contador",
+        category: CATEGORY,
+        media: STAT_ICON,
+        activate: true,
+        content: buildStatSection(),
     });
 }
