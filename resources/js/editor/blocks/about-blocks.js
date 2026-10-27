@@ -1,6 +1,6 @@
 import { assetUrl } from "@/utils/url.js";
 
-const CATEGORY = "Institutional";
+const CATEGORY = "Institucional";
 
 const PARAGRAPHS = [
     `Banco Integral nació en <span class="hs-highlight">1990</span> como un proyecto de créditos de la Fundación Salvadoreña de Apoyo Integral FUSAI, apoyado por naciones Unidas, evoluciono a través de los años hasta convertirse en Banco Integral, S.A.`,
