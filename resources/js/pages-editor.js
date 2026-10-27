@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     new EditorNavigation(editorService);
 
     const editor = initializeGrapesJS();
+    window.__gjs = editor;
 
     const editorLoaded = new Promise((resolve) => {
         editor.on("load", () => {
