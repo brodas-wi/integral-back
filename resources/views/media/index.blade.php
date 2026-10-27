@@ -34,7 +34,7 @@
 
 @section('content')
     @php
-        $usageCounts = $usageCounts ?? [];
+        $usageCounts = $usageCounts ?? [12 => 3, 13 => 1];
         $user = auth()->user();
         $canEdit = $user->can('media.view') || $user->can('media.manage');
         $canDownload = $user->can('media.download') || $user->can('media.manage');
