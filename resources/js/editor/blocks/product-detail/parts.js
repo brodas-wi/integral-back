@@ -71,8 +71,8 @@ export const iconCard = (title = "Lorem ipsum", items = 3) => `
 
 export const iconCardSimple = (title = "Lorem ipsum") => `
 <div class="pd-card-simple">
-    <div class="w-14 h-14 rounded-full flex items-center justify-center shrink-0 pd-btn-orange">
-        <img src="${PLACEHOLDER_IMAGE}" alt="" class="w-7 h-7 object-contain">
+    <div class="pd-card-icon">
+        <img src="${PLACEHOLDER_IMAGE}" alt="" class="pd-card-icon-img">
     </div>
     <span class="text-base font-bold pd-text-primary tracking-wide">${title}</span>
     <p class="text-base pd-text-primary leading-snug m-0">${LOREM}</p>
