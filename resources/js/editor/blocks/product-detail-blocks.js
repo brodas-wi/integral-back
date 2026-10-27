@@ -15,6 +15,7 @@ import {
     priceBox,
     priceBoxDouble,
     productTitle,
+    statBoxes,
     text,
     twoLineTitle,
 } from "./product-detail/parts";
@@ -62,6 +63,17 @@ export const productDetailBlocks = [
         body: split({
             main: `${twoLineTitle("¡Adquiere", "tu producto nuevo!")}${bulletList(5, "CONDICIONES")}`,
             aside: actionPanel({ cta: "Solicita tu crédito", notes: 2 }),
+        }),
+    }),
+
+    sectionBlock({
+        id: "product-detail-stats",
+        label: "Sección: 2 columnas (título + párrafo + contadores)",
+        media: ICONS.statsColumns,
+        styles: ["asymmetric", "stats"],
+        body: split({
+            main: `${twoLineTitle("¡Adquiere", "tu producto nuevo!")}${text("body")}`,
+            aside: statBoxes(),
         }),
     }),
 
