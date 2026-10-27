@@ -13,12 +13,12 @@ cp -a /var/www/public-src/. /var/www/public/
 # quedar con archivos de dueño mixto (ej. root, si alguna vez se corrió
 # un comando artisan manualmente como root dentro del contenedor),
 # lo que provoca fallos silenciosos al escribir logs o cache.
+php artisan view:clear || true
+php artisan config:clear || true
+php artisan route:clear || true
+
 chown -R www-data:www-data /var/www/public /var/www/storage
 
 php artisan storage:link --force || true
-
-php artisan view:clear
-php artisan config:clear
-php artisan route:clear
 
 exec "$@"
