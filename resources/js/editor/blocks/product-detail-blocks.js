@@ -3,7 +3,6 @@ import { styleTag } from "./product-detail/styles";
 import { ASIDE_CLASS, actionPanel, section, split } from "./product-detail/layouts";
 import {
     COVERAGE_TABLE_DATA,
-    PLACEHOLDER_IMAGE,
     bulletList,
     coverageTable,
     ctaButton,
@@ -185,22 +184,6 @@ export const productDetailBlocks = [
             ].join(""),
             aside: actionPanel({ price: priceBox(), notes: 2 }),
         }),
-    }),
-
-    sectionBlock({
-        id: "product-detail-icons-cta",
-        label: "Sección: imagen/íconos + acción",
-        media: ICONS.iconsCta,
-        styles: ["iconsCta"],
-        containerClass: "flex flex-col gap-8",
-        body: `${text("body", "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt.")}
-${split({
-            gridClass: "pd-icons-cta-grid",
-            mainClass: "w-full",
-            main: `<img src="${PLACEHOLDER_IMAGE}" alt="Servicios disponibles" class="w-full h-auto object-contain">`,
-            aside: actionPanel(),
-        })}
-${text("body", "Lorem ipsum dolor sit amet, texto adicional de cierre de la sección.")}`,
     }),
 
     sectionBlock({

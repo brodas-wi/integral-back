@@ -109,12 +109,6 @@ export const ICONS = {
 <rect x="20" y="10.5" width="9" height="2.8" rx="1.4" fill="#E97300"/>
 <rect x="20" y="15.5" width="9" height="4.5" rx="1" fill="none" stroke="#003B71" stroke-width="0.7"/>`),
 
-    iconsCta: svg(`
-<circle cx="5" cy="14" r="3.2" fill="#E97300" fill-opacity="0.8"/>
-<circle cx="13" cy="14" r="3.2" fill="#E97300" fill-opacity="0.8"/>
-<circle cx="21" cy="14" r="3.2" fill="#E97300" fill-opacity="0.8"/>
-<rect x="24" y="17" width="6" height="3" rx="1.5" fill="#E97300" fill-opacity="0.85"/>`),
-
     table: svg(`
 <rect x="2" y="4" width="20" height="4" fill="#E97300" fill-opacity="0.8" rx="1"/>
 <rect x="2" y="10" width="20" height="3" fill="none" stroke="#003B71" stroke-opacity="0.3" stroke-width="0.6"/>

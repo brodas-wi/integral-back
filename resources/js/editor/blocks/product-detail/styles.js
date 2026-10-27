@@ -26,8 +26,6 @@ export const STYLES = {
 
     threeCol: `.pd-three-col-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem;align-items:start;}.pd-three-col-grid>div:last-child:nth-child(3n+1){grid-column:1/-1;max-width:33%;margin:0 auto;}@media(max-width:${tablet}px){.pd-three-col-grid{gap:1.5rem;}.pd-three-col-grid>div:last-child:nth-child(3n+1){max-width:50%;}}@media(max-width:${mobile}px){.pd-three-col-grid{grid-template-columns:1fr;}.pd-three-col-grid>div:last-child:nth-child(3n+1){max-width:none;}}`,
 
-    iconsCta: `.pd-icons-cta-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:2rem;align-items:center;}@media(max-width:${tablet}px){.pd-icons-cta-grid{grid-template-columns:1fr;gap:1.5rem;}}`,
-
     cardsGrid: `.pd-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}.pd-card{background-color:#fff;border-radius:0.75rem;box-shadow:0 2px 12px 0 rgba(0,0,0,0.08);padding:1.5rem;display:flex;flex-direction:column;gap:0.75rem;}@media(max-width:${mobile}px){.pd-cards-grid{grid-template-columns:1fr;}}`,
 
     cardsRow: `.pd-cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;}.pd-card-simple{background-color:#fff;border-radius:0.75rem;box-shadow:0 2px 12px 0 rgba(0,0,0,0.08);padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;text-align:center;}@media(max-width:${mobile}px){.pd-cards-row{grid-template-columns:1fr 1fr;}}`,
