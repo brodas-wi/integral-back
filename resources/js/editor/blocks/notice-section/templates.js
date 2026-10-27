@@ -5,10 +5,10 @@ export const ITEM_TYPE = "sa-item";
 export const NOTICE_TYPE = "sa-notice";
 export const ICON_TYPE = "sa-icon";
 
-const DEFAULT_ICON = "ri-chat-1-line";
+const DEFAULT_ICON = "ri-chat-4-line";
 
 export const ICON_OPTIONS = [
-    { value: "ri-chat-1-line", label: "Mensaje" },
+    { value: "ri-chat-4-line", label: "Mensaje" },
     { value: "ri-message-2-line", label: "Mensaje de texto" },
     { value: "ri-notification-3-line", label: "Notificación" },
     { value: "ri-information-line", label: "Información" },

@@ -15,7 +15,7 @@ export const ICON_OPTIONS = [
     { value: "ri-customer-service-2-line", label: "Servicio al cliente" },
     { value: "ri-global-line", label: "Sitio web" },
     { value: "ri-computer-line", label: "Computadora" },
-    { value: "ri-chat-1-line", label: "Mensaje" },
+    { value: "ri-chat-4-line", label: "Mensaje" },
     { value: "ri-file-text-line", label: "Documento" },
     { value: "ri-printer-line", label: "Impresión" },
     { value: "ri-building-line", label: "Oficina" },

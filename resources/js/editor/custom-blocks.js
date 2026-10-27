@@ -134,8 +134,8 @@ export function addCustomBlocks(editor) {
     initializeLetterCardsBlock(editor);
     initializeRequestChannelsBlock(editor);
     initializeListPanelBlock(editor);
-    initializeTextSectionsBlock(editor);
     initializeNoticeSectionBlock(editor);
+    initializeTextSectionsBlock(editor);
     initializeTextKitBlock(editor);
 
     blockRegistry.reorderExistingBlocks(editor);
