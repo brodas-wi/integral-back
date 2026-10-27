@@ -17,4 +17,8 @@ chown -R www-data:www-data /var/www/public /var/www/storage
 
 php artisan storage:link --force || true
 
+php artisan view:clear
+php artisan config:clear
+php artisan route:clear
+
 exec "$@"
