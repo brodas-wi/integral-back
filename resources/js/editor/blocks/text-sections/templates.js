@@ -1,6 +1,8 @@
 export const SECTION_TYPE = "ts-section";
 export const GROUP_TYPE = "ts-group";
 export const PARA_TYPE = "ts-para";
+export const LIST_TYPE = "ts-list";
+export const ITEM_TYPE = "ts-item";
 
 export const DEFAULT_DATA = {
     groups: [
@@ -27,7 +29,7 @@ const HIDDEN = 'data-gjs-selectable="false" data-gjs-hoverable="false"';
 const SHELL = `${FIXED} data-gjs-droppable="false" ${HIDDEN}`;
 const GROUPS = `${FIXED} data-gjs-droppable=".ts-group" ${HIDDEN}`;
 const TITLE_COL = `${FIXED} data-gjs-droppable=".ts-title,.ts-line" ${HIDDEN}`;
-const BODY = `${FIXED} data-gjs-droppable=".ts-para" ${HIDDEN}`;
+const BODY = `${FIXED} data-gjs-droppable=".ts-para,.ts-list" ${HIDDEN}`;
 const IN_TITLE_COL = 'data-gjs-draggable=".ts-title-col"';
 const IN_BODY = 'data-gjs-draggable=".ts-body"';
 
@@ -42,6 +44,13 @@ const TS_CSS = `
 .ts-line{width:2.5rem;height:1rem;margin-top:0.25rem;background-image:linear-gradient(#E97300,#E97300);background-repeat:no-repeat;background-position:left center;background-size:100% 2px;}
 .ts-body{display:flex;flex-direction:column;gap:0.75rem;min-width:0;min-height:1.5rem;}
 .ts-para{margin:0;color:#003B71;font-weight:400;font-size:0.875rem;line-height:1.6;}
+.ts-list{margin:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:1.25rem;list-style-position:outside;min-height:1.5rem;}
+ul.ts-list{list-style-type:disc;}
+ol.ts-list{list-style-type:decimal;}
+.ts-item{margin:0 0 0.125rem;color:#003B71;font-weight:400;font-size:0.875rem;line-height:1.6;}
+.ts-item::marker{font-size:0.85em;}
+.ts-para a,.ts-item a{color:#E97300;text-decoration:none;overflow-wrap:anywhere;}
+.ts-para a:hover,.ts-item a:hover{color:#C96200;text-decoration:underline;}
 @media(max-width:768px){
 .ts-group{grid-template-columns:minmax(0,1fr);}
 }
@@ -74,6 +83,23 @@ ${lines(9)}`),
 <rect x="5" y="11" width="22" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.55"/>
 <rect x="5" y="15" width="22" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.55"/>
 <rect x="5" y="19" width="14" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.55"/>`),
+    bullets: svg(`
+<circle cx="7" cy="10" r="1" fill="#003B71" fill-opacity="0.75"/>
+<rect x="11" y="9.2" width="16" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.5"/>
+<circle cx="7" cy="16" r="1" fill="#003B71" fill-opacity="0.75"/>
+<rect x="11" y="15.2" width="16" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.5"/>
+<circle cx="7" cy="22" r="1" fill="#003B71" fill-opacity="0.75"/>
+<rect x="11" y="21.2" width="11" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.5"/>`),
+    numbered: svg(`
+<rect x="5.6" y="9" width="2" height="2" rx="0.5" fill="#003B71" fill-opacity="0.75"/>
+<rect x="11" y="9.2" width="16" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.5"/>
+<rect x="5.6" y="15" width="2" height="2" rx="0.5" fill="#003B71" fill-opacity="0.75"/>
+<rect x="11" y="15.2" width="16" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.5"/>
+<rect x="5.6" y="21" width="2" height="2" rx="0.5" fill="#003B71" fill-opacity="0.75"/>
+<rect x="11" y="21.2" width="11" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.5"/>`),
+    item: svg(`
+<circle cx="8" cy="16" r="1.4" fill="#003B71" fill-opacity="0.75"/>
+<rect x="12" y="14.8" width="15" height="2.4" rx="1.2" fill="#003B71" fill-opacity="0.5"/>`),
 };
 
 export function escapeHtml(value) {
@@ -87,6 +113,15 @@ export function escapeHtml(value) {
 
 export function buildPara(text = "Escribe aquí el texto.") {
     return `<p class="ts-para" data-gjs-type="${PARA_TYPE}">${escapeHtml(text)}</p>`;
+}
+
+export function buildItem(text = "Escribe aquí el texto.") {
+    return `<li class="ts-item" data-gjs-type="${ITEM_TYPE}">${escapeHtml(text)}</li>`;
+}
+
+export function buildList(ordered = false, items = ["Primer ítem.", "Segundo ítem.", "Tercer ítem."]) {
+    const tag = ordered ? "ol" : "ul";
+    return `<${tag} class="ts-list" data-gjs-type="${LIST_TYPE}">${items.map((text) => buildItem(text)).join("")}</${tag}>`;
 }
 
 export function buildGroup(group = { title: "Nuevo título", paras: ["Escribe aquí el texto."] }) {

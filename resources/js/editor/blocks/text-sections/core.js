@@ -1,10 +1,14 @@
 import {
     GROUP_TYPE,
     ICONS,
+    ITEM_TYPE,
+    LIST_TYPE,
     PARA_TYPE,
     SECTION_TYPE,
     STYLES,
     buildGroup,
+    buildItem,
+    buildList,
     buildPara,
     buildSection,
 } from "./templates.js";
@@ -68,6 +72,19 @@ function registerTypes(editor) {
         tagName: "p",
         draggable: ".ts-body",
     });
+
+    registerBase(editor, LIST_TYPE, {
+        name: "Lista de Sección",
+        tagName: "ul",
+        draggable: ".ts-body",
+        droppable: ".ts-item",
+    });
+
+    registerTextType(editor, ITEM_TYPE, {
+        name: "Ítem de Lista",
+        tagName: "li",
+        draggable: ".ts-list",
+    });
 }
 
 function registerBlocks(editor) {
@@ -89,6 +106,24 @@ function registerBlocks(editor) {
             label: "Párrafo de Sección",
             media: ICONS.para,
             content: buildPara(),
+        },
+        {
+            id: "text-sections-bullets-block",
+            label: "Lista con Viñetas",
+            media: ICONS.bullets,
+            content: buildList(false),
+        },
+        {
+            id: "text-sections-numbered-block",
+            label: "Lista Numerada",
+            media: ICONS.numbered,
+            content: buildList(true),
+        },
+        {
+            id: "text-sections-item-block",
+            label: "Ítem de Lista",
+            media: ICONS.item,
+            content: buildItem(),
         },
     ];
 
