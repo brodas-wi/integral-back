@@ -61,7 +61,7 @@ import { initializeListPanelBlock } from "@/editor/blocks/list-panel-blocks.js";
 import { initializeTextSectionsBlock } from "@/editor/blocks/text-sections-blocks.js";
 import { initializeNoticeSectionBlock } from "@/editor/blocks/notice-section-blocks.js";
 import { initializeTextKitBlock } from "@/editor/blocks/text-kit-blocks.js";
-import { initializeIconBadgeBlock } from "./icon-badge-blocks.js";
+import { initializeIconBadgeBlock } from "@/editor/blocks/icon-badge-blocks.js";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
