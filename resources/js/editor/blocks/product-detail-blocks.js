@@ -158,7 +158,7 @@ export const productDetailBlocks = [
         media: ICONS.cardsRow,
         styles: ["cardsRow"],
         containerClass: "flex flex-col gap-5",
-        body: `${text("accent", "Subtítulo destacado")}${text("bodyStrong")}${iconCardRow(5)}`,
+        body: `${text("accentLg", "Subtítulo destacado")}${text("bodyStrong")}${iconCardRow(5)}`,
     }),
 
     sectionBlock({

@@ -16,6 +16,7 @@ const TEXT_CLASSES = {
     heading: "text-base font-bold pd-text-primary",
     accent: "text-base font-bold pd-text-orange",
     accentLead: "text-base font-bold pd-text-orange leading-snug",
+    accentLg: "text-lg font-bold pd-text-orange leading-snug",
 };
 
 export const text = (variant, content = LOREM_LONG) =>
@@ -74,7 +75,7 @@ export const iconCardSimple = (title = "Lorem ipsum") => `
     <div class="pd-card-icon">
         <img src="${PLACEHOLDER_IMAGE}" alt="" class="pd-card-icon-img">
     </div>
-    <span class="text-base font-bold pd-text-primary tracking-wide">${title}</span>
+    <span class="pd-card-title">${title}</span>
     <p class="text-base pd-text-primary leading-snug m-0">${LOREM}</p>
 </div>`;
 
