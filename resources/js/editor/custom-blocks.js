@@ -53,6 +53,7 @@ import { initializeTextButtonBlock } from "@/editor/blocks/text-button-blocks.js
 import { initializeContactCardsBlock } from "@/editor/blocks/contact-cards-blocks.js";
 import { initializeTitleSectionBlock } from "@/editor/blocks/title-section-blocks.js";
 import { initializeInfoPanelsBlock } from "@/editor/blocks/info-panels-blocks.js";
+import { initializeHighlightBoxBlock } from "@/editor/blocks/highlight-box-blocks.js";
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
@@ -121,6 +122,7 @@ export function addCustomBlocks(editor) {
     initializeContactCardsBlock(editor);
     initializeTitleSectionBlock(editor);
     initializeInfoPanelsBlock(editor);
+    initializeHighlightBoxBlock(editor);
 
     blockRegistry.reorderExistingBlocks(editor);
 }
