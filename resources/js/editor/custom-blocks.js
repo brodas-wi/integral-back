@@ -117,7 +117,7 @@ export function addCustomBlocks(editor) {
     initializeProductCardsBlock(editor);
     initializeIconCardsGridBlock(editor);
     initializeButtonBlocks(editor);
-    initializeTabsBlocks(editor);
+    // initializeTabsBlocks(editor);
     // initializeTableBlocks(editor);
     initializeCardTableBlocks(editor);
     initializeDocumentDownloadBlocks(editor);
