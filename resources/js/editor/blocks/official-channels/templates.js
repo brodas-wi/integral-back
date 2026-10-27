@@ -1,10 +1,31 @@
-import { assetUrl } from "@/utils/url.js";
-
 export const SECTION_TYPE = "oc-section";
 export const CARD_TYPE = "oc-card";
 export const TEXT_TYPE = "oc-text";
 export const LINK_TYPE = "oc-link";
 export const NOTICE_TYPE = "oc-notice";
+export const ICON_TYPE = "oc-icon";
+
+const DEFAULT_ICON = "ri-information-line";
+
+export const ICON_OPTIONS = [
+    { value: "ri-mail-line", label: "Correo" },
+    { value: "ri-whatsapp-line", label: "WhatsApp" },
+    { value: "ri-phone-line", label: "Teléfono" },
+    { value: "ri-smartphone-line", label: "Celular" },
+    { value: "ri-customer-service-2-line", label: "Servicio al cliente" },
+    { value: "ri-computer-line", label: "Computadora" },
+    { value: "ri-global-line", label: "Sitio web" },
+    { value: "ri-chat-1-line", label: "Mensaje" },
+    { value: "ri-facebook-circle-line", label: "Facebook" },
+    { value: "ri-instagram-line", label: "Instagram" },
+    { value: "ri-bank-line", label: "Banco / Agencia" },
+    { value: "ri-map-pin-line", label: "Ubicación" },
+    { value: "ri-user-line", label: "Persona" },
+    { value: "ri-lock-line", label: "Candado" },
+    { value: "ri-shield-check-line", label: "Escudo" },
+    { value: "ri-time-line", label: "Horario" },
+    { value: "ri-information-line", label: "Información" },
+];
 
 export const DEFAULT_DATA = {
     title: "Canales oficiales",
@@ -83,7 +104,7 @@ const OC_CSS = `
 .oc-card{display:flex;align-items:flex-start;gap:0.875rem;box-sizing:border-box;padding-top:1rem;padding-right:1.125rem;padding-bottom:1rem;padding-left:1.125rem;border:1px solid #E2E8F0;border-radius:0.875rem;background-color:#fff;transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease;}
 .oc-card:hover{transform:translateY(-4px);border-color:#F2A65A;box-shadow:0 12px 28px rgba(0,59,113,0.12);}
 .oc-card-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:2.75rem;height:2.75rem;border-radius:0.75rem;background-color:#FCEAD9;}
-.oc-card-img{display:block;width:1.375rem;height:1.375rem;object-fit:contain;}
+.oc-card-glyph{display:block;color:#E97300;font-size:1.375rem;line-height:1;}
 .oc-body{display:flex;flex-direction:column;gap:0.125rem;flex:1;min-width:0;min-height:1.5rem;}
 .oc-card-title{margin:0 0 0.25rem;color:#003B71;font-weight:700;font-size:0.8125rem;line-height:1.4;}
 .oc-text{margin:0;color:#003B71;font-weight:400;font-size:0.75rem;line-height:1.55;overflow-wrap:anywhere;}
@@ -93,7 +114,7 @@ const OC_CSS = `
 .oc-link:hover{color:#C96200;text-decoration:underline;}
 .oc-link:focus-visible{outline:2px solid #E97300;outline-offset:2px;border-radius:0.125rem;}
 .oc-notice{display:flex;align-items:center;gap:0.875rem;margin-top:clamp(1.25rem,2.5vw,1.75rem);box-sizing:border-box;padding-top:1rem;padding-right:1.25rem;padding-bottom:1rem;padding-left:1.25rem;border-radius:1rem;background-color:#FDF1E5;}
-.oc-notice-img{display:block;flex-shrink:0;width:1.5rem;height:1.5rem;object-fit:contain;}
+.oc-notice-glyph{display:block;flex-shrink:0;color:#E97300;font-size:1.5rem;line-height:1;}
 .oc-notice-text{margin:0;color:#003B71;font-weight:700;font-size:0.875rem;line-height:1.5;}
 @media(max-width:992px){
 .oc-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
@@ -153,7 +174,10 @@ export function escapeHtml(value) {
         .replace(/'/g, "&#39;");
 }
 
-const placeholder = () => escapeHtml(assetUrl("images/placeholder.svg"));
+const glyph = (icon, kind) => {
+    const name = escapeHtml(icon || DEFAULT_ICON);
+    return `<i class="oc-${kind}-glyph ${name}" data-gjs-type="${ICON_TYPE}" data-oc-icon="${name}" ${FIXED}></i>`;
+};
 
 export function buildText(text = "Escribe aquí el texto.") {
     return `<p class="oc-text" data-gjs-type="${TEXT_TYPE}" ${IN_BODY}>${escapeHtml(text)}</p>`;
@@ -167,11 +191,11 @@ export function buildLink({ text = "Enlace", href = "#", newTab = false } = {}) 
 const buildItem = (item) => (item.kind === "link" ? buildLink(item) : buildText(item.text));
 
 export function buildCard(card = { title: "Nuevo canal", items: [{ kind: "text", text: "Escribe aquí el texto." }] }) {
-    return `<div class="oc-card" data-gjs-type="${CARD_TYPE}"><div class="oc-card-icon" ${SHELL}><img class="oc-card-img" src="${placeholder()}" alt="" ${FIXED}></div><div class="oc-body" ${BODY}><h3 class="oc-card-title" data-gjs-type="text" ${IN_BODY}>${escapeHtml(card.title)}</h3>${card.items.map(buildItem).join("")}</div></div>`;
+    return `<div class="oc-card" data-gjs-type="${CARD_TYPE}"><div class="oc-card-icon" ${SHELL}>${glyph(card.icon, "card")}</div><div class="oc-body" ${BODY}><h3 class="oc-card-title" data-gjs-type="text" ${IN_BODY}>${escapeHtml(card.title)}</h3>${card.items.map(buildItem).join("")}</div></div>`;
 }
 
 export function buildNotice(text = DEFAULT_DATA.notice) {
-    return `<div class="oc-notice" data-gjs-type="${NOTICE_TYPE}"><img class="oc-notice-img" src="${placeholder()}" alt="" ${FIXED}><p class="oc-notice-text" data-gjs-type="text" ${IN_NOTICE}>${escapeHtml(text)}</p></div>`;
+    return `<div class="oc-notice" data-gjs-type="${NOTICE_TYPE}">${glyph("ri-shield-check-line", "notice")}<p class="oc-notice-text" data-gjs-type="text" ${IN_NOTICE}>${escapeHtml(text)}</p></div>`;
 }
 
 export function buildSection(data = DEFAULT_DATA) {

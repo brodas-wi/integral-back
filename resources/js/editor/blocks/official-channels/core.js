@@ -1,6 +1,8 @@
 import {
     CARD_TYPE,
     ICONS,
+    ICON_OPTIONS,
+    ICON_TYPE,
     LINK_TYPE,
     NOTICE_TYPE,
     SECTION_TYPE,
@@ -132,6 +134,52 @@ function registerTypes(editor) {
     );
 }
 
+const ICON_CLASSES = ICON_OPTIONS.map((option) => option.value);
+
+function registerIconType(editor) {
+    editor.DomComponents.addType(ICON_TYPE, {
+        isComponent: (el) =>
+            el.getAttribute?.("data-gjs-type") === ICON_TYPE ? { type: ICON_TYPE } : false,
+        model: {
+            defaults: {
+                name: "Icono",
+                tagName: "i",
+                draggable: false,
+                droppable: false,
+                removable: false,
+                copyable: false,
+                selectable: true,
+                hoverable: true,
+                editable: false,
+                highlightable: false,
+                traits: [
+                    "id",
+                    {
+                        type: "select",
+                        name: "data-oc-icon",
+                        label: "Icono",
+                        options: ICON_OPTIONS.map(({ value, label }) => ({
+                            id: value,
+                            value,
+                            label,
+                            name: label,
+                        })),
+                    },
+                ],
+            },
+            init() {
+                this.on("change:attributes:data-oc-icon", this.syncIcon);
+            },
+            syncIcon() {
+                const icon = this.getAttributes()["data-oc-icon"];
+                if (!ICON_CLASSES.includes(icon)) return;
+                this.removeClass(ICON_CLASSES);
+                this.addClass(icon);
+            },
+        },
+    });
+}
+
 function registerBlocks(editor) {
     const blocks = [
         {
@@ -173,5 +221,6 @@ function registerBlocks(editor) {
 
 export function registerOfficialChannelsCore(editor) {
     registerTypes(editor);
+    registerIconType(editor);
     registerBlocks(editor);
 }
