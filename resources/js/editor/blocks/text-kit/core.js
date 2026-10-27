@@ -12,7 +12,7 @@ import {
     buildPara,
 } from "./templates.js";
 
-const CATEGORY = "Texto";
+const CATEGORY = "Institucional";
 const SCHEME = /^[a-z][a-z0-9+.-]*:/i;
 const SAFE_SCHEME = /^(https?:|mailto:|tel:)/i;
 const BLOCK_PREFIX = /^(th|ip|hl|oc|lc|ex|lp|ts|sa|dl)-/;
