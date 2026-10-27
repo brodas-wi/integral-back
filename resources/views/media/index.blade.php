@@ -34,7 +34,7 @@
 
 @section('content')
     @php
-        $usageCounts = $usageCounts ?? [12 => 3, 13 => 1];
+        $usageCounts = $media->pluck('id')->mapWithKeys(fn($id) => [$id => 1])->all();
         $user = auth()->user();
         $canEdit = $user->can('media.view') || $user->can('media.manage');
         $canDownload = $user->can('media.download') || $user->can('media.manage');
@@ -129,13 +129,12 @@
                             </div>
                         </a>
 
-                        <div class="absolute top-2 right-2 z-10 flex items-center gap-1.5 pointer-events-none">
+                        <div class="media-badges">
                             @if ($usageCount > 0)
                                 <button type="button" data-check-usages data-media-id="{{ $item->id }}"
                                     title="En uso en {{ $usageCount }} {{ $usageCount === 1 ? 'lugar' : 'lugares' }}"
-                                    aria-label="Ver dónde se usa"
-                                    class="pointer-events-auto w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center shadow-sm hover:opacity-90 transition-opacity">
-                                    <i class="ri-links-line text-sm"></i>
+                                    aria-label="Ver dónde se usa" class="media-usage-badge">
+                                    <i class="ri-links-line"></i>
                                 </button>
                             @endif
                             <span class="px-2 py-1 rounded text-xs {{ $badgeClass }}">{{ $ext }}</span>
