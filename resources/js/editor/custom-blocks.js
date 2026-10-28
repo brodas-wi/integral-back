@@ -103,6 +103,7 @@ export function addCustomBlocks(editor) {
     // blockRegistry.registerBlocks(formBlocks);
     initializeInlineFormBlock(editor);
     blockRegistry.registerBlocks(mapFilterBlocks);
+    initializeSearchBlock(editor);
     blockRegistry.registerBlocks(iconLinksBlocks);
     // blockRegistry.registerBlocks(tableBlocks);
     blockRegistry.registerBlocks(cardTableBlocks);
@@ -125,7 +126,6 @@ export function addCustomBlocks(editor) {
     initializeCardTableBlocks(editor);
     initializeDocumentDownloadBlocks(editor);
     initializeDownloadsBlock(editor);
-    initializeSearchBlock(editor);
     initializeAssetsBlocks(editor);
     initializeFaqBlock(editor);
     initializeContactBlock(editor);

@@ -18,6 +18,8 @@ var heading = root.querySelector(".srch-heading");
 var status = root.querySelector(".srch-status");
 var list = root.querySelector(".srch-list");
 if (!form || !input || !submit || !panel || !inner || !heading || !status || !list) return;
+if (root.__srchReady) return;
+root.__srchReady = true;
 
 var endpoint = root.getAttribute("data-srch-endpoint") || "/api/search";
 var step = parseInt(root.getAttribute("data-srch-limit"), 10) || 6;
@@ -43,7 +45,10 @@ function setStatus(text) {
 }
 
 function removeMore() {
-    if (moreBtn && moreBtn.parentNode) moreBtn.parentNode.removeChild(moreBtn);
+    var buttons = inner.querySelectorAll(".srch-more");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].parentNode.removeChild(buttons[i]);
+    }
     moreBtn = null;
 }
 
