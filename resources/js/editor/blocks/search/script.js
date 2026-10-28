@@ -11,8 +11,8 @@ if (!form || !input || !panel || !inner || !heading || !status || !list) return;
 
 var endpoint = root.getAttribute("data-srch-endpoint") || "/api/search";
 var step = parseInt(root.getAttribute("data-srch-limit"), 10) || 6;
-var timer = null;
-var token = 0;
+var submit = root.querySelector(".srch-submit");
+var busy = false;
 var items = [];
 var shown = 0;
 var moreBtn = null;
@@ -91,21 +91,25 @@ function render(query, results) {
 }
 
 function search() {
-    window.clearTimeout(timer);
+    if (busy) return;
+
     var query = input.value.trim();
+    clear(list);
+    removeMore();
+
     if (query.length < 2) {
-        token++;
-        panel.hidden = true;
-        clear(list);
-        removeMore();
+        heading.textContent = "Buscar";
+        setStatus("Escribe al menos 2 caracteres para buscar.");
+        panel.hidden = false;
         return;
     }
-    var current = ++token;
-    if (panel.hidden) {
-        heading.textContent = "Resultados para “" + query + "”";
-        setStatus("Buscando…");
-        panel.hidden = false;
-    }
+
+    busy = true;
+    submit.disabled = true;
+    heading.textContent = "Resultados para “" + query + "”";
+    setStatus("Buscando…");
+    panel.hidden = false;
+
     var url = endpoint + (endpoint.indexOf("?") === -1 ? "?" : "&") + "q=" + encodeURIComponent(query);
     fetch(url, { headers: { Accept: "application/json" }, credentials: "same-origin" })
         .then(function (response) {
@@ -113,16 +117,16 @@ function search() {
             return response.json();
         })
         .then(function (data) {
-            if (current !== token) return;
             render(query, Array.isArray(data.results) ? data.results : []);
         })
         .catch(function () {
-            if (current !== token) return;
             clear(list);
             removeMore();
-            heading.textContent = "Resultados para “" + query + "”";
             setStatus("No fue posible realizar la búsqueda. Intenta de nuevo.");
-            panel.hidden = false;
+        })
+        .then(function () {
+            busy = false;
+            submit.disabled = false;
         });
 }
 
