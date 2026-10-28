@@ -5,9 +5,12 @@ import { showUsagesModal } from "@/components/usages-modal.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]');
 
+const selectedIds = new Set();
+
 document.addEventListener("DOMContentLoaded", () => {
     initDeleteMedia();
     initCheckUsages();
+    initBulkDelete();
 });
 
 function initDeleteMedia() {
@@ -107,16 +110,61 @@ function deleteMediaWithThumbnail(mediaId, deleteThumbnail) {
 
 function removeMediaItemFromGrid(mediaId) {
     const mediaItem = document.getElementById(`media-item-${mediaId}`);
-    if (mediaItem) {
-        mediaItem.style.transition = "opacity 0.3s, transform 0.3s";
-        mediaItem.style.opacity = "0";
-        mediaItem.style.transform = "scale(0.9)";
-        setTimeout(() => {
-            mediaItem.remove();
-            if (document.querySelectorAll('[id^="media-item-"]').length === 0) {
+    if (!mediaItem) {
+        refreshMediaGrid();
+        return;
+    }
+
+    mediaItem.style.transition = "opacity 0.3s, transform 0.3s";
+    mediaItem.style.opacity = "0";
+    mediaItem.style.transform = "scale(0.9)";
+    setTimeout(() => {
+        mediaItem.remove();
+        refreshMediaGrid();
+    }, 300);
+}
+
+async function refreshMediaGrid() {
+    try {
+        const response = await fetch(window.location.href, {
+            headers: { "X-Requested-With": "XMLHttpRequest" },
+            credentials: "same-origin",
+        });
+        const html = await response.text();
+        const doc = new DOMParser().parseFromString(html, "text/html");
+
+        const newGrid = doc.getElementById("media-grid");
+        if (!newGrid) {
+            const url = new URL(window.location.href);
+            const page = parseInt(url.searchParams.get("page") || "1", 10);
+            if (page > 1) {
+                url.searchParams.set("page", page - 1);
+                window.location.href = url.toString();
+            } else {
                 window.location.reload();
             }
-        }, 300);
+            return;
+        }
+
+        document.getElementById("media-grid").innerHTML = newGrid.innerHTML;
+
+        const pagination = document.getElementById("media-pagination");
+        const newPagination = doc.getElementById("media-pagination");
+        if (pagination && newPagination) {
+            pagination.innerHTML = newPagination.innerHTML;
+        }
+
+        const counter = document.querySelector("[data-media-count]");
+        const newCounter = doc.querySelector("[data-media-count]");
+        if (counter && newCounter) {
+            counter.textContent = newCounter.textContent;
+        }
+
+        initDeleteMedia();
+        initCheckUsages();
+        syncSelection();
+    } catch {
+        window.location.reload();
     }
 }
 
@@ -132,4 +180,124 @@ function initCheckUsages() {
                 .catch(() => showNotification("Error al consultar el uso del archivo", "error"));
         });
     });
+}
+
+function initBulkDelete() {
+    document.addEventListener("change", (e) => {
+        const target = e.target;
+
+        if (target.matches("[data-media-select]")) {
+            setSelected(target.value, target.checked);
+            updateBulkBar();
+        } else if (target.matches("[data-select-all]")) {
+            document.querySelectorAll("[data-media-select]:not(:disabled)").forEach((checkbox) => {
+                checkbox.checked = target.checked;
+                setSelected(checkbox.value, target.checked);
+            });
+            updateBulkBar();
+        }
+    });
+
+    document.addEventListener("click", (e) => {
+        if (e.target.closest("[data-bulk-clear]")) {
+            clearSelection();
+        } else if (e.target.closest("[data-bulk-delete]")) {
+            confirmBulkDelete();
+        }
+    });
+}
+
+function setSelected(id, selected) {
+    if (selected) {
+        selectedIds.add(id);
+    } else {
+        selectedIds.delete(id);
+    }
+    const card = document.getElementById(`media-item-${id}`);
+    if (card) card.classList.toggle("mu-selected", selected);
+}
+
+function updateBulkBar() {
+    const countEl = document.querySelector("[data-bulk-count]");
+    const actions = document.querySelector("[data-bulk-actions]");
+    const selectAll = document.querySelector("[data-select-all]");
+    if (!countEl || !actions || !selectAll) return;
+
+    const count = selectedIds.size;
+    countEl.hidden = count === 0;
+    actions.hidden = count === 0;
+    countEl.textContent = `${count} ${count === 1 ? "seleccionado" : "seleccionados"}`;
+
+    const selectable = document.querySelectorAll("[data-media-select]:not(:disabled)").length;
+    const checked = document.querySelectorAll("[data-media-select]:checked").length;
+    selectAll.checked = selectable > 0 && checked === selectable;
+    selectAll.indeterminate = checked > 0 && checked < selectable;
+}
+
+function clearSelection() {
+    selectedIds.clear();
+    document.querySelectorAll("[data-media-select]").forEach((checkbox) => {
+        checkbox.checked = false;
+    });
+    document.querySelectorAll(".mu-selected").forEach((card) => card.classList.remove("mu-selected"));
+    updateBulkBar();
+}
+
+function syncSelection() {
+    const present = new Set();
+
+    document.querySelectorAll("[data-media-select]").forEach((checkbox) => {
+        present.add(checkbox.value);
+        if (selectedIds.has(checkbox.value)) {
+            checkbox.checked = true;
+            checkbox.closest(".card")?.classList.add("mu-selected");
+        }
+    });
+
+    [...selectedIds].forEach((id) => {
+        if (!present.has(id)) selectedIds.delete(id);
+    });
+
+    updateBulkBar();
+}
+
+function confirmBulkDelete() {
+    const count = selectedIds.size;
+    if (count === 0) return;
+
+    showConfirmModal({
+        title: "¿Mover a la papelera?",
+        message: `¿Estás seguro de que deseas mover ${count} ${count === 1 ? "archivo" : "archivos"} a la papelera?`,
+        confirmText: "Mover a papelera",
+        cancelText: "Cancelar",
+        type: "danger",
+        onConfirm: bulkDeleteMedia,
+    });
+}
+
+function bulkDeleteMedia() {
+    if (!CSRF) {
+        showNotification("Error de configuración. Recarga la página.", "error");
+        return;
+    }
+
+    fetch(buildUrl("media/bulk-delete"), {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": CSRF.getAttribute("content"),
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({ ids: [...selectedIds] }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            const type = data.success ? (data.blocked && data.blocked.length ? "warning" : "success") : "error";
+            showNotification(data.message || "Error desconocido", type);
+            selectedIds.clear();
+            refreshMediaGrid();
+        })
+        .catch(() => showNotification("Error al eliminar. Verifica tu conexión.", "error"));
 }

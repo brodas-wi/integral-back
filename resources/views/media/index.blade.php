@@ -9,7 +9,7 @@
 @section('page-title')
     <div class="flex items-center gap-3">
         <span>Medios</span>
-        <span class="badge badge-info">{{ $stats['total'] }} {{ $stats['total'] === 1 ? 'archivo' : 'archivos' }}</span>
+        <span class="badge badge-info" data-media-count>{{ $stats['total'] }} {{ $stats['total'] === 1 ? 'archivo' : 'archivos' }}</span>
     </div>
 @endsection
 
@@ -83,10 +83,39 @@
     </div>
 
     @if ($media->count() > 0)
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        @php
+            $canBulkDelete = auth()->user()->can('media.delete') || auth()->user()->can('media.manage');
+        @endphp
+
+        @if ($canBulkDelete)
+            <div class="mu-bulk-bar">
+                <label class="mu-bulk-all">
+                    <input type="checkbox" data-select-all>
+                    <span>Seleccionar todo</span>
+                </label>
+                <span class="mu-bulk-count" data-bulk-count hidden></span>
+                <div class="mu-bulk-actions" data-bulk-actions hidden>
+                    <button type="button" class="btn-outline btn-sm" data-bulk-clear>Cancelar</button>
+                    <button type="button" class="mu-bulk-delete" data-bulk-delete>
+                        <i class="ri-delete-bin-line"></i>
+                        <span>Mover a papelera</span>
+                    </button>
+                </div>
+            </div>
+        @endif
+
+        <div id="media-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @foreach ($media as $item)
-                <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4"
+                <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4 relative"
                     id="media-item-{{ $item->id }}">
+                    @if ($canBulkDelete)
+                        @php $inUse = in_array($item->id, $usedMediaIds ?? []); @endphp
+                        <label class="mu-select {{ $inUse ? 'mu-select-disabled' : '' }}"
+                            title="{{ $inUse ? 'En uso, no se puede eliminar' : 'Seleccionar' }}">
+                            <input type="checkbox" data-media-select value="{{ $item->id }}"
+                                {{ $inUse ? 'disabled' : '' }}>
+                        </label>
+                    @endif
                     <a href="{{ route('media.show', $item) }}" class="block mb-3">
                         <div
                             class="w-full h-36 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative group-hover:opacity-90 transition-opacity">
@@ -218,11 +247,13 @@
             @endforeach
         </div>
 
-        @if ($media->hasPages())
-            <div class="mt-6">
-                {{ $media->appends(request()->query())->links() }}
-            </div>
-        @endif
+        <div id="media-pagination">
+            @if ($media->hasPages())
+                <div class="mt-6">
+                    {{ $media->appends(request()->query())->links() }}
+                </div>
+            @endif
+        </div>
     @else
         <div class="card text-center py-12">
             <i class="ri-folder-open-line text-6xl text-gray-400 mb-4"></i>

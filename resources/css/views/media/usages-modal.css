@@ -98,7 +98,7 @@
 
 .mu-indicator {
     position: absolute;
-    top: 0.5rem;
+    bottom: 0.5rem;
     left: 0.5rem;
     z-index: 2;
     width: 1.5rem;
@@ -111,4 +111,111 @@
     color: #ffffff;
     font-size: 0.8125rem;
     box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
+}
+
+.mu-select {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 3;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.25);
+    cursor: pointer;
+}
+
+.mu-select input {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #003b71;
+}
+
+.mu-select-disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.mu-select-disabled input {
+    cursor: not-allowed;
+}
+
+.card.mu-selected {
+    outline: 2px solid #003b71;
+    outline-offset: -2px;
+}
+
+.mu-bulk-bar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
+}
+
+.mu-bulk-all {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+}
+
+.mu-bulk-all input {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    accent-color: #003b71;
+}
+
+.mu-bulk-count {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #003b71;
+}
+
+.mu-bulk-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.mu-bulk-count[hidden],
+.mu-bulk-actions[hidden] {
+    display: none;
+}
+
+.mu-bulk-delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.875rem;
+    border: none;
+    border-radius: 9999px;
+    background-color: #dc2626;
+    color: #ffffff;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.mu-bulk-delete:hover {
+    background-color: #b91c1c;
 }

@@ -457,7 +457,11 @@ class MediaController extends Controller
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->input('ids', []);
+        if (!auth()->user()->can('media.delete') && !auth()->user()->can('media.manage')) {
+            return response()->json(['success' => false, 'message' => 'Sin permisos para eliminar'], 403);
+        }
+
+        $ids = array_filter((array) $request->input('ids', []), 'is_numeric');
         if (empty($ids)) {
             return response()->json(['success' => false, 'message' => 'No se seleccionaron archivos'], 422);
         }
