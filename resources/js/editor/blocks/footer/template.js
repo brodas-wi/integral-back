@@ -23,9 +23,31 @@ const logoHtml = (data) =>
         ? `<img src="${esc(data.logo_url)}" alt="${esc(data.logo_alt || "Logo")}">`
         : `<span class="ft-logo-text">${esc(data.logo_alt || "Logo")}</span>`;
 
+const TITLE_WEIGHT = 1.5;
+
+function columnCount(sections) {
+    if (!sections.length) return 1;
+
+    const heights = sections.map((section) => TITLE_WEIGHT + section.links.length);
+    const capacity = Math.max(...heights);
+
+    let columns = 1;
+    let used = 0;
+    heights.forEach((height) => {
+        if (used + height > capacity && used > 0) {
+            columns += 1;
+            used = 0;
+        }
+        used += height;
+    });
+
+    return columns;
+}
+
 export function buildFooterHTML(input) {
     const data = mergeData(input);
-    return `<div class="ft-inner" ${LOCKED}><div class="ft-logo-col">${logoHtml(data)}</div><div class="ft-sections" ${LOCKED}>${data.sections.map(sectionHtml).join("")}</div></div><div class="ft-stripe" ${LOCKED}></div>`;
+    const columns = columnCount(data.sections);
+    return `<div class="ft-inner" ${LOCKED}><div class="ft-logo-col">${logoHtml(data)}</div><div class="ft-sections ft-cols-${columns}" ${LOCKED}>${data.sections.map(sectionHtml).join("")}</div></div><div class="ft-stripe" ${LOCKED}></div>`;
 }
 
 export const buildFooterContent = (input) => buildFooterHTML(input) + FOOTER_STYLES;
