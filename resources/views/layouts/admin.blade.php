@@ -57,7 +57,7 @@
         ],
         [
             'key' => 'servicios',
-            'label' => 'Red de Servicios',
+            'label' => 'Servicios',
             'icon' => 'ri-map-pin-line',
             'items' => [
                 ['label' => 'Agencias', 'route' => 'agencies.index', 'icon' => 'ri-building-line', 'active' => ['agencies.*'], 'can' => ['agencies.view', 'agencies.manage']],

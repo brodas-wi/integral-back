@@ -59,7 +59,7 @@
             ],
         ],
         [
-            'label' => 'Red de Servicios',
+            'label' => 'Servicios',
             'icon' => 'ri-map-pin-line',
             'items' => [
                 ['label' => 'Total Agencias', 'hint' => 'Ubicaciones registradas', 'stat' => 'agencies', 'icon' => 'ri-building-line', 'color' => 'red', 'route' => 'agencies', 'perm' => 'agencies'],
