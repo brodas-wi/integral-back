@@ -1,5 +1,14 @@
+import { DYNAMIC_CSS } from "./templates.js";
+
 export const SEARCH_SCRIPT = `
 var root = this;
+var doc = root.ownerDocument;
+if (!doc.getElementById("srch-dynamic-style")) {
+    var styleEl = doc.createElement("style");
+    styleEl.id = "srch-dynamic-style";
+    styleEl.textContent = ${JSON.stringify(DYNAMIC_CSS)};
+    doc.head.appendChild(styleEl);
+}
 var form = root.querySelector(".srch-form");
 var input = root.querySelector(".srch-input");
 var submit = root.querySelector(".srch-submit");
