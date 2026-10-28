@@ -98,13 +98,10 @@ async function doToggle(id, btn) {
         if (data.success) {
             const nowActive = data.is_active;
             const icon = btn.querySelector("i");
-            if (icon) {
-                icon.className = nowActive
-                    ? "ri-toggle-fill text-green-500 text-2xl"
-                    : "ri-toggle-line text-gray-400 text-2xl";
-            }
+            if (icon) icon.className = nowActive ? "ri-toggle-fill" : "ri-toggle-line";
+            const label = btn.querySelector("[data-toggle-label]");
+            if (label) label.textContent = nowActive ? "Desactivar" : "Activar";
             btn.dataset.active = nowActive ? "1" : "0";
-            btn.title = nowActive ? "Desactivar" : "Activar";
 
             const badge = document.getElementById(`navbar-badge-${id}`);
             if (badge) {
