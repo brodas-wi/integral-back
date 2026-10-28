@@ -1,7 +1,7 @@
 import { assetUrl } from "@/utils/url.js";
 
 export const COMPONENT_TYPE = "split-carousel-component";
-export const VERSION = 2;
+export const VERSION = 3;
 export const CONFIG_ATTR = "data-split-carousel-config";
 export const VERSION_ATTR = "data-split-carousel-version";
 
@@ -31,7 +31,9 @@ const SC_CSS = `
 .sc-swiper{overflow:hidden;width:100%;}
 .sc-swiper .swiper-wrapper{align-items:stretch;}
 .sc-swiper .swiper-slide{height:auto;display:flex;justify-content:center;}
-.sc-card{position:relative;width:100%;max-width:260px;aspect-ratio:13/18;border-radius:24px;overflow:hidden;margin:0 auto;}
+.sc-card{position:relative;display:block;width:100%;max-width:260px;aspect-ratio:13/18;border-radius:24px;overflow:hidden;margin:0 auto;}
+.sc-card-link{color:inherit;text-decoration:none;cursor:pointer;}
+.sc-card-link:focus-visible{outline:3px solid #E97300;outline-offset:3px;}
 .sc-card-media{position:absolute;inset:0;width:100%;height:100%;}
 .sc-card-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .sc-card-video-wrap{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 0.25s ease;overflow:hidden;border-radius:24px;}
@@ -71,6 +73,15 @@ export function safeUrl(value) {
     return escapeHtml(url);
 }
 
+export function safeHref(value) {
+    const url = String(value ?? "").trim();
+    if (!url) return "";
+    if (url.startsWith("#")) return url;
+    if (url.startsWith("/") && !url.startsWith("//")) return url;
+    if (/^(https?:|mailto:|tel:)/i.test(url)) return url;
+    return "";
+}
+
 export function normalizeConfig(raw) {
     const src = raw && typeof raw === "object" ? raw : {};
     const text = (value) => (typeof value === "string" ? value : "");
@@ -81,6 +92,7 @@ export function normalizeConfig(raw) {
         cards: sourceCards.map((card) => ({
             image: text(card?.image),
             video: text(card?.video),
+            href: text(card?.href).trim(),
             title: text(card?.title),
             desc: text(card?.desc),
         })),
@@ -105,7 +117,13 @@ function buildCardHTML(card) {
         ? `<div class="sc-card-video-wrap"><video class="sc-card-video" src="${video}" muted loop playsinline autoplay preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1" data-gjs-type="sc-video-media" data-gjs-editable="false" data-gjs-selectable="false" data-gjs-hoverable="false"></video></div>`
         : "";
 
-    return `<div class="swiper-slide"><div class="sc-card">
+    const href = safeHref(card.href);
+    const open = href
+        ? `<a class="sc-card sc-card-link" href="${escapeHtml(href)}">`
+        : `<div class="sc-card">`;
+    const close = href ? "</a>" : "</div>";
+
+    return `<div class="swiper-slide">${open}
         <div class="sc-card-media">
             <img src="${image}" alt="${title}">
             ${videoHtml}
@@ -114,7 +132,7 @@ function buildCardHTML(card) {
             <h3 class="sc-card-title">${title}</h3>
             <p class="sc-card-desc">${desc}</p>
         </div>
-    </div></div>`;
+    ${close}</div>`;
 }
 
 function buildHTML(data) {

@@ -125,6 +125,10 @@ function cardHTML(card, idx, total) {
             <label class="scm-label">Descripción</label>
             <input class="scm-input" placeholder="Descripción breve" value="${esc(card.desc)}" data-bind="cards.${idx}.desc">
         </div>
+        <div>
+            <label class="scm-label">Enlace (opcional)</label>
+            <input class="scm-input" placeholder="/pagina, https://... o déjalo vacío" value="${esc(card.href)}" data-bind="cards.${idx}.href">
+        </div>
     </div>`;
 }
 
@@ -301,7 +305,7 @@ function showSplitCarouselModal(editor, component) {
             );
         },
         "add-card"() {
-            state.cards.push({ image: "", video: "", title: "Nueva tarjeta", desc: "Descripción de la tarjeta." });
+            state.cards.push({ image: "", video: "", href: "", title: "Nueva tarjeta", desc: "Descripción de la tarjeta." });
             renderCards();
             flashCard(state.cards.length - 1);
         },
