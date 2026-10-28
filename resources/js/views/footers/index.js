@@ -17,20 +17,86 @@ const escapeHtml = (value) =>
 document.addEventListener("DOMContentLoaded", () => {
     initToggleActive();
     initDelete();
-    initDropdowns();
+    initPagesModal();
 });
 
-function initDropdowns() {
-    document
-        .querySelectorAll("[data-dropdown] .dropdown-trigger")
-        .forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                if (typeof window.toggleDropdown === "function") {
-                    window.toggleDropdown(btn.closest("[data-dropdown]"));
-                }
-            });
+function initPagesModal() {
+    document.querySelectorAll("[data-pages-modal]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            let pages = [];
+            try {
+                pages = JSON.parse(btn.dataset.pages || "[]");
+            } catch {
+                pages = [];
+            }
+            openPagesModal(btn.dataset.footerName || "", pages);
         });
+    });
+}
+
+function openPagesModal(name, pages) {
+    document.getElementById("fl-pages-modal")?.remove();
+
+    const make = (tag, className, text) => {
+        const el = document.createElement(tag);
+        if (className) el.className = className;
+        if (text !== undefined) el.textContent = text;
+        return el;
+    };
+
+    const overlay = make("div", "fl-modal-overlay");
+    overlay.id = "fl-pages-modal";
+    const modal = make("div", "fl-modal");
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+
+    const header = make("div", "fl-modal-header");
+    const titleWrap = make("div", "fl-modal-titles");
+    titleWrap.appendChild(make("h2", "fl-modal-title", "Páginas vinculadas"));
+    titleWrap.appendChild(
+        make("p", "fl-modal-sub", `${name} · ${pages.length} ${pages.length === 1 ? "página" : "páginas"}`),
+    );
+    const closeBtn = make("button", "fl-modal-close");
+    closeBtn.type = "button";
+    closeBtn.setAttribute("aria-label", "Cerrar");
+    closeBtn.innerHTML = '<i class="ri-close-line"></i>';
+    header.append(titleWrap, closeBtn);
+
+    const list = make("ul", "fl-modal-list");
+    pages.forEach((page) => {
+        const item = make("li", "fl-modal-item");
+        const link = make("a", "fl-modal-link");
+        link.href = page.url;
+        link.appendChild(make("i", "ri-file-line"));
+        link.appendChild(make("span", "fl-modal-link-title", page.title));
+        link.appendChild(
+            make(
+                "span",
+                `fl-modal-state ${page.published ? "fl-modal-state-on" : "fl-modal-state-off"}`,
+                page.published ? "Publicada" : "Borrador",
+            ),
+        );
+        item.appendChild(link);
+        list.appendChild(item);
+    });
+
+    modal.append(header, list);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    const onKeydown = (event) => {
+        if (event.key === "Escape") close();
+    };
+    const close = () => {
+        document.removeEventListener("keydown", onKeydown);
+        overlay.remove();
+    };
+
+    closeBtn.addEventListener("click", close);
+    overlay.addEventListener("mousedown", (event) => {
+        if (event.target === overlay) close();
+    });
+    document.addEventListener("keydown", onKeydown);
 }
 
 function initToggleActive() {
@@ -98,19 +164,17 @@ async function doToggle(id, btn) {
         if (data.success) {
             const nowActive = data.is_active;
             const icon = btn.querySelector("i");
-            if (icon) {
-                icon.className = nowActive
-                    ? "ri-toggle-fill text-green-500 text-2xl"
-                    : "ri-toggle-line text-gray-400 text-2xl";
-            }
+            if (icon) icon.className = nowActive ? "ri-toggle-fill" : "ri-toggle-line";
+            const label = btn.querySelector("[data-toggle-label]");
+            if (label) label.textContent = nowActive ? "Desactivar" : "Activar";
             btn.dataset.active = nowActive ? "1" : "0";
-            btn.title = nowActive ? "Desactivar" : "Activar";
 
             const badge = document.getElementById(`footer-badge-${id}`);
             if (badge) {
                 badge.textContent = nowActive ? "Activo" : "Inactivo";
                 badge.className = `badge fl-status ${nowActive ? "badge-success" : "badge-danger"}`;
             }
+
             showNotification(data.message, "success");
         } else {
             throw new Error(data.message || "Error desconocido");

@@ -334,3 +334,147 @@
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+.nv-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(3px);
+}
+
+.nv-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 30rem;
+    max-height: 80vh;
+    overflow: hidden;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15);
+    font-family: "Inter", sans-serif;
+}
+
+.nv-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-shrink: 0;
+    padding-top: 1rem;
+    padding-right: 1.25rem;
+    padding-bottom: 0.875rem;
+    padding-left: 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.nv-modal-title {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.nv-modal-sub {
+    margin: 0.125rem 0 0;
+    font-size: 0.8125rem;
+    color: #64748b;
+    overflow-wrap: anywhere;
+}
+
+.nv-modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border: 0;
+    border-radius: 9999px;
+    background-color: transparent;
+    color: #94a3b8;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.nv-modal-close:hover {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.nv-modal-list {
+    margin: 0;
+    padding-top: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    overflow-y: auto;
+    list-style: none;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.nv-modal-link {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding-top: 0.625rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.625rem;
+    padding-left: 0.75rem;
+    border-radius: 0.5rem;
+    color: #334155;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.nv-modal-link:hover {
+    background-color: #f1f5f9;
+}
+
+.nv-modal-link i {
+    flex-shrink: 0;
+    color: #94a3b8;
+}
+
+.nv-modal-link-title {
+    flex: 1;
+    min-width: 0;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.nv-modal-state {
+    flex-shrink: 0;
+    padding-top: 1px;
+    padding-right: 8px;
+    padding-bottom: 1px;
+    padding-left: 8px;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+}
+
+.nv-modal-state-on {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.nv-modal-state-off {
+    background-color: #fef3c7;
+    color: #b45309;
+}

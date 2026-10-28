@@ -49,7 +49,18 @@
     @else
         <div class="nv-list">
             @foreach ($navbars as $navbar)
-                @php $pageCount = $navbar->pages->count(); @endphp
+                @php
+                    $pageCount = $navbar->pages->count();
+                    $pagesList = $navbar->pages
+                        ->map(
+                            fn($page) => [
+                                'title' => $page->title,
+                                'url' => route('pages.show', $page->slug),
+                                'published' => (bool) $page->is_published,
+                            ],
+                        )
+                        ->values();
+                @endphp
                 <article class="nv-item" id="navbar-row-{{ $navbar->id }}" data-navbar-row>
                     <header class="nv-head">
                         <div class="nv-id">
@@ -124,24 +135,11 @@
                             <div class="nv-info-body">
                                 <span class="nv-info-label">Páginas vinculadas</span>
                                 @if ($pageCount > 0)
-                                    <div class="dropdown" data-dropdown>
-                                        <button type="button" class="nv-pages-btn" title="Ver páginas vinculadas"
-                                            onclick="toggleDropdown(this.closest('.dropdown'))">
-                                            {{ $pageCount }} {{ $pageCount === 1 ? 'página' : 'páginas' }}
-                                            <i class="ri-arrow-down-s-line"></i>
-                                        </button>
-                                        <div class="dropdown-menu navbar-pages-dropdown">
-                                            @foreach ($navbar->pages as $page)
-                                                <a href="{{ route('pages.show', $page->slug) }}" class="dropdown-item">
-                                                    <i class="ri-file-line"></i>
-                                                    <span>{{ $page->title }}</span>
-                                                    @if ($page->is_published)
-                                                        <span class="ml-auto badge badge-success badge-xs">Pub.</span>
-                                                    @endif
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                    </div>
+                                    <button type="button" class="nv-pages-btn" data-pages-modal
+                                        data-navbar-name="{{ $navbar->name }}"
+                                        data-pages="{{ json_encode($pagesList) }}" title="Ver páginas vinculadas">
+                                        {{ $pageCount }} {{ $pageCount === 1 ? 'página' : 'páginas' }}
+                                    </button>
                                 @else
                                     <span class="nv-info-value nv-muted">Ninguna</span>
                                 @endif

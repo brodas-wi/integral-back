@@ -17,7 +17,86 @@ const escapeHtml = (value) =>
 document.addEventListener("DOMContentLoaded", () => {
     initToggleActive();
     initDelete();
+    initPagesModal();
 });
+
+function initPagesModal() {
+    document.querySelectorAll("[data-pages-modal]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            let pages = [];
+            try {
+                pages = JSON.parse(btn.dataset.pages || "[]");
+            } catch {
+                pages = [];
+            }
+            openPagesModal(btn.dataset.navbarName || "", pages);
+        });
+    });
+}
+
+function openPagesModal(name, pages) {
+    document.getElementById("nv-pages-modal")?.remove();
+
+    const make = (tag, className, text) => {
+        const el = document.createElement(tag);
+        if (className) el.className = className;
+        if (text !== undefined) el.textContent = text;
+        return el;
+    };
+
+    const overlay = make("div", "nv-modal-overlay");
+    overlay.id = "nv-pages-modal";
+    const modal = make("div", "nv-modal");
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+
+    const header = make("div", "nv-modal-header");
+    const titleWrap = make("div", "nv-modal-titles");
+    titleWrap.appendChild(make("h2", "nv-modal-title", "Páginas vinculadas"));
+    titleWrap.appendChild(
+        make("p", "nv-modal-sub", `${name} · ${pages.length} ${pages.length === 1 ? "página" : "páginas"}`),
+    );
+    const closeBtn = make("button", "nv-modal-close");
+    closeBtn.type = "button";
+    closeBtn.setAttribute("aria-label", "Cerrar");
+    closeBtn.innerHTML = '<i class="ri-close-line"></i>';
+    header.append(titleWrap, closeBtn);
+
+    const list = make("ul", "nv-modal-list");
+    pages.forEach((page) => {
+        const item = make("li", "nv-modal-item");
+        const link = make("a", "nv-modal-link");
+        link.href = page.url;
+        link.appendChild(make("i", "ri-file-line"));
+        link.appendChild(make("span", "nv-modal-link-title", page.title));
+        const state = make(
+            "span",
+            `nv-modal-state ${page.published ? "nv-modal-state-on" : "nv-modal-state-off"}`,
+            page.published ? "Publicada" : "Borrador",
+        );
+        link.appendChild(state);
+        item.appendChild(link);
+        list.appendChild(item);
+    });
+
+    modal.append(header, list);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    const onKeydown = (event) => {
+        if (event.key === "Escape") close();
+    };
+    const close = () => {
+        document.removeEventListener("keydown", onKeydown);
+        overlay.remove();
+    };
+
+    closeBtn.addEventListener("click", close);
+    overlay.addEventListener("mousedown", (event) => {
+        if (event.target === overlay) close();
+    });
+    document.addEventListener("keydown", onKeydown);
+}
 
 function initToggleActive() {
     document.querySelectorAll("[data-toggle-active]").forEach((btn) => {
