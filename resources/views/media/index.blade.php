@@ -116,9 +116,9 @@
                                 {{ $inUse ? 'disabled' : '' }}>
                         </label>
                     @endif
-                    <a href="{{ route('media.show', $item) }}" class="block mb-3">
+                    <div class="mb-3">
                         <div
-                            class="w-full h-36 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative group-hover:opacity-90 transition-opacity">
+                            class="w-full h-36 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative">
                             @if ($item->isImage())
                                 <img src="{{ $item->url }}" alt="{{ $item->alt ?? $item->filename }}"
                                     class="w-full h-full object-cover">
@@ -156,7 +156,7 @@
                                 </span>
                             @endif
                         </div>
-                    </a>
+                    </div>
 
                     <div class="flex-1 flex flex-col">
                         <h4 class="font-semibold text-sm text-secondary truncate mb-2" title="{{ $item->filename }}">
