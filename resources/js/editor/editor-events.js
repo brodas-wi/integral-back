@@ -18,7 +18,38 @@ function showSessionExpiredModal() {
     });
 }
 
+function ensureCloneStyles(editor, root) {
+    const wrapper = editor.getWrapper();
+    const nodes = [root, ...root.find("*")];
+
+    nodes.forEach((comp) => {
+        let id = comp.getAttributes().id;
+        if (!id) return;
+
+        let rule = editor.Css.getIdRule(id);
+        if (!rule) {
+            const base = id.replace(/-\d+$/, "");
+            if (base !== id) rule = editor.Css.getIdRule(base);
+        }
+        const style = rule ? { ...rule.getStyle() } : null;
+
+        const shared = wrapper.find(`#${window.CSS.escape(id)}`).length > 1;
+        if (shared) {
+            id = `${id}-${Math.random().toString(36).slice(2, 7)}`;
+            comp.addAttributes({ id });
+        }
+
+        if (style && Object.keys(style).length) {
+            editor.Css.setIdRule(id, style);
+        }
+    });
+}
+
 export function setupEditorEvents(editor, editorService, editorState) {
+    editor.on("component:clone", (clone) => {
+        setTimeout(() => ensureCloneStyles(editor, clone), 50);
+    });
+
     editor.on("component:add", () => editorService.markAsDirty());
     editor.on("component:remove", () => editorService.markAsDirty());
     editor.on("component:update", () => editorService.markAsDirty());

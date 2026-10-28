@@ -264,6 +264,7 @@ export const TAB_CONFIG = {
     },
     typo: { label: "Tipografía", prefix: "", type: "typo" },
     bg: { label: "Fondo", prefix: "bg-", prop: "bgClass", type: "color" },
+    spacing: { label: "Espaciado", prefix: "", type: "spacing" },
     border: {
         label: "Borde",
         prefix: "border-",
@@ -313,4 +314,24 @@ export const FONT_WEIGHTS = [
     { label: "Bold", cls: "font-bold", weight: "700" },
     { label: "ExtraBold", cls: "font-extrabold", weight: "800" },
     { label: "Black", cls: "font-black", weight: "900" },
+];
+
+export const SPACING_TYPES = [
+    { id: "p", label: "Padding" },
+    { id: "m", label: "Margin" },
+];
+
+export const SPACING_SIDES = [
+    { id: "all", label: "Todos", key: "" },
+    { id: "x", label: "Horizontal", key: "x" },
+    { id: "y", label: "Vertical", key: "y" },
+    { id: "t", label: "Arriba", key: "t" },
+    { id: "r", label: "Derecha", key: "r" },
+    { id: "b", label: "Abajo", key: "b" },
+    { id: "l", label: "Izquierda", key: "l" },
+];
+
+export const SPACING_VALUES = [
+    "0", "0.5", "1", "1.5", "2", "3", "4", "5", "6", "8",
+    "10", "12", "16", "20", "24", "32", "40", "48", "64", "96",
 ];

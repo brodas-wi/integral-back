@@ -7,6 +7,9 @@ import {
     RADIUS_OPTIONS,
     FONT_SIZES,
     FONT_WEIGHTS,
+    SPACING_TYPES,
+    SPACING_SIDES,
+    SPACING_VALUES,
 } from "./constants";
 
 const pickAttrs = (key, prefix, cls, value) =>
@@ -21,6 +24,8 @@ export class ColorPickerModal {
         this._activeTab = DEFAULT_TAB;
         this._pending = {};
         this._customHex = "#000000";
+        this._spacingType = "p";
+        this._spacingSide = "all";
         this._handleKeyDown = (e) => {
             if (e.key === "Escape") this.close();
         };
@@ -38,6 +43,8 @@ export class ColorPickerModal {
         this._onConfirm = onConfirm;
         this._pending = {};
         this._activeTab = DEFAULT_TAB;
+        this._spacingType = "p";
+        this._spacingSide = "all";
         this._render();
         document.addEventListener("keydown", this._handleKeyDown);
     }
@@ -121,13 +128,30 @@ export class ColorPickerModal {
                 this._refresh();
                 break;
             }
-            case "remove":
-                this._pending[this._activeTab] = {
-                    action: "remove",
-                    prefix: TAB_CONFIG[this._activeTab].prefix,
-                };
+            case "spacing-type":
+                this._spacingType = d.value;
                 this._refresh();
                 break;
+            case "spacing-side":
+                this._spacingSide = d.value;
+                this._refresh();
+                break;
+            case "remove": {
+                if (TAB_CONFIG[this._activeTab].type === "spacing") {
+                    const tw = this._spacingKey();
+                    this._pending[`spacing-${tw}`] = {
+                        action: "remove",
+                        prefix: `spacing-${tw}`,
+                    };
+                } else {
+                    this._pending[this._activeTab] = {
+                        action: "remove",
+                        prefix: TAB_CONFIG[this._activeTab].prefix,
+                    };
+                }
+                this._refresh();
+                break;
+            }
             case "confirm": {
                 const changes = Object.values(this._pending);
                 const cb = this._onConfirm;
@@ -174,7 +198,9 @@ export class ColorPickerModal {
     }
 
     _footer() {
-        const removable = TAB_CONFIG[this._activeTab].type === "color";
+        const removable = ["color", "spacing"].includes(
+            TAB_CONFIG[this._activeTab].type,
+        );
         return `
             ${removable ? `<button class="cp-btn-remove" data-action="remove"><i class="ri-eraser-line"></i> Quitar</button>` : `<div></div>`}
             <div class="cp-footer-right">
@@ -195,6 +221,7 @@ export class ColorPickerModal {
             );
         }
         if (type === "radius") return this._radiusSection();
+        if (type === "spacing") return this._spacingSection();
         return this._typoSection();
     }
 
@@ -252,6 +279,57 @@ export class ColorPickerModal {
                     <button class="cp-btn-apply" data-action="apply-custom">Seleccionar</button>
                 </div>
                 <p class="cp-custom-hint">Se aplica como estilo directo del elemento y tiene prioridad sobre las clases heredadas.</p>
+            </div>
+        `;
+    }
+
+    _spacingKey() {
+        const side = SPACING_SIDES.find((s) => s.id === this._spacingSide);
+        return `${this._spacingType}${side ? side.key : ""}`;
+    }
+
+    _spacingSection() {
+        const tw = this._spacingKey();
+        const key = `spacing-${tw}`;
+        const pending = this._pending[key];
+
+        const types = SPACING_TYPES.map(
+            (t) =>
+                `<button class="cp-chip${t.id === this._spacingType ? " selected" : ""}" data-action="spacing-type" data-value="${t.id}">${t.label}</button>`,
+        ).join("");
+
+        const sides = SPACING_SIDES.map(
+            (s) =>
+                `<button class="cp-chip${s.id === this._spacingSide ? " selected" : ""}" data-action="spacing-side" data-value="${s.id}">${s.label}</button>`,
+        ).join("");
+
+        const values = (
+            this._spacingType === "m"
+                ? [...SPACING_VALUES, "auto"]
+                : SPACING_VALUES
+        )
+            .map((v) => {
+                const cls = `${tw}-${v}`;
+                const isSelected =
+                    pending && pending.action === "apply" && pending.cls === cls;
+                const px = v === "auto" ? "auto" : `${parseFloat(v) * 4}px`;
+                return `<button class="cp-chip cp-chip-value${isSelected ? " selected" : ""}" title="${cls} · ${px}" ${pickAttrs(key, key, cls, v)}>${v}</button>`;
+            })
+            .join("");
+
+        return `
+            <div class="cp-section">
+                <span class="cp-section-label">Tipo</span>
+                <div class="cp-chip-row">${types}</div>
+            </div>
+            <div class="cp-section">
+                <span class="cp-section-label">Lado</span>
+                <div class="cp-chip-row">${sides}</div>
+            </div>
+            <div class="cp-section">
+                <span class="cp-section-label">Valor (escala Tailwind)</span>
+                <div class="cp-chip-row">${values}</div>
+                <p class="cp-custom-hint">Se aplica como clase de Tailwind (<code>${tw}-4</code>), así que se conserva al duplicar. "Quitar" elimina el valor del tipo y lado seleccionados.</p>
             </div>
         `;
     }

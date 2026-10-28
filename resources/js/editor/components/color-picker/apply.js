@@ -80,6 +80,11 @@ const CSS_PROP_MAP = {
 };
 
 const BREAKPOINT_RE = /^(?:(?:sm|md|lg|xl|2xl):)?(.+)$/;
+const SPACING_VALUE = "(?:[0-9]+(?:\\.[0-9]+)?|auto|px)";
+
+function _spacingRegex(tw) {
+    return new RegExp(`^(?:(?:sm|md|lg|xl|2xl):)?${tw}-${SPACING_VALUE}$`);
+}
 const ARBITRARY_COLOR_RE = /^\[(?:#|rgb|hsl)/i;
 const ESCAPED_ARBITRARY_RE = /^-[0-9a-f]{3,8}-?$/i;
 
@@ -150,6 +155,13 @@ export function applyColorToComponent(editor, component, changes) {
     const style = { ...(target.getStyle() || {}) };
 
     changes.forEach(({ action, cls, value, prefix }) => {
+        if (prefix.startsWith("spacing-")) {
+            const pattern = _spacingRegex(prefix.slice(8));
+            classes = classes.filter((c) => !pattern.test(c));
+            if (action === "apply" && cls) classes.push(cls);
+            return;
+        }
+
         const cssProp = CSS_PROP_MAP[prefix];
         classes = _stripConflicts(classes, prefix);
 
