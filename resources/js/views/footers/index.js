@@ -3,6 +3,17 @@ import { buildUrl } from "@/utils/url.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]');
 
+const HTML_ESCAPES = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+};
+
+const escapeHtml = (value) =>
+    String(value ?? "").replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
+
 document.addEventListener("DOMContentLoaded", () => {
     initToggleActive();
     initDelete();
@@ -98,7 +109,7 @@ async function doToggle(id, btn) {
             const badge = document.getElementById(`footer-badge-${id}`);
             if (badge) {
                 badge.textContent = nowActive ? "Activo" : "Inactivo";
-                badge.className = `badge ${nowActive ? "badge-success" : "badge-danger"}`;
+                badge.className = `badge fl-status ${nowActive ? "badge-success" : "badge-danger"}`;
             }
             showNotification(data.message, "success");
         } else {
@@ -126,7 +137,7 @@ function initDelete() {
 
             window.showConfirmModal({
                 title: "Mover a papelera",
-                message: `¿Mover <strong>"${name}"</strong> a la papelera? Podrás recuperarlo después.`,
+                message: `¿Mover <strong>"${escapeHtml(name)}"</strong> a la papelera? Podrás recuperarlo después.`,
                 confirmText: "Mover a papelera",
                 cancelText: "Cancelar",
                 type: "warning",
@@ -152,6 +163,9 @@ async function doDelete(id, btn) {
         if (data.success) {
             document.getElementById(`footer-row-${id}`)?.remove();
             showNotification(data.message, "success");
+            if (document.querySelectorAll("[data-footer-row]").length === 0) {
+                window.location.reload();
+            }
         } else {
             throw new Error(data.message);
         }

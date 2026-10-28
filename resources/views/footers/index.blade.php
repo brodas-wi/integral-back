@@ -26,22 +26,26 @@
 @endsection
 
 @section('content')
-    <div class="card">
-        @if ($footers->isEmpty())
-            <div class="text-center py-12 text-gray-500">
-                <i class="ri-layout-bottom-line text-4xl mb-3 block"></i>
-                <p class="mb-4">No hay footers creados aún.</p>
-                <a href="{{ route('footers.create') }}" class="btn-primary btn-sm inline-flex">
+    @if ($footers->isEmpty())
+        <div class="card fl-empty">
+            <span class="fl-empty-icon"><i class="ri-layout-bottom-line"></i></span>
+            <h3 class="fl-empty-title">No hay footers creados aún</h3>
+            <p class="fl-empty-text">Crea tu primer footer para mostrar los enlaces y datos de contacto al final de las páginas.</p>
+            @canany(['footers.create', 'footers.manage'])
+                <a href="{{ route('footers.create') }}" class="btn-primary btn-sm inline-flex items-center">
                     <i class="ri-add-line mr-1"></i> Crear primer footer
                 </a>
-            </div>
-        @else
-            <table class="w-full">
+            @endcanany
+        </div>
+    @else
+        <div class="card fl-card">
+            <table class="fl-table w-full">
                 <thead>
                     <tr>
-                        <th class="table-header rounded-tl-lg">Nombre</th>
+                        <th class="table-header rounded-tl-lg">Footer</th>
                         <th class="table-header">Estado</th>
                         <th class="table-header">Páginas</th>
+                        <th class="table-header">Creado</th>
                         <th class="table-header">Actualizado</th>
                         <th class="table-header rounded-tr-lg text-right">Acciones</th>
                     </tr>
@@ -49,17 +53,21 @@
                 <tbody>
                     @foreach ($footers as $footer)
                         @php $pageCount = $footer->pages->count(); @endphp
-                        <tr class="table-row" id="footer-row-{{ $footer->id }}">
-                            <td class="py-3 px-4 font-medium text-secondary">
-                                {{ $footer->name }}
+                        <tr class="table-row" id="footer-row-{{ $footer->id }}" data-footer-row>
+                            <td class="py-3 px-4 fl-cell-name">
+                                <div class="fl-name">
+                                    <span class="fl-name-icon"><i class="ri-layout-bottom-line"></i></span>
+                                    <span class="fl-name-text">{{ $footer->name }}</span>
+                                </div>
                             </td>
-                            <td class="py-3 px-4">
-                                <span class="badge {{ $footer->is_active ? 'badge-success' : 'badge-danger' }}"
+                            <td class="py-3 px-4 fl-cell-nowrap" data-label="Estado">
+                                <span
+                                    class="badge fl-status {{ $footer->is_active ? 'badge-success' : 'badge-danger' }}"
                                     id="footer-badge-{{ $footer->id }}">
                                     {{ $footer->is_active ? 'Activo' : 'Inactivo' }}
                                 </span>
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-4 fl-cell-nowrap" data-label="Páginas">
                                 @if ($pageCount > 0)
                                     <div class="relative inline-block" data-dropdown>
                                         <button type="button"
@@ -81,41 +89,52 @@
                                         </div>
                                     </div>
                                 @else
-                                    <span class="text-xs text-gray-400">Sin páginas</span>
+                                    <span class="fl-muted">Sin páginas</span>
                                 @endif
                             </td>
-                            <td class="py-3 px-4 text-sm text-gray-500">
-                                {{ $footer->updated_at->format('d/m/Y H:i') }}
+                            <td class="py-3 px-4 fl-cell-nowrap" data-label="Creado">
+                                <div class="fl-date" title="{{ $footer->created_at->format('d/m/Y H:i:s') }}">
+                                    <span class="fl-date-main">{{ $footer->created_at->format('d/m/Y') }}</span>
+                                    <span class="fl-date-sub">{{ $footer->created_at->format('H:i') }}</span>
+                                </div>
                             </td>
-                            <td class="py-3 px-4">
-                                <div class="flex justify-end gap-2 items-center">
+                            <td class="py-3 px-4 fl-cell-nowrap" data-label="Actualizado">
+                                <div class="fl-date" title="{{ $footer->updated_at->format('d/m/Y H:i:s') }}">
+                                    <span class="fl-date-main">{{ $footer->updated_at->format('d/m/Y') }}</span>
+                                    <span class="fl-date-sub">{{ $footer->updated_at->diffForHumans() }}</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 fl-cell-actions">
+                                <div class="fl-actions">
                                     @canany(['footers.view', 'footers.manage'])
                                         <a href="{{ route('footers.preview', $footer->id) }}" target="_blank"
-                                            class="btn-outline btn-sm">
-                                            <i class="ri-eye-line mr-1"></i> Previsualizar
+                                            rel="noopener" class="fl-action" title="Previsualizar">
+                                            <i class="ri-eye-line"></i>
                                         </a>
                                     @endcanany
                                     @canany(['footers.edit', 'footers.manage'])
-                                        <a href="{{ route('footers.edit', $footer->id) }}" class="btn-outline btn-sm">
-                                            <i class="ri-edit-line mr-1"></i> Editar
+                                        <a href="{{ route('footers.edit', $footer->id) }}" class="fl-action"
+                                            title="Editar">
+                                            <i class="ri-edit-line"></i>
                                         </a>
                                     @endcanany
                                     @canany(['footers.toggle', 'footers.manage'])
-                                        <button data-toggle-active data-footer-id="{{ $footer->id }}"
+                                        <button type="button" data-toggle-active data-footer-id="{{ $footer->id }}"
                                             data-active="{{ $footer->is_active ? '1' : '0' }}"
                                             data-page-count="{{ $pageCount }}"
                                             title="{{ $footer->is_active ? 'Desactivar' : 'Activar' }}"
-                                            class="btn-sm w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                                            class="fl-action">
                                             <i
                                                 class="{{ $footer->is_active ? 'ri-toggle-fill text-green-500' : 'ri-toggle-line text-gray-400' }} text-2xl"></i>
                                         </button>
                                     @endcanany
                                     @canany(['footers.delete', 'footers.manage'])
-                                        <button data-delete-footer data-footer-id="{{ $footer->id }}"
-                                            data-footer-name="{{ addslashes($footer->name) }}"
-                                            data-page-count="{{ $pageCount }}" title="Eliminar"
-                                            class="btn-sm w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-red-50 hover:border-red-200 transition-colors text-gray-400 hover:text-red-500">
-                                            <i class="ri-delete-bin-line text-lg"></i>
+                                        <button type="button" data-delete-footer data-footer-id="{{ $footer->id }}"
+                                            data-footer-name="{{ $footer->name }}"
+                                            data-page-count="{{ $pageCount }}"
+                                            title="{{ $pageCount > 0 ? 'No se puede eliminar: tiene páginas vinculadas' : 'Eliminar' }}"
+                                            class="fl-action fl-action-danger {{ $pageCount > 0 ? 'fl-action-locked' : '' }}">
+                                            <i class="ri-delete-bin-line"></i>
                                         </button>
                                     @endcanany
                                 </div>
@@ -124,8 +143,8 @@
                     @endforeach
                 </tbody>
             </table>
-        @endif
-    </div>
+        </div>
+    @endif
 @endsection
 
 @push('scripts')

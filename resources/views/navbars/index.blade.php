@@ -8,11 +8,6 @@
     @vite('resources/css/views/navbars/index.css')
 @endpush
 
-@php
-    $totalNavbars = $navbars->count();
-    $activeNavbars = $navbars->where('is_active', true)->count();
-@endphp
-
 @section('header-actions')
     @canany(['navbars.restore', 'navbars.manage'])
         <a href="{{ route('navbars.trashed') }}" class="btn-outline btn-sm btn-header-action">
@@ -43,30 +38,6 @@
             @endcanany
         </div>
     @else
-        <div class="nv-summary">
-            <div class="nv-stat">
-                <span class="nv-stat-icon nv-stat-blue"><i class="ri-layout-top-line"></i></span>
-                <div>
-                    <p class="nv-stat-value" data-nv-total>{{ $totalNavbars }}</p>
-                    <p class="nv-stat-label">Total de navbars</p>
-                </div>
-            </div>
-            <div class="nv-stat">
-                <span class="nv-stat-icon nv-stat-green"><i class="ri-checkbox-circle-line"></i></span>
-                <div>
-                    <p class="nv-stat-value" data-nv-active>{{ $activeNavbars }}</p>
-                    <p class="nv-stat-label">Activos</p>
-                </div>
-            </div>
-            <div class="nv-stat">
-                <span class="nv-stat-icon nv-stat-red"><i class="ri-close-circle-line"></i></span>
-                <div>
-                    <p class="nv-stat-value" data-nv-inactive>{{ $totalNavbars - $activeNavbars }}</p>
-                    <p class="nv-stat-label">Inactivos</p>
-                </div>
-            </div>
-        </div>
-
         <div class="card nv-card">
             <table class="nv-table w-full">
                 <thead>
@@ -84,20 +55,20 @@
                         @php $pageCount = $navbar->pages->count(); @endphp
                         <tr class="table-row" id="navbar-row-{{ $navbar->id }}" data-navbar-row
                             data-active="{{ $navbar->is_active ? '1' : '0' }}">
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-4 nv-cell-name">
                                 <div class="nv-name">
                                     <span class="nv-name-icon"><i class="ri-layout-top-line"></i></span>
                                     <span class="nv-name-text">{{ $navbar->name }}</span>
                                 </div>
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-4 nv-cell-status" data-label="Estado">
                                 <span
                                     class="badge nv-status {{ $navbar->is_active ? 'badge-success' : 'badge-danger' }}"
                                     id="navbar-badge-{{ $navbar->id }}">
                                     {{ $navbar->is_active ? 'Activo' : 'Inactivo' }}
                                 </span>
                             </td>
-                            <td class="py-3 px-4 nv-col-pages">
+                            <td class="py-3 px-4 nv-col-pages" data-label="Páginas">
                                 @if ($pageCount > 0)
                                     <div class="relative inline-block" data-dropdown>
                                         <button type="button"
@@ -122,19 +93,19 @@
                                     <span class="nv-muted">Sin páginas</span>
                                 @endif
                             </td>
-                            <td class="py-3 px-4 nv-col-created">
+                            <td class="py-3 px-4 nv-col-created" data-label="Creado">
                                 <div class="nv-date" title="{{ $navbar->created_at->format('d/m/Y H:i:s') }}">
                                     <span class="nv-date-main">{{ $navbar->created_at->format('d/m/Y') }}</span>
                                     <span class="nv-date-sub">{{ $navbar->created_at->format('H:i') }}</span>
                                 </div>
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-4" data-label="Actualizado">
                                 <div class="nv-date" title="{{ $navbar->updated_at->format('d/m/Y H:i:s') }}">
                                     <span class="nv-date-main">{{ $navbar->updated_at->format('d/m/Y') }}</span>
                                     <span class="nv-date-sub">{{ $navbar->updated_at->diffForHumans() }}</span>
                                 </div>
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-4 nv-cell-actions">
                                 <div class="nv-actions">
                                     @canany(['navbars.view', 'navbars.manage'])
                                         <a href="{{ route('navbars.preview', $navbar->id) }}" target="_blank"

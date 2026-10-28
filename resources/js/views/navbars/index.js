@@ -14,20 +14,6 @@ const HTML_ESCAPES = {
 const escapeHtml = (value) =>
     String(value ?? "").replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
 
-function refreshSummary() {
-    const total = document.querySelectorAll("[data-navbar-row]").length;
-    const active = document.querySelectorAll('[data-navbar-row][data-active="1"]').length;
-    const values = {
-        "[data-nv-total]": total,
-        "[data-nv-active]": active,
-        "[data-nv-inactive]": total - active,
-    };
-    Object.entries(values).forEach(([selector, value]) => {
-        const el = document.querySelector(selector);
-        if (el) el.textContent = value;
-    });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     initToggleActive();
     initDelete();
@@ -126,9 +112,6 @@ async function doToggle(id, btn) {
                 badge.className = `badge nv-status ${nowActive ? "badge-success" : "badge-danger"}`;
             }
 
-            const row = document.getElementById(`navbar-row-${id}`);
-            if (row) row.dataset.active = nowActive ? "1" : "0";
-            refreshSummary();
             showNotification(data.message, "success");
         } else {
             throw new Error(data.message || "Error desconocido");
@@ -183,9 +166,7 @@ async function doDelete(id, btn) {
             showNotification(data.message, "success");
             if (document.querySelectorAll("[data-navbar-row]").length === 0) {
                 window.location.reload();
-                return;
             }
-            refreshSummary();
         } else {
             throw new Error(data.message);
         }
