@@ -103,9 +103,11 @@ const desktopItem = (item) => {
     }
     const columns = item.columns.slice(0, MAX_SUBMENU_COLUMNS);
     const cta = desktopCtaColumn(item.cta_column);
+    const fill = columns.length >= MAX_SUBMENU_COLUMNS;
+    const track = fill ? "minmax(0,1fr)" : "minmax(0,320px)";
     const grid = cta
-        ? `grid-template-columns:repeat(${columns.length},minmax(0,1fr)) minmax(200px,260px);`
-        : `grid-template-columns:repeat(${columns.length},minmax(0,280px));justify-content:start;`;
+        ? `grid-template-columns:repeat(${columns.length},${track}) minmax(200px,260px);${fill ? "" : "justify-content:center;"}`
+        : `grid-template-columns:repeat(${columns.length},minmax(0,${fill ? "1fr" : "320px"}));justify-content:${fill ? "start" : "center"};`;
     return `<li class="nb-nav-item"><button class="nb-nav-link nb-nav-trigger" type="button" aria-expanded="false">${esc(item.label || "Menú")}</button><div class="nb-mega"><div class="nb-mega-grid" style="${grid}">${columns.map(desktopColumn).join("")}${cta}</div></div></li>`;
 };
 
