@@ -8,7 +8,7 @@
 
 @section('page-title')
     <div class="flex items-center gap-3">
-        <span>Medios</span>
+        <span>Medios v2</span>
         <span class="badge badge-info">{{ $stats['total'] }} {{ $stats['total'] === 1 ? 'archivo' : 'archivos' }}</span>
     </div>
 @endsection
