@@ -148,16 +148,49 @@ const buildShell = () => {
 <div class="ctm-tabs">${tabs}</div>
 <div class="ctm-body">${bodies}</div>
 <div class="ctm-footer">
+    <div class="ctm-footer-group">
+        <button type="button" class="ctm-btn-backup" data-action="backup"><i class="ri-download-2-line"></i> Respaldar</button>
+        <label class="ctm-btn-restore"><i class="ri-upload-2-line"></i> Restaurar<input type="file" accept=".json,application/json" data-restore hidden></label>
+    </div>
     <button type="button" class="ctm-btn-cancel" data-action="close">Cancelar</button>
     <button type="button" class="ctm-btn-save" data-action="save"><i class="ri-check-line"></i> Aplicar cambios</button>
 </div>`;
 };
 
+function downloadBackup(data) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `tabla-tarjetas-backup-${stamp}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+}
+
+function confirmDialog({ icon, iconColor, title, message, detail, confirmLabel, confirmColor, showCancel = true }) {
+    return new Promise((resolve) => {
+        const element = document.createElement("div");
+        element.className = "ctm-confirm-overlay";
+        element.innerHTML = `<div class="ctm-confirm-modal"><div class="ctm-confirm-header"><i class="${icon}" style="color:${iconColor};"></i><h3>${esc(title)}</h3></div><div class="ctm-confirm-body"><p>${esc(message)}</p>${detail ? `<span class="ctm-confirm-filename"><i class="ri-file-code-line"></i>${esc(detail)}</span>` : ""}</div><div class="ctm-confirm-footer">${showCancel ? '<button type="button" class="ctm-confirm-cancel">Cancelar</button>' : ""}<button type="button" class="ctm-confirm-ok" style="background:${confirmColor};">${esc(confirmLabel)}</button></div></div>`;
+        const finish = (value) => {
+            element.remove();
+            resolve(value);
+        };
+        element.querySelector(".ctm-confirm-ok").onclick = () => finish(true);
+        const cancel = element.querySelector(".ctm-confirm-cancel");
+        if (cancel) cancel.onclick = () => finish(false);
+        document.body.appendChild(element);
+    });
+}
+
 export function showCardTableModal(editor, component) {
     ensureModalStyles();
     document.getElementById("card-table-config-modal")?.remove();
 
-    const state = mergeData(readCardTableConfig(component));
+    let state = mergeData(readCardTableConfig(component));
 
     const overlay = document.createElement("div");
     overlay.id = "card-table-config-modal";
@@ -220,7 +253,48 @@ export function showCardTableModal(editor, component) {
     };
 
     const onKeydown = (event) => {
-        if (event.key === "Escape") close();
+        if (event.key === "Escape" && !document.querySelector(".ctm-confirm-overlay")) close();
+    };
+
+    const restoreFrom = async (input) => {
+        const file = input.files && input.files[0];
+        input.value = "";
+        if (!file) return;
+
+        let parsed = null;
+        try {
+            parsed = JSON.parse(await file.text());
+        } catch {
+            parsed = null;
+        }
+
+        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+            await confirmDialog({
+                icon: "ri-error-warning-line",
+                iconColor: "#ef4444",
+                title: "Archivo inválido",
+                message: "El archivo seleccionado no es un JSON válido.",
+                confirmLabel: "Cerrar",
+                confirmColor: "#ef4444",
+                showCancel: false,
+            });
+            return;
+        }
+
+        const accepted = await confirmDialog({
+            icon: "ri-refresh-line",
+            iconColor: "#E97300",
+            title: "Restaurar configuración",
+            message: "Se reemplazará la configuración actual de la tabla con la del respaldo. Los cambios se aplican a la tabla cuando pulses «Aplicar cambios».",
+            detail: file.name,
+            confirmLabel: "Sí, restaurar",
+            confirmColor: "#E97300",
+        });
+        if (!accepted) return;
+
+        state = mergeData(parsed);
+        renderAll();
+        renderPreview();
     };
 
     const close = () => {
@@ -241,6 +315,7 @@ export function showCardTableModal(editor, component) {
             applyCardTableConfig(editor, component, state);
             close();
         },
+        backup: () => downloadBackup(mergeData(state)),
         tab: (el) => {
             modal
                 .querySelectorAll(".ctm-tab")
@@ -285,7 +360,10 @@ export function showCardTableModal(editor, component) {
     };
 
     modal.addEventListener("input", syncBound);
-    modal.addEventListener("change", syncBound);
+    modal.addEventListener("change", (event) => {
+        if (event.target.matches("[data-restore]")) restoreFrom(event.target);
+        else syncBound(event);
+    });
 
     overlay.addEventListener("mousedown", (event) => {
         if (event.target === overlay) close();
