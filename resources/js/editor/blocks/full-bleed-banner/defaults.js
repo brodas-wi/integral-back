@@ -1,5 +1,5 @@
 export const COMPONENT_TYPE = "full-bleed-banner-component";
-export const FULL_BLEED_VERSION = "2";
+export const FULL_BLEED_VERSION = "3";
 export const MAX_TITLE = 160;
 export const MAX_BUTTON = 60;
 export const ALIGNS = ["left", "right"];
