@@ -1,6 +1,6 @@
 import { ICONS } from "./product-detail/icons";
 import { styleTag } from "./product-detail/styles";
-import { ASIDE_CLASS, actionPanel, section, split } from "./product-detail/layouts";
+import { ASIDE_CLASS, GAP_CLASS, actionPanel, section, split } from "./product-detail/layouts";
 import {
     COVERAGE_TABLE_DATA,
     bulletList,
@@ -115,11 +115,11 @@ export const productDetailBlocks = [
         label: "Sección: 3 columnas (2 listas + acción)",
         media: ICONS.threeCol,
         styles: ["threeCol"],
-        containerClass: "flex flex-col gap-6",
+        containerClass: GAP_CLASS,
         body: `${text("lead")}
 <div class="pd-three-col-grid">
-    ${bulletList(3, "VENTAJAS")}
-    ${bulletList(3, "BENEFICIOS")}
+    <div class="${GAP_CLASS}">${bulletList(3, "VENTAJAS")}</div>
+    <div class="${GAP_CLASS}">${bulletList(3, "BENEFICIOS")}</div>
     <div class="${ASIDE_CLASS}">${actionPanel({ notes: 3 })}</div>
 </div>`,
     }),
@@ -130,9 +130,9 @@ export const productDetailBlocks = [
         media: ICONS.headerGrid,
         styles: ["headerGrid"],
         body: `<div class="pd-header-grid">
-    <div class="pd-hg-intro">${text("lead")}</div>
-    <div class="pd-hg-col1">${bulletList(4, "VENTAJAS")}</div>
-    <div class="pd-hg-col2">${bulletList(2, "REQUISITOS")}</div>
+    <div class="pd-hg-intro ${GAP_CLASS}">${text("lead")}</div>
+    <div class="pd-hg-col1 ${GAP_CLASS}">${bulletList(4, "VENTAJAS")}</div>
+    <div class="pd-hg-col2 ${GAP_CLASS}">${bulletList(2, "REQUISITOS")}</div>
     <div class="pd-hg-action ${ASIDE_CLASS}">${actionPanel({ notes: 3 })}</div>
 </div>`,
     }),
@@ -157,7 +157,7 @@ export const productDetailBlocks = [
         label: "Sección: fila de tarjetas simples (sin acción lateral)",
         media: ICONS.cardsRow,
         styles: ["cardsRow"],
-        containerClass: "flex flex-col gap-5",
+        containerClass: GAP_CLASS,
         body: `${text("accentLg", "Subtítulo destacado")}${text("bodyStrong")}${iconCardRow(5)}`,
     }),
 
@@ -167,7 +167,7 @@ export const productDetailBlocks = [
         media: ICONS.repeatBlocks,
         styles: ["asymmetric"],
         body: split({
-            mainClass: "flex flex-col gap-6",
+            mainClass: GAP_CLASS,
             main: [
                 paragraphGroup(
                     "Lorem ipsum dolor sit amet",
@@ -194,7 +194,7 @@ export const productDetailBlocks = [
         body: split({
             main: `${text("body")}
 <div class="flex flex-col gap-2">
-    ${text("heading", "Subtítulo de la sección")}
+    ${text("heading", "Subtítulo secundario")}
     ${text("body", "Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.")}
     ${text("accent", "Qué puede incluir:")}
     ${bulletList(4)}

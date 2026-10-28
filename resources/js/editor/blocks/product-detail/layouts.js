@@ -1,7 +1,8 @@
 import { styleTag } from "./styles";
 import { ctaButton, footnoteGroup, productTitle } from "./parts";
 
-export const MAIN_CLASS = "flex flex-col gap-5";
+export const GAP_CLASS = "flex flex-col gap-5";
+export const MAIN_CLASS = GAP_CLASS;
 export const ASIDE_CLASS = "pd-aside";
 
 export const section = ({ body, styles = [], containerClass = "" }) => {
