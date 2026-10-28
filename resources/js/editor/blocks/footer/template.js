@@ -25,7 +25,7 @@ const logoHtml = (data) =>
 
 export function buildFooterHTML(input) {
     const data = mergeData(input);
-    return `<div class="ft-inner" ${LOCKED}><div class="ft-logo-col">${logoHtml(data)}</div>${data.sections.map(sectionHtml).join("")}</div><div class="ft-stripe" ${LOCKED}></div>`;
+    return `<div class="ft-inner" ${LOCKED}><div class="ft-logo-col">${logoHtml(data)}</div><div class="ft-sections" ${LOCKED}>${data.sections.map(sectionHtml).join("")}</div></div><div class="ft-stripe" ${LOCKED}></div>`;
 }
 
 export const buildFooterContent = (input) => buildFooterHTML(input) + FOOTER_STYLES;

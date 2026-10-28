@@ -1,10 +1,11 @@
 export const FOOTER_STYLES = `<style>
 .ft-wrapper{width:100%;background-color:#003B71;font-family:'Poppins',sans-serif;box-sizing:border-box;}
-.ft-inner{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2.5rem 2rem;align-items:start;width:100%;max-width:1600px;margin:0 auto;box-sizing:border-box;padding-top:clamp(2rem,4vw,3rem);padding-bottom:clamp(1.5rem,3vw,2rem);padding-left:clamp(1.5rem,4vw,3.5rem);padding-right:clamp(1.5rem,4vw,3.5rem);}
+.ft-inner{display:grid;grid-template-columns:minmax(140px,200px) minmax(0,1fr);gap:2rem 2.5rem;align-items:start;width:100%;max-width:1600px;margin:0 auto;box-sizing:border-box;padding-top:clamp(2rem,4vw,3rem);padding-bottom:clamp(1.5rem,3vw,2rem);padding-left:clamp(1.5rem,4vw,3.5rem);padding-right:clamp(1.5rem,4vw,3.5rem);}
 .ft-logo-col{min-width:0;}
+.ft-sections{min-width:0;column-width:210px;column-gap:2rem;column-fill:balance;}
 .ft-logo-col img{display:block;width:100%;max-width:160px;height:auto;}
 .ft-logo-text{font-size:1.25rem;font-weight:800;color:#fff;}
-.ft-section{min-width:0;}
+.ft-section{min-width:0;display:inline-block;width:100%;box-sizing:border-box;break-inside:avoid;page-break-inside:avoid;padding-top:0;padding-right:0;padding-bottom:2rem;padding-left:0;}
 .ft-section-title{margin:0 0 0.875rem;padding:0;font-size:0.9375rem;font-weight:700;color:#fff;}
 .ft-links{display:flex;flex-direction:column;gap:0.5rem;margin:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:1.125rem;list-style:disc;}
 .ft-links li::marker{color:#fff;}
@@ -17,15 +18,15 @@ export const FOOTER_STYLES = `<style>
 .ft-link:focus-visible{outline:2px solid #E97300;outline-offset:3px;border-radius:2px;}
 .ft-stripe{width:100%;height:40px;background-color:#E97300;}
 @media(max-width:992px){
-.ft-inner{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:2rem 1.5rem;}
+.ft-inner{grid-template-columns:1fr;gap:1.5rem;}
+.ft-sections{column-width:170px;column-gap:1.5rem;}
 }
 @media(max-width:480px){
-.ft-inner{grid-template-columns:1fr 1fr;gap:1.75rem 1.25rem;}
-.ft-logo-col{grid-column:1 / -1;}
+.ft-sections{column-width:130px;column-gap:1.25rem;}
+.ft-section{padding-bottom:1.5rem;}
 }
 @media(max-width:320px){
-.ft-inner{grid-template-columns:1fr;}
-.ft-logo-col{grid-column:auto;}
+.ft-sections{column-width:auto;column-count:1;}
 }
 @media(prefers-reduced-motion:reduce){
 .ft-link,.ft-link i{transition:none;}

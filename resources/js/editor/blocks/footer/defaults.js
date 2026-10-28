@@ -1,7 +1,7 @@
 import { clone } from "./utils";
 
 export const COMPONENT_TYPE = "footer-component";
-export const FOOTER_VERSION = "3";
+export const FOOTER_VERSION = "4";
 export const MAX_SECTIONS = 8;
 
 export const DEFAULT_DATA = {
