@@ -8,6 +8,11 @@
     @vite('resources/css/views/navbars/index.css')
 @endpush
 
+@php
+    $totalNavbars = $navbars->count();
+    $activeNavbars = $navbars->where('is_active', true)->count();
+@endphp
+
 @section('header-actions')
     @canany(['navbars.restore', 'navbars.manage'])
         <a href="{{ route('navbars.trashed') }}" class="btn-outline btn-sm btn-header-action">
@@ -26,22 +31,50 @@
 @endsection
 
 @section('content')
-    <div class="card">
-        @if ($navbars->isEmpty())
-            <div class="text-center py-12 text-gray-500">
-                <i class="ri-layout-top-line text-4xl mb-3 block"></i>
-                <p class="mb-4">No hay navbars creados aún.</p>
-                <a href="{{ route('navbars.create') }}" class="btn-primary btn-sm inline-flex">
+    @if ($navbars->isEmpty())
+        <div class="card nv-empty">
+            <span class="nv-empty-icon"><i class="ri-layout-top-line"></i></span>
+            <h3 class="nv-empty-title">No hay navbars creados aún</h3>
+            <p class="nv-empty-text">Crea tu primer navbar para mostrar el menú de navegación en el sitio.</p>
+            @canany(['navbars.create', 'navbars.manage'])
+                <a href="{{ route('navbars.create') }}" class="btn-primary btn-sm inline-flex items-center">
                     <i class="ri-add-line mr-1"></i> Crear primer navbar
                 </a>
+            @endcanany
+        </div>
+    @else
+        <div class="nv-summary">
+            <div class="nv-stat">
+                <span class="nv-stat-icon nv-stat-blue"><i class="ri-layout-top-line"></i></span>
+                <div>
+                    <p class="nv-stat-value" data-nv-total>{{ $totalNavbars }}</p>
+                    <p class="nv-stat-label">Total de navbars</p>
+                </div>
             </div>
-        @else
-            <table class="w-full">
+            <div class="nv-stat">
+                <span class="nv-stat-icon nv-stat-green"><i class="ri-checkbox-circle-line"></i></span>
+                <div>
+                    <p class="nv-stat-value" data-nv-active>{{ $activeNavbars }}</p>
+                    <p class="nv-stat-label">Activos</p>
+                </div>
+            </div>
+            <div class="nv-stat">
+                <span class="nv-stat-icon nv-stat-red"><i class="ri-close-circle-line"></i></span>
+                <div>
+                    <p class="nv-stat-value" data-nv-inactive>{{ $totalNavbars - $activeNavbars }}</p>
+                    <p class="nv-stat-label">Inactivos</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card nv-card">
+            <table class="nv-table w-full">
                 <thead>
                     <tr>
-                        <th class="table-header rounded-tl-lg">Nombre</th>
+                        <th class="table-header rounded-tl-lg">Navbar</th>
                         <th class="table-header">Estado</th>
-                        <th class="table-header">Páginas</th>
+                        <th class="table-header nv-col-pages">Páginas</th>
+                        <th class="table-header nv-col-created">Creado</th>
                         <th class="table-header">Actualizado</th>
                         <th class="table-header rounded-tr-lg text-right">Acciones</th>
                     </tr>
@@ -49,17 +82,22 @@
                 <tbody>
                     @foreach ($navbars as $navbar)
                         @php $pageCount = $navbar->pages->count(); @endphp
-                        <tr class="table-row" id="navbar-row-{{ $navbar->id }}">
-                            <td class="py-3 px-4 font-medium text-secondary">
-                                {{ $navbar->name }}
+                        <tr class="table-row" id="navbar-row-{{ $navbar->id }}" data-navbar-row
+                            data-active="{{ $navbar->is_active ? '1' : '0' }}">
+                            <td class="py-3 px-4">
+                                <div class="nv-name">
+                                    <span class="nv-name-icon"><i class="ri-layout-top-line"></i></span>
+                                    <span class="nv-name-text">{{ $navbar->name }}</span>
+                                </div>
                             </td>
                             <td class="py-3 px-4">
-                                <span class="badge {{ $navbar->is_active ? 'badge-success' : 'badge-danger' }}"
+                                <span
+                                    class="badge nv-status {{ $navbar->is_active ? 'badge-success' : 'badge-danger' }}"
                                     id="navbar-badge-{{ $navbar->id }}">
                                     {{ $navbar->is_active ? 'Activo' : 'Inactivo' }}
                                 </span>
                             </td>
-                            <td class="py-3 px-4">
+                            <td class="py-3 px-4 nv-col-pages">
                                 @if ($pageCount > 0)
                                     <div class="relative inline-block" data-dropdown>
                                         <button type="button"
@@ -81,41 +119,52 @@
                                         </div>
                                     </div>
                                 @else
-                                    <span class="text-xs text-gray-400">Sin páginas</span>
+                                    <span class="nv-muted">Sin páginas</span>
                                 @endif
                             </td>
-                            <td class="py-3 px-4 text-sm text-gray-500">
-                                {{ $navbar->updated_at->format('d/m/Y H:i') }}
+                            <td class="py-3 px-4 nv-col-created">
+                                <div class="nv-date" title="{{ $navbar->created_at->format('d/m/Y H:i:s') }}">
+                                    <span class="nv-date-main">{{ $navbar->created_at->format('d/m/Y') }}</span>
+                                    <span class="nv-date-sub">{{ $navbar->created_at->format('H:i') }}</span>
+                                </div>
                             </td>
                             <td class="py-3 px-4">
-                                <div class="flex justify-end gap-2 items-center">
+                                <div class="nv-date" title="{{ $navbar->updated_at->format('d/m/Y H:i:s') }}">
+                                    <span class="nv-date-main">{{ $navbar->updated_at->format('d/m/Y') }}</span>
+                                    <span class="nv-date-sub">{{ $navbar->updated_at->diffForHumans() }}</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="nv-actions">
                                     @canany(['navbars.view', 'navbars.manage'])
                                         <a href="{{ route('navbars.preview', $navbar->id) }}" target="_blank"
-                                            class="btn-outline btn-sm">
-                                            <i class="ri-eye-line mr-1"></i> Previsualizar
+                                            rel="noopener" class="nv-action" title="Previsualizar">
+                                            <i class="ri-eye-line"></i>
                                         </a>
                                     @endcanany
                                     @canany(['navbars.edit', 'navbars.manage'])
-                                        <a href="{{ route('navbars.edit', $navbar->id) }}" class="btn-outline btn-sm">
-                                            <i class="ri-edit-line mr-1"></i> Editar
+                                        <a href="{{ route('navbars.edit', $navbar->id) }}" class="nv-action"
+                                            title="Editar">
+                                            <i class="ri-edit-line"></i>
                                         </a>
                                     @endcanany
                                     @canany(['navbars.toggle', 'navbars.manage'])
-                                        <button data-toggle-active data-navbar-id="{{ $navbar->id }}"
+                                        <button type="button" data-toggle-active data-navbar-id="{{ $navbar->id }}"
                                             data-active="{{ $navbar->is_active ? '1' : '0' }}"
                                             data-page-count="{{ $pageCount }}"
                                             title="{{ $navbar->is_active ? 'Desactivar' : 'Activar' }}"
-                                            class="btn-sm w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                                            class="nv-action">
                                             <i
                                                 class="{{ $navbar->is_active ? 'ri-toggle-fill text-green-500' : 'ri-toggle-line text-gray-400' }} text-2xl"></i>
                                         </button>
                                     @endcanany
                                     @canany(['navbars.delete', 'navbars.manage'])
-                                        <button data-delete-navbar data-navbar-id="{{ $navbar->id }}"
-                                            data-navbar-name="{{ addslashes($navbar->name) }}"
-                                            data-page-count="{{ $pageCount }}" title="Eliminar"
-                                            class="btn-sm w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-red-50 hover:border-red-200 transition-colors text-gray-400 hover:text-red-500">
-                                            <i class="ri-delete-bin-line text-lg"></i>
+                                        <button type="button" data-delete-navbar data-navbar-id="{{ $navbar->id }}"
+                                            data-navbar-name="{{ $navbar->name }}"
+                                            data-page-count="{{ $pageCount }}"
+                                            title="{{ $pageCount > 0 ? 'No se puede eliminar: tiene páginas vinculadas' : 'Eliminar' }}"
+                                            class="nv-action nv-action-danger {{ $pageCount > 0 ? 'nv-action-locked' : '' }}">
+                                            <i class="ri-delete-bin-line"></i>
                                         </button>
                                     @endcanany
                                 </div>
@@ -124,8 +173,8 @@
                     @endforeach
                 </tbody>
             </table>
-        @endif
-    </div>
+        </div>
+    @endif
 @endsection
 
 @push('scripts')

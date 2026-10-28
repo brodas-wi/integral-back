@@ -3,6 +3,31 @@ import { buildUrl } from "@/utils/url.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]');
 
+const HTML_ESCAPES = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+};
+
+const escapeHtml = (value) =>
+    String(value ?? "").replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
+
+function refreshSummary() {
+    const total = document.querySelectorAll("[data-navbar-row]").length;
+    const active = document.querySelectorAll('[data-navbar-row][data-active="1"]').length;
+    const values = {
+        "[data-nv-total]": total,
+        "[data-nv-active]": active,
+        "[data-nv-inactive]": total - active,
+    };
+    Object.entries(values).forEach(([selector, value]) => {
+        const el = document.querySelector(selector);
+        if (el) el.textContent = value;
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     initToggleActive();
     initDelete();
@@ -98,8 +123,12 @@ async function doToggle(id, btn) {
             const badge = document.getElementById(`navbar-badge-${id}`);
             if (badge) {
                 badge.textContent = nowActive ? "Activo" : "Inactivo";
-                badge.className = `badge ${nowActive ? "badge-success" : "badge-danger"}`;
+                badge.className = `badge nv-status ${nowActive ? "badge-success" : "badge-danger"}`;
             }
+
+            const row = document.getElementById(`navbar-row-${id}`);
+            if (row) row.dataset.active = nowActive ? "1" : "0";
+            refreshSummary();
             showNotification(data.message, "success");
         } else {
             throw new Error(data.message || "Error desconocido");
@@ -126,7 +155,7 @@ function initDelete() {
 
             window.showConfirmModal({
                 title: "Mover a papelera",
-                message: `¿Mover <strong>"${name}"</strong> a la papelera? Podrás recuperarlo después.`,
+                message: `¿Mover <strong>"${escapeHtml(name)}"</strong> a la papelera? Podrás recuperarlo después.`,
                 confirmText: "Mover a papelera",
                 cancelText: "Cancelar",
                 type: "warning",
@@ -152,6 +181,11 @@ async function doDelete(id, btn) {
         if (data.success) {
             document.getElementById(`navbar-row-${id}`)?.remove();
             showNotification(data.message, "success");
+            if (document.querySelectorAll("[data-navbar-row]").length === 0) {
+                window.location.reload();
+                return;
+            }
+            refreshSummary();
         } else {
             throw new Error(data.message);
         }

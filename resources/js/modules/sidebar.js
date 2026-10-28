@@ -39,17 +39,25 @@ export function initSidebar() {
 
     const STORAGE_KEY = "cms_sidebar_groups";
 
-    function loadGroupState() {
+    function loadOpenGroup() {
         try {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            if (typeof parsed === "string") return parsed;
+            if (parsed && typeof parsed === "object") {
+                return Object.keys(parsed).find((key) => parsed[key] === true) || null;
+            }
+            return null;
         } catch {
-            return {};
+            return null;
         }
     }
 
-    function saveGroupState(state) {
+    function saveOpenGroup(name) {
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            if (name) localStorage.setItem(STORAGE_KEY, JSON.stringify(name));
+            else localStorage.removeItem(STORAGE_KEY);
         } catch {
             // ignore storage errors
         }
@@ -77,33 +85,32 @@ export function initSidebar() {
 
     function toggleGroup(group) {
         const isOpen = group.classList.contains("is-open");
-        const groupName = group.dataset.group;
-        const state = loadGroupState();
 
         if (isOpen) {
             closeGroup(group);
-            state[groupName] = false;
-        } else {
-            openGroup(group);
-            state[groupName] = true;
+            saveOpenGroup(null);
+            return;
         }
 
-        saveGroupState(state);
+        sidebar.querySelectorAll(".sidebar-group.is-open").forEach((other) => {
+            if (other !== group) closeGroup(other);
+        });
+        openGroup(group);
+        saveOpenGroup(group.dataset.group);
     }
 
     const groups = sidebar.querySelectorAll(".sidebar-group");
-    const persistedState = loadGroupState();
+    const activeGroup = Array.from(groups).find((group) => group.dataset.open === "true");
+    const initialName = activeGroup ? activeGroup.dataset.group : loadOpenGroup();
+
+    if (activeGroup) saveOpenGroup(activeGroup.dataset.group);
 
     groups.forEach((group) => {
-        const groupName = group.dataset.group;
-        const serverOpen = group.dataset.open === "true";
         const content = group.querySelector(".sidebar-group-content");
 
         if (!content) return;
 
-        const shouldOpen =
-            serverOpen ||
-            (persistedState[groupName] === true);
+        const shouldOpen = group.dataset.group === initialName;
 
         if (shouldOpen) {
             content.style.maxHeight = content.scrollHeight + "px";
