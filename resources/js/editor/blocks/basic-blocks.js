@@ -1,5 +1,8 @@
 import { assetUrl } from "@/utils/url.js";
-import { STYLES as TEXT_STYLES, buildItem, buildLink, buildList, buildPara } from "./text-kit/templates.js";
+const TEXT_CLASSES = "text-base text-[#003B71] leading-relaxed";
+
+const listContent = (tag, kind, count = 3) =>
+    `<${tag} class="${kind} pl-6 m-0 space-y-2 ${TEXT_CLASSES}">${Array.from({ length: count }, () => "<li>Elemento de lista</li>").join("")}</${tag}>`;
 
 const CATEGORY = "Básico";
 const BLUE = "#003B71";
@@ -57,7 +60,7 @@ export const basicBlocks = [
         label: "Párrafo",
         category: CATEGORY,
         media: svg(lines([[8, 24, 1], [13, 24, 0.5], [18, 18, 0.5]])),
-        content: `${buildPara("Este es un párrafo de ejemplo. Puedes editar este texto y agregar tu propio contenido aquí.")}${TEXT_STYLES}`,
+        content: `<p class="${TEXT_CLASSES} m-0">Este es un párrafo de ejemplo. Puedes editar este texto y agregar tu propio contenido aquí.</p>`,
     },
     {
         id: "link",
@@ -66,7 +69,7 @@ export const basicBlocks = [
         media: svg(
             `<path fill="${ORANGE}" d="M13 10H10a6 6 0 000 12h3v-2h-3a4 4 0 010-8h3v-2zm6 0h-3v2h3a4 4 0 010 8h-3v2h3a6 6 0 000-12zm-8 7h6v-2h-6v2z"/>`,
         ),
-        content: `${buildLink({ text: "Texto del enlace" })}${TEXT_STYLES}`,
+        content: `<a href="#" class="text-base font-semibold text-[#E97300] underline hover:text-[#C96200]">Texto del enlace</a>`,
     },
     {
         id: "image",
@@ -95,7 +98,7 @@ export const basicBlocks = [
                 .map((y) => bullet(y, `<circle cx="7" cy="${y}" r="2" fill="${BLUE}"/>`))
                 .join(""),
         ),
-        content: `${buildList(false, ["Elemento de lista", "Elemento de lista", "Elemento de lista"])}${TEXT_STYLES}`,
+        content: listContent("ul", "list-disc"),
     },
     {
         id: "ordered-list",
@@ -111,7 +114,7 @@ export const basicBlocks = [
                 )
                 .join(""),
         ),
-        content: `${buildList(true, ["Elemento de lista", "Elemento de lista", "Elemento de lista"])}${TEXT_STYLES}`,
+        content: listContent("ol", "list-decimal"),
     },
     {
         id: "list-item",
@@ -120,7 +123,7 @@ export const basicBlocks = [
         media: svg(`
             <circle cx="8" cy="16" r="1.6" fill="${BLUE}"/>
             <rect x="12" y="14.8" width="15" height="2.4" rx="1.2" fill="${BLUE}" fill-opacity="0.5"/>`),
-        content: `${buildItem("Elemento de lista")}${TEXT_STYLES}`,
+        content: `<li class="${TEXT_CLASSES}" data-gjs-draggable="ul,ol">Elemento de lista</li>`,
     },
     ...DIVIDERS.map(dividerBlock),
     {
