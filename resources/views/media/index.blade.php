@@ -131,9 +131,9 @@
                                     <button type="button" data-check-usages data-media-id="{{ $item->id }}"
                                         title="En uso en {{ $usageCount }} {{ $usageCount === 1 ? 'lugar' : 'lugares' }}"
                                         aria-label="Ver dónde se usa"
-                                        class="w-6 h-6 rounded-full flex items-center justify-center text-white text-sm shadow-sm"
-                                        style="background-color:#E97300;">
-                                        <i class="ri-links-line"></i>
+                                        class="w-6 h-6 rounded-full flex items-center justify-center text-sm shadow-sm"
+                                        style="background-color:#E97300 !important;color:#ffffff !important;border:0 !important;padding:0 !important;">
+                                        <i class="ri-links-line" style="color:#ffffff !important;"></i>
                                     </button>
                                 @endif
                                 <span class="px-2 py-1 rounded text-xs {{ $badgeClass }}">{{ $ext }}</span>
