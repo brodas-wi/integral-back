@@ -25,10 +25,10 @@ const bullet = (y, marker) =>
     `${marker}<rect x="12" y="${y - 1}" width="14" height="2" rx="1" fill="${BLUE}" fill-opacity="0.6"/>`;
 
 const HEADINGS = [
-    { id: "heading1", label: "Título H1", tag: "h1", text: "Título Principal", size: 18, classes: "text-4xl font-bold leading-tight bs-blue" },
-    { id: "heading2", label: "Título H2", tag: "h2", text: "Subtítulo", size: 16, classes: "text-3xl font-bold leading-snug bs-blue" },
-    { id: "heading3", label: "Título H3", tag: "h3", text: "Título de Sección", size: 14, classes: "text-2xl font-bold leading-snug bs-orange" },
-    { id: "heading4", label: "Título H4", tag: "h4", text: "Título de Subsección", size: 12, classes: "text-xl font-bold leading-snug bs-orange" },
+    { id: "heading1", label: "Título H1", tag: "h1", text: "Título Principal", size: 18, classes: "m-0 text-4xl font-bold leading-tight bs-blue" },
+    { id: "heading2", label: "Título H2", tag: "h2", text: "Subtítulo", size: 16, classes: "m-0 text-3xl font-bold leading-snug bs-blue" },
+    { id: "heading3", label: "Título H3", tag: "h3", text: "Título de Sección", size: 14, classes: "m-0 text-2xl font-bold leading-snug bs-orange" },
+    { id: "heading4", label: "Título H4", tag: "h4", text: "Título de Subsección", size: 12, classes: "m-0 text-xl font-bold leading-snug bs-orange" },
 ];
 
 const DIVIDERS = [
