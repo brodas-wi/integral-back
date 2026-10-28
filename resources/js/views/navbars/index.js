@@ -17,21 +17,7 @@ const escapeHtml = (value) =>
 document.addEventListener("DOMContentLoaded", () => {
     initToggleActive();
     initDelete();
-    initDropdowns();
 });
-
-function initDropdowns() {
-    document
-        .querySelectorAll("[data-dropdown] .dropdown-trigger")
-        .forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                if (typeof window.toggleDropdown === "function") {
-                    window.toggleDropdown(btn.closest("[data-dropdown]"));
-                }
-            });
-        });
-}
 
 function initToggleActive() {
     document.querySelectorAll("[data-toggle-active]").forEach((btn) => {

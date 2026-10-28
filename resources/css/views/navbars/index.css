@@ -100,8 +100,7 @@
     gap: 0.5rem;
 }
 
-.nv-edit,
-.nv-more-btn {
+.nv-edit {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -137,9 +136,23 @@
 }
 
 .nv-more-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.375rem;
+    height: 2.375rem;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
     border: 2px solid #e2e8f0;
+    border-radius: 9999px;
     background-color: #ffffff;
     color: #475569;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .nv-more-btn:hover {
@@ -147,9 +160,12 @@
     background-color: #f8fafc;
 }
 
-.nv-edit i,
-.nv-more-btn i {
+.nv-edit i {
     font-size: 1rem;
+}
+
+.nv-more-btn i {
+    font-size: 1.25rem;
 }
 
 .nv-more .nv-menu {

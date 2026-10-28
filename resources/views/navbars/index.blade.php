@@ -73,12 +73,13 @@
                             @endif
 
                             @if ($hasMenu)
-                                <div class="relative inline-block nv-more" data-dropdown>
-                                    <button type="button" class="nv-more-btn dropdown-trigger">
-                                        <span>Más</span>
-                                        <i class="ri-arrow-down-s-line"></i>
+                                <div class="dropdown nv-more" data-dropdown>
+                                    <button type="button" class="nv-more-btn" aria-label="Más acciones"
+                                        title="Más acciones"
+                                        onclick="toggleDropdown(this.closest('.dropdown'))">
+                                        <i class="ri-more-2-fill"></i>
                                     </button>
-                                    <div class="dropdown-menu dropdown-menu-bottom nv-menu">
+                                    <div class="dropdown-menu nv-menu">
                                         @if ($canPreview)
                                             <a href="{{ route('navbars.preview', $navbar->id) }}" target="_blank"
                                                 rel="noopener" class="dropdown-item">
@@ -123,13 +124,13 @@
                             <div class="nv-info-body">
                                 <span class="nv-info-label">Páginas vinculadas</span>
                                 @if ($pageCount > 0)
-                                    <div class="relative inline-block" data-dropdown>
-                                        <button type="button" class="nv-pages-btn dropdown-trigger"
-                                            title="Ver páginas vinculadas">
+                                    <div class="dropdown" data-dropdown>
+                                        <button type="button" class="nv-pages-btn" title="Ver páginas vinculadas"
+                                            onclick="toggleDropdown(this.closest('.dropdown'))">
                                             {{ $pageCount }} {{ $pageCount === 1 ? 'página' : 'páginas' }}
                                             <i class="ri-arrow-down-s-line"></i>
                                         </button>
-                                        <div class="dropdown-menu dropdown-menu-bottom navbar-pages-dropdown">
+                                        <div class="dropdown-menu navbar-pages-dropdown">
                                             @foreach ($navbar->pages as $page)
                                                 <a href="{{ route('pages.show', $page->slug) }}" class="dropdown-item">
                                                     <i class="ri-file-line"></i>
