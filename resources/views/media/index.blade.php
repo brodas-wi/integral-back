@@ -8,7 +8,7 @@
 
 @section('page-title')
     <div class="flex items-center gap-3">
-        <span>Medios v2</span>
+        <span>Medios</span>
         <span class="badge badge-info">{{ $stats['total'] }} {{ $stats['total'] === 1 ? 'archivo' : 'archivos' }}</span>
     </div>
 @endsection
@@ -108,7 +108,7 @@
 
                 <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4"
                     id="media-item-{{ $item->id }}">
-                    <div class="relative mb-3">
+                    <div class="mb-3">
                         <div
                             class="w-full h-36 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative">
                             @if ($item->isImage())
@@ -125,18 +125,19 @@
                             @else
                                 <i class="ri-file-excel-line text-7xl text-green-500"></i>
                             @endif
-                        </div>
 
-                        <div style="position:absolute;top:0.5rem;right:0.5rem;z-index:10;display:flex;align-items:center;gap:0.375rem;">
-                            @if ($usageCount > 0)
-                                <button type="button" data-check-usages data-media-id="{{ $item->id }}"
-                                    title="En uso en {{ $usageCount }} {{ $usageCount === 1 ? 'lugar' : 'lugares' }}"
-                                    aria-label="Ver dónde se usa"
-                                    style="display:flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;padding:0;border:0;border-radius:9999px;background-color:#E97300;color:#fff;font-size:0.875rem;line-height:1;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,0.25);">
-                                    <i class="ri-links-line"></i>
-                                </button>
-                            @endif
-                            <span class="px-2 py-1 rounded text-xs {{ $badgeClass }}">{{ $ext }}</span>
+                            <div class="absolute top-2 right-2 z-10 flex items-center gap-1.5">
+                                @if ($usageCount > 0)
+                                    <button type="button" data-check-usages data-media-id="{{ $item->id }}"
+                                        title="En uso en {{ $usageCount }} {{ $usageCount === 1 ? 'lugar' : 'lugares' }}"
+                                        aria-label="Ver dónde se usa"
+                                        class="w-6 h-6 rounded-full flex items-center justify-center text-white text-sm shadow-sm"
+                                        style="background-color:#E97300;">
+                                        <i class="ri-links-line"></i>
+                                    </button>
+                                @endif
+                                <span class="px-2 py-1 rounded text-xs {{ $badgeClass }}">{{ $ext }}</span>
+                            </div>
                         </div>
                     </div>
 
