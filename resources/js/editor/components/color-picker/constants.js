@@ -317,8 +317,8 @@ export const FONT_WEIGHTS = [
 ];
 
 export const SPACING_TYPES = [
-    { id: "p", label: "Padding" },
-    { id: "m", label: "Margin" },
+    { id: "p", label: "Relleno" },
+    { id: "m", label: "Margen" },
 ];
 
 export const SPACING_SIDES = [
