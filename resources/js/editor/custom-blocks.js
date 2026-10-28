@@ -62,6 +62,8 @@ import { initializeTextSectionsBlock } from "@/editor/blocks/text-sections-block
 import { initializeNoticeSectionBlock } from "@/editor/blocks/notice-section-blocks.js";
 import { initializeTextKitBlock } from "@/editor/blocks/text-kit-blocks.js";
 import { initializeIconBadgeBlock } from "@/editor/blocks/icon-badge-blocks.js";
+import { initializeSearchBlock } from "@/editor/blocks/search-blocks.js";
+
 
 export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
@@ -123,6 +125,7 @@ export function addCustomBlocks(editor) {
     initializeCardTableBlocks(editor);
     initializeDocumentDownloadBlocks(editor);
     initializeDownloadsBlock(editor);
+    initializeSearchBlock(editor);
     initializeAssetsBlocks(editor);
     initializeFaqBlock(editor);
     initializeContactBlock(editor);
