@@ -1,7 +1,7 @@
 import { SEARCH_SCRIPT } from "./script.js";
 import { CSS, ICONS, SECTION_TYPE, STYLES, VERSION, buildInner, buildSection } from "./templates.js";
 
-const CATEGORY = "Interactivos";
+const CATEGORY = "Navegación";
 const CANVAS_STYLE_ID = "srch-canvas-style";
 const CANVAS_CSS =
     ".srch-container,.srch-panel{pointer-events:none;}.srch-title{pointer-events:auto;}";

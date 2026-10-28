@@ -2,16 +2,16 @@ export const SEARCH_SCRIPT = `
 var root = this;
 var form = root.querySelector(".srch-form");
 var input = root.querySelector(".srch-input");
+var submit = root.querySelector(".srch-submit");
 var panel = root.querySelector(".srch-panel");
 var inner = root.querySelector(".srch-inner");
 var heading = root.querySelector(".srch-heading");
 var status = root.querySelector(".srch-status");
 var list = root.querySelector(".srch-list");
-if (!form || !input || !panel || !inner || !heading || !status || !list) return;
+if (!form || !input || !submit || !panel || !inner || !heading || !status || !list) return;
 
 var endpoint = root.getAttribute("data-srch-endpoint") || "/api/search";
 var step = parseInt(root.getAttribute("data-srch-limit"), 10) || 6;
-var submit = root.querySelector(".srch-submit");
 var busy = false;
 var items = [];
 var shown = 0;
@@ -133,10 +133,5 @@ function search() {
 form.addEventListener("submit", function (event) {
     event.preventDefault();
     search();
-});
-
-input.addEventListener("input", function () {
-    window.clearTimeout(timer);
-    timer = window.setTimeout(search, 350);
 });
 `;

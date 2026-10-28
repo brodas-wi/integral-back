@@ -1,4 +1,4 @@
-export const VERSION = 2;
+export const VERSION = 3;
 export const SECTION_TYPE = "srch-section";
 
 export const DEFAULTS = {
@@ -16,14 +16,14 @@ export const CSS = `
 .srch-section{width:100%;box-sizing:border-box;background-color:#fff;font-family:'Poppins',sans-serif;}
 .srch-container{width:100%;max-width:1600px;margin:0 auto;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:clamp(1.25rem,2.5vw,2rem);padding-top:clamp(2rem,5vw,4rem);padding-right:clamp(1.5rem,4vw,3.5rem);padding-bottom:clamp(2rem,5vw,4rem);padding-left:clamp(1.5rem,4vw,3.5rem);}
 .srch-title{margin:0;text-align:center;color:#003B71;font-weight:700;font-size:clamp(1.5rem,3vw,2.25rem);line-height:1.2;}
-.srch-form{display:flex;align-items:center;gap:0.75rem;width:100%;max-width:40rem;box-sizing:border-box;}
-.srch-input{flex:1;min-width:0;height:2.75rem;box-sizing:border-box;background-color:#fff;border:1px solid #D5DBE5;border-radius:0.625rem;outline:none;color:#003B71;font-family:inherit;font-size:0.875rem;padding-top:0;padding-right:1rem;padding-bottom:0;padding-left:1rem;transition:border-color 0.2s,box-shadow 0.2s;}
-.srch-input::placeholder{color:#9AA4B5;}
-.srch-input:focus{border-color:#E97300;box-shadow:0 0 0 3px rgba(233,115,0,0.15);}
-.srch-submit{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;height:2.75rem;box-sizing:border-box;border:none;border-radius:9999px;background-color:#E97300;color:#fff;cursor:pointer;font-family:inherit;font-size:0.8125rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding-top:0;padding-right:1.5rem;padding-bottom:0;padding-left:1.5rem;transition:background-color 0.2s;}
+.srch-form{display:flex;align-items:center;width:100%;max-width:36rem;box-sizing:border-box;background-color:#F1F4F8;border-radius:9999px;box-shadow:0 4px 20px 0 rgba(0,59,113,0.14);transition:box-shadow 0.2s;}
+.srch-form:focus-within{box-shadow:0 4px 20px 0 rgba(0,59,113,0.14),0 0 0 2px #E97300;}
+.srch-input{flex:1;min-width:0;height:3.5rem;box-sizing:border-box;border:none;outline:none;background-color:transparent;border-radius:9999px;color:#003B71;font-family:inherit;font-size:1rem;padding-top:0;padding-right:0.5rem;padding-bottom:0;padding-left:1.5rem;}
+.srch-input::placeholder{color:#8C97A8;}
+.srch-submit{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:2.75rem;height:2.75rem;margin-top:0;margin-right:0.375rem;margin-bottom:0;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;box-sizing:border-box;border:none;border-radius:9999px;background-color:#E97300;color:#fff;cursor:pointer;transition:background-color 0.2s;}
 .srch-submit:hover{background-color:#C96200;}
 .srch-submit:disabled{opacity:0.6;cursor:wait;}
-.srch-submit svg{display:block;width:1rem;height:1rem;}
+.srch-submit i{display:block;font-size:1.25rem;line-height:1;}
 .srch-panel{width:100%;box-sizing:border-box;background-color:#F4F6F9;}
 .srch-inner{width:100%;max-width:1600px;margin:0 auto;box-sizing:border-box;display:flex;flex-direction:column;gap:1rem;padding-top:clamp(1.5rem,3vw,2.5rem);padding-right:clamp(1.5rem,4vw,3.5rem);padding-bottom:clamp(1.5rem,3vw,2.5rem);padding-left:clamp(1.5rem,4vw,3.5rem);}
 .srch-heading{margin:0;color:#14243D;font-weight:600;font-size:clamp(1.125rem,2vw,1.5rem);line-height:1.3;overflow-wrap:anywhere;}
@@ -38,7 +38,7 @@ export const CSS = `
 .srch-link-excerpt{color:#6B7280;font-size:0.8125rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .srch-more{align-self:flex-start;margin-top:0.5rem;box-sizing:border-box;cursor:pointer;font-family:inherit;font-size:0.875rem;font-weight:600;line-height:1;color:#E97300;background-color:transparent;border:2px solid #E97300;border-radius:9999px;padding-top:0.625rem;padding-right:1.5rem;padding-bottom:0.625rem;padding-left:1.5rem;transition:background-color 0.2s,color 0.2s;}
 .srch-more:hover{background-color:#E97300;color:#fff;}
-@media(max-width:640px){.srch-list{grid-template-columns:1fr;}.srch-submit{width:2.75rem;padding-right:0;padding-left:0;}.srch-submit span{display:none;}}
+@media(max-width:640px){.srch-list{grid-template-columns:1fr;}.srch-input{height:3.25rem;font-size:0.9375rem;}}
 `;
 
 export const STYLES = `<style>${CSS}</style>`;
@@ -49,7 +49,7 @@ const svg = (body) =>
 export const ICONS = {
     section: svg(`
 <rect x="8" y="4" width="16" height="2.2" rx="1.1" fill="#003B71" fill-opacity="0.75"/>
-<rect x="5" y="9" width="22" height="6" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.6"/>
+<rect x="5" y="9" width="22" height="6" rx="3" fill="#F1F4F8" stroke="#cbd5e1" stroke-width="0.6"/>
 <rect x="8" y="11.2" width="8" height="1.6" rx="0.8" fill="#003B71" fill-opacity="0.35"/>
 <circle cx="23" cy="12" r="2.2" fill="#E97300"/>
 <rect x="3" y="18" width="26" height="11" rx="1.5" fill="#F4F6F9"/>
@@ -75,7 +75,7 @@ export function buildInner({
 } = {}) {
     const heading = titleHtml ?? escapeHtml(title);
 
-    return `<div class="srch-container" ${FIXED} ${HIDDEN}><h2 class="srch-title" data-gjs-type="text" ${FIXED}>${heading}</h2><form class="srch-form" role="search" action="#" ${FIXED} ${HIDDEN}><input class="srch-input" type="text" name="q" maxlength="100" autocomplete="off" enterkeyhint="search" aria-label="Buscar en el sitio" placeholder="${escapeHtml(placeholder)}" ${FIXED} ${HIDDEN}><button class="srch-submit" type="submit" aria-label="Buscar" ${FIXED} ${HIDDEN}><span>Buscar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button></form></div><div class="srch-panel" aria-live="polite" hidden ${FIXED} ${HIDDEN}><div class="srch-inner" ${FIXED} ${HIDDEN}><h3 class="srch-heading" ${FIXED} ${HIDDEN}></h3><p class="srch-status" hidden ${FIXED} ${HIDDEN}></p><ul class="srch-list" role="list" ${FIXED} ${HIDDEN}></ul></div></div>`;
+    return `<div class="srch-container" ${FIXED} ${HIDDEN}><h2 class="srch-title" data-gjs-type="text" ${FIXED}>${heading}</h2><form class="srch-form" role="search" action="#" ${FIXED} ${HIDDEN}><input class="srch-input" type="text" name="q" maxlength="100" autocomplete="off" enterkeyhint="search" aria-label="Buscar en el sitio" placeholder="${escapeHtml(placeholder)}" ${FIXED} ${HIDDEN}><button class="srch-submit" type="submit" aria-label="Buscar" ${FIXED} ${HIDDEN}><i class="ri-search-line" aria-hidden="true"></i></button></form></div><div class="srch-panel" aria-live="polite" hidden ${FIXED} ${HIDDEN}><div class="srch-inner" ${FIXED} ${HIDDEN}><h3 class="srch-heading" ${FIXED} ${HIDDEN}></h3><p class="srch-status" hidden ${FIXED} ${HIDDEN}></p><ul class="srch-list" role="list" ${FIXED} ${HIDDEN}></ul></div></div>`;
 }
 
 export function buildSection(config = {}) {
