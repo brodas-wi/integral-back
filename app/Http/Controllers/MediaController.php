@@ -43,6 +43,11 @@ class MediaController extends Controller
 
         $media = $query->paginate($perPage);
 
+        $usedMediaIds = $media->getCollection()
+            ->filter(fn ($item) => !empty($item->findUsages()))
+            ->pluck('id')
+            ->all();
+
         $stats = [
             'total' => Media::count(),
             'images' => Media::where('type', 'image')->count(),
@@ -51,7 +56,7 @@ class MediaController extends Controller
             'videos' => Media::where('type', 'video')->count(),
         ];
 
-        return view('media.index', compact('media', 'stats'));
+        return view('media.index', compact('media', 'stats', 'usedMediaIds'));
     }
 
     public function trashed(Request $request)

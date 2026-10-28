@@ -33,16 +33,6 @@
 @endsection
 
 @section('content')
-    @php
-        $usageCounts = $media->pluck('id')->mapWithKeys(fn($id) => [$id => 1])->all();
-        $user = auth()->user();
-        $canEdit = $user->can('media.view') || $user->can('media.manage');
-        $canDownload = $user->can('media.download') || $user->can('media.manage');
-        $canDelete = $user->can('media.delete') || $user->can('media.manage');
-        $hasDropdownActions = $canEdit || $canDownload || $canDelete;
-        $hasFilters = request('search') || request('type') || request('date_from') || request('date_to');
-    @endphp
-
     <div class="card mb-6">
         <form method="GET" action="{{ route('media.index') }}" class="space-y-4">
             <div class="flex flex-col sm:flex-row gap-4">
@@ -52,10 +42,10 @@
                 </div>
                 <select name="type" class="input-field sm:w-48">
                     <option value="">Todos los tipos</option>
-                    <option value="image" @selected(request('type') === 'image')>Imágenes</option>
-                    <option value="video" @selected(request('type') === 'video')>Videos</option>
-                    <option value="document" @selected(request('type') === 'document')>Archivos Excel</option>
-                    <option value="pdf" @selected(request('type') === 'pdf')>PDFs</option>
+                    <option value="image" {{ request('type') === 'image' ? 'selected' : '' }}>Imágenes</option>
+                    <option value="video" {{ request('type') === 'video' ? 'selected' : '' }}>Videos</option>
+                    <option value="document" {{ request('type') === 'document' ? 'selected' : '' }}>Archivos Excel</option>
+                    <option value="pdf" {{ request('type') === 'pdf' ? 'selected' : '' }}>PDFs</option>
                 </select>
             </div>
 
@@ -71,9 +61,9 @@
                 <div class="flex-1">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Por página</label>
                     <select name="per_page" class="input-field" onchange="this.form.submit()">
-                        @foreach ([10, 20, 30] as $size)
-                            <option value="{{ $size }}" @selected((int) request('per_page', 10) === $size)>{{ $size }}</option>
-                        @endforeach
+                        <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                        <option value="20" {{ request('per_page', 10) == 20 ? 'selected' : '' }}>20</option>
+                        <option value="30" {{ request('per_page', 10) == 30 ? 'selected' : '' }}>30</option>
                     </select>
                 </div>
                 <div class="flex items-end gap-2">
@@ -81,7 +71,7 @@
                         <i class="ri-search-line mr-2"></i>
                         Buscar
                     </button>
-                    @if ($hasFilters)
+                    @if (request('search') || request('type') || request('date_from') || request('date_to'))
                         <a href="{{ route('media.index') }}" class="btn-outline whitespace-nowrap">
                             <i class="ri-close-line mr-2"></i>
                             Limpiar
@@ -93,53 +83,51 @@
     </div>
 
     @if ($media->count() > 0)
-        <div id="media-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @foreach ($media as $item)
-                @php
-                    $ext = strtoupper(pathinfo($item->filename, PATHINFO_EXTENSION));
-                    $usageCount = $usageCounts[$item->id] ?? 0;
-                    $badgeClass = match (true) {
-                        $item->isImage() => 'bg-black bg-opacity-70 text-white font-medium',
-                        $item->isVideo() => 'bg-purple-100 text-purple-700 font-bold',
-                        $item->isPdf() => 'bg-red-100 text-red-700 font-bold',
-                        default => 'bg-green-100 text-green-700 font-bold',
-                    };
-                @endphp
-
                 <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4"
                     id="media-item-{{ $item->id }}">
-                    <div class="mb-3">
+                    <a href="{{ route('media.show', $item) }}" class="block mb-3">
                         <div
-                            class="w-full h-36 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative">
+                            class="w-full h-36 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative group-hover:opacity-90 transition-opacity">
                             @if ($item->isImage())
                                 <img src="{{ $item->url }}" alt="{{ $item->alt ?? $item->filename }}"
-                                    class="w-full h-full object-cover" loading="lazy" decoding="async">
-                            @elseif ($item->isVideo())
-                                <video src="{{ $item->url }}" muted preload="none"
+                                    class="w-full h-full object-cover">
+                                <div
+                                    class="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs font-medium">
+                                    {{ strtoupper(pathinfo($item->filename, PATHINFO_EXTENSION)) }}
+                                </div>
+                            @elseif($item->isVideo())
+                                <video src="{{ $item->url }}" muted preload="metadata"
                                     class="w-full h-full object-cover"></video>
+                                <div
+                                    class="absolute top-2 right-2 bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold">
+                                    {{ strtoupper(pathinfo($item->filename, PATHINFO_EXTENSION)) }}
+                                </div>
                                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                                     <i class="ri-play-circle-fill text-4xl text-white text-opacity-80"></i>
                                 </div>
-                            @elseif ($item->isPdf())
+                            @elseif($item->isPdf())
                                 <i class="ri-file-pdf-line text-7xl text-red-500"></i>
+                                <div
+                                    class="absolute top-2 right-2 bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-bold">
+                                    PDF
+                                </div>
                             @else
                                 <i class="ri-file-excel-line text-7xl text-green-500"></i>
+                                <div
+                                    class="absolute top-2 right-2 bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold">
+                                    {{ strtoupper(pathinfo($item->filename, PATHINFO_EXTENSION)) }}
+                                </div>
                             @endif
 
-                            <div class="absolute top-2 right-2 z-10 flex items-center gap-1.5">
-                                @if ($usageCount > 0)
-                                    <button type="button" data-check-usages data-media-id="{{ $item->id }}"
-                                        title="En uso en {{ $usageCount }} {{ $usageCount === 1 ? 'lugar' : 'lugares' }}"
-                                        aria-label="Ver dónde se usa"
-                                        class="w-6 h-6 rounded-full flex items-center justify-center text-sm shadow-sm"
-                                        style="background-color:#E97300 !important;color:#ffffff !important;border:0 !important;padding:0 !important;">
-                                        <i class="ri-links-line" style="color:#ffffff !important;"></i>
-                                    </button>
-                                @endif
-                                <span class="px-2 py-1 rounded text-xs {{ $badgeClass }}">{{ $ext }}</span>
-                            </div>
+                            @if (in_array($item->id, $usedMediaIds ?? []))
+                                <span class="mu-indicator" title="En uso" aria-label="En uso">
+                                    <i class="ri-link"></i>
+                                </span>
+                            @endif
                         </div>
-                    </div>
+                    </a>
 
                     <div class="flex-1 flex flex-col">
                         <h4 class="font-semibold text-sm text-secondary truncate mb-2" title="{{ $item->filename }}">
@@ -154,7 +142,7 @@
                                 @endif
                             </div>
                             <div class="flex items-center justify-between">
-                                <span class="truncate flex-1 mr-2">{{ $item->uploader?->name ?? '—' }}</span>
+                                <span class="truncate flex-1 mr-2">{{ $item->uploader->name }}</span>
                                 <span class="text-gray-500 flex-shrink-0">{{ $item->created_at->format('d/m/Y') }}</span>
                             </div>
                         </div>
@@ -167,6 +155,14 @@
                                     <span>Ver</span>
                                 </a>
                             @endcanany
+
+                            @php
+                                $canEdit = auth()->user()->can('media.view') || auth()->user()->can('media.manage');
+                                $canDownload =
+                                    auth()->user()->can('media.download') || auth()->user()->can('media.manage');
+                                $canDelete = auth()->user()->can('media.delete') || auth()->user()->can('media.manage');
+                                $hasDropdownActions = $canEdit || $canDownload || $canDelete;
+                            @endphp
 
                             @if ($hasDropdownActions)
                                 <div class="dropdown" data-dropdown>
@@ -191,24 +187,24 @@
                                         @endif
 
                                         @if ($item->isImage() || $item->isPdf() || $item->isVideo())
-                                            <a href="{{ $item->url }}" target="_blank" rel="noopener"
-                                                class="dropdown-item">
+                                            <a href="{{ $item->url }}" target="_blank" class="dropdown-item">
                                                 <i class="ri-external-link-line"></i>
                                                 <span>Abrir</span>
                                             </a>
                                         @endif
 
-                                        @if ($canEdit)
+                                        @canany(['media.view', 'media.manage'])
                                             <button type="button" data-check-usages data-media-id="{{ $item->id }}"
-                                                class="dropdown-item">
+                                                data-filename="{{ addslashes($item->filename) }}" class="dropdown-item">
                                                 <i class="ri-links-line"></i>
                                                 <span>Ver dónde se usa</span>
                                             </button>
-                                        @endif
+                                        @endcanany
 
                                         @if ($canDelete)
                                             <button type="button" data-delete-media data-media-id="{{ $item->id }}"
-                                                data-filename="{{ $item->filename }}" class="dropdown-item-danger">
+                                                data-filename="{{ addslashes($item->filename) }}"
+                                                class="dropdown-item-danger">
                                                 <i class="ri-delete-bin-line"></i>
                                                 <span>Eliminar</span>
                                             </button>
@@ -232,13 +228,13 @@
             <i class="ri-folder-open-line text-6xl text-gray-400 mb-4"></i>
             <h3 class="text-xl font-semibold text-secondary mb-2">No hay archivos</h3>
             <p class="text-gray-600 mb-6">
-                @if ($hasFilters)
+                @if (request('search') || request('type') || request('date_from') || request('date_to'))
                     No se encontraron archivos que coincidan con tu búsqueda
                 @else
                     Comienza subiendo tu primera imagen, video o documento
                 @endif
             </p>
-            @if ($hasFilters)
+            @if (request('search') || request('type') || request('date_from') || request('date_to'))
                 <a href="{{ route('media.index') }}" class="btn-outline inline-flex items-center">
                     <i class="ri-close-line mr-2"></i>
                     Limpiar búsqueda
