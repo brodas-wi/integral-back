@@ -45,7 +45,7 @@
                 ['label' => 'Total Banners', 'hint' => 'Banners activos e inactivos', 'stat' => 'banners', 'icon' => 'ri-image-2-line', 'color' => 'yellow', 'route' => 'banners', 'perm' => 'banners'],
                 ['label' => 'Total Avisos', 'hint' => 'Avisos y notificaciones publicados', 'stat' => 'announcements', 'icon' => 'ri-notification-line', 'color' => 'pink', 'route' => 'announcements', 'perm' => 'announcements'],
                 ['label' => 'Total Activos', 'hint' => 'Activos extraordinarios registrados', 'stat' => 'assets', 'icon' => 'ri-building-4-line', 'color' => 'lime', 'route' => 'assets', 'perm' => 'assets'],
-                ['label' => 'Total Noticias', 'hint' => 'Noticias publicadas y borradores', 'stat' => 'news', 'icon' => 'ri-newspaper-line', 'color' => 'sky', 'route' => 'news', 'perm' => 'news'],
+                ['label' => 'Total Noticias', 'hint' => 'Noticias publicadas y borradores', 'stat' => 'news', 'icon' => 'ri-newspaper-line', 'color' => 'sky', 'route' => 'news', 'perm' => 'news', 'feature' => 'news'],
             ],
         ],
         [
@@ -71,7 +71,7 @@
     $dashboardGroups = collect($dashboardGroups)
         ->map(function ($group) use ($gate, $palettes) {
             $group['items'] = collect($group['items'])
-                ->filter(fn($item) => $gate->any(["{$item['perm']}.view", "{$item['perm']}.manage"]))
+                ->filter(fn($item) => (!isset($item['feature']) || config("features.{$item['feature']}")) && $gate->any(["{$item['perm']}.view", "{$item['perm']}.manage"]))
                 ->map(function ($item) use ($gate, $palettes) {
                     $item['p'] = $palettes[$item['color']];
                     $item['can_create'] = $gate->any([$item['create_perm'] ?? "{$item['perm']}.create", "{$item['perm']}.manage"]);

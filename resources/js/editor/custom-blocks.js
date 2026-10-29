@@ -114,7 +114,7 @@ export function addCustomBlocks(editor) {
     blockRegistry.applyToEditor(editor);
 
     initializeMapFilterBlocks(editor);
-    initializeNewsGridBlocks(editor);
+    // initializeNewsGridBlocks(editor);
     initializeBarChartSectionBlock(editor);
     initializeBarChartBlock(editor);
     initializeSavingsSectionBlock(editor);

@@ -41,6 +41,7 @@ class DashboardController extends Controller
         $user = auth()->user();
 
         $stats = collect(self::COUNTERS)
+            ->reject(fn ($config, $key) => $key === 'news' && !config('features.news'))
             ->map(fn ($config) => $user->canAny(["{$config[1]}.view", "{$config[1]}.manage"])
                 ? $config[0]::count()
                 : 0)

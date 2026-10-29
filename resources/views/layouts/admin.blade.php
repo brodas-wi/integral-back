@@ -41,7 +41,7 @@
                 ['label' => 'Banners', 'route' => 'banners.index', 'icon' => 'ri-image-2-line', 'active' => ['banners.*'], 'can' => ['banners.view', 'banners.manage']],
                 ['label' => 'Avisos', 'route' => 'announcements.index', 'icon' => 'ri-notification-line', 'active' => ['announcements.*'], 'can' => ['announcements.view', 'announcements.manage']],
                 ['label' => 'Activos Extraordinarios', 'route' => 'assets.index', 'icon' => 'ri-building-4-line', 'active' => ['assets.*', 'asset-categories.*'], 'can' => ['assets.view', 'assets.manage']],
-                ['label' => 'Noticias', 'route' => 'news.index', 'icon' => 'ri-newspaper-line', 'active' => ['news.*', 'news-categories.*'], 'can' => ['news.view', 'news.manage', 'news_categories.view', 'news_categories.manage']],
+                ['label' => 'Noticias', 'route' => 'news.index', 'icon' => 'ri-newspaper-line', 'active' => ['news.*', 'news-categories.*'], 'can' => ['news.view', 'news.manage', 'news_categories.view', 'news_categories.manage'], 'feature' => 'news'],
             ],
         ],
         [
@@ -69,7 +69,7 @@
     $sidebarGroups = collect($sidebarGroups)
         ->map(function ($group) use ($gate) {
             $group['items'] = collect($group['items'])
-                ->filter(fn($item) => $gate->any($item['can']))
+                ->filter(fn($item) => (!isset($item['feature']) || config("features.{$item['feature']}")) && $gate->any($item['can']))
                 ->map(function ($item) {
                     $item['is_active'] = request()->routeIs(...$item['active']);
                     return $item;
