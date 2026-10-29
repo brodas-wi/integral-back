@@ -20,7 +20,7 @@ function buildFixedBannerHTML(data, uid) {
 
     const responsivePaddingCss = `<style>@media(max-width:991px){#fb-root-${uid}{padding:1.5rem !important;}}</style>`;
 
-    const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/7;min-height:220px;border-radius:clamp(12px,2vw,24px);overflow:hidden;box-sizing:border-box;`;
+    const wrapperStyle = `position:relative;width:100%;aspect-ratio:16/9;min-height:220px;max-height:640px;border-radius:clamp(12px,2vw,24px);overflow:hidden;box-sizing:border-box;`;
 
     const responsiveWrapperCss = `<style>@media(max-width:768px){#fb-wrapper-${uid}{aspect-ratio:16/10 !important;}}</style>`;
 
