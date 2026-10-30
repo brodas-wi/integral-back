@@ -20,7 +20,7 @@ export const STYLES = {
 
     section: `.pd-section{width:100%;background-color:#fff;box-sizing:border-box;}.pd-container{width:100%;max-width:${maxWidth};margin:0 auto;padding-top:${padding};padding-bottom:${padding};padding-left:${padding};padding-right:${padding};box-sizing:border-box;}.pd-aside{display:flex;flex-direction:column;align-items:stretch;gap:1rem;width:100%;max-width:28rem;min-width:0;justify-self:end;box-sizing:border-box;}.pd-aside .pd-cta{display:block;width:100%;box-sizing:border-box;}@media(max-width:${tablet}px){.pd-aside{max-width:none;justify-self:stretch;}}`,
 
-    asymmetric: `.pd-asymmetric-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:2rem;align-items:start;}@media(max-width:${tablet}px){.pd-asymmetric-grid{grid-template-columns:1fr;gap:1.5rem;}}`,
+    asymmetric: `.pd-asymmetric-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:2rem;align-items:start;}@media(max-width:${tablet}px){.pd-asymmetric-grid{grid-template-columns:1fr;gap:1.5rem;}}@media(max-width:${mobile}px){.pd-asymmetric-grid>div:first-child h2{font-size:1.75rem;line-height:1.2;text-align:center;}}`,
 
     nested: `.pd-nested-two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}.pd-nested-two-col-full{grid-column:1/-1;}@media(max-width:${mobile}px){.pd-nested-two-col{grid-template-columns:1fr;}}`,
 
