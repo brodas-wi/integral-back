@@ -1,6 +1,6 @@
 import { assetUrl } from "@/utils/url.js";
 
-const CATEGORY = "Contenido";
+const CATEGORY = "Productos y Servicios";
 
 const svg = (body) =>
     `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" fill="#f8f9fa" rx="2"/>${body}</svg>`;
@@ -56,14 +56,14 @@ const buildSection = () =>
 export const paymentChannelsBlocks = [
     {
         id: "payment-channels-block",
-        label: "Canales de pago",
+        label: "Sección: canales de pago",
         category: CATEGORY,
         media: ICONS.section,
         content: buildSection(),
     },
     {
         id: "payment-channel-item-block",
-        label: "Canal de pago (tarjeta)",
+        label: "Ítem: canal (tarjeta)",
         category: CATEGORY,
         media: ICONS.card,
         content: `${buildCard("Nuevo canal de pago")}${STYLES}`,

@@ -286,7 +286,7 @@ export function registerFaqCore(editor) {
 
     editor.BlockManager.add("faq-block", {
         label: "Preguntas Frecuentes",
-        category: "Contenido",
+        category: "Interactivos",
         media: ICON,
         activate: true,
         content: { type: COMPONENT_TYPE },

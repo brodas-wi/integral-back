@@ -21,7 +21,7 @@ const STYLES = `<style>
 .pb-heading{text-align:center;}
 .pb-title{margin:0;font-size:2.25rem;font-weight:700;line-height:1.2;color:#fff;}
 .pb-subtitle{margin:0.5rem 0 0;font-size:1rem;line-height:1.5;color:#fff;}
-.pb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;margin-top:2.5rem;}
+.pb-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2rem;margin-top:2.5rem;}
 .pb-item{display:flex;flex-direction:column;align-items:center;text-align:center;}
 .pb-badge{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:4rem;height:4rem;margin-bottom:0.75rem;border-radius:9999px;background-color:rgba(255,255,255,0.2);}
 .pb-badge img{display:block;width:2.25rem;height:2.25rem;object-fit:contain;}
@@ -29,10 +29,10 @@ const STYLES = `<style>
 .pb-item-desc{font-size:1rem;line-height:1.4;color:#fff;}
 @media(max-width:992px){
 .pb-title{font-size:1.875rem;}
+.pb-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;}
 }
 @media(max-width:640px){
 .pb-title{font-size:1.5rem;}
-.pb-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;}
 }
 </style>`;
 
@@ -80,7 +80,7 @@ ${STYLES}`;
 
 export const productBenefitsBlock = {
     id: "product-benefits-section",
-    label: "Sección: beneficios con íconos (radio izquierda)",
+    label: "Sección: beneficios + curva izquierda",
     category: CATEGORY,
     media: ICON_LEFT,
     content: benefitsSection("left"),
@@ -88,7 +88,7 @@ export const productBenefitsBlock = {
 
 export const productBenefitsBlockRight = {
     id: "product-benefits-section-right",
-    label: "Sección: beneficios con íconos (radio derecha)",
+    label: "Sección: beneficios + curva derecha",
     category: CATEGORY,
     media: ICON_RIGHT,
     content: benefitsSection("right"),

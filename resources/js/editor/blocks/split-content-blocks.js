@@ -166,13 +166,8 @@ export const splitContentBlocks = [
         imageRight: false,
     }),
     itemBlock({
-        id: "split-list-item",
-        label: "Ítem: lista con badge",
-        content: listItem("light"),
-    }),
-    itemBlock({
         id: "split-list-group",
-        label: "Ítem: grupo de listas",
+        label: "Ítem: lista con íconos",
         content: `<div class="flex flex-col gap-4">${listItem("light").repeat(3)}</div>`,
     }),
 ];
