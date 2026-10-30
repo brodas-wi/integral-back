@@ -18,7 +18,9 @@
     <meta name="media-api-url" content="{{ route('media.api') }}">
     <meta name="api-assets-url" content="{{ route('api.assets.active') }}">
     <meta name="map-locations-url" content="{{ route('api.map-locations') }}">
-    <meta name="api-news-url" content="{{ route('api.news.active') }}">
+    @if (config('features.news'))
+        <meta name="api-news-url" content="{{ route('api.news.active') }}">
+    @endif
     <meta name="api-news-categories-url" content="{{ route('api.news-categories.active') }}">
     <meta name="api-forms-options-url" content="{{ route('api.forms.options') }}">
 
