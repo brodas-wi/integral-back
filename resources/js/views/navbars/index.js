@@ -171,7 +171,7 @@ async function doToggle(id, btn) {
             const badge = document.getElementById(`navbar-badge-${id}`);
             if (badge) {
                 badge.textContent = nowActive ? "Activo" : "Inactivo";
-                badge.className = `badge nv-status ${nowActive ? "badge-success" : "badge-danger"}`;
+                badge.className = `badge ${nowActive ? "badge-success" : "badge-danger"} flex-shrink-0 whitespace-nowrap`;
             }
 
             showNotification(data.message, "success");

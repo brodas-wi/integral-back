@@ -47,7 +47,7 @@
             @endcanany
         </div>
     @else
-        <div class="nv-list">
+        <div class="grid gap-4 nv-grid">
             @foreach ($navbars as $navbar)
                 @php
                     $pageCount = $navbar->pages->count();
@@ -61,110 +61,105 @@
                         )
                         ->values();
                 @endphp
-                <article class="nv-item" id="navbar-row-{{ $navbar->id }}" data-navbar-row>
-                    <header class="nv-head">
-                        <div class="nv-id">
-                            <span class="nv-icon"><i class="ri-layout-top-line"></i></span>
-                            <div class="nv-id-text">
-                                <h3 class="nv-name">{{ $navbar->name }}</h3>
-                                <span
-                                    class="badge nv-status {{ $navbar->is_active ? 'badge-success' : 'badge-danger' }}"
-                                    id="navbar-badge-{{ $navbar->id }}">
-                                    {{ $navbar->is_active ? 'Activo' : 'Inactivo' }}
-                                </span>
-                            </div>
+                <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4"
+                    id="navbar-row-{{ $navbar->id }}" data-navbar-row>
+                    <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-base font-bold text-secondary mb-1 line-clamp-2 break-words">
+                                {{ $navbar->name }}</h3>
+                            <span class="text-[11px] text-gray-500 font-mono">ID {{ $navbar->id }}</span>
                         </div>
+                        <span id="navbar-badge-{{ $navbar->id }}"
+                            class="badge {{ $navbar->is_active ? 'badge-success' : 'badge-danger' }} flex-shrink-0 whitespace-nowrap">
+                            {{ $navbar->is_active ? 'Activo' : 'Inactivo' }}
+                        </span>
+                    </div>
 
-                        <div class="nv-actions">
-                            @if ($canEdit)
-                                <a href="{{ route('navbars.edit', $navbar->id) }}" class="nv-edit">
-                                    <i class="ri-edit-line"></i>
-                                    <span>Editar</span>
-                                </a>
-                            @endif
-
-                            @if ($hasMenu)
-                                <div class="dropdown nv-more" data-dropdown>
-                                    <button type="button" class="nv-more-btn" aria-label="Más acciones"
-                                        title="Más acciones"
-                                        onclick="toggleDropdown(this.closest('.dropdown'))">
-                                        <i class="ri-more-2-fill"></i>
-                                    </button>
-                                    <div class="dropdown-menu nv-menu">
-                                        @if ($canPreview)
-                                            <a href="{{ route('navbars.preview', $navbar->id) }}" target="_blank"
-                                                rel="noopener" class="dropdown-item">
-                                                <i class="ri-eye-line"></i>
-                                                <span>Previsualizar</span>
-                                            </a>
-                                        @endif
-                                        @if ($canToggle)
-                                            <button type="button" data-toggle-active
-                                                data-navbar-id="{{ $navbar->id }}"
-                                                data-active="{{ $navbar->is_active ? '1' : '0' }}"
-                                                data-page-count="{{ $pageCount }}" class="dropdown-item">
-                                                <i
-                                                    class="{{ $navbar->is_active ? 'ri-toggle-fill' : 'ri-toggle-line' }}"></i>
-                                                <span
-                                                    data-toggle-label>{{ $navbar->is_active ? 'Desactivar' : 'Activar' }}</span>
-                                            </button>
-                                        @endif
-                                        @if ($canDelete)
-                                            <button type="button" data-delete-navbar
-                                                data-navbar-id="{{ $navbar->id }}"
-                                                data-navbar-name="{{ $navbar->name }}"
-                                                data-page-count="{{ $pageCount }}"
-                                                class="dropdown-item-danger {{ $pageCount > 0 ? 'nv-locked' : '' }}"
-                                                title="{{ $pageCount > 0 ? 'No se puede eliminar: tiene páginas vinculadas' : 'Mover a la papelera' }}">
-                                                <i class="ri-delete-bin-line"></i>
-                                                <span>Eliminar</span>
-                                                @if ($pageCount > 0)
-                                                    <small class="nv-locked-tag">En uso</small>
-                                                @endif
-                                            </button>
-                                        @endif
-                                    </div>
-                                </div>
+                    <div class="space-y-1.5 flex-1">
+                        <div class="flex items-center justify-between gap-2 text-sm text-gray-600">
+                            <span>Páginas:</span>
+                            @if ($pageCount > 0)
+                                <button type="button" class="nv-pages-btn" data-pages-modal
+                                    data-navbar-name="{{ $navbar->name }}" data-pages="{{ json_encode($pagesList) }}"
+                                    title="Ver páginas vinculadas">
+                                    {{ $pageCount }} {{ $pageCount === 1 ? 'página' : 'páginas' }}
+                                </button>
+                            @else
+                                <span class="font-semibold text-gray-400">Ninguna</span>
                             @endif
                         </div>
-                    </header>
 
-                    <div class="nv-info">
-                        <div class="nv-info-item">
-                            <span class="nv-info-icon"><i class="ri-pages-line"></i></span>
-                            <div class="nv-info-body">
-                                <span class="nv-info-label">Páginas vinculadas</span>
-                                @if ($pageCount > 0)
-                                    <button type="button" class="nv-pages-btn" data-pages-modal
-                                        data-navbar-name="{{ $navbar->name }}"
-                                        data-pages="{{ json_encode($pagesList) }}" title="Ver páginas vinculadas">
-                                        {{ $pageCount }} {{ $pageCount === 1 ? 'página' : 'páginas' }}
-                                    </button>
-                                @else
-                                    <span class="nv-info-value nv-muted">Ninguna</span>
-                                @endif
-                            </div>
+                        <div class="flex items-center justify-between gap-2 text-sm text-gray-600"
+                            title="{{ $navbar->created_at->format('d/m/Y H:i:s') }}">
+                            <span>Creado:</span>
+                            <span
+                                class="font-semibold text-secondary">{{ $navbar->created_at->format('d/m/Y H:i') }}</span>
                         </div>
 
-                        <div class="nv-info-item" title="{{ $navbar->created_at->format('d/m/Y H:i:s') }}">
-                            <span class="nv-info-icon"><i class="ri-calendar-line"></i></span>
-                            <div class="nv-info-body">
-                                <span class="nv-info-label">Creado</span>
-                                <span class="nv-info-value">{{ $navbar->created_at->format('d/m/Y') }}</span>
-                                <span class="nv-info-sub">{{ $navbar->created_at->format('H:i') }}</span>
-                            </div>
+                        <div class="flex items-center justify-between gap-2 text-sm text-gray-600"
+                            title="{{ $navbar->updated_at->format('d/m/Y H:i:s') }}">
+                            <span>Actualizado:</span>
+                            <span
+                                class="font-semibold text-secondary">{{ $navbar->updated_at->format('d/m/Y H:i') }}</span>
                         </div>
 
-                        <div class="nv-info-item" title="{{ $navbar->updated_at->format('d/m/Y H:i:s') }}">
-                            <span class="nv-info-icon"><i class="ri-history-line"></i></span>
-                            <div class="nv-info-body">
-                                <span class="nv-info-label">Última actualización</span>
-                                <span class="nv-info-value">{{ $navbar->updated_at->format('d/m/Y') }}</span>
-                                <span class="nv-info-sub">{{ $navbar->updated_at->diffForHumans() }}</span>
-                            </div>
+                        <div class="flex items-center justify-between gap-2 text-sm text-gray-600">
+                            <span class="shrink-0">Hace:</span>
+                            <span class="font-semibold text-secondary">{{ $navbar->updated_at->diffForHumans() }}</span>
                         </div>
                     </div>
-                </article>
+
+                    <div class="flex items-center gap-2 mt-1 pt-3 border-t border-gray-100">
+                        @if ($canEdit)
+                            <a href="{{ route('navbars.edit', $navbar->id) }}"
+                                class="btn-outline btn-sm flex-1 flex items-center justify-center gap-2">
+                                <i class="ri-edit-line"></i>
+                                <span>Editar</span>
+                            </a>
+                        @endif
+
+                        @if ($hasMenu)
+                            <div class="dropdown nv-more" data-dropdown>
+                                <button type="button"
+                                    class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center"
+                                    aria-label="Más acciones" title="Más acciones"
+                                    onclick="toggleDropdown(this.closest('.dropdown'))">
+                                    <i class="ri-more-2-fill text-lg"></i>
+                                </button>
+                                <div class="dropdown-menu nv-menu">
+                                    @if ($canPreview)
+                                        <a href="{{ route('navbars.preview', $navbar->id) }}" target="_blank"
+                                            rel="noopener" class="dropdown-item">
+                                            <i class="ri-eye-line"></i>
+                                            <span>Previsualizar</span>
+                                        </a>
+                                    @endif
+                                    @if ($canToggle)
+                                        <button type="button" data-toggle-active data-navbar-id="{{ $navbar->id }}"
+                                            data-active="{{ $navbar->is_active ? '1' : '0' }}"
+                                            data-page-count="{{ $pageCount }}" class="dropdown-item">
+                                            <i class="{{ $navbar->is_active ? 'ri-toggle-fill' : 'ri-toggle-line' }}"></i>
+                                            <span
+                                                data-toggle-label>{{ $navbar->is_active ? 'Desactivar' : 'Activar' }}</span>
+                                        </button>
+                                    @endif
+                                    @if ($canDelete)
+                                        <button type="button" data-delete-navbar data-navbar-id="{{ $navbar->id }}"
+                                            data-navbar-name="{{ $navbar->name }}" data-page-count="{{ $pageCount }}"
+                                            class="dropdown-item-danger {{ $pageCount > 0 ? 'nv-locked' : '' }}"
+                                            title="{{ $pageCount > 0 ? 'No se puede eliminar: tiene páginas vinculadas' : 'Mover a la papelera' }}">
+                                            <i class="ri-delete-bin-line"></i>
+                                            <span>Eliminar</span>
+                                            @if ($pageCount > 0)
+                                                <small class="nv-locked-tag">En uso</small>
+                                            @endif
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             @endforeach
         </div>
     @endif
