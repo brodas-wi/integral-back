@@ -21,6 +21,8 @@ if (!doc.getElementById("mp-runtime-style")) {
 
 var CENTER = [13.7942, -88.8965];
 var ZOOM = 8;
+var POINT_ZOOM = 17;
+var switching = false;
 var DEFAULT_TEMPLATE = "{agencias} agencias y {puntos} puntos de pago activos distribuidos en todo el país.";
 var state = { departments: [], agencies: [], paymentPoints: [], type: null, department: null, pointKey: null };
 var L = null;
@@ -112,8 +114,24 @@ function renderMarkers() {
         var marker = L.marker([parseFloat(item.lat), parseFloat(item.lng)], { icon: icon });
         marker.bindPopup(popupHtml(item));
         marker.__mpKey = item.type + "-" + item.id;
+        marker.on("click", function () {
+            switching = true;
+            map.flyTo(marker.getLatLng(), POINT_ZOOM);
+        });
         markers.addLayer(marker);
     });
+}
+
+function resetView() {
+    if (!map) return;
+    if (state.department) {
+        var dep = state.departments.filter(function (d) { return d.name === state.department; })[0];
+        if (dep && dep.lat && dep.lng) {
+            map.flyTo([dep.lat, dep.lng], dep.zoom || 11);
+            return;
+        }
+    }
+    map.flyTo(CENTER, ZOOM);
 }
 
 function applyMapState() {
@@ -125,19 +143,12 @@ function applyMapState() {
             if (marker.__mpKey === state.pointKey) found = marker;
         });
         if (found) {
-            map.flyTo(found.getLatLng(), 17);
+            map.flyTo(found.getLatLng(), POINT_ZOOM);
             setTimeout(function () { found.openPopup(); }, 350);
             return;
         }
     }
-    if (state.department) {
-        var dep = state.departments.filter(function (d) { return d.name === state.department; })[0];
-        if (dep && dep.lat && dep.lng) {
-            map.flyTo([dep.lat, dep.lng], dep.zoom || 11);
-            return;
-        }
-    }
-    map.flyTo(CENTER, ZOOM);
+    resetView();
 }
 
 function buildDepartmentOptions() {
@@ -270,6 +281,17 @@ function createMap(leaflet) {
     }).addTo(map);
     markers = L.layerGroup().addTo(map);
     map.on("click", function () { map.scrollWheelZoom.enable(); });
+    map.on("popupopen", function () { switching = false; });
+    map.on("popupclose", function () {
+        setTimeout(function () {
+            if (switching || !map) return;
+            var open = false;
+            markers.eachLayer(function (marker) {
+                if (marker.isPopupOpen()) open = true;
+            });
+            if (!open) resetView();
+        }, 50);
+    });
     map.on("mouseout", function () { map.scrollWheelZoom.disable(); });
     if (win.ResizeObserver) {
         observer = new win.ResizeObserver(function () {
