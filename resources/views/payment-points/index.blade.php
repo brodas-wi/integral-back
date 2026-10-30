@@ -5,6 +5,14 @@
     <x-page-title-with-stats title="Puntos de Pago" :count="$stats['total']" />
 @endsection
 
+@php
+    $user = auth()->user();
+    $canBulkStatus = $user->canAny(['payment_points.edit', 'payment_points.manage']);
+    $canBulkDelete = $user->canAny(['payment_points.delete', 'payment_points.manage']);
+    $canBulk = $canBulkStatus || $canBulkDelete;
+    $hasFilters = request('search') || request('correspondent') || request('department') || request('status');
+@endphp
+
 @section('header-actions')
     <div class="flex gap-2">
         @canany(['payment_points.export', 'payment_points.manage'])
@@ -72,7 +80,7 @@
                     <i class="ri-search-line mr-2"></i>
                     Filtrar
                 </button>
-                @if (request('search') || request('correspondent') || request('department') || request('status'))
+                @if ($hasFilters)
                     <a href="{{ route('payment-points.index') }}" class="btn-outline whitespace-nowrap">
                         <i class="ri-close-line mr-2"></i>
                         Limpiar
@@ -129,28 +137,55 @@
         </div>
     @endif
 
-    <div id="bulk-actions-bar" class="card mb-6 bg-primary bg-opacity-10 border-primary hidden transition-all duration-300">
-        <div class="flex items-center justify-between flex-wrap gap-4">
-            <div class="flex items-center gap-3">
-                <span class="text-sm font-medium text-secondary">
-                    <span id="selected-count">0</span> seleccionados
-                </span>
-                <button type="button" id="select-all-btn" class="text-sm text-primary hover:underline">
-                    Seleccionar página
-                </button>
-                <button type="button" id="deselect-all-btn" class="text-sm text-gray-600 hover:underline">
-                    Deseleccionar todos
-                </button>
-            </div>
-            <div class="flex items-center gap-2">
-                <button type="button" id="geocode-selected-btn" class="btn-secondary btn-sm">
-                    <i class="ri-map-pin-line mr-2"></i>
-                    Obtener Coordenadas
-                </button>
+    @if ($canBulk)
+        <div id="bulk-actions-bar"
+            class="card mb-6 bg-primary bg-opacity-10 border-primary hidden transition-all duration-300">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <span class="text-sm font-medium text-secondary">
+                        <span id="selected-count">0</span> seleccionados
+                    </span>
+                    <button type="button" id="select-all-btn" class="text-sm text-primary hover:underline">
+                        Seleccionar página
+                    </button>
+                    <button type="button" id="deselect-all-btn" class="text-sm text-gray-600 hover:underline">
+                        Deseleccionar todos
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-2 flex-wrap">
+                    @if ($canBulkStatus)
+                        <button type="button" data-bulk="activate"
+                            class="btn-secondary btn-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="ri-toggle-fill mr-2"></i>
+                            Activar (<span data-bulk-count="activate">0</span>)
+                        </button>
+                        <button type="button" data-bulk="deactivate"
+                            class="btn-outline btn-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="ri-toggle-line mr-2"></i>
+                            Desactivar (<span data-bulk-count="deactivate">0</span>)
+                        </button>
+                    @endif
+                    @if ($canBulkDelete)
+                        <button type="button" data-bulk="delete"
+                            class="btn-sm inline-flex items-center px-4 py-2 rounded-full bg-red-600 text-white font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="ri-delete-bin-line mr-2"></i>
+                            Eliminar (<span data-bulk-count="delete">0</span>)
+                        </button>
+                    @endif
+
+                    {{--
+                    <button type="button" id="geocode-selected-btn" class="btn-secondary btn-sm">
+                        <i class="ri-map-pin-line mr-2"></i>
+                        Obtener Coordenadas
+                    </button>
+                    --}}
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 
+    {{--
     <div id="geocoding-progress" class="card mb-6 bg-blue-50 border border-blue-200 hidden">
         <div class="space-y-3">
             <div class="flex items-center justify-between">
@@ -164,6 +199,7 @@
             <div class="text-xs text-blue-700" id="geocoding-details">Preparando...</div>
         </div>
     </div>
+    --}}
 
     <div class="card">
         @if ($paymentPoints->count() > 0)
@@ -174,18 +210,23 @@
                         data-address="{{ $point->address }}" data-municipality="{{ $point->municipality }}"
                         data-department="{{ $point->department }}" data-affiliate="{{ $point->affiliate }}"
                         data-branch="{{ $point->branch }}"
-                        data-has-coordinates="{{ $point->has_coordinates ? 'true' : 'false' }}">
+                        data-has-coordinates="{{ $point->has_coordinates ? 'true' : 'false' }}"
+                        data-active="{{ $point->is_active ? '1' : '0' }}">
                         <div class="flex items-start gap-4">
-                            <div class="flex items-start pt-1">
-                                <input type="checkbox"
-                                    class="point-checkbox w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer"
-                                    data-point-id="{{ $point->id }}">
-                            </div>
+                            @if ($canBulk)
+                                <div class="flex items-start pt-1">
+                                    <input type="checkbox"
+                                        class="point-checkbox w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer"
+                                        data-point-id="{{ $point->id }}"
+                                        aria-label="Seleccionar {{ $point->affiliate }}">
+                                </div>
+                            @endif
 
                             <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-2">
+                                <div class="flex items-center gap-2 mb-2 flex-wrap">
                                     <span class="badge badge-info">{{ $point->correspondent }}</span>
-                                    <span class="badge {{ $point->is_active ? 'badge-success' : 'badge-danger' }}">
+                                    <span data-point-status
+                                        class="badge {{ $point->is_active ? 'badge-success' : 'badge-danger' }}">
                                         {{ $point->is_active ? 'Activo' : 'Inactivo' }}
                                     </span>
                                     @if ($point->has_coordinates)
@@ -213,7 +254,8 @@
 
                             <div class="dropdown" data-dropdown>
                                 <button type="button"
-                                    class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center dropdown-trigger">
+                                    class="btn-secondary btn-sm w-[38px] p-0 flex items-center justify-center dropdown-trigger"
+                                    aria-label="Más acciones">
                                     <i class="ri-more-2-fill text-xl"></i>
                                 </button>
                                 <div class="dropdown-menu">
@@ -232,7 +274,7 @@
                                     @canany(['payment_points.delete', 'payment_points.manage'])
                                         <button type="button" class="dropdown-item-danger delete-payment-point-btn"
                                             data-point-id="{{ $point->id }}"
-                                            data-point-name="{{ addslashes($point->affiliate) }} - {{ addslashes($point->branch) }}">
+                                            data-point-name="{{ $point->affiliate }} - {{ $point->branch }}">
                                             <i class="ri-delete-bin-line"></i>
                                             <span>Eliminar</span>
                                         </button>
@@ -244,19 +286,30 @@
                 @endforeach
             </div>
 
-            <div class="mt-6">
-                {{ $paymentPoints->links() }}
-            </div>
+            @if ($paymentPoints->hasPages())
+                <div class="mt-6">
+                    {{ $paymentPoints->links() }}
+                </div>
+            @endif
         @else
             <div class="text-center py-12">
                 <i class="ri-store-line text-6xl text-gray-300 mb-4"></i>
-                <p class="text-gray-500 mb-4">No se encontraron puntos de pago</p>
-                @canany(['payment_points.create', 'payment_points.manage'])
-                    <a href="{{ route('payment-points.create') }}" class="btn-primary inline-flex items-center">
-                        <i class="ri-add-line mr-2"></i>
-                        Crear primer punto
+                <p class="text-gray-500 mb-4">
+                    {{ $hasFilters ? 'No se encontraron puntos de pago con esos filtros' : 'No hay puntos de pago registrados' }}
+                </p>
+                @if ($hasFilters)
+                    <a href="{{ route('payment-points.index') }}" class="btn-outline inline-flex items-center">
+                        <i class="ri-close-line mr-2"></i>
+                        Limpiar búsqueda
                     </a>
-                @endcanany
+                @else
+                    @canany(['payment_points.create', 'payment_points.manage'])
+                        <a href="{{ route('payment-points.create') }}" class="btn-primary inline-flex items-center">
+                            <i class="ri-add-line mr-2"></i>
+                            Crear primer punto
+                        </a>
+                    @endcanany
+                @endif
             </div>
         @endif
     </div>

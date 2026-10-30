@@ -429,6 +429,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/municipalities', [AgencyController::class, 'getMunicipalities'])
             ->name('municipalities');
 
+        Route::post('/bulk-status', [AgencyController::class, 'bulkStatus'])
+            ->name('bulk-status');
+
+        Route::post('/bulk-delete', [AgencyController::class, 'bulkDestroy'])
+            ->name('bulk-destroy');
+
         Route::get('/{agency}/edit', [AgencyController::class, 'edit'])
             ->name('edit')
             ->middleware('can:agencies.edit,agencies.manage');
@@ -488,6 +494,12 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/municipalities', [PaymentPointController::class, 'getMunicipalities'])
             ->name('municipalities');
+
+        Route::post('/bulk-status', [PaymentPointController::class, 'bulkStatus'])
+            ->name('bulk-status');
+
+        Route::post('/bulk-delete', [PaymentPointController::class, 'bulkDestroy'])
+            ->name('bulk-destroy');
 
         Route::get('/{paymentPoint}/edit', [PaymentPointController::class, 'edit'])
             ->name('edit')

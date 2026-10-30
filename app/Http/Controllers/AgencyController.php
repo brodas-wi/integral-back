@@ -15,6 +15,7 @@ use App\Services\GeolocationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -30,9 +31,6 @@ class AgencyController extends Controller
         protected AgencyExportService $exportService
     ) {}
 
-    /**
-     * Display a listing of agencies
-     */
     public function index(Request $request): View
     {
         $filters = $request->only(['search', 'zone', 'department', 'municipality', 'status']);
@@ -51,9 +49,6 @@ class AgencyController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new agency
-     */
     public function create(): View
     {
         return view('agencies.create', [
@@ -62,13 +57,10 @@ class AgencyController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created agency
-     */
     public function store(StoreAgencyRequest $request): RedirectResponse
     {
         try {
-            $agency = $this->agencyService->create($request->validated());
+            $this->agencyService->create($request->validated());
 
             return redirect()
                 ->route('agencies.index')
@@ -85,9 +77,6 @@ class AgencyController extends Controller
         }
     }
 
-    /**
-     * Display the specified agency
-     */
     public function show(Agency $agency): View
     {
         $agency->load(['phones', 'creator']);
@@ -95,9 +84,6 @@ class AgencyController extends Controller
         return view('agencies.show', compact('agency'));
     }
 
-    /**
-     * Show the form for editing the specified agency
-     */
     public function edit(Agency $agency): View
     {
         $agency->load('phones');
@@ -109,9 +95,6 @@ class AgencyController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified agency
-     */
     public function update(UpdateAgencyRequest $request, Agency $agency): RedirectResponse
     {
         try {
@@ -133,9 +116,6 @@ class AgencyController extends Controller
         }
     }
 
-    /**
-     * Remove the specified agency
-     */
     public function destroy(Agency $agency): JsonResponse|RedirectResponse
     {
         $this->authorize('agencies.delete', 'agencies.manage');
@@ -173,9 +153,95 @@ class AgencyController extends Controller
         }
     }
 
-    /**
-     * Update agency coordinates
-     */
+    public function bulkStatus(Request $request): JsonResponse
+    {
+        if (!$request->user()->canAny(['agencies.edit', 'agencies.manage'])) {
+            return response()->json(['success' => false, 'message' => 'Sin permisos para cambiar el estado'], 403);
+        }
+
+        $data = $request->validate([
+            'ids' => 'required|array|min:1|max:200',
+            'ids.*' => 'integer',
+            'active' => 'required|boolean',
+        ]);
+
+        $target = $request->boolean('active');
+        $userId = $request->user()->id;
+
+        $updated = DB::transaction(function () use ($data, $target, $userId) {
+            $ids = Agency::whereIn('id', $data['ids'])
+                ->where('is_active', !$target)
+                ->pluck('id')
+                ->all();
+
+            if ($ids) {
+                Agency::whereIn('id', $ids)->update([
+                    'is_active' => $target,
+                    'updated_by' => $userId,
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return $ids;
+        });
+
+        $count = count($updated);
+        $skipped = count(array_unique($data['ids'])) - $count;
+
+        $message = $count > 0
+            ? "{$count} agencia(s) " . ($target ? 'activada(s)' : 'desactivada(s)') . '.'
+            : 'Ninguna agencia cambió de estado.';
+
+        if ($skipped > 0) {
+            $message .= " {$skipped} ya estaba(n) " . ($target ? 'activa(s)' : 'inactiva(s)') . ' o no existe(n).';
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'updated_ids' => $updated,
+        ]);
+    }
+
+    public function bulkDestroy(Request $request): JsonResponse
+    {
+        if (!$request->user()->canAny(['agencies.delete', 'agencies.manage'])) {
+            return response()->json(['success' => false, 'message' => 'Sin permisos para eliminar'], 403);
+        }
+
+        $data = $request->validate([
+            'ids' => 'required|array|min:1|max:200',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted = [];
+        $failed = 0;
+
+        foreach (Agency::whereIn('id', $data['ids'])->get() as $agency) {
+            try {
+                $this->agencyService->delete($agency);
+                $deleted[] = $agency->id;
+            } catch (\Exception $e) {
+                $failed++;
+                Log::error('Error deleting agency in bulk', [
+                    'error' => $e->getMessage(),
+                    'agency_id' => $agency->id,
+                ]);
+            }
+        }
+
+        $message = count($deleted) . ' agencia(s) eliminada(s).';
+        if ($failed > 0) {
+            $message .= " {$failed} no se pudo(ieron) eliminar.";
+        }
+
+        return response()->json([
+            'success' => count($deleted) > 0,
+            'message' => $message,
+            'deleted_ids' => $deleted,
+        ], count($deleted) > 0 ? 200 : 422);
+    }
+
     public function updateCoordinates(Request $request, Agency $agency): JsonResponse
     {
         $request->validate([
@@ -207,9 +273,6 @@ class AgencyController extends Controller
         }
     }
 
-    /**
-     * Show the import form
-     */
     public function importForm(): View
     {
         return view('agencies.import', [
@@ -218,9 +281,6 @@ class AgencyController extends Controller
         ]);
     }
 
-    /**
-     * Process the import file
-     */
     public function import(ImportAgenciesRequest $request): JsonResponse|RedirectResponse
     {
         try {
@@ -280,9 +340,6 @@ class AgencyController extends Controller
         }
     }
 
-    /**
-     * Export agencies to Excel
-     */
     public function export(Request $request)
     {
         try {
@@ -300,9 +357,6 @@ class AgencyController extends Controller
         }
     }
 
-    /**
-     * Geocode an address
-     */
     public function geocode(GeocodeAddressRequest $request): JsonResponse
     {
         try {
@@ -332,9 +386,6 @@ class AgencyController extends Controller
         }
     }
 
-    /**
-     * Get municipalities by department
-     */
     public function getMunicipalities(Request $request): JsonResponse
     {
         $department = $request->input('department');
@@ -346,9 +397,6 @@ class AgencyController extends Controller
         ]);
     }
 
-    /**
-     * Get list of departments
-     */
     public function getDepartmentsList(): JsonResponse
     {
         return response()->json([
@@ -357,14 +405,11 @@ class AgencyController extends Controller
         ]);
     }
 
-    /**
-     * Get agencies for API (public or filtered)
-     */
     public function apiIndex(Request $request): JsonResponse
     {
         $filters = array_merge(
             $request->only(['search', 'zone', 'department']),
-            ['status' => 'active'] // Only active agencies for API
+            ['status' => 'active']
         );
 
         $agencies = $this->agencyService
@@ -390,9 +435,6 @@ class AgencyController extends Controller
         ]);
     }
 
-    /**
-     * Check if request expects JSON
-     */
     protected function expectsJson(): bool
     {
         return request()->expectsJson() || request()->ajax();

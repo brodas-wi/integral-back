@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
@@ -63,7 +64,7 @@ class PaymentPointController extends Controller
     public function store(StorePaymentPointRequest $request): RedirectResponse
     {
         try {
-            $paymentPoint = $this->paymentPointService->create($request->validated());
+            $this->paymentPointService->create($request->validated());
 
             return redirect()
                 ->route('payment-points.index')
@@ -153,6 +154,95 @@ class PaymentPointController extends Controller
                 ->route('payment-points.index')
                 ->with('error', 'Error al eliminar el punto de pago');
         }
+    }
+
+    public function bulkStatus(Request $request): JsonResponse
+    {
+        if (!$request->user()->canAny(['payment_points.edit', 'payment_points.manage'])) {
+            return response()->json(['success' => false, 'message' => 'Sin permisos para cambiar el estado'], 403);
+        }
+
+        $data = $request->validate([
+            'ids' => 'required|array|min:1|max:200',
+            'ids.*' => 'integer',
+            'active' => 'required|boolean',
+        ]);
+
+        $target = $request->boolean('active');
+        $userId = $request->user()->id;
+
+        $updated = DB::transaction(function () use ($data, $target, $userId) {
+            $ids = PaymentPoint::whereIn('id', $data['ids'])
+                ->where('is_active', !$target)
+                ->pluck('id')
+                ->all();
+
+            if ($ids) {
+                PaymentPoint::whereIn('id', $ids)->update([
+                    'is_active' => $target,
+                    'updated_by' => $userId,
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return $ids;
+        });
+
+        $count = count($updated);
+        $skipped = count(array_unique($data['ids'])) - $count;
+
+        $message = $count > 0
+            ? "{$count} punto(s) de pago " . ($target ? 'activado(s)' : 'desactivado(s)') . '.'
+            : 'Ningún punto de pago cambió de estado.';
+
+        if ($skipped > 0) {
+            $message .= " {$skipped} ya estaba(n) " . ($target ? 'activo(s)' : 'inactivo(s)') . ' o no existe(n).';
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'updated_ids' => $updated,
+        ]);
+    }
+
+    public function bulkDestroy(Request $request): JsonResponse
+    {
+        if (!$request->user()->canAny(['payment_points.delete', 'payment_points.manage'])) {
+            return response()->json(['success' => false, 'message' => 'Sin permisos para eliminar'], 403);
+        }
+
+        $data = $request->validate([
+            'ids' => 'required|array|min:1|max:200',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted = [];
+        $failed = 0;
+
+        foreach (PaymentPoint::whereIn('id', $data['ids'])->get() as $point) {
+            try {
+                $this->paymentPointService->delete($point);
+                $deleted[] = $point->id;
+            } catch (\Exception $e) {
+                $failed++;
+                Log::error('Error deleting payment point in bulk', [
+                    'error' => $e->getMessage(),
+                    'payment_point_id' => $point->id,
+                ]);
+            }
+        }
+
+        $message = count($deleted) . ' punto(s) de pago eliminado(s).';
+        if ($failed > 0) {
+            $message .= " {$failed} no se pudo(ieron) eliminar.";
+        }
+
+        return response()->json([
+            'success' => count($deleted) > 0,
+            'message' => $message,
+            'deleted_ids' => $deleted,
+        ], count($deleted) > 0 ? 200 : 422);
     }
 
     public function importForm(): View
