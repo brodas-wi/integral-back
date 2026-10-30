@@ -47,7 +47,7 @@
             @endcanany
         </div>
     @else
-        <div class="grid gap-4 nv-grid">
+        <div class="grid gap-5 nv-grid">
             @foreach ($navbars as $navbar)
                 @php
                     $pageCount = $navbar->pages->count();
@@ -61,11 +61,11 @@
                         )
                         ->values();
                 @endphp
-                <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-4"
+                <div class="card group hover:shadow-lg transition-shadow flex flex-col h-full p-6"
                     id="navbar-row-{{ $navbar->id }}" data-navbar-row>
                     <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
                         <div class="flex-1 min-w-0">
-                            <h3 class="text-base font-bold text-secondary mb-1 line-clamp-2 break-words">
+                            <h3 class="text-lg font-bold text-secondary mb-1 line-clamp-2 break-words">
                                 {{ $navbar->name }}</h3>
                             <span class="text-[11px] text-gray-500 font-mono">ID {{ $navbar->id }}</span>
                         </div>
@@ -75,13 +75,13 @@
                         </span>
                     </div>
 
-                    <div class="space-y-1.5 flex-1">
-                        <div class="flex items-center justify-between gap-2 text-sm text-gray-600">
+                    <div class="space-y-2.5 flex-1 text-[0.9375rem]">
+                        <div class="flex items-center justify-between gap-2 text-gray-600">
                             <span>Páginas:</span>
                             @if ($pageCount > 0)
                                 <button type="button" class="nv-pages-btn" data-pages-modal
-                                    data-navbar-name="{{ $navbar->name }}" data-pages="{{ json_encode($pagesList) }}"
-                                    title="Ver páginas vinculadas">
+                                    data-navbar-name="{{ $navbar->name }}"
+                                    data-pages="{{ json_encode($pagesList) }}" title="Ver páginas vinculadas">
                                     {{ $pageCount }} {{ $pageCount === 1 ? 'página' : 'páginas' }}
                                 </button>
                             @else
@@ -89,23 +89,37 @@
                             @endif
                         </div>
 
-                        <div class="flex items-center justify-between gap-2 text-sm text-gray-600"
+                        <div class="pt-2.5 border-t border-gray-100 space-y-1"
                             title="{{ $navbar->created_at->format('d/m/Y H:i:s') }}">
-                            <span>Creado:</span>
-                            <span
-                                class="font-semibold text-secondary">{{ $navbar->created_at->format('d/m/Y H:i') }}</span>
+                            <div class="flex items-center justify-between gap-2 text-gray-600">
+                                <span>Creado:</span>
+                                <span
+                                    class="font-semibold text-secondary">{{ $navbar->created_at->format('d/m/Y H:i') }}</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 text-gray-600">
+                                <span>Por:</span>
+                                <span
+                                    class="font-semibold text-secondary truncate ml-2">{{ $navbar->creator?->name ?? 'Sistema' }}</span>
+                            </div>
                         </div>
 
-                        <div class="flex items-center justify-between gap-2 text-sm text-gray-600"
+                        <div class="pt-2.5 border-t border-gray-100 space-y-1"
                             title="{{ $navbar->updated_at->format('d/m/Y H:i:s') }}">
-                            <span>Actualizado:</span>
-                            <span
-                                class="font-semibold text-secondary">{{ $navbar->updated_at->format('d/m/Y H:i') }}</span>
-                        </div>
-
-                        <div class="flex items-center justify-between gap-2 text-sm text-gray-600">
-                            <span class="shrink-0">Hace:</span>
-                            <span class="font-semibold text-secondary">{{ $navbar->updated_at->diffForHumans() }}</span>
+                            <div class="flex items-center justify-between gap-2 text-gray-600">
+                                <span>Actualizado:</span>
+                                <span
+                                    class="font-semibold text-secondary">{{ $navbar->updated_at->format('d/m/Y H:i') }}</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 text-gray-600">
+                                <span>Por:</span>
+                                <span
+                                    class="font-semibold text-secondary truncate ml-2">{{ $navbar->editor?->name ?? 'Sistema' }}</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 text-gray-600">
+                                <span>Hace:</span>
+                                <span
+                                    class="font-semibold text-secondary">{{ $navbar->updated_at->diffForHumans() }}</span>
+                            </div>
                         </div>
                     </div>
 
