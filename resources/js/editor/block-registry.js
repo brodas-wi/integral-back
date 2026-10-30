@@ -6,6 +6,15 @@ const CATEGORY_ORDER = [
     "Heroes",
     "Banners",
     "Contenido",
+    "Productos y Servicios",
+    "Detalle de Producto",
+    "Institucional",
+    "Documentos",
+    "Formularios",
+    "Gráficos",
+    "Interactivos",
+    "Llamadas a la acción",
+    "Botones",
 ];
 
 class BlockRegistry {

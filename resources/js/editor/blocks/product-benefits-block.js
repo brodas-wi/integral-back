@@ -1,6 +1,6 @@
 import { assetUrl } from "@/utils/url.js";
 
-const CATEGORY = "Banners";
+const CATEGORY = "Contenido";
 
 const HEADING = {
     title: "Compromiso con la Inclusión Financiera",
