@@ -12,7 +12,7 @@ RUN npm run build
 
 
 # --- ETAPA 2: Runtime PHP-FPM para Producción ---
-FROM php:8.3-fpm-alpine AS production
+FROM php:8.5-fpm-alpine AS production
 
 RUN apk add --no-cache \
     git \
@@ -34,14 +34,15 @@ RUN docker-php-ext-configure gd \
     --with-webp \
     --with-freetype
 
-RUN docker-php-ext-install \
+RUN docker-php-ext-install -j"$(nproc)" \
     pdo_mysql \
     mbstring \
     exif \
     pcntl \
     bcmath \
     gd \
-    zip
+    zip \
+    intl
 
 RUN { \
     echo 'upload_max_filesize = 90M'; \
@@ -51,7 +52,14 @@ RUN { \
     echo 'max_input_time = 300'; \
 } > /usr/local/etc/php/conf.d/uploads.ini
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN { \
+    echo 'opcache.enable=1'; \
+    echo 'opcache.memory_consumption=128'; \
+    echo 'opcache.max_accelerated_files=10000'; \
+    echo 'opcache.validate_timestamps=0'; \
+} > /usr/local/etc/php/conf.d/opcache.ini
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
