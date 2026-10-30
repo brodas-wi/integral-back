@@ -80,7 +80,7 @@ ${STYLES}`;
 
 export const productBenefitsBlock = {
     id: "product-benefits-section",
-    label: "Sección: beneficios + curva izquierda",
+    label: "Sección: beneficios + curva izq.",
     category: CATEGORY,
     media: ICON_LEFT,
     content: benefitsSection("left"),
@@ -88,7 +88,7 @@ export const productBenefitsBlock = {
 
 export const productBenefitsBlockRight = {
     id: "product-benefits-section-right",
-    label: "Sección: beneficios + curva derecha",
+    label: "Sección: beneficios + curva der.",
     category: CATEGORY,
     media: ICON_RIGHT,
     content: benefitsSection("right"),

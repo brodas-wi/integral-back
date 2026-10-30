@@ -79,8 +79,8 @@ export function addCustomBlocks(editor) {
     initializeHeroPagesBlock(editor);
     initializeFullBleedBannerBlock(editor);
     initializeWideBannerBlock(editor);
-    initializeOptionsBannerBlock(editor);
     initializeFullImageBlock(editor);
+    initializeOptionsBannerBlock(editor);
 
     // blockRegistry.registerBlocks(tabsBlocks);
     blockRegistry.registerBlocks(aboutBlocks);
@@ -90,13 +90,13 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(paymentChannelsBlocks);
     blockRegistry.registerBlocks(assistanceCardsBlocks);
     blockRegistry.registerBlocks(dualCardBlocks)
-    blockRegistry.registerBlocks(splitContentBlocks);
     blockRegistry.registerBlocks(productDetailBlocks);
+    blockRegistry.registerBlocks(splitContentBlocks);
+    blockRegistry.registerBlocks(featureBlocks);
     blockRegistry.registerBlocks([productBenefitsBlock, productBenefitsBlockRight]);
     blockRegistry.registerBlocks(ctaBlocks);
     blockRegistry.registerBlocks(documentDownloadBlocks);
     // blockRegistry.registerBlocks(promoCtaBlocks);
-    blockRegistry.registerBlocks(featureBlocks);
     blockRegistry.registerBlocks(serviceCardsBlocks);
     blockRegistry.registerBlocks(contactInfoBlocks);
     blockRegistry.registerBlocks(richListBlocks);
