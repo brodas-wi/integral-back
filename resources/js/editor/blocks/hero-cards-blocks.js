@@ -466,10 +466,17 @@ function showHeroCardsModal(editor, component) {
 }
 
 const iconHeroCards = `<svg viewBox="0 0 32 32" width="32" height="32">
-    <rect width="32" height="32" fill="#ffffff" rx="2"/>
-    <rect x="7" y="5.5" width="18" height="2.2" rx="1.1" fill="#94a3b8"/>
-    <rect x="5" y="11" width="10" height="15" rx="1.5" fill="#003B71"/>
-    <rect x="17" y="11" width="10" height="15" rx="1.5" fill="#E97300"/>
+    <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
+    <rect x="9" y="3" width="14" height="2.4" rx="1.2" fill="#E97300"/>
+    <rect x="6" y="7" width="20" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.5"/>
+    ${[11, 21]
+        .flatMap((y) =>
+            [2, 11.67, 21.33].map(
+                (x) => `<rect x="${x}" y="${y}" width="8.67" height="9" rx="1.5" fill="#e0e7ef"/>
+    <rect x="${x + 1}" y="${y + 4.5}" width="6.67" height="3" rx="0.8" fill="#003B71" fill-opacity="0.75"/>`,
+            ),
+        )
+        .join("\n    ")}
 </svg>`;
 
 export function initializeHeroCardsBlock(editor) {
@@ -514,7 +521,7 @@ export function initializeHeroCardsBlock(editor) {
 
         model: {
             defaults: {
-                name: "Grid con Tarjetas",
+                name: "Sección: grid de tarjetas",
                 tagName: "div",
                 draggable: true,
                 droppable: false,
@@ -579,7 +586,7 @@ export function initializeHeroCardsBlock(editor) {
     });
 
     editor.BlockManager.add("hero-cards-block", {
-        label: "Grid con Tarjetas",
+        label: "Sección: grid de tarjetas",
         category: "Productos y Servicios",
         media: iconHeroCards,
         activate: true,

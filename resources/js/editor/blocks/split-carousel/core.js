@@ -53,9 +53,17 @@ const SC_CSS = `
 
 const ICON = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <rect x="2" y="8" width="9" height="16" rx="1" fill="#003B71" fill-opacity="0.15" stroke="#003B71" stroke-width="0.8"/>
-    <rect x="14" y="6" width="6" height="20" rx="1.5" fill="#E97300" fill-opacity="0.3" stroke="#E97300" stroke-width="0.8"/>
-    <rect x="22" y="6" width="6" height="20" rx="1.5" fill="#E97300" fill-opacity="0.2" stroke="#E97300" stroke-width="0.8"/>
+    <rect x="2" y="9" width="9" height="2.4" rx="1.2" fill="#E97300"/>
+    <rect x="2" y="13" width="8" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="2" y="15.5" width="6" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.5"/>
+    ${[13, 22]
+        .map(
+            (x) => `<rect x="${x}" y="5" width="7.5" height="16" rx="1.5" fill="#e0e7ef"/>
+    <rect x="${x + 1}" y="15.5" width="5.5" height="3.5" rx="0.8" fill="#003B71" fill-opacity="0.75"/>`,
+        )
+        .join("\n    ")}
+    <circle cx="18.5" cy="26" r="2" fill="#E97300"/>
+    <circle cx="24" cy="26" r="2" fill="#E97300"/>
 </svg>`;
 
 export function escapeHtml(value) {
@@ -237,7 +245,7 @@ export function registerSplitCarouselCore(editor) {
                 : false,
         model: {
             defaults: {
-                name: "Sección con Carrusel",
+                name: "Sección: carrusel + título",
                 tagName: "div",
                 draggable: true,
                 droppable: false,
@@ -272,7 +280,7 @@ export function registerSplitCarouselCore(editor) {
     });
 
     editor.BlockManager.add("split-carousel-block", {
-        label: "Sección con Carrusel",
+        label: "Sección: carrusel + título",
         category: "Productos y Servicios",
         media: ICON,
         activate: true,

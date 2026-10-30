@@ -26,7 +26,7 @@ const cardHtml = (index, total) => {
 </div>`;
 };
 
-const buildShell = () => `<div class="hpm-header"><div class="hpm-header-left"><i class="ri-gallery-line"></i><h2>Configurar Tarjetas por Páginas</h2></div><button type="button" class="hpm-close" data-action="close"><i class="ri-close-line"></i></button></div>
+const buildShell = () => `<div class="hpm-header"><div class="hpm-header-left"><i class="ri-gallery-line"></i><h2>Configurar Carrusel</h2></div><button type="button" class="hpm-close" data-action="close"><i class="ri-close-line"></i></button></div>
 <div class="hpm-body">
 <div class="hpm-card"><div><label class="hpm-label">Título principal</label><input type="text" class="hpm-input" maxlength="${MAX_HEADING}" data-bind="heading" placeholder="Título"></div><div><label class="hpm-label">Subtítulo</label><input type="text" class="hpm-input" maxlength="${MAX_HEADING}" data-bind="subheading" placeholder="Subtítulo"></div></div>
 <div class="hpm-body-list" data-list style="display:flex;flex-direction:column;gap:0.75rem;"></div>

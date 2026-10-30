@@ -9,12 +9,17 @@ import {
 
 const BLOCK_ICON = `<svg viewBox="0 0 32 32" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
     <rect width="32" height="32" fill="#f8f9fa" rx="2"/>
-    <rect x="2" y="6" width="9" height="20" rx="1.5" fill="#003B71" fill-opacity="0.2" stroke="#003B71" stroke-width="0.8"/>
-    <rect x="12.5" y="6" width="9" height="20" rx="1.5" fill="#003B71" fill-opacity="0.3" stroke="#003B71" stroke-width="0.8"/>
-    <rect x="23" y="6" width="7" height="20" rx="1.5" fill="#E97300" fill-opacity="0.35" stroke="#E97300" stroke-width="0.8"/>
-    <circle cx="12" cy="29.5" r="1.2" fill="#003B71"/>
-    <circle cx="16" cy="29.5" r="1.2" fill="#cbd5e1"/>
-    <circle cx="20" cy="29.5" r="1.2" fill="#cbd5e1"/>
+    <rect x="11" y="3" width="10" height="2.4" rx="1.2" fill="#E97300"/>
+    <rect x="8" y="7" width="16" height="1.4" rx="0.7" fill="#003B71" fill-opacity="0.5"/>
+    ${[5.75, 13.25, 20.75]
+        .map(
+            (x) => `<rect x="${x}" y="11" width="5.5" height="18" rx="1.5" fill="#e0e7ef"/>
+    <rect x="${x + 0.75}" y="12.5" width="3.5" height="1.2" rx="0.6" fill="#003B71" fill-opacity="0.5"/>
+    <rect x="${x + 0.75}" y="22.5" width="4" height="4.5" rx="0.8" fill="#003B71" fill-opacity="0.75"/>`,
+        )
+        .join("\n    ")}
+    <circle cx="2.5" cy="20" r="2" fill="#E97300"/>
+    <circle cx="29.5" cy="20" r="2" fill="#E97300"/>
 </svg>`;
 
 const PROPAGATED = [
@@ -43,7 +48,7 @@ function registerType(editor) {
 
         model: {
             defaults: {
-                name: "Tarjetas por Páginas",
+                name: "Sección: carrusel de tarjetas",
                 tagName: "section",
                 draggable: true,
                 droppable: false,
@@ -81,7 +86,7 @@ function registerType(editor) {
     });
 
     editor.BlockManager.add("hero-pages-block", {
-        label: "Tarjetas por Páginas",
+        label: "Sección: carrusel de tarjetas",
         category: "Productos y Servicios",
         media: BLOCK_ICON,
         activate: true,
