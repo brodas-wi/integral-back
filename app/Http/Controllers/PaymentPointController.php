@@ -277,6 +277,10 @@ class PaymentPointController extends Controller
                 $message .= " Se encontraron " . count($result['duplicates']) . " duplicados.";
             }
 
+            if (($result['without_coordinates'] ?? 0) > 0) {
+                $message .= " {$result['without_coordinates']} quedaron sin coordenadas.";
+            }
+
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,

@@ -24,6 +24,7 @@
                         <li>La primera fila debe contener los encabezados de las columnas</li>
                         <li>Los registros duplicados serán omitidos automáticamente</li>
                         <li>El sistema detecta duplicados por: Corresponsal + Afiliado + Sucursal</li>
+                        <li>Puedes incluir las columnas opcionales "Latitud" y "Longitud" para importar las coordenadas</li>
                         <li>La importación es rápida y procesará todos los registros en segundos</li>
                     </ul>
                 </div>
@@ -67,7 +68,7 @@
                         <ul class="list-disc list-inside text-sm text-yellow-700 space-y-1">
                             <li>La columna "Distrito" corresponde al Departamento en el sistema</li>
                             <li>Los corresponsales válidos son: PuntoXpress, AKI Pago, Otro</li>
-                            <li>Todas las columnas son obligatorias</li>
+                            <li>Todas las columnas son obligatorias, excepto "Latitud" y "Longitud", que son opcionales</li>
                         </ul>
                     </div>
                 </div>
@@ -81,13 +82,13 @@
                     <div class="flex-1">
                         <p class="font-semibold text-blue-900 mb-2">Sobre las coordenadas geográficas</p>
                         <p class="text-sm text-blue-800">
-                            Las coordenadas <strong>no se importan automáticamente</strong>. Puedes agregarlas manualmente
-                            después de la importación:
+                            Las coordenadas son <strong>opcionales</strong>. Si tu archivo incluye las columnas
+                            <strong>Latitud</strong> y <strong>Longitud</strong>, se importan junto con el punto:
                         </p>
                         <ul class="list-disc list-inside text-sm text-blue-700 mt-2 space-y-1">
-                            <li>Edita cada punto de pago individualmente</li>
-                            <li>Usa el botón "Obtener Coordenadas" para geolocalizar automáticamente</li>
-                            <li>O ajusta la ubicación manualmente en el mapa interactivo</li>
+                            <li>Usa números decimales, por ejemplo 13.6929 y -89.2182</li>
+                            <li>Deben venir las dos columnas con valor; si falta una, el punto se importa sin coordenadas</li>
+                            <li>Los puntos sin coordenadas se completan después editándolos o con el botón "Obtener Coordenadas"</li>
                         </ul>
                     </div>
                 </div>
