@@ -277,6 +277,14 @@ class PaymentPointController extends Controller
                 $message .= " Se encontraron " . count($result['duplicates']) . " duplicados.";
             }
 
+            if (($result['has_coordinate_columns'] ?? false) && ($result['without_coordinates'] ?? 0) > 0) {
+                $message .= " {$result['without_coordinates']} quedaron sin coordenadas.";
+            }
+
+            if (count($result['warnings'] ?? []) > 0) {
+                $message .= " Hay " . count($result['warnings']) . " aviso(s) sobre coordenadas.";
+            }
+
             if (($result['without_coordinates'] ?? 0) > 0) {
                 $message .= " {$result['without_coordinates']} quedaron sin coordenadas.";
             }
