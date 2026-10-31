@@ -267,7 +267,9 @@ class PaymentPointController extends Controller
                 return back()->with('error', $result['message']);
             }
 
-            $message = "Se importaron {$result['imported']} puntos de pago exitosamente.";
+            $message = $result['imported'] > 0
+                ? "Se importaron {$result['imported']} puntos de pago exitosamente."
+                : 'No se importó ningún punto de pago.';
 
             if ($result['skipped'] > 0) {
                 $message .= " Se omitieron {$result['skipped']} registros.";
@@ -283,6 +285,10 @@ class PaymentPointController extends Controller
 
             if (count($result['warnings'] ?? []) > 0) {
                 $message .= " Hay " . count($result['warnings']) . " aviso(s) sobre coordenadas.";
+            }
+
+            if (count($result['errors'] ?? []) > 0) {
+                $message .= ' ' . count($result['errors']) . ' con errores.';
             }
 
             if (($result['without_coordinates'] ?? 0) > 0) {

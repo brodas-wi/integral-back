@@ -108,6 +108,13 @@ class PaymentPointImportService
         return $this->latColumn !== null && $this->lngColumn !== null;
     }
 
+    protected function rowLabel(string $affiliate, string $branch): string
+    {
+        $label = trim("{$affiliate} / {$branch}", ' /');
+
+        return $label !== '' ? " ({$label})" : '';
+    }
+
     protected function isEmptyRow(array $row): bool
     {
         return empty(array_filter($row, fn($cell) => !is_null($cell) && trim((string) $cell) !== ''));
@@ -123,15 +130,22 @@ class PaymentPointImportService
             $branch = trim($row[5] ?? '');
             $address = trim($row[6] ?? '');
 
-            if (empty($correspondent) || empty($department) || empty($affiliate) || empty($branch)) {
-                $this->errors[] = "Fila {$rowNumber}: Datos incompletos";
+            $missing = array_keys(array_filter([
+                'Corresponsal' => $correspondent === '',
+                'Distrito' => $department === '',
+                'Afiliado' => $affiliate === '',
+                'Sucursal' => $branch === '',
+            ]));
+
+            if ($missing) {
+                $this->errors[] = "Fila {$rowNumber}: falta " . implode(', ', $missing) . $this->rowLabel($affiliate, $branch);
                 $this->skipped++;
                 return;
             }
 
             $correspondentNormalized = $this->normalizeCorrespondent($correspondent);
             if (!$correspondentNormalized) {
-                $this->errors[] = "Fila {$rowNumber}: Corresponsal no válido '{$correspondent}'";
+                $this->errors[] = "Fila {$rowNumber}: corresponsal no válido '{$correspondent}'" . $this->rowLabel($affiliate, $branch);
                 $this->skipped++;
                 return;
             }
@@ -169,7 +183,7 @@ class PaymentPointImportService
                 $this->withCoordinates++;
             }
         } catch (\Exception $e) {
-            $this->errors[] = "Fila {$rowNumber}: {$e->getMessage()}";
+            $this->errors[] = "Fila {$rowNumber}: " . Str::limit(strtok($e->getMessage(), "\n"), 180);
             $this->skipped++;
             Log::error('Error processing row', [
                 'row' => $rowNumber,

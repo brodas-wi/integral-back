@@ -2,6 +2,12 @@ import { showNotification } from "@/utils/notifications.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
 
+const TONES = {
+    red: "bg-red-50 border-red-200 text-red-800",
+    yellow: "bg-yellow-50 border-yellow-200 text-yellow-800",
+    blue: "bg-blue-50 border-blue-200 text-blue-800",
+};
+
 document.addEventListener("DOMContentLoaded", function () {
     const importForm = document.getElementById("import-form");
     if (!importForm) return;
@@ -18,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const progressBar     = document.getElementById("progress-bar");
     const progressText    = document.getElementById("progress-text");
     const progressDetails = document.getElementById("progress-details");
+    const resultsContainer = document.getElementById("import-results");
 
     dropZone?.addEventListener("click", () => fileInput?.click());
 
@@ -63,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
             importBtn.disabled = true;
             importBtn.innerHTML = '<i class="ri-loader-4-line mr-2 animate-spin"></i> Importando...';
         }
+        resultsContainer?.classList.add("hidden");
         progressContainer?.classList.remove("hidden");
         updateProgress(10, "Iniciando importación...");
 
@@ -81,11 +89,20 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
 
             if (data.success) {
+                const result = data.data || {};
+                const groups = collectIssues(result);
                 updateProgress(100, data.message);
-                showNotification(data.message || "Importación completada", "success");
-                setTimeout(() => {
-                    window.location.href = data.redirect || "/payment-points";
-                }, 2000);
+
+                if (groups.length === 0 && result.imported > 0) {
+                    showNotification(data.message || "Importación completada", "success");
+                    setTimeout(() => {
+                        window.location.href = data.redirect || "/payment-points";
+                    }, 2000);
+                } else {
+                    showNotification(data.message, result.imported > 0 ? "warning" : "error");
+                    renderResults(data, groups);
+                    resetButton();
+                }
             } else {
                 throw new Error(data.message || "Error al importar");
             }
@@ -124,6 +141,59 @@ document.addEventListener("DOMContentLoaded", function () {
         dropZoneContent?.classList.add("hidden");
         filePreview?.classList.remove("hidden");
         if (importBtn) importBtn.disabled = false;
+    }
+
+    function collectIssues(result) {
+        return [
+            { title: "Errores", tone: "red", items: result.errors || [] },
+            { title: "Duplicados omitidos", tone: "yellow", items: result.duplicates || [] },
+            { title: "Avisos de coordenadas", tone: "blue", items: result.warnings || [] },
+        ].filter((group) => group.items.length > 0);
+    }
+
+    function renderResults(data, groups) {
+        if (!resultsContainer) return;
+
+        const result = data.data || {};
+        const summary = `<p class="text-sm font-semibold text-secondary">${escapeHtml(data.message)}</p>`;
+
+        const sections = groups
+            .map(
+                (group) => `
+            <div class="border rounded-lg p-4 ${TONES[group.tone]}">
+                <p class="font-semibold mb-2">${group.title} (${group.items.length})</p>
+                <ul class="list-disc list-inside text-sm space-y-1 max-h-64 overflow-y-auto">
+                    ${group.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                </ul>
+            </div>`,
+            )
+            .join("");
+
+        const link =
+            result.imported > 0
+                ? `<a href="${escapeHtml(data.redirect || "/payment-points")}" class="btn-outline inline-flex items-center"><i class="ri-list-check mr-2"></i> Ver puntos de pago</a>`
+                : "";
+
+        resultsContainer.innerHTML = summary + sections + link;
+        resultsContainer.classList.remove("hidden");
+        resultsContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function resetButton() {
+        if (importBtn) {
+            importBtn.disabled = false;
+            importBtn.innerHTML = '<i class="ri-upload-line mr-2"></i> Importar Puntos';
+        }
+        progressContainer?.classList.add("hidden");
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
     }
 
     function formatFileSize(bytes) {

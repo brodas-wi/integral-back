@@ -160,6 +160,8 @@
                     </div>
                 </div>
 
+                <div id="import-results" class="hidden mb-6 space-y-4"></div>
+
                 <div class="flex justify-between gap-4">
                     <a href="{{ route('payment-points.index') }}" class="btn-outline">
                         <i class="ri-arrow-left-line mr-2"></i>
