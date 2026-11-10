@@ -93,7 +93,7 @@
             class="fixed lg:static inset-y-0 left-0 z-50 w-60 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
             <div class="flex flex-col h-full">
                 <div class="flex items-center justify-between p-4 bg-secondary">
-                    <h1 class="text-2xl font-bold text-white">CMS Admin</h1>
+                    <h1 class="text-2xl font-bold text-white">CMS Integral</h1>
                     <button id="closeSidebar" class="lg:hidden text-white">
                         <i class="ri-close-line text-2xl"></i>
                     </button>

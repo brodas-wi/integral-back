@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="{{ Vite::asset('node_modules/remixicon/fonts/remixicon.css') }}" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="min-h-screen flex items-center justify-center bg-secondary">
     <div class="w-full max-w-md">
         <div class="bg-white rounded-2xl shadow-2xl p-8">
@@ -27,16 +29,8 @@
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray">
                             <i class="ri-user-line text-xl"></i>
                         </span>
-                        <input 
-                            id="username" 
-                            type="text" 
-                            name="username" 
-                            value="{{ old('username') }}" 
-                            required 
-                            autofocus
-                            class="input-field pl-12"
-                            placeholder="Ingresa tu usuario"
-                        >
+                        <input id="username" type="text" name="username" value="{{ old('username') }}" required
+                            autofocus class="input-field pl-12" placeholder="Ingresa tu usuario">
                     </div>
                     @error('username')
                         <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
@@ -51,14 +45,8 @@
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray">
                             <i class="ri-lock-line text-xl"></i>
                         </span>
-                        <input 
-                            id="password" 
-                            type="password" 
-                            name="password" 
-                            required
-                            class="input-field pl-12"
-                            placeholder="Ingresa tu contraseña"
-                        >
+                        <input id="password" type="password" name="password" required class="input-field pl-12"
+                            placeholder="Ingresa tu contraseña">
                     </div>
                     @error('password')
                         <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
@@ -67,11 +55,8 @@
 
                 <div class="flex items-center justify-between mb-6">
                     <label class="flex items-center">
-                        <input 
-                            type="checkbox" 
-                            name="remember" 
-                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                        >
+                        <input type="checkbox" name="remember"
+                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
                         <span class="ml-2 text-sm text-gray">Recordarme</span>
                     </label>
                 </div>
@@ -83,11 +68,10 @@
             </form>
         </div>
 
-        <div class="text-center mt-6">
-            <p class="text-light text-sm">
-                © 2025 INTEGRAL CMS. Todos los derechos reservados.
-            </p>
-        </div>
+        <p class="text-light text-sm">
+            © {{ now()->year }} CMS Integral. Todos los derechos reservados.
+        </p>
     </div>
 </body>
+
 </html>
