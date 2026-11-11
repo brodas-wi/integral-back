@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: dokploy-deploy
+  group: dokploy-deploy-v2
   cancel-in-progress: false
 
 permissions:
