@@ -405,6 +405,31 @@ class AgencyController extends Controller
         ]);
     }
 
+    public function apiList(): JsonResponse
+    {
+        $agencies = Agency::query()
+            ->active()
+            ->with('phones')
+            ->orderBy('zone')
+            ->orderBy('name')
+            ->get()
+            ->map(fn ($agency) => [
+                'id' => $agency->id,
+                'name' => $agency->name,
+                'address' => $agency->address,
+                'municipality' => $agency->municipality,
+                'department' => $agency->department,
+                'zone' => $agency->zone,
+                'schedule' => $agency->schedule,
+                'latitude' => $agency->hasCoordinates() ? (float) $agency->latitude : null,
+                'longitude' => $agency->hasCoordinates() ? (float) $agency->longitude : null,
+                'phones' => $agency->formatted_phones,
+            ])
+            ->values();
+
+        return response()->json($agencies);
+    }
+
     public function apiIndex(Request $request): JsonResponse
     {
         $filters = array_merge(

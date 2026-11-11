@@ -458,6 +458,7 @@ Route::middleware(['auth'])->group(function () {
     // API Routes for Agencies
     Route::prefix('api/agencies')->name('api.agencies.')->group(function () {
         Route::get('/active', [AgencyController::class, 'apiIndex'])->name('active');
+        Route::get('/list', [AgencyController::class, 'apiList'])->name('list');
     });
 
     // ==========================================

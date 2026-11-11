@@ -37,6 +37,7 @@ import { mapFilterBlocks, initializeMapFilterBlocks } from "./blocks/map-filter-
 import { initializeBannerBlocks } from "./blocks/banner-blocks";
 import { initializeVideoBannerBlock } from "@/editor/blocks/video-banner-blocks";
 import { assetsBlocks, initializeAssetsBlocks } from "@/editor/blocks/assets-blocks";
+import { initializeAgenciesListBlock } from "@/editor/blocks/agencies-list-blocks.js";
 import { initializeHeroBannerBlock } from "@/editor/blocks/hero-banner-blocks";
 import { initializeHeroVideoBlock } from "@/editor/blocks/hero-video-blocks";
 import { initializeFixedBannerBlock } from "@/editor/blocks/fixed-banner-blocks";
@@ -127,6 +128,7 @@ export function addCustomBlocks(editor) {
     initializeDocumentDownloadBlocks(editor);
     initializeDownloadsBlock(editor);
     initializeAssetsBlocks(editor);
+    initializeAgenciesListBlock(editor);
     initializeFaqBlock(editor);
     initializeContactBlock(editor);
     initializeTextButtonBlock(editor);
