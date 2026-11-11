@@ -1,3 +1,4 @@
+import { openMediaPicker } from "@/editor/media-picker";
 import { MAX_COLS, MAX_ROWS, mergeData } from "./defaults";
 import { ensureModalStyles } from "./modal-styles";
 import {
@@ -290,7 +291,11 @@ export function showCardTableModal(editor, component) {
     };
 
     const onKeydown = (event) => {
-        const mediaOpen = document.querySelector(".gjs-mdl-container")?.offsetParent !== null;
+        const picker = document.getElementById("media-modal");
+        const mediaOpen =
+            Boolean(picker) &&
+            picker.getClientRects().length > 0 &&
+            getComputedStyle(picker).visibility !== "hidden";
         if (
             event.key === "Escape" &&
             !mediaOpen &&
@@ -358,32 +363,22 @@ export function showCardTableModal(editor, component) {
         const entry = cellEntry(el);
         if (!entry) return;
 
-        const raiseModal = () => {
-            const container = document.querySelector(".gjs-mdl-container");
-            if (container) container.style.zIndex = "1000000";
-        };
+        try {
+            openMediaPicker({
+                type: "image",
+                title: "Seleccionar imagen de la celda",
+                onSelect: (url) => {
+                    entry.src = url || "";
+                    hydrate();
+                },
+            });
+        } catch (error) {
+            console.error("[CardTable] No se pudo abrir el selector de medios:", error);
+            return;
+        }
 
-        const applyAsset = (asset) => {
-            if (!asset) return;
-            const src =
-                typeof asset === "string"
-                    ? asset
-                    : typeof asset.getSrc === "function"
-                      ? asset.getSrc()
-                      : asset.get?.("src") || asset.src || "";
-            entry.src = src || "";
-            hydrate();
-        };
-
-        editor.AssetManager.open({
-            types: ["image"],
-            accept: "image/*",
-            select: (asset, complete) => {
-                applyAsset(asset);
-                if (complete) editor.Modal.close();
-            },
-        });
-        raiseModal();
+        const picker = document.getElementById("media-modal");
+        if (picker) picker.style.setProperty("z-index", "1000001", "important");
     };
 
     const index = (el) => Number(el.dataset.index);
