@@ -290,9 +290,10 @@ export function showCardTableModal(editor, component) {
     };
 
     const onKeydown = (event) => {
+        const mediaOpen = document.querySelector(".gjs-mdl-container")?.offsetParent !== null;
         if (
             event.key === "Escape" &&
-            overlay.style.display !== "none" &&
+            !mediaOpen &&
             !document.querySelector(".ctm-confirm-overlay")
         )
             close();
@@ -357,25 +358,32 @@ export function showCardTableModal(editor, component) {
         const entry = cellEntry(el);
         if (!entry) return;
 
-        overlay.style.display = "none";
+        const raiseModal = () => {
+            const container = document.querySelector(".gjs-mdl-container");
+            if (container) container.style.zIndex = "1000000";
+        };
 
-        const restore = () => {
-            editor.off("modal:close", restore);
-            overlay.style.display = "";
+        const applyAsset = (asset) => {
+            if (!asset) return;
+            const src =
+                typeof asset === "string"
+                    ? asset
+                    : typeof asset.getSrc === "function"
+                      ? asset.getSrc()
+                      : asset.get?.("src") || asset.src || "";
+            entry.src = src || "";
             hydrate();
         };
-        editor.on("modal:close", restore);
 
         editor.AssetManager.open({
             types: ["image"],
             accept: "image/*",
             select: (asset, complete) => {
-                const src =
-                    typeof asset.getSrc === "function" ? asset.getSrc() : asset.get("src");
-                entry.src = src || "";
+                applyAsset(asset);
                 if (complete) editor.Modal.close();
             },
         });
+        raiseModal();
     };
 
     const index = (el) => Number(el.dataset.index);
