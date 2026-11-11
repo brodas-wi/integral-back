@@ -39,16 +39,17 @@ const INITIAL_CONTENT = `
 <div class="ast-tabs" role="tablist" data-ast-tabs ${LOCKED}></div>
 <div data-ast-content ${LOCKED}></div>`;
 
-/*
- * Este script se serializa con toString() y se ejecuta en la página pública,
- * así que debe ser autónomo: no puede usar variables ni funciones externas.
- */
 function createAssetsScript() {
     return function () {
         const section = this;
         const doc = section.ownerDocument ?? document;
+        const win = doc.defaultView ?? window;
+        const tabsWrap = section.querySelector("[data-ast-tabs]");
+        const contentEl = section.querySelector("[data-ast-content]");
+        if (!tabsWrap || !contentEl) return;
+
         const appBase = doc.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, "") ?? "";
-        const apiEndpoint =
+        const endpoint =
             doc.querySelector('meta[name="api-assets-url"]')?.content ||
             (appBase ? `${appBase}/api/assets/active` : "");
 
@@ -76,7 +77,7 @@ function createAssetsScript() {
 .ast-card-body{padding:0.75rem 0.875rem;}
 .ast-card-name{margin:0 0 0.25rem;font-size:0.8125rem;font-weight:700;line-height:1.4;color:#003B71;}
 .ast-card-desc{margin:0;font-size:0.75rem;line-height:1.4;color:#003B71;}
-.ast-empty{padding:3rem 1rem;text-align:center;font-size:0.875rem;color:#94a3b8;}
+.ast-empty{grid-column:1 / -1;padding:3rem 1rem;text-align:center;font-size:0.875rem;color:#94a3b8;}
 .ast-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:4rem 1rem;font-size:0.875rem;color:#94a3b8;}
 .ast-spinner{width:2.25rem;height:2.25rem;border:3px solid #e5e7eb;border-top-color:#E97300;border-radius:50%;animation:ast-spin 0.8s linear infinite;}
 @keyframes ast-spin{to{transform:rotate(360deg);}}
@@ -100,9 +101,19 @@ function createAssetsScript() {
         }
         if (style.textContent !== STYLES) style.textContent = STYLES;
 
-        const tabsWrap = section.querySelector("[data-ast-tabs]");
-        const contentEl = section.querySelector("[data-ast-content]");
-        if (!tabsWrap || !contentEl) return;
+        const state =
+            section.__ast ||
+            (section.__ast = {
+                assets: [],
+                activeSlug: "",
+                defaultCategory: null,
+                loaded: false,
+                request: 0,
+                bound: false,
+                select: null,
+            });
+        const requestId = ++state.request;
+        const defaultCategory = section.dataset.defaultCategory || "";
 
         const ESCAPES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
         const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ESCAPES[char]);
@@ -111,20 +122,20 @@ function createAssetsScript() {
         const truncate = (text, max) =>
             text && text.length > max ? `${text.slice(0, max).trim()}...` : text || "";
 
-        const defaultCategory = section.dataset.defaultCategory || "";
-        const requestId = (section.__astRequest = (section.__astRequest || 0) + 1);
-        let assets = [];
-        let activeSlug = "";
+        const normalize = (asset) => ({
+            ...asset,
+            category_slug: String(asset.category_slug || "sin-categoria"),
+            category: asset.category || "Sin categoría",
+        });
 
         const categories = () => {
-            const seen = new Set();
-            const list = [];
-            assets.forEach((asset) => {
-                if (seen.has(asset.category_slug)) return;
-                seen.add(asset.category_slug);
-                list.push({ slug: asset.category_slug, name: asset.category });
+            const seen = new Map();
+            state.assets.forEach((asset) => {
+                if (!seen.has(asset.category_slug)) seen.set(asset.category_slug, asset.category);
             });
-            return list.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
+            return Array.from(seen, ([slug, name]) => ({ slug, name })).sort((a, b) =>
+                String(a.name).localeCompare(String(b.name), "es", { sensitivity: "base" }),
+            );
         };
 
         const card = (asset) => {
@@ -148,53 +159,98 @@ function createAssetsScript() {
         };
 
         const renderContent = () => {
-            if (activeSlug) {
-                const filtered = assets.filter((asset) => asset.category_slug === activeSlug);
-                const label = filtered[0]?.category || categories().find((c) => c.slug === activeSlug)?.name || "";
-                contentEl.innerHTML = group(label, filtered);
+            if (state.activeSlug) {
+                const items = state.assets.filter((asset) => asset.category_slug === state.activeSlug);
+                contentEl.innerHTML = group(items[0]?.category || "", items);
                 return;
             }
 
             contentEl.innerHTML = categories()
                 .map((category) =>
-                    group(category.name, assets.filter((asset) => asset.category_slug === category.slug)),
+                    group(
+                        category.name,
+                        state.assets.filter((asset) => asset.category_slug === category.slug),
+                    ),
                 )
                 .join("");
         };
 
         const renderTabs = () => {
             const tab = (slug, label) => {
-                const active = slug === activeSlug;
+                const active = slug === state.activeSlug;
                 return `<button type="button" role="tab" aria-selected="${active}" class="ast-tab${active ? " ast-tab--active" : ""}" data-tab-slug="${esc(slug)}">${esc(label)}</button>`;
             };
 
             tabsWrap.innerHTML = [tab("", "Todos"), ...categories().map((c) => tab(c.slug, c.name))].join("");
         };
 
-        if (!tabsWrap.__astBound) {
-            tabsWrap.__astBound = true;
+        const syncTabs = () => {
+            tabsWrap.querySelectorAll("[data-tab-slug]").forEach((button) => {
+                const active = button.dataset.tabSlug === state.activeSlug;
+                button.classList.toggle("ast-tab--active", active);
+                button.setAttribute("aria-selected", String(active));
+            });
+        };
+
+        state.select = (slug) => {
+            state.activeSlug = slug;
+            syncTabs();
+            renderContent();
+        };
+
+        if (!state.bound) {
+            state.bound = true;
             tabsWrap.addEventListener("click", (event) => {
                 const button = event.target.closest("[data-tab-slug]");
-                if (!button) return;
-                activeSlug = button.dataset.tabSlug;
-                tabsWrap.querySelectorAll(".ast-tab").forEach((item) => {
-                    const active = item === button;
-                    item.classList.toggle("ast-tab--active", active);
-                    item.setAttribute("aria-selected", String(active));
-                });
-                renderContent();
+                if (button && state.select) state.select(button.dataset.tabSlug);
             });
         }
 
+        const present = () => {
+            const exists = (slug) => categories().some((category) => category.slug === slug);
+
+            if (state.defaultCategory !== defaultCategory) {
+                state.defaultCategory = defaultCategory;
+                state.activeSlug = exists(defaultCategory) ? defaultCategory : "";
+            } else if (state.activeSlug && !exists(state.activeSlug)) {
+                state.activeSlug = "";
+            }
+
+            renderTabs();
+            renderContent();
+        };
+
         const showMessage = (message) => {
-            tabsWrap.innerHTML =
-                '<button type="button" role="tab" aria-selected="true" class="ast-tab ast-tab--active" data-tab-slug="">Todos</button>';
+            state.assets = [];
+            state.activeSlug = "";
+            renderTabs();
             contentEl.innerHTML = `<div class="ast-empty">${message}</div>`;
         };
 
+        const fetchAssets = () => {
+            const cache = (win.__astCache = win.__astCache || {});
+            const hit = cache[endpoint];
+            if (hit && Date.now() - hit.time < 30000) return hit.promise;
+
+            const promise = fetch(endpoint, { headers: { Accept: "application/json" } }).then((response) => {
+                if (!response.ok) throw new Error(String(response.status));
+                return response.json();
+            });
+            cache[endpoint] = { time: Date.now(), promise };
+            promise.catch(() => {
+                if (cache[endpoint] && cache[endpoint].promise === promise) delete cache[endpoint];
+            });
+            return promise;
+        };
+
         const load = async () => {
-            if (!apiEndpoint) {
+            if (!endpoint) {
                 showMessage("Vista previa del catálogo (los datos reales se cargan en el sitio publicado).");
+                return;
+            }
+
+            if (state.loaded) {
+                present();
                 return;
             }
 
@@ -202,28 +258,19 @@ function createAssetsScript() {
                 '<div class="ast-loading"><div class="ast-spinner"></div><span>Cargando activos extraordinarios...</span></div>';
 
             try {
-                const response = await fetch(apiEndpoint, { headers: { Accept: "application/json" } });
-                if (requestId !== section.__astRequest) return;
-
-                if (!response.ok) {
-                    showMessage("No se pudieron cargar los activos extraordinarios.");
-                    return;
-                }
-
-                const data = await response.json();
-                if (requestId !== section.__astRequest) return;
+                const data = await fetchAssets();
+                if (requestId !== state.request) return;
 
                 if (!Array.isArray(data) || !data.length) {
                     showMessage("No hay activos extraordinarios disponibles.");
                     return;
                 }
 
-                assets = data;
-                activeSlug = categories().some((c) => c.slug === defaultCategory) ? defaultCategory : "";
-                renderTabs();
-                renderContent();
+                state.assets = data.map(normalize);
+                state.loaded = true;
+                present();
             } catch {
-                if (requestId === section.__astRequest) {
+                if (requestId === state.request) {
                     showMessage("No se pudieron cargar los activos extraordinarios.");
                 }
             }
@@ -255,13 +302,18 @@ function runScript(component) {
     if (el?.isConnected && typeof script === "function") script.call(el);
 }
 
+function scheduleRun(component, delay) {
+    clearTimeout(component.__astTimer);
+    component.__astTimer = setTimeout(() => runScript(component), delay);
+}
+
 function runAll(editor) {
     editor
         .getWrapper()
         .find(`[data-gjs-type="${COMPONENT_TYPE}"]`)
         .forEach((component) => {
             component.set("type", COMPONENT_TYPE);
-            runScript(component);
+            scheduleRun(component, 0);
         });
 }
 
@@ -282,7 +334,7 @@ async function loadCategoryOptions(editor) {
 
         trait.options = [DEFAULT_CATEGORY_OPTION, ...categories.map((c) => ({ id: c.slug, name: c.name }))];
     } catch {
-        /* sin categorías: el selector queda con la opción "Todas" */
+        return;
     }
 }
 
@@ -293,7 +345,7 @@ function setupEditorEvents(editor) {
     editor.on("component:mount", (component) => {
         if (component.getEl()?.getAttribute?.("data-gjs-type") !== COMPONENT_TYPE) return;
         component.set("type", COMPONENT_TYPE);
-        setTimeout(() => runScript(component), 500);
+        scheduleRun(component, 500);
     });
 
     editor.on("storage:start:store", () => {
@@ -359,7 +411,7 @@ export function initializeAssetsBlocks(editor) {
             init() {
                 this.set("type", COMPONENT_TYPE);
                 this.addAttributes({ "data-gjs-type": COMPONENT_TYPE });
-                this.on("change:attributes", () => setTimeout(() => runScript(this), 100));
+                this.on("change:attributes", () => scheduleRun(this, 100));
             },
         },
     });
