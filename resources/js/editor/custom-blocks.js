@@ -104,6 +104,8 @@ export function addCustomBlocks(editor) {
     // blockRegistry.registerBlocks(formBlocks);
     initializeInlineFormBlock(editor);
     blockRegistry.registerBlocks(mapFilterBlocks);
+    initializeAgenciesListBlock(editor);
+    blockRegistry.registerBlocks(assetsBlocks);
     initializeSearchBlock(editor);
     blockRegistry.registerBlocks(iconLinksBlocks);
     // blockRegistry.registerBlocks(tableBlocks);
@@ -111,7 +113,6 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(buttonBlocks);
     blockRegistry.registerBlocks(badgeBlocks);
     // blockRegistry.registerBlocks(financingBlocks);
-    blockRegistry.registerBlocks(assetsBlocks);
     blockRegistry.applyToEditor(editor);
 
     initializeMapFilterBlocks(editor);
@@ -128,7 +129,6 @@ export function addCustomBlocks(editor) {
     initializeDocumentDownloadBlocks(editor);
     initializeDownloadsBlock(editor);
     initializeAssetsBlocks(editor);
-    initializeAgenciesListBlock(editor);
     initializeFaqBlock(editor);
     initializeContactBlock(editor);
     initializeTextButtonBlock(editor);
