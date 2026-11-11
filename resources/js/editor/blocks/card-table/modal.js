@@ -33,9 +33,14 @@ const ALIGN_OPTIONS = [
     ["right", "Derecha"],
 ];
 const KIND_OPTIONS = [
-    ["text", "Texto"],
-    ["badge", "Badge"],
-    ["check", "Check"],
+    ["text", "Texto", "ri-text"],
+    ["badge", "Badge", "ri-price-tag-3-line"],
+    ["check", "Check", "ri-checkbox-circle-line"],
+    ["image", "Imagen", "ri-image-line"],
+];
+const FIT_OPTIONS = [
+    ["contain", "Ajustar"],
+    ["cover", "Rellenar"],
 ];
 const WIDTH_OPTIONS = [
     [1, "Igual"],
@@ -50,6 +55,12 @@ const segmented = (path, options, type = "string") =>
                 `<button type="button" class="ctm-seg-btn ${className}" data-action="set" data-path="${path}" data-value="${value}" data-type="${type}">${label}</button>`,
         )
         .join("")}</div>`;
+
+const kindSelector = (path) =>
+    `<div class="ctm-kinds">${KIND_OPTIONS.map(
+        ([value, label, icon]) =>
+            `<button type="button" class="ctm-kind" data-action="set" data-path="${path}" data-value="${value}" data-type="string" title="${label}"><i class="${icon}"></i><span class="ctm-kind-text">${label}</span></button>`,
+    ).join("")}</div>`;
 
 const field = (label, content) =>
     `<div class="ctm-field"><label class="ctm-label">${label}</label>${content}</div>`;
@@ -78,9 +89,24 @@ const cellEditor = (rowIndex, colIndex) => {
     return `
 <div class="ctm-cell" data-cell="${rowIndex}.${colIndex}">
     <span class="ctm-cell-label" data-col-label></span>
-    ${segmented(`${path}.kind`, KIND_OPTIONS)}
+    ${kindSelector(`${path}.kind`)}
     <textarea class="ctm-textarea" data-bind="${path}.text" rows="2" placeholder="Texto..."></textarea>
     <div class="ctm-check-preview"><i class="ri-check-line"></i> Muestra un check</div>
+    <div class="ctm-image-editor">
+        <div class="ctm-image-main">
+            <div class="ctm-image-thumb" data-image-thumb><i class="ri-image-line"></i></div>
+            <div class="ctm-image-actions">
+                <button type="button" class="ctm-btn-sm" data-action="pick-image" data-cell-ref="${rowIndex}.${colIndex}"><i class="ri-folder-image-line"></i> Seleccionar</button>
+                <button type="button" class="ctm-btn-sm ctm-danger" data-action="clear-image" data-cell-ref="${rowIndex}.${colIndex}" data-clear-image><i class="ri-delete-bin-line"></i> Quitar</button>
+            </div>
+        </div>
+        <input type="text" class="ctm-input-sm" data-bind="${path}.src" placeholder="URL de la imagen">
+        <input type="text" class="ctm-input-sm" data-bind="${path}.alt" placeholder="Texto alternativo">
+        <div class="ctm-image-opts">
+            <select class="ctm-input-sm" data-bind="${path}.fit">${FIT_OPTIONS.map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}</select>
+            <input type="number" class="ctm-input-sm" data-bind="${path}.height" min="24" max="400" step="4" placeholder="Altura (px)" title="Altura en píxeles">
+        </div>
+    </div>
 </div>`;
 };
 
@@ -123,7 +149,7 @@ const buildPanels = () => ({
 <div class="ctm-list" data-list="columns"></div>
 <button type="button" class="ctm-btn-add" data-action="add-column"><i class="ri-add-line"></i> Agregar columna</button>`,
     rows: `
-<p class="ctm-hint">Máximo ${MAX_ROWS} filas. Cada celda puede ser texto, badge o check. Usa <code>**texto**</code> para negrita y Enter para un salto de línea.</p>
+<p class="ctm-hint">Máximo ${MAX_ROWS} filas. Cada celda puede ser texto, badge, check o imagen. Usa <code>**texto**</code> para negrita y Enter para un salto de línea.</p>
 <div class="ctm-list" data-list="rows"></div>
 <button type="button" class="ctm-btn-add" data-action="add-row"><i class="ri-add-line"></i> Agregar fila</button>`,
     preview: `<div class="ctm-preview" data-preview></div>`,
@@ -227,6 +253,17 @@ export function showCardTableModal(editor, component) {
             const column = state.columns[colIndex];
             if (!entry || !column) return;
             cell.classList.toggle("ctm-cell-check", entry.kind === "check");
+            cell.classList.toggle("ctm-cell-image", entry.kind === "image");
+            const thumb = cell.querySelector("[data-image-thumb]");
+            const imageSrc = entry.src || "";
+            if (thumb && thumb.dataset.src !== imageSrc) {
+                thumb.dataset.src = imageSrc;
+                thumb.innerHTML = imageSrc
+                    ? `<img src="${esc(imageSrc)}" alt="">`
+                    : '<i class="ri-image-line"></i>';
+            }
+            const clearButton = cell.querySelector("[data-clear-image]");
+            if (clearButton) clearButton.disabled = !imageSrc;
             cell.dataset.color = column.color;
             cell.querySelector("[data-col-label]").textContent =
                 column.text || `Columna ${colIndex + 1}`;
@@ -253,7 +290,12 @@ export function showCardTableModal(editor, component) {
     };
 
     const onKeydown = (event) => {
-        if (event.key === "Escape" && !document.querySelector(".ctm-confirm-overlay")) close();
+        if (
+            event.key === "Escape" &&
+            overlay.style.display !== "none" &&
+            !document.querySelector(".ctm-confirm-overlay")
+        )
+            close();
     };
 
     const restoreFrom = async (input) => {
@@ -306,6 +348,36 @@ export function showCardTableModal(editor, component) {
         if (operation()) renderAll();
     };
 
+    const cellEntry = (el) => {
+        const [rowIndex, colIndex] = el.dataset.cellRef.split(".").map(Number);
+        return state.rows[rowIndex]?.[colIndex];
+    };
+
+    const pickImage = (el) => {
+        const entry = cellEntry(el);
+        if (!entry) return;
+
+        overlay.style.display = "none";
+
+        const restore = () => {
+            editor.off("modal:close", restore);
+            overlay.style.display = "";
+            hydrate();
+        };
+        editor.on("modal:close", restore);
+
+        editor.AssetManager.open({
+            types: ["image"],
+            accept: "image/*",
+            select: (asset, complete) => {
+                const src =
+                    typeof asset.getSrc === "function" ? asset.getSrc() : asset.get("src");
+                entry.src = src || "";
+                if (complete) editor.Modal.close();
+            },
+        });
+    };
+
     const index = (el) => Number(el.dataset.index);
     const offset = (el) => Number(el.dataset.offset);
 
@@ -339,6 +411,13 @@ export function showCardTableModal(editor, component) {
         "remove-row": (el) => run(() => removeRow(state, index(el))),
         "duplicate-row": (el) => run(() => duplicateRow(state, index(el))),
         "move-row": (el) => run(() => moveRow(state, index(el), offset(el))),
+        "pick-image": pickImage,
+        "clear-image": (el) => {
+            const entry = cellEntry(el);
+            if (!entry) return;
+            entry.src = "";
+            hydrate();
+        },
     };
 
     modal.addEventListener("click", (event) => {

@@ -31,6 +31,12 @@ export const CARD_TABLE_STYLES = `<style>
 .ct-blue .ct-badge{background-color:#003B71;}
 .ct-orange .ct-badge{background-color:#E97300;}
 .ct-check{display:block;flex-shrink:0;width:1.75rem;height:1.75rem;}
+.ct-image{display:block;width:100%;max-width:100%;min-width:0;border-radius:0.5rem;}
+.ct-fit-contain{object-fit:contain;}
+.ct-fit-cover{object-fit:cover;}
+.ct-align-left .ct-image{object-position:left center;}
+.ct-align-center .ct-image{object-position:center;}
+.ct-align-right .ct-image{object-position:right center;}
 ${gridRules}
 @media(hover:hover){
 .ct-card:hover{box-shadow:0 6px 18px 0 rgba(15,23,42,0.14);}
@@ -43,6 +49,7 @@ ${gridRules}
 .ct-cell::before{content:attr(data-label);padding-right:1rem;font-size:0.8rem;font-weight:600;text-align:left;color:#64748b;}
 .ct-wrap .ct-cell:first-child{justify-content:flex-start;text-align:left;}
 .ct-wrap .ct-cell:first-child::before{display:none;}
+.ct-wrap .ct-image{width:auto;max-width:60%;}
 }
 @media(prefers-reduced-motion:reduce){
 .ct-card{transition:none;}

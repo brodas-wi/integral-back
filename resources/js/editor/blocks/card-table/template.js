@@ -10,6 +10,12 @@ const formatText = (text) =>
         .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
         .replace(/\r?\n/g, "<br>");
 
+const safeSrc = (src) => {
+    const value = String(src ?? "").trim();
+    if (/^[a-z][a-z0-9+.-]*:/i.test(value) && !/^(https?:|data:image\/)/i.test(value)) return "";
+    return value;
+};
+
 const gridClass = (data) => {
     const cols = data.columns.length;
     const first = cols > 1 && data.firstColumnWidth > 1 ? ` ct-first-${data.firstColumnWidth}` : "";
@@ -17,6 +23,11 @@ const gridClass = (data) => {
 };
 
 const cellContent = (cell) => {
+    if (cell.kind === "image") {
+        const src = safeSrc(cell.src);
+        if (!src) return "";
+        return `<img class="ct-image ct-fit-${cell.fit}" src="${esc(src)}" alt="${esc(cell.alt)}" height="${cell.height}" loading="lazy">`;
+    }
     if (cell.kind === "check") return CHECK_ICON;
     if (cell.kind === "badge") return `<span class="ct-badge">${formatText(cell.text)}</span>`;
     return `<span class="ct-value">${formatText(cell.text)}</span>`;
