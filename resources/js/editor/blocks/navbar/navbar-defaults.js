@@ -1,10 +1,11 @@
 import { clone } from "./navbar-utils";
 
 export const COMPONENT_TYPE = "navbar-component";
-export const NAVBAR_VERSION = "12";
+export const NAVBAR_VERSION = "13";
 export const MAX_SUBMENU_COLUMNS = 3;
 export const MAX_CTA_BUTTONS = 2;
 export const MAX_BOTTOM_BUTTONS = 3;
+export const MAX_DROPDOWN_ITEMS = 6;
 const BUTTON_COLORS = ["blue", "white", "orange"];
 
 export const DEFAULT_DATA = {
@@ -17,7 +18,7 @@ export const DEFAULT_DATA = {
         { label: "Agencias y corresponsales", href: "#", icon: "ri-building-line", show_icon: false },
         { label: "Preguntas frecuentes", href: "#", icon: "ri-question-answer-line", show_icon: false },
     ],
-    bottom_buttons: [{ label: "Mi Banca Integral", href: "#", color: "orange" }],
+    bottom_buttons: [{ type: "link", label: "Mi Banca Integral", href: "#", color: "orange", items: [] }],
     nav_links: [
         { type: "link", label: "Inicio", href: "/", icon: "" },
         {
@@ -108,9 +109,16 @@ export function mergeNavbarData(input) {
     const bottomButtons = asArray(source.bottom_buttons, base.bottom_buttons)
         .slice(0, MAX_BOTTOM_BUTTONS)
         .map((button) => ({
+            type: button.type === "dropdown" ? "dropdown" : "link",
             label: button.label || "",
             href: button.href || "#",
             color: pickColor(button.color, "orange"),
+            items: asArray(button.items, [])
+                .slice(0, MAX_DROPDOWN_ITEMS)
+                .map((item) => ({
+                    label: (item && item.label) || "",
+                    href: (item && item.href) || "#",
+                })),
         }));
 
     const topButton = { ...base.top_button, ...source.top_button };

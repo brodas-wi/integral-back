@@ -3,6 +3,7 @@ import { IconPickerModal } from "@/editor/components/icon-picker-modal";
 import {
     MAX_BOTTOM_BUTTONS,
     MAX_CTA_BUTTONS,
+    MAX_DROPDOWN_ITEMS,
     MAX_SUBMENU_COLUMNS,
     mergeNavbarData,
 } from "./navbar-defaults";
@@ -24,6 +25,7 @@ const COLOR_LABELS = { blue: "Azul", white: "Blanco", orange: "Naranja" };
 const BUTTON_COLORS = ["blue", "white", "orange"];
 
 const newItem = () => ({ label: "Nuevo item", desc: "", href: "#" });
+const newDropdownItem = () => ({ label: "Nuevo enlace", href: "#" });
 const newColumn = () => ({ badge: "Nueva columna", badge_color: "blue", items: [newItem()] });
 const newSubmenu = () => ({
     type: "submenu",
@@ -88,11 +90,36 @@ ${iconRow(`${path}.icon`)}
 </div>`;
 };
 
+const BUTTON_TYPES = [
+    ["link", "Enlace único"],
+    ["dropdown", "Desplegable"],
+];
+
+const buttonTypeToggle = (index, current) =>
+    `<div class="nb-color-toggle">${BUTTON_TYPES.map(
+        ([value, label]) =>
+            `<button type="button" class="nb-color-opt nb-color-opt-blue${current === value ? "" : " nb-color-inactive"}" data-action="set-button-type" data-index="${index}" data-value="${value}">${label}</button>`,
+    ).join("")}</div>`;
+
+const dropdownItemCard = (item, itemIndex, path, total) => {
+    const itemPath = `${path}.items.${itemIndex}`;
+    return `<div class="nb-col-item" data-item="${itemPath}"><div class="nb-row">${smallInput(`${itemPath}.label`, "Texto del enlace (ej: Banca Personas)", "nb-grow")}${moveGroup(`${path}.items`, itemIndex, total)}${removeBtn(`${path}.items`, itemIndex)}</div>${urlInput(`${itemPath}.href`, "URL", true)}</div>`;
+};
+
 const bottomButtonCard = (button, index, all) => {
     const path = `bottom_buttons.${index}`;
+    const dropdown = button.type === "dropdown";
+    const items = (button.items || [])
+        .map((item, itemIndex, list) => dropdownItemCard(item, itemIndex, path, list.length))
+        .join("");
+    const full = (button.items || []).length >= MAX_DROPDOWN_ITEMS;
+    const target = dropdown
+        ? `<div class="nb-section-title">Enlaces del desplegable (máx. ${MAX_DROPDOWN_ITEMS})</div><div class="nb-col-items">${items}</div><div class="nb-add-row">${addBtn("add-dropdown-item", "Agregar enlace", "nb-btn-add-item", `data-list="${path}.items" ${full ? "disabled" : ""}`)}</div>`
+        : urlInput(`${path}.href`, undefined, true);
     return `<div class="nb-action-card" data-item="${path}">
 <div class="nb-row">${smallInput(`${path}.label`, "Texto del botón", "nb-grow")}${moveGroup("bottom_buttons", index, all.length)}${removeBtn("bottom_buttons", index)}</div>
-${urlInput(`${path}.href`, undefined, true)}
+<div class="nb-row"><span class="nb-col-title">Tipo</span>${buttonTypeToggle(index, dropdown ? "dropdown" : "link")}</div>
+${target}
 <div class="nb-row"><span class="nb-col-title">Estilo</span>${colorToggle(`${path}.color`, "orange", false, BUTTON_COLORS)}</div>
 </div>`;
 };
@@ -171,7 +198,7 @@ const buildPanels = () => ({
         `<p class="nb-hint">Links de la barra inferior. Los submenús generan mega-menús con columnas. Usa las flechas para cambiar el orden.</p><div class="nb-list" data-list-root="nav_links"></div><div class="nb-add-row">${addBtn("add-link", "Agregar link", "nb-btn-add-link")}${addBtn("add-submenu", "Agregar submenú", "nb-btn-add-submenu")}</div>`,
     ),
     "bottom-buttons": card(
-        `<p class="nb-hint">Botones a la derecha de la barra inferior (Mi Banca Integral, etc.). Máximo ${MAX_BOTTOM_BUTTONS}. Usa las flechas para cambiar el orden.</p><div class="nb-list" data-list-root="bottom_buttons"></div><div class="nb-add-row">${addBtn("add-bottom-button", "Agregar botón", "nb-btn-add-action")}</div>`,
+        `<p class="nb-hint">Botones a la derecha de la barra inferior (Mi Banca Integral, etc.). Máximo ${MAX_BOTTOM_BUTTONS}. Cada botón puede ser un enlace único o un desplegable con varios enlaces. Usa las flechas para cambiar el orden.</p><div class="nb-list" data-list-root="bottom_buttons"></div><div class="nb-add-row">${addBtn("add-bottom-button", "Agregar botón", "nb-btn-add-action")}</div>`,
     ),
     "icon-btn":
         card(
@@ -212,9 +239,13 @@ function buildPayload(state) {
     });
     data.logo_href = trim(data.logo_href) || "/";
     data.bottom_buttons = data.bottom_buttons.map((button) => ({
+        type: button.type === "dropdown" ? "dropdown" : "link",
         label: trim(button.label),
         href: trim(button.href) || "#",
         color: BUTTON_COLORS.includes(button.color) ? button.color : "orange",
+        items: (button.items || [])
+            .map((item) => ({ label: trim(item.label), href: trim(item.href) || "#" }))
+            .filter((item) => item.label),
     }));
     data.top_button = {
         label: trim(data.top_button.label),
@@ -453,9 +484,24 @@ export function showNavbarModal(editor, component) {
         },
         "add-bottom-button": () => {
             if (state.bottom_buttons.length >= MAX_BOTTOM_BUTTONS) return;
-            state.bottom_buttons.push({ label: "Nuevo botón", href: "#", color: "orange" });
+            state.bottom_buttons.push({ type: "link", label: "Nuevo botón", href: "#", color: "orange", items: [] });
             renderList("bottom_buttons");
             scrollToLast("bottom_buttons");
+        },
+        "set-button-type": (el) => {
+            const button = state.bottom_buttons[Number(el.dataset.index)];
+            if (!button) return;
+            button.type = el.dataset.value === "dropdown" ? "dropdown" : "link";
+            if (!Array.isArray(button.items)) button.items = [];
+            if (button.type === "dropdown" && !button.items.length) {
+                button.items = [newDropdownItem(), newDropdownItem()];
+            }
+            renderList("bottom_buttons");
+        },
+        "add-dropdown-item": (el) => {
+            const items = getByPath(state, el.dataset.list);
+            if (items.length < MAX_DROPDOWN_ITEMS) items.push(newDropdownItem());
+            renderList("bottom_buttons");
         },
         "add-link": () => {
             state.nav_links.push({ type: "link", label: "Nuevo enlace", href: "#", icon: "" });

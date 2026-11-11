@@ -39,13 +39,26 @@ const BUTTON_CLASSES = { blue: "nb-btn-blue", white: "nb-btn-white", orange: "nb
 
 const buttonClass = (color) => BUTTON_CLASSES[color] || BUTTON_CLASSES.orange;
 
+const bottomButtonHtml = (button) => {
+    if (button.type === "dropdown") {
+        const items = button.items
+            .filter((item) => item.label)
+            .map(
+                (item) =>
+                    `<a href="${esc(item.href || "#")}" class="nb-dd-item">${esc(item.label)}</a>`,
+            )
+            .join("");
+        if (items) {
+            return `<div class="nb-btn-dropdown"><button type="button" class="nb-btn ${buttonClass(button.color)} nb-dd-trigger" aria-expanded="false" aria-haspopup="true"><span>${esc(button.label)}</span><i class="ri-arrow-down-s-line"></i></button><div class="nb-dd-menu">${items}</div></div>`;
+        }
+    }
+    return `<a href="${esc(button.href || "#")}" class="nb-btn ${buttonClass(button.color)}">${esc(button.label)}</a>`;
+};
+
 const bottomButtonsHtml = (data) =>
     data.bottom_buttons
         .filter((button) => button.label)
-        .map(
-            (button) =>
-                `<a href="${esc(button.href || "#")}" class="nb-btn ${buttonClass(button.color)}">${esc(button.label)}</a>`,
-        )
+        .map(bottomButtonHtml)
         .join("");
 
 const topButtonHtml = (data) => {

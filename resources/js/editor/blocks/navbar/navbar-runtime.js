@@ -28,6 +28,10 @@ function initNavbar(root) {
             item.classList.remove(OPEN);
             setAttr(item.querySelector(".nb-nav-trigger"), "aria-expanded", "false");
         });
+        root.querySelectorAll(".nb-btn-dropdown." + OPEN).forEach((dropdown) => {
+            dropdown.classList.remove(OPEN);
+            setAttr(dropdown.querySelector(".nb-dd-trigger"), "aria-expanded", "false");
+        });
     };
 
     const closeMobile = () => {
@@ -50,6 +54,18 @@ function initNavbar(root) {
         "click",
         (event) => {
             const target = event.target;
+
+            const dropdownTrigger = target.closest(".nb-dd-trigger");
+            if (dropdownTrigger) {
+                const dropdown = dropdownTrigger.closest(".nb-btn-dropdown");
+                const wasOpen = dropdown.classList.contains(OPEN);
+                closeDesktop();
+                if (!wasOpen) {
+                    dropdown.classList.add(OPEN);
+                    setAttr(dropdownTrigger, "aria-expanded", "true");
+                }
+                return;
+            }
 
             const trigger = target.closest(".nb-nav-trigger");
             if (trigger) {
