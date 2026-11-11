@@ -1,12 +1,10 @@
 export const COMPONENT_TYPE = "card-table-component";
-export const CARD_TABLE_VERSION = "2";
+export const CARD_TABLE_VERSION = "3";
 export const MAX_COLS = 8;
 export const MAX_ROWS = 30;
 export const CELL_KINDS = ["text", "badge", "check", "image"];
 export const IMAGE_FITS = ["contain", "cover"];
-export const MIN_IMAGE_HEIGHT = 24;
-export const MAX_IMAGE_HEIGHT = 400;
-export const DEFAULT_IMAGE_HEIGHT = 80;
+export const IMAGE_HEIGHTS = [0, 64, 96, 128, 160];
 export const COLORS = ["blue", "orange"];
 export const ALIGNS = ["left", "center", "right"];
 export const FIRST_WIDTHS = [1, 2, 3];
@@ -27,7 +25,7 @@ export const createCell = () => ({
     src: "",
     alt: "",
     fit: "contain",
-    height: DEFAULT_IMAGE_HEIGHT,
+    height: 0,
 });
 
 export function createDefaultData(cols = 3, rows = 5) {
@@ -60,18 +58,20 @@ function normalizeCell(cell) {
         : source.isBadge
             ? "badge"
             : "text";
-    const height = Number.parseInt(source.height, 10);
+    const requested = Number.parseInt(source.height, 10);
+    const height =
+        requested > 0
+            ? IMAGE_HEIGHTS.slice(1).reduce((best, value) =>
+                  Math.abs(value - requested) < Math.abs(best - requested) ? value : best,
+              )
+            : 0;
     return {
         text: typeof source.text === "string" ? source.text : "",
         kind,
         src: typeof source.src === "string" ? source.src.trim() : "",
         alt: typeof source.alt === "string" ? source.alt : "",
         fit: pick(source.fit, IMAGE_FITS, "contain"),
-        height: clamp(
-            Number.isNaN(height) ? DEFAULT_IMAGE_HEIGHT : height,
-            MIN_IMAGE_HEIGHT,
-            MAX_IMAGE_HEIGHT,
-        ),
+        height,
     };
 }
 

@@ -26,7 +26,8 @@ const cellContent = (cell) => {
     if (cell.kind === "image") {
         const src = safeSrc(cell.src);
         if (!src) return "";
-        return `<img class="ct-image ct-fit-${cell.fit}" src="${esc(src)}" alt="${esc(cell.alt)}" height="${cell.height}" loading="lazy">`;
+        const size = cell.height ? ` ct-h-${cell.height}` : "";
+        return `<span class="ct-media${size}"><img class="ct-image ct-fit-${cell.fit}" src="${esc(src)}" alt="${esc(cell.alt)}" loading="lazy" decoding="async"></span>`;
     }
     if (cell.kind === "check") return CHECK_ICON;
     if (cell.kind === "badge") return `<span class="ct-badge">${formatText(cell.text)}</span>`;

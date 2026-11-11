@@ -39,6 +39,13 @@ const KIND_OPTIONS = [
     ["check", "Check", "ri-checkbox-circle-line"],
     ["image", "Imagen", "ri-image-line"],
 ];
+const HEIGHT_OPTIONS = [
+    [0, "Alto: auto"],
+    [64, "Alto: 64 px"],
+    [96, "Alto: 96 px"],
+    [128, "Alto: 128 px"],
+    [160, "Alto: 160 px"],
+];
 const FIT_OPTIONS = [
     ["contain", "Ajustar"],
     ["cover", "Rellenar"],
@@ -105,7 +112,7 @@ const cellEditor = (rowIndex, colIndex) => {
         <input type="text" class="ctm-input-sm" data-bind="${path}.alt" placeholder="Texto alternativo">
         <div class="ctm-image-opts">
             <select class="ctm-input-sm" data-bind="${path}.fit">${FIT_OPTIONS.map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}</select>
-            <input type="number" class="ctm-input-sm" data-bind="${path}.height" min="24" max="400" step="4" placeholder="Altura (px)" title="Altura en píxeles">
+            <select class="ctm-input-sm" data-bind="${path}.height" title="Auto: la imagen toma el alto de la fila. Con un valor fijo, la fila crece si hace falta.">${HEIGHT_OPTIONS.map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}</select>
         </div>
     </div>
 </div>`;
