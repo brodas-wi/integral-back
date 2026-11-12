@@ -34,33 +34,39 @@ export const DEFAULT_DATA = {
     cards: [
         {
             title: "Correo electrónico",
+            icon: "ri-mail-line",
             items: [
                 { kind: "link", text: "servicio.cliente@integral.com.sv", href: "mailto:servicio.cliente@integral.com.sv" },
             ],
         },
         {
             title: "Teléfono / WhatsApp",
+            icon: "ri-whatsapp-line",
             items: [{ kind: "link", text: "2250-6090", href: "tel:+50322506090" }],
         },
         {
             title: "Formularios y chatbot",
+            icon: "ri-computer-line",
             items: [
                 { kind: "link", text: "www.bancointegral.com", href: "https://www.bancointegral.com", newTab: true },
             ],
         },
         {
             title: "Redes sociales",
+            icon: "ri-chat-4-line",
             items: [
-                { kind: "link", text: "Facebook: facebook.com/IntegralElSalvador", href: "https://www.facebook.com/IntegralElSalvador", newTab: true },
-                { kind: "link", text: "Instagram: @integral.sv", href: "https://www.instagram.com/integral.sv/", newTab: true },
+                { kind: "social", label: "Facebook:", text: "facebook.com/IntegralElSalvador", href: "https://www.facebook.com/IntegralElSalvador", newTab: true },
+                { kind: "social", label: "Instagram:", text: "@integral.sv", href: "https://www.instagram.com/integral.sv/", newTab: true },
             ],
         },
         {
             title: "Red de Agencias",
+            icon: "ri-bank-line",
             items: [{ kind: "text", text: "Red de Agencias de Banco Integral" }],
         },
         {
             title: "Contacto directo",
+            icon: "ri-user-line",
             items: [
                 {
                     kind: "text",
@@ -70,6 +76,7 @@ export const DEFAULT_DATA = {
         },
         {
             title: "Medios digitales",
+            icon: "ri-lock-line",
             items: [
                 {
                     kind: "text",
@@ -186,7 +193,16 @@ export function buildLink({ text = "Enlace", href = "#", newTab = false } = {}) 
     return `<a class="oc-link" href="${escapeHtml(href)}"${target} data-gjs-type="${LINK_TYPE}" ${IN_BODY}>${escapeHtml(text)}</a>`;
 }
 
-const buildItem = (item) => (item.kind === "link" ? buildLink(item) : buildText(item.text));
+export function buildSocial({ label = "", text = "", href = "#", newTab = false } = {}) {
+    const target = newTab ? ` target="_blank" rel="noopener noreferrer"` : "";
+    return `<p class="oc-text" data-gjs-type="${TEXT_TYPE}" ${IN_BODY}>${escapeHtml(label)} <a href="${escapeHtml(href)}"${target}>${escapeHtml(text)}</a></p>`;
+}
+
+const buildItem = (item) => {
+    if (item.kind === "link") return buildLink(item);
+    if (item.kind === "social") return buildSocial(item);
+    return buildText(item.text);
+};
 
 export function buildCard(card = { title: "Nuevo canal", items: [{ kind: "text", text: "Escribe aquí el texto." }] }) {
     return `<div class="oc-card" data-gjs-type="${CARD_TYPE}"><div class="oc-card-icon" ${SHELL}>${glyph(card.icon, "card")}</div><div class="oc-body" ${BODY}><h3 class="oc-card-title" data-gjs-type="text" ${IN_BODY}>${escapeHtml(card.title)}</h3>${card.items.map(buildItem).join("")}</div></div>`;
