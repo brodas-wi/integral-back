@@ -51,8 +51,8 @@ export const DEFAULT_DATA = {
         {
             title: "Redes sociales",
             items: [
-                { kind: "text", text: "Facebook: facebook.com/IntegralElSalvador" },
-                { kind: "text", text: "Instagram: @integral.sv" },
+                { kind: "link", text: "Facebook: facebook.com/IntegralElSalvador", href: "https://www.facebook.com/IntegralElSalvador", newTab: true },
+                { kind: "link", text: "Instagram: @integral.sv", href: "https://www.instagram.com/integral.sv/", newTab: true },
             ],
         },
         {
@@ -101,8 +101,7 @@ const OC_CSS = `
 .oc-desc{margin:0.5rem 0 0;color:#003B71;font-weight:400;font-size:clamp(0.875rem,1.3vw,0.9375rem);line-height:1.6;}
 .oc-sep{height:1rem;margin-top:0.5rem;background-image:linear-gradient(#E97300,#E97300);background-repeat:no-repeat;background-position:center;background-size:100% 2px;}
 .oc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1rem,2vw,1.5rem);min-height:3rem;}
-.oc-card{display:flex;align-items:flex-start;gap:0.875rem;box-sizing:border-box;padding-top:1rem;padding-right:1.125rem;padding-bottom:1rem;padding-left:1.125rem;border:1px solid #E2E8F0;border-radius:0.875rem;background-color:#fff;transition:transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease;}
-.oc-card:hover{transform:translateY(-4px);border-color:#F2A65A;box-shadow:0 12px 28px rgba(0,59,113,0.12);}
+.oc-card{display:flex;align-items:flex-start;gap:0.875rem;box-sizing:border-box;padding-top:1rem;padding-right:1.125rem;padding-bottom:1rem;padding-left:1.125rem;border:1px solid #E2E8F0;border-radius:0.875rem;background-color:#fff;}
 .oc-card-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:2.75rem;height:2.75rem;border-radius:0.75rem;background-color:#FCEAD9;}
 .oc-card-glyph{display:block;color:#E97300;font-size:1.375rem;line-height:1;}
 .oc-body{display:flex;flex-direction:column;gap:0.125rem;flex:1;min-width:0;min-height:1.5rem;}
@@ -123,8 +122,7 @@ const OC_CSS = `
 .oc-grid{grid-template-columns:minmax(0,1fr);}
 }
 @media(prefers-reduced-motion:reduce){
-.oc-card,.oc-link{transition:none;}
-.oc-card:hover{transform:none;}
+.oc-link{transition:none;}
 }
 `;
 
