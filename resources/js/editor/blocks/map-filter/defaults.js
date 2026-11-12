@@ -1,5 +1,5 @@
 export const COMPONENT_TYPE = "map-filter-component";
-export const MAP_VERSION = "5";
+export const MAP_VERSION = "6";
 export const MAX_TITLE = 120;
 export const MAX_STATS = 300;
 

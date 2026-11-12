@@ -33,7 +33,7 @@ export const DYNAMIC_CSS =
     ".mp-filter-option:disabled{opacity:0.5;cursor:default;pointer-events:none;}" +
     ".mp-pin{background-color:transparent !important;border-width:0 !important;}" +
     ".mp-pin svg{display:block;transform-origin:50% 98%;transition:transform 0.2s ease;}" +
-    ".mp-compact .mp-pin svg{transform:scale(0.55);}" +
+    ".mp-compact .mp-pin svg{transform:scale(0.65);}" +
     "@media(prefers-reduced-motion:reduce){.mp-pin svg{transition:none;}}" +
     ".mp-popup{min-width:180px;font-family:'Poppins',sans-serif;}" +
     ".mp-popup-name{margin:0 0 0.375rem;font-size:0.875rem;font-weight:700;color:#003B71;}" +
