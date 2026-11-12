@@ -32,7 +32,7 @@ export const DYNAMIC_CSS =
     ".mp-filter-option:hover,.mp-filter-option.mp-selected{background-color:#F4F6F9;}" +
     ".mp-filter-option:disabled{opacity:0.5;cursor:default;pointer-events:none;}" +
     ".mp-pin{background-color:transparent !important;border-width:0 !important;}" +
-    ".mp-pin svg{display:block;transform-origin:50% 100%;transition:transform 0.2s ease;}" +
+    ".mp-pin svg{display:block;transform-origin:50% 98%;transition:transform 0.2s ease;}" +
     ".mp-compact .mp-pin svg{transform:scale(0.55);}" +
     "@media(prefers-reduced-motion:reduce){.mp-pin svg{transition:none;}}" +
     ".mp-popup{min-width:180px;font-family:'Poppins',sans-serif;}" +

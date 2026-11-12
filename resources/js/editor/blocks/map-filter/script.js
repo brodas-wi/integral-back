@@ -21,7 +21,7 @@ if (!styleEl) {
 if (styleEl.textContent !== ${JSON.stringify(DYNAMIC_CSS)}) styleEl.textContent = ${JSON.stringify(DYNAMIC_CSS)};
 
 var CENTER = [13.7942, -88.8965];
-var ZOOM = 8;
+var ZOOM = 8.5;
 var POINT_ZOOM = 17;
 var COMPACT_ZOOM = 11;
 var switching = false;
@@ -91,7 +91,7 @@ function filteredPoints() {
 }
 
 function pinSvg(color) {
-    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 42" width="30" height="42"><path d="M15 0C6.7 0 0 6.7 0 15c0 11.3 15 27 15 27s15-15.7 15-27C30 6.7 23.3 0 15 0z" fill="' + color + '"/><circle cx="15" cy="14" r="5.5" fill="#ffffff"/></svg>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 32 44" width="32" height="44"><path d="M15 0C6.7 0 0 6.7 0 15c0 11.3 15 27 15 27s15-15.7 15-27C30 6.7 23.3 0 15 0z" fill="' + color + '" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/><circle cx="15" cy="14" r="5.5" fill="#ffffff"/></svg>';
 }
 
 function popupHtml(item) {
@@ -109,11 +109,14 @@ function renderMarkers() {
         var icon = L.divIcon({
             className: "mp-pin",
             html: pinSvg(item.type === "agency" ? "#E97300" : "#003B71"),
-            iconSize: [30, 42],
-            iconAnchor: [15, 42],
+            iconSize: [32, 44],
+            iconAnchor: [16, 43],
             popupAnchor: [0, -38]
         });
-        var marker = L.marker([parseFloat(item.lat), parseFloat(item.lng)], { icon: icon });
+        var marker = L.marker([parseFloat(item.lat), parseFloat(item.lng)], {
+            icon: icon,
+            zIndexOffset: item.type === "agency" ? 10000 : 0
+        });
         marker.bindPopup(popupHtml(item));
         marker.__mpKey = item.type + "-" + item.id;
         marker.on("click", function () {
@@ -126,7 +129,7 @@ function renderMarkers() {
 
 function updateCompact() {
     if (!map) return;
-    var overview = !state.type && !state.department && !state.pointKey;
+    var overview = !state.department && !state.pointKey;
     mapEl.classList.toggle("mp-compact", overview && map.getZoom() < COMPACT_ZOOM);
 }
 
@@ -284,7 +287,7 @@ function loadLeaflet() {
 function createMap(leaflet) {
     L = leaflet;
     if (!mapEl.isConnected) return;
-    map = L.map(mapEl, { zoomControl: true, scrollWheelZoom: false }).setView(CENTER, ZOOM);
+    map = L.map(mapEl, { zoomControl: true, scrollWheelZoom: false, zoomSnap: 0.25 }).setView(CENTER, ZOOM);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
