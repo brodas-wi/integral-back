@@ -70,6 +70,11 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(basicBlocks);
     blockRegistry.registerBlocks(columnBlocks);
 
+    blockRegistry.registerBlocks(mapFilterBlocks);
+    initializeAgenciesListBlock(editor);
+    blockRegistry.registerBlocks(assetsBlocks);
+    initializeSearchBlock(editor);
+
     initializeBannerBlocks(editor);
     initializeVideoBannerBlock(editor);
     initializeHeroBannerBlock(editor);
@@ -103,10 +108,6 @@ export function addCustomBlocks(editor) {
     blockRegistry.registerBlocks(richListBlocks);
     // blockRegistry.registerBlocks(formBlocks);
     initializeInlineFormBlock(editor);
-    blockRegistry.registerBlocks(mapFilterBlocks);
-    initializeAgenciesListBlock(editor);
-    blockRegistry.registerBlocks(assetsBlocks);
-    initializeSearchBlock(editor);
     blockRegistry.registerBlocks(iconLinksBlocks);
     // blockRegistry.registerBlocks(tableBlocks);
     blockRegistry.registerBlocks(cardTableBlocks);

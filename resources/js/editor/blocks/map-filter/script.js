@@ -12,16 +12,18 @@ if (!filters || !mapEl || mapEl.__mpInit) return;
 if (typeof root.__mpCleanup === "function") root.__mpCleanup();
 mapEl.__mpInit = true;
 
-if (!doc.getElementById("mp-runtime-style")) {
-    var styleEl = doc.createElement("style");
+var styleEl = doc.getElementById("mp-runtime-style");
+if (!styleEl) {
+    styleEl = doc.createElement("style");
     styleEl.id = "mp-runtime-style";
-    styleEl.textContent = ${JSON.stringify(DYNAMIC_CSS)};
     doc.head.appendChild(styleEl);
 }
+if (styleEl.textContent !== ${JSON.stringify(DYNAMIC_CSS)}) styleEl.textContent = ${JSON.stringify(DYNAMIC_CSS)};
 
 var CENTER = [13.7942, -88.8965];
 var ZOOM = 8;
 var POINT_ZOOM = 17;
+var COMPACT_ZOOM = 11;
 var switching = false;
 var DEFAULT_TEMPLATE = "{agencias} agencias y {puntos} puntos de pago activos distribuidos en todo el país.";
 var state = { departments: [], agencies: [], paymentPoints: [], type: null, department: null, pointKey: null };
@@ -122,6 +124,12 @@ function renderMarkers() {
     });
 }
 
+function updateCompact() {
+    if (!map) return;
+    var overview = !state.type && !state.department && !state.pointKey;
+    mapEl.classList.toggle("mp-compact", overview && map.getZoom() < COMPACT_ZOOM);
+}
+
 function resetView() {
     if (!map) return;
     if (state.department) {
@@ -137,6 +145,7 @@ function resetView() {
 function applyMapState() {
     if (!map) return;
     renderMarkers();
+    updateCompact();
     if (state.pointKey) {
         var found = null;
         markers.eachLayer(function (marker) {
@@ -280,6 +289,7 @@ function createMap(leaflet) {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
     markers = L.layerGroup().addTo(map);
+    map.on("zoomend", updateCompact);
     map.on("click", function () { map.scrollWheelZoom.enable(); });
     map.on("popupopen", function () { switching = false; });
     map.on("popupclose", function () {

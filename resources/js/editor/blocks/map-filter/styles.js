@@ -32,6 +32,9 @@ export const DYNAMIC_CSS =
     ".mp-filter-option:hover,.mp-filter-option.mp-selected{background-color:#F4F6F9;}" +
     ".mp-filter-option:disabled{opacity:0.5;cursor:default;pointer-events:none;}" +
     ".mp-pin{background-color:transparent !important;border-width:0 !important;}" +
+    ".mp-pin svg{display:block;transform-origin:50% 100%;transition:transform 0.2s ease;}" +
+    ".mp-compact .mp-pin svg{transform:scale(0.55);}" +
+    "@media(prefers-reduced-motion:reduce){.mp-pin svg{transition:none;}}" +
     ".mp-popup{min-width:180px;font-family:'Poppins',sans-serif;}" +
     ".mp-popup-name{margin:0 0 0.375rem;font-size:0.875rem;font-weight:700;color:#003B71;}" +
     ".mp-popup-line{display:flex;align-items:flex-start;gap:0.375rem;margin:0 0 0.25rem;font-size:0.8125rem;line-height:1.4;color:#475569;}" +
