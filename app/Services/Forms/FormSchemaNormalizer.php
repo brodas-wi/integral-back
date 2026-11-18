@@ -197,7 +197,7 @@ class FormSchemaNormalizer
         $isRelative = str_starts_with($url, '/') && !str_starts_with($url, '//');
         $isAbsolute = filter_var($url, FILTER_VALIDATE_URL) && preg_match('/^https?:\/\//i', $url);
 
-        return mb_strlen($url) <= 2048 && ($isRelative || $isAbsolute);
+        return mb_strlen($url) <= 2048 && !preg_match('/\s/u', $url) && ($isRelative || $isAbsolute);
     }
 
     private function rangeSettings(array $raw, string $path, bool $decimal): array

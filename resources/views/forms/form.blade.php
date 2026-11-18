@@ -25,7 +25,8 @@
 @section('content')
     <div id="form-editor" class="space-y-6 max-w-4xl"
         data-submit-url="{{ $form ? route('forms.update', $form) : route('forms.store') }}"
-        data-method="{{ $form ? 'PUT' : 'POST' }}" data-base-version="{{ $form?->currentVersion?->version }}">
+        data-method="{{ $form ? 'PUT' : 'POST' }}" data-base-version="{{ $form?->currentVersion?->version }}"
+        data-field-types="{{ json_encode($fieldTypes) }}" data-pages-search-url="{{ route('api.pages.search') }}">
 
         <script type="application/json" id="form-initial">{!! json_encode($initial, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) !!}</script>
 
@@ -96,14 +97,37 @@
         </div>
 
         <div class="card space-y-4">
-            <div>
+            <div class="flex flex-wrap items-center justify-between gap-3">
                 <h3 class="text-base font-bold text-secondary">Campos</h3>
-                {{-- <p class="text-xs text-gray-500 mt-1">Editor temporal en JSON. El constructor visual con flechas de subir y
-                    bajar llega en la siguiente fase.</p> --}}
+                <div class="flex items-center gap-2">
+                    <button type="button" data-fields-mode="simple" class="btn-primary btn-sm">
+                        <i class="ri-list-settings-line mr-2"></i>
+                        Sencillo
+                    </button>
+                    <button type="button" data-fields-mode="json" class="btn-outline btn-sm">
+                        <i class="ri-braces-line mr-2"></i>
+                        JSON
+                    </button>
+                </div>
             </div>
 
-            <textarea id="f-fields-json" rows="18" spellcheck="false"
-                class="input-field !rounded-2xl font-mono text-xs leading-relaxed"></textarea>
+            <div id="fields-simple">
+                <div id="fields-builder" class="space-y-4"></div>
+            </div>
+
+            <div id="fields-json" class="hidden space-y-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" id="format-json" class="btn-outline btn-sm">
+                        <i class="ri-code-line mr-2"></i>
+                        Formatear
+                    </button>
+                    <button type="button" id="copy-json" class="btn-outline btn-sm">
+                        <i class="ri-file-copy-line mr-2"></i>
+                        Copiar JSON
+                    </button>
+                </div>
+                <div id="f-fields-json"></div>
+            </div>
 
             <details class="rounded-2xl bg-gray-50 border border-gray-200 p-4 text-sm text-gray-700">
                 <summary class="cursor-pointer font-semibold text-secondary">Guía rápida de campos</summary>

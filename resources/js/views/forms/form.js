@@ -1,5 +1,7 @@
 import { showNotification } from "@/utils/notifications.js";
 import { copyText } from "@/utils/clipboard.js";
+import { createJsonEditor } from "./json-editor.js";
+import { createFieldBuilder } from "./field-builder.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
 const root = document.getElementById("form-editor");
@@ -9,6 +11,10 @@ const RESERVED_VARIABLES = ["form_title", "submission_id", "date"];
 const $ = (id) => document.getElementById(id);
 
 let initialConfirmField = null;
+let mode = "simple";
+let fieldsData = [];
+let builder = null;
+let editor = null;
 
 function readInitial() {
     try {
@@ -28,7 +34,9 @@ function fill(initial) {
     $("f-title").value = initial.title ?? "";
     $("f-description").value = initial.description ?? "";
     $("f-submit-label").value = initial.submit_label ?? "";
-    $("f-fields-json").value = JSON.stringify(initial.fields ?? [], null, 2);
+    fieldsData = Array.isArray(initial.fields) ? initial.fields : [];
+    builder?.setFields(fieldsData);
+    editor?.setValue(JSON.stringify(fieldsData, null, 2));
 
     $("t-title").value = thanks.title ?? "";
     $("t-subtitle").value = thanks.subtitle ?? "";
@@ -46,8 +54,10 @@ function fill(initial) {
 }
 
 function parseFields() {
+    if (mode === "simple") return fieldsData;
+
     try {
-        const parsed = JSON.parse($("f-fields-json").value);
+        const parsed = JSON.parse(editor.getValue());
         if (!Array.isArray(parsed)) throw new Error("not-array");
         return parsed;
     } catch {
@@ -134,6 +144,47 @@ function collect(fields) {
             },
         },
     };
+}
+
+function setMode(next) {
+    if (next === mode) return;
+
+    if (next === "simple") {
+        let parsed = null;
+        try {
+            parsed = JSON.parse(editor.getValue());
+        } catch {
+            parsed = null;
+        }
+
+        const valid =
+            Array.isArray(parsed) &&
+            parsed.every((item) => item !== null && typeof item === "object" && !Array.isArray(item));
+
+        if (!valid) {
+            showErrors(["El JSON de los campos no es válido. Corrígelo antes de volver al modo sencillo."]);
+            return;
+        }
+
+        clearErrors();
+        fieldsData = parsed;
+        builder.setFields(fieldsData);
+    } else {
+        editor.setValue(JSON.stringify(fieldsData, null, 2));
+    }
+
+    mode = next;
+    $("fields-simple").classList.toggle("hidden", next !== "simple");
+    $("fields-json").classList.toggle("hidden", next !== "json");
+
+    document.querySelectorAll("[data-fields-mode]").forEach((button) => {
+        const active = button.dataset.fieldsMode === next;
+        button.classList.toggle("btn-primary", active);
+        button.classList.toggle("btn-outline", !active);
+    });
+
+    if (next === "json") editor.refresh();
+    refreshDependentUi();
 }
 
 function describe(path, message) {
@@ -236,10 +287,38 @@ async function save() {
 }
 
 if (root) {
+    editor = createJsonEditor($("f-fields-json"), {
+        onChange: () => {
+            if (mode === "json") refreshDependentUi();
+        },
+    });
+
+    builder = createFieldBuilder($("fields-builder"), {
+        types: JSON.parse(root.dataset.fieldTypes || "[]"),
+        searchUrl: root.dataset.pagesSearchUrl,
+        onChange: refreshDependentUi,
+    });
+
     fill(readInitial());
     refreshDependentUi();
 
-    $("f-fields-json").addEventListener("input", refreshDependentUi);
+    document.querySelectorAll("[data-fields-mode]").forEach((button) => {
+        button.addEventListener("click", () => setMode(button.dataset.fieldsMode));
+    });
+
+    $("copy-json").addEventListener("click", async () => {
+        const copied = await copyText(editor.getValue());
+        showNotification(copied ? "JSON copiado al portapapeles" : "No se pudo copiar", copied ? "success" : "error");
+    });
+
+    $("format-json").addEventListener("click", () => {
+        try {
+            editor.setValue(JSON.stringify(JSON.parse(editor.getValue()), null, 2));
+        } catch {
+            showNotification("El JSON no es válido, no se puede formatear", "error");
+        }
+    });
+
     $("save-form").addEventListener("click", save);
 
     document.addEventListener("click", async (event) => {
