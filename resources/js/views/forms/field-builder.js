@@ -76,10 +76,15 @@ function checkFor(field, prop, label, notify) {
     return h("label", { class: "flex items-center gap-2 text-sm text-gray-700 cursor-pointer" }, input, label);
 }
 
+const ICON_STYLES = {
+    "ri-file-copy-2-line": "!border-secondary !text-secondary hover:!bg-gray-100 hover:!text-secondary",
+    "ri-delete-bin-line": "!border-red-400 !text-red-600 hover:!bg-red-50 hover:!text-red-700",
+};
+
 function iconButton(icon, title, onClick, disabled = false) {
     const button = h("button", {
         type: "button",
-        class: "btn-outline btn-sm !px-2",
+        class: `btn-outline btn-sm !w-9 !h-9 !min-w-0 !p-0 !rounded-full shrink-0 inline-flex items-center justify-center leading-none ${ICON_STYLES[icon] ?? ""}`,
         title,
         "aria-label": title,
         disabled,

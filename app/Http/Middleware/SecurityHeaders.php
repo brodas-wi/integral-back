@@ -101,6 +101,8 @@ class SecurityHeaders
         'news.create',
         'news.edit',
         'news.show',
+        'forms.create',
+        'forms.edit',
     ];
 
     public function handle(Request $request, Closure $next): Response
