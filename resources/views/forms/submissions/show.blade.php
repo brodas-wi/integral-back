@@ -48,6 +48,8 @@
 
         <div class="card space-y-2 text-sm self-start">
             <h3 class="text-base font-bold text-secondary mb-2">Información</h3>
+            <div class="flex justify-between gap-3"><span class="text-gray-600">Correlativo</span>
+                <span class="font-mono font-semibold text-secondary">{{ $submission->correlative ?: '—' }}</span></div>
             <div class="flex justify-between gap-3"><span class="text-gray-600">Correo</span>
                 <span class="text-right break-all">{{ $submission->email ?: '—' }}</span></div>
             <div class="flex justify-between gap-3"><span class="text-gray-600">Aviso interno</span>

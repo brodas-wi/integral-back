@@ -198,6 +198,57 @@
             </div>
         </div>
 
+        <div class="card space-y-4">
+            <h3 class="text-base font-bold text-secondary">Correlativo</h3>
+            <p class="text-xs text-gray-500">Un código único para cada respuesta recibida. Por ahora solo se ve en la
+                sección de respuestas y en el CSV.</p>
+
+            <label class="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
+                <input type="checkbox" id="k-enabled" class="w-4 h-4 accent-primary">
+                Generar un correlativo para cada respuesta
+            </label>
+
+            <div id="k-options" class="hidden space-y-4">
+                <div class="flex flex-wrap items-center gap-6 text-sm text-gray-700">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="k-mode" value="default" class="w-4 h-4 accent-primary">
+                        Por defecto
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="k-mode" value="custom" class="w-4 h-4 accent-primary">
+                        Personalizado
+                    </label>
+                </div>
+
+                <div id="k-default" class="space-y-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1" for="k-prefix">Prefijo</label>
+                    <input type="text" id="k-prefix" class="input-field uppercase" maxlength="10" placeholder="SOL">
+                    <p class="text-xs text-gray-500">Formato: prefijo, año y mes, y un consecutivo. El consecutivo se
+                        reinicia cada año y se comparte entre los formularios que usen el mismo prefijo.</p>
+                </div>
+
+                <div id="k-custom" class="hidden space-y-2">
+                    <label class="block text-xs font-medium text-gray-700 mb-1" for="k-pattern">Plantilla</label>
+                    <input type="text" id="k-pattern" class="input-field font-mono" maxlength="80"
+                        placeholder="INT-{YY}{MM}-{N:4}">
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" data-k-token="{YYYY}" class="badge badge-gray cursor-pointer">{YYYY} año</button>
+                        <button type="button" data-k-token="{YY}" class="badge badge-gray cursor-pointer">{YY} año corto</button>
+                        <button type="button" data-k-token="{MM}" class="badge badge-gray cursor-pointer">{MM} mes</button>
+                        <button type="button" data-k-token="{DD}" class="badge badge-gray cursor-pointer">{DD} día</button>
+                        <button type="button" data-k-token="{N:5}" class="badge badge-gray cursor-pointer">{N:5} consecutivo</button>
+                    </div>
+                    <p class="text-xs text-gray-500">Debe incluir una pieza {N} o {N:5}. El consecutivo es solo de este
+                        formulario, sigue corrido y no se reinicia.</p>
+                </div>
+
+                <div class="rounded-2xl bg-gray-50 border border-gray-200 p-4">
+                    <p class="text-xs font-semibold text-secondary mb-2">Vista previa (primera respuesta)</p>
+                    <code id="k-preview" class="text-sm"></code>
+                </div>
+            </div>
+        </div>
+
         <div class="card space-y-6">
             <h3 class="text-base font-bold text-secondary">Correos</h3>
 
@@ -217,6 +268,8 @@
                     <label class="block text-xs font-medium text-gray-700 mb-1" for="n-subject">Asunto</label>
                     <input type="text" id="n-subject" class="input-field" maxlength="200">
                 </div>
+
+                @include('forms.partials.email-html-editor', ['key' => 'notify', 'prefix' => 'n'])
             </div>
 
             <hr class="border-gray-100">
@@ -241,9 +294,13 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1" for="c-body">Mensaje</label>
+                    <label class="block text-xs font-medium text-gray-700 mb-1" for="c-body">Mensaje (texto por
+                        defecto)</label>
                     <textarea id="c-body" rows="5" maxlength="5000" class="input-field !rounded-2xl"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Se usa solo si no escribes contenido HTML personalizado abajo.</p>
                 </div>
+
+                @include('forms.partials.email-html-editor', ['key' => 'confirmation', 'prefix' => 'c'])
 
                 <div class="rounded-2xl bg-gray-50 border border-gray-200 p-4">
                     <p class="text-xs font-semibold text-secondary mb-2">Variables disponibles en asunto y mensaje</p>

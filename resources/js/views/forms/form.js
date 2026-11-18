@@ -2,11 +2,13 @@ import { showNotification } from "@/utils/notifications.js";
 import { copyText } from "@/utils/clipboard.js";
 import { createJsonEditor } from "./json-editor.js";
 import { createFieldBuilder } from "./field-builder.js";
+import { createHtmlEditor } from "./html-editor.js";
+import { EXAMPLES, buildPreviewDocument, htmlIssues, variablesFor } from "./email-html.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
 const root = document.getElementById("form-editor");
 
-const RESERVED_VARIABLES = ["form_title", "submission_id", "date"];
+const RESERVED_VARIABLES = ["form_title", "submission_id", "date", "correlative"];
 
 const $ = (id) => document.getElementById(id);
 
@@ -15,6 +17,7 @@ let mode = "simple";
 let fieldsData = [];
 let builder = null;
 let editor = null;
+const htmlEditors = {};
 
 function readInitial() {
     try {
@@ -38,6 +41,15 @@ function fill(initial) {
     builder?.setFields(fieldsData);
     editor?.setValue(JSON.stringify(fieldsData, null, 2));
 
+    const correlative = initial.settings?.correlative ?? {};
+    $("k-enabled").checked = Boolean(correlative.enabled);
+    document.querySelector(
+        `input[name="k-mode"][value="${correlative.mode === "custom" ? "custom" : "default"}"]`,
+    ).checked = true;
+    $("k-prefix").value = correlative.prefix ?? "SOL";
+    $("k-pattern").value = correlative.pattern ?? "SOL-{YYYY}{MM}-{N:5}";
+    syncCorrelativeUi();
+
     $("t-title").value = thanks.title ?? "";
     $("t-subtitle").value = thanks.subtitle ?? "";
     $("t-seconds").value = thanks.seconds ?? "";
@@ -46,10 +58,12 @@ function fill(initial) {
     $("n-enabled").checked = Boolean(notify.enabled);
     $("n-recipients").value = (notify.recipients ?? []).join("\n");
     $("n-subject").value = notify.subject ?? "";
+    htmlEditors.notify?.setValue(notify.body_html ?? "");
 
     $("c-enabled").checked = Boolean(confirmation.enabled);
     $("c-subject").value = confirmation.subject ?? "";
     $("c-body").value = confirmation.body ?? "";
+    htmlEditors.confirmation?.setValue(confirmation.body_html ?? "");
     initialConfirmField = confirmation.field_key ?? null;
 }
 
@@ -106,6 +120,87 @@ function refreshDependentUi() {
             chip.textContent = `{{${name}}}`;
             hint.appendChild(chip);
         });
+
+    renderHtmlEditorUi(fields);
+}
+
+const HTML_PREFIX = { notify: "n", confirmation: "c" };
+
+function renderHtmlEditorUi(fields) {
+    if (!htmlEditors.notify) return;
+
+    Object.keys(HTML_PREFIX).forEach((mode) => {
+        const box = $(`${HTML_PREFIX[mode]}-html-vars`);
+        box.innerHTML = "";
+
+        variablesFor(mode, fields).forEach((name) => {
+            const chip = document.createElement("button");
+            chip.type = "button";
+            chip.dataset.htmlVar = `{{${name}}}`;
+            chip.dataset.htmlTarget = mode;
+            chip.className = "badge badge-gray cursor-pointer font-mono";
+            chip.textContent = `{{${name}}}`;
+            box.appendChild(chip);
+        });
+
+        updateHtmlStatus(mode, fields);
+    });
+}
+
+function updateHtmlStatus(mode, fields = parseFields() ?? []) {
+    const status = $(`${HTML_PREFIX[mode]}-html-status`);
+    const html = htmlEditors[mode].getValue();
+
+    if (!html.trim()) {
+        status.className = "text-xs text-gray-500";
+        status.textContent = "Sin contenido personalizado: se usará el contenido por defecto.";
+        return;
+    }
+
+    const issues = htmlIssues(html, mode, fields);
+    status.className = issues.length ? "text-xs text-red-600" : "text-xs text-green-600";
+    status.textContent = issues.length ? issues.join(" ") : "La estructura es correcta.";
+}
+
+function showHtmlPreview(mode) {
+    const frame = $(`${HTML_PREFIX[mode]}-html-preview`);
+    frame.srcdoc = buildPreviewDocument(htmlEditors[mode].getValue(), mode, parseFields() ?? []);
+    frame.classList.remove("hidden");
+}
+
+function onHtmlChange(mode) {
+    updateHtmlStatus(mode);
+
+    if (!$(`${HTML_PREFIX[mode]}-html-preview`).classList.contains("hidden")) showHtmlPreview(mode);
+}
+
+function correlativeMode() {
+    return document.querySelector('input[name="k-mode"]:checked')?.value ?? "default";
+}
+
+function correlativePreview() {
+    const now = new Date();
+    const year = String(now.getFullYear());
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const prefix = ($("k-prefix").value.trim() || "SOL").toUpperCase();
+    const pattern = correlativeMode() === "default" ? `${prefix}-{YYYY}{MM}-{N:5}` : $("k-pattern").value;
+
+    return pattern.replace(/\{(YYYY|YY|MM|DD|N)(?::(\d{1,2}))?\}/g, (_, token, pad) => {
+        if (token === "YYYY") return year;
+        if (token === "YY") return year.slice(2);
+        if (token === "MM") return month;
+        if (token === "DD") return day;
+        return "1".padStart(Number(pad) || 1, "0");
+    });
+}
+
+function syncCorrelativeUi() {
+    const mode = correlativeMode();
+    $("k-options").classList.toggle("hidden", !$("k-enabled").checked);
+    $("k-default").classList.toggle("hidden", mode !== "default");
+    $("k-custom").classList.toggle("hidden", mode !== "custom");
+    $("k-preview").textContent = correlativePreview();
 }
 
 function collect(fields) {
@@ -123,6 +218,12 @@ function collect(fields) {
         submit_label: $("f-submit-label").value,
         fields,
         settings: {
+            correlative: {
+                enabled: $("k-enabled").checked,
+                mode: correlativeMode(),
+                prefix: $("k-prefix").value,
+                pattern: $("k-pattern").value,
+            },
             thanks: {
                 title: $("t-title").value,
                 subtitle: $("t-subtitle").value,
@@ -134,12 +235,14 @@ function collect(fields) {
                     enabled: $("n-enabled").checked,
                     recipients,
                     subject: $("n-subject").value,
+                    body_html: htmlEditors.notify.getValue(),
                 },
                 confirmation: {
                     enabled: $("c-enabled").checked,
                     field_key: $("c-field").value || null,
                     subject: $("c-subject").value,
                     body: $("c-body").value,
+                    body_html: htmlEditors.confirmation.getValue(),
                 },
             },
         },
@@ -299,6 +402,9 @@ if (root) {
         onChange: refreshDependentUi,
     });
 
+    htmlEditors.notify = createHtmlEditor($("n-html"), { onChange: () => onHtmlChange("notify") });
+    htmlEditors.confirmation = createHtmlEditor($("c-html"), { onChange: () => onHtmlChange("confirmation") });
+
     fill(readInitial());
     refreshDependentUi();
 
@@ -320,6 +426,52 @@ if (root) {
     });
 
     $("save-form").addEventListener("click", save);
+
+    document.addEventListener("click", (event) => {
+        const chip = event.target.closest("[data-html-var]");
+
+        if (chip) {
+            htmlEditors[chip.dataset.htmlTarget].insert(chip.dataset.htmlVar);
+            return;
+        }
+
+        const action = event.target.closest("[data-html-action]");
+        if (!action) return;
+
+        const mode = action.dataset.htmlTarget;
+        const current = htmlEditors[mode].getValue();
+
+        if (action.dataset.htmlAction === "preview") {
+            if (!current.trim()) {
+                showNotification("Escribe contenido HTML o carga el ejemplo para ver la vista previa", "error");
+                return;
+            }
+            showHtmlPreview(mode);
+        }
+
+        if (action.dataset.htmlAction === "example") {
+            if (!current.trim() || window.confirm("Esto reemplaza el contenido actual. ¿Continuar?")) {
+                htmlEditors[mode].setValue(EXAMPLES[mode]);
+            }
+        }
+
+        if (action.dataset.htmlAction === "clear") htmlEditors[mode].setValue("");
+    });
+
+    ["k-enabled", "k-prefix", "k-pattern"].forEach((id) => $(id).addEventListener("input", syncCorrelativeUi));
+    document.querySelectorAll('input[name="k-mode"]').forEach((radio) => radio.addEventListener("change", syncCorrelativeUi));
+    document.querySelectorAll("[data-k-token]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const input = $("k-pattern");
+            const token = button.dataset.kToken;
+            const start = input.selectionStart ?? input.value.length;
+            const end = input.selectionEnd ?? input.value.length;
+            input.value = input.value.slice(0, start) + token + input.value.slice(end);
+            input.focus();
+            input.setSelectionRange(start + token.length, start + token.length);
+            syncCorrelativeUi();
+        });
+    });
 
     document.addEventListener("click", async (event) => {
         const copy = event.target.closest("[data-copy]");

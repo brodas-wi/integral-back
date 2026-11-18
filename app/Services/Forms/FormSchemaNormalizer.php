@@ -4,6 +4,7 @@ namespace App\Services\Forms;
 
 use App\Enums\FormFieldType;
 use Illuminate\Support\Str;
+use Mews\Purifier\Facades\Purifier;
 use Illuminate\Validation\ValidationException;
 
 class FormSchemaNormalizer
@@ -12,7 +13,9 @@ class FormSchemaNormalizer
     public const MAX_OPTIONS = 50;
     public const MAX_RECIPIENTS = 10;
     public const MAX_LINKS = 5;
-    public const RESERVED_VARIABLES = ['form_title', 'submission_id', 'date'];
+    public const CORRELATIVE_PREFIX = 'SOL';
+    public const MAX_EMAIL_HTML = 20000;
+    public const RESERVED_VARIABLES = ['form_title', 'submission_id', 'date', 'correlative'];
 
     private array $errors = [];
 
@@ -266,6 +269,7 @@ class FormSchemaNormalizer
         $emailKeys = array_column(array_filter($fields, fn($f) => $f['type'] === FormFieldType::Email->value), 'key');
 
         return [
+            'correlative' => $this->normalizeCorrelative($input['correlative'] ?? []),
             'thanks' => [
                 'title' => $this->string($thanks['title'] ?? null, 'settings.thanks.title', 120, false, 'El título de agradecimiento') ?: '¡Gracias!',
                 'subtitle' => $this->string($thanks['subtitle'] ?? null, 'settings.thanks.subtitle', 300, false, 'El subtítulo de agradecimiento') ?: 'Hemos recibido tu registro. Te contactaremos pronto.',
@@ -319,6 +323,7 @@ class FormSchemaNormalizer
             'enabled' => $enabled,
             'recipients' => $recipients,
             'subject' => $subject,
+            'body_html' => $this->emailHtml($input['body_html'] ?? null, 'settings.emails.notify.body_html', $allowedVariables, true),
         ];
     }
 
@@ -353,6 +358,7 @@ class FormSchemaNormalizer
             'field_key' => in_array($fieldKey, $emailKeys, true) ? $fieldKey : null,
             'subject' => $subject,
             'body' => $body,
+            'body_html' => $this->emailHtml($input['body_html'] ?? null, 'settings.emails.confirmation.body_html', $allowedVariables, false),
         ];
     }
 
@@ -365,6 +371,177 @@ class FormSchemaNormalizer
                 $this->fail($path, 'La variable {{' . $name . '}} no existe en este formulario.');
             }
         }
+    }
+
+    private function normalizeCorrelative(mixed $input): array
+    {
+        $input = is_array($input) ? $input : [];
+        $enabled = filter_var($input['enabled'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $mode = ($input['mode'] ?? 'default') === 'custom' ? 'custom' : 'default';
+        $prefix = Str::upper(trim((string) ($input['prefix'] ?? '')));
+        $pattern = trim((string) ($input['pattern'] ?? ''));
+
+        if ($prefix === '') {
+            $prefix = self::CORRELATIVE_PREFIX;
+        }
+
+        if (!preg_match('/^[A-Z0-9]{1,10}$/', $prefix)) {
+            $this->fail('settings.correlative.prefix', 'El prefijo debe tener de 1 a 10 letras o números, sin espacios ni guiones.');
+            $prefix = self::CORRELATIVE_PREFIX;
+        }
+
+        if ($mode === 'default') {
+            $pattern = $prefix . '-{YYYY}{MM}-{N:5}';
+        } elseif ($enabled) {
+            $this->checkCorrelativePattern($pattern);
+        }
+
+        return [
+            'enabled' => $enabled,
+            'mode' => $mode,
+            'prefix' => $prefix,
+            'pattern' => $pattern,
+        ];
+    }
+
+    private function checkCorrelativePattern(string $pattern): void
+    {
+        $path = 'settings.correlative.pattern';
+
+        if ($pattern === '' || mb_strlen($pattern) > 80) {
+            $this->fail($path, 'Escribe la plantilla del correlativo (máximo 80 caracteres).');
+            return;
+        }
+
+        preg_match_all('/\{([^}]*)\}/', $pattern, $matches);
+        $counters = 0;
+
+        foreach ($matches[1] as $token) {
+            if (!preg_match('/^(YYYY|YY|MM|DD|N(?::([1-9]|1[0-2]))?)$/', $token)) {
+                $this->fail($path, 'La pieza {' . $token . '} no existe. Usa {YYYY}, {YY}, {MM}, {DD} y {N} o {N:5}.');
+            }
+
+            if (str_starts_with($token, 'N')) {
+                $counters++;
+            }
+        }
+
+        if ($counters !== 1) {
+            $this->fail($path, 'La plantilla debe incluir exactamente una pieza {N} o {N:5} para el consecutivo.');
+        }
+
+        $fixed = preg_replace('/\{[^}]*\}/', '', $pattern) ?? '';
+
+        if (!preg_match('/^[A-Za-z0-9\-_\/.]*$/', $fixed)) {
+            $this->fail($path, 'Fuera de las piezas solo se permiten letras, números y los símbolos - _ / .');
+        }
+    }
+
+    private function emailHtml(mixed $value, string $path, array $allowedVariables, bool $notify): ?string
+    {
+        $html = is_scalar($value) ? trim((string) $value) : '';
+        $html = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/u', '', $html) ?? '';
+
+        if ($html === '') {
+            return null;
+        }
+
+        if (mb_strlen($html) > self::MAX_EMAIL_HTML) {
+            $this->fail($path, 'El contenido HTML no puede superar ' . self::MAX_EMAIL_HTML . ' caracteres.');
+            return null;
+        }
+
+        $structure = $this->htmlStructureError($html);
+
+        if ($structure !== null) {
+            $this->fail($path, $structure);
+            return null;
+        }
+
+        $extra = $notify ? ['answers', 'admin_url'] : ['answers'];
+        $this->checkVariables($html, array_merge($allowedVariables, $extra), $path);
+        $this->checkAttributeVariables($html, $path, $notify);
+
+        $clean = $this->sanitizeEmailHtml($html);
+
+        if (trim(strip_tags($clean)) === '' && !str_contains($clean, '<img')) {
+            $this->fail($path, 'El contenido quedó vacío después de limpiar el HTML.');
+            return null;
+        }
+
+        return $clean;
+    }
+
+    private function checkAttributeVariables(string $html, string $path, bool $notify): void
+    {
+        $allowed = array_merge(self::RESERVED_VARIABLES, $notify ? ['admin_url'] : []);
+        $reported = [];
+
+        preg_match_all('/<[^>]*\{\{[^>]*>/', $html, $tags);
+
+        foreach ($tags[0] as $tag) {
+            preg_match_all('/\{\{\s*([A-Za-z0-9_]+)\s*\}\}/', $tag, $names);
+
+            foreach ($names[1] as $name) {
+                if (!in_array($name, $allowed, true) && !in_array($name, $reported, true)) {
+                    $reported[] = $name;
+                    $this->fail($path, 'La variable {{' . $name . '}} no puede ir dentro de una etiqueta (por ejemplo en un enlace). Úsala como texto.');
+                }
+            }
+        }
+    }
+
+    private function htmlStructureError(string $html): ?string
+    {
+        $void = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'];
+        $stripped = preg_replace('/<!--.*?-->/s', '', $html) ?? $html;
+        $stack = [];
+
+        preg_match_all('/<(\/?)([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/', $stripped, $matches, PREG_SET_ORDER);
+
+        foreach ($matches as $match) {
+            $tag = strtolower($match[2]);
+
+            if (in_array($tag, $void, true) || str_ends_with($match[0], '/>')) {
+                continue;
+            }
+
+            if ($match[1] === '') {
+                $stack[] = $tag;
+                continue;
+            }
+
+            $open = array_pop($stack);
+
+            if ($open === null) {
+                return "Hay una etiqueta </{$tag}> sin su apertura.";
+            }
+
+            if ($open !== $tag) {
+                return "La etiqueta <{$open}> debe cerrarse con </{$open}> antes de </{$tag}>.";
+            }
+        }
+
+        return $stack === [] ? null : 'La etiqueta <' . end($stack) . '> no se cierra.';
+    }
+
+    private function sanitizeEmailHtml(string $html): string
+    {
+        $names = [];
+
+        $tokenized = preg_replace_callback('/\{\{\s*([A-Za-z0-9_]+)\s*\}\}/', function (array $match) use (&$names) {
+            $names[] = $match[1];
+
+            return 'zzvar' . (count($names) - 1) . 'zz';
+        }, $html) ?? $html;
+
+        $clean = Purifier::clean($tokenized, 'email');
+
+        return preg_replace_callback(
+            '/zzvar(\d+)zz/',
+            fn (array $match) => isset($names[(int) $match[1]]) ? '{{' . $names[(int) $match[1]] . '}}' : $match[0],
+            $clean,
+        ) ?? $clean;
     }
 
     private function redirectUrl(mixed $value): ?string

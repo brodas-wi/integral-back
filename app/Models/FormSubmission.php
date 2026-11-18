@@ -24,6 +24,7 @@ class FormSubmission extends Model
 
     protected $fillable = [
         'uuid',
+        'correlative',
         'form_id',
         'form_version_id',
         'answers',
@@ -60,7 +61,7 @@ class FormSubmission extends Model
         return $query
             ->when($filters['search'] ?? null, function ($query, $search) {
                 $term = '%' . addcslashes(trim($search), '%_\\') . '%';
-                $query->where(fn($w) => $w->where('email', 'like', $term)->orWhere('search_text', 'like', $term));
+                $query->where(fn($w) => $w->where('correlative', 'like', $term)->orWhere('email', 'like', $term)->orWhere('search_text', 'like', $term));
             })
             ->when($filters['date_from'] ?? null, fn($query, $date) => $query->whereDate('created_at', '>=', $date))
             ->when($filters['date_to'] ?? null, fn($query, $date) => $query->whereDate('created_at', '<=', $date));

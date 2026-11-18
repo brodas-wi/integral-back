@@ -256,6 +256,12 @@ class FormController extends Controller
                 ['type' => 'proper_name', 'label' => 'Escribe tu nombre completo', 'required' => true, 'width' => 'full'],
             ],
             'settings' => [
+                'correlative' => [
+                    'enabled' => false,
+                    'mode' => 'default',
+                    'prefix' => 'SOL',
+                    'pattern' => 'SOL-{YYYY}{MM}-{N:5}',
+                ],
                 'thanks' => [
                     'title' => '¡Gracias!',
                     'subtitle' => 'Hemos recibido tu registro. Te contactaremos pronto.',

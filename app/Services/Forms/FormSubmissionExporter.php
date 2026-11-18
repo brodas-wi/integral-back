@@ -13,19 +13,26 @@ class FormSubmissionExporter
     public function write(Form $form, Builder|\Illuminate\Database\Eloquent\Relations\Relation $query): void
     {
         $columns = $this->usedColumns($form, $query);
+        $withCorrelative = (clone $query)->whereNotNull('correlative')->exists();
         $out = fopen('php://output', 'w');
 
         fwrite($out, "\xEF\xBB\xBF");
-        $this->put($out, array_merge(['Fecha', 'ID', 'Versión'], array_values($columns), ['Enviada desde']));
+        $this->put($out, array_merge(
+            ['Fecha'],
+            $withCorrelative ? ['Correlativo'] : [],
+            ['ID', 'Versión'],
+            array_values($columns),
+            ['Enviada desde'],
+        ));
 
-        $query->with('version:id,version')->lazyByIdDesc(500)->each(function ($submission) use ($out, $columns) {
+        $query->with('version:id,version')->lazyByIdDesc(500)->each(function ($submission) use ($out, $columns, $withCorrelative) {
             $answers = collect($submission->answers)->keyBy('key');
 
-            $row = [
-                $submission->created_at->format('Y-m-d H:i:s'),
-                $submission->uuid,
-                $submission->version?->version,
-            ];
+            $row = array_merge(
+                [$submission->created_at->format('Y-m-d H:i:s')],
+                $withCorrelative ? [$submission->correlative] : [],
+                [$submission->uuid, $submission->version?->version],
+            );
 
             foreach (array_keys($columns) as $key) {
                 $row[] = $answers->get($key)['display'] ?? '';

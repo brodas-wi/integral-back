@@ -40,7 +40,7 @@
         <form method="GET" action="{{ route('forms.submissions.index', $form) }}" class="space-y-4">
             <div class="flex flex-col sm:flex-row gap-4">
                 <input type="text" name="search" value="{{ request('search') }}"
-                    placeholder="Buscar por correo o contenido..." class="input-field flex-1">
+                    placeholder="Buscar por correlativo, correo o contenido..." class="input-field flex-1">
             </div>
             <div class="flex flex-col sm:flex-row gap-4">
                 <div class="flex-1">
@@ -83,6 +83,7 @@
                     <thead>
                         <tr class="table-header">
                             <th class="table-header">Fecha</th>
+                            <th class="table-header">Correlativo</th>
                             <th class="table-header">Resumen</th>
                             <th class="table-header">Correos</th>
                             <th class="table-header text-right">Acciones</th>
@@ -101,6 +102,9 @@
                                 <td class="py-3 px-4 whitespace-nowrap">
                                     <span class="font-semibold text-secondary">{{ $submission->created_at->format('d/m/Y') }}</span>
                                     <span class="block text-xs text-gray-500">{{ $submission->created_at->format('H:i') }}</span>
+                                </td>
+                                <td class="py-3 px-4 whitespace-nowrap">
+                                    <span class="font-mono text-xs font-semibold text-secondary">{{ $submission->correlative ?: '—' }}</span>
                                 </td>
                                 <td class="py-3 px-4 max-w-md">
                                     <span class="block truncate text-gray-800">{{ $summary ?: '—' }}</span>
