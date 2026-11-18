@@ -8,6 +8,7 @@ use App\Models\Form;
 use App\Models\FormVersion;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use App\Services\Forms\FormSchemaNormalizer;
 use App\Services\Forms\FormService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -273,6 +274,7 @@ class FormController extends Controller
                         'enabled' => false,
                         'recipients' => [],
                         'subject' => 'Nueva solicitud: {{form_title}}',
+                        'body' => FormSchemaNormalizer::DEFAULT_NOTIFY_BODY,
                     ],
                     'confirmation' => [
                         'enabled' => false,

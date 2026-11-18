@@ -1,3 +1,7 @@
+@php
+    $html = nl2br(e($messageBody));
+    $html = preg_replace('/(https?:\/\/[^\s<]*[^\s<.,;:!?)])/i', '<a href="$1" style="color:#f0872a;">$1</a>', $html);
+@endphp
 <!DOCTYPE html>
 <html lang="es">
 

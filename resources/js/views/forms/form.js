@@ -2,8 +2,6 @@ import { showNotification } from "@/utils/notifications.js";
 import { copyText } from "@/utils/clipboard.js";
 import { createJsonEditor } from "./json-editor.js";
 import { createFieldBuilder } from "./field-builder.js";
-import { createHtmlEditor } from "./html-editor.js";
-import { EXAMPLES, buildPreviewDocument, htmlIssues, variablesFor } from "./email-html.js";
 
 const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
 const root = document.getElementById("form-editor");
@@ -17,7 +15,8 @@ let mode = "simple";
 let fieldsData = [];
 let builder = null;
 let editor = null;
-const htmlEditors = {};
+const DEFAULT_NOTIFY_BODY =
+    "Se recibió una nueva respuesta en {{form_title}}.\n\nCorrelativo: {{correlative}}\nFecha: {{date}}\n\n{{answers}}\n\nVer respuesta en el CMS:\n{{admin_url}}";
 
 function readInitial() {
     try {
@@ -58,12 +57,11 @@ function fill(initial) {
     $("n-enabled").checked = Boolean(notify.enabled);
     $("n-recipients").value = (notify.recipients ?? []).join("\n");
     $("n-subject").value = notify.subject ?? "";
-    htmlEditors.notify?.setValue(notify.body_html ?? "");
+    $("n-body").value = notify.body ?? DEFAULT_NOTIFY_BODY;
 
     $("c-enabled").checked = Boolean(confirmation.enabled);
     $("c-subject").value = confirmation.subject ?? "";
     $("c-body").value = confirmation.body ?? "";
-    htmlEditors.confirmation?.setValue(confirmation.body_html ?? "");
     initialConfirmField = confirmation.field_key ?? null;
 }
 
@@ -111,6 +109,8 @@ function refreshDependentUi() {
     hint.innerHTML = "";
     [
         ...RESERVED_VARIABLES,
+        "answers",
+        "admin_url",
         ...fields.filter((field) => field.type !== "note").map((field) => field.key),
     ]
         .filter(Boolean)
@@ -120,58 +120,6 @@ function refreshDependentUi() {
             chip.textContent = `{{${name}}}`;
             hint.appendChild(chip);
         });
-
-    renderHtmlEditorUi(fields);
-}
-
-const HTML_PREFIX = { notify: "n", confirmation: "c" };
-
-function renderHtmlEditorUi(fields) {
-    if (!htmlEditors.notify) return;
-
-    Object.keys(HTML_PREFIX).forEach((mode) => {
-        const box = $(`${HTML_PREFIX[mode]}-html-vars`);
-        box.innerHTML = "";
-
-        variablesFor(mode, fields).forEach((name) => {
-            const chip = document.createElement("button");
-            chip.type = "button";
-            chip.dataset.htmlVar = `{{${name}}}`;
-            chip.dataset.htmlTarget = mode;
-            chip.className = "badge badge-gray cursor-pointer font-mono";
-            chip.textContent = `{{${name}}}`;
-            box.appendChild(chip);
-        });
-
-        updateHtmlStatus(mode, fields);
-    });
-}
-
-function updateHtmlStatus(mode, fields = parseFields() ?? []) {
-    const status = $(`${HTML_PREFIX[mode]}-html-status`);
-    const html = htmlEditors[mode].getValue();
-
-    if (!html.trim()) {
-        status.className = "text-xs text-gray-500";
-        status.textContent = "Sin contenido personalizado: se usará el contenido por defecto.";
-        return;
-    }
-
-    const issues = htmlIssues(html, mode, fields);
-    status.className = issues.length ? "text-xs text-red-600" : "text-xs text-green-600";
-    status.textContent = issues.length ? issues.join(" ") : "La estructura es correcta.";
-}
-
-function showHtmlPreview(mode) {
-    const frame = $(`${HTML_PREFIX[mode]}-html-preview`);
-    frame.srcdoc = buildPreviewDocument(htmlEditors[mode].getValue(), mode, parseFields() ?? []);
-    frame.classList.remove("hidden");
-}
-
-function onHtmlChange(mode) {
-    updateHtmlStatus(mode);
-
-    if (!$(`${HTML_PREFIX[mode]}-html-preview`).classList.contains("hidden")) showHtmlPreview(mode);
 }
 
 function correlativeMode() {
@@ -235,14 +183,13 @@ function collect(fields) {
                     enabled: $("n-enabled").checked,
                     recipients,
                     subject: $("n-subject").value,
-                    body_html: htmlEditors.notify.getValue(),
+                    body: $("n-body").value,
                 },
                 confirmation: {
                     enabled: $("c-enabled").checked,
                     field_key: $("c-field").value || null,
                     subject: $("c-subject").value,
                     body: $("c-body").value,
-                    body_html: htmlEditors.confirmation.getValue(),
                 },
             },
         },
@@ -402,9 +349,6 @@ if (root) {
         onChange: refreshDependentUi,
     });
 
-    htmlEditors.notify = createHtmlEditor($("n-html"), { onChange: () => onHtmlChange("notify") });
-    htmlEditors.confirmation = createHtmlEditor($("c-html"), { onChange: () => onHtmlChange("confirmation") });
-
     fill(readInitial());
     refreshDependentUi();
 
@@ -426,37 +370,6 @@ if (root) {
     });
 
     $("save-form").addEventListener("click", save);
-
-    document.addEventListener("click", (event) => {
-        const chip = event.target.closest("[data-html-var]");
-
-        if (chip) {
-            htmlEditors[chip.dataset.htmlTarget].insert(chip.dataset.htmlVar);
-            return;
-        }
-
-        const action = event.target.closest("[data-html-action]");
-        if (!action) return;
-
-        const mode = action.dataset.htmlTarget;
-        const current = htmlEditors[mode].getValue();
-
-        if (action.dataset.htmlAction === "preview") {
-            if (!current.trim()) {
-                showNotification("Escribe contenido HTML o carga el ejemplo para ver la vista previa", "error");
-                return;
-            }
-            showHtmlPreview(mode);
-        }
-
-        if (action.dataset.htmlAction === "example") {
-            if (!current.trim() || window.confirm("Esto reemplaza el contenido actual. ¿Continuar?")) {
-                htmlEditors[mode].setValue(EXAMPLES[mode]);
-            }
-        }
-
-        if (action.dataset.htmlAction === "clear") htmlEditors[mode].setValue("");
-    });
 
     ["k-enabled", "k-prefix", "k-pattern"].forEach((id) => $(id).addEventListener("input", syncCorrelativeUi));
     document.querySelectorAll('input[name="k-mode"]').forEach((radio) => radio.addEventListener("change", syncCorrelativeUi));

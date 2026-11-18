@@ -252,6 +252,14 @@
         <div class="card space-y-6">
             <h3 class="text-base font-bold text-secondary">Correos</h3>
 
+            <div class="rounded-2xl bg-gray-50 border border-gray-200 p-4 space-y-2">
+                <p class="text-xs font-semibold text-secondary">Variables disponibles en asuntos y mensajes</p>
+                <div id="variables-hint" class="flex flex-wrap gap-2"></div>
+                <p class="text-xs text-gray-500"><code>{{ '{{answers}}' }}</code> imprime todas las preguntas con sus
+                    respuestas. <code>{{ '{{admin_url}}' }}</code> es el enlace a la respuesta en el CMS y solo funciona
+                    en el aviso interno. Ambas solo se usan en el mensaje, no en el asunto.</p>
+            </div>
+
             <div class="space-y-4">
                 <label class="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
                     <input type="checkbox" id="n-enabled" class="w-4 h-4 accent-primary">
@@ -269,7 +277,12 @@
                     <input type="text" id="n-subject" class="input-field" maxlength="200">
                 </div>
 
-                @include('forms.partials.email-html-editor', ['key' => 'notify', 'prefix' => 'n'])
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1" for="n-body">Mensaje</label>
+                    <textarea id="n-body" rows="7" maxlength="5000" class="input-field !rounded-2xl"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Es el contenido del aviso. Obligatorio mientras el aviso esté
+                        activo.</p>
+                </div>
             </div>
 
             <hr class="border-gray-100">
@@ -294,17 +307,10 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1" for="c-body">Mensaje (texto por
-                        defecto)</label>
+                    <label class="block text-xs font-medium text-gray-700 mb-1" for="c-body">Mensaje</label>
                     <textarea id="c-body" rows="5" maxlength="5000" class="input-field !rounded-2xl"></textarea>
-                    <p class="text-xs text-gray-500 mt-1">Se usa solo si no escribes contenido HTML personalizado abajo.</p>
-                </div>
-
-                @include('forms.partials.email-html-editor', ['key' => 'confirmation', 'prefix' => 'c'])
-
-                <div class="rounded-2xl bg-gray-50 border border-gray-200 p-4">
-                    <p class="text-xs font-semibold text-secondary mb-2">Variables disponibles en asunto y mensaje</p>
-                    <div id="variables-hint" class="flex flex-wrap gap-2"></div>
+                    <p class="text-xs text-gray-500 mt-1">Es el contenido de la confirmación. Obligatorio mientras esté
+                        activa.</p>
                 </div>
             </div>
         </div>

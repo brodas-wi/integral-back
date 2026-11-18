@@ -3,7 +3,7 @@ import { EditorState } from "@codemirror/state";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 import { linter, lintGutter } from "@codemirror/lint";
 
-export const theme = EditorView.theme({
+const theme = EditorView.theme({
     "&": {
         maxHeight: "32rem",
         minHeight: "12rem",
