@@ -33,6 +33,7 @@ function fill(initial) {
 
     $("f-name").value = initial.name ?? "";
     $("f-active").checked = initial.is_active !== false;
+    syncActiveUi();
     $("f-title").value = initial.title ?? "";
     $("f-description").value = initial.description ?? "";
     $("f-submit-label").value = initial.submit_label ?? "";
@@ -120,6 +121,14 @@ function refreshDependentUi() {
             chip.textContent = `{{${name}}}`;
             hint.appendChild(chip);
         });
+}
+
+function syncActiveUi() {
+    const active = $("f-active").checked;
+    $("f-active-title").textContent = active ? "Formulario activo" : "Formulario inactivo";
+    $("f-active-help").textContent = active
+        ? "Visible en la página pública."
+        : "Oculto en la página pública.";
 }
 
 function correlativeMode() {
@@ -370,6 +379,7 @@ if (root) {
     });
 
     $("save-form").addEventListener("click", save);
+    $("f-active").addEventListener("change", syncActiveUi);
 
     ["k-enabled", "k-prefix", "k-pattern"].forEach((id) => $(id).addEventListener("input", syncCorrelativeUi));
     document.querySelectorAll('input[name="k-mode"]').forEach((radio) => radio.addEventListener("change", syncCorrelativeUi));

@@ -45,9 +45,14 @@
                 <p class="text-xs text-gray-500 mt-1">Solo lo ves tú. Si lo dejas vacío se usa el título del formulario.</p>
             </div>
 
-            <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
-                <input type="checkbox" id="f-active" class="w-4 h-4 accent-primary">
-                Formulario activo (visible en la página pública)
+            <label for="f-active" class="flex items-center gap-3 cursor-pointer w-fit">
+                <input type="checkbox" id="f-active" class="peer sr-only">
+                <span
+                    class="relative shrink-0 w-11 h-6 rounded-full bg-gray-300 transition-colors peer-checked:bg-primary peer-focus-visible:ring-2 peer-focus-visible:ring-primary/40 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:w-5 after:h-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span>
+                <span>
+                    <span id="f-active-title" class="block text-sm font-medium text-gray-700"></span>
+                    <span id="f-active-help" class="block text-xs text-gray-500"></span>
+                </span>
             </label>
 
             @if ($form)
