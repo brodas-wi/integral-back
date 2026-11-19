@@ -12,11 +12,18 @@ class FormSubmissionExporter
 
     public function write(Form $form, Builder|\Illuminate\Database\Eloquent\Relations\Relation $query): void
     {
-        $columns = $this->usedColumns($form, $query);
-        $withCorrelative = (clone $query)->whereNotNull('correlative')->exists();
+        @set_time_limit(0);
+
+        $base = $query->toBase();
         $out = fopen('php://output', 'w');
 
         fwrite($out, "\xEF\xBB\xBF");
+        $this->flushOutput();
+
+        $columns = $this->usedColumns($form, $base);
+        $withCorrelative = (clone $base)->whereNotNull('correlative')->exists();
+        $versions = FormVersion::where('form_id', $form->id)->pluck('version', 'id');
+
         $this->put($out, array_merge(
             ['Fecha'],
             $withCorrelative ? ['Correlativo'] : [],
@@ -25,23 +32,33 @@ class FormSubmissionExporter
             ['Enviada desde'],
         ));
 
-        $query->with('version:id,version')->lazyByIdDesc(500)->each(function ($submission) use ($out, $columns, $withCorrelative) {
-            $answers = collect($submission->answers)->keyBy('key');
+        $keys = array_keys($columns);
+        $written = 0;
 
-            $row = array_merge(
-                [$submission->created_at->format('Y-m-d H:i:s')],
-                $withCorrelative ? [$submission->correlative] : [],
-                [$submission->uuid, $submission->version?->version],
-            );
+        (clone $base)
+            ->select(['id', 'uuid', 'correlative', 'form_version_id', 'answers', 'source_url', 'created_at'])
+            ->lazyByIdDesc(500)
+            ->each(function ($submission) use ($out, $keys, $withCorrelative, $versions, &$written) {
+                $answers = collect($this->decode($submission->answers))->keyBy('key');
 
-            foreach (array_keys($columns) as $key) {
-                $row[] = $answers->get($key)['display'] ?? '';
-            }
+                $row = array_merge(
+                    [$submission->created_at],
+                    $withCorrelative ? [$submission->correlative] : [],
+                    [$submission->uuid, $versions[$submission->form_version_id] ?? ''],
+                );
 
-            $row[] = $submission->source_url;
+                foreach ($keys as $key) {
+                    $row[] = $answers->get($key)['display'] ?? '';
+                }
 
-            $this->put($out, $row);
-        });
+                $row[] = $submission->source_url;
+
+                $this->put($out, $row);
+
+                if (++$written % 500 === 0) {
+                    $this->flushOutput();
+                }
+            });
 
         fclose($out);
     }
@@ -68,17 +85,17 @@ class FormSubmissionExporter
         return $columns;
     }
 
-    private function usedColumns(Form $form, $query): array
+    private function usedColumns(Form $form, $base): array
     {
         $all = $this->columns($form);
         $used = [];
         $hasRows = false;
 
-        (clone $query)->lazyByIdDesc(500)->each(function ($submission) use (&$used, &$hasRows) {
+        (clone $base)->select(['id', 'answers'])->lazyByIdDesc(1000)->each(function ($submission) use (&$used, &$hasRows) {
             $hasRows = true;
 
-            foreach ($submission->answers as $answer) {
-                if (($answer['display'] ?? '') !== '') {
+            foreach ($this->decode($submission->answers) as $answer) {
+                if (isset($answer['key']) && ($answer['display'] ?? '') !== '') {
                     $used[$answer['key']] = true;
                 }
             }
@@ -91,6 +108,22 @@ class FormSubmissionExporter
         }
 
         return array_filter($all, fn ($label, $key) => isset($used[$key]), ARRAY_FILTER_USE_BOTH);
+    }
+
+    private function decode(mixed $json): array
+    {
+        $data = is_string($json) ? json_decode($json, true) : $json;
+
+        return is_array($data) ? $data : [];
+    }
+
+    private function flushOutput(): void
+    {
+        if (ob_get_level() > 0) {
+            ob_flush();
+        }
+
+        flush();
     }
 
     private function put($handle, array $row): void

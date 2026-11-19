@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class FormSubmission extends Model
@@ -63,8 +64,8 @@ class FormSubmission extends Model
                 $term = '%' . addcslashes(trim($search), '%_\\') . '%';
                 $query->where(fn($w) => $w->where('correlative', 'like', $term)->orWhere('email', 'like', $term)->orWhere('search_text', 'like', $term));
             })
-            ->when($filters['date_from'] ?? null, fn($query, $date) => $query->whereDate('created_at', '>=', $date))
-            ->when($filters['date_to'] ?? null, fn($query, $date) => $query->whereDate('created_at', '<=', $date));
+            ->when($filters['date_from'] ?? null, fn($query, $date) => $query->where('created_at', '>=', Carbon::parse($date)->startOfDay()))
+            ->when($filters['date_to'] ?? null, fn($query, $date) => $query->where('created_at', '<=', Carbon::parse($date)->endOfDay()));
     }
 
     public function form(): BelongsTo

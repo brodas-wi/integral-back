@@ -7,6 +7,7 @@ use App\Models\FormSubmission;
 use App\Services\Forms\FormSubmissionExporter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -46,10 +47,20 @@ class FormSubmissionController extends Controller
 
         $name = Str::limit($form->slug, 60, '') . '-respuestas-' . now()->format('Ymd-His') . '.csv';
 
+        Log::info('Exportación de respuestas', [
+            'user_id' => $request->user()->id,
+            'form_id' => $form->id,
+            'filtros' => $filters,
+        ]);
+
         return response()->streamDownload(
             fn() => $exporter->write($form, $query),
             $name,
-            ['Content-Type' => 'text/csv; charset=UTF-8'],
+            [
+                'Content-Type' => 'text/csv; charset=UTF-8',
+                'Cache-Control' => 'no-store, private',
+                'X-Accel-Buffering' => 'no',
+            ],
         );
     }
 

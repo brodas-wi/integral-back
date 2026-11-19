@@ -358,24 +358,27 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/{media}/edit', [MediaController::class, 'edit'])
             ->name('edit')
-            ->middleware('can:media.view,media.manage');
+            ->middleware('can:media.edit,media.manage');
 
         Route::put('/{media}', [MediaController::class, 'update'])
             ->name('update')
-            ->middleware('can:media.view,media.manage');
+            ->middleware('can:media.edit,media.manage');
 
         Route::get('/{media}', [MediaController::class, 'show'])
             ->name('show')
             ->middleware('can:media.view,media.manage');
 
         Route::delete('/{media}', [MediaController::class, 'destroy'])
-            ->name('destroy');
+            ->name('destroy')
+            ->middleware('can:media.delete,media.manage');
 
         Route::post('/{media}/destroy-with-thumbnail', [MediaController::class, 'destroyWithThumbnail'])
-            ->name('destroy-with-thumbnail');
+            ->name('destroy-with-thumbnail')
+            ->middleware('can:media.delete,media.manage');
 
         Route::post('/bulk-delete', [MediaController::class, 'bulkDelete'])
-            ->name('bulk-delete');
+            ->name('bulk-delete')
+            ->middleware('can:media.delete,media.manage');
 
         Route::patch('/{id}/restore', [MediaController::class, 'restore'])
             ->name('restore')
@@ -424,16 +427,18 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/geocode', [AgencyController::class, 'geocode'])
             ->name('geocode')
-            ->middleware('can:agencies.create,agencies.edit,agencies.manage');
+            ->middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('agencies.create|agencies.edit'));
 
         Route::get('/municipalities', [AgencyController::class, 'getMunicipalities'])
             ->name('municipalities');
 
         Route::post('/bulk-status', [AgencyController::class, 'bulkStatus'])
-            ->name('bulk-status');
+            ->name('bulk-status')
+            ->middleware('can:agencies.edit,agencies.manage');
 
         Route::post('/bulk-delete', [AgencyController::class, 'bulkDestroy'])
-            ->name('bulk-destroy');
+            ->name('bulk-destroy')
+            ->middleware('can:agencies.delete,agencies.manage');
 
         Route::get('/{agency}/edit', [AgencyController::class, 'edit'])
             ->name('edit')
@@ -452,7 +457,8 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('can:agencies.edit,agencies.manage');
 
         Route::delete('/{agency}', [AgencyController::class, 'destroy'])
-            ->name('destroy');
+            ->name('destroy')
+            ->middleware('can:agencies.delete,agencies.manage');
     });
 
     // API Routes for Agencies
@@ -491,16 +497,18 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/geocode', [PaymentPointController::class, 'geocode'])
             ->name('geocode')
-            ->middleware('can:payment_points.create,payment_points.edit,payment_points.manage');
+            ->middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('payment_points.create|payment_points.edit'));
 
         Route::get('/municipalities', [PaymentPointController::class, 'getMunicipalities'])
             ->name('municipalities');
 
         Route::post('/bulk-status', [PaymentPointController::class, 'bulkStatus'])
-            ->name('bulk-status');
+            ->name('bulk-status')
+            ->middleware('can:payment_points.edit,payment_points.manage');
 
         Route::post('/bulk-delete', [PaymentPointController::class, 'bulkDestroy'])
-            ->name('bulk-destroy');
+            ->name('bulk-destroy')
+            ->middleware('can:payment_points.delete,payment_points.manage');
 
         Route::get('/{paymentPoint}/edit', [PaymentPointController::class, 'edit'])
             ->name('edit')
@@ -518,7 +526,8 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('can:payment_points.edit,payment_points.manage');
 
         Route::delete('/{paymentPoint}', [PaymentPointController::class, 'destroy'])
-            ->name('destroy');
+            ->name('destroy')
+            ->middleware('can:payment_points.delete,payment_points.manage');
     });
 
     Route::prefix('api/payment-points')->name('api.payment-points.')->group(function () {
@@ -564,7 +573,8 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('can:announcements.edit,announcements.manage');
 
         Route::delete('/{announcement}', [AnnouncementController::class, 'destroy'])
-            ->name('destroy');
+            ->name('destroy')
+            ->middleware('can:announcements.delete,announcements.manage');
     });
 
     // API endpoint for public access
@@ -878,11 +888,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/api/asset-categories/search', [ExtraordinaryAssetController::class, 'apiCategorySuggestions'])
         ->name('api.asset-categories.search')
-        ->middleware('can:assets.create,assets.edit,assets.manage');
+        ->middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('assets.create|assets.edit'));
 
     Route::get('/api/asset-categories/all', [ExtraordinaryAssetController::class, 'apiCategoryList'])
         ->name('api.asset-categories.all')
-        ->middleware('can:assets.create,assets.edit,assets.manage');
+        ->middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('assets.create|assets.edit'));
 
     // API endpoint for scripts (shared DB - public frontend consumes this)
     Route::get('/api/scripts/active', [ScriptController::class, 'apiActive'])

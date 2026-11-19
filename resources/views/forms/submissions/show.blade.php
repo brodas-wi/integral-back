@@ -59,7 +59,7 @@
             @if ($submission->mail_error)
                 <p class="text-xs text-red-600 break-words">{{ $submission->mail_error }}</p>
             @endif
-            @if ($submission->source_url)
+            @if ($submission->source_url && preg_match('/^https?:\/\//i', $submission->source_url))
                 <div class="pt-2">
                     <span class="text-gray-600">Enviada desde</span>
                     <a href="{{ $submission->source_url }}" target="_blank" rel="noopener noreferrer"

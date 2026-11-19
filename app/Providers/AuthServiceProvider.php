@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
     // Override permission check to include .manage permissions
     Gate::before(function ($user, $ability) {
       // If user has the exact permission, allow
-      if ($user->hasPermissionTo($ability)) {
+      if ($user->checkPermissionTo($ability)) {
         return true;
       }
 
@@ -24,7 +24,7 @@ class AuthServiceProvider extends ServiceProvider
         $module = $parts[0];
         $managePermission = $module . '.manage';
 
-        if ($user->hasPermissionTo($managePermission)) {
+        if ($user->checkPermissionTo($managePermission)) {
           return true;
         }
       }
