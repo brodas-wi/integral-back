@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 class PermissionHelper
 {
-  // Translate permission name to Spanish
   public static function translatePermission(string $permission): string
   {
     $translations = [
@@ -12,8 +11,8 @@ class PermissionHelper
       'users.create' => 'Crear usuarios',
       'users.edit' => 'Editar usuarios',
       'users.delete' => 'Eliminar usuarios',
-      'users.manage' => 'Gestionar usuarios',
       'users.activate' => 'Activar/Desactivar usuarios',
+      'users.manage' => 'Gestionar usuarios',
 
       'roles.view' => 'Ver roles',
       'roles.create' => 'Crear roles',
@@ -34,35 +33,103 @@ class PermissionHelper
       'pages.create' => 'Crear páginas',
       'pages.edit' => 'Editar páginas',
       'pages.delete' => 'Eliminar páginas',
+      'pages.publish' => 'Publicar/Despublicar páginas',
       'pages.manage' => 'Gestionar páginas',
 
-      'media.view' => 'Ver media',
-      'media.upload' => 'Subir media',
-      'media.download' => 'Descargar media',
-      'media.edit' => 'Editar media',
-      'media.delete' => 'Eliminar media',
-      'media.manage' => 'Gestionar media',
+      'navbars.view' => 'Ver navbars',
+      'navbars.create' => 'Crear navbars',
+      'navbars.edit' => 'Editar navbars',
+      'navbars.delete' => 'Eliminar navbars',
+      'navbars.toggle' => 'Activar/Desactivar navbars',
+      'navbars.restore' => 'Restaurar navbars',
+      'navbars.manage' => 'Gestionar navbars',
+
+      'footers.view' => 'Ver footers',
+      'footers.create' => 'Crear footers',
+      'footers.edit' => 'Editar footers',
+      'footers.delete' => 'Eliminar footers',
+      'footers.toggle' => 'Activar/Desactivar footers',
+      'footers.restore' => 'Restaurar footers',
+      'footers.manage' => 'Gestionar footers',
+
+      'media.view' => 'Ver medios',
+      'media.upload' => 'Subir medios',
+      'media.download' => 'Descargar medios',
+      'media.edit' => 'Editar medios',
+      'media.delete' => 'Eliminar medios',
+      'media.manage' => 'Gestionar medios',
+
+      'banners.view' => 'Ver banners',
+      'banners.create' => 'Crear banners',
+      'banners.edit' => 'Editar banners',
+      'banners.delete' => 'Eliminar banners',
+      'banners.manage' => 'Gestionar banners',
+
+      'announcements.view' => 'Ver anuncios',
+      'announcements.create' => 'Crear anuncios',
+      'announcements.edit' => 'Editar anuncios',
+      'announcements.delete' => 'Eliminar anuncios',
+      'announcements.manage' => 'Gestionar anuncios',
 
       'agencies.view' => 'Ver agencias',
       'agencies.create' => 'Crear agencias',
       'agencies.edit' => 'Editar agencias',
       'agencies.delete' => 'Eliminar agencias',
       'agencies.import' => 'Importar agencias',
+      'agencies.export' => 'Exportar agencias',
       'agencies.manage' => 'Gestionar agencias',
 
-      'navbars.view' => 'Ver navbars',
-      'navbars.create' => 'Crear navbars',
-      'navbars.edit' => 'Editar navbars',
-      'navbars.delete' => 'Eliminar navbars',
-      'navbars.manage' => 'Gestionar navbars',
-      'navbars.toggle' => 'Activar/Desactivar navbars',
-      'navbars.restore' => 'Restaurar navbars',
+      'payment_points.view' => 'Ver puntos de pago',
+      'payment_points.create' => 'Crear puntos de pago',
+      'payment_points.edit' => 'Editar puntos de pago',
+      'payment_points.delete' => 'Eliminar puntos de pago',
+      'payment_points.import' => 'Importar puntos de pago',
+      'payment_points.export' => 'Exportar puntos de pago',
+      'payment_points.manage' => 'Gestionar puntos de pago',
+
+      'assets.view' => 'Ver activos extraordinarios',
+      'assets.create' => 'Crear activos extraordinarios',
+      'assets.edit' => 'Editar activos extraordinarios',
+      'assets.delete' => 'Eliminar activos extraordinarios',
+      'assets.toggle' => 'Activar/Desactivar activos extraordinarios',
+      'assets.manage' => 'Gestionar activos extraordinarios',
+
+      'scripts.view' => 'Ver scripts',
+      'scripts.create' => 'Crear scripts',
+      'scripts.edit' => 'Editar scripts',
+      'scripts.delete' => 'Eliminar scripts',
+      'scripts.activate' => 'Activar/Desactivar scripts',
+      'scripts.approve' => 'Aprobar/Rechazar scripts',
+      'scripts.auto_approve' => 'Aprobación automática de scripts',
+      'scripts.manage' => 'Gestionar scripts',
+
+      'forms.view' => 'Ver formularios',
+      'forms.create' => 'Crear formularios',
+      'forms.edit' => 'Editar formularios',
+      'forms.delete' => 'Eliminar formularios',
+      'forms.manage' => 'Gestionar formularios',
+
+      'form_submissions.view' => 'Ver respuestas de formularios',
+      'form_submissions.export' => 'Exportar respuestas de formularios',
+      'form_submissions.delete' => 'Eliminar respuestas de formularios',
+      'form_submissions.manage' => 'Gestionar respuestas de formularios',
+
+      'news.view' => 'Ver noticias',
+      'news.create' => 'Crear noticias',
+      'news.edit' => 'Editar noticias',
+      'news.delete' => 'Eliminar noticias',
+      'news.manage' => 'Gestionar noticias',
+
+      'news_categories.view' => 'Ver categorías de noticias',
+      'news_categories.create' => 'Crear categorías de noticias',
+      'news_categories.edit' => 'Editar categorías de noticias',
+      'news_categories.delete' => 'Eliminar categorías de noticias',
+      'news_categories.manage' => 'Gestionar categorías de noticias',
     ];
 
-    return $translations[$permission] ?? $permission;
+    return $translations[$permission] ?? ucfirst(str_replace(['.', '_'], ' ', $permission));
   }
 
-  // Translate module name to Spanish
   public static function translateModule(string $module): string
   {
     $translations = [
@@ -71,14 +138,24 @@ class PermissionHelper
       'permissions' => 'Permisos',
       'content' => 'Contenido',
       'pages' => 'Páginas',
-      'media' => 'Media',
+      'navbars' => 'Navbars',
+      'footers' => 'Footers',
+      'media' => 'Medios',
+      'banners' => 'Banners',
+      'announcements' => 'Anuncios',
       'agencies' => 'Agencias',
+      'payment_points' => 'Puntos de pago',
+      'assets' => 'Activos extraordinarios',
+      'scripts' => 'Scripts',
+      'forms' => 'Formularios',
+      'form_submissions' => 'Respuestas de formularios',
+      'news' => 'Noticias',
+      'news_categories' => 'Categorías de noticias',
     ];
 
-    return $translations[$module] ?? ucfirst($module);
+    return $translations[$module] ?? ucfirst(str_replace('_', ' ', $module));
   }
 
-  // Get icon for a module
   public static function getModuleIcon(string $module): string
   {
     $icons = [
@@ -87,26 +164,34 @@ class PermissionHelper
       'permissions' => 'ri-lock-line',
       'content' => 'ri-file-text-line',
       'pages' => 'ri-pages-line',
+      'navbars' => 'ri-menu-line',
+      'footers' => 'ri-layout-bottom-line',
       'media' => 'ri-image-line',
+      'banners' => 'ri-advertisement-line',
+      'announcements' => 'ri-megaphone-line',
       'agencies' => 'ri-map-pin-line',
+      'payment_points' => 'ri-bank-card-line',
+      'assets' => 'ri-building-line',
+      'scripts' => 'ri-code-s-slash-line',
+      'forms' => 'ri-survey-line',
+      'form_submissions' => 'ri-inbox-line',
+      'news' => 'ri-newspaper-line',
+      'news_categories' => 'ri-price-tag-3-line',
     ];
 
     return $icons[$module] ?? 'ri-folder-line';
   }
 
-  // Check if permission is a manage permission
   public static function isManagePermission(string $permission): bool
   {
     return str_ends_with($permission, '.manage');
   }
 
-  // Extract module name from permission string
   public static function getModuleFromPermission(string $permission): string
   {
     return explode('.', $permission)[0];
   }
 
-  // Check if user has any of the given permissions (OR logic)
   public static function hasAnyPermission($user, array $permissions): bool
   {
     foreach ($permissions as $permission) {
@@ -117,7 +202,6 @@ class PermissionHelper
     return false;
   }
 
-  // Check if user has all of the given permissions (AND logic)
   public static function hasAllPermissions($user, array $permissions): bool
   {
     foreach ($permissions as $permission) {
@@ -128,7 +212,6 @@ class PermissionHelper
     return true;
   }
 
-  // Check if user can access a module (has view or manage permission)
   public static function canAccessModule($user, string $module): bool
   {
     return $user->can("{$module}.view") || $user->can("{$module}.manage");
