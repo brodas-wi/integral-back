@@ -255,8 +255,8 @@
             <div class="rounded-2xl bg-gray-50 border border-gray-200 p-4 space-y-2">
                 <p class="text-xs font-semibold text-secondary">Variables disponibles en asuntos y mensajes</p>
                 <div id="variables-hint" class="flex flex-wrap gap-2"></div>
-                <p class="text-xs text-gray-500"><code>{{ '{{answers}}' }}</code> imprime todas las preguntas con sus
-                    respuestas. <code>{{ '{{admin_url}}' }}</code> es el enlace a la respuesta en el CMS y solo funciona
+                <p class="text-xs text-gray-500"><code>@{{answers}}</code> imprime todas las preguntas con sus
+                    respuestas. <code>@{{admin_url}}</code> es el enlace a la respuesta en el CMS y solo funciona
                     en el aviso interno. Ambas solo se usan en el mensaje, no en el asunto.</p>
             </div>
 
