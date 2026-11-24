@@ -12,6 +12,8 @@ class FormSchemaNormalizer
     public const MAX_OPTIONS = 50;
     public const MAX_RECIPIENTS = 10;
     public const MAX_LINKS = 5;
+    public const MAX_ROUTING_GROUPS = 10;
+    public const MAX_GROUP_CC = 5;
     public const CORRELATIVE_PREFIX = 'SOL';
     public const DEFAULT_NOTIFY_BODY = "Se recibió una nueva respuesta en {{form_title}}.\n\nCorrelativo: {{correlative}}\nFecha: {{date}}\n\n{{answers}}\n\nVer respuesta en el CMS:\n{{admin_url}}";
     public const RESERVED_VARIABLES = ['form_title', 'submission_id', 'date', 'correlative'];
@@ -276,41 +278,32 @@ class FormSchemaNormalizer
                 'redirect_url' => $this->redirectUrl($thanks['redirect_url'] ?? null),
             ],
             'emails' => [
-                'notify' => $this->normalizeNotify($emails['notify'] ?? [], $allowedVariables),
+                'notify' => $this->normalizeNotify($emails['notify'] ?? [], $allowedVariables, $fields),
                 'confirmation' => $this->normalizeConfirmation($emails['confirmation'] ?? [], $emailKeys, $allowedVariables),
             ],
         ];
     }
 
-    private function normalizeNotify(mixed $input, array $allowedVariables): array
+    private function normalizeNotify(mixed $input, array $allowedVariables, array $fields): array
     {
         $input = is_array($input) ? $input : [];
         $enabled = filter_var($input['enabled'] ?? false, FILTER_VALIDATE_BOOLEAN);
-        $recipients = [];
+        $mode = ($input['mode'] ?? 'all') === 'routed' ? 'routed' : 'all';
+        $recipients = $this->emailList($input['recipients'] ?? [], 'settings.emails.notify.recipients', self::MAX_RECIPIENTS, 'destinatarios');
+        $routing = ['field_key' => null, 'groups' => []];
+        $needsGeneral = true;
 
-        foreach ((array) ($input['recipients'] ?? []) as $index => $address) {
-            $address = Str::lower(trim((string) $address));
-
-            if ($address === '') {
-                continue;
-            }
-
-            if (!filter_var($address, FILTER_VALIDATE_EMAIL) || mb_strlen($address) > 190) {
-                $this->fail("settings.emails.notify.recipients.{$index}", "«{$address}» no es un correo válido.");
-                continue;
-            }
-
-            $recipients[$address] = $address;
+        if ($mode === 'routed') {
+            [$routing, $needsGeneral] = $this->normalizeRouting($input['routing'] ?? [], $fields, $enabled);
         }
 
-        $recipients = array_values($recipients);
-
-        if (count($recipients) > self::MAX_RECIPIENTS) {
-            $this->fail('settings.emails.notify.recipients', 'Se admiten como máximo ' . self::MAX_RECIPIENTS . ' destinatarios.');
-        }
-
-        if ($enabled && $recipients === []) {
-            $this->fail('settings.emails.notify.recipients', 'Agrega al menos un destinatario para el aviso interno.');
+        if ($enabled && $needsGeneral && $recipients === []) {
+            $this->fail(
+                'settings.emails.notify.recipients',
+                $mode === 'routed'
+                    ? 'Agrega al menos un correo general para las respuestas que no tengan grupo.'
+                    : 'Agrega al menos un destinatario para el aviso interno.'
+            );
         }
 
         $subject = $this->string($input['subject'] ?? null, 'settings.emails.notify.subject', 200, false, 'El asunto')
@@ -325,10 +318,128 @@ class FormSchemaNormalizer
 
         return [
             'enabled' => $enabled,
+            'mode' => $mode,
             'recipients' => $recipients,
+            'routing' => $routing,
             'subject' => $subject,
             'body' => $body,
         ];
+    }
+
+    private function normalizeRouting(mixed $input, array $fields, bool $enabled): array
+    {
+        $input = is_array($input) ? $input : [];
+        $base = 'settings.emails.notify.routing';
+        $empty = ['field_key' => null, 'groups' => []];
+        $fieldKey = trim((string) ($input['field_key'] ?? ''));
+        $field = collect($fields)->first(fn ($f) => $f['key'] === $fieldKey && $f['type'] === FormFieldType::Select->value);
+
+        if (!$field) {
+            if ($enabled) {
+                $this->fail("{$base}.field_key", 'Elige el campo de lista que define a quién se envía el aviso.');
+            }
+
+            return [$empty, true];
+        }
+
+        $labels = array_column($field['options'], 'label', 'value');
+        $rawGroups = is_array($input['groups'] ?? null) ? array_values($input['groups']) : [];
+
+        if (count($rawGroups) > self::MAX_ROUTING_GROUPS) {
+            $this->fail("{$base}.groups", 'Se admiten como máximo ' . self::MAX_ROUTING_GROUPS . ' grupos.');
+            return [$empty, true];
+        }
+
+        $groups = [];
+        $assigned = [];
+
+        foreach ($rawGroups as $index => $raw) {
+            $path = "{$base}.groups.{$index}";
+
+            if (!is_array($raw)) {
+                $this->fail($path, 'El grupo no es válido.');
+                continue;
+            }
+
+            $values = [];
+
+            foreach ((array) ($raw['values'] ?? []) as $value) {
+                $value = is_scalar($value) ? trim((string) $value) : '';
+
+                if (!isset($labels[$value])) {
+                    $this->fail("{$path}.values", 'Una de las opciones elegidas ya no existe en el campo.');
+                    continue;
+                }
+
+                if (isset($assigned[$value])) {
+                    $this->fail("{$path}.values", "La opción «{$labels[$value]}» está en más de un grupo.");
+                    continue;
+                }
+
+                $assigned[$value] = true;
+                $values[] = $value;
+            }
+
+            $primary = Str::lower(is_scalar($raw['primary'] ?? null) ? trim((string) $raw['primary']) : '');
+
+            if ($primary !== '' && (!filter_var($primary, FILTER_VALIDATE_EMAIL) || mb_strlen($primary) > 190)) {
+                $this->fail("{$path}.primary", "«{$primary}» no es un correo válido.");
+                $primary = '';
+            }
+
+            $cc = $this->emailList($raw['cc'] ?? [], "{$path}.cc", self::MAX_GROUP_CC, 'correos con copia');
+            $cc = array_values(array_diff($cc, [$primary]));
+
+            if ($values === [] && $primary === '' && $cc === []) {
+                continue;
+            }
+
+            if ($values === []) {
+                $this->fail("{$path}.values", 'Elige al menos una opción para el grupo.');
+            }
+
+            if ($primary === '') {
+                $this->fail("{$path}.primary", 'Escribe el correo principal del grupo.');
+            }
+
+            $groups[] = ['values' => $values, 'primary' => $primary, 'cc' => $cc];
+        }
+
+        if ($enabled && $groups === []) {
+            $this->fail("{$base}.groups", 'Agrega al menos un grupo.');
+        }
+
+        $needsGeneral = !$field['required'] || array_diff(array_keys($labels), array_keys($assigned)) !== [];
+
+        return [['field_key' => $fieldKey, 'groups' => $groups], $needsGeneral];
+    }
+
+    private function emailList(mixed $input, string $path, int $max, string $name): array
+    {
+        $list = [];
+
+        foreach ((array) $input as $index => $address) {
+            $address = Str::lower(is_scalar($address) ? trim((string) $address) : '');
+
+            if ($address === '') {
+                continue;
+            }
+
+            if (!filter_var($address, FILTER_VALIDATE_EMAIL) || mb_strlen($address) > 190) {
+                $this->fail("{$path}.{$index}", "«{$address}» no es un correo válido.");
+                continue;
+            }
+
+            $list[$address] = $address;
+        }
+
+        $list = array_values($list);
+
+        if (count($list) > $max) {
+            $this->fail($path, "Se admiten como máximo {$max} {$name}.");
+        }
+
+        return $list;
     }
 
     private function normalizeConfirmation(mixed $input, array $emailKeys, array $allowedVariables): array

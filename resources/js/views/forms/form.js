@@ -15,6 +15,8 @@ let mode = "simple";
 let fieldsData = [];
 let builder = null;
 let editor = null;
+let routingGroups = [];
+let routeFieldKey = null;
 const DEFAULT_NOTIFY_BODY =
     "Se recibió una nueva respuesta en {{form_title}}.\n\nCorrelativo: {{correlative}}\nFecha: {{date}}\n\n{{answers}}\n\nVer respuesta en el CMS:\n{{admin_url}}";
 
@@ -59,6 +61,20 @@ function fill(initial) {
     $("n-recipients").value = (notify.recipients ?? []).join("\n");
     $("n-subject").value = notify.subject ?? "";
     $("n-body").value = notify.body ?? DEFAULT_NOTIFY_BODY;
+
+    const routing = notify.routing ?? {};
+    document.querySelector(
+        `input[name="n-mode"][value="${notify.mode === "routed" ? "routed" : "all"}"]`,
+    ).checked = true;
+    routeFieldKey = routing.field_key ?? null;
+    routingGroups = (routing.groups ?? []).map((group) => ({
+        values: group.values ?? [],
+        primary: group.primary ?? "",
+        cc: (group.cc ?? []).join("\n"),
+    }));
+    $("n-route-field").innerHTML = "";
+    delete $("n-groups").dataset.ready;
+    syncNotifyUi();
 
     $("c-enabled").checked = Boolean(confirmation.enabled);
     $("c-subject").value = confirmation.subject ?? "";
@@ -121,6 +137,140 @@ function refreshDependentUi() {
             chip.textContent = `{{${name}}}`;
             hint.appendChild(chip);
         });
+
+    syncRouting(fields);
+}
+
+function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+}
+
+function splitEmails(value) {
+    return value
+        .split(/[\s,;]+/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+}
+
+function notifyMode() {
+    return document.querySelector('input[name="n-mode"]:checked')?.value ?? "all";
+}
+
+function syncNotifyUi() {
+    const routed = notifyMode() === "routed";
+    $("n-routing").classList.toggle("hidden", !routed);
+    $("n-recipients-label").textContent = routed
+        ? "Correos generales (uno por línea, máximo 10)"
+        : "Destinatarios (uno por línea, máximo 10)";
+    $("n-recipients-help").textContent = routed
+        ? "Reciben copia de todas las respuestas y son el destino de las que no tengan grupo. Son obligatorios si el campo es opcional o hay opciones sin grupo."
+        : "Reciben todas las respuestas.";
+}
+
+function readGroups() {
+    return [...$("n-groups").children].map((card) => ({
+        values: [...card.querySelectorAll("[data-g-value]:checked")].map((input) => input.value),
+        primary: card.querySelector("[data-g-primary]").value,
+        cc: card.querySelector("[data-g-cc]").value,
+    }));
+}
+
+function currentRouteField() {
+    const key = $("n-route-field").value;
+    return (parseFields() ?? []).find((field) => field.type === "select" && field.key === key) ?? null;
+}
+
+function groupCard(group, index, options) {
+    const card = el("div", "rounded-2xl border border-gray-200 bg-gray-50 p-4 space-y-3");
+    const head = el("div", "flex items-center justify-between gap-2");
+    head.append(el("p", "text-sm font-semibold text-secondary", `Grupo ${index + 1}`));
+
+    const remove = el("button", "btn-outline btn-sm");
+    remove.type = "button";
+    remove.title = "Quitar grupo";
+    remove.innerHTML = '<i class="ri-delete-bin-line"></i>';
+    remove.addEventListener("click", () => {
+        card.remove();
+        renderGroups(readGroups());
+    });
+    head.append(remove);
+
+    const optionsBox = el("div", "flex flex-wrap gap-x-4 gap-y-2");
+    options.forEach((option) => {
+        const label = el("label", "flex items-center gap-2 text-sm text-gray-700 cursor-pointer");
+        const input = el("input", "w-4 h-4 accent-primary");
+        input.type = "checkbox";
+        input.value = option.value;
+        input.dataset.gValue = "";
+        input.checked = (group.values ?? []).includes(option.value);
+        label.append(input, el("span", "", option.label || option.value));
+        optionsBox.append(label);
+    });
+
+    if (!options.length) {
+        optionsBox.append(el("p", "text-xs text-gray-500", "Este campo aún no tiene opciones guardadas."));
+    }
+
+    const primary = el("input", "input-field");
+    primary.type = "text";
+    primary.maxLength = 190;
+    primary.placeholder = "correo.principal@empresa.com";
+    primary.value = group.primary ?? "";
+    primary.dataset.gPrimary = "";
+
+    const cc = el("textarea", "input-field !rounded-2xl");
+    cc.rows = 2;
+    cc.placeholder = "uno por línea, máximo 5";
+    cc.value = group.cc ?? "";
+    cc.dataset.gCc = "";
+
+    const primaryWrap = el("div");
+    primaryWrap.append(el("label", "block text-xs font-medium text-gray-700 mb-1", "Correo principal"), primary);
+
+    const ccWrap = el("div");
+    ccWrap.append(el("label", "block text-xs font-medium text-gray-700 mb-1", "Con copia (opcional)"), cc);
+
+    card.append(
+        head,
+        el("p", "text-xs font-medium text-gray-700", "Opciones de este grupo"),
+        optionsBox,
+        primaryWrap,
+        ccWrap,
+    );
+
+    return card;
+}
+
+function renderGroups(groups) {
+    const options = (currentRouteField()?.options ?? []).filter((option) => option.value);
+    const list = $("n-groups");
+    list.innerHTML = "";
+    groups.forEach((group, index) => list.appendChild(groupCard(group, index, options)));
+    list.dataset.ready = "1";
+    routingGroups = groups;
+    $("n-groups-empty").classList.toggle("hidden", groups.length > 0);
+}
+
+function syncRouting(fields) {
+    const select = $("n-route-field");
+    const previous = select.value || routeFieldKey || "";
+    const listFields = fields.filter((field) => field.type === "select" && field.key);
+
+    select.innerHTML = "";
+
+    if (!listFields.length) {
+        select.append(new Option("No hay campos de lista guardados en el formulario", ""));
+    } else {
+        listFields.forEach((field) => {
+            select.append(new Option(`${field.label || "Lista"} (${field.key})`, field.key));
+        });
+        select.value = listFields.some((field) => field.key === previous) ? previous : listFields[0].key;
+    }
+
+    renderGroups($("n-groups").dataset.ready ? readGroups() : routingGroups);
 }
 
 function syncActiveUi() {
@@ -161,10 +311,7 @@ function syncCorrelativeUi() {
 }
 
 function collect(fields) {
-    const recipients = $("n-recipients")
-        .value.split(/[\s,;]+/)
-        .map((value) => value.trim())
-        .filter(Boolean);
+    const recipients = splitEmails($("n-recipients").value);
 
     return {
         base_version: root.dataset.baseVersion ? Number(root.dataset.baseVersion) : null,
@@ -190,7 +337,16 @@ function collect(fields) {
             emails: {
                 notify: {
                     enabled: $("n-enabled").checked,
+                    mode: notifyMode(),
                     recipients,
+                    routing: {
+                        field_key: $("n-route-field").value || null,
+                        groups: readGroups().map((group) => ({
+                            values: group.values,
+                            primary: group.primary,
+                            cc: splitEmails(group.cc),
+                        })),
+                    },
                     subject: $("n-subject").value,
                     body: $("n-body").value,
                 },
@@ -252,6 +408,9 @@ function describe(path, message) {
 
     const field = path.match(/^fields\.(\d+)/);
     if (field) return `Campo ${Number(field[1]) + 1}: ${message}`;
+
+    const group = path.match(/^settings\.emails\.notify\.routing\.groups\.(\d+)/);
+    if (group) return `Grupo ${Number(group[1]) + 1}: ${message}`;
 
     return message;
 }
@@ -380,6 +539,12 @@ if (root) {
 
     $("save-form").addEventListener("click", save);
     $("f-active").addEventListener("change", syncActiveUi);
+
+    document.querySelectorAll('input[name="n-mode"]').forEach((radio) => radio.addEventListener("change", syncNotifyUi));
+    $("n-route-field").addEventListener("change", () => renderGroups(readGroups()));
+    $("n-add-group").addEventListener("click", () => {
+        renderGroups([...readGroups(), { values: [], primary: "", cc: "" }]);
+    });
 
     ["k-enabled", "k-prefix", "k-pattern"].forEach((id) => $(id).addEventListener("input", syncCorrelativeUi));
     document.querySelectorAll('input[name="k-mode"]').forEach((radio) => radio.addEventListener("change", syncCorrelativeUi));

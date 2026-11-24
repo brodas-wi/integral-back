@@ -271,10 +271,41 @@
                     Avisar internamente cuando llegue una nueva solicitud
                 </label>
 
+                <div class="flex flex-wrap items-center gap-6 text-sm text-gray-700">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="n-mode" value="all" class="w-4 h-4 accent-primary">
+                        Todas las respuestas a los mismos correos
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="n-mode" value="routed" class="w-4 h-4 accent-primary">
+                        Según una respuesta del formulario
+                    </label>
+                </div>
+
+                <div id="n-routing" class="hidden space-y-4 rounded-2xl border border-gray-200 p-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1" for="n-route-field">Campo que decide el
+                            destino</label>
+                        <select id="n-route-field" class="input-field"></select>
+                        <p class="text-xs text-gray-500 mt-1">Solo campos de tipo lista que ya tengan clave. Si agregaste
+                            campos u opciones nuevas, guarda primero.</p>
+                    </div>
+
+                    <div id="n-groups" class="space-y-3"></div>
+                    <p id="n-groups-empty" class="text-xs text-gray-500">Aún no hay grupos. Cada grupo reúne una o más
+                        opciones y las envía a un correo principal, con copias opcionales.</p>
+
+                    <button type="button" id="n-add-group" class="btn-outline btn-sm">
+                        <i class="ri-add-line mr-2"></i>
+                        Agregar grupo
+                    </button>
+                </div>
+
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1" for="n-recipients">Destinatarios (uno por
-                        línea, máximo 10)</label>
+                    <label id="n-recipients-label" class="block text-xs font-medium text-gray-700 mb-1"
+                        for="n-recipients"></label>
                     <textarea id="n-recipients" rows="3" class="input-field !rounded-2xl" placeholder="equipo@empresa.com"></textarea>
+                    <p id="n-recipients-help" class="text-xs text-gray-500 mt-1"></p>
                 </div>
 
                 <div>

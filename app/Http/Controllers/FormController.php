@@ -272,7 +272,9 @@ class FormController extends Controller
                 'emails' => [
                     'notify' => [
                         'enabled' => false,
+                        'mode' => 'all',
                         'recipients' => [],
+                        'routing' => ['field_key' => null, 'groups' => []],
                         'subject' => 'Nueva solicitud: {{form_title}}',
                         'body' => FormSchemaNormalizer::DEFAULT_NOTIFY_BODY,
                     ],

@@ -12,9 +12,10 @@ class FormMailer
     public function sendNotify(FormSubmission $submission): void
     {
         $settings = $submission->version->settings['emails']['notify'] ?? [];
-        $recipients = $settings['recipients'] ?? [];
 
-        if ($recipients === []) {
+        [$to, $cc] = $this->resolveRecipients($submission, $settings);
+
+        if ($to === []) {
             throw new RuntimeException('El formulario no tiene destinatarios para el aviso interno.');
         }
 
@@ -26,7 +27,37 @@ class FormMailer
             $this->extras($submission, true),
         );
 
-        Mail::to($recipients)->send(new FormMessageMail($subject, $body, $submission->email));
+        $pending = Mail::to($to);
+
+        if ($cc !== []) {
+            $pending->cc($cc);
+        }
+
+        $pending->send(new FormMessageMail($subject, $body, $submission->email));
+    }
+
+    private function resolveRecipients(FormSubmission $submission, array $settings): array
+    {
+        $general = $settings['recipients'] ?? [];
+
+        if (($settings['mode'] ?? 'all') !== 'routed') {
+            return [$general, []];
+        }
+
+        $routing = $settings['routing'] ?? [];
+        $answer = collect($submission->answers ?? [])->firstWhere('key', $routing['field_key'] ?? null);
+        $value = is_array($answer) && is_scalar($answer['value'] ?? null) ? (string) $answer['value'] : null;
+
+        $group = collect($routing['groups'] ?? [])->first(fn ($g) => $value !== null && in_array($value, $g['values'] ?? [], true));
+
+        if (!$group) {
+            return [$general, []];
+        }
+
+        $to = [$group['primary']];
+        $cc = array_values(array_diff(array_unique(array_merge($group['cc'] ?? [], $general)), $to));
+
+        return [$to, $cc];
     }
 
     public function sendConfirmation(FormSubmission $submission): void
