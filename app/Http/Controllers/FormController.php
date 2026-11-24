@@ -91,13 +91,17 @@ class FormController extends Controller
         $version = $updated->currentVersion;
         $changed = $updated->current_version_id !== $previousVersionId;
 
+        $message = $changed
+            ? "Formulario actualizado. Se creó la versión {$version->version}."
+            : 'Formulario guardado. El contenido no cambió, no se creó una versión nueva.';
+
+        session()->flash('success', $message);
+
         return response()->json([
             'success' => true,
-            'message' => $changed
-                ? "Formulario actualizado. Se creó la versión {$version->version}."
-                : 'Formulario guardado. El contenido no cambió, no se creó una versión nueva.',
+            'message' => $message,
             'version' => $version->version,
-            'initial' => $this->initialFor($updated),
+            'redirect' => route('forms.index'),
         ]);
     }
 
