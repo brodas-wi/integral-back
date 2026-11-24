@@ -261,7 +261,7 @@ class FormController extends Controller
                     'enabled' => false,
                     'mode' => 'default',
                     'prefix' => 'SOL',
-                    'pattern' => 'SOL-{YYYY}{MM}-{N:5}',
+                    'pattern' => 'SOL-{MM}{YYYY}-{N:5}',
                 ],
                 'thanks' => [
                     'title' => '¡Gracias!',

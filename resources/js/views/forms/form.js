@@ -47,7 +47,7 @@ function fill(initial) {
         `input[name="k-mode"][value="${correlative.mode === "custom" ? "custom" : "default"}"]`,
     ).checked = true;
     $("k-prefix").value = correlative.prefix ?? "SOL";
-    $("k-pattern").value = correlative.pattern ?? "SOL-{YYYY}{MM}-{N:5}";
+    $("k-pattern").value = correlative.pattern ?? "SOL-{MM}{YYYY}-{N:5}";
     syncCorrelativeUi();
 
     $("t-title").value = thanks.title ?? "";
@@ -141,7 +141,7 @@ function correlativePreview() {
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const day = String(now.getDate()).padStart(2, "0");
     const prefix = ($("k-prefix").value.trim() || "SOL").toUpperCase();
-    const pattern = correlativeMode() === "default" ? `${prefix}-{YYYY}{MM}-{N:5}` : $("k-pattern").value;
+    const pattern = correlativeMode() === "default" ? `${prefix}-{MM}{YYYY}-{N:5}` : $("k-pattern").value;
 
     return pattern.replace(/\{(YYYY|YY|MM|DD|N)(?::(\d{1,2}))?\}/g, (_, token, pad) => {
         if (token === "YYYY") return year;

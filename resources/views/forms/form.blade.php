@@ -228,7 +228,7 @@
                 <div id="k-default" class="space-y-1">
                     <label class="block text-xs font-medium text-gray-700 mb-1" for="k-prefix">Prefijo</label>
                     <input type="text" id="k-prefix" class="input-field uppercase" maxlength="10" placeholder="SOL">
-                    <p class="text-xs text-gray-500">Formato: prefijo, año y mes, y un consecutivo. El consecutivo se
+                    <p class="text-xs text-gray-500">Formato: prefijo, mes y año, y un consecutivo. El consecutivo se
                         reinicia cada año y se comparte entre los formularios que usen el mismo prefijo.</p>
                 </div>
 

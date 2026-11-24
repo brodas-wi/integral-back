@@ -394,7 +394,7 @@ class FormSchemaNormalizer
         }
 
         if ($mode === 'default') {
-            $pattern = $prefix . '-{YYYY}{MM}-{N:5}';
+            $pattern = $prefix . '-{MM}{YYYY}-{N:5}';
         } elseif ($enabled) {
             $this->checkCorrelativePattern($pattern);
         }
