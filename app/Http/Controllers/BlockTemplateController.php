@@ -15,15 +15,36 @@ class BlockTemplateController extends Controller
     public function index(Request $request): View
     {
         $search = trim((string) $request->query('search', ''));
+        $status = in_array($request->query('status'), ['active', 'inactive'], true) ? $request->query('status') : '';
+        $mode = in_array($request->query('mode'), ['static', 'managed'], true) ? $request->query('mode') : '';
+        $category = trim((string) $request->query('category', ''));
+        $sort = $request->query('sort') === 'recent' ? 'recent' : 'name';
+        $perPage = in_array((int) $request->query('per_page'), [10, 20, 30], true) ? (int) $request->query('per_page') : 10;
+
+        $like = '%' . addcslashes($search, '%_\\') . '%';
 
         $templates = BlockTemplate::query()
-            ->when($search !== '', fn ($query) => $query->where('name', 'like', "%{$search}%"))
-            ->orderBy('category')
-            ->orderBy('name')
-            ->paginate(15)
+            ->when($search !== '', fn ($query) => $query->where(function ($inner) use ($like) {
+                $inner->where('name', 'like', $like)
+                    ->orWhere('description', 'like', $like)
+                    ->orWhere('category', 'like', $like);
+            }))
+            ->when($status !== '', fn ($query) => $query->where('is_active', $status === 'active'))
+            ->when($mode !== '', fn ($query) => $query->where('mode', $mode))
+            ->when($category !== '', fn ($query) => $query->where('category', $category))
+            ->when(
+                $sort === 'recent',
+                fn ($query) => $query->orderByDesc('updated_at'),
+                fn ($query) => $query->orderBy('category')->orderBy('name')
+            )
+            ->paginate($perPage)
             ->withQueryString();
 
-        return view('block-templates.index', compact('templates', 'search'));
+        $filters = compact('search', 'status', 'mode', 'category', 'sort', 'perPage');
+        $hasFilters = $search !== '' || $status !== '' || $mode !== '' || $category !== '';
+        $categories = BlockTemplate::query()->distinct()->orderBy('category')->pluck('category');
+
+        return view('block-templates.index', compact('templates', 'filters', 'hasFilters', 'categories'));
     }
 
     public function create(): View

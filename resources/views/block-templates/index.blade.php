@@ -21,21 +21,61 @@
 
 @section('content')
     <div class="card mb-6">
-        <form method="GET" action="{{ route('block-templates.index') }}" class="flex flex-col sm:flex-row gap-4">
-            <div class="flex-1">
-                <input type="text" name="search" value="{{ $search }}" placeholder="Buscar por nombre..." class="input-field">
+        <form method="GET" action="{{ route('block-templates.index') }}" class="space-y-4">
+            <div class="flex flex-col sm:flex-row gap-4">
+                <div class="flex-1">
+                    <input type="text" name="search" value="{{ $filters['search'] }}"
+                        placeholder="Buscar por nombre, descripción o categoría..." class="input-field">
+                </div>
+                <select name="status" class="input-field sm:w-44" onchange="this.form.submit()">
+                    <option value="">Todos los estados</option>
+                    <option value="active" @selected($filters['status'] === 'active')>Activas</option>
+                    <option value="inactive" @selected($filters['status'] === 'inactive')>Inactivas</option>
+                </select>
+                <select name="mode" class="input-field sm:w-44" onchange="this.form.submit()">
+                    <option value="">Todos los tipos</option>
+                    <option value="static" @selected($filters['mode'] === 'static')>Estáticas</option>
+                    <option value="managed" @selected($filters['mode'] === 'managed')>Administrables</option>
+                </select>
             </div>
-            <div class="flex items-end gap-2">
-                <button type="submit" class="btn-secondary whitespace-nowrap">
-                    <i class="ri-search-line mr-2"></i>
-                    Buscar
-                </button>
-                @if ($search !== '')
-                    <a href="{{ route('block-templates.index') }}" class="btn-outline whitespace-nowrap">
-                        <i class="ri-close-line mr-2"></i>
-                        Limpiar
-                    </a>
-                @endif
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <div class="flex-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Categoría</label>
+                    <select name="category" class="input-field" onchange="this.form.submit()">
+                        <option value="">Todas las categorías</option>
+                        @foreach ($categories as $categoryOption)
+                            <option value="{{ $categoryOption }}" @selected($filters['category'] === $categoryOption)>{{ $categoryOption }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Ordenar por</label>
+                    <select name="sort" class="input-field" onchange="this.form.submit()">
+                        <option value="name" @selected($filters['sort'] === 'name')>Categoría y nombre</option>
+                        <option value="recent" @selected($filters['sort'] === 'recent')>Más recientes</option>
+                    </select>
+                </div>
+                <div class="flex-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Por página</label>
+                    <select name="per_page" class="input-field" onchange="this.form.submit()">
+                        @foreach ([10, 20, 30] as $size)
+                            <option value="{{ $size }}" @selected($filters['perPage'] === $size)>{{ $size }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex items-end gap-2">
+                    <button type="submit" class="btn-secondary whitespace-nowrap">
+                        <i class="ri-search-line mr-2"></i>
+                        Buscar
+                    </button>
+                    @if ($hasFilters)
+                        <a href="{{ route('block-templates.index') }}" class="btn-outline whitespace-nowrap">
+                            <i class="ri-close-line mr-2"></i>
+                            Limpiar
+                        </a>
+                    @endif
+                </div>
             </div>
         </form>
     </div>
@@ -47,7 +87,7 @@
                     <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
                         <div class="flex-1 min-w-0">
                             <h3 class="text-base font-bold text-secondary mb-1 line-clamp-2">{{ $template->name }}</h3>
-                            <span class="text-[11px] text-gray-500 font-mono truncate block">{{ $template->slug }}</span>
+                            <p class="text-sm text-gray-500 line-clamp-2">{{ $template->description ?: 'Sin descripción' }}</p>
                         </div>
                         <span class="badge {{ $template->is_active ? 'badge-success' : 'badge-warning' }} flex-shrink-0 whitespace-nowrap">
                             <i class="ri-{{ $template->is_active ? 'eye' : 'eye-off' }}-line mr-1"></i>
@@ -130,9 +170,9 @@
             <i class="ri-layout-masonry-line text-6xl text-gray-400 mb-4"></i>
             <h3 class="text-xl font-semibold text-secondary mb-2">No hay plantillas</h3>
             <p class="text-gray-600 mb-6">
-                {{ $search !== '' ? 'No se encontraron plantillas que coincidan con tu búsqueda' : 'Crea tu primera plantilla de bloque para el editor' }}
+                {{ $hasFilters ? 'No se encontraron plantillas que coincidan con tu búsqueda' : 'Crea tu primera plantilla de bloque para el editor' }}
             </p>
-            @if ($search === '')
+            @if (! $hasFilters)
                 @canany(['block_templates.create', 'block_templates.manage'])
                     <a href="{{ route('block-templates.create') }}" class="btn-primary inline-flex items-center">
                         <i class="ri-add-line mr-2"></i>
