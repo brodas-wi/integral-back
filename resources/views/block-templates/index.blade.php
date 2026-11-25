@@ -10,11 +10,6 @@
 @endsection
 
 @section('header-actions')
-    <button type="button" class="btn-secondary btn-sm btn-header-action" onclick="document.getElementById('bt-help').showModal()">
-        <i class="ri-question-line sm:mr-2"></i>
-        <span class="btn-text">Ayuda</span>
-        <span class="btn-tooltip">Ayuda</span>
-    </button>
     @canany(['block_templates.create', 'block_templates.manage'])
         <a href="{{ route('block-templates.create') }}" class="btn-primary btn-sm btn-header-action">
             <i class="ri-add-line sm:mr-2"></i>
