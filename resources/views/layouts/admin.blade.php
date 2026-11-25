@@ -168,7 +168,7 @@
                         <h2 class="text-2xl font-bold text-secondary">@yield('page-title', 'Dashboard')</h2>
                     </div>
 
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
                         @yield('header-actions')
                     </div>
                 </div>
