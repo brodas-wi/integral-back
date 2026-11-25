@@ -18,7 +18,6 @@ class BlockTemplateController extends Controller
         $status = in_array($request->query('status'), ['active', 'inactive'], true) ? $request->query('status') : '';
         $mode = in_array($request->query('mode'), ['static', 'managed'], true) ? $request->query('mode') : '';
         $category = trim((string) $request->query('category', ''));
-        $sort = $request->query('sort') === 'recent' ? 'recent' : 'name';
         $perPage = in_array((int) $request->query('per_page'), [10, 20, 30], true) ? (int) $request->query('per_page') : 10;
 
         $like = '%' . addcslashes($search, '%_\\') . '%';
@@ -32,15 +31,12 @@ class BlockTemplateController extends Controller
             ->when($status !== '', fn ($query) => $query->where('is_active', $status === 'active'))
             ->when($mode !== '', fn ($query) => $query->where('mode', $mode))
             ->when($category !== '', fn ($query) => $query->where('category', $category))
-            ->when(
-                $sort === 'recent',
-                fn ($query) => $query->orderByDesc('updated_at'),
-                fn ($query) => $query->orderBy('category')->orderBy('name')
-            )
+            ->orderBy('category')
+            ->orderBy('name')
             ->paginate($perPage)
             ->withQueryString();
 
-        $filters = compact('search', 'status', 'mode', 'category', 'sort', 'perPage');
+        $filters = compact('search', 'status', 'mode', 'category', 'perPage');
         $hasFilters = $search !== '' || $status !== '' || $mode !== '' || $category !== '';
         $categories = BlockTemplate::query()->distinct()->orderBy('category')->pluck('category');
 

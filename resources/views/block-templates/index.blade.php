@@ -27,19 +27,22 @@
                     <input type="text" name="search" value="{{ $filters['search'] }}"
                         placeholder="Buscar por nombre, descripción o categoría..." class="input-field">
                 </div>
-                <select name="status" class="input-field sm:w-44" onchange="this.form.submit()">
+                <select name="status" class="input-field sm:w-56" onchange="this.form.submit()">
                     <option value="">Todos los estados</option>
                     <option value="active" @selected($filters['status'] === 'active')>Activas</option>
                     <option value="inactive" @selected($filters['status'] === 'inactive')>Inactivas</option>
                 </select>
-                <select name="mode" class="input-field sm:w-44" onchange="this.form.submit()">
-                    <option value="">Todos los tipos</option>
-                    <option value="static" @selected($filters['mode'] === 'static')>Estáticas</option>
-                    <option value="managed" @selected($filters['mode'] === 'managed')>Administrables</option>
-                </select>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4">
+                <div class="flex-1">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Tipo</label>
+                    <select name="mode" class="input-field" onchange="this.form.submit()">
+                        <option value="">Todos los tipos</option>
+                        <option value="static" @selected($filters['mode'] === 'static')>Estáticas</option>
+                        <option value="managed" @selected($filters['mode'] === 'managed')>Administrables</option>
+                    </select>
+                </div>
                 <div class="flex-1">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Categoría</label>
                     <select name="category" class="input-field" onchange="this.form.submit()">
@@ -47,13 +50,6 @@
                         @foreach ($categories as $categoryOption)
                             <option value="{{ $categoryOption }}" @selected($filters['category'] === $categoryOption)>{{ $categoryOption }}</option>
                         @endforeach
-                    </select>
-                </div>
-                <div class="flex-1">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Ordenar por</label>
-                    <select name="sort" class="input-field" onchange="this.form.submit()">
-                        <option value="name" @selected($filters['sort'] === 'name')>Categoría y nombre</option>
-                        <option value="recent" @selected($filters['sort'] === 'recent')>Más recientes</option>
                     </select>
                 </div>
                 <div class="flex-1">
