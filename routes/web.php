@@ -20,6 +20,8 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsCategoryController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\FormSubmissionController;
+use App\Http\Controllers\BlockTemplateController;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
@@ -778,6 +780,45 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/api/forms/options', [FormController::class, 'apiOptions'])
         ->name('api.forms.options')
         ->middleware('can:pages.edit,pages.manage');
+
+    // ==========================================
+    // BLOCK TEMPLATES MODULE ROUTES
+    // ==========================================
+    $btPermission = fn (string $action) => PermissionMiddleware::using("block_templates.{$action}|block_templates.manage");
+
+    Route::prefix('block-templates')->name('block-templates.')->group(function () use ($btPermission) {
+        Route::get('/', [BlockTemplateController::class, 'index'])
+            ->name('index')
+            ->middleware($btPermission('view'));
+
+        Route::get('/create', [BlockTemplateController::class, 'create'])
+            ->name('create')
+            ->middleware($btPermission('create'));
+
+        Route::post('/', [BlockTemplateController::class, 'store'])
+            ->name('store')
+            ->middleware($btPermission('create'));
+
+        Route::get('/{blockTemplate}/edit', [BlockTemplateController::class, 'edit'])
+            ->name('edit')
+            ->middleware($btPermission('edit'));
+
+        Route::put('/{blockTemplate}', [BlockTemplateController::class, 'update'])
+            ->name('update')
+            ->middleware($btPermission('edit'));
+
+        Route::patch('/{blockTemplate}/toggle-status', [BlockTemplateController::class, 'toggleStatus'])
+            ->name('toggle-status')
+            ->middleware($btPermission('toggle'));
+
+        Route::delete('/{blockTemplate}', [BlockTemplateController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware($btPermission('delete'));
+    });
+
+    Route::get('/api/block-templates/active', [BlockTemplateController::class, 'apiActive'])
+        ->name('api.block-templates.active')
+        ->middleware(PermissionMiddleware::using('pages.edit|pages.manage'));
 
     // ==========================================
     // SCRIPTS MODULE ROUTES

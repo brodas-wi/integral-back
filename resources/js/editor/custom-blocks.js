@@ -64,6 +64,7 @@ import { initializeNoticeSectionBlock } from "@/editor/blocks/notice-section-blo
 import { initializeTextKitBlock } from "@/editor/blocks/text-kit-blocks.js";
 import { initializeIconBadgeBlock } from "@/editor/blocks/icon-badge-blocks.js";
 import { initializeSearchBlock } from "@/editor/blocks/search-blocks.js";
+import { initializeBlockTemplatesBlock } from "@/editor/blocks/block-templates-blocks.js";
 
 
 export function addCustomBlocks(editor) {
@@ -145,6 +146,7 @@ export function addCustomBlocks(editor) {
     initializeTextSectionsBlock(editor);
     initializeTextKitBlock(editor);
     initializeIconBadgeBlock(editor);
+    initializeBlockTemplatesBlock(editor);
 
     blockRegistry.reorderExistingBlocks(editor);
 }

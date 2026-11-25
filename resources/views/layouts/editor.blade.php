@@ -17,6 +17,7 @@
     <meta name="api-announcements-url" content="{{ route('api.announcements.for-page') }}">
     <meta name="media-api-url" content="{{ route('media.api') }}">
     <meta name="api-assets-url" content="{{ route('api.assets.active') }}">
+    <meta name="block-templates-url" content="{{ route('api.block-templates.active') }}">
     <meta name="map-locations-url" content="{{ route('api.map-locations') }}">
     @if (config('features.news'))
         <meta name="api-news-url" content="{{ route('api.news.active') }}">

@@ -125,6 +125,14 @@ class PermissionHelper
       'news_categories.edit' => 'Editar categorías de noticias',
       'news_categories.delete' => 'Eliminar categorías de noticias',
       'news_categories.manage' => 'Gestionar categorías de noticias',
+
+      'block_templates.view' => 'Ver plantillas de bloques',
+      'block_templates.create' => 'Crear plantillas de bloques',
+      'block_templates.edit' => 'Editar plantillas de bloques',
+      'block_templates.delete' => 'Eliminar plantillas de bloques',
+      'block_templates.toggle' => 'Activar/Desactivar plantillas de bloques',
+      'block_templates.scripts' => 'Escribir JavaScript en plantillas de bloques',
+      'block_templates.manage' => 'Gestionar plantillas de bloques',
     ];
 
     return $translations[$permission] ?? ucfirst(str_replace(['.', '_'], ' ', $permission));
@@ -151,6 +159,7 @@ class PermissionHelper
       'form_submissions' => 'Respuestas de formularios',
       'news' => 'Noticias',
       'news_categories' => 'Categorías de noticias',
+      'block_templates' => 'Plantillas de bloques',
     ];
 
     return $translations[$module] ?? ucfirst(str_replace('_', ' ', $module));
@@ -177,6 +186,7 @@ class PermissionHelper
       'form_submissions' => 'ri-inbox-line',
       'news' => 'ri-newspaper-line',
       'news_categories' => 'ri-price-tag-3-line',
+      'block_templates' => 'ri-layout-masonry-line',
     ];
 
     return $icons[$module] ?? 'ri-folder-line';

@@ -9,6 +9,7 @@
     <meta name="asset-url" content="{{ rtrim(config('app.asset_url', config('app.url')), '/') }}">
     <meta name="media-api-url" content="{{ route('media.api') }}">
     <meta name="api-assets-url" content="{{ route('api.assets.active') }}">
+    <meta name="block-templates-url" content="{{ route('api.block-templates.active') }}">
     <meta name="map-locations-url" content="{{ route('api.map-locations') }}">
     <title>@yield('title', 'Dashboard') - CMS Integral</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
@@ -52,6 +53,7 @@
                 ['label' => 'Navbars', 'route' => 'navbars.index', 'icon' => 'ri-layout-top-line', 'active' => ['navbars.*'], 'can' => ['navbars.view', 'navbars.manage']],
                 ['label' => 'Footers', 'route' => 'footers.index', 'icon' => 'ri-layout-bottom-line', 'active' => ['footers.*'], 'can' => ['footers.view', 'footers.manage']],
                 ['label' => 'Formularios', 'route' => 'forms.index', 'icon' => 'ri-survey-line', 'active' => ['forms.*'], 'can' => ['forms.view', 'forms.manage']],
+                ['label' => 'Plantillas de bloques', 'route' => 'block-templates.index', 'icon' => 'ri-layout-masonry-line', 'active' => ['block-templates.*'], 'can' => ['block_templates.view', 'block_templates.manage']],
                 ['label' => 'Scripts', 'route' => 'scripts.index', 'icon' => 'ri-code-s-slash-line', 'active' => ['scripts.*'], 'can' => ['scripts.view', 'scripts.manage']],
             ],
         ],
