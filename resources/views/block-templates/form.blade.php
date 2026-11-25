@@ -79,8 +79,11 @@
                 <div>
                     <span class="{{ $label }}">Estado</span>
                     <input type="hidden" name="is_active" value="0">
-                    <label class="inline-flex items-center gap-2 text-sm text-gray-700">
-                        <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $template->is_active))> Disponible en el editor
+                    <label class="inline-flex cursor-pointer items-center gap-3">
+                        <input type="checkbox" name="is_active" value="1" class="peer sr-only" @checked(old('is_active', $template->is_active))>
+                        <span class="relative h-6 w-11 flex-shrink-0 rounded-full bg-gray-300 transition-colors after:absolute after:left-[3px] after:top-[3px] after:h-[18px] after:w-[18px] after:rounded-full after:bg-white after:shadow after:transition-transform after:content-[''] peer-checked:bg-secondary peer-checked:after:translate-x-5"></span>
+                        <span class="text-sm text-gray-700 peer-checked:hidden">Inactiva</span>
+                        <span class="hidden text-sm text-gray-700 peer-checked:inline">Activa</span>
                     </label>
                 </div>
             </div>

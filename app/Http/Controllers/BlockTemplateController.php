@@ -42,7 +42,7 @@ class BlockTemplateController extends Controller
         $template = BlockTemplate::create($this->payload($request));
 
         return redirect()
-            ->route('block-templates.edit', $template)
+            ->route('block-templates.index')
             ->with('success', 'Plantilla creada correctamente.');
     }
 
@@ -56,7 +56,7 @@ class BlockTemplateController extends Controller
         $blockTemplate->update($this->payload($request, $blockTemplate));
 
         return redirect()
-            ->route('block-templates.edit', $blockTemplate)
+            ->route('block-templates.index')
             ->with('success', 'Plantilla actualizada correctamente.');
     }
 
