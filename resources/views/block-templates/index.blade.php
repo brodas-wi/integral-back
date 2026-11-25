@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Plantillas de bloques')
+@section('title', 'Plantillas')
 
 @section('page-title')
     <div class="flex items-center gap-3">
-        <span>Plantillas de bloques</span>
+        <span>Plantillas</span>
         <span class="badge badge-info">{{ $templates->total() }} {{ $templates->total() === 1 ? 'plantilla' : 'plantillas' }}</span>
     </div>
 @endsection
