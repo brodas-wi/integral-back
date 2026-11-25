@@ -22,14 +22,9 @@
         $canScripts = auth()->user()->can('block_templates.scripts');
         $mode = old('mode', $template->mode);
         $label = 'block text-xs font-medium text-gray-700 mb-1';
-        $starterHtml = '<section class="demo"><h2>{{title}}</h2><p>{{description}}</p></section>';
+        $starterHtml = '<section class="demo"><h2>Título de ejemplo</h2><p>Texto de ejemplo para tu bloque.</p></section>';
         $starterCss = '.demo{padding:2rem;text-align:center}';
-        $starterSchema = [
-            ['key' => 'title', 'label' => 'Título', 'type' => 'text', 'default' => 'Título de ejemplo'],
-            ['key' => 'description', 'label' => 'Descripción', 'type' => 'textarea', 'default' => 'Texto de ejemplo'],
-        ];
-        $schemaSource = $template->schema ?: ($template->exists ? null : $starterSchema);
-        $schemaText = old('schema', $schemaSource ? json_encode($schemaSource, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : '');
+        $schemaText = old('schema', $template->schema ? json_encode($template->schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : '');
     @endphp
 
     <form id="bt-form" method="POST"

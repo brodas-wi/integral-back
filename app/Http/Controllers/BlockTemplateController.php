@@ -29,7 +29,7 @@ class BlockTemplateController extends Controller
     public function create(): View
     {
         $template = new BlockTemplate([
-            'mode' => 'managed',
+            'mode' => 'static',
             'category' => 'Personalizados',
             'is_active' => true,
         ]);
