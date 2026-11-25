@@ -38,7 +38,7 @@
                 <div class="flex-1">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Tipo</label>
                     <select name="mode" class="input-field" onchange="this.form.submit()">
-                        <option value="">Todos los tipos</option>
+                        <option value="">Todos</option>
                         <option value="static" @selected($filters['mode'] === 'static')>Estáticas</option>
                         <option value="managed" @selected($filters['mode'] === 'managed')>Administrables</option>
                     </select>
@@ -46,7 +46,7 @@
                 <div class="flex-1">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Categoría</label>
                     <select name="category" class="input-field" onchange="this.form.submit()">
-                        <option value="">Todas las categorías</option>
+                        <option value="">Todas</option>
                         @foreach ($categories as $categoryOption)
                             <option value="{{ $categoryOption }}" @selected($filters['category'] === $categoryOption)>{{ $categoryOption }}</option>
                         @endforeach
