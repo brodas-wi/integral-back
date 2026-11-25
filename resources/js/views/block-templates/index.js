@@ -15,10 +15,21 @@ const TONES = {
     },
 };
 
-function describe(form) {
-    const name = form.dataset.name || "esta plantilla";
+function resolveAction(form) {
+    if (form.dataset.btAction) return form.dataset.btAction;
 
-    if (form.dataset.btAction === "delete") {
+    const method = form.querySelector('input[name="_method"]')?.value?.toUpperCase();
+    if (method === "DELETE") return "delete";
+    if (method === "PATCH" && form.action.includes("toggle-status")) return "toggle";
+
+    return null;
+}
+
+function describe(form, action) {
+    const name =
+        form.dataset.name || form.closest(".card")?.querySelector("h3")?.textContent.trim() || "esta plantilla";
+
+    if (action === "delete") {
         return {
             name,
             tone: "danger",
@@ -30,7 +41,9 @@ function describe(form) {
         };
     }
 
-    if (form.dataset.active === "1") {
+    const active = form.dataset.active ? form.dataset.active === "1" : /desactivar/i.test(form.textContent);
+
+    if (active) {
         return {
             name,
             tone: "warning",
@@ -122,12 +135,15 @@ function lockAndSubmit(form) {
 }
 
 document.addEventListener("submit", async (event) => {
-    const form = event.target.closest("form[data-bt-action]");
-    if (!form) return;
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement)) return;
+
+    const action = resolveAction(form);
+    if (!action) return;
 
     event.preventDefault();
 
-    const confirmed = await confirmAction(describe(form));
+    const confirmed = await confirmAction(describe(form, action));
     if (!confirmed) return;
 
     lockAndSubmit(form);
