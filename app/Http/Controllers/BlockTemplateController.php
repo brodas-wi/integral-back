@@ -34,7 +34,7 @@ class BlockTemplateController extends Controller
             'is_active' => true,
         ]);
 
-        return view('block-templates.form', compact('template'));
+        return view('block-templates.form', ['template' => $template, 'categories' => $this->categories()]);
     }
 
     public function store(BlockTemplateRequest $request): RedirectResponse
@@ -48,7 +48,7 @@ class BlockTemplateController extends Controller
 
     public function edit(BlockTemplate $blockTemplate): View
     {
-        return view('block-templates.form', ['template' => $blockTemplate]);
+        return view('block-templates.form', ['template' => $blockTemplate, 'categories' => $this->categories()]);
     }
 
     public function update(BlockTemplateRequest $request, BlockTemplate $blockTemplate): RedirectResponse
@@ -84,6 +84,19 @@ class BlockTemplateController extends Controller
             ->get(['slug', 'name', 'category', 'description', 'mode', 'html', 'css', 'js', 'schema', 'icon_svg', 'version']);
 
         return response()->json($templates);
+    }
+
+    private function categories(): array
+    {
+        return BlockTemplate::query()
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category')
+            ->push('Personalizados')
+            ->unique()
+            ->sort()
+            ->values()
+            ->all();
     }
 
     private function payload(BlockTemplateRequest $request, ?BlockTemplate $template = null): array

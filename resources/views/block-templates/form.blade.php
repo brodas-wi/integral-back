@@ -56,9 +56,11 @@
                     <label class="{{ $label }}" for="bt-name">Nombre</label>
                     <input id="bt-name" type="text" name="name" maxlength="120" value="{{ old('name', $template->name) }}" class="input-field">
                 </div>
-                <div>
+                <div class="relative" data-category-field data-categories="{{ json_encode($categories) }}">
                     <label class="{{ $label }}" for="bt-category">Categoría en el editor</label>
-                    <input id="bt-category" type="text" name="category" maxlength="60" value="{{ old('category', $template->category) }}" class="input-field">
+                    <input id="bt-category" type="text" name="category" maxlength="60" autocomplete="off" value="{{ old('category', $template->category) }}" class="input-field">
+                    <div data-category-list hidden class="absolute z-20 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 shadow-lg"></div>
+                    <p data-category-hint hidden class="mt-1 text-xs text-amber-600"></p>
                 </div>
             </div>
 
@@ -91,22 +93,43 @@
 
         <section class="card space-y-4">
             <div class="flex items-center gap-4">
-                <img id="bt-icon-preview" alt="" class="h-12 w-12 rounded bg-gray-100 p-1">
-                <div class="flex-1">
-                    <label class="{{ $label }}" for="bt-icon-file">Icono SVG del bloque (opcional)</label>
-                    <input id="bt-icon-file" type="file" accept=".svg,image/svg+xml" class="text-sm text-gray-600">
+                <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
+                    <img id="bt-icon-preview" alt="" class="h-10 w-10 rounded">
+                </div>
+                <div class="min-w-0 flex-1">
+                    <span class="{{ $label }}">Icono SVG del bloque (opcional)</span>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button type="button" id="bt-icon-pick" class="btn-secondary btn-sm">
+                            <i class="ri-upload-2-line mr-1"></i> Subir SVG
+                        </button>
+                        <button type="button" id="bt-icon-clear" class="btn-outline btn-sm hidden">
+                            <i class="ri-close-line mr-1"></i> Quitar
+                        </button>
+                        <span id="bt-icon-name" class="truncate text-xs text-gray-500">Se usa el icono por defecto</span>
+                    </div>
+                    <input id="bt-icon-file" type="file" accept=".svg,image/svg+xml" class="hidden">
                 </div>
             </div>
             <textarea id="bt-icon" name="icon_svg" rows="3" class="input-field !rounded-lg font-mono text-xs" placeholder="&lt;svg viewBox=&quot;0 0 32 32&quot;&gt;...&lt;/svg&gt;">{{ old('icon_svg', $template->icon_svg) }}</textarea>
         </section>
 
         <section class="card space-y-2">
-            <label class="{{ $label }}">HTML</label>
+            <div class="flex items-center justify-between gap-3">
+                <label class="{{ $label }} mb-0">HTML</label>
+                <button type="button" class="btn-outline btn-sm" data-format="html">
+                    <i class="ri-code-line mr-1"></i> Formatear
+                </button>
+            </div>
             <textarea name="html" data-cm="html" rows="10" class="input-field">{{ old('html', $template->html ?: ($template->exists ? '' : $starterHtml)) }}</textarea>
         </section>
 
         <section class="card space-y-2">
-            <label class="{{ $label }}">CSS</label>
+            <div class="flex items-center justify-between gap-3">
+                <label class="{{ $label }} mb-0">CSS</label>
+                <button type="button" class="btn-outline btn-sm" data-format="css">
+                    <i class="ri-code-line mr-1"></i> Formatear
+                </button>
+            </div>
             <textarea name="css" data-cm="css" rows="8" class="input-field">{{ old('css', $template->css ?: ($template->exists ? '' : $starterCss)) }}</textarea>
         </section>
 
@@ -114,7 +137,7 @@
             <div class="flex items-center justify-between gap-3">
                 <label class="{{ $label }} mb-0">Campos administrables (JSON)</label>
                 <button type="button" id="bt-detect" class="btn-secondary btn-sm">
-                    <i class="ri-magic-line mr-1"></i> Detectar campos desde el HTML
+                    <i class="ri-magic-line mr-1"></i> Detectar campos HTML
                 </button>
             </div>
             <textarea name="schema" data-cm="json" rows="8" class="input-field">{{ $schemaText }}</textarea>

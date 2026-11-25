@@ -1,7 +1,7 @@
-<dialog id="bt-help" class="w-full max-w-2xl rounded-xl p-0 shadow-2xl backdrop:bg-slate-900/50">
+<dialog id="bt-help" class="w-full max-w-2xl overflow-hidden rounded-xl p-0 shadow-2xl backdrop:bg-slate-900/50" onclick="if (event.target === this) this.close()">
     <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
         <h2 class="text-base font-semibold text-slate-900">Cómo usar las plantillas de bloques</h2>
-        <button type="button" onclick="document.getElementById('bt-help').close()" class="rounded-full p-1.5 text-slate-400 hover:bg-slate-100"><i class="ri-close-line text-lg"></i></button>
+        <button type="button" onclick="document.getElementById('bt-help').close()" class="flex !h-9 !w-9 !min-w-0 flex-shrink-0 items-center justify-center rounded-full !p-0 leading-none text-slate-400 hover:bg-slate-100"><i class="ri-close-line text-lg"></i></button>
     </div>
     <div class="max-h-[70vh] space-y-5 overflow-y-auto px-5 py-4 text-sm leading-relaxed text-slate-700">
         @verbatim
@@ -28,7 +28,7 @@
 
         <section>
             <h3 class="mb-1 font-semibold text-slate-900">3. Campos</h3>
-            <p>Pulsa <em>Detectar campos desde el HTML</em> para generar el JSON y luego ajusta etiquetas y valores por defecto.</p>
+            <p>Pulsa <em>Detectar campos HTML</em> para generar el JSON y luego ajusta etiquetas y valores por defecto.</p>
             <pre class="mt-2 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-100">[
   { "key": "title", "label": "Título", "type": "text", "default": "Hola" },
   { "key": "align", "label": "Alineación", "type": "select", "options": ["left", "center"] },
@@ -59,8 +59,5 @@ title.addEventListener("click", () =&gt; title.classList.toggle("active"));</pre
             </ul>
         </section>
         @endverbatim
-    </div>
-    <div class="flex justify-end border-t border-slate-100 px-5 py-3">
-        <button type="button" onclick="document.getElementById('bt-help').close()" class="rounded-full bg-[#f0872a] px-5 py-2 text-sm font-semibold text-white">Entendido</button>
     </div>
 </dialog>
