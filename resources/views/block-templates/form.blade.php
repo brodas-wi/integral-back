@@ -24,7 +24,12 @@
         $label = 'block text-xs font-medium text-gray-700 mb-1';
         $starterHtml = '<section class="demo"><h2>{{title}}</h2><p>{{description}}</p></section>';
         $starterCss = '.demo{padding:2rem;text-align:center}';
-        $schemaText = old('schema', $template->schema ? json_encode($template->schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : '');
+        $starterSchema = [
+            ['key' => 'title', 'label' => 'Título', 'type' => 'text', 'default' => 'Título de ejemplo'],
+            ['key' => 'description', 'label' => 'Descripción', 'type' => 'textarea', 'default' => 'Texto de ejemplo'],
+        ];
+        $schemaSource = $template->schema ?: ($template->exists ? null : $starterSchema);
+        $schemaText = old('schema', $schemaSource ? json_encode($schemaSource, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : '');
     @endphp
 
     <form id="bt-form" method="POST"
@@ -59,7 +64,7 @@
 
             <div>
                 <label class="{{ $label }}" for="bt-description">Descripción</label>
-                <textarea id="bt-description" name="description" rows="2" maxlength="500" class="input-field">{{ old('description', $template->description) }}</textarea>
+                <textarea id="bt-description" name="description" rows="2" maxlength="500" class="input-field !rounded-lg">{{ old('description', $template->description) }}</textarea>
             </div>
 
             <div class="grid gap-4 md:grid-cols-2">
@@ -92,7 +97,7 @@
                     <input id="bt-icon-file" type="file" accept=".svg,image/svg+xml" class="text-sm text-gray-600">
                 </div>
             </div>
-            <textarea id="bt-icon" name="icon_svg" rows="3" class="input-field font-mono text-xs" placeholder="&lt;svg viewBox=&quot;0 0 32 32&quot;&gt;...&lt;/svg&gt;">{{ old('icon_svg', $template->icon_svg) }}</textarea>
+            <textarea id="bt-icon" name="icon_svg" rows="3" class="input-field !rounded-lg font-mono text-xs" placeholder="&lt;svg viewBox=&quot;0 0 32 32&quot;&gt;...&lt;/svg&gt;">{{ old('icon_svg', $template->icon_svg) }}</textarea>
         </section>
 
         <section class="card space-y-2">

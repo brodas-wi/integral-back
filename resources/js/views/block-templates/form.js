@@ -164,9 +164,29 @@ function init() {
     iconFile.addEventListener("change", () => {
         const file = iconFile.files?.[0];
         if (!file) return;
+
+        const isSvg = file.type === "image/svg+xml" || /\.svg$/i.test(file.name);
+        if (!isSvg || file.size > 20000) {
+            window.alert("Selecciona un archivo .svg de máximo 20 KB.");
+            iconFile.value = "";
+            return;
+        }
+
         const reader = new FileReader();
         reader.onload = () => {
-            iconInput.value = String(reader.result ?? "");
+            const svg = String(reader.result ?? "")
+                .replace(/<\?xml[\s\S]*?\?>/gi, "")
+                .replace(/<!DOCTYPE[\s\S]*?>/gi, "")
+                .replace(/<!--[\s\S]*?-->/g, "")
+                .trim();
+
+            if (!svg.startsWith("<svg")) {
+                window.alert("El archivo no contiene un SVG válido.");
+                iconFile.value = "";
+                return;
+            }
+
+            iconInput.value = svg;
             updateIcon();
         };
         reader.readAsText(file);
