@@ -96,7 +96,8 @@
                             <div class="dropdown-menu">
                                 @canany(['block_templates.toggle', 'block_templates.manage'])
                                     <form method="POST" action="{{ route('block-templates.toggle-status', $template) }}"
-                                        data-bt-action="toggle">
+                                        data-bt-action="toggle" data-name="{{ $template->name }}"
+                                        data-active="{{ $template->is_active ? '1' : '0' }}">
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" class="dropdown-item w-full">
